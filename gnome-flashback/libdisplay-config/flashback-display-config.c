@@ -382,6 +382,8 @@ handle_get_resources (MetaDBusDisplayConfig *skeleton,
                              g_variant_new_boolean (output->is_presentation));
       g_variant_builder_add (&properties, "{sv}", "connector-type",
                              g_variant_new_string (get_connector_type_name (output->connector_type)));
+      g_variant_builder_add (&properties, "{sv}", "underscanning",
+                             g_variant_new_boolean (output->is_underscanning));
 
       edid = flashback_monitor_manager_read_edid (manager, output);
 
@@ -623,6 +625,7 @@ handle_apply_configuration (MetaDBusDisplayConfig *skeleton,
       MetaOutputInfo *output_info;
       gboolean primary;
       gboolean presentation;
+      gboolean underscanning;
 
       if (output_index >= manager->n_outputs)
         {
@@ -640,6 +643,9 @@ handle_apply_configuration (MetaDBusDisplayConfig *skeleton,
 
       if (g_variant_lookup (properties, "presentation", "b", &presentation))
         output_info->is_presentation = presentation;
+
+      if (g_variant_lookup (properties, "underscanning", "b", &underscanning))
+        output_info->is_underscanning = underscanning;
 
       g_ptr_array_add (output_infos, output_info);
     }

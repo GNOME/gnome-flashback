@@ -320,6 +320,38 @@ output_set_presentation_xrandr (FlashbackMonitorManagerPrivate *priv,
                            (unsigned char*) &value, 1);
 }
 
+static gboolean
+output_get_underscanning_xrandr (FlashbackMonitorManagerPrivate *priv,
+                                 MetaOutput                     *output)
+{
+  gboolean value = FALSE;
+  Atom atom, actual_type;
+  int actual_format;
+  unsigned long nitems, bytes_after;
+  unsigned char *buffer;
+  char *str;
+
+  atom = XInternAtom (priv->xdisplay, "underscan", False);
+  XRRGetOutputProperty (priv->xdisplay,
+                        (XID)output->winsys_id,
+                        atom,
+                        0, G_MAXLONG, False, False, XA_ATOM,
+                        &actual_type, &actual_format,
+                        &nitems, &bytes_after, &buffer);
+
+  if (actual_type != XA_ATOM || actual_format != 32 ||
+      nitems < 1)
+    goto out;
+
+  str = XGetAtomName (priv->xdisplay, *(Atom *)buffer);
+  value = !strcmp(str, "on");
+  XFree (str);
+
+out:
+  XFree (buffer);
+  return value;
+}
+
 static int
 normalize_backlight (MetaOutput *output,
                      int         hw_value)
@@ -1001,6 +1033,7 @@ read_current_config (FlashbackMonitorManager *manager)
 
           meta_output->is_primary = ((XID)meta_output->winsys_id == primary_output);
           meta_output->is_presentation = output_get_presentation_xrandr (priv, meta_output);
+          meta_output->is_underscanning = output_get_underscanning_xrandr (priv, meta_output);
           output_get_backlight_limits_xrandr (priv, meta_output);
 
         if (!(meta_output->backlight_min == 0 && meta_output->backlight_max == 0))
@@ -1190,6 +1223,27 @@ flashback_monitor_manager_new (MetaDBusDisplayConfig *display_config)
   return g_object_new (FLASHBACK_TYPE_MONITOR_MANAGER,
                        "display-config", display_config,
                        NULL);
+}
+
+static void
+output_set_underscanning_xrandr (FlashbackMonitorManagerPrivate *priv,
+                                 MetaOutput                     *output,
+                                 gboolean                        underscanning)
+{
+  Atom prop, valueatom;
+  const char *value;
+
+  prop = XInternAtom (priv->xdisplay, "underscan", False);
+
+  /* XXX: Also implement underscan border */
+  value = underscanning ? "on" : "off";
+  valueatom = XInternAtom (priv->xdisplay, value, False);
+
+  XRRChangeOutputProperty (priv->xdisplay,
+                           (XID)output->winsys_id,
+                           prop,
+                           XA_ATOM, 32, PropModeReplace,
+                           (unsigned char*) &valueatom, 1);
 }
 
 void
@@ -1392,8 +1446,13 @@ flashback_monitor_manager_apply_configuration (FlashbackMonitorManager  *manager
                                       output_info->output,
                                       output_info->is_presentation);
 
+      output_set_underscanning_xrandr (priv,
+                                       output_info->output,
+                                       output_info->is_underscanning);
+
       output->is_primary = output_info->is_primary;
       output->is_presentation = output_info->is_presentation;
+      output->is_underscanning = output_info->is_underscanning;
     }
 
   /* Disable outputs not mentioned in the list */
