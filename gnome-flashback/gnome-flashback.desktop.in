@@ -1,4 +1,5 @@
 [Desktop Entry]
+_Name=GNOME Flashback
 Type=Application
 Exec=gnome-flashback
 OnlyShowIn=GNOME;
