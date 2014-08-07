@@ -42,7 +42,8 @@ BUILT_SOURCES = \
 	flashback-end-session-dialog-generated.c
 
 EXTRA_DIST = \
-	$(desktop_in_files)
+	$(desktop_in_files) \
+	org.gnome.SessionManager.EndSessionDialog.xml
 
 CLEANFILES = \
 	$(desktop_DATA) \
