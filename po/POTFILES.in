@@ -3,3 +3,4 @@
 [encoding: UTF-8]
 data/gnome-flashback.desktop.in
 data/gnome-flashback.session.in
+gnome-flashback/gnome-flashback.desktop.in

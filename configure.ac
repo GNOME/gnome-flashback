@@ -19,9 +19,16 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [Define the gettext pack
 IT_PROG_INTLTOOL([0.40.6])
 AC_PROG_CC
 
+GTK_REQUIRED=3.10.0
+
+PKG_CHECK_MODULES(GNOME_FLASHBACK, gtk+-3.0 >= $GTK_REQUIRED)
+AC_SUBST(GNOME_FLASHBACK_CFLAGS)
+AC_SUBST(GNOME_FLASHBACK_LIBS)
+
 AC_CONFIG_FILES([
 Makefile
 data/Makefile
+gnome-flashback/Makefile
 po/Makefile.in
 ])
 
@@ -35,5 +42,4 @@ echo "
     sysconfdir:                    ${sysconfdir}
     source code location:          ${srcdir}
     compiler:                      ${CC}
-
 "

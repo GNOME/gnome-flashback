@@ -1,4 +1,5 @@
 SUBDIRS = \
+	gnome-flashback \
 	data \
 	po
 
