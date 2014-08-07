@@ -5,7 +5,8 @@ AM_CPPFLAGS = \
 	$(GNOME_FLASHBACK_CFLAGS) \
 	-I$(top_builddir)/gnome-flashback \
 	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
-	-DGNOME_DESKTOP_USE_UNSTABLE_API
+	-DGNOME_DESKTOP_USE_UNSTABLE_API \
+	-DGTKBUILDER_DIR=\""$(pkgdatadir)"\"
 
 gnome_flashback_SOURCES = \
 	flashback-application.c \
@@ -15,6 +16,8 @@ gnome_flashback_SOURCES = \
 	flashback-end-session-dialog-generated.c \
 	flashback-end-session-dialog-generated.h \
 	flashback-gsettings.h \
+	flashback-inhibit-dialog.c \
+	flashback-inhibit-dialog.h \
 	flashback-main.c
 
 gnome_flashback_LDADD = \
