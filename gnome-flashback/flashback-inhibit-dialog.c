@@ -535,17 +535,8 @@ setup_dialog (FlashbackInhibitDialog *dialog)
 
 	g_print ("setting up dialog\n");
 	switch (dialog->priv->action) {
-	case FLASHBACK_LOGOUT_ACTION_SWITCH_USER:
-		button_text = _("Switch User");
-		break;
 	case FLASHBACK_LOGOUT_ACTION_LOGOUT:
 		button_text = _("Log Out");
-		break;
-	case FLASHBACK_LOGOUT_ACTION_SLEEP:
-		button_text = _("Suspend");
-		break;
-	case FLASHBACK_LOGOUT_ACTION_HIBERNATE:
-		button_text = _("Hibernate");
 		break;
 	case FLASHBACK_LOGOUT_ACTION_SHUTDOWN:
 		button_text = _("Power Off");
