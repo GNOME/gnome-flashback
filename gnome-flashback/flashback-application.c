@@ -17,12 +17,37 @@
 
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
+#include "config.h"
 #include "flashback-application.h"
+#include "flashback-desktop-background.h"
+#include "flashback-gsettings.h"
 
 struct _FlashbackApplicationPrivate {
+	FlashbackDesktopBackground *background;
+	GSettings                  *settings;
 };
 
 G_DEFINE_TYPE (FlashbackApplication, flashback_application, GTK_TYPE_APPLICATION);
+
+static void
+flashback_application_settings_changed (GSettings   *settings,
+                                        const gchar *key,
+                                        gpointer     user_data)
+{
+	FlashbackApplication *app = FLASHBACK_APPLICATION (user_data);
+	gboolean draw_background = g_settings_get_boolean (settings, key);
+
+	if (draw_background) {
+		if (app->priv->background == NULL) {
+			app->priv->background = flashback_desktop_background_new ();
+		}
+	} else {
+		if (app->priv->background) {
+			g_object_unref (app->priv->background);
+			app->priv->background = NULL;
+		}
+	}
+}
 
 static void
 flashback_application_activate (GApplication *application)
@@ -32,18 +57,45 @@ flashback_application_activate (GApplication *application)
 static void
 flashback_application_startup (GApplication *application)
 {
+	FlashbackApplication *app = FLASHBACK_APPLICATION (application);
+
 	G_APPLICATION_CLASS (flashback_application_parent_class)->startup (application);
+
+	bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+	textdomain (GETTEXT_PACKAGE);
+
+	app->priv->settings = g_settings_new (FLASHBACK_SCHEMA);
+
+	g_signal_connect (app->priv->settings, "changed::" KEY_DRAW_BACKGROUND,
+	                  G_CALLBACK (flashback_application_settings_changed), app);
+	flashback_application_settings_changed (app->priv->settings, KEY_DRAW_BACKGROUND, app);
+
+	g_application_hold (application);
 }
 
 static void
 flashback_application_shutdown (GApplication *application)
 {
+	FlashbackApplication *app = FLASHBACK_APPLICATION (application);
+
+	if (app->priv->background) {
+		g_object_unref (app->priv->background);
+		app->priv->background = NULL;
+	}
+
+	if (app->priv->settings) {
+		g_object_unref (app->priv->settings);
+		app->priv->settings = NULL;
+	}
+
 	G_APPLICATION_CLASS (flashback_application_parent_class)->shutdown (application);
 }
 
 static void
 flashback_application_init (FlashbackApplication *application)
 {
+	application->priv = G_TYPE_INSTANCE_GET_PRIVATE (application, FLASHBACK_TYPE_APPLICATION, FlashbackApplicationPrivate);
 }
 
 static void
@@ -54,6 +106,8 @@ flashback_application_class_init (FlashbackApplicationClass *class)
 	application_class->startup  = flashback_application_startup;
 	application_class->shutdown = flashback_application_shutdown;
 	application_class->activate = flashback_application_activate;
+
+	g_type_class_add_private (class, sizeof (FlashbackApplicationPrivate));
 }
 
 FlashbackApplication *

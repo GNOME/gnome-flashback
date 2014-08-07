@@ -1,0 +1,23 @@
+<schemalist gettext-domain="@GETTEXT_PACKAGE@">
+	<schema id="org.gnome.gnome-flashback" path="/org/gnome/gnome-flashback/">
+		<key name="draw-background" type="b">
+			<default>true</default>
+			<_summary>Draw desktop background</_summary>
+			<_description>If set to true, then GNOME Flashback application will be used to draw desktop background.</_description>
+		</key>
+
+		<!--
+		<child name="background" schema="org.gnome.gnome-flashback.background"/>
+		-->
+	</schema>
+
+	<!--
+	<schema id="org.gnome.gnome-flashback.background" path="/org/gnome/gnome-flashback/background/">
+		<key name="fade" type="b">
+			<default>true</default>
+			<_summary>Fade the background on change</_summary>
+			<_description>If set to true, then fade effect will be used to change the desktop background.</_description>
+		</key>
+	</schema>
+	-->
+</schemalist>

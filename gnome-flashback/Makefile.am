@@ -4,11 +4,15 @@ bin_PROGRAMS = \
 AM_CPPFLAGS = \
 	$(GNOME_FLASHBACK_CFLAGS) \
 	-I$(top_builddir)/gnome-flashback \
-	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\"
+	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+	-DGNOME_DESKTOP_USE_UNSTABLE_API
 
 gnome_flashback_SOURCES = \
 	flashback-application.c \
 	flashback-application.h \
+	flashback-desktop-background.c \
+	flashback-desktop-background.h \
+	flashback-gsettings.h \
 	flashback-main.c
 
 gnome_flashback_LDADD = \
