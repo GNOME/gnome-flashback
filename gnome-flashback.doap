@@ -5,6 +5,7 @@
          xmlns="http://usefulinc.com/ns/doap#">
 
   <name xml:lang="en">GNOME Flashback</name>
+  <shortdesc xml:lang="en">GNOME Flashback session</shortdesc>
   <homepage rdf:resource="https://wiki.gnome.org/Projects/GnomeFlashback" />
   <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/gnome-flashback-list" />
   <download-page rdf:resource="http://download.gnome.org/sources/gnome-flashback/" />
