@@ -1,0 +1,156 @@
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Aviary.pl
+# Jeśli masz jakiekolwiek uwagi odnoszące się do tłumaczenia lub chcesz
+# pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas:
+# gnomepl@aviary.pl
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Piotr Drąg <piotrdrag@gmail.com>, 2014.
+# Aviary.pl <gnomepl@aviary.pl>, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-flashback\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-08-11 19:30+0200\n"
+"PO-Revision-Date: 2014-08-11 19:34+0200\n"
+"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
+"Language-Team: Polish <gnomepl@aviary.pl>\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2;\n"
+"X-Poedit-Language: Polish\n"
+"X-Poedit-Country: Poland\n"
+
+#: ../data/gnome-flashback.desktop.in.h:1
+msgid "GNOME Flashback (Metacity)"
+msgstr "Tradycyjne środowisko GNOME (Metacity)"
+
+#: ../data/gnome-flashback.desktop.in.h:2
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr ""
+"Ta sesja loguje użytkownika do tradycyjnego środowiska GNOME, używając "
+"Metacity"
+
+#: ../data/flashback-inhibit-dialog.ui.h:1
+msgid "Some programs are still running:"
+msgstr "Niektóre programy są nadal uruchomione:"
+
+#: ../data/flashback-inhibit-dialog.ui.h:2
+msgid ""
+"Waiting for the program to finish.  Interrupting the program may cause you "
+"to lose work."
+msgstr ""
+"Oczekiwanie na zakończenie działania programów. Przerwanie działania "
+"programów może spowodować utratę niezapisanych wyników pracy."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
+msgid "Draw desktop background"
+msgstr "Wyświetlanie tła pulpitu"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:2
+msgid ""
+"If set to true, then GNOME Flashback application will be used to draw "
+"desktop background."
+msgstr ""
+"Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
+"GNOME będzie używany do wyświetlania tła pulpitu."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:341
+#, c-format
+msgid "Log Out %s"
+msgstr "Wyloguj użytkownika %s"
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:343
+#: ../gnome-flashback/flashback-inhibit-dialog.c:353
+#: ../gnome-flashback/flashback-inhibit-dialog.c:363
+#: ../gnome-flashback/flashback-inhibit-dialog.c:374
+msgid "Some applications are still running:"
+msgstr "Niektóre programy są nadal uruchomione:"
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:344
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Kliknięcie przycisku Wyloguj zakończy działanie tych programów i wyloguje z "
+"systemu."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:347
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "Użytkownik %s zostanie wylogowany za %d sekundę."
+msgstr[1] "Użytkownik %s zostanie wylogowany za %d sekundy."
+msgstr[2] "Użytkownik %s zostanie wylogowany za %d sekund."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:351
+#: ../gnome-flashback/flashback-inhibit-dialog.c:542
+#, c-format
+msgid "Power Off"
+msgstr "Wyłącz komputer"
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:354
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
+"Kliknięcie przycisku Wyłącz komputer zakończy działanie tych programów i "
+"wyłączy komputer."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:357
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Wyłączenie komputera nastąpi za %d sekundę."
+msgstr[1] "Wyłączenie komputera nastąpi za %d sekundy."
+msgstr[2] "Wyłączenie komputera nastąpi za %d sekund."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:361
+#: ../gnome-flashback/flashback-inhibit-dialog.c:545
+#, c-format
+msgid "Restart"
+msgstr "Uruchom ponownie"
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:364
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Kliknięcie przycisku Uruchom ponownie zakończy działanie tych programów i "
+"ponownie uruchomi komputer."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:367
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Ponowne uruchomienie systemu nastąpi za %d sekundę."
+msgstr[1] "Ponowne uruchomienie systemu nastąpi za %d sekundy."
+msgstr[2] "Ponowne uruchomienie systemu nastąpi za %d sekund."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:375
+msgid ""
+"Waiting for these application to finish.  Interrupting them can lead to loss "
+"of data."
+msgstr ""
+"Oczekiwanie na zakończenie działania programów. Przerwanie działania "
+"programów może spowodować utratę niezapisanych wyników pracy."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:379
+#, c-format
+msgid "The action will proceed automatically in %d second."
+msgid_plural "The action will proceed automatically in %d seconds."
+msgstr[0] "Działanie nastąpi za %d sekundę."
+msgstr[1] "Działanie nastąpi za %d sekundy."
+msgstr[2] "Działanie nastąpi za %d sekund."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:539
+msgid "Log Out"
+msgstr "Wyloguj"
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:552
+msgid "Lock Screen"
+msgstr "Zablokuj ekran"
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:553
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: ../gnome-flashback/gnome-flashback.desktop.in.h:1
+msgid "GNOME Flashback"
+msgstr "Tradycyjne środowisko GNOME"
