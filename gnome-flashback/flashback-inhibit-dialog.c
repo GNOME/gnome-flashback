@@ -83,6 +83,8 @@ lock_screen (FlashbackInhibitDialog *dialog)
 		g_warning ("Couldn't lock screen: %s", error->message);
 		g_error_free (error);
 	}
+
+	gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
 }
 
 static void
