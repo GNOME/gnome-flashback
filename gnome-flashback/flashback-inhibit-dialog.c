@@ -716,6 +716,7 @@ flashback_inhibit_dialog_class_init (FlashbackInhibitDialogClass *klass)
 static void
 flashback_inhibit_dialog_init (FlashbackInhibitDialog *dialog)
 {
+	GtkWindow *window;
 	GtkWidget *content_area;
 	GtkWidget *widget;
 	GError    *error;
@@ -741,10 +742,13 @@ flashback_inhibit_dialog_init (FlashbackInhibitDialog *dialog)
 	widget = GTK_WIDGET (gtk_builder_get_object (dialog->priv->xml, "main-box"));
 	gtk_container_add (GTK_CONTAINER (content_area), widget);
 
+	window = GTK_WINDOW (dialog);
+
 	gtk_container_set_border_width (GTK_CONTAINER (dialog), 6);
-	gtk_window_set_icon_name (GTK_WINDOW (dialog), "system-log-out");
-	gtk_window_set_title (GTK_WINDOW (dialog), "");
-	g_object_set (dialog, "resizable", FALSE, NULL);
+	gtk_window_set_icon_name (window, "system-log-out");
+	gtk_window_set_title (window, "");
+	gtk_window_set_position (window, GTK_WIN_POS_CENTER_ALWAYS);
+	gtk_window_set_resizable (window, FALSE);
 }
 
 static void
