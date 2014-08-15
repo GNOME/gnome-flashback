@@ -1,6 +1,3 @@
-uidir   = $(pkgdatadir)
-ui_DATA = flashback-inhibit-dialog.ui
-
 sessiondir       = $(datadir)/gnome-session/sessions
 session_in_files = gnome-flashback.session.in
 session_DATA     = $(session_in_files:.session.in=.session)
@@ -27,8 +24,7 @@ gsettings_SCHEMAS       = $(gsettings_schemas_in:.xml.in=.xml)
 EXTRA_DIST = \
 	$(session_in_files) \
 	$(xsession_in_files) \
-	$(gsettings_schemas_in_in) \
-	$(ui_DATA)
+	$(gsettings_schemas_in_in)
 
 CLEANFILES = \
 	$(session_DATA) \

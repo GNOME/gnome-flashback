@@ -25,9 +25,14 @@
 #include "flashback-gsettings.h"
 
 struct _FlashbackApplicationPrivate {
+	GSettings *settings;
+
+	/* Desktop background */
 	FlashbackDesktopBackground *background;
-	GSettings                  *settings;
-	gint                        bus_name;
+
+	/* End session dialog */
+	gint       bus_name;
+	GtkWidget *dialog;
 };
 
 G_DEFINE_TYPE (FlashbackApplication, flashback_application, GTK_TYPE_APPLICATION);
@@ -40,34 +45,43 @@ inhibit_dialog_response (FlashbackInhibitDialog    *dialog,
 	int action;
 
 	g_object_get (dialog, "action", &action, NULL);
-	gtk_widget_destroy (GTK_WIDGET (dialog));
+	flashback_inhibit_dialog_close (dialog);
 
 	switch (response_id) {
-	case GTK_RESPONSE_CANCEL:
-	case GTK_RESPONSE_NONE:
-	case GTK_RESPONSE_DELETE_EVENT:
-		if (action == FLASHBACK_LOGOUT_ACTION_LOGOUT
-			|| action == FLASHBACK_LOGOUT_ACTION_SHUTDOWN
-			|| action == FLASHBACK_LOGOUT_ACTION_REBOOT) {
-			g_print ("cancel action %d\n", action);
-			flashback_end_session_dialog_emit_canceled (object);
-			flashback_end_session_dialog_emit_closed (object);
-		}
+	case FLASHBACK_RESPONSE_CANCEL:
+		flashback_end_session_dialog_emit_canceled (object);
+		flashback_end_session_dialog_emit_closed (object);
 		break;
-	case GTK_RESPONSE_ACCEPT:
-		g_print ("confirm action %d\n", action);
+	case FLASHBACK_RESPONSE_ACCEPT:
 		if (action == FLASHBACK_LOGOUT_ACTION_LOGOUT) {
 			flashback_end_session_dialog_emit_confirmed_logout (object);
 		} else if (action == FLASHBACK_LOGOUT_ACTION_SHUTDOWN) {
 			flashback_end_session_dialog_emit_confirmed_shutdown (object);
 		} else if (action == FLASHBACK_LOGOUT_ACTION_REBOOT) {
 			flashback_end_session_dialog_emit_confirmed_reboot (object);
+		} else {
+			g_assert_not_reached ();
 		}
 		break;
 	default:
 		g_assert_not_reached ();
 		break;
 	}
+}
+
+static void
+inhibit_dialog_close (FlashbackInhibitDialog    *dialog,
+                      FlashbackEndSessionDialog *object)
+{
+	flashback_end_session_dialog_emit_canceled (object);
+	flashback_end_session_dialog_emit_closed (object);
+}
+
+static void
+closed (FlashbackEndSessionDialog *object,
+        FlashbackApplication      *app)
+{
+	app->priv->dialog = NULL;
 }
 
 static gboolean
@@ -79,16 +93,37 @@ handle_open (FlashbackEndSessionDialog *object,
              const gchar *const        *arg_inhibitor_object_paths,
              gpointer                   user_data)
 {
-	g_print ("handle open\n");
+	FlashbackApplication *app = user_data;
 
-	GtkWidget *dialog = flashback_inhibit_dialog_new (arg_type, arg_seconds_to_stay_open, arg_inhibitor_object_paths);
+	if (app->priv->dialog != NULL) {
+		g_object_set (app->priv->dialog, "inhibitor-paths", arg_inhibitor_object_paths, NULL);
 
-	g_signal_connect (dialog, "response", G_CALLBACK (inhibit_dialog_response), object);
+		if (arg_timestamp != 0) {
+			gtk_window_present_with_time (GTK_WINDOW (app->priv->dialog), arg_timestamp);
+		} else {
+			gtk_window_present (GTK_WINDOW (app->priv->dialog));
+		}
 
-	gtk_window_present_with_time (GTK_WINDOW (dialog), arg_timestamp);
+		flashback_end_session_dialog_complete_open (object, invocation);
+		return TRUE;
+	}
+
+	app->priv->dialog = flashback_inhibit_dialog_new (arg_type,
+	                                                  arg_seconds_to_stay_open,
+	                                                  arg_inhibitor_object_paths);
+
+	g_signal_connect (app->priv->dialog, "response", G_CALLBACK (inhibit_dialog_response), object);
+	g_signal_connect (app->priv->dialog, "destroy", G_CALLBACK (inhibit_dialog_close), object);
+	g_signal_connect (app->priv->dialog, "close", G_CALLBACK (inhibit_dialog_close), object);
+	g_signal_connect (object, "closed", G_CALLBACK (closed), app);
+
+	if (arg_timestamp != 0) {
+		gtk_window_present_with_time (GTK_WINDOW (app->priv->dialog), arg_timestamp);
+	} else {
+		gtk_window_present (GTK_WINDOW (app->priv->dialog));
+	}
 
 	flashback_end_session_dialog_complete_open (object, invocation);
-
 	return TRUE;
 }
 
@@ -97,13 +132,13 @@ on_bus_acquired (GDBusConnection *connection,
                  const gchar     *name,
                  gpointer         user_data)
 {
-	g_print ("Acquired a message bus connection\n");
-
+	FlashbackApplication *app;
 	GDBusInterfaceSkeleton *iface;
 	GError *error = NULL;
 
+	app = FLASHBACK_APPLICATION (user_data);
 	iface = G_DBUS_INTERFACE_SKELETON (flashback_end_session_dialog_skeleton_new ());
-	g_signal_connect (iface, "handle-open", G_CALLBACK (handle_open), NULL);
+	g_signal_connect (iface, "handle-open", G_CALLBACK (handle_open), app);
 
 	if (!g_dbus_interface_skeleton_export (iface,
 	                                       connection,
@@ -113,22 +148,6 @@ on_bus_acquired (GDBusConnection *connection,
 		g_error_free (error);
 		return;
 	}
-}
-
-static void
-on_name_acquired (GDBusConnection *connection,
-                  const gchar     *name,
-                  gpointer         user_data)
-{
-	g_print ("Acquired the name %s\n", name);
-}
-
-static void
-on_name_lost (GDBusConnection *connection,
-              const gchar     *name,
-              gpointer         user_data)
-{
-	g_print ("Lost the name %s\n", name);
 }
 
 static void
@@ -173,14 +192,15 @@ flashback_application_startup (GApplication *application)
 	                  G_CALLBACK (flashback_application_settings_changed), app);
 	flashback_application_settings_changed (app->priv->settings, KEY_DRAW_BACKGROUND, app);
 
+	app->priv->dialog = NULL;
 	app->priv->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,
 	                                      "org.gnome.Shell",
 	                                      G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
 	                                      G_BUS_NAME_OWNER_FLAGS_REPLACE,
 	                                      on_bus_acquired,
-	                                      on_name_acquired,
-	                                      on_name_lost,
 	                                      NULL,
+	                                      NULL,
+	                                      app,
 	                                      NULL);
 
 	g_application_hold (application);

@@ -31,22 +31,25 @@
 #include "config.h"
 #include "flashback-inhibit-dialog.h"
 
+#define IS_STRING_EMPTY(string) ((string) == NULL || (string)[0] == '\0')
+
 #ifndef DEFAULT_ICON_SIZE
 #define DEFAULT_ICON_SIZE 32
 #endif
 
-#define DIALOG_RESPONSE_LOCK_SCREEN 1
-
 struct _FlashbackInhibitDialogPrivate {
-	GtkBuilder        *xml;
 	int                action;
 	int                timeout;
 	guint              timeout_id;
-	gboolean           is_done;
 	const char *const *inhibitor_paths;
 	GtkListStore      *list_store;
-	int                xrender_event_base;
-	int                xrender_error_base;
+
+	GtkWidget         *main_box;
+	GtkWidget         *inhibitors_treeview;
+	GtkWidget         *description_label;
+	GtkWidget         *lock_screen_button;
+	GtkWidget         *cancel_button;
+	GtkWidget         *accept_button;
 };
 
 enum {
@@ -57,6 +60,14 @@ enum {
 };
 
 enum {
+	SIGNAL_RESPONSE,
+	SIGNAL_CLOSE,
+	SIGNAL_LAST
+};
+
+static guint signals[SIGNAL_LAST];
+
+enum {
 	INHIBIT_IMAGE_COLUMN = 0,
 	INHIBIT_NAME_COLUMN,
 	INHIBIT_REASON_COLUMN,
@@ -65,48 +76,12 @@ enum {
 	NUMBER_OF_COLUMNS
 };
 
-static void flashback_inhibit_dialog_class_init  (FlashbackInhibitDialogClass *klass);
-static void flashback_inhibit_dialog_init        (FlashbackInhibitDialog      *inhibit_dialog);
-static void flashback_inhibit_dialog_finalize    (GObject                     *object);
+static void flashback_inhibit_dialog_start_timer (FlashbackInhibitDialog *dialog);
+static void flashback_inhibit_dialog_stop_timer (FlashbackInhibitDialog *dialog);
+static void populate_model (FlashbackInhibitDialog *dialog);
+static void update_dialog_text (FlashbackInhibitDialog *dialog);
 
-G_DEFINE_TYPE (FlashbackInhibitDialog, flashback_inhibit_dialog, GTK_TYPE_DIALOG)
-
-static void
-lock_screen (FlashbackInhibitDialog *dialog)
-{
-	GError *error;
-	error = NULL;
-
-	g_spawn_command_line_async ("gnome-screensaver-command --lock", &error);
-
-	if (error != NULL) {
-		g_warning ("Couldn't lock screen: %s", error->message);
-		g_error_free (error);
-	}
-
-	gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
-}
-
-static void
-on_response (FlashbackInhibitDialog *dialog,
-             gint                    response_id)
-
-{
-	if (dialog->priv->is_done) {
-		g_signal_stop_emission_by_name (dialog, "response");
-		return;
-	}
-
-	switch (response_id) {
-	case DIALOG_RESPONSE_LOCK_SCREEN:
-		g_signal_stop_emission_by_name (dialog, "response");
-		lock_screen (dialog);
-		break;
-	default:
-		dialog->priv->is_done = TRUE;
-		break;
-	}
-}
+G_DEFINE_TYPE_WITH_PRIVATE (FlashbackInhibitDialog, flashback_inhibit_dialog, GTK_TYPE_WINDOW)
 
 static void
 flashback_inhibit_dialog_set_action (FlashbackInhibitDialog *dialog,
@@ -123,10 +98,25 @@ flashback_inhibit_dialog_set_timeout (FlashbackInhibitDialog *dialog,
 }
 
 static void
-flashback_inhibit_dialog_set_inhibitor_paths (FlashbackInhibitDialog  *dialog,
-                                              const char *const       *paths)
+flashback_inhibit_dialog_set_inhibitor_paths (FlashbackInhibitDialog *dialog,
+                                              const gchar *const     *paths)
 {
-	dialog->priv->inhibitor_paths = (const char *const*)g_strdupv ((gchar **)paths);
+	const gchar *const *old_paths;
+
+	old_paths = dialog->priv->inhibitor_paths;
+	dialog->priv->inhibitor_paths = (const gchar *const *) g_strdupv ((gchar **) paths);
+
+	if (dialog->priv->list_store == NULL) {
+		return;
+	}
+
+	gtk_list_store_clear (dialog->priv->list_store);
+
+	if (G_N_ELEMENTS (paths) == 0 || paths[0] == NULL) {
+		update_dialog_text (dialog);
+	} else {
+		populate_model (dialog);
+	}
 }
 
 static gchar *
@@ -171,35 +161,71 @@ static void
 add_inhibitor (FlashbackInhibitDialog *dialog,
                GDBusProxy             *inhibitor)
 {
-        /*GdkDisplay     *gdkdisplay;
-        const char     *name;
-        char           *app_id;
-        char           *desktop_filename;
-        GdkPixbuf      *pixbuf;
+	gchar *app_id;
+	gchar *reason;
+	gchar *filename;
+	const gchar *name;
+	GdkPixbuf *pixbuf;
+
+	app_id = inhibitor_get_app_id (inhibitor);
+	reason = inhibitor_get_reason (inhibitor);
+	filename = NULL;
+	name = NULL;
+	pixbuf = NULL;
+
+	if (!IS_STRING_EMPTY (app_id)) {
+		if (!g_str_has_suffix (app_id, ".desktop")) {
+			filename = g_strdup_printf ("%s.desktop", app_id);
+		} else {
+			filename = g_strdup (app_id);
+		}
+	}
+
+	if (filename != NULL) {
+		g_free (filename);
+	}
+
+	if (name == NULL) {
+		if (!IS_STRING_EMPTY (app_id)) {
+			name = g_strdup (app_id);
+		} else {
+			name = _("Unknown");
+		}
+	}
+
+	if (pixbuf == NULL) {
+		pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+		                                   "image-missing",
+		                                   DEFAULT_ICON_SIZE,
+		                                   0,
+		                                   NULL);
+	}
+
+	gtk_list_store_insert_with_values (dialog->priv->list_store,
+	                                   NULL, 0,
+	                                   INHIBIT_IMAGE_COLUMN, pixbuf,
+	                                   INHIBIT_NAME_COLUMN, name,
+	                                   INHIBIT_REASON_COLUMN, reason,
+	                                   INHIBIT_ID_COLUMN, g_dbus_proxy_get_object_path (inhibitor),
+	                                   INHIBIT_PROXY_COLUMN, inhibitor,
+	                                   -1);
+
+	g_clear_object (&pixbuf);
+	g_free (reason);
+	g_free (app_id);
+
+	update_dialog_text (dialog);
+
+        /*
         GDesktopAppInfo *app_info;
         char          **search_dirs;
         char           *freeme;
-        gchar          *reason;
+
         GKeyFile *keyfile;
         GIcon *gicon;
 
-        gdkdisplay = gtk_widget_get_display (GTK_WIDGET (dialog));
-
         app_info = NULL;
-        name = NULL;
-        pixbuf = NULL;
         freeme = NULL;
-
-        app_id = inhibitor_get_app_id (inhibitor);
-        reason = inhibitor_get_reason (inhibitor);
-
-        if (IS_STRING_EMPTY (app_id)) {
-                desktop_filename = NULL;
-        } else if (! g_str_has_suffix (app_id, ".desktop")) {
-                desktop_filename = g_strdup_printf ("%s.desktop", app_id);
-        } else {
-                desktop_filename = g_strdup (app_id);
-        }
 
         if (desktop_filename != NULL) {
                 search_dirs = gsm_util_get_desktop_dirs (TRUE, FALSE);
@@ -257,156 +283,86 @@ add_inhibitor (FlashbackInhibitDialog *dialog,
                 }
         }
 
-        if (name == NULL) {
-                if (! IS_STRING_EMPTY (app_id)) {
-                        name = app_id;
-                } else {
-                        name = _("Unknown");
-                }
-        }
-
-        if (pixbuf == NULL) {
-                GtkIconInfo *info;
-                info = gtk_icon_theme_lookup_icon (gtk_icon_theme_get_default (),
-                                                   GSM_ICON_INHIBITOR_DEFAULT,
-                                                   DEFAULT_ICON_SIZE,
-                                                   0);
-                pixbuf = gtk_icon_info_load_icon (info, NULL);
-                gtk_icon_info_free (info);
-        }
-
-        gtk_list_store_insert_with_values (dialog->priv->list_store,
-                                           NULL, 0,
-                                           INHIBIT_IMAGE_COLUMN, pixbuf,
-                                           INHIBIT_NAME_COLUMN, name,
-                                           INHIBIT_REASON_COLUMN, reason,
-                                           INHIBIT_ID_COLUMN, g_dbus_proxy_get_object_path (inhibitor),
-                                           INHIBIT_PROXY_COLUMN, inhibitor,
-                                           -1);
-
-        g_free (desktop_filename);
         g_free (freeme);
-        g_clear_object (&pixbuf);
         g_clear_object (&app_info);
-
-        g_free (app_id);
-        g_free (reason);*/
+        */
 }
 
 static gboolean
 model_is_empty (GtkTreeModel *model)
 {
-        gint n;
-
-        n = gtk_tree_model_iter_n_children (model, NULL);
-        g_print ("model rows: %d\n", n);
-        return n == 0;
+	return gtk_tree_model_iter_n_children (model, NULL) == 0;
 }
-
-static void flashback_inhibit_dialog_start_timer (FlashbackInhibitDialog *dialog);
-static void flashback_inhibit_dialog_stop_timer (FlashbackInhibitDialog *dialog);
 
 static void
 update_dialog_text (FlashbackInhibitDialog *dialog)
 {
-        const char *header_text;
-        gchar *description_text;
-        GtkWidget  *widget;
-        gchar *title;
-        const gchar *user;
-        gchar *markup;
-        gboolean inhibited;
-        gint seconds;
+	gboolean     inhibited;
+	gint         seconds;
+	const gchar *title;
+	const gchar *tmp;
+	gchar       *description;
 
-        user = g_get_real_name ();
-        inhibited = !model_is_empty (GTK_TREE_MODEL (dialog->priv->list_store));
+	inhibited = !model_is_empty (GTK_TREE_MODEL (dialog->priv->list_store));
 
-        g_print ("update dialog text: inhibited %d\n", inhibited);
+	if (inhibited) {
+		flashback_inhibit_dialog_stop_timer (dialog);
+	} else {
+		flashback_inhibit_dialog_start_timer (dialog);
+	}
 
-        if (inhibited) {
-                flashback_inhibit_dialog_stop_timer (dialog);
-        }
-        else {
-                flashback_inhibit_dialog_start_timer (dialog);
-        }
+	if (dialog->priv->timeout <= 30) {
+		seconds = dialog->priv->timeout;
+	} else {
+		seconds = (dialog->priv->timeout / 10) * 10;
+		if (dialog->priv->timeout % 10) {
+			seconds += 10;
+		}
+	}
 
-        if (dialog->priv->timeout <= 30) {
-                seconds = dialog->priv->timeout;
-        } else {
-                seconds = (dialog->priv->timeout / 10) * 10;
-                if (dialog->priv->timeout % 10) {
-                        seconds += 10;
-                }
-        }
+	if (dialog->priv->action == FLASHBACK_LOGOUT_ACTION_LOGOUT) {
+		title = _("Log Out");
+		if (inhibited) {
+			description = g_strdup (_("Click Log Out to quit these applications and log out of the system."));
+		} else {
+			tmp = ngettext ("%s will be logged out automatically in %d second.",
+			                "%s will be logged out automatically in %d seconds.",
+			                seconds);
+			description = g_strdup_printf (tmp, g_get_real_name (), seconds);
+		}
+	} else if (dialog->priv->action == FLASHBACK_LOGOUT_ACTION_SHUTDOWN) {
+		title = _("Power Off");
+		if (inhibited) {
+			description = g_strdup (_("Click Power Off to quit these applications and power off the system."));
+		} else {
+			tmp = ngettext ("The system will power off automatically in %d second.",
+			                "The system will power off automatically in %d seconds.",
+			                seconds);
+			description = g_strdup_printf (tmp, seconds);
+		}
+	} else if (dialog->priv->action == FLASHBACK_LOGOUT_ACTION_REBOOT) {
+		title = _("Restart");
+		if (inhibited) {
+			description = g_strdup (_("Click Restart to quit these applications and restart the system."));
+		} else {
+			tmp = ngettext ("The system will restart automatically in %d second.",
+			                "The system will restart automatically in %d seconds.",
+			                seconds);
+			description = g_strdup_printf (tmp, seconds);
+		}
+	} else {
+		g_assert_not_reached ();
+	}
 
-        if (dialog->priv->action == FLASHBACK_LOGOUT_ACTION_LOGOUT) {
-                title = g_strdup_printf (_("Log Out %s"), user);
-                if (inhibited) {
-                        header_text = _("Some applications are still running:");
-                        description_text = g_strdup (_("Click Log Out to quit these applications and log out of the system."));
-                } else {
-                        header_text = NULL;
-                        description_text = g_strdup_printf (ngettext ("%s will be logged out automatically in %d second.",
-                                                                      "%s will be logged out automatically in %d seconds.", seconds), user, seconds);
-                }
-        } else if (dialog->priv->action == FLASHBACK_LOGOUT_ACTION_SHUTDOWN) {
-                title = g_strdup_printf (_("Power Off"));
-                if (inhibited) {
-                        header_text = _("Some applications are still running:");
-                        description_text = g_strdup (_("Click Power Off to quit these applications and power off the system."));
-                } else {
-                        header_text = NULL;
-                        description_text = g_strdup_printf (ngettext ("The system will power off automatically in %d second.",
-                                                                      "The system will power off automatically in %d seconds.", seconds), seconds);
-                }
-        } else if (dialog->priv->action == FLASHBACK_LOGOUT_ACTION_REBOOT) {
-                title = g_strdup_printf (_("Restart"));
-                if (inhibited) {
-                        header_text = _("Some applications are still running:");
-                        description_text = g_strdup (_("Click Restart to quit these applications and restart the system."));
-                } else {
-                        header_text = NULL;
-                        description_text = g_strdup_printf (ngettext ("The system will restart automatically in %d second.",
-                                                                      "The system will restart automatically in %d seconds.", seconds), seconds);
-                }
-        }
-        else {
-                title = g_strdup ("");
-                if (inhibited) {
-                        header_text = _("Some applications are still running:");
-                        description_text = g_strdup (_("Waiting for these application to finish.  Interrupting them can lead to loss of data."));
+	gtk_window_set_title (GTK_WINDOW (dialog), title);
+	gtk_label_set_text (GTK_LABEL (dialog->priv->description_label), description);
+	g_free (description);
 
-                } else {
-                        header_text = NULL;
-                        description_text = g_strdup_printf (ngettext ("The action will proceed automatically in %d second.",
-                                                                      "The action will proceed automatically in %d seconds.", seconds), seconds);
-                }
-        }
-
-        gtk_window_set_title (GTK_WINDOW (dialog), title);
-
-        widget = GTK_WIDGET (gtk_builder_get_object (dialog->priv->xml, "header-label"));
-        if (header_text) {
-                markup = g_strdup_printf ("<b>%s</b>", header_text);
-                gtk_label_set_markup (GTK_LABEL (widget), markup);
-                g_free (markup);
-                gtk_widget_show (widget);
-        } else {
-                gtk_widget_hide (widget);
-        }
-
-        widget = GTK_WIDGET (gtk_builder_get_object (dialog->priv->xml, "scrolledwindow1"));
-        if (inhibited) {
-                gtk_widget_show (widget);
-        } else {
-                gtk_widget_hide (widget);
-        }
-
-        widget = GTK_WIDGET (gtk_builder_get_object (dialog->priv->xml, "description-label"));
-        gtk_label_set_text (GTK_LABEL (widget), description_text);
-
-        g_free (description_text);
-        g_free (title);
+	if (inhibited) {
+		gtk_widget_show (dialog->priv->main_box);
+	} else {
+		gtk_widget_hide (dialog->priv->main_box);
+	}
 }
 
 static void
@@ -524,7 +480,6 @@ populate_model (FlashbackInhibitDialog *dialog)
 		                          on_inhibitor_created,
 		                          dialog);
 	}
-	update_dialog_text (dialog);
 }
 
 static void
@@ -535,7 +490,6 @@ setup_dialog (FlashbackInhibitDialog *dialog)
 	GtkTreeViewColumn *column;
 	GtkCellRenderer   *renderer;
 
-	g_print ("setting up dialog\n");
 	switch (dialog->priv->action) {
 	case FLASHBACK_LOGOUT_ACTION_LOGOUT:
 		button_text = _("Log Out");
@@ -551,10 +505,7 @@ setup_dialog (FlashbackInhibitDialog *dialog)
 		break;
 	}
 
-	gtk_dialog_add_button (GTK_DIALOG (dialog), _("Lock Screen"), DIALOG_RESPONSE_LOCK_SCREEN);
-	gtk_dialog_add_button (GTK_DIALOG (dialog), _("Cancel"), GTK_RESPONSE_CANCEL);
-	gtk_dialog_add_button (GTK_DIALOG (dialog), button_text, GTK_RESPONSE_ACCEPT);
-	g_signal_connect (dialog, "response", G_CALLBACK (on_response), dialog);
+	gtk_button_set_label (GTK_BUTTON (dialog->priv->accept_button), button_text);
 
 	dialog->priv->list_store = gtk_list_store_new (NUMBER_OF_COLUMNS,
 	                                               GDK_TYPE_PIXBUF,
@@ -562,9 +513,8 @@ setup_dialog (FlashbackInhibitDialog *dialog)
 	                                               G_TYPE_STRING,
 	                                               G_TYPE_STRING,
 	                                               G_TYPE_OBJECT);
-	g_print ("empty model: %d\n", gtk_tree_model_iter_n_children (GTK_TREE_MODEL (dialog->priv->list_store), NULL));
 
-	treeview = GTK_WIDGET (gtk_builder_get_object (dialog->priv->xml, "inhibitors-treeview"));
+	treeview = dialog->priv->inhibitors_treeview;
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview), FALSE);
 	gtk_tree_view_set_model (GTK_TREE_VIEW (treeview), GTK_TREE_MODEL (dialog->priv->list_store));
 
@@ -611,6 +561,7 @@ flashback_inhibit_dialog_constructor (GType                  type,
 	dialog = FLASHBACK_INHIBIT_DIALOG (object);
 
 	setup_dialog (dialog);
+	update_dialog_text (dialog);
 
 	return G_OBJECT (dialog);
 }
@@ -623,7 +574,6 @@ flashback_inhibit_dialog_dispose (GObject *object)
 	flashback_inhibit_dialog_stop_timer (dialog);
 
 	g_clear_object (&dialog->priv->list_store);
-	g_clear_object (&dialog->priv->xml);
 
 	G_OBJECT_CLASS (flashback_inhibit_dialog_parent_class)->dispose (object);
 }
@@ -632,7 +582,8 @@ static gboolean
 flashback_inhibit_dialog_timeout (FlashbackInhibitDialog *dialog)
 {
 	if (dialog->priv->timeout == 0) {
-		gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
+		flashback_inhibit_dialog_response (dialog, FLASHBACK_RESPONSE_ACCEPT);
+		dialog->priv->timeout_id = 0;
 		return G_SOURCE_REMOVE;
 	}
 
@@ -661,28 +612,47 @@ flashback_inhibit_dialog_stop_timer (FlashbackInhibitDialog *dialog)
 }
 
 static void
-flashback_inhibit_dialog_show (GtkWidget *widget)
+flashback_inhibit_dialog_get_preferred_width (GtkWidget *widget,
+                                               gint      *minimum_width,
+                                               gint      *natural_width)
 {
-	FlashbackInhibitDialog *dialog = FLASHBACK_INHIBIT_DIALOG (widget);
-
-	GTK_WIDGET_CLASS (flashback_inhibit_dialog_parent_class)->show (widget);
-
-	update_dialog_text (dialog);
+	*minimum_width = *natural_width = 460;
 }
 
 static void
 flashback_inhibit_dialog_class_init (FlashbackInhibitDialogClass *klass)
 {
-	GObjectClass   *object_class = G_OBJECT_CLASS (klass);
-	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+	GObjectClass   *object_class;
+	GtkWidgetClass *widget_class;
+	GtkBindingSet  *binding_set;
+
+	object_class = G_OBJECT_CLASS (klass);
+	widget_class = GTK_WIDGET_CLASS (klass);
+
+	klass->close = flashback_inhibit_dialog_close;
 
 	object_class->get_property = flashback_inhibit_dialog_get_property;
 	object_class->set_property = flashback_inhibit_dialog_set_property;
 	object_class->constructor = flashback_inhibit_dialog_constructor;
 	object_class->dispose = flashback_inhibit_dialog_dispose;
-	object_class->finalize = flashback_inhibit_dialog_finalize;
 
-	widget_class->show = flashback_inhibit_dialog_show;
+	widget_class->get_preferred_width = flashback_inhibit_dialog_get_preferred_width;
+
+	signals[SIGNAL_RESPONSE] = g_signal_new ("response",
+	                                         G_OBJECT_CLASS_TYPE (klass),
+	                                         G_SIGNAL_RUN_LAST,
+	                                         G_STRUCT_OFFSET (FlashbackInhibitDialogClass, response),
+	                                         NULL, NULL,
+	                                         g_cclosure_marshal_VOID__INT,
+	                                         G_TYPE_NONE, 1,
+	                                         G_TYPE_INT);
+	signals[SIGNAL_CLOSE] = g_signal_new ("close",
+	                                      G_OBJECT_CLASS_TYPE (klass),
+	                                      G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+	                                      G_STRUCT_OFFSET (FlashbackInhibitDialogClass, close),
+	                                      NULL, NULL,
+	                                      g_cclosure_marshal_VOID__VOID,
+	                                      G_TYPE_NONE, 0);
 
 	g_object_class_install_property (object_class,
 	                                 PROP_ACTION,
@@ -710,57 +680,79 @@ flashback_inhibit_dialog_class_init (FlashbackInhibitDialogClass *klass)
 	                                                     G_TYPE_STRV,
 	                                                     G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
-	g_type_class_add_private (klass, sizeof (FlashbackInhibitDialogPrivate));
+	binding_set = gtk_binding_set_by_class (klass);
+	gtk_binding_entry_add_signal (binding_set, GDK_KEY_Escape, 0, "close", 0);
+
+	gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gnome-flashback/flashback-inhibit-dialog.ui");
+	gtk_widget_class_bind_template_child_private (widget_class, FlashbackInhibitDialog, main_box);
+	gtk_widget_class_bind_template_child_private (widget_class, FlashbackInhibitDialog, inhibitors_treeview);
+	gtk_widget_class_bind_template_child_private (widget_class, FlashbackInhibitDialog, description_label);
+	gtk_widget_class_bind_template_child_private (widget_class, FlashbackInhibitDialog, lock_screen_button);
+	gtk_widget_class_bind_template_child_private (widget_class, FlashbackInhibitDialog, cancel_button);
+	gtk_widget_class_bind_template_child_private (widget_class, FlashbackInhibitDialog, accept_button);
+}
+
+static void
+lock_screen_button_clicked (GtkButton              *button,
+                            FlashbackInhibitDialog *dialog)
+{
+	GError *error;
+	error = NULL;
+
+	g_spawn_command_line_async ("gnome-screensaver-command --lock", &error);
+
+	if (error != NULL) {
+		g_warning ("Couldn't lock screen: %s", error->message);
+		g_error_free (error);
+	}
+
+	flashback_inhibit_dialog_close (dialog);
+}
+
+static void
+cancel_button_clicked (GtkButton              *button,
+                       FlashbackInhibitDialog *dialog)
+{
+	flashback_inhibit_dialog_response (dialog, FLASHBACK_RESPONSE_CANCEL);
+}
+
+static void
+accept_button_clicked (GtkButton              *button,
+                       FlashbackInhibitDialog *dialog)
+{
+	flashback_inhibit_dialog_response (dialog, FLASHBACK_RESPONSE_ACCEPT);
 }
 
 static void
 flashback_inhibit_dialog_init (FlashbackInhibitDialog *dialog)
 {
 	GtkWindow *window;
-	GtkWidget *content_area;
-	GtkWidget *widget;
-	GError    *error;
 
-	dialog->priv = G_TYPE_INSTANCE_GET_PRIVATE (dialog, FLASHBACK_TYPE_INHIBIT_DIALOG, FlashbackInhibitDialogPrivate);
+	dialog->priv = G_TYPE_INSTANCE_GET_PRIVATE (dialog,
+	                                            FLASHBACK_TYPE_INHIBIT_DIALOG,
+	                                            FlashbackInhibitDialogPrivate);
 
-	dialog->priv->xml = gtk_builder_new ();
-	gtk_builder_set_translation_domain (dialog->priv->xml, GETTEXT_PACKAGE);
+	gtk_widget_init_template (GTK_WIDGET (dialog));
 
-	error = NULL;
-	if (!gtk_builder_add_from_file (dialog->priv->xml,
-	                                GTKBUILDER_DIR "/flashback-inhibit-dialog.ui",
-	                                &error)) {
-		if (error) {
-			g_warning ("Could not load inhibitor UI file: %s", error->message);
-			g_error_free (error);
-		} else {
-			g_warning ("Could not load inhibitor UI file.");
-		}
-	}
-
-	content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-	widget = GTK_WIDGET (gtk_builder_get_object (dialog->priv->xml, "main-box"));
-	gtk_container_add (GTK_CONTAINER (content_area), widget);
+	g_signal_connect (dialog->priv->lock_screen_button, "clicked",
+	                 G_CALLBACK (lock_screen_button_clicked), dialog);
+	g_signal_connect (dialog->priv->cancel_button, "clicked",
+	                 G_CALLBACK (cancel_button_clicked), dialog);
+	g_signal_connect (dialog->priv->accept_button, "clicked",
+	                 G_CALLBACK (accept_button_clicked), dialog);
 
 	window = GTK_WINDOW (dialog);
 
-	gtk_container_set_border_width (GTK_CONTAINER (dialog), 6);
 	gtk_window_set_icon_name (window, "system-log-out");
-	gtk_window_set_title (window, "");
-	gtk_window_set_position (window, GTK_WIN_POS_CENTER_ALWAYS);
-	gtk_window_set_resizable (window, FALSE);
-}
-
-static void
-flashback_inhibit_dialog_finalize (GObject *object)
-{
-	G_OBJECT_CLASS (flashback_inhibit_dialog_parent_class)->finalize (object);
+	gtk_window_set_keep_above (window, TRUE);
+	gtk_window_set_skip_taskbar_hint (window, TRUE);
+	gtk_window_set_skip_pager_hint (window, TRUE);
 }
 
 GtkWidget *
-flashback_inhibit_dialog_new (int action,
-                              int seconds,
-                              const char *const *inhibitor_paths)
+flashback_inhibit_dialog_new (gint                action,
+                              gint                seconds,
+                              const gchar *const *inhibitor_paths)
 {
 	GObject *object;
 
@@ -771,4 +763,21 @@ flashback_inhibit_dialog_new (int action,
 	                       NULL);
 
 	return GTK_WIDGET (object);
+}
+
+void
+flashback_inhibit_dialog_response (FlashbackInhibitDialog *dialog,
+                                   gint                    response_id)
+{
+	g_return_if_fail (FLASHBACK_IS_INHIBIT_DIALOG (dialog));
+
+	g_signal_emit (dialog, signals[SIGNAL_RESPONSE], 0, response_id);
+}
+
+void
+flashback_inhibit_dialog_close (FlashbackInhibitDialog *dialog)
+{
+	g_return_if_fail (FLASHBACK_IS_INHIBIT_DIALOG (dialog));
+
+	gtk_window_close (GTK_WINDOW (dialog));
 }

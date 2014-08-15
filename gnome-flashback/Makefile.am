@@ -5,8 +5,7 @@ AM_CPPFLAGS = \
 	$(GNOME_FLASHBACK_CFLAGS) \
 	-I$(top_builddir)/gnome-flashback \
 	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
-	-DGNOME_DESKTOP_USE_UNSTABLE_API \
-	-DGTKBUILDER_DIR=\""$(pkgdatadir)"\"
+	-DGNOME_DESKTOP_USE_UNSTABLE_API
 
 gnome_flashback_SOURCES = \
 	flashback-application.c \
@@ -18,7 +17,9 @@ gnome_flashback_SOURCES = \
 	flashback-gsettings.h \
 	flashback-inhibit-dialog.c \
 	flashback-inhibit-dialog.h \
-	flashback-main.c
+	flashback-main.c \
+	flashback-resources.c \
+	flashback-resources.h
 
 gnome_flashback_LDADD = \
 	$(GNOME_FLASHBACK_LIBS)
@@ -37,13 +38,21 @@ flashback-end-session-dialog-generated.c: org.gnome.SessionManager.EndSessionDia
 		--c-namespace Flashback \
 		org.gnome.SessionManager.EndSessionDialog.xml
 
+flashback-resources.c: flashback.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/flashback.gresource.xml)
+	$(AM_V_GEN)$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate --c-name flashback $<
+flashback-resources.h: flashback.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/flashback.gresource.xml)
+	$(AM_V_GEN)$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate --c-name flashback $<
+
 BUILT_SOURCES = \
 	flashback-end-session-dialog-generated.h \
-	flashback-end-session-dialog-generated.c
+	flashback-end-session-dialog-generated.c \
+	flashback-resources.c \
+	flashback-resources.h
 
 EXTRA_DIST = \
 	$(desktop_in_files) \
-	org.gnome.SessionManager.EndSessionDialog.xml
+	org.gnome.SessionManager.EndSessionDialog.xml \
+	flashback.gresource.xml
 
 CLEANFILES = \
 	$(desktop_DATA) \

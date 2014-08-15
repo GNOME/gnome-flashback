@@ -23,6 +23,17 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+	FLASHBACK_LOGOUT_ACTION_LOGOUT,
+	FLASHBACK_LOGOUT_ACTION_SHUTDOWN,
+	FLASHBACK_LOGOUT_ACTION_REBOOT
+} FlashbackLogoutAction;
+
+typedef enum {
+	FLASHBACK_RESPONSE_CANCEL,
+	FLASHBACK_RESPONSE_ACCEPT
+} FlashbackResponseType;
+
 #define FLASHBACK_TYPE_INHIBIT_DIALOG         (flashback_inhibit_dialog_get_type ())
 #define FLASHBACK_INHIBIT_DIALOG(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), FLASHBACK_TYPE_INHIBIT_DIALOG, FlashbackInhibitDialog))
 #define FLASHBACK_INHIBIT_DIALOG_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k),     FLASHBACK_TYPE_INHIBIT_DIALOG, FlashbackInhibitDialogClass))
@@ -30,32 +41,30 @@ G_BEGIN_DECLS
 #define FLASHBACK_IS_INHIBIT_DIALOG_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k),    FLASHBACK_TYPE_INHIBIT_DIALOG))
 #define FLASHBACK_INHIBIT_DIALOG_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o),  FLASHBACK_TYPE_INHIBIT_DIALOG, FlashbackInhibitDialogClass))
 
-typedef enum _FlashbackLogoutAction FlashbackLogoutAction;
-
 typedef struct _FlashbackInhibitDialog        FlashbackInhibitDialog;
 typedef struct _FlashbackInhibitDialogClass   FlashbackInhibitDialogClass;
 typedef struct _FlashbackInhibitDialogPrivate FlashbackInhibitDialogPrivate;
 
-enum _FlashbackLogoutAction {
-	FLASHBACK_LOGOUT_ACTION_LOGOUT,
-	FLASHBACK_LOGOUT_ACTION_SHUTDOWN,
-	FLASHBACK_LOGOUT_ACTION_REBOOT
-};
-
 struct _FlashbackInhibitDialog {
-	GtkDialog                      parent;
+	GtkWindow                      parent;
 	FlashbackInhibitDialogPrivate *priv;
 };
 
 struct _FlashbackInhibitDialogClass {
-	GtkDialogClass parent_class;
+	GtkWindowClass parent_class;
+
+	void (* response) (FlashbackInhibitDialog *dialog, gint response_id);
+	void (* close)    (FlashbackInhibitDialog *dialog);
 };
 
 GType      flashback_inhibit_dialog_get_type (void);
-GtkWidget *flashback_inhibit_dialog_new      (int action,
-                                              int seconds,
-                                              const char *const *inhibitor_paths);
+GtkWidget *flashback_inhibit_dialog_new      (gint                action,
+                                              gint                seconds,
+                                              const gchar *const *inhibitor_paths);
 
+void       flashback_inhibit_dialog_response (FlashbackInhibitDialog *dialog,
+                                              gint                    response_id);
+void       flashback_inhibit_dialog_close    (FlashbackInhibitDialog *dialog);
 G_END_DECLS
 
 #endif

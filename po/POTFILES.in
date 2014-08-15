@@ -3,7 +3,7 @@
 [encoding: UTF-8]
 data/gnome-flashback.desktop.in
 data/gnome-flashback.session.in
-[type: gettext/glade]data/flashback-inhibit-dialog.ui
 data/org.gnome.gnome-flashback.gschema.xml.in.in
 gnome-flashback/flashback-inhibit-dialog.c
+[type: gettext/glade]gnome-flashback/flashback-inhibit-dialog.ui
 gnome-flashback/gnome-flashback.desktop.in
