@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-11 19:30+0200\n"
-"PO-Revision-Date: 2014-08-11 19:34+0200\n"
+"POT-Creation-Date: 2014-08-15 21:44+0200\n"
+"PO-Revision-Date: 2014-08-15 21:45+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -33,18 +33,6 @@ msgstr ""
 "Ta sesja loguje użytkownika do tradycyjnego środowiska GNOME, używając "
 "Metacity"
 
-#: ../data/flashback-inhibit-dialog.ui.h:1
-msgid "Some programs are still running:"
-msgstr "Niektóre programy są nadal uruchomione:"
-
-#: ../data/flashback-inhibit-dialog.ui.h:2
-msgid ""
-"Waiting for the program to finish.  Interrupting the program may cause you "
-"to lose work."
-msgstr ""
-"Oczekiwanie na zakończenie działania programów. Przerwanie działania "
-"programów może spowodować utratę niezapisanych wyników pracy."
-
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
 msgid "Draw desktop background"
 msgstr "Wyświetlanie tła pulpitu"
@@ -57,25 +45,22 @@ msgstr ""
 "Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
 "GNOME będzie używany do wyświetlania tła pulpitu."
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:341
-#, c-format
-msgid "Log Out %s"
-msgstr "Wyloguj użytkownika %s"
+#: ../gnome-flashback/flashback-inhibit-dialog.c:192
+msgid "Unknown"
+msgstr "Nieznany"
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:343
-#: ../gnome-flashback/flashback-inhibit-dialog.c:353
-#: ../gnome-flashback/flashback-inhibit-dialog.c:363
-#: ../gnome-flashback/flashback-inhibit-dialog.c:374
-msgid "Some applications are still running:"
-msgstr "Niektóre programy są nadal uruchomione:"
+#: ../gnome-flashback/flashback-inhibit-dialog.c:324
+#: ../gnome-flashback/flashback-inhibit-dialog.c:495
+msgid "Log Out"
+msgstr "Wyloguj"
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:344
+#: ../gnome-flashback/flashback-inhibit-dialog.c:326
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Kliknięcie przycisku Wyloguj zakończy działanie tych programów i wyloguje z "
 "systemu."
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:347
+#: ../gnome-flashback/flashback-inhibit-dialog.c:328
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
@@ -83,19 +68,18 @@ msgstr[0] "Użytkownik %s zostanie wylogowany za %d sekundę."
 msgstr[1] "Użytkownik %s zostanie wylogowany za %d sekundy."
 msgstr[2] "Użytkownik %s zostanie wylogowany za %d sekund."
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:351
-#: ../gnome-flashback/flashback-inhibit-dialog.c:542
-#, c-format
+#: ../gnome-flashback/flashback-inhibit-dialog.c:334
+#: ../gnome-flashback/flashback-inhibit-dialog.c:498
 msgid "Power Off"
 msgstr "Wyłącz komputer"
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:354
+#: ../gnome-flashback/flashback-inhibit-dialog.c:336
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 "Kliknięcie przycisku Wyłącz komputer zakończy działanie tych programów i "
 "wyłączy komputer."
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:357
+#: ../gnome-flashback/flashback-inhibit-dialog.c:338
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -103,19 +87,18 @@ msgstr[0] "Wyłączenie komputera nastąpi za %d sekundę."
 msgstr[1] "Wyłączenie komputera nastąpi za %d sekundy."
 msgstr[2] "Wyłączenie komputera nastąpi za %d sekund."
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:361
-#: ../gnome-flashback/flashback-inhibit-dialog.c:545
-#, c-format
+#: ../gnome-flashback/flashback-inhibit-dialog.c:344
+#: ../gnome-flashback/flashback-inhibit-dialog.c:501
 msgid "Restart"
 msgstr "Uruchom ponownie"
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:364
+#: ../gnome-flashback/flashback-inhibit-dialog.c:346
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Kliknięcie przycisku Uruchom ponownie zakończy działanie tych programów i "
 "ponownie uruchomi komputer."
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:367
+#: ../gnome-flashback/flashback-inhibit-dialog.c:348
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -123,33 +106,25 @@ msgstr[0] "Ponowne uruchomienie systemu nastąpi za %d sekundę."
 msgstr[1] "Ponowne uruchomienie systemu nastąpi za %d sekundy."
 msgstr[2] "Ponowne uruchomienie systemu nastąpi za %d sekund."
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:375
+#: ../gnome-flashback/flashback-inhibit-dialog.ui.h:1
+msgid "Some programs are still running:"
+msgstr "Niektóre programy są nadal uruchomione:"
+
+#: ../gnome-flashback/flashback-inhibit-dialog.ui.h:2
 msgid ""
-"Waiting for these application to finish.  Interrupting them can lead to loss "
+"Waiting for these application to finish. Interrupting them can lead to loss "
 "of data."
 msgstr ""
 "Oczekiwanie na zakończenie działania programów. Przerwanie działania "
 "programów może spowodować utratę niezapisanych wyników pracy."
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:379
-#, c-format
-msgid "The action will proceed automatically in %d second."
-msgid_plural "The action will proceed automatically in %d seconds."
-msgstr[0] "Działanie nastąpi za %d sekundę."
-msgstr[1] "Działanie nastąpi za %d sekundy."
-msgstr[2] "Działanie nastąpi za %d sekund."
-
-#: ../gnome-flashback/flashback-inhibit-dialog.c:539
-msgid "Log Out"
-msgstr "Wyloguj"
-
-#: ../gnome-flashback/flashback-inhibit-dialog.c:552
-msgid "Lock Screen"
-msgstr "Zablokuj ekran"
-
-#: ../gnome-flashback/flashback-inhibit-dialog.c:553
+#: ../gnome-flashback/flashback-inhibit-dialog.ui.h:3
 msgid "Cancel"
 msgstr "Anuluj"
+
+#: ../gnome-flashback/flashback-inhibit-dialog.ui.h:4
+msgid "Lock Screen"
+msgstr "Zablokuj ekran"
 
 #: ../gnome-flashback/gnome-flashback.desktop.in.h:1
 msgid "GNOME Flashback"
