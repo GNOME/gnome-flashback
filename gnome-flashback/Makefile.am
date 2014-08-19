@@ -52,7 +52,8 @@ BUILT_SOURCES = \
 EXTRA_DIST = \
 	$(desktop_in_files) \
 	org.gnome.SessionManager.EndSessionDialog.xml \
-	flashback.gresource.xml
+	flashback.gresource.xml \
+	flashback-inhibit-dialog.ui
 
 CLEANFILES = \
 	$(desktop_DATA) \
