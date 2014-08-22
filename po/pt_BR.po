@@ -1,0 +1,120 @@
+# Brazilian Portuguese translation for gnome-flashback.
+# Copyright (C) 2014 gnome-flashback's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-flashback package.
+# Rafael Ferreira <rafael.f.f1@gmail.com>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-flashback master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"flashback&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-08-22 06:50+0000\n"
+"PO-Revision-Date: 2014-08-22 04:12-0300\n"
+"Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
+"Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.6.7\n"
+
+#: ../data/gnome-flashback.desktop.in.h:1
+msgid "GNOME Flashback (Metacity)"
+msgstr "GNOME Flashback (Metacity)"
+
+#: ../data/gnome-flashback.desktop.in.h:2
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr "Essa sessão se inicia no GNOME Flashback com Metacity"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
+msgid "Draw desktop background"
+msgstr "Desenhar fundo de tela da área de trabalho"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:2
+msgid ""
+"If set to true, then GNOME Flashback application will be used to draw "
+"desktop background."
+msgstr ""
+"Se definido como verdadeiro, então o aplicativo GNOME Flashback será usado "
+"para desenhar o fundo de tela da área de trabalho."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:192
+msgid "Unknown"
+msgstr "Desconhecido"
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:324
+#: ../gnome-flashback/flashback-inhibit-dialog.c:495
+msgid "Log Out"
+msgstr "Encerrar sessão"
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:326
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Clique em \"Encerrar sessão\" para sair desses aplicativos e encerrar a "
+"sessão do sistema."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:328
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s terá sua sessão encerrada em %d segundo."
+msgstr[1] "%s terá sua sessão encerrada em %d segundos."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:334
+#: ../gnome-flashback/flashback-inhibit-dialog.c:498
+msgid "Power Off"
+msgstr "Desligar"
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:336
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
+"Clique em \"Desligar\" para sair desses aplicativos e desligar o sistema."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:338
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "O sistema será desligado automaticamente em %d segundo."
+msgstr[1] "O sistema será desligado automaticamente em %d segundos."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:344
+#: ../gnome-flashback/flashback-inhibit-dialog.c:501
+msgid "Restart"
+msgstr "Reiniciar"
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:346
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Clique em \"Reiniciar\" para sair desses aplicativos e reiniciar o sistema."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.c:348
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "O sistema será reiniciado automaticamente em %d segundo."
+msgstr[1] "O sistema será reiniciado automaticamente em %d segundos."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.ui.h:1
+msgid "Some programs are still running:"
+msgstr "Alguns programas ainda estão em execução:"
+
+#: ../gnome-flashback/flashback-inhibit-dialog.ui.h:2
+msgid ""
+"Waiting for these application to finish. Interrupting them can lead to loss "
+"of data."
+msgstr ""
+"Esperando esses aplicativos serem finalizados. Interrompê-los pode levar à "
+"perda de dados."
+
+#: ../gnome-flashback/flashback-inhibit-dialog.ui.h:3
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: ../gnome-flashback/flashback-inhibit-dialog.ui.h:4
+msgid "Lock Screen"
+msgstr "Bloquear tela"
+
+#: ../gnome-flashback/gnome-flashback.desktop.in.h:1
+msgid "GNOME Flashback"
+msgstr "GNOME Flashback"
