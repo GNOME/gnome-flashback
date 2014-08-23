@@ -8,12 +8,14 @@ AM_CPPFLAGS = \
 	-DGNOME_DESKTOP_USE_UNSTABLE_API
 
 gnome_flashback_SOURCES = \
+	dbus-display-config.c \
+	dbus-display-config.h \
+	dbus-end-session-dialog.c \
+	dbus-end-session-dialog.h \
+	dbus-idle-monitor.c \
+	dbus-idle-monitor.h \
 	flashback-application.c \
 	flashback-application.h \
-	flashback-dbus-display-config.c \
-	flashback-dbus-display-config.h \
-	flashback-dbus-idle-monitor.c \
-	flashback-dbus-idle-monitor.h \
 	flashback-desktop-background.c \
 	flashback-desktop-background.h \
 	flashback-end-session-dialog.c \
@@ -34,28 +36,28 @@ desktop_DATA     = $(desktop_in_files:.desktop.in=.desktop)
 
 %.desktop: %.desktop.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 
-flashback-end-session-dialog.h:
-flashback-end-session-dialog.c: org.gnome.SessionManager.EndSessionDialog.xml Makefile.am
+dbus-end-session-dialog.h:
+dbus-end-session-dialog.c: org.gnome.SessionManager.EndSessionDialog.xml Makefile.am
 	$(AM_V_GEN) gdbus-codegen \
 		--interface-prefix=org.gnome.SessionManager \
-		--generate-c-code flashback-end-session-dialog \
-		--c-namespace Flashback \
+		--generate-c-code dbus-end-session-dialog \
+		--c-namespace DBus \
 		org.gnome.SessionManager.EndSessionDialog.xml
 
-flashback-dbus-display-config.h:
-flashback-dbus-display-config.c: org.gnome.Mutter.DisplayConfig.xml
+dbus-display-config.h:
+dbus-display-config.c: org.gnome.Mutter.DisplayConfig.xml
 	$(AM_V_GEN) gdbus-codegen \
 		--interface-prefix org.gnome.Mutter \
-		--c-namespace Flashback \
-		--generate-c-code flashback-dbus-display-config \
+		--c-namespace DBus \
+		--generate-c-code dbus-display-config \
 		$(srcdir)/org.gnome.Mutter.DisplayConfig.xml
 
-flashback-dbus-idle-monitor.h:
-flashback-dbus-idle-monitor.c: org.gnome.Mutter.IdleMonitor.xml
+dbus-idle-monitor.h:
+dbus-idle-monitor.c: org.gnome.Mutter.IdleMonitor.xml
 	$(AM_V_GEN) gdbus-codegen \
 		--interface-prefix org.gnome.Mutter \
-		--c-namespace Flashback \
-		--generate-c-code flashback-dbus-idle-monitor \
+		--c-namespace DBus \
+		--generate-c-code dbus-idle-monitor \
 		--c-generate-object-manager \
 		$(srcdir)/org.gnome.Mutter.IdleMonitor.xml
 
@@ -65,12 +67,12 @@ flashback-resources.h: flashback.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES)
 	$(AM_V_GEN)$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate --c-name flashback $<
 
 BUILT_SOURCES = \
-	flashback-end-session-dialog.h \
-	flashback-end-session-dialog.c \
-	flashback-dbus-display-config.h \
-	flashback-dbus-display-config.c \
-	flashback-dbus-idle-monitor.h \
-	flashback-dbus-idle-monitor.c \
+	dbus-end-session-dialog.h \
+	dbus-end-session-dialog.c \
+	dbus-display-config.h \
+	dbus-display-config.c \
+	dbus-idle-monitor.h \
+	dbus-idle-monitor.c \
 	flashback-resources.c \
 	flashback-resources.h
 

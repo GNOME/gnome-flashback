@@ -18,8 +18,9 @@
 #ifndef FLASHBACK_GSETTINGS_H
 #define FLASHBACK_GSETTINGS_H
 
-#define FLASHBACK_SCHEMA    "org.gnome.gnome-flashback"
-#define KEY_DRAW_BACKGROUND "draw-background"
+#define FLASHBACK_SCHEMA       "org.gnome.gnome-flashback"
+#define KEY_DESKTOP_BACKGROUND "desktop-background"
+#define KEY_END_SESSION_DIALOG "end-session-dialog"
 
 /*#define FLASHBACK_BACKGROUND_SCHEMA "org.gnome.gnome-flashback.background"
 #define KEY_FADE                    "fade"*/
