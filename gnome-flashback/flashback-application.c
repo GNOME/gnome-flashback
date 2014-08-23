@@ -20,7 +20,7 @@
 #include "config.h"
 #include "flashback-application.h"
 #include "flashback-desktop-background.h"
-#include "flashback-end-session-dialog-generated.h"
+#include "flashback-end-session-dialog.h"
 #include "flashback-inhibit-dialog.h"
 #include "flashback-gsettings.h"
 

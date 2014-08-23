@@ -12,8 +12,8 @@ gnome_flashback_SOURCES = \
 	flashback-application.h \
 	flashback-desktop-background.c \
 	flashback-desktop-background.h \
-	flashback-end-session-dialog-generated.c \
-	flashback-end-session-dialog-generated.h \
+	flashback-end-session-dialog.c \
+	flashback-end-session-dialog.h \
 	flashback-gsettings.h \
 	flashback-inhibit-dialog.c \
 	flashback-inhibit-dialog.h \
@@ -30,11 +30,11 @@ desktop_DATA     = $(desktop_in_files:.desktop.in=.desktop)
 
 %.desktop: %.desktop.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 
-flashback-end-session-dialog-generated.h:
-flashback-end-session-dialog-generated.c: org.gnome.SessionManager.EndSessionDialog.xml Makefile.am
+flashback-end-session-dialog.h:
+flashback-end-session-dialog.c: org.gnome.SessionManager.EndSessionDialog.xml Makefile.am
 	$(AM_V_GEN) gdbus-codegen \
 		--interface-prefix=org.gnome.SessionManager \
-		--generate-c-code flashback-end-session-dialog-generated \
+		--generate-c-code flashback-end-session-dialog \
 		--c-namespace Flashback \
 		org.gnome.SessionManager.EndSessionDialog.xml
 
@@ -61,8 +61,8 @@ flashback-resources.h: flashback.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES)
 	$(AM_V_GEN)$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate --c-name flashback $<
 
 BUILT_SOURCES = \
-	flashback-end-session-dialog-generated.h \
-	flashback-end-session-dialog-generated.c \
+	flashback-end-session-dialog.h \
+	flashback-end-session-dialog.c \
 	flashback-dbus-display-config.h \
 	flashback-dbus-display-config.c \
 	flashback-dbus-idle-monitor.h \
