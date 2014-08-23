@@ -38,6 +38,23 @@ flashback-end-session-dialog-generated.c: org.gnome.SessionManager.EndSessionDia
 		--c-namespace Flashback \
 		org.gnome.SessionManager.EndSessionDialog.xml
 
+flashback-dbus-display-config.h:
+flashback-dbus-display-config.c: org.gnome.Mutter.DisplayConfig.xml
+	$(AM_V_GEN) gdbus-codegen \
+		--interface-prefix org.gnome.Mutter \
+		--c-namespace Flashback \
+		--generate-c-code flashback-dbus-display-config \
+		$(srcdir)/org.gnome.Mutter.DisplayConfig.xml
+
+flashback-dbus-idle-monitor.h:
+flashback-dbus-idle-monitor.c: org.gnome.Mutter.IdleMonitor.xml
+	$(AM_V_GEN) gdbus-codegen \
+		--interface-prefix org.gnome.Mutter \
+		--c-namespace Flashback \
+		--generate-c-code flashback-dbus-idle-monitor \
+		--c-generate-object-manager \
+		$(srcdir)/org.gnome.Mutter.IdleMonitor.xml
+
 flashback-resources.c: flashback.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/flashback.gresource.xml)
 	$(AM_V_GEN)$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate --c-name flashback $<
 flashback-resources.h: flashback.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/flashback.gresource.xml)
@@ -46,12 +63,18 @@ flashback-resources.h: flashback.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES)
 BUILT_SOURCES = \
 	flashback-end-session-dialog-generated.h \
 	flashback-end-session-dialog-generated.c \
+	flashback-dbus-display-config.h \
+	flashback-dbus-display-config.c \
+	flashback-dbus-idle-monitor.h \
+	flashback-dbus-idle-monitor.c \
 	flashback-resources.c \
 	flashback-resources.h
 
 EXTRA_DIST = \
 	$(desktop_in_files) \
 	org.gnome.SessionManager.EndSessionDialog.xml \
+	org.gnome.Mutter.DisplayConfig.xml \
+	org.gnome.Mutter.IdleMonitor.xml \
 	flashback.gresource.xml \
 	flashback-inhibit-dialog.ui
 
