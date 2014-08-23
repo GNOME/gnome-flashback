@@ -18,6 +18,8 @@ gnome_flashback_SOURCES = \
 	flashback-application.h \
 	flashback-desktop-background.c \
 	flashback-desktop-background.h \
+	flashback-display-config.c \
+	flashback-display-config.h \
 	flashback-end-session-dialog.c \
 	flashback-end-session-dialog.h \
 	flashback-gsettings.h \

@@ -20,6 +20,7 @@
 #include "config.h"
 #include "flashback-application.h"
 #include "flashback-desktop-background.h"
+#include "flashback-display-config.h"
 #include "flashback-end-session-dialog.h"
 #include "flashback-gsettings.h"
 
@@ -27,6 +28,7 @@ struct _FlashbackApplicationPrivate {
 	GSettings                  *settings;
 
 	FlashbackDesktopBackground *background;
+	FlashbackDisplayConfig     *config;
 	FlashbackEndSessionDialog  *dialog;
 };
 
@@ -48,6 +50,19 @@ flashback_application_settings_changed (GSettings   *settings,
 			if (app->priv->background) {
 				g_object_unref (app->priv->background);
 				app->priv->background = NULL;
+			}
+		}
+	}
+	
+	if (key == NULL || g_strcmp0 (key, KEY_DISPLAY_CONFIG) == 0) {
+		if (g_settings_get_boolean (settings, KEY_DISPLAY_CONFIG)) {
+			if (app->priv->config == NULL) {
+				app->priv->config = flashback_display_config_new ();
+			}
+		} else {
+			if (app->priv->config) {
+				g_object_unref (app->priv->config);
+				app->priv->config = NULL;
 			}
 		}
 	}
@@ -99,6 +114,11 @@ flashback_application_shutdown (GApplication *application)
 	if (app->priv->background) {
 		g_object_unref (app->priv->background);
 		app->priv->background = NULL;
+	}
+	
+	if (app->priv->config) {
+		g_object_unref (app->priv->config);
+		app->priv->config = NULL;
 	}
 
 	if (app->priv->dialog) {

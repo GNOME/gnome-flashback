@@ -5,6 +5,11 @@
 			<_summary>Desktop background</_summary>
 			<_description>If set to true, then GNOME Flashback application will be used to draw desktop background.</_description>
 		</key>
+		<key name="display-config" type="b">
+			<default>true</default>
+			<_summary>Display config</_summary>
+			<_description>If set to true, then GNOME Flashback application will be used to provide display configuration.</_description>
+		</key>
 		<key name="end-session-dialog" type="b">
 			<default>true</default>
 			<_summary>End session dialog</_summary>

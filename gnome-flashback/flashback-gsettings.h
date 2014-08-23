@@ -20,6 +20,7 @@
 
 #define FLASHBACK_SCHEMA       "org.gnome.gnome-flashback"
 #define KEY_DESKTOP_BACKGROUND "desktop-background"
+#define KEY_DISPLAY_CONFIG     "display-config"
 #define KEY_END_SESSION_DIALOG "end-session-dialog"
 
 /*#define FLASHBACK_BACKGROUND_SCHEMA "org.gnome.gnome-flashback.background"
