@@ -10,6 +10,10 @@ AM_CPPFLAGS = \
 gnome_flashback_SOURCES = \
 	flashback-application.c \
 	flashback-application.h \
+	flashback-dbus-display-config.c \
+	flashback-dbus-display-config.h \
+	flashback-dbus-idle-monitor.c \
+	flashback-dbus-idle-monitor.h \
 	flashback-desktop-background.c \
 	flashback-desktop-background.h \
 	flashback-end-session-dialog.c \
