@@ -15,6 +15,11 @@
 			<_summary>End session dialog</_summary>
 			<_description>If set to true, then GNOME Flashback application will be used to show end session dialog.</_description>
 		</key>
+		<key name="idle-monitor" type="b">
+			<default>true</default>
+			<_summary>Idle monitor</_summary>
+			<_description>If set to true, then GNOME Flashback application will be used fo user activity monitoring.</_description>
+		</key>
 
 		<!--
 		<child name="background" schema="org.gnome.gnome-flashback.background"/>

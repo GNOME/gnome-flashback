@@ -23,6 +23,8 @@ gnome_flashback_SOURCES = \
 	flashback-end-session-dialog.c \
 	flashback-end-session-dialog.h \
 	flashback-gsettings.h \
+	flashback-idle-monitor.c \
+	flashback-idle-monitor.h \
 	flashback-inhibit-dialog.c \
 	flashback-inhibit-dialog.h \
 	flashback-main.c \

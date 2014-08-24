@@ -23,6 +23,7 @@
 #include "flashback-display-config.h"
 #include "flashback-end-session-dialog.h"
 #include "flashback-gsettings.h"
+#include "flashback-idle-monitor.h"
 
 struct _FlashbackApplicationPrivate {
 	GSettings                  *settings;
@@ -30,6 +31,7 @@ struct _FlashbackApplicationPrivate {
 	FlashbackDesktopBackground *background;
 	FlashbackDisplayConfig     *config;
 	FlashbackEndSessionDialog  *dialog;
+	FlashbackIdleMonitor       *monitor;
 };
 
 G_DEFINE_TYPE (FlashbackApplication, flashback_application, GTK_TYPE_APPLICATION);
@@ -79,6 +81,19 @@ flashback_application_settings_changed (GSettings   *settings,
 			}
 		}
 	}
+	
+	if (key == NULL || g_strcmp0 (key, KEY_IDLE_MONITOR) == 0) {
+		if (g_settings_get_boolean (settings, KEY_IDLE_MONITOR)) {
+			if (app->priv->monitor == NULL) {
+				app->priv->monitor = flashback_idle_monitor_new ();
+			}
+		} else {
+			if (app->priv->monitor) {
+				g_object_unref (app->priv->monitor);
+				app->priv->monitor = NULL;
+			}
+		}
+	}
 }
 
 static void
@@ -115,7 +130,7 @@ flashback_application_shutdown (GApplication *application)
 		g_object_unref (app->priv->background);
 		app->priv->background = NULL;
 	}
-	
+
 	if (app->priv->config) {
 		g_object_unref (app->priv->config);
 		app->priv->config = NULL;
@@ -124,6 +139,11 @@ flashback_application_shutdown (GApplication *application)
 	if (app->priv->dialog) {
 		g_object_unref (app->priv->dialog);
 		app->priv->dialog = NULL;
+	}
+
+	if (app->priv->monitor) {
+		g_object_unref (app->priv->monitor);
+		app->priv->monitor = NULL;
 	}
 
 	if (app->priv->settings) {

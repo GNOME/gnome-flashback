@@ -22,6 +22,7 @@
 #define KEY_DESKTOP_BACKGROUND "desktop-background"
 #define KEY_DISPLAY_CONFIG     "display-config"
 #define KEY_END_SESSION_DIALOG "end-session-dialog"
+#define KEY_IDLE_MONITOR       "idle-monitor"
 
 /*#define FLASHBACK_BACKGROUND_SCHEMA "org.gnome.gnome-flashback.background"
 #define KEY_FADE                    "fade"*/
