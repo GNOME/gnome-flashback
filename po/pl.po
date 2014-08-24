@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-15 21:44+0200\n"
-"PO-Revision-Date: 2014-08-15 21:45+0200\n"
+"POT-Creation-Date: 2014-08-24 17:53+0200\n"
+"PO-Revision-Date: 2014-08-24 17:54+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -34,8 +34,8 @@ msgstr ""
 "Metacity"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
-msgid "Draw desktop background"
-msgstr "Wyświetlanie tła pulpitu"
+msgid "Desktop background"
+msgstr "Tło pulpitu"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:2
 msgid ""
@@ -44,6 +44,42 @@ msgid ""
 msgstr ""
 "Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
 "GNOME będzie używany do wyświetlania tła pulpitu."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:3
+msgid "Display config"
+msgstr "Konfiguracja ekranów"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:4
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide "
+"display configuration."
+msgstr ""
+"Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
+"GNOME będzie dostarczał konfigurację ekranów."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:5
+msgid "End session dialog"
+msgstr "Okno dialogowe kończenia sesji"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:6
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show end "
+"session dialog."
+msgstr ""
+"Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
+"GNOME będzie używany do wyświetlania okna dialogowego kończenia sesji."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:7
+msgid "Idle monitor"
+msgstr "Monitorowanie bezczynności"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:8
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr ""
+"Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
+"GNOME będzie używany do monitorowania aktywności użytkownika."
 
 #: ../gnome-flashback/flashback-inhibit-dialog.c:192
 msgid "Unknown"
