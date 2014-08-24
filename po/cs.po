@@ -22,11 +22,11 @@ msgstr ""
 
 #: ../data/gnome-flashback.desktop.in.h:1
 msgid "GNOME Flashback (Metacity)"
-msgstr "GNOME Flashback (Metacity)"
+msgstr "GNOME historické (Metacity)"
 
 #: ../data/gnome-flashback.desktop.in.h:2
 msgid "This session logs you into GNOME Flashback with Metacity"
-msgstr "Toto sezení vás přihlásí do GNOME Flashback s Metacity"
+msgstr "Toto sezení vás přihlásí do GNOME historické s Metacity"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
 msgid "Draw desktop background"
@@ -37,7 +37,7 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to draw "
 "desktop background."
 msgstr ""
-"Když je zapnuto, bude aplikace GNOME Flashback použita k vykreslování pozadí "
+"Když je zapnuto, bude aplikace GNOME historické použita k vykreslování pozadí "
 "pracovní plochy."
 
 #: ../gnome-flashback/flashback-inhibit-dialog.c:192
@@ -118,4 +118,4 @@ msgstr "Uzamknout obrazovku"
 
 #: ../gnome-flashback/gnome-flashback.desktop.in.h:1
 msgid "GNOME Flashback"
-msgstr "GNOME Flashback"
+msgstr "GNOME historické"
