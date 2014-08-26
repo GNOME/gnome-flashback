@@ -2,22 +2,23 @@
 # Copyright (C) 2014 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
 # Rafael Ferreira <rafael.f.f1@gmail.com>, 2014.
+# Enrico Nicoletto <liverig@gmail.com>, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-08-22 06:50+0000\n"
-"PO-Revision-Date: 2014-08-22 04:12-0300\n"
-"Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
+"POT-Creation-Date: 2014-08-24 15:55+0000\n"
+"PO-Revision-Date: 2014-08-26 17:05-0300\n"
+"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.7\n"
+"X-Generator: Poedit 1.6.3\n"
 
 #: ../data/gnome-flashback.desktop.in.h:1
 msgid "GNOME Flashback (Metacity)"
@@ -28,8 +29,9 @@ msgid "This session logs you into GNOME Flashback with Metacity"
 msgstr "Essa sessão se inicia no GNOME Flashback com Metacity"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
-msgid "Draw desktop background"
-msgstr "Desenhar fundo de tela da área de trabalho"
+#| msgid "Draw desktop background"
+msgid "Desktop background"
+msgstr "Plano de fundo da área de trabalho"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:2
 msgid ""
@@ -37,7 +39,52 @@ msgid ""
 "desktop background."
 msgstr ""
 "Se definido como verdadeiro, então o aplicativo GNOME Flashback será usado "
-"para desenhar o fundo de tela da área de trabalho."
+"para desenhar o plano de fundo da área de trabalho."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:3
+msgid "Display config"
+msgstr "Exibir configuração"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:4
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to draw "
+#| "desktop background."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide "
+"display configuration."
+msgstr ""
+"Se definido como verdadeiro, então o aplicativo GNOME Flashback será usado "
+"para fornecer configurações de tela."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:5
+msgid "End session dialog"
+msgstr "Diálogo de finalização de sessão"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:6
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to draw "
+#| "desktop background."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show end "
+"session dialog."
+msgstr ""
+"Se definido como verdadeiro, então o aplicativo GNOME Flashback será usado "
+"para mostrar o diálogo de finalização de sessão."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:7
+msgid "Idle monitor"
+msgstr "Monitor ocioso"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:8
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to draw "
+#| "desktop background."
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr ""
+"Se definido como verdadeiro, então o aplicativo GNOME Flashback será usado "
+"para o monitoramento das atividades do usuário."
 
 #: ../gnome-flashback/flashback-inhibit-dialog.c:192
 msgid "Unknown"
