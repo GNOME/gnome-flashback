@@ -1,7 +1,7 @@
 [Desktop Entry]
 _Name=GNOME Flashback (Metacity)
 _Comment=This session logs you into GNOME Flashback with Metacity
-Exec=gnome-session --session=gnome-flashback
+Exec=gnome-session --session=gnome-flashback-metacity
 TryExec=metacity
 Icon=
 Type=Application
