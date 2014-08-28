@@ -1,11 +1,11 @@
 sessiondir       = $(datadir)/gnome-session/sessions
-session_in_files = gnome-flashback-metacity.session.in
+session_in_files = gnome-flashback-compiz.session.in gnome-flashback-metacity.session.in
 session_DATA     = $(session_in_files:.session.in=.session)
 
 %.session: %.session.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 
 xsessiondir       = $(datadir)/xsessions
-xsession_in_files = gnome-flashback-metacity.desktop.in
+xsession_in_files = gnome-flashback-compiz.desktop.in gnome-flashback-metacity.desktop.in
 xsession_DATA     = $(xsession_in_files:.desktop.in=.desktop)
 
 %.desktop: %.desktop.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@

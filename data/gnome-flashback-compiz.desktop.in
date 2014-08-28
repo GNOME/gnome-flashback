@@ -1,0 +1,8 @@
+[Desktop Entry]
+_Name=GNOME Flashback (Compiz)
+_Comment=This session logs you into GNOME Flashback with Compiz
+Exec=gnome-session --session=gnome-flashback-compiz
+TryExec=metacity
+Icon=
+Type=Application
+DesktopNames=GNOME
