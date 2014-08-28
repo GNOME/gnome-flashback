@@ -1,8 +1,8 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
 [encoding: UTF-8]
-data/gnome-flashback.desktop.in
-data/gnome-flashback.session.in
+data/gnome-flashback-metacity.desktop.in
+data/gnome-flashback-metacity.session.in
 data/org.gnome.gnome-flashback.gschema.xml.in.in
 gnome-flashback/flashback-inhibit-dialog.c
 [type: gettext/glade]gnome-flashback/flashback-inhibit-dialog.ui
