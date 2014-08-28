@@ -52,7 +52,11 @@ echo "
     `echo gnome-flashback $VERSION | sed "s/./=/g"`
 
     prefix:                        ${prefix}
+    exec_prefix:                   ${exec_prefix}
+
     sysconfdir:                    ${sysconfdir}
+    libexecdir:                    ${libexecdir}
+
     source code location:          ${srcdir}
     compiler:                      ${CC}
 "

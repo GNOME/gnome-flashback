@@ -5,7 +5,7 @@ gnome-flashback/flashback-inhibit-dialog.c
 [type: gettext/glade]gnome-flashback/flashback-inhibit-dialog.ui
 gnome-flashback/gnome-flashback.desktop.in
 gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in
-sessions/gnome-flashback-compiz.desktop.in
+sessions/gnome-flashback-compiz.desktop.in.in
 sessions/gnome-flashback-compiz.session.in
-sessions/gnome-flashback-metacity.desktop.in
+sessions/gnome-flashback-metacity.desktop.in.in
 sessions/gnome-flashback-metacity.session.in
