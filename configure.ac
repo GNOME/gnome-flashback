@@ -40,9 +40,9 @@ AC_SUBST(GNOME_FLASHBACK_LIBS)
 
 AC_CONFIG_FILES([
 Makefile
-data/Makefile
 gnome-flashback/Makefile
 po/Makefile.in
+sessions/Makefile
 ])
 
 AC_OUTPUT
