@@ -214,11 +214,13 @@ on_menu_activate_open_volume_control (GtkMenuItem *item,
                                       GvcStreamStatusIcon   *icon)
 {
         GAppInfo *app;
+        GdkDisplay *display;
         GdkAppLaunchContext *context;
         GError *error;
 
         error = NULL;
-        context = gdk_app_launch_context_new ();
+        display = gdk_display_get_default ();
+        context = gdk_display_get_app_launch_context (display);
         app = g_app_info_create_from_commandline ("gnome-control-center sound", "Sound preferences", 0, &error);
         if (app)
                 g_app_info_launch (app, NULL, G_APP_LAUNCH_CONTEXT (context), &error);
