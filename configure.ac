@@ -29,6 +29,8 @@ GLIB_GSETTINGS
 
 GTK_REQUIRED=3.10.0
 LIBGNOME_DESKTOP_REQUIRED=3.8.0
+CANBERRA_REQUIRED=0.13
+GLIB_REQUIRED=2.39.91
 
 PKG_CHECK_MODULES(GNOME_FLASHBACK, gtk+-3.0 >= $GTK_REQUIRED)
 AC_SUBST(GNOME_FLASHBACK_CFLAGS)
@@ -50,6 +52,13 @@ PKG_CHECK_MODULES(IDLE_MONITOR, gtk+-3.0 >= $GTK_REQUIRED)
 AC_SUBST(IDLE_MONITOR_CFLAGS)
 AC_SUBST(IDLE_MONITOR_LIBS)
 
+PKG_CHECK_MODULES(GVC, gobject-2.0 libpulse libpulse-mainloop-glib)
+AM_CONDITIONAL(HAVE_INTROSPECTION, false)
+
+PKG_CHECK_MODULES(SOUND_APPLET, gtk+-3.0 >= $GTK_REQUIRED libcanberra-gtk3 >= $CANBERRA_REQUIRED glib-2.0 >= $GLIB_REQUIRED)
+AC_SUBST(SOUND_APPLET_CFLAGS)
+AC_SUBST(SOUND_APPLET_LIBS)
+
 AC_CONFIG_FILES([
 Makefile
 gnome-flashback/Makefile
@@ -57,6 +66,8 @@ gnome-flashback/libdesktop-background/Makefile
 gnome-flashback/libdisplay-config/Makefile
 gnome-flashback/libend-session-dialog/Makefile
 gnome-flashback/libidle-monitor/Makefile
+gnome-flashback/libsound-applet/Makefile
+gnome-flashback/libsound-applet/gvc/Makefile
 po/Makefile.in
 sessions/Makefile
 ])

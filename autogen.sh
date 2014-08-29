@@ -12,6 +12,13 @@ PKG_NAME="gnome-flashback"
     exit 1
 }
 
+if test ! -f gnome-flashback/libsound-applet/gvc/Makefile.am;
+then
+	echo "+ Setting up submodules"
+	git submodule init
+fi
+git submodule update
+
 which gnome-autogen.sh || {
     echo "You need to install gnome-common."
     exit 1

@@ -298,5 +298,7 @@ gvc_applet_new (void)
 
         applet = g_object_new (GVC_TYPE_APPLET, NULL);
 
+        gvc_applet_start (GVC_APPLET (applet));
+
         return GVC_APPLET (applet);
 }

@@ -23,6 +23,7 @@
 #include "libdisplay-config/flashback-display-config.h"
 #include "libend-session-dialog/flashback-end-session-dialog.h"
 #include "libidle-monitor/flashback-idle-monitor.h"
+#include "libsound-applet/gvc-applet.h"
 
 #define FLASHBACK_SCHEMA       "org.gnome.gnome-flashback"
 #define KEY_DESKTOP_BACKGROUND "desktop-background"
@@ -38,6 +39,7 @@ struct _FlashbackApplicationPrivate {
 	FlashbackDisplayConfig     *config;
 	FlashbackEndSessionDialog  *dialog;
 	FlashbackIdleMonitor       *monitor;
+	GvcApplet                  *applet;
 };
 
 G_DEFINE_TYPE (FlashbackApplication, flashback_application, GTK_TYPE_APPLICATION);
@@ -100,6 +102,19 @@ flashback_application_settings_changed (GSettings   *settings,
 			}
 		}
 	}
+
+	if (key == NULL || g_strcmp0 (key, KEY_SOUND_APPLET) == 0) {
+		if (g_settings_get_boolean (settings, KEY_SOUND_APPLET)) {
+			if (app->priv->applet == NULL) {
+				app->priv->applet = gvc_applet_new ();
+			}
+		} else {
+			if (app->priv->applet) {
+				g_object_unref (app->priv->applet);
+				app->priv->applet = NULL;
+			}
+		}
+	}
 }
 
 static void
@@ -151,6 +166,8 @@ flashback_application_shutdown (GApplication *application)
 		g_object_unref (app->priv->monitor);
 		app->priv->monitor = NULL;
 	}
+
+	g_clear_object (&app->priv->applet);
 
 	if (app->priv->settings) {
 		g_object_unref (app->priv->settings);

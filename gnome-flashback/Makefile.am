@@ -2,7 +2,8 @@ SUBDIRS = \
 	libdesktop-background \
 	libdisplay-config \
 	libend-session-dialog \
-	libidle-monitor
+	libidle-monitor \
+	libsound-applet
 
 bin_PROGRAMS = \
 	gnome-flashback
@@ -22,7 +23,8 @@ gnome_flashback_LDADD = \
 	$(top_builddir)/gnome-flashback/libdesktop-background/libdesktop-background.la \
 	$(top_builddir)/gnome-flashback/libdisplay-config/libdisplay-config.la \
 	$(top_builddir)/gnome-flashback/libend-session-dialog/libend-session-dialog.la \
-	$(top_builddir)/gnome-flashback/libidle-monitor/libidle-monitor.la
+	$(top_builddir)/gnome-flashback/libidle-monitor/libidle-monitor.la \
+	$(top_builddir)/gnome-flashback/libsound-applet/libsound-applet.la
 
 desktopdir       = $(datadir)/applications
 desktop_in_files = gnome-flashback.desktop.in

@@ -1,0 +1,3 @@
+[submodule "gnome-flashback/libsound-applet/gvc"]
+	path = gnome-flashback/libsound-applet/gvc
+	url = git://git.gnome.org/libgnome-volume-control
