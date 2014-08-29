@@ -22,8 +22,14 @@
 #include "libdesktop-background/flashback-desktop-background.h"
 #include "flashback-display-config.h"
 #include "flashback-end-session-dialog.h"
-#include "flashback-gsettings.h"
 #include "flashback-idle-monitor.h"
+
+#define FLASHBACK_SCHEMA       "org.gnome.gnome-flashback"
+#define KEY_DESKTOP_BACKGROUND "desktop-background"
+#define KEY_DISPLAY_CONFIG     "display-config"
+#define KEY_END_SESSION_DIALOG "end-session-dialog"
+#define KEY_IDLE_MONITOR       "idle-monitor"
+#define KEY_SOUND_APPLET       "sound-applet"
 
 struct _FlashbackApplicationPrivate {
 	GSettings                  *settings;
