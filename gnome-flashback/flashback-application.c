@@ -19,7 +19,7 @@
 #include <gtk/gtk.h>
 #include "config.h"
 #include "flashback-application.h"
-#include "flashback-desktop-background.h"
+#include "libdesktop-background/flashback-desktop-background.h"
 #include "flashback-display-config.h"
 #include "flashback-end-session-dialog.h"
 #include "flashback-gsettings.h"

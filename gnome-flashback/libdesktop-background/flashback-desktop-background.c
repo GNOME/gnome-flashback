@@ -18,7 +18,9 @@
 #include <gtk/gtk.h>
 #include <libgnome-desktop/gnome-bg.h>
 #include "flashback-desktop-background.h"
-#include "flashback-gsettings.h"
+
+/*#define FLASHBACK_BACKGROUND_SCHEMA "org.gnome.gnome-flashback.background"
+#define KEY_FADE                    "fade"*/
 
 struct _FlashbackDesktopBackgroundPrivate {
 	GnomeBG   *gnome_bg;
@@ -120,7 +122,7 @@ flashback_desktop_background_init (FlashbackDesktopBackground *background)
 	background->priv = G_TYPE_INSTANCE_GET_PRIVATE (background, FLASHBACK_TYPE_DESKTOP_BACKGROUND, FlashbackDesktopBackgroundPrivate);
 
 	background->priv->gnome_bg = gnome_bg_new ();
-	background->priv->gnome_settings = g_settings_new (GNOME_DESKTOP_BACKGROUND_SCHEMA);
+	background->priv->gnome_settings = g_settings_new ("org.gnome.desktop.background");
 
 	g_signal_connect (background->priv->gnome_bg, "changed",
 	                  G_CALLBACK (flashback_desktop_background_changed), background);

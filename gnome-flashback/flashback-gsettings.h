@@ -25,9 +25,4 @@
 #define KEY_IDLE_MONITOR       "idle-monitor"
 #define KEY_SOUND_APPLET       "sound-applet"
 
-/*#define FLASHBACK_BACKGROUND_SCHEMA "org.gnome.gnome-flashback.background"
-#define KEY_FADE                    "fade"*/
-
-#define GNOME_DESKTOP_BACKGROUND_SCHEMA "org.gnome.desktop.background"
-
 #endif

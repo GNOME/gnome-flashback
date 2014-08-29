@@ -1,11 +1,13 @@
+SUBDIRS = \
+	libdesktop-background
+
 bin_PROGRAMS = \
 	gnome-flashback
 
 AM_CPPFLAGS = \
 	$(GNOME_FLASHBACK_CFLAGS) \
 	-I$(top_builddir)/gnome-flashback \
-	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
-	-DGNOME_DESKTOP_USE_UNSTABLE_API
+	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\"
 
 gnome_flashback_SOURCES = \
 	dbus-display-config.c \
@@ -16,8 +18,6 @@ gnome_flashback_SOURCES = \
 	dbus-idle-monitor.h \
 	flashback-application.c \
 	flashback-application.h \
-	flashback-desktop-background.c \
-	flashback-desktop-background.h \
 	flashback-display-config.c \
 	flashback-display-config.h \
 	flashback-end-session-dialog.c \
@@ -32,7 +32,8 @@ gnome_flashback_SOURCES = \
 	flashback-resources.h
 
 gnome_flashback_LDADD = \
-	$(GNOME_FLASHBACK_LIBS)
+	$(GNOME_FLASHBACK_LIBS) \
+	$(top_builddir)/gnome-flashback/libdesktop-background/libdesktop-background.la
 
 desktopdir       = $(datadir)/applications
 desktop_in_files = gnome-flashback.desktop.in
