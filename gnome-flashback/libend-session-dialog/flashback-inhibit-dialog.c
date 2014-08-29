@@ -30,6 +30,7 @@
 
 #include "config.h"
 #include "flashback-inhibit-dialog.h"
+#include "flashback-resources.h"
 
 #define IS_STRING_EMPTY(string) ((string) == NULL || (string)[0] == '\0')
 
@@ -682,6 +683,8 @@ flashback_inhibit_dialog_class_init (FlashbackInhibitDialogClass *klass)
 
 	binding_set = gtk_binding_set_by_class (klass);
 	gtk_binding_entry_add_signal (binding_set, GDK_KEY_Escape, 0, "close", 0);
+
+	flashback_register_resource ();
 
 	gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gnome-flashback/flashback-inhibit-dialog.ui");
 	gtk_widget_class_bind_template_child_private (widget_class, FlashbackInhibitDialog, main_box);
