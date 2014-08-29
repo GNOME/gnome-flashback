@@ -20,9 +20,9 @@
 #include "config.h"
 #include "flashback-application.h"
 #include "libdesktop-background/flashback-desktop-background.h"
-#include "flashback-display-config.h"
+#include "libdisplay-config/flashback-display-config.h"
 #include "libend-session-dialog/flashback-end-session-dialog.h"
-#include "flashback-idle-monitor.h"
+#include "libidle-monitor/flashback-idle-monitor.h"
 
 #define FLASHBACK_SCHEMA       "org.gnome.gnome-flashback"
 #define KEY_DESKTOP_BACKGROUND "desktop-background"

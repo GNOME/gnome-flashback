@@ -46,11 +46,21 @@ PKG_CHECK_MODULES(DESKTOP_BACKGROUND, gtk+-3.0 >= $GTK_REQUIRED gnome-desktop-3.
 AC_SUBST(DESKTOP_BACKGROUND_CFLAGS)
 AC_SUBST(DESKTOP_BACKGROUND_LIBS)
 
+PKG_CHECK_MODULES(DISPLAY_CONFIG, gtk+-3.0 >= $GTK_REQUIRED)
+AC_SUBST(DISPLAY_CONFIG_CFLAGS)
+AC_SUBST(DISPLAY_CONFIG_LIBS)
+
+PKG_CHECK_MODULES(IDLE_MONITOR, gtk+-3.0 >= $GTK_REQUIRED)
+AC_SUBST(IDLE_MONITOR_CFLAGS)
+AC_SUBST(IDLE_MONITOR_LIBS)
+
 AC_CONFIG_FILES([
 Makefile
 gnome-flashback/Makefile
 gnome-flashback/libdesktop-background/Makefile
+gnome-flashback/libdisplay-config/Makefile
 gnome-flashback/libend-session-dialog/Makefile
+gnome-flashback/libidle-monitor/Makefile
 po/Makefile.in
 sessions/Makefile
 ])
