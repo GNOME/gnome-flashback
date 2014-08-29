@@ -43,6 +43,8 @@ struct GvcStreamStatusIconPrivate
         guint           current_icon;
         char           *display_name;
         gboolean        thaw;
+        GdkDevice      *grabbed_pointer;
+        GdkDevice      *grabbed_keyboard;
 };
 
 enum
@@ -95,6 +97,25 @@ update_dock (GvcStreamStatusIcon *icon)
         icon->priv->thaw = FALSE;
 }
 
+static void
+ungrab (GvcStreamStatusIcon *icon,
+        guint                time)
+{
+	/* ungrab focus */
+	if (icon->priv->grabbed_pointer != NULL) {
+		gdk_device_ungrab (icon->priv->grabbed_pointer, time);
+		g_clear_object (&icon->priv->grabbed_pointer);
+	}
+	if (icon->priv->grabbed_keyboard != NULL) {
+		gdk_device_ungrab (icon->priv->grabbed_keyboard, time);
+		g_clear_object (&icon->priv->grabbed_keyboard);
+	}
+	gtk_grab_remove (icon->priv->dock);
+
+	/* hide again */
+	gtk_widget_hide (icon->priv->dock);
+}
+
 static gboolean
 popup_dock (GvcStreamStatusIcon *icon,
             guint                time)
@@ -109,6 +130,11 @@ popup_dock (GvcStreamStatusIcon *icon,
         int            monitor_num;
         GdkRectangle   monitor;
         GtkRequisition dock_req;
+        GdkWindow     *window;
+        GdkDeviceManager *device_manager;
+        GList         *list;
+        GList         *link;
+        gboolean       grabbed;
 
         update_dock (icon);
 
@@ -170,21 +196,52 @@ popup_dock (GvcStreamStatusIcon *icon,
         /* grab focus */
         gtk_grab_add (icon->priv->dock);
 
-        if (gdk_pointer_grab (gtk_widget_get_window (icon->priv->dock), TRUE,
-                              GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
-                              GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK, NULL, NULL,
-                              time)
-            != GDK_GRAB_SUCCESS) {
-                gtk_grab_remove (icon->priv->dock);
-                gtk_widget_hide (icon->priv->dock);
+        display = gtk_widget_get_display (icon->priv->dock);
+        window = gtk_widget_get_window (icon->priv->dock);
+        device_manager = gdk_display_get_device_manager (display);
+
+        grabbed = FALSE;
+        list = gdk_device_manager_list_devices (device_manager, GDK_DEVICE_TYPE_MASTER);
+        for (link = list; link != NULL; link = g_list_next (link)) {
+                GdkDevice *device = GDK_DEVICE (link->data);
+                if (gdk_device_get_source (device) == GDK_SOURCE_KEYBOARD)
+                        continue;
+                if (gdk_device_grab (device, window,
+                                     GDK_OWNERSHIP_NONE, TRUE,
+                                     GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
+                                     GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK,
+                                     NULL, time) != GDK_GRAB_SUCCESS) {
+                        icon->priv->grabbed_pointer = g_object_ref (device);
+                        grabbed = TRUE;
+                        break;
+                }
+        }
+        g_list_free (list);
+
+        if (grabbed) {
+                ungrab (icon, time);
                 return FALSE;
         }
 
-        if (gdk_keyboard_grab (gtk_widget_get_window (icon->priv->dock), TRUE, time) != GDK_GRAB_SUCCESS) {
-                display = gtk_widget_get_display (icon->priv->dock);
-                gdk_display_pointer_ungrab (display, time);
-                gtk_grab_remove (icon->priv->dock);
-                gtk_widget_hide (icon->priv->dock);
+        grabbed = FALSE;
+        list = gdk_device_manager_list_devices (device_manager, GDK_DEVICE_TYPE_MASTER);
+        for (link = list; link != NULL; link = g_list_next (link)) {
+                GdkDevice *device = GDK_DEVICE (link->data);
+                if (gdk_device_get_source (device) != GDK_SOURCE_KEYBOARD)
+                        continue;
+                if (gdk_device_grab (device, window,
+                                     GDK_OWNERSHIP_NONE, TRUE,
+                                     GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK,
+                                     NULL, time) != GDK_GRAB_SUCCESS) {
+                        icon->priv->grabbed_keyboard = g_object_ref (device);
+                        grabbed = TRUE;
+                        break;
+                }
+        }
+        g_list_free (list);
+
+        if (grabbed) {
+                ungrab (icon, time);
                 return FALSE;
         }
 
@@ -295,16 +352,7 @@ static void
 gvc_icon_release_grab (GvcStreamStatusIcon *icon,
                          GdkEventButton    *event)
 {
-        GdkDisplay     *display;
-
-        /* ungrab focus */
-        display = gtk_widget_get_display (GTK_WIDGET (icon->priv->dock));
-        gdk_display_keyboard_ungrab (display, event->time);
-        gdk_display_pointer_ungrab (display, event->time);
-        gtk_grab_remove (icon->priv->dock);
-
-        /* hide again */
-        gtk_widget_hide (icon->priv->dock);
+	ungrab (icon, event->time);
 }
 
 static gboolean
@@ -323,16 +371,7 @@ on_dock_button_press (GtkWidget      *widget,
 static void
 popdown_dock (GvcStreamStatusIcon *icon)
 {
-        GdkDisplay *display;
-
-        /* ungrab focus */
-        display = gtk_widget_get_display (icon->priv->dock);
-        gdk_display_keyboard_ungrab (display, GDK_CURRENT_TIME);
-        gdk_display_pointer_ungrab (display, GDK_CURRENT_TIME);
-        gtk_grab_remove (icon->priv->dock);
-
-        /* hide again */
-        gtk_widget_hide (icon->priv->dock);
+	ungrab (icon, GDK_CURRENT_TIME);
 }
 
 static gboolean
@@ -669,6 +708,9 @@ gvc_stream_status_icon_dispose (GObject *object)
                 icon->priv->mixer_stream = NULL;
         }
 
+        g_clear_object (&icon->priv->grabbed_pointer);
+        g_clear_object (&icon->priv->grabbed_keyboard);
+
         G_OBJECT_CLASS (gvc_stream_status_icon_parent_class)->dispose (object);
 }
 
@@ -744,6 +786,8 @@ gvc_stream_status_icon_init (GvcStreamStatusIcon *icon)
                           NULL);
 
         icon->priv->thaw = FALSE;
+        icon->priv->grabbed_pointer = NULL;
+        icon->priv->grabbed_keyboard = NULL;
 }
 
 static void
