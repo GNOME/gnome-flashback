@@ -21,7 +21,7 @@
 #include "flashback-application.h"
 #include "libdesktop-background/flashback-desktop-background.h"
 #include "flashback-display-config.h"
-#include "flashback-end-session-dialog.h"
+#include "libend-session-dialog/flashback-end-session-dialog.h"
 #include "flashback-idle-monitor.h"
 
 #define FLASHBACK_SCHEMA       "org.gnome.gnome-flashback"
