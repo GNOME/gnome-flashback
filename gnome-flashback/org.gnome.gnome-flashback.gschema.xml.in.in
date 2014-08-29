@@ -20,6 +20,11 @@
 			<_summary>Idle monitor</_summary>
 			<_description>If set to true, then GNOME Flashback application will be used for user activity monitoring.</_description>
 		</key>
+		<key name="sound-applet" type="b">
+			<default>true</default>
+			<_summary>Sound applet</_summary>
+			<_description>If set to true, then GNOME Flashback application will be used to show sound applet. This is same sound applet that used to be part of GNOME Control Center.</_description>
+		</key>
 
 		<!--
 		<child name="background" schema="org.gnome.gnome-flashback.background"/>
