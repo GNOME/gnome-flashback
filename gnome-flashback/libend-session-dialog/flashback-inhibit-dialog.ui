@@ -74,7 +74,7 @@
           <object class="GtkLabel" id="description_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Waiting for these application to finish. Interrupting them can lead to loss of data.</property>
+            <property name="label" translatable="yes">Waiting for these applications to finish. Interrupting them can lead to loss of data.</property>
             <property name="justify">center</property>
             <property name="wrap">True</property>
           </object>
