@@ -1,0 +1,246 @@
+# Indonesian translation for gnome-flashback.
+# Copyright (C) 2014 gnome-flashback's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-flashback package.
+# Andika Triwidada <andika@gmail.com>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-flashback master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"flashback&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-09-04 18:50+0000\n"
+"PO-Revision-Date: 2014-09-05 08:39+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 1.5.7\n"
+
+#: ../gnome-flashback/gnome-flashback.desktop.in.h:1
+msgid "GNOME Flashback"
+msgstr "GNOME Flashback"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:193
+msgid "Unknown"
+msgstr "Tak diketahui"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:325
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:496
+msgid "Log Out"
+msgstr "Log Keluar"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:327
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Klik Log Keluar untuk keluar dari aplikasi-aplikasi ini dan log keluar dari "
+"sistem."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:329
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s akan otomatis dilog-keluarkan dalam %d detik"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:335
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:499
+msgid "Power Off"
+msgstr "Matikan"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:337
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
+"Klik Matikan untuk keluar dari aplikasi-aplikasi ini dan mematikan sistem"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:339
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Sistem akan otomatis dimatikan dalam %d detik."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:345
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:502
+msgid "Restart"
+msgstr "Start Ulang"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:347
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Klik Start Ulang untuk keluar dari aplikasi-aplikasi ini dan memulai ulang "
+"sistem"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:349
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Sistem akan otomatis dimulai ulang dalam %d detik."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:1
+msgid "Some programs are still running:"
+msgstr "Beberapa program masih berjalan:"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:2
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr ""
+"Menunggu aplikasi-aplikasi ini berakhir. Menginterupsi mereka bisa "
+"menyebabkan kehilangan data."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:3
+msgid "Cancel"
+msgstr "Batal"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:4
+msgid "Lock Screen"
+msgstr "Kunci Layar"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:267
+msgid "Output"
+msgstr "Keluaran"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:269
+msgid "Sound Output Volume"
+msgstr "Volume Keluaran Suara"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:273
+msgid "Input"
+msgstr "Masukan"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:275
+msgid "Microphone Volume"
+msgstr "Volume Mikrofon"
+
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:611
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:620
+msgctxt "volume"
+msgid "100%"
+msgstr "100%"
+
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:615
+msgctxt "volume"
+msgid "Unamplified"
+msgstr "Tak diperkuat"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:292
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "Gagal memulai Preferensi Suara: %s"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:317
+msgid "_Mute"
+msgstr "_Bisu"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:326
+msgid "_Sound Preferences"
+msgstr "Preferensi _Suara"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:450
+msgid "Muted"
+msgstr "Senyap"
+
+#. translators:
+#. * The device has been disabled
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1830
+msgid "Disabled"
+msgstr "Dinonaktifkan"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1837
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u Keluaran"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1847
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u Masukan"
+
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2373
+msgid "System Sounds"
+msgstr "Suara Sistem"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
+msgid "Desktop background"
+msgstr "Latar belakang desktop"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:2
+msgid ""
+"If set to true, then GNOME Flashback application will be used to draw "
+"desktop background."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menggambar "
+"latar belakang desktop."
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:3
+msgid "Display config"
+msgstr "Konfig tampilan"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:4
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide "
+"display configuration."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menyediakan "
+"tampilan"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:5
+msgid "End session dialog"
+msgstr "Dialog akhir sesi"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:6
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show end "
+"session dialog."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menampilkan "
+"dialog akhir sesi"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:7
+msgid "Idle monitor"
+msgstr "Pemantauan menganggur"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:8
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk pemantauan "
+"aktivitas pengguna."
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:9
+msgid "Sound applet"
+msgstr "Aplet suara"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:10
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show sound "
+"applet. This is same sound applet that used to be part of GNOME Control "
+"Center."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menampilkan "
+"aplet suara. Ini aplet suara yang sama dengan yang biasanya menjadi bagian "
+"dari Pusat Kendali GNOME."
+
+#: ../sessions/gnome-flashback-compiz.desktop.in.in.h:1
+msgid "GNOME Flashback (Compiz)"
+msgstr "GNOME Flashback (Compiz)"
+
+#: ../sessions/gnome-flashback-compiz.desktop.in.in.h:2
+msgid "This session logs you into GNOME Flashback with Compiz"
+msgstr "Sesi ini melog Anda ke dalam GNOME Flashback dengan Compiz"
+
+#: ../sessions/gnome-flashback-metacity.desktop.in.in.h:1
+msgid "GNOME Flashback (Metacity)"
+msgstr "GNOME Flashback (Metacity)"
+
+#: ../sessions/gnome-flashback-metacity.desktop.in.in.h:2
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr "Sesi ini melog Anda ke dalam GNOME Flashback dengan Metacity"
