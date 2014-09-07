@@ -1,0 +1,17 @@
+Version 3.1x.0
+==============
+- Initial version.
+- GNOME Flashback session. Includes sessions with Metacity and Compiz as
+  window managers.
+- GNOME Sound applet. This is same sound applet that used to be part of GNOME
+  Control Center. Actually this is not applet, but application that provides
+  icon for notification area / system tray.
+- Desktop background. Application will simply draw background image to root
+  window without any effects.
+- End session dialog. Application will show logout, restart and shutdown dialogs
+  when needed. (#710804)
+- Idle monitor. Application will monitor user activity. This will fix invisible
+  cursor bug.
+- Updated translations:
+  Andika Triwidada (id), Daniel Mustieles (es), Enrico Nicoletto (pt_BR),
+  Marek Černocký (cs), Piotr Drąg (pl), Rafael Ferreira (pt_BR).
