@@ -22,7 +22,7 @@
 #include "libdesktop-background/flashback-desktop-background.h"
 #include "libdisplay-config/flashback-display-config.h"
 #include "libend-session-dialog/flashback-end-session-dialog.h"
-#include "libidle-monitor/flashback-idle-monitor.h"
+#include "libidle-monitor/meta-idle-monitor-dbus.h"
 #include "libsound-applet/gvc-applet.h"
 
 #define FLASHBACK_SCHEMA       "org.gnome.gnome-flashback"
@@ -38,11 +38,11 @@ struct _FlashbackApplicationPrivate {
 	FlashbackDesktopBackground *background;
 	FlashbackDisplayConfig     *config;
 	FlashbackEndSessionDialog  *dialog;
-	FlashbackIdleMonitor       *monitor;
+	MetaIdleMonitorDBus        *idle_monitor;
 	GvcApplet                  *applet;
 };
 
-G_DEFINE_TYPE (FlashbackApplication, flashback_application, GTK_TYPE_APPLICATION);
+G_DEFINE_TYPE_WITH_PRIVATE (FlashbackApplication, flashback_application, GTK_TYPE_APPLICATION);
 
 static void
 flashback_application_settings_changed (GSettings   *settings,
@@ -92,13 +92,13 @@ flashback_application_settings_changed (GSettings   *settings,
 	
 	if (key == NULL || g_strcmp0 (key, KEY_IDLE_MONITOR) == 0) {
 		if (g_settings_get_boolean (settings, KEY_IDLE_MONITOR)) {
-			if (app->priv->monitor == NULL) {
-				app->priv->monitor = flashback_idle_monitor_new ();
+			if (app->priv->idle_monitor == NULL) {
+				app->priv->idle_monitor = meta_idle_monitor_dbus_new ();
 			}
 		} else {
-			if (app->priv->monitor) {
-				g_object_unref (app->priv->monitor);
-				app->priv->monitor = NULL;
+			if (app->priv->idle_monitor) {
+				g_object_unref (app->priv->idle_monitor);
+				app->priv->idle_monitor = NULL;
 			}
 		}
 	}
@@ -162,9 +162,9 @@ flashback_application_shutdown (GApplication *application)
 		app->priv->dialog = NULL;
 	}
 
-	if (app->priv->monitor) {
-		g_object_unref (app->priv->monitor);
-		app->priv->monitor = NULL;
+	if (app->priv->idle_monitor) {
+		g_object_unref (app->priv->idle_monitor);
+		app->priv->idle_monitor = NULL;
 	}
 
 	g_clear_object (&app->priv->applet);
@@ -180,9 +180,7 @@ flashback_application_shutdown (GApplication *application)
 static void
 flashback_application_init (FlashbackApplication *application)
 {
-	application->priv = G_TYPE_INSTANCE_GET_PRIVATE (application,
-	                                                 FLASHBACK_TYPE_APPLICATION,
-	                                                 FlashbackApplicationPrivate);
+	application->priv = flashback_application_get_instance_private (application);
 }
 
 static void
@@ -193,8 +191,6 @@ flashback_application_class_init (FlashbackApplicationClass *class)
 	application_class->startup  = flashback_application_startup;
 	application_class->shutdown = flashback_application_shutdown;
 	application_class->activate = flashback_application_activate;
-
-	g_type_class_add_private (class, sizeof (FlashbackApplicationPrivate));
 }
 
 FlashbackApplication *

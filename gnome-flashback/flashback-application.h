@@ -22,8 +22,12 @@
 
 G_BEGIN_DECLS
 
-#define FLASHBACK_TYPE_APPLICATION (flashback_application_get_type ())
-#define FLASHBACK_APPLICATION(o)   (G_TYPE_CHECK_INSTANCE_CAST ((o),  FLASHBACK_TYPE_APPLICATION, FlashbackApplication))
+#define FLASHBACK_TYPE_APPLICATION         (flashback_application_get_type ())
+#define FLASHBACK_APPLICATION(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), FLASHBACK_TYPE_APPLICATION, FlashbackApplication))
+#define FLASHBACK_APPLICATION_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST ((k),    FLASHBACK_TYPE_APPLICATION, FlashbackApplicationClass))
+#define FLASHBACK_IS_APPLICATION(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), FLASHBACK_TYPE_APPLICATION))
+#define FLASHBACK_IS_APPLICATION_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k),    FLASHBACK_TYPE_APPLICATION))
+#define FLASHBACK_APPLICATION_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o),  FLASHBACK_TYPE_APPLICATION, FlashbackApplicationClass))
 
 typedef struct _FlashbackApplication        FlashbackApplication;
 typedef struct _FlashbackApplicationClass   FlashbackApplicationClass;
