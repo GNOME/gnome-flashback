@@ -1,7 +1,6 @@
 # Czech translation for gnome-flashback.
 # Copyright (C) 2014 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
-#
 # Marek Černocký <marek@manet.cz>, 2014.
 #
 msgid ""
@@ -9,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-08-19 18:49+0000\n"
-"PO-Revision-Date: 2014-08-20 07:52+0200\n"
+"POT-Creation-Date: 2014-09-04 11:48+0000\n"
+"PO-Revision-Date: 2014-09-10 07:28+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -20,41 +19,25 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
-#: ../data/gnome-flashback.desktop.in.h:1
-msgid "GNOME Flashback (Metacity)"
-msgstr "GNOME historické (Metacity)"
+#: ../gnome-flashback/gnome-flashback.desktop.in.h:1
+msgid "GNOME Flashback"
+msgstr "GNOME historické"
 
-#: ../data/gnome-flashback.desktop.in.h:2
-msgid "This session logs you into GNOME Flashback with Metacity"
-msgstr "Toto sezení vás přihlásí do GNOME historické s Metacity"
-
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
-msgid "Draw desktop background"
-msgstr "Vykreslovat pozadí pracovní plochy"
-
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:2
-msgid ""
-"If set to true, then GNOME Flashback application will be used to draw "
-"desktop background."
-msgstr ""
-"Když je zapnuto, bude aplikace GNOME historické použita k vykreslování pozadí "
-"pracovní plochy."
-
-#: ../gnome-flashback/flashback-inhibit-dialog.c:192
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:193
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:324
-#: ../gnome-flashback/flashback-inhibit-dialog.c:495
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:325
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:496
 msgid "Log Out"
 msgstr "Odhlásit"
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:326
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:327
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Kliknutím na Odhlásit ukončíte tyto aplikace a odhlásíte se ze systému."
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:328
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:329
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
@@ -62,16 +45,16 @@ msgstr[0] "%s bude odhlášen(a) automaticky za %d sekundu."
 msgstr[1] "%s bude odhlášen(a) automaticky za %d sekundy."
 msgstr[2] "%s bude odhlášen(a) automaticky za %d sekund."
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:334
-#: ../gnome-flashback/flashback-inhibit-dialog.c:498
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:335
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:499
 msgid "Power Off"
 msgstr "Vypnout"
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:336
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:337
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "Kliknutím na Vypnout ukončíte tyto aplikace a vypnete systém."
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:338
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:339
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -79,16 +62,16 @@ msgstr[0] "Systém bude vypnut automaticky za %d sekundu."
 msgstr[1] "Systém bude vypnut automaticky za %d sekundy."
 msgstr[2] "Systém bude vypnut automaticky za %d sekund."
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:344
-#: ../gnome-flashback/flashback-inhibit-dialog.c:501
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:345
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:502
 msgid "Restart"
 msgstr "Restartovat"
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:346
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:347
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "Kliknutím na Restartovat ukončíte tyto aplikace a restartujete systém."
 
-#: ../gnome-flashback/flashback-inhibit-dialog.c:348
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:349
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -96,26 +79,174 @@ msgstr[0] "Systém bude restartován automaticky za %d sekundu."
 msgstr[1] "Systém bude restartován automaticky za %d sekundy."
 msgstr[2] "Systém bude restartován automaticky za %d sekund."
 
-#: ../gnome-flashback/flashback-inhibit-dialog.ui.h:1
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:1
 msgid "Some programs are still running:"
 msgstr "Doposud běží některé aplikace:"
 
-#: ../gnome-flashback/flashback-inhibit-dialog.ui.h:2
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:2
 msgid ""
-"Waiting for these application to finish. Interrupting them can lead to loss "
+"Waiting for these applications to finish. Interrupting them can lead to loss "
 "of data."
 msgstr ""
 "Čeká se, až tyto aplikace skončí. Jejich násilné přerušení může způsobit "
 "ztrátu dat."
 
-#: ../gnome-flashback/flashback-inhibit-dialog.ui.h:3
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:3
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: ../gnome-flashback/flashback-inhibit-dialog.ui.h:4
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:4
 msgid "Lock Screen"
 msgstr "Uzamknout obrazovku"
 
-#: ../gnome-flashback/gnome-flashback.desktop.in.h:1
-msgid "GNOME Flashback"
-msgstr "GNOME historické"
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:267
+msgid "Output"
+msgstr "Výstup"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:269
+msgid "Sound Output Volume"
+msgstr "Hlasitost zvukového výstupu"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:273
+msgid "Input"
+msgstr "Vstup"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:275
+msgid "Microphone Volume"
+msgstr "Hlasitost mikrofonu"
+
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:611
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:620
+msgctxt "volume"
+msgid "100%"
+msgstr "100%"
+
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:615
+msgctxt "volume"
+msgid "Unamplified"
+msgstr "Nezesíleno"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:292
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "Selhalo spuštění předvoleb zvuku: %s"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:317
+msgid "_Mute"
+msgstr "_Ztišit"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:326
+msgid "_Sound Preferences"
+msgstr "_Předvolby zvuku"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:450
+msgid "Muted"
+msgstr "Ztišeno"
+
+#. translators:
+#. * The device has been disabled
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1830
+msgid "Disabled"
+msgstr "Zakázáno"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1837
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u výstup"
+msgstr[1] "%u výstupy"
+msgstr[2] "%u výstupů"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1847
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u vstup"
+msgstr[1] "%u vstupy"
+msgstr[2] "%u vstupů"
+
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2373
+msgid "System Sounds"
+msgstr "Systémové zvuky"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
+msgid "Desktop background"
+msgstr "Pozadí pracovní plochy"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:2
+msgid ""
+"If set to true, then GNOME Flashback application will be used to draw "
+"desktop background."
+msgstr ""
+"Když je zapnuto, bude aplikace GNOME historické použita k vykreslování "
+"pozadí pracovní plochy."
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:3
+msgid "Display config"
+msgstr "Zobrazit nastavení"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:4
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide "
+"display configuration."
+msgstr ""
+"Když je zapnuto, bude aplikace GNOME historické použita k poskytnutí "
+"zobrazení nastavení."
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:5
+msgid "End session dialog"
+msgstr "Dialogové okno pro ukončení sezení"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:6
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show end "
+"session dialog."
+msgstr ""
+"Když je zapnuto, bude aplikace GNOME historické použita k zobrazení "
+"dialogového okna pro ukončení sezení."
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:7
+msgid "Idle monitor"
+msgstr "Sledovat aktivitu"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:8
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr ""
+"Když je zapnuto, bude aplikace GNOME historické použita ke sledování "
+"aktivity uživatele."
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:9
+msgid "Sound applet"
+msgstr "Zvukový aplet"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:10
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show sound "
+"applet. This is same sound applet that used to be part of GNOME Control "
+"Center."
+msgstr ""
+"Když je zapnuto, bude aplikace GNOME historické použita k zobrazení zvukového "
+"apletu. Jedná se o stejný zvukový aplet, který je použit v části řídícího "
+"centra GNOME."
+
+#: ../sessions/gnome-flashback-compiz.desktop.in.in.h:1
+msgid "GNOME Flashback (Compiz)"
+msgstr "GNOME historické (Compiz)"
+
+#: ../sessions/gnome-flashback-compiz.desktop.in.in.h:2
+msgid "This session logs you into GNOME Flashback with Compiz"
+msgstr "Toto sezení vás přihlásí do GNOME historické s Compizem"
+
+#: ../sessions/gnome-flashback-metacity.desktop.in.in.h:1
+msgid "GNOME Flashback (Metacity)"
+msgstr "GNOME historické (Metacity)"
+
+#: ../sessions/gnome-flashback-metacity.desktop.in.in.h:2
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr "Toto sezení vás přihlásí do GNOME historické s Metacity"
