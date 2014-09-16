@@ -1,0 +1,250 @@
+# Slovenian translation for gnome-flashback.
+# Copyright (C) 2014 gnome-flashback's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-flashback package.
+#
+# Matej Urbančič <mateju@svn.gnome.org>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-flashback master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"flashback&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-09-16 06:50+0000\n"
+"PO-Revision-Date: 2014-09-16 17:42+0100\n"
+"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"Language-Team: Slovenian <gnome-si@googlegroups.com>\n"
+"Language: sl_SI\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: ../gnome-flashback/gnome-flashback.desktop.in.h:1
+#, fuzzy
+msgid "GNOME Flashback"
+msgstr "GNOME Pasjansa"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:193
+msgid "Unknown"
+msgstr "Neznano"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:325
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:496
+msgid "Log Out"
+msgstr "Odjava"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:327
+#, fuzzy
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr "Kliknite Odjava za končanje teh programov in odjavo iz sistema."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:329
+#, fuzzy, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "Uporabnik %s bo samodejno odjavljen čez %d sekund."
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:335
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:499
+msgid "Power Off"
+msgstr "Izklop"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:337
+#, fuzzy
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
+"Kliknite na gumb za izklop za končanje teh programov in izklop iz sistema."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:339
+#, fuzzy, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Sistem se bo samodejno izklopil čez %d sekund."
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:345
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:502
+msgid "Restart"
+msgstr "Ponoven zagon"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:347
+#, fuzzy
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Kliknite Zaženi znova za končanje teh programov in ponoven zagon sistema. "
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:349
+#, fuzzy, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Sistem se bo samodejno ponovno zagnal čez %d sekund."
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:1
+msgid "Some programs are still running:"
+msgstr "Nekateri programi so še vedno zagnani:"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:2
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:3
+msgid "Cancel"
+msgstr "Prekliči"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:4
+msgid "Lock Screen"
+msgstr "Zakleni zaslon"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:267
+msgid "Output"
+msgstr "Izpis"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:269
+msgid "Sound Output Volume"
+msgstr "Izhodna glasnost zvoka"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:273
+msgid "Input"
+msgstr "Vnos"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:275
+msgid "Microphone Volume"
+msgstr "Glasnost mikrofona"
+
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:611
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:620
+msgctxt "volume"
+msgid "100%"
+msgstr "100%"
+
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:615
+msgctxt "volume"
+msgid "Unamplified"
+msgstr "Neojačano"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:292
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "Napaka med zagonom lastnosti zvoka: %s"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:317
+msgid "_Mute"
+msgstr "_Utišaj"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:326
+msgid "_Sound Preferences"
+msgstr "_Nastavitve zvoka"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:450
+msgid "Muted"
+msgstr "Utišano"
+
+#. translators:
+#. * The device has been disabled
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1830
+msgid "Disabled"
+msgstr "Onemogočeno"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1837
+#, fuzzy, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u izhodov"
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1847
+#, fuzzy, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u vhodov"
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2373
+msgid "System Sounds"
+msgstr "Sistemski zvoki"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
+msgid "Desktop background"
+msgstr "Ozadje namizja"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:2
+msgid ""
+"If set to true, then GNOME Flashback application will be used to draw "
+"desktop background."
+msgstr ""
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:3
+msgid "Display config"
+msgstr "Nastavitev zaslona"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:4
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide "
+"display configuration."
+msgstr ""
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:5
+msgid "End session dialog"
+msgstr "Končaj pogovorno okno seje"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:6
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show end "
+"session dialog."
+msgstr ""
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:7
+msgid "Idle monitor"
+msgstr "Nedejaven zaslon"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:8
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr ""
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:9
+msgid "Sound applet"
+msgstr "Aplet zvoka"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:10
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show sound "
+"applet. This is same sound applet that used to be part of GNOME Control "
+"Center."
+msgstr ""
+
+#: ../sessions/gnome-flashback-compiz.desktop.in.in.h:1
+msgid "GNOME Flashback (Compiz)"
+msgstr "GNOME Flashback (Compiz)"
+
+#: ../sessions/gnome-flashback-compiz.desktop.in.in.h:2
+msgid "This session logs you into GNOME Flashback with Compiz"
+msgstr ""
+
+#: ../sessions/gnome-flashback-metacity.desktop.in.in.h:1
+msgid "GNOME Flashback (Metacity)"
+msgstr "GNOME Flashback (Metacity)"
+
+#: ../sessions/gnome-flashback-metacity.desktop.in.in.h:2
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr ""
