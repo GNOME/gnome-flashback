@@ -6,7 +6,7 @@
 			<_description>If set to true, then GNOME Flashback application will be used to draw desktop background.</_description>
 		</key>
 		<key name="display-config" type="b">
-			<default>true</default>
+			<default>false</default>
 			<_summary>Display config</_summary>
 			<_description>If set to true, then GNOME Flashback application will be used to provide display configuration.</_description>
 		</key>
