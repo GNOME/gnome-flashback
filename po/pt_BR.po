@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-08-29 17:33+0000\n"
-"PO-Revision-Date: 2014-09-02 03:04-0300\n"
+"POT-Creation-Date: 2014-09-04 11:48+0000\n"
+"PO-Revision-Date: 2014-09-18 01:51-0300\n"
 "Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -18,62 +18,62 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.7\n"
+"X-Generator: Poedit 1.6.9\n"
 
 #: ../gnome-flashback/gnome-flashback.desktop.in.h:1
 msgid "GNOME Flashback"
 msgstr "GNOME Flashback"
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:192
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:193
 msgid "Unknown"
 msgstr "Desconhecido"
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:324
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:495
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:325
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:496
 msgid "Log Out"
 msgstr "Encerrar sessão"
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:326
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:327
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Clique em \"Encerrar sessão\" para sair desses aplicativos e encerrar a "
 "sessão do sistema."
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:328
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:329
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s terá sua sessão encerrada em %d segundo."
 msgstr[1] "%s terá sua sessão encerrada em %d segundos."
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:334
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:498
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:335
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:499
 msgid "Power Off"
 msgstr "Desligar"
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:336
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:337
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 "Clique em \"Desligar\" para sair desses aplicativos e desligar o sistema."
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:338
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:339
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "O sistema será desligado automaticamente em %d segundo."
 msgstr[1] "O sistema será desligado automaticamente em %d segundos."
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:344
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:501
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:345
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:502
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:346
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:347
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Clique em \"Reiniciar\" para sair desses aplicativos e reiniciar o sistema."
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:348
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:349
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -86,7 +86,7 @@ msgstr "Alguns programas ainda estão em execução:"
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:2
 msgid ""
-"Waiting for these application to finish. Interrupting them can lead to loss "
+"Waiting for these applications to finish. Interrupting them can lead to loss "
 "of data."
 msgstr ""
 "Esperando esses aplicativos serem finalizados. Interrompê-los pode levar à "
@@ -127,20 +127,20 @@ msgctxt "volume"
 msgid "Unamplified"
 msgstr "Não amplificado"
 
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:233
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:292
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
 msgstr "Falha ao iniciar as preferências de som: %s"
 
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:259
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:317
 msgid "_Mute"
 msgstr "_Mudo"
 
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:268
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:326
 msgid "_Sound Preferences"
 msgstr "Preferências de _som"
 
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:413
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:450
 msgid "Muted"
 msgstr "Mudo"
 
