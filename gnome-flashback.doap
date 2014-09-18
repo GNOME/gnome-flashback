@@ -6,6 +6,16 @@
 
   <name xml:lang="en">GNOME Flashback</name>
   <shortdesc xml:lang="en">GNOME Flashback session</shortdesc>
+  <description>GNOME Flashback provides unofficial session and helper application.
+
+This session consists of gnome-applets, gnome-flashback, gnome-panel and
+metacity. And all other modules that are used in official GNOME session.
+
+Helper application main job is to provide all features that is need for
+our session, but has been removed from GNOME and/or moved to mutter or
+gnome-shell.
+
+NOTE: This session is not supported by GNOME in any way!</description>
   <homepage rdf:resource="https://wiki.gnome.org/Projects/GnomeFlashback" />
   <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/gnome-flashback-list" />
   <download-page rdf:resource="http://download.gnome.org/sources/gnome-flashback/" />
