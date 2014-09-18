@@ -1,4 +1,4 @@
-Version 3.1x.0
+Version 3.10.0
 ==============
 - Initial version.
 - GNOME Flashback session. Includes sessions with Metacity and Compiz as
@@ -13,5 +13,10 @@ Version 3.1x.0
 - Idle monitor. Application will monitor user activity. This will fix invisible
   cursor bug.
 - Updated translations:
-  Andika Triwidada (id), Daniel Mustieles (es), Enrico Nicoletto (pt_BR),
-  Marek Černocký (cs), Piotr Drąg (pl), Rafael Ferreira (pt_BR).
+  Andika Triwidada (id), Daniel Mustieles (es), Dmitry Shachnev (ru),
+  Enrico Nicoletto (pt_BR), Marek Černocký (cs), Matej Urbančič (sl),
+  Piotr Drąg (pl), Rafael Ferreira (pt_BR).
+
+NOTE: This is first release and is intended to improve GNOME Flashback session.
+Don't expect that this module will solve all problems! There is still a lot of
+work to do to make this session in good state.
