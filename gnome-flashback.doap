@@ -21,6 +21,8 @@ NOTE: This session is not supported by GNOME in any way!</description>
   <download-page rdf:resource="http://download.gnome.org/sources/gnome-flashback/" />
   <bug-database rdf:resource="https://bugzilla.gnome.org/browse.cgi?product=gnome-flashabck" />
 
+  <programming-language>C</programming-language>
+
   <maintainer>
     <foaf:Person>
       <foaf:name>Alberts Muktupāvels</foaf:name>
