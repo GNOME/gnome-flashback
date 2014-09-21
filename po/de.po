@@ -1,0 +1,253 @@
+# German translation for gnome-flashback.
+# Copyright (C) 2014 gnome-flashback's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-flashback package.
+# Daniel Raab <3dani33@gmail.com>, 2014.
+# Benjamin Steinwender <b@stbe.at>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-flashback master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"flashback&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-09-21 06:42+0000\n"
+"PO-Revision-Date: 2014-09-21 12:04+0200\n"
+"Last-Translator: Benjamin Steinwender <b@stbe.at>\n"
+"Language-Team: Deutsch <gnome-de@gnome.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.6\n"
+
+#: ../gnome-flashback/gnome-flashback.desktop.in.h:1
+msgid "GNOME Flashback"
+msgstr "GNOME Flashback"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:193
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:325
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:496
+msgid "Log Out"
+msgstr "Abmelden"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:327
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Drücken Sie auf Abmelden, um diese Anwendungen zu schließen und sich aus dem "
+"System abzumelden."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:329
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s wird in %d Sekunde automatisch abgemeldet."
+msgstr[1] "%s wird in %d Sekunden automatisch abgemeldet."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:335
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:499
+msgid "Power Off"
+msgstr "Ausschalten"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:337
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
+"Drücken Sie auf Ausschalten, um diese Anwendungen zu schließen und sich aus "
+"dem System abzumelden."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:339
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Das System wird in %d Sekunde automatisch abgeschaltet."
+msgstr[1] "Das System wird in %d Sekunden automatisch abgeschaltet."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:345
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:502
+msgid "Restart"
+msgstr "Neustarten"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:347
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Drücken Sie Neustarten, um diese Anwendungen zu schließen und das System "
+"neuzustarten"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:349
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Das System wird in %d Sekunde automatisch neu gestartet."
+msgstr[1] "Das System wird in %d Sekunden automatisch neu gestartet."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:1
+msgid "Some programs are still running:"
+msgstr "Einige Anwendungen laufen noch."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:2
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr ""
+"Es wird auf das Beenden dieser Anwendungen gewartet. Unterbrechen kann zu "
+"Datenverlust führen"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:3
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:4
+msgid "Lock Screen"
+msgstr "Sperrbildschirm"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:267
+msgid "Output"
+msgstr "Ausgabegeräte"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:269
+msgid "Sound Output Volume"
+msgstr "Ausgabelautstärke"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:273
+msgid "Input"
+msgstr "Eingabegeräte"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:275
+msgid "Microphone Volume"
+msgstr "Mikrofonlautstärke"
+
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:611
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:620
+msgctxt "volume"
+msgid "100%"
+msgstr "100%"
+
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:615
+msgctxt "volume"
+msgid "Unamplified"
+msgstr "Unverstärkt"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:292
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "Klanginstellungen konnte nicht geöffnet werden: %s"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:317
+msgid "_Mute"
+msgstr "_Stumm"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:326
+msgid "_Sound Preferences"
+msgstr "_Klangeinstellungen"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:450
+msgid "Muted"
+msgstr "Stummgeschaltet"
+
+#. translators:
+#. * The device has been disabled
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1830
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1837
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u Ausgabegerät"
+msgstr[1] "%u Ausgabegeräte"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1847
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u Eingabegerät"
+msgstr[1] "%u Eingabegeräte"
+
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2373
+msgid "System Sounds"
+msgstr "Systemklänge"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
+msgid "Desktop background"
+msgstr "Schreibtischhintergrund"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:2
+msgid ""
+"If set to true, then GNOME Flashback application will be used to draw "
+"desktop background."
+msgstr ""
+"Falls dieser Schlüssel wahr ist, dann wird GNOME Flashback benutzt, um den "
+"Schreibtischhintergrund darzustellen."
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:3
+msgid "Display config"
+msgstr "Anzeigeeinstellungen"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:4
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide "
+"display configuration."
+msgstr ""
+"Falls dieser Schlüssel wahr ist, dann wird GNOME Flashback benutzt, um "
+"Anzeigeeinstellungen bereitzustellen."
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:5
+msgid "End session dialog"
+msgstr "Sitzungsende-Dialog"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:6
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show end "
+"session dialog."
+msgstr ""
+"Falls dieser Schlüssel wahr ist, dann wird GNOME Flashback benutzt, um den "
+"Sitzungsende-Dialog anzuzeigen."
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:7
+msgid "Idle monitor"
+msgstr "Ruheüberwachung"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:8
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr ""
+"Falls dieser Schlüssel wahr ist, dann wird GNOME Flashback für die "
+"Benutzeraktivitätsüberwachung verwendet."
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:9
+msgid "Sound applet"
+msgstr "Audioeinstellungen"
+
+#: ../gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in.h:10
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show sound "
+"applet. This is same sound applet that used to be part of GNOME Control "
+"Center."
+msgstr ""
+"Falls dieser Schlüssel wahr ist, dann wird GNOME Flashback benutzt, um "
+"Audioeinstellungen anzuzeigen. Das sind die selben Audioeinstellungen, die "
+"früher Teil der GNOME-Einstellungen waren."
+
+#: ../sessions/gnome-flashback-compiz.desktop.in.in.h:1
+msgid "GNOME Flashback (Compiz)"
+msgstr "GNOME Flashback (Compiz)"
+
+#: ../sessions/gnome-flashback-compiz.desktop.in.in.h:2
+msgid "This session logs you into GNOME Flashback with Compiz"
+msgstr "Diese Sitzung meldet Sie in GNOME Flashback mit Compiz an"
+
+#: ../sessions/gnome-flashback-metacity.desktop.in.in.h:1
+msgid "GNOME Flashback (Metacity)"
+msgstr "GNOME Flashback (Metacity)"
+
+#: ../sessions/gnome-flashback-metacity.desktop.in.in.h:2
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr "Diese Sitzung meldet sie in GNOME Flashback mit Metacity an"
