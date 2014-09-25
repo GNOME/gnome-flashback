@@ -251,6 +251,16 @@ desktop_window_configure_event (GtkWidget         *widget,
 }
 
 static void
+desktop_window_style_updated (GtkWidget *widget)
+{
+	DesktopWindow *window = DESKTOP_WINDOW (widget);
+
+	GTK_WIDGET_CLASS (desktop_window_parent_class)->style_updated (widget);
+
+	g_signal_emit (window, signals [UPDATE_SIGNAL], 0);
+}
+
+static void
 desktop_window_class_init (DesktopWindowClass *class)
 {
 	GObjectClass   *object_class;
@@ -265,6 +275,7 @@ desktop_window_class_init (DesktopWindowClass *class)
 	widget_class->unrealize = desktop_window_unrelaize;
 	widget_class->map = desktop_window_map;
 	widget_class->configure_event = desktop_window_configure_event;
+	widget_class->style_updated = desktop_window_style_updated;
 
 	signals [UPDATE_SIGNAL] =
 		g_signal_new ("update",
