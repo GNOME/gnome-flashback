@@ -7,8 +7,10 @@ AM_CPPFLAGS = \
 	-DGNOME_DESKTOP_USE_UNSTABLE_API
 
 libdesktop_background_la_SOURCES = \
-	flashback-desktop-background.c \
-	flashback-desktop-background.h
+	desktop-background.c \
+	desktop-background.h \
+	desktop-window.c \
+	desktop-window.h
 
 libdesktop_background_la_LIBADD = \
 	$(DESKTOP_BACKGROUND_LIBS)

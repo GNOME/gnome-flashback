@@ -19,7 +19,7 @@
 #include <gtk/gtk.h>
 #include "config.h"
 #include "flashback-application.h"
-#include "libdesktop-background/flashback-desktop-background.h"
+#include "libdesktop-background/desktop-background.h"
 #include "libdisplay-config/flashback-display-config.h"
 #include "libend-session-dialog/flashback-end-session-dialog.h"
 #include "libidle-monitor/meta-idle-monitor-dbus.h"
@@ -35,7 +35,7 @@
 struct _FlashbackApplicationPrivate {
 	GSettings                  *settings;
 
-	FlashbackDesktopBackground *background;
+	DesktopBackground          *background;
 	FlashbackDisplayConfig     *config;
 	FlashbackEndSessionDialog  *dialog;
 	MetaIdleMonitorDBus        *idle_monitor;
@@ -54,7 +54,7 @@ flashback_application_settings_changed (GSettings   *settings,
 	if (key == NULL || g_strcmp0 (key, KEY_DESKTOP_BACKGROUND) == 0) {
 		if (g_settings_get_boolean (settings, KEY_DESKTOP_BACKGROUND)) {
 			if (app->priv->background == NULL) {
-				app->priv->background = flashback_desktop_background_new ();
+				app->priv->background = desktop_background_new ();
 			}
 		} else {
 			if (app->priv->background) {

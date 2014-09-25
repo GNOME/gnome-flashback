@@ -26,18 +26,14 @@
 			<_description>If set to true, then GNOME Flashback application will be used to show sound applet. This is same sound applet that used to be part of GNOME Control Center.</_description>
 		</key>
 
-		<!--
-		<child name="background" schema="org.gnome.gnome-flashback.background"/>
-		-->
+		<child name="desktop-background" schema="org.gnome.gnome-flashback.desktop-background"/>
 	</schema>
 
-	<!--
-	<schema id="org.gnome.gnome-flashback.background" path="/org/gnome/gnome-flashback/background/">
+	<schema id="org.gnome.gnome-flashback.desktop-background" path="/org/gnome/gnome-flashback/desktop-background/">
 		<key name="fade" type="b">
 			<default>true</default>
 			<_summary>Fade the background on change</_summary>
 			<_description>If set to true, then fade effect will be used to change the desktop background.</_description>
 		</key>
 	</schema>
-	-->
 </schemalist>
