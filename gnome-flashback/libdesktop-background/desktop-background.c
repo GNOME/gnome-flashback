@@ -386,6 +386,16 @@ desktop_background_change_event (GSettings *settings,
 }
 
 static void
+size_allocate (GtkWidget     *widget,
+               GtkAllocation *allocation,
+               gpointer       user_data)
+{
+	DesktopBackground *background = DESKTOP_BACKGROUND (user_data);
+
+	queue_background_change (user_data);
+}
+
+static void
 desktop_background_finalize (GObject *object)
 {
 	DesktopBackground        *background;
@@ -413,15 +423,6 @@ desktop_background_finalize (GObject *object)
 }
 
 static void
-desktop_background_update (DesktopWindow *window,
-                           gpointer       user_data)
-{
-	DesktopBackground *background = DESKTOP_BACKGROUND (user_data);
-
-	queue_background_change (user_data);
-}
-
-static void
 desktop_background_init (DesktopBackground *background)
 {
 	DesktopBackgroundPrivate *priv;
@@ -443,8 +444,8 @@ desktop_background_init (DesktopBackground *background)
 	                  G_CALLBACK (desktop_background_change_event), background);
 
 	priv->background = desktop_window_new ();
-	g_signal_connect (priv->background, "update",
-	                  G_CALLBACK (desktop_background_update), background);
+	g_signal_connect (priv->background, "size-allocate",
+	                  G_CALLBACK (size_allocate), background);
 
 	queue_background_change (background);
 

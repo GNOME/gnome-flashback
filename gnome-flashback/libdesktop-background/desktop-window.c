@@ -26,13 +26,6 @@ struct _DesktopWindowPrivate {
 
 G_DEFINE_TYPE_WITH_PRIVATE (DesktopWindow, desktop_window, GTK_TYPE_WINDOW);
 
-enum {
-	UPDATE_SIGNAL,
-	LAST_SIGNAL
-};
-
-static guint signals [LAST_SIGNAL] = { 0 };
-
 static void
 desktop_window_screen_changed (GdkScreen *screen,
                                gpointer   user_data)
@@ -49,8 +42,6 @@ desktop_window_screen_changed (GdkScreen *screen,
 	              "width-request", width,
 	              "height-request", height,
 	              NULL);
-
-	g_signal_emit (window, signals [UPDATE_SIGNAL], 0);
 }
 
 static void
@@ -129,16 +120,6 @@ desktop_window_init (DesktopWindow *window)
 }
 
 static void
-desktop_window_style_updated (GtkWidget *widget)
-{
-	DesktopWindow *window = DESKTOP_WINDOW (widget);
-
-	GTK_WIDGET_CLASS (desktop_window_parent_class)->style_updated (widget);
-
-	g_signal_emit (window, signals [UPDATE_SIGNAL], 0);
-}
-
-static void
 desktop_window_class_init (DesktopWindowClass *class)
 {
 	GObjectClass   *object_class;
@@ -152,18 +133,6 @@ desktop_window_class_init (DesktopWindowClass *class)
 	widget_class->realize = desktop_window_relaize;
 	widget_class->unrealize = desktop_window_unrelaize;
 	widget_class->map = desktop_window_map;
-	widget_class->style_updated = desktop_window_style_updated;
-
-	signals [UPDATE_SIGNAL] =
-		g_signal_new ("update",
-		              G_TYPE_FROM_CLASS (object_class),
-		              G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
-		              0,
-		              NULL,
-		              NULL,
-		              g_cclosure_marshal_VOID__VOID,
-		              G_TYPE_NONE,
-		              0);
 }
 
 GtkWidget *
