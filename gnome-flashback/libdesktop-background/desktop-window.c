@@ -33,110 +33,6 @@ enum {
 
 static guint signals [LAST_SIGNAL] = { 0 };
 
-static Atom _NET_CLIENT_LIST = None;
-static Atom _NET_WM_WINDOW_TYPE = None;
-static Atom _NET_WM_WINDOW_TYPE_DESKTOP = None;
-
-static Window *
-get_windows (Display       *display,
-             unsigned long *items)
-{
-	Atom           type;
-	unsigned long  left;
-    unsigned char *list;
-    int            result;
-    int            format;
-
-	result = XGetWindowProperty (display, XDefaultRootWindow (display), _NET_CLIENT_LIST,
-	                             0L, 1024L, False, XA_WINDOW, &type, &format,
-	                             items, &left, &list);
-
-	if (result != Success)
-		return (Window *) 0;
-
-	return (Window *) list;
-}
-
-static gboolean
-is_desktop_window (Display *display,
-                   Window   window)
-{
-	Atom           type;
-	Atom          *atoms;
-	int            result;
-	int            format;
-	unsigned long  items;
-	unsigned long  left;
-	unsigned char *data;
-
-	result = XGetWindowProperty (display, window, _NET_WM_WINDOW_TYPE,
-	                             0L, 1L, False, XA_ATOM, &type, &format,
-	                             &items, &left, &data);
-
-	if (result != Success)
-		return FALSE;
-
-	atoms = (Atom *) data;
-
-	if (items && atoms[0] == _NET_WM_WINDOW_TYPE_DESKTOP) {
-		XFree (data);
-		return TRUE;
-	}
-
-	XFree (data);
-	return FALSE;
-}
-
-static Window *
-get_desktop_windows_list (Display       *display,
-                          unsigned long *items)
-{
-	Window        *list;
-	unsigned long  all_items;
-	int            i;
-	Window        *desktops;
-
-	*items = 0;
-	list = get_windows (display, &all_items);
-	desktops = g_new0 (Window, all_items);
-
-	for (i = 0; i < all_items; i++) {
-		if (is_desktop_window (display, list[i])) {
-			desktops[(*items)++] = list[i];
-		}
-	}
-
-	return desktops;
-}
-
-static void
-desktop_window_ensure_below (GtkWidget *widget)
-{
-	GdkWindow     *our_desktop_window;
-	GdkWindow     *other_desktop_window;
-	GdkDisplay    *display;
-	Window        *list;
-	unsigned long  items;
-	int            i;
-
-	gdk_error_trap_push ();
-
-	our_desktop_window = gtk_widget_get_window (widget);
-	display = gdk_display_get_default ();
-	list = get_desktop_windows_list (gdk_x11_display_get_xdisplay (display), &items);
-
-	for (i = 0; i < items; i++) {
-		other_desktop_window = gdk_x11_window_foreign_new_for_display (display, list[i]);
-		if (other_desktop_window != our_desktop_window) {
-			gdk_window_raise (other_desktop_window);
-		}
-	}
-
-	gdk_error_trap_pop_ignored ();
-
-	g_free (list);
-}
-
 static void
 desktop_window_screen_changed (GdkScreen *screen,
                                gpointer   user_data)
@@ -217,11 +113,9 @@ desktop_window_init (DesktopWindow *window)
 	DesktopWindowPrivate *priv;
 	gint                  id;
 	GdkScreen            *screen;
-	Display              *display;
 
 	priv = window->priv = desktop_window_get_instance_private (window);
 	screen = gdk_screen_get_default ();
-	display = gdk_x11_display_get_xdisplay (gdk_display_get_default ());
 
 	id = g_signal_connect (screen, "monitors-changed",
 	                       G_CALLBACK (desktop_window_screen_changed), window);
@@ -232,22 +126,6 @@ desktop_window_init (DesktopWindow *window)
 	priv->size_changed_id = id;
 
 	desktop_window_screen_changed (screen, window);
-
-	_NET_CLIENT_LIST = XInternAtom (display, "_NET_CLIENT_LIST", False);
-	_NET_WM_WINDOW_TYPE = XInternAtom (display, "_NET_WM_WINDOW_TYPE", False);
-	_NET_WM_WINDOW_TYPE_DESKTOP = XInternAtom (display, "_NET_WM_WINDOW_TYPE_DESKTOP", False);
-}
-
-static gboolean
-desktop_window_configure_event (GtkWidget         *widget,
-                                GdkEventConfigure *event)
-{
-	if (GTK_WIDGET_CLASS (desktop_window_parent_class)->configure_event)
-		GTK_WIDGET_CLASS (desktop_window_parent_class)->configure_event (widget, event);
-
-	desktop_window_ensure_below (widget);
-
-	return TRUE;
 }
 
 static void
@@ -274,7 +152,6 @@ desktop_window_class_init (DesktopWindowClass *class)
 	widget_class->realize = desktop_window_relaize;
 	widget_class->unrealize = desktop_window_unrelaize;
 	widget_class->map = desktop_window_map;
-	widget_class->configure_event = desktop_window_configure_event;
 	widget_class->style_updated = desktop_window_style_updated;
 
 	signals [UPDATE_SIGNAL] =

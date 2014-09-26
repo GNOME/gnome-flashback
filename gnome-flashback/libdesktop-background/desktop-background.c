@@ -16,6 +16,8 @@
  */
 
 #include <gtk/gtk.h>
+#include <gdk/gdkx.h>
+#include <X11/Xatom.h>
 #include <libgnome-desktop/gnome-bg.h>
 
 #include "desktop-window.h"
@@ -38,6 +40,138 @@ struct _DesktopBackgroundPrivate {
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (DesktopBackground, desktop_background, G_TYPE_OBJECT);
+
+static gboolean
+is_nautilus_desktop_manager (void)
+{
+	GdkDisplay *display;
+	GdkScreen  *screen;
+	gchar      *name;
+	Atom        atom;
+	Window      window;
+
+	display = gdk_display_get_default ();
+	screen = gdk_display_get_default_screen (display);
+
+	name = g_strdup_printf ("_NET_DESKTOP_MANAGER_S%d", gdk_screen_get_number (screen));
+	atom = XInternAtom (GDK_DISPLAY_XDISPLAY (display), name, FALSE);
+	g_free (name);
+
+	window = XGetSelectionOwner (GDK_DISPLAY_XDISPLAY (display), atom);
+
+	if (window != None)
+		return TRUE;
+
+	return FALSE;
+}
+
+static gboolean
+is_desktop_window (Display *display,
+                   Window   window)
+{
+	Atom           type;
+	Atom          *atoms;
+	int            result;
+	int            format;
+	unsigned long  items;
+	unsigned long  left;
+	unsigned char *data;
+
+	result = XGetWindowProperty (display, window,
+	                             XInternAtom (display, "_NET_WM_WINDOW_TYPE", False),
+	                             0L, 1L, False, XA_ATOM, &type, &format,
+	                             &items, &left, &data);
+
+	if (result != Success)
+		return FALSE;
+
+	atoms = (Atom *) data;
+
+	if (items && atoms[0] == XInternAtom (display, "_NET_WM_WINDOW_TYPE_DESKTOP", False)) {
+		XFree (data);
+		return TRUE;
+	}
+
+	XFree (data);
+	return FALSE;
+}
+
+static GdkWindow *
+get_nautilus_window (DesktopBackground *background)
+{
+	GdkDisplay    *display;
+	GdkWindow     *window;
+	Display       *xdisplay;
+	Atom           type;
+	int            result;
+	int            format;
+	unsigned long  items;
+	unsigned long  left;
+	unsigned char *list;
+	int            i;
+	Window        *windows;
+	Window         nautilus;
+	Window         desktop;
+
+	gdk_error_trap_push ();
+
+	display = gdk_display_get_default ();
+	xdisplay = GDK_DISPLAY_XDISPLAY (display);
+	result = XGetWindowProperty (xdisplay, XDefaultRootWindow (xdisplay),
+	                             XInternAtom (xdisplay, "_NET_CLIENT_LIST", False),
+	                             0L, 1024L, False, XA_WINDOW, &type, &format,
+	                             &items, &left, &list);
+
+	if (result != Success) {
+		gdk_error_trap_pop_ignored ();
+		return NULL;
+	}
+
+	nautilus = None;
+	desktop = GDK_WINDOW_XID (gtk_widget_get_window (background->priv->background));
+	windows = (Window *) list;
+	for	(i = 0; i < items; i++) {
+		if (is_desktop_window (xdisplay, windows[i]) && windows[i] != desktop) {
+			nautilus = windows[i];
+			break;
+		}
+	}
+
+	XFree (list);
+
+	window = NULL;
+	if (nautilus != None) {
+		window = gdk_x11_window_foreign_new_for_display (display, nautilus);
+	}
+
+	gdk_error_trap_pop_ignored ();
+
+	return window;
+}
+
+static GdkFilterReturn
+event_filter_func (GdkXEvent *xevent,
+                   GdkEvent  *event,
+                   gpointer   data)
+{
+	DesktopBackground *background = DESKTOP_BACKGROUND (data);
+	static gboolean nautilus_raised = FALSE;
+
+	if (is_nautilus_desktop_manager ()) {
+		if (nautilus_raised == FALSE) {
+			GdkWindow *nautilus = get_nautilus_window (background);
+
+			gdk_window_hide (nautilus);
+			gdk_window_show (nautilus);
+
+			nautilus_raised = TRUE;
+		}
+	} else {
+		nautilus_raised = FALSE;
+	}
+
+	return GDK_FILTER_CONTINUE;
+}
 
 static void
 free_fade (DesktopBackground *background)
@@ -273,6 +407,8 @@ desktop_background_finalize (GObject *object)
 	g_clear_object (&priv->gnome_settings);
 	g_clear_object (&priv->background_settings);
 
+	gdk_window_remove_filter (NULL, event_filter_func, background);
+
 	G_OBJECT_CLASS (desktop_background_parent_class)->finalize (object);
 }
 
@@ -311,6 +447,8 @@ desktop_background_init (DesktopBackground *background)
 	                  G_CALLBACK (desktop_background_update), background);
 
 	queue_background_change (background);
+
+	gdk_window_add_filter (NULL, event_filter_func, background);
 }
 
 static void
