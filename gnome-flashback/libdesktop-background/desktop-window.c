@@ -154,7 +154,7 @@ desktop_window_new (void)
 	window = GTK_WINDOW (widget);
 
 	gtk_window_set_keep_below (window, TRUE);
-	gtk_window_present (window);
+	gtk_widget_realize (widget);
 
 	return widget;
 }

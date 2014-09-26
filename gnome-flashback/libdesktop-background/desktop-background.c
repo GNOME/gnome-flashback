@@ -333,6 +333,7 @@ background_changed_cb (gpointer user_data)
 	background_unrealize (background);
 	background_set_up (background);
 
+	gtk_widget_show (background->priv->background);
 	gtk_widget_queue_draw (background->priv->background);
 
 	return G_SOURCE_REMOVE;
