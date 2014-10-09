@@ -161,10 +161,12 @@ event_filter_func (GdkXEvent *xevent,
 		if (nautilus_raised == FALSE) {
 			GdkWindow *nautilus = get_nautilus_window (background);
 
-			gdk_window_hide (nautilus);
-			gdk_window_show (nautilus);
+			if (GDK_IS_WINDOW (nautilus)) {
+				gdk_window_hide (nautilus);
+				gdk_window_show (nautilus);
 
-			nautilus_raised = TRUE;
+				nautilus_raised = TRUE;
+			}
 		}
 	} else {
 		nautilus_raised = FALSE;
