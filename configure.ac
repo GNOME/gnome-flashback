@@ -65,6 +65,7 @@ AC_SUBST(SOUND_APPLET_LIBS)
 
 AC_CONFIG_FILES([
 Makefile
+data/Makefile
 gnome-flashback/Makefile
 gnome-flashback/libdesktop-background/Makefile
 gnome-flashback/libdisplay-config/Makefile
@@ -74,7 +75,6 @@ gnome-flashback/libsound-applet/Makefile
 gnome-flashback/libsound-applet/gvc/Makefile
 gnome-flashback-init/Makefile
 po/Makefile.in
-sessions/Makefile
 ])
 
 AC_OUTPUT

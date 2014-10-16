@@ -1,5 +1,5 @@
 # List of source files that should *not* be translated.
 # Please keep this file sorted alphabetically.
+data/gnome-flashback-compiz.desktop.in
+data/gnome-flashback-metacity.desktop.in
 gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in
-sessions/gnome-flashback-compiz.desktop.in
-sessions/gnome-flashback-metacity.desktop.in
