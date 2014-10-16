@@ -9,6 +9,7 @@ gnome-flashback/libsound-applet/gvc-channel-bar.c
 gnome-flashback/libsound-applet/gvc-stream-status-icon.c
 gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c
 gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in
+gnome-flashback-init/gnome-flashback-init.desktop.in
 sessions/gnome-flashback-compiz.desktop.in.in
 sessions/gnome-flashback-compiz.session.in
 sessions/gnome-flashback-metacity.desktop.in.in

@@ -1,5 +1,6 @@
 SUBDIRS = \
 	gnome-flashback \
+	gnome-flashback-init \
 	po \
 	sessions
 

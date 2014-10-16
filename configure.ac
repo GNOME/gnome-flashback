@@ -36,6 +36,10 @@ PKG_CHECK_MODULES(GNOME_FLASHBACK, gtk+-3.0 >= $GTK_REQUIRED)
 AC_SUBST(GNOME_FLASHBACK_CFLAGS)
 AC_SUBST(GNOME_FLASHBACK_LIBS)
 
+PKG_CHECK_MODULES(GNOME_FLASHBACK_INIT, gtk+-3.0 >= $GTK_REQUIRED)
+AC_SUBST(GNOME_FLASHBACK_INIT_CFLAGS)
+AC_SUBST(GNOME_FLASHBACK_INIT_LIBS)
+
 PKG_CHECK_MODULES(END_SESSION_DIALOG, gtk+-3.0 >= $GTK_REQUIRED)
 AC_SUBST(END_SESSION_DIALOG_CFLAGS)
 AC_SUBST(END_SESSION_DIALOG_LIBS)
@@ -68,6 +72,7 @@ gnome-flashback/libend-session-dialog/Makefile
 gnome-flashback/libidle-monitor/Makefile
 gnome-flashback/libsound-applet/Makefile
 gnome-flashback/libsound-applet/gvc/Makefile
+gnome-flashback-init/Makefile
 po/Makefile.in
 sessions/Makefile
 ])
