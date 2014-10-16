@@ -10,6 +10,9 @@ gnome-flashback-metacity: Makefile
 	$(AM_V_GEN) (echo '#! /bin/sh' && echo 'exec gnome-session --session=gnome-flashback-metacity "$$@"') > $@
 	$(AM_V_at) chmod a+x $@
 
+menudir   = $(sysconfdir)/xdg/menus
+menu_DATA = gnome-flashback-applications.menu
+
 sessiondir       = $(datadir)/gnome-session/sessions
 session_in_files = gnome-flashback-compiz.session.in gnome-flashback-metacity.session.in
 session_DATA     = $(session_in_files:.session.in=.session)
@@ -44,6 +47,7 @@ gsettings_SCHEMAS       = $(gsettings_schemas_in:.xml.in=.xml)
 EXTRA_DIST = \
 	$(desktop_in_files) \
 	$(gsettings_schemas_in_in) \
+	$(menu_DATA) \
 	$(session_in_files) \
 	$(xsession_in_in_files)
 
