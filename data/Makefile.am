@@ -30,8 +30,20 @@ xsession_DATA        = $(xsession_in_files:.desktop.in=.desktop)
 
 %.desktop: %.desktop.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 
+@INTLTOOL_XML_NOMERGE_RULE@
+
+gsettings_schemas_in_in = org.gnome.gnome-flashback.gschema.xml.in.in
+gsettings_schemas_in    = $(gsettings_schemas_in_in:.xml.in.in=.xml.in)
+gsettings_SCHEMAS       = $(gsettings_schemas_in:.xml.in=.xml)
+
+%.gschema.xml.in: %.gschema.xml.in.in Makefile
+	$(AM_V_GEN) $(SED) -e 's^\@GETTEXT_PACKAGE\@^$(GETTEXT_PACKAGE)^g' < $< > $@
+
+@GSETTINGS_RULES@
+
 EXTRA_DIST = \
 	$(desktop_in_files) \
+	$(gsettings_schemas_in_in) \
 	$(session_in_files) \
 	$(xsession_in_in_files)
 
@@ -39,6 +51,9 @@ CLEANFILES = \
 	$(desktop_DATA) \
 	gnome-flashback-compiz \
 	gnome-flashback-metacity \
+	$(gsettings_schemas_in) \
+	$(gsettings_SCHEMAS) \
+	*.gschema.valid \
 	$(session_DATA) \
 	$(xsession_in_files) \
 	$(xsession_DATA)

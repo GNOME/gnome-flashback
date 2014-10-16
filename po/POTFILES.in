@@ -7,10 +7,10 @@ data/gnome-flashback-compiz.session.in
 data/gnome-flashback-init.desktop.in
 data/gnome-flashback-metacity.desktop.in.in
 data/gnome-flashback-metacity.session.in
+data/org.gnome.gnome-flashback.gschema.xml.in.in
 gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c
 [type: gettext/glade]gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui
 gnome-flashback/libsound-applet/gvc-applet.c
 gnome-flashback/libsound-applet/gvc-channel-bar.c
 gnome-flashback/libsound-applet/gvc-stream-status-icon.c
 gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c
-gnome-flashback/org.gnome.gnome-flashback.gschema.xml.in.in
