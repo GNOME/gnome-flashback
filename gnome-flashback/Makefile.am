@@ -26,12 +26,6 @@ gnome_flashback_LDADD = \
 	$(top_builddir)/gnome-flashback/libidle-monitor/libidle-monitor.la \
 	$(top_builddir)/gnome-flashback/libsound-applet/libsound-applet.la
 
-desktopdir       = $(datadir)/applications
-desktop_in_files = gnome-flashback.desktop.in
-desktop_DATA     = $(desktop_in_files:.desktop.in=.desktop)
-
-%.desktop: %.desktop.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
-
 @INTLTOOL_XML_NOMERGE_RULE@
 
 gsettings_schemas_in_in = org.gnome.gnome-flashback.gschema.xml.in.in
@@ -44,11 +38,9 @@ gsettings_SCHEMAS       = $(gsettings_schemas_in:.xml.in=.xml)
 @GSETTINGS_RULES@
 
 EXTRA_DIST = \
-	$(desktop_in_files) \
 	$(gsettings_schemas_in_in)
 
 CLEANFILES = \
-	$(desktop_DATA) \
 	$(gsettings_schemas_in) \
 	$(gsettings_SCHEMAS) \
 	*.gschema.valid
