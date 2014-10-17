@@ -295,6 +295,24 @@ model_is_empty (GtkTreeModel *model)
 	return gtk_tree_model_iter_n_children (model, NULL) == 0;
 }
 
+char *
+get_user_name (void)
+{
+	char *name;
+
+	name = g_locale_to_utf8 (g_get_real_name (), -1, NULL, NULL, NULL);
+
+	if (name == NULL || name[0] == '\0' || g_strcmp0 (name, "Unknown") == 0) {
+		g_free (name);
+		name = g_locale_to_utf8 (g_get_user_name (), -1 , NULL, NULL, NULL);
+	}
+
+	if (!name)
+		name = g_strdup (g_get_user_name ());
+
+	return name;
+}
+
 static void
 update_dialog_text (FlashbackInhibitDialog *dialog)
 {
@@ -329,7 +347,7 @@ update_dialog_text (FlashbackInhibitDialog *dialog)
 			tmp = ngettext ("%s will be logged out automatically in %d second.",
 			                "%s will be logged out automatically in %d seconds.",
 			                seconds);
-			description = g_strdup_printf (tmp, g_get_real_name (), seconds);
+			description = g_strdup_printf (tmp, get_user_name (), seconds);
 		}
 	} else if (dialog->priv->action == FLASHBACK_LOGOUT_ACTION_SHUTDOWN) {
 		title = _("Power Off");
