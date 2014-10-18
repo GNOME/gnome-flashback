@@ -38,18 +38,18 @@
 #define SCALE_SIZE 128
 
 static const char *output_icon_names[] = {
-        "audio-volume-muted-symbolic",
-        "audio-volume-low-symbolic",
-        "audio-volume-medium-symbolic",
-        "audio-volume-high-symbolic",
+        "audio-volume-muted",
+        "audio-volume-low",
+        "audio-volume-medium",
+        "audio-volume-high",
         NULL
 };
 
 static const char *input_icon_names[] = {
-        "audio-input-microphone-muted-symbolic",
-        "audio-input-microphone-low-symbolic",
-        "audio-input-microphone-medium-symbolic",
-        "audio-input-microphone-high-symbolic",
+        "microphone-sensitivity-muted",
+        "microphone-sensitivity-low",
+        "microphone-sensitivity-medium",
+        "microphone-sensitivity-high",
         NULL
 };
 
