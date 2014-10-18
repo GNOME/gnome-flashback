@@ -44,6 +44,10 @@ PKG_CHECK_MODULES(END_SESSION_DIALOG, gtk+-3.0 >= $GTK_REQUIRED)
 AC_SUBST(END_SESSION_DIALOG_CFLAGS)
 AC_SUBST(END_SESSION_DIALOG_LIBS)
 
+PKG_CHECK_MODULES(AUTOMOUNT_MANAGER, gtk+-3.0 >= $GTK_REQUIRED)
+AC_SUBST(AUTOMOUNT_MANAGER_CFLAGS)
+AC_SUBST(AUTOMOUNT_MANAGER_LIBS)
+
 PKG_CHECK_MODULES(DESKTOP_BACKGROUND, gtk+-3.0 >= $GTK_REQUIRED gnome-desktop-3.0 >= $LIBGNOME_DESKTOP_REQUIRED)
 AC_SUBST(DESKTOP_BACKGROUND_CFLAGS)
 AC_SUBST(DESKTOP_BACKGROUND_LIBS)
@@ -67,6 +71,7 @@ AC_CONFIG_FILES([
 Makefile
 data/Makefile
 gnome-flashback/Makefile
+gnome-flashback/libautomount-manager/Makefile
 gnome-flashback/libdesktop-background/Makefile
 gnome-flashback/libdisplay-config/Makefile
 gnome-flashback/libend-session-dialog/Makefile

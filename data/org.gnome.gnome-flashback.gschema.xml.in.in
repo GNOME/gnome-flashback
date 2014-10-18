@@ -1,5 +1,10 @@
 <schemalist gettext-domain="@GETTEXT_PACKAGE@">
 	<schema id="org.gnome.gnome-flashback" path="/org/gnome/gnome-flashback/">
+		<key name="automount-manager" type="b">
+			<default>true</default>
+			<_summary>Automount manager</_summary>
+			<_description>If set to true, then GNOME Flashback application will be used to automount removable media.</_description>
+		</key>
 		<key name="desktop-background" type="b">
 			<default>true</default>
 			<_summary>Desktop background</_summary>

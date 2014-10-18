@@ -19,6 +19,7 @@
 #include <gtk/gtk.h>
 #include "config.h"
 #include "flashback-application.h"
+#include "libautomount-manager/gsd-automount-manager.h"
 #include "libdesktop-background/desktop-background.h"
 #include "libdisplay-config/flashback-display-config.h"
 #include "libend-session-dialog/flashback-end-session-dialog.h"
@@ -26,6 +27,7 @@
 #include "libsound-applet/gvc-applet.h"
 
 #define FLASHBACK_SCHEMA       "org.gnome.gnome-flashback"
+#define KEY_AUTOMOUNT_MANAGER  "automount-manager"
 #define KEY_DESKTOP_BACKGROUND "desktop-background"
 #define KEY_DISPLAY_CONFIG     "display-config"
 #define KEY_END_SESSION_DIALOG "end-session-dialog"
@@ -34,7 +36,7 @@
 
 struct _FlashbackApplicationPrivate {
 	GSettings                  *settings;
-
+	GsdAutomountManager        *automount;
 	DesktopBackground          *background;
 	FlashbackDisplayConfig     *config;
 	FlashbackEndSessionDialog  *dialog;
@@ -50,6 +52,19 @@ flashback_application_settings_changed (GSettings   *settings,
                                         gpointer     user_data)
 {
 	FlashbackApplication *app = FLASHBACK_APPLICATION (user_data);
+
+	if (key == NULL || g_strcmp0 (key, KEY_AUTOMOUNT_MANAGER) == 0) {
+		if (g_settings_get_boolean (settings, KEY_AUTOMOUNT_MANAGER)) {
+			if (app->priv->automount == NULL) {
+				app->priv->automount = gsd_automount_manager_new ();
+			}
+		} else {
+			if (app->priv->automount) {
+				g_object_unref (app->priv->automount);
+				app->priv->automount = NULL;
+			}
+		}
+	}
 
 	if (key == NULL || g_strcmp0 (key, KEY_DESKTOP_BACKGROUND) == 0) {
 		if (g_settings_get_boolean (settings, KEY_DESKTOP_BACKGROUND)) {
@@ -146,6 +161,11 @@ static void
 flashback_application_shutdown (GApplication *application)
 {
 	FlashbackApplication *app = FLASHBACK_APPLICATION (application);
+
+	if (app->priv->automount) {
+		g_object_unref (app->priv->automount);
+		app->priv->automount = NULL;
+	}
 
 	if (app->priv->background) {
 		g_object_unref (app->priv->background);

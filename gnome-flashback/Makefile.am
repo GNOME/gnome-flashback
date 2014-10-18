@@ -1,4 +1,5 @@
 SUBDIRS = \
+	libautomount-manager \
 	libdesktop-background \
 	libdisplay-config \
 	libend-session-dialog \
@@ -20,6 +21,7 @@ gnome_flashback_SOURCES = \
 
 gnome_flashback_LDADD = \
 	$(GNOME_FLASHBACK_LIBS) \
+	$(top_builddir)/gnome-flashback/libautomount-manager/libautomount-manager.la \
 	$(top_builddir)/gnome-flashback/libdesktop-background/libdesktop-background.la \
 	$(top_builddir)/gnome-flashback/libdisplay-config/libdisplay-config.la \
 	$(top_builddir)/gnome-flashback/libend-session-dialog/libend-session-dialog.la \
