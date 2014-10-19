@@ -66,8 +66,6 @@ main (int argc, char *argv[])
 		return 1;
 	}
 
-	g_warning ("Connecting to session manager");
-
 	proxy = g_dbus_proxy_new_sync (connection,
 	                               G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
 	                               G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS,
@@ -89,8 +87,6 @@ main (int argc, char *argv[])
 
 	app_id = "gnome-flashback-init";
 	client_startup_id = g_getenv ("DESKTOP_AUTOSTART_ID");
-
-	g_warning ("Registering client '%s' '%s'", app_id, client_startup_id);
 
 	parameters = g_variant_new ("(ss)",app_id, client_startup_id ? client_startup_id : "");
 	res = g_dbus_proxy_call_sync (proxy,
