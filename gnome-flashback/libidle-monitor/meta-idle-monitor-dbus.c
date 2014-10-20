@@ -142,7 +142,7 @@ handle_add_user_active_watch (MetaDBusIdleMonitor   *skeleton,
                               GDBusMethodInvocation *invocation,
                               MetaIdleMonitor       *monitor)
 {
-	
+
   DBusWatch *watch;
 
   watch = make_dbus_watch (skeleton, invocation, monitor);

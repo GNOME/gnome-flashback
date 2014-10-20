@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2014 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
@@ -78,7 +78,7 @@ flashback_application_settings_changed (GSettings   *settings,
 			}
 		}
 	}
-	
+
 	if (key == NULL || g_strcmp0 (key, KEY_DISPLAY_CONFIG) == 0) {
 		if (g_settings_get_boolean (settings, KEY_DISPLAY_CONFIG)) {
 			if (app->priv->config == NULL) {
@@ -104,7 +104,7 @@ flashback_application_settings_changed (GSettings   *settings,
 			}
 		}
 	}
-	
+
 	if (key == NULL || g_strcmp0 (key, KEY_IDLE_MONITOR) == 0) {
 		if (g_settings_get_boolean (settings, KEY_IDLE_MONITOR)) {
 			if (app->priv->idle_monitor == NULL) {
