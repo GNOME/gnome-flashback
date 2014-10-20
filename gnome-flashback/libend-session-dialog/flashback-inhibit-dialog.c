@@ -158,6 +158,84 @@ inhibitor_get_reason (GDBusProxy *proxy)
 	return reason;
 }
 
+static gchar **
+get_app_dirs (void)
+{
+	GPtrArray *dirs;
+	const gchar * const *system_data_dirs;
+	gint i;
+
+	dirs = g_ptr_array_new ();
+
+	g_ptr_array_add (dirs, g_build_filename (g_get_user_data_dir (), "applications", NULL));
+
+	system_data_dirs = g_get_system_data_dirs ();
+	for (i = 0; system_data_dirs[i]; i++)
+		g_ptr_array_add (dirs, g_build_filename (system_data_dirs[i], "applications", NULL));
+
+	g_ptr_array_add (dirs, NULL);
+
+	return (char **) g_ptr_array_free (dirs, FALSE);
+}
+
+static gchar **
+get_autostart_dirs (void)
+{
+	GPtrArray *dirs;
+	const gchar * const *system_config_dirs;
+	const gchar * const *system_data_dirs;
+	gint i;
+
+	dirs = g_ptr_array_new ();
+
+	g_ptr_array_add (dirs, g_build_filename (g_get_user_config_dir (), "autostart", NULL));
+
+	system_data_dirs = g_get_system_data_dirs ();
+	for (i = 0; system_data_dirs[i]; i++)
+		g_ptr_array_add (dirs, g_build_filename (system_data_dirs[i], "gnome", "autostart", NULL));
+
+	system_config_dirs = g_get_system_config_dirs ();
+	for (i = 0; system_config_dirs[i]; i++)
+		g_ptr_array_add (dirs, g_build_filename (system_config_dirs[i], "autostart", NULL));
+
+	g_ptr_array_add (dirs, NULL);
+
+	return (char **) g_ptr_array_free (dirs, FALSE);
+}
+
+static gchar **
+get_desktop_dirs (void)
+{
+	gchar **apps;
+	gchar **autostart;
+	gchar **result;
+	gint size;
+	gint i;
+
+	apps = get_app_dirs ();
+	autostart = get_autostart_dirs ();
+
+	size = 0;
+	for (i = 0; apps[i] != NULL; i++)
+		size++;
+	for (i = 0; autostart[i] != NULL; i++)
+		size++;
+
+	result = g_new (gchar *, size + 1);
+	size = 0;
+
+	for (i = 0; apps[i] != NULL; i++, size++)
+		result[size] = apps[i];
+	for (i = 0; autostart[i] != NULL; i++, size++)
+		result[size] = autostart[i];
+	result[size] = NULL;
+
+	g_free (apps);
+	g_free (autostart);
+
+	return result;
+}
+
 static void
 add_inhibitor (FlashbackInhibitDialog *dialog,
                GDBusProxy             *inhibitor)
@@ -165,7 +243,7 @@ add_inhibitor (FlashbackInhibitDialog *dialog,
 	gchar *app_id;
 	gchar *reason;
 	gchar *filename;
-	const gchar *name;
+	gchar *name;
 	GdkPixbuf *pixbuf;
 
 	app_id = inhibitor_get_app_id (inhibitor);
@@ -183,16 +261,74 @@ add_inhibitor (FlashbackInhibitDialog *dialog,
 	}
 
 	if (filename != NULL) {
+		gchar **search_dirs;
+		GDesktopAppInfo *app_info;
+		GKeyFile *keyfile;
+
+		search_dirs = get_desktop_dirs ();
+		app_info = NULL;
+
+		if (g_path_is_absolute (filename)) {
+			gchar *basename;
+
+			app_info = g_desktop_app_info_new_from_filename (filename);
+			if (app_info == NULL) {
+				basename = g_path_get_basename (filename);
+				g_free (filename);
+				filename = basename;
+			}
+		}
+
+		if (app_info == NULL) {
+			keyfile = g_key_file_new ();
+			if (g_key_file_load_from_dirs (keyfile, filename, (const gchar **) search_dirs, NULL, 0, NULL))
+				app_info = g_desktop_app_info_new_from_keyfile (keyfile);
+			g_key_file_free (keyfile);
+		}
+
+		if (app_info == NULL) {
+			g_free (filename);
+			filename = g_strdup_printf ("gnome-%s.desktop", app_id);
+			keyfile = g_key_file_new ();
+			if (g_key_file_load_from_dirs (keyfile, filename, (const gchar **) search_dirs, NULL, 0, NULL))
+				app_info = g_desktop_app_info_new_from_keyfile (keyfile);
+			g_key_file_free (keyfile);
+		}
+
+		g_strfreev (search_dirs);
+
+		if (app_info != NULL) {
+			GIcon *gicon;
+			const gchar *tmp_name;
+
+			tmp_name = g_app_info_get_name (G_APP_INFO (app_info));
+			gicon = g_app_info_get_icon (G_APP_INFO (app_info));
+
+			name = g_utf8_normalize (tmp_name, -1, G_NORMALIZE_ALL);
+
+			if (pixbuf == NULL) {
+				GtkIconInfo *info;
+
+				info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
+				                                       gicon, DEFAULT_ICON_SIZE, 0);
+				pixbuf = gtk_icon_info_load_icon (info, NULL);
+				g_object_unref (info);
+			}
+		}
+
 		g_free (filename);
+		g_clear_object (&app_info);
 	}
 
 	if (name == NULL) {
 		if (!IS_STRING_EMPTY (app_id)) {
 			name = g_strdup (app_id);
 		} else {
-			name = _("Unknown");
+			name = g_strdup (_("Unknown"));
 		}
 	}
+
+	g_free (app_id);
 
 	if (pixbuf == NULL) {
 		pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
@@ -212,81 +348,10 @@ add_inhibitor (FlashbackInhibitDialog *dialog,
 	                                   -1);
 
 	g_clear_object (&pixbuf);
+	g_free (name);
 	g_free (reason);
-	g_free (app_id);
 
 	update_dialog_text (dialog);
-
-        /*
-        GDesktopAppInfo *app_info;
-        char          **search_dirs;
-        char           *freeme;
-
-        GKeyFile *keyfile;
-        GIcon *gicon;
-
-        app_info = NULL;
-        freeme = NULL;
-
-        if (desktop_filename != NULL) {
-                search_dirs = gsm_util_get_desktop_dirs (TRUE, FALSE);
-
-                if (g_path_is_absolute (desktop_filename)) {
-                        char *basename;
-
-                        app_info = g_desktop_app_info_new_from_filename (desktop_filename);
-                        if (app_info == NULL) {
-                                g_warning ("Unable to load desktop file '%s'",
-                                            desktop_filename);
-
-                                basename = g_path_get_basename (desktop_filename);
-                                g_free (desktop_filename);
-                                desktop_filename = basename;
-                        }
-                }
-
-                if (app_info == NULL) {
-                        keyfile = g_key_file_new ();
-                        if (g_key_file_load_from_dirs (keyfile, desktop_filename, (const gchar **)search_dirs, NULL, 0, NULL))
-                                app_info = g_desktop_app_info_new_from_keyfile (keyfile);
-                        g_key_file_free (keyfile);
-                }
-
-                // look for a file with a vendor prefix
-                if (app_info == NULL) {
-                        g_warning ("Unable to find desktop file '%s'",
-                                   desktop_filename);
-                        g_free (desktop_filename);
-                        desktop_filename = g_strdup_printf ("gnome-%s.desktop", app_id);
-                        keyfile = g_key_file_new ();
-                        if (g_key_file_load_from_dirs (keyfile, desktop_filename, (const gchar **)search_dirs, NULL, 0, NULL))
-                                app_info = g_desktop_app_info_new_from_keyfile (keyfile);
-                        g_key_file_free (keyfile);
-                }
-                g_strfreev (search_dirs);
-
-                if (app_info == NULL) {
-                        g_warning ("Unable to find desktop file '%s'",
-                                   desktop_filename);
-                } else {
-                        name = g_app_info_get_name (G_APP_INFO (app_info));
-                        gicon = g_app_info_get_icon (G_APP_INFO (app_info));
-
-                        if (pixbuf == NULL) {
-                                GtkIconInfo *info;
-                                info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
-                                                                       gicon,
-                                                                       DEFAULT_ICON_SIZE,
-                                                                       0);
-                                pixbuf = gtk_icon_info_load_icon (info, NULL);
-                                gtk_icon_info_free (info);
-                        }
-                }
-        }
-
-        g_free (freeme);
-        g_clear_object (&app_info);
-        */
 }
 
 static gboolean
@@ -302,7 +367,7 @@ get_user_name (void)
 
 	name = g_locale_to_utf8 (g_get_real_name (), -1, NULL, NULL, NULL);
 
-	if (name == NULL || name[0] == '\0' || g_strcmp0 (name, "Unknown") == 0) {
+	if (IS_STRING_EMPTY (name) || g_strcmp0 (name, "Unknown") == 0) {
 		g_free (name);
 		name = g_locale_to_utf8 (g_get_user_name (), -1 , NULL, NULL, NULL);
 	}
