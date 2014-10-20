@@ -106,7 +106,7 @@ render_icon (GIcon *icon, gint icon_size)
 
 		if (info) {
 			pixbuf = gtk_icon_info_load_icon (info, NULL);
-		        gtk_icon_info_free (info);
+		        g_object_unref (info);
 		}
 
 		if (pixbuf == NULL) {
@@ -334,13 +334,13 @@ prepare_combo_box (GtkWidget *combo_box,
                 g_object_unref (info);
         }
 
-        icon = g_themed_icon_new (GTK_STOCK_DIALOG_QUESTION);
+        icon = g_themed_icon_new ("dialog-question");
         gtk_app_chooser_button_append_custom_item (app_chooser, CUSTOM_ITEM_ASK,
                                                    _("Ask what to do"),
                                                    icon);
         g_object_unref (icon);
 
-        icon = g_themed_icon_new (GTK_STOCK_CLOSE);
+        icon = g_themed_icon_new ("window-close");
         gtk_app_chooser_button_append_custom_item (app_chooser, CUSTOM_ITEM_DO_NOTHING,
                                                    _("Do Nothing"),
                                                    icon);
@@ -399,6 +399,7 @@ static void
 gsd_autorun_launch_for_mount (GMount *mount, GAppInfo *app_info)
 {
 	GFile *root;
+	GdkDisplay *display;
 	GdkAppLaunchContext *launch_context;
 	GError *error;
 	gboolean result;
@@ -409,7 +410,8 @@ gsd_autorun_launch_for_mount (GMount *mount, GAppInfo *app_info)
 	root = g_mount_get_root (mount);
 	list = g_list_append (NULL, root);
 
-	launch_context = gdk_app_launch_context_new ();
+	display = gdk_display_get_default ();
+	launch_context = gdk_display_get_app_launch_context (display);
 
 	error = NULL;
 	result = g_app_info_launch (app_info,
@@ -614,6 +616,7 @@ do_autorun_for_content_type (GMount *mount,
 	GtkWidget *combo_box;
 	GtkWidget *always_check_button;
 	GtkWidget *eject_button;
+	GtkWidget *button_box;
 	GtkWidget *image;
 	char *markup;
 	char *content_description;
@@ -672,7 +675,7 @@ show_dialog:
 
 	dialog = gtk_dialog_new ();
 
-	hbox = gtk_hbox_new (FALSE, 12);
+	hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
 	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), hbox, TRUE, TRUE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
 
@@ -690,7 +693,7 @@ show_dialog:
 	if (pixbuf) {
 		g_object_unref (pixbuf);
 	}
-	vbox = gtk_vbox_new (FALSE, 12);
+	vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
 	gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
 
 	label = gtk_label_new (NULL);
@@ -774,8 +777,8 @@ show_dialog:
 	gtk_box_pack_start (GTK_BOX (vbox), always_check_button, TRUE, TRUE, 0);
 
 	gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-				GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-				GTK_STOCK_OK, GTK_RESPONSE_OK,
+				_("_Cancel"), GTK_RESPONSE_CANCEL,
+				_("_OK"), GTK_RESPONSE_OK,
 				NULL);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
@@ -789,8 +792,11 @@ show_dialog:
 		eject_button = gtk_button_new_with_mnemonic (_("_Unmount"));
 		data->should_eject = FALSE;
 	}
+
 	gtk_dialog_add_action_widget (GTK_DIALOG (dialog), eject_button, AUTORUN_DIALOG_RESPONSE_EJECT);
-	gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (gtk_dialog_get_action_area (GTK_DIALOG (dialog))), eject_button, TRUE);
+
+	button_box = gtk_widget_get_parent (eject_button);
+	gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (button_box), eject_button, TRUE);
 
 	/* show the dialog */
 	gtk_widget_show_all (dialog);
