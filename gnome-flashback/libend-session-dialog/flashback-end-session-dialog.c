@@ -37,12 +37,9 @@ inhibit_dialog_response (FlashbackInhibitDialog *dialog,
 	int action;
 
 	g_object_get (dialog, "action", &action, NULL);
-	flashback_inhibit_dialog_close (dialog);
 
 	switch (response_id) {
 	case FLASHBACK_RESPONSE_CANCEL:
-		dbus_end_session_dialog_emit_canceled (object);
-		dbus_end_session_dialog_emit_closed (object);
 		break;
 	case FLASHBACK_RESPONSE_ACCEPT:
 		if (action == FLASHBACK_LOGOUT_ACTION_LOGOUT) {
@@ -65,6 +62,8 @@ inhibit_dialog_response (FlashbackInhibitDialog *dialog,
 		g_assert_not_reached ();
 		break;
 	}
+
+	flashback_inhibit_dialog_close (dialog);
 }
 
 static void
