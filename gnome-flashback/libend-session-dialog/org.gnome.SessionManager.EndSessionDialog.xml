@@ -7,7 +7,8 @@
         <doc:doc>
           <doc:summary>
             The type of dialog to show.
-            0 for logout, 1 for shutdown, 2 for restart.
+            0 for logout, 1 for shutdown, 2 for restart, 3 for hibernate,
+            4 for suspend and 5 hybrid sleep.
           </doc:summary>
         </doc:doc>
       </arg>
@@ -47,6 +48,9 @@
     <signal name="ConfirmedLogout" />
     <signal name="ConfirmedReboot" />
     <signal name="ConfirmedShutdown" />
+    <signal name="ConfirmedHibernate" />
+    <signal name="ConfirmedSuspend" />
+    <signal name="ConfirmedHybridSleep" />
     <signal name="Canceled" />
     <signal name="Closed" />
   </interface>

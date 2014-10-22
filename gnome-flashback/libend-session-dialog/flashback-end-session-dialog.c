@@ -51,6 +51,12 @@ inhibit_dialog_response (FlashbackInhibitDialog *dialog,
 			dbus_end_session_dialog_emit_confirmed_shutdown (object);
 		} else if (action == FLASHBACK_LOGOUT_ACTION_REBOOT) {
 			dbus_end_session_dialog_emit_confirmed_reboot (object);
+		} else if (action == FLASHBACK_LOGOUT_ACTION_HIBERNATE) {
+			dbus_end_session_dialog_emit_confirmed_hibernate (object);
+		} else if (action == FLASHBACK_LOGOUT_ACTION_SUSPEND) {
+			dbus_end_session_dialog_emit_confirmed_suspend (object);
+		} else if (action == FLASHBACK_LOGOUT_ACTION_HYBRID_SLEEP) {
+			dbus_end_session_dialog_emit_confirmed_hybrid_sleep (object);
 		} else {
 			g_assert_not_reached ();
 		}

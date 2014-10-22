@@ -434,6 +434,24 @@ update_dialog_text (FlashbackInhibitDialog *dialog)
 			                seconds);
 			description = g_strdup_printf (tmp, seconds);
 		}
+	} else if (dialog->priv->action == FLASHBACK_LOGOUT_ACTION_HIBERNATE) {
+		title = _("Hibernate");
+		tmp = ngettext ("The system will hibernate automatically in %d second.",
+		                "The system will hibernate automatically in %d seconds.",
+		                seconds);
+		description = g_strdup_printf (tmp, seconds);
+	} else if (dialog->priv->action == FLASHBACK_LOGOUT_ACTION_SUSPEND) {
+		title = _("Suspend");
+		tmp = ngettext ("The system will suspend automatically in %d second.",
+		                "The system will suspend automatically in %d seconds.",
+		                seconds);
+		description = g_strdup_printf (tmp, seconds);
+	} else if (dialog->priv->action == FLASHBACK_LOGOUT_ACTION_HYBRID_SLEEP) {
+		title = _("Hybrid Sleep");
+		tmp = ngettext ("The system will hybrid sleep automatically in %d second.",
+		                "The system will hybrid sleep automatically in %d seconds.",
+		                seconds);
+		description = g_strdup_printf (tmp, seconds);
 	} else {
 		g_assert_not_reached ();
 	}
@@ -583,6 +601,15 @@ setup_dialog (FlashbackInhibitDialog *dialog)
 		break;
 	case FLASHBACK_LOGOUT_ACTION_REBOOT:
 		button_text = _("Restart");
+		break;
+	case FLASHBACK_LOGOUT_ACTION_HIBERNATE:
+		button_text = _("Hibernate");
+		break;
+	case FLASHBACK_LOGOUT_ACTION_SUSPEND:
+		button_text = _("Suspend");
+		break;
+	case FLASHBACK_LOGOUT_ACTION_HYBRID_SLEEP:
+		button_text = _("Hybrid Sleep");
 		break;
 	default:
 		g_assert_not_reached ();
