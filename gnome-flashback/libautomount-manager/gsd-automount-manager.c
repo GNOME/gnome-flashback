@@ -330,7 +330,7 @@ session_props_changed (GDBusProxy *session, GVariant *v, char **props, gpointer 
 
         g_variant_get (active_v, "b", &is_active);
         g_variant_unref (active_v);
-        g_printerr ("AUTOMOUNT: session is active: %d -> %d\n", p->session_is_active, is_active);
+        g_debug ("AUTOMOUNT: session is active: %d -> %d", p->session_is_active, is_active);
         p->session_is_active = is_active;
 
         if (!p->session_is_active) {
