@@ -118,6 +118,7 @@ _scale_box_new (GvcChannelBar *bar)
 
                 gtk_box_pack_start (GTK_BOX (sbox), priv->high_image, FALSE, FALSE, 0);
                 gtk_widget_hide (priv->high_image);
+
                 gtk_box_pack_start (GTK_BOX (box), priv->scale, TRUE, TRUE, 0);
 
                 bar->priv->end_box = ebox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
@@ -129,7 +130,6 @@ _scale_box_new (GvcChannelBar *bar)
                 gtk_box_pack_start (GTK_BOX (ebox), priv->mute_box, FALSE, FALSE, 0);
         } else {
                 bar->priv->scale_box = box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-                gtk_box_pack_start (GTK_BOX (box), priv->image, FALSE, FALSE, 0);
 
                 priv->scale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, priv->adjustment);
 
@@ -137,6 +137,8 @@ _scale_box_new (GvcChannelBar *bar)
 
                 bar->priv->start_box = sbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
                 gtk_box_pack_start (GTK_BOX (box), sbox, FALSE, FALSE, 0);
+
+                gtk_box_pack_start (GTK_BOX (sbox), priv->image, FALSE, FALSE, 0);
 
                 gtk_box_pack_end (GTK_BOX (sbox), priv->low_image, FALSE, FALSE, 0);
                 gtk_widget_show (priv->low_image);
@@ -148,6 +150,7 @@ _scale_box_new (GvcChannelBar *bar)
 
                 gtk_box_pack_start (GTK_BOX (ebox), priv->high_image, FALSE, FALSE, 0);
                 gtk_widget_show (priv->high_image);
+
                 gtk_box_pack_start (GTK_BOX (ebox), priv->mute_box, FALSE, FALSE, 0);
         }
 
