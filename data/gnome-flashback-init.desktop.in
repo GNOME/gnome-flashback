@@ -2,7 +2,7 @@
 Type=Application
 _Name=GNOME Flashback Initialization
 Exec=gnome-flashback-init
-OnlyShowIn=GNOME;
+OnlyShowIn=GNOME-Flashback;
 NoDisplay=true
 X-GNOME-Autostart-Phase=Initialization
 X-GNOME-Autostart-Notify=true

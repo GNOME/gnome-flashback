@@ -2,7 +2,7 @@
 _Name=GNOME Flashback
 Type=Application
 Exec=gnome-flashback
-OnlyShowIn=GNOME;
+OnlyShowIn=GNOME-Flashback;
 NoDisplay=true
 X-GNOME-Autostart-Phase=Desktop
 X-GNOME-AutoRestart=true
