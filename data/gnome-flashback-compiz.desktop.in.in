@@ -5,4 +5,4 @@ Exec=@libexecdir@/gnome-flashback-compiz
 TryExec=compiz
 Icon=
 Type=Application
-DesktopNames=GNOME
+DesktopNames=GNOME-Flashback;GNOME
