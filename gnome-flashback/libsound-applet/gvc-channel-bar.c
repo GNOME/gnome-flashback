@@ -47,7 +47,6 @@ struct GvcChannelBarPrivate
         GtkWidget     *start_box;
         GtkWidget     *end_box;
         GtkWidget     *image;
-        GtkWidget     *label;
         GtkWidget     *low_image;
         GtkWidget     *scale;
         GtkWidget     *high_image;
@@ -57,7 +56,6 @@ struct GvcChannelBarPrivate
         GtkAdjustment *zero_adjustment;
         gboolean       show_mute;
         gboolean       is_muted;
-        char          *name;
         char          *icon_name;
         char          *low_icon_name;
         char          *high_icon_name;
@@ -75,12 +73,10 @@ enum
         PROP_SHOW_MUTE,
         PROP_IS_MUTED,
         PROP_ADJUSTMENT,
-        PROP_NAME,
         PROP_ICON_NAME,
         PROP_LOW_ICON_NAME,
         PROP_HIGH_ICON_NAME,
-        PROP_IS_AMPLIFIED,
-        PROP_ELLIPSIZE
+        PROP_IS_AMPLIFIED
 };
 
 static void     gvc_channel_bar_class_init    (GvcChannelBarClass *klass);
@@ -119,7 +115,6 @@ _scale_box_new (GvcChannelBar *bar)
                 gtk_box_pack_start (GTK_BOX (box), sbox, FALSE, FALSE, 0);
 
                 gtk_box_pack_start (GTK_BOX (sbox), priv->image, FALSE, FALSE, 0);
-                gtk_box_pack_start (GTK_BOX (sbox), priv->label, FALSE, FALSE, 0);
 
                 gtk_box_pack_start (GTK_BOX (sbox), priv->high_image, FALSE, FALSE, 0);
                 gtk_widget_hide (priv->high_image);
@@ -146,7 +141,6 @@ _scale_box_new (GvcChannelBar *bar)
                 gtk_box_pack_end (GTK_BOX (sbox), priv->low_image, FALSE, FALSE, 0);
                 gtk_widget_show (priv->low_image);
 
-                gtk_box_pack_start (GTK_BOX (sbox), priv->label, TRUE, TRUE, 0);
                 gtk_box_pack_start (GTK_BOX (box), priv->scale, TRUE, TRUE, 0);
 
                 bar->priv->end_box = ebox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
@@ -195,21 +189,6 @@ update_image (GvcChannelBar *bar)
 }
 
 static void
-update_label (GvcChannelBar *bar)
-{
-        if (bar->priv->name != NULL) {
-                gtk_label_set_text_with_mnemonic (GTK_LABEL (bar->priv->label),
-                                                  bar->priv->name);
-                gtk_label_set_mnemonic_widget (GTK_LABEL (bar->priv->label),
-                                               bar->priv->scale);
-                gtk_widget_show (bar->priv->label);
-        } else {
-                gtk_label_set_text (GTK_LABEL (bar->priv->label), NULL);
-                gtk_widget_hide (bar->priv->label);
-        }
-}
-
-static void
 update_layout (GvcChannelBar *bar)
 {
         GtkWidget *box;
@@ -223,13 +202,11 @@ update_layout (GvcChannelBar *bar)
         frame = gtk_widget_get_parent (box);
 
         g_object_ref (bar->priv->image);
-        g_object_ref (bar->priv->label);
         g_object_ref (bar->priv->mute_box);
         g_object_ref (bar->priv->low_image);
         g_object_ref (bar->priv->high_image);
 
         gtk_container_remove (GTK_CONTAINER (bar->priv->start_box), bar->priv->image);
-        gtk_container_remove (GTK_CONTAINER (bar->priv->start_box), bar->priv->label);
         gtk_container_remove (GTK_CONTAINER (bar->priv->end_box), bar->priv->mute_box);
 
         if (bar->priv->orientation == GTK_ORIENTATION_VERTICAL) {
@@ -249,7 +226,6 @@ update_layout (GvcChannelBar *bar)
         gtk_container_add (GTK_CONTAINER (frame), bar->priv->scale_box);
 
         g_object_unref (bar->priv->image);
-        g_object_unref (bar->priv->label);
         g_object_unref (bar->priv->mute_box);
         g_object_unref (bar->priv->low_image);
         g_object_unref (bar->priv->high_image);
@@ -277,18 +253,6 @@ gvc_channel_bar_set_size_group (GvcChannelBar *bar,
                 }
         }
         gtk_widget_queue_draw (GTK_WIDGET (bar));
-}
-
-void
-gvc_channel_bar_set_name (GvcChannelBar  *bar,
-                          const char     *name)
-{
-        g_return_if_fail (GVC_IS_CHANNEL_BAR (bar));
-
-        g_free (bar->priv->name);
-        bar->priv->name = g_strdup (name);
-        update_label (bar);
-        g_object_notify (G_OBJECT (bar), "name");
 }
 
 void
@@ -627,33 +591,11 @@ gvc_channel_bar_set_is_amplified (GvcChannelBar *bar, gboolean amplified)
                 gtk_alignment_set (GTK_ALIGNMENT (bar->priv->mute_box), 0.5, 0, 0, 0);
                 gtk_misc_set_alignment (GTK_MISC (bar->priv->low_image), 0.5, 0.15);
                 gtk_misc_set_alignment (GTK_MISC (bar->priv->high_image), 0.5, 0.15);
-                gtk_misc_set_alignment (GTK_MISC (bar->priv->label), 0, 0);
         } else {
                 gtk_alignment_set (GTK_ALIGNMENT (bar->priv->mute_box), 0.5, 0.5, 0, 0);
                 gtk_misc_set_alignment (GTK_MISC (bar->priv->low_image), 0.5, 0.5);
                 gtk_misc_set_alignment (GTK_MISC (bar->priv->high_image), 0.5, 0.5);
-                gtk_misc_set_alignment (GTK_MISC (bar->priv->label), 0, 0.5);
         }
-}
-
-gboolean
-gvc_channel_bar_get_ellipsize (GvcChannelBar *bar)
-{
-        g_return_val_if_fail (GVC_IS_CHANNEL_BAR (bar), FALSE);
-
-        return gtk_label_get_ellipsize (GTK_LABEL (bar->priv->label)) != PANGO_ELLIPSIZE_NONE;
-}
-
-void
-gvc_channel_bar_set_ellipsize (GvcChannelBar *bar,
-                               gboolean       ellipsized)
-{
-        g_return_if_fail (GVC_IS_CHANNEL_BAR (bar));
-
-        if (ellipsized)
-                gtk_label_set_ellipsize (GTK_LABEL (bar->priv->label), PANGO_ELLIPSIZE_END);
-	else
-                gtk_label_set_ellipsize (GTK_LABEL (bar->priv->label), PANGO_ELLIPSIZE_NONE);
 }
 
 void
@@ -689,9 +631,6 @@ gvc_channel_bar_set_property (GObject       *object,
         case PROP_SHOW_MUTE:
                 gvc_channel_bar_set_show_mute (self, g_value_get_boolean (value));
                 break;
-        case PROP_NAME:
-                gvc_channel_bar_set_name (self, g_value_get_string (value));
-                break;
         case PROP_ICON_NAME:
                 gvc_channel_bar_set_icon_name (self, g_value_get_string (value));
                 break;
@@ -706,9 +645,6 @@ gvc_channel_bar_set_property (GObject       *object,
                 break;
         case PROP_IS_AMPLIFIED:
                 gvc_channel_bar_set_is_amplified (self, g_value_get_boolean (value));
-                break;
-        case PROP_ELLIPSIZE:
-                gvc_channel_bar_set_ellipsize (self, g_value_get_boolean (value));
                 break;
         default:
                 G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -735,9 +671,6 @@ gvc_channel_bar_get_property (GObject     *object,
         case PROP_SHOW_MUTE:
                 g_value_set_boolean (value, priv->show_mute);
                 break;
-        case PROP_NAME:
-                g_value_set_string (value, priv->name);
-                break;
         case PROP_ICON_NAME:
                 g_value_set_string (value, priv->icon_name);
                 break;
@@ -752,9 +685,6 @@ gvc_channel_bar_get_property (GObject     *object,
                 break;
         case PROP_IS_AMPLIFIED:
                 g_value_set_boolean (value, priv->is_amplified);
-                break;
-        case PROP_ELLIPSIZE:
-                g_value_set_boolean (value, gvc_channel_bar_get_ellipsize (self));
                 break;
         default:
                 G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -820,13 +750,6 @@ gvc_channel_bar_class_init (GvcChannelBarClass *klass)
                                                               GTK_TYPE_ADJUSTMENT,
                                                               G_PARAM_READWRITE));
         g_object_class_install_property (object_class,
-                                         PROP_NAME,
-                                         g_param_spec_string ("name",
-                                                              "Name",
-                                                              "Name to display for this stream",
-                                                              NULL,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (object_class,
                                          PROP_ICON_NAME,
                                          g_param_spec_string ("icon-name",
                                                               "Icon Name",
@@ -854,13 +777,7 @@ gvc_channel_bar_class_init (GvcChannelBarClass *klass)
                                                                "Whether the stream is digitally amplified",
                                                                FALSE,
                                                                G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (object_class,
-                                         PROP_ELLIPSIZE,
-                                         g_param_spec_boolean ("ellipsize",
-                                                               "Label is ellipsized",
-                                                               "Whether the label is ellipsized",
-                                                               FALSE,
-                                                               G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
+
         g_type_class_add_private (klass, sizeof (GvcChannelBarPrivate));
 }
 
@@ -928,10 +845,6 @@ gvc_channel_bar_init (GvcChannelBar *bar)
         bar->priv->image = gtk_image_new ();
         gtk_widget_set_no_show_all (bar->priv->image, TRUE);
 
-        bar->priv->label = gtk_label_new (NULL);
-        gtk_misc_set_alignment (GTK_MISC (bar->priv->label), 0.0, 0.5);
-        gtk_widget_set_no_show_all (bar->priv->label, TRUE);
-
         /* frame */
         frame = gtk_frame_new (NULL);
         gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
@@ -956,7 +869,6 @@ gvc_channel_bar_finalize (GObject *object)
 
         g_return_if_fail (channel_bar->priv != NULL);
 
-        g_free (channel_bar->priv->name);
         g_free (channel_bar->priv->icon_name);
         g_free (channel_bar->priv->low_icon_name);
         g_free (channel_bar->priv->high_icon_name);

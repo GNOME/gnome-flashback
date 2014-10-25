@@ -46,8 +46,6 @@ GType               gvc_channel_bar_get_type            (void);
 
 GtkWidget *         gvc_channel_bar_new                 (void);
 
-void                gvc_channel_bar_set_name            (GvcChannelBar *bar,
-                                                         const char    *name);
 void                gvc_channel_bar_set_icon_name       (GvcChannelBar *bar,
                                                          const char    *icon_name);
 void                gvc_channel_bar_set_low_icon_name   (GvcChannelBar *bar,
@@ -74,9 +72,6 @@ void                gvc_channel_bar_set_is_amplified    (GvcChannelBar *bar,
                                                          gboolean amplified);
 void                gvc_channel_bar_set_base_volume     (GvcChannelBar *bar,
                                                          guint32        base_volume);
-gboolean            gvc_channel_bar_get_ellipsize       (GvcChannelBar *bar);
-void                gvc_channel_bar_set_ellipsize       (GvcChannelBar *bar,
-                                                         gboolean       ellipsized);
 
 gboolean            gvc_channel_bar_scroll              (GvcChannelBar  *bar,
                                                          GdkEventScroll *event);
