@@ -1,3 +1,23 @@
+Version 3.14.0
+==============
+- Added automount manager. This is same program that used to be part of GNOME
+  Settings Daemon. (Balló György)
+- Updated desktop background drawing. (Alberts Muktupāvels)
+- Don't use symbolic icons in sound applet. (Alberts Muktupāvels, Balló György)
+- Added older version of applications.menu file to fix #722056. This
+  will require new version of gnome-panel to fully fix this bug. (Alberts
+  Muktupāvels)
+- Added support for Hibernate, Suspend and Hybrid Sleep actions in End Session
+  Dialog. (Alberts Muktupāvels, Balló György)
+- Updated translations:
+  Andika Triwidada (id), Daniel Raab (de), Daniel Mustieles (es),
+  Gabor Kelemen (hu), Мирослав Николић (sr), Piotr Drąg (pl)
+
+NOTE: With this version GNOME Flashback will start use GNOME-Flashback as
+desktop name by setting DesktopNames to GNOME-Flashback;GNOME. In all
+applications/modules that are used by GNOME Flashback and is not used by GNOME
+anymore will have ShowOnlyIn set to GNOME-Flashback in .desktop files.
+
 Version 3.10.0
 ==============
 - Initial version.
