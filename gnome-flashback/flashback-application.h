@@ -18,7 +18,7 @@
 #ifndef FLASHBACK_APPLICATION_H
 #define FLASHBACK_APPLICATION_H
 
-#include <gtk/gtk.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
@@ -34,12 +34,12 @@ typedef struct _FlashbackApplicationClass   FlashbackApplicationClass;
 typedef struct _FlashbackApplicationPrivate FlashbackApplicationPrivate;
 
 struct _FlashbackApplication {
-	GtkApplication               parent;
+	GObject                     parent;
 	FlashbackApplicationPrivate *priv;
 };
 
 struct _FlashbackApplicationClass {
-	GtkApplicationClass parent;
+	GObjectClass parent_class;
 };
 
 GType                 flashback_application_get_type (void);

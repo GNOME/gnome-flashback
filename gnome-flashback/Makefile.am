@@ -17,7 +17,9 @@ AM_CPPFLAGS = \
 gnome_flashback_SOURCES = \
 	flashback-application.c \
 	flashback-application.h \
-	flashback-main.c
+	flashback-main.c \
+	flashback-session.c \
+	flashback-session.h
 
 gnome_flashback_LDADD = \
 	$(GNOME_FLASHBACK_LIBS) \

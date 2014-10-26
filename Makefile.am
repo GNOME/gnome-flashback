@@ -1,7 +1,6 @@
 SUBDIRS = \
 	data \
 	gnome-flashback \
-	gnome-flashback-init \
 	po
 
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}

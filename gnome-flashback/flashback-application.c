@@ -44,7 +44,7 @@ struct _FlashbackApplicationPrivate {
 	GvcApplet                  *applet;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (FlashbackApplication, flashback_application, GTK_TYPE_APPLICATION);
+G_DEFINE_TYPE_WITH_PRIVATE (FlashbackApplication, flashback_application, G_TYPE_OBJECT);
 
 static void
 flashback_application_settings_changed (GSettings   *settings,
@@ -72,10 +72,7 @@ flashback_application_settings_changed (GSettings   *settings,
 				app->priv->background = desktop_background_new ();
 			}
 		} else {
-			if (app->priv->background) {
-				g_object_unref (app->priv->background);
-				app->priv->background = NULL;
-			}
+			g_clear_object (&app->priv->background);
 		}
 	}
 
@@ -85,10 +82,7 @@ flashback_application_settings_changed (GSettings   *settings,
 				app->priv->config = flashback_display_config_new ();
 			}
 		} else {
-			if (app->priv->config) {
-				g_object_unref (app->priv->config);
-				app->priv->config = NULL;
-			}
+			g_clear_object (&app->priv->config);
 		}
 	}
 
@@ -98,10 +92,7 @@ flashback_application_settings_changed (GSettings   *settings,
 				app->priv->dialog = flashback_end_session_dialog_new ();
 			}
 		} else {
-			if (app->priv->dialog) {
-				g_object_unref (app->priv->dialog);
-				app->priv->dialog = NULL;
-			}
+			g_clear_object (&app->priv->dialog);
 		}
 	}
 
@@ -111,10 +102,7 @@ flashback_application_settings_changed (GSettings   *settings,
 				app->priv->idle_monitor = meta_idle_monitor_dbus_new ();
 			}
 		} else {
-			if (app->priv->idle_monitor) {
-				g_object_unref (app->priv->idle_monitor);
-				app->priv->idle_monitor = NULL;
-			}
+			g_clear_object (&app->priv->idle_monitor);
 		}
 	}
 
@@ -124,101 +112,53 @@ flashback_application_settings_changed (GSettings   *settings,
 				app->priv->applet = gvc_applet_new ();
 			}
 		} else {
-			if (app->priv->applet) {
-				g_object_unref (app->priv->applet);
-				app->priv->applet = NULL;
-			}
+			g_clear_object (&app->priv->applet);
 		}
 	}
 }
 
 static void
-flashback_application_activate (GApplication *application)
+flashback_application_finalize (GObject *object)
 {
-}
+	FlashbackApplication *app = FLASHBACK_APPLICATION (object);
 
-static void
-flashback_application_startup (GApplication *application)
-{
-	FlashbackApplication *app = FLASHBACK_APPLICATION (application);
-
-	G_APPLICATION_CLASS (flashback_application_parent_class)->startup (application);
-
-	bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
-	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-	textdomain (GETTEXT_PACKAGE);
-
-	app->priv->settings = g_settings_new (FLASHBACK_SCHEMA);
-
-	g_signal_connect (app->priv->settings, "changed",
-	                  G_CALLBACK (flashback_application_settings_changed), app);
-	flashback_application_settings_changed (app->priv->settings, NULL, app);
-
-	g_application_hold (application);
-}
-
-static void
-flashback_application_shutdown (GApplication *application)
-{
-	FlashbackApplication *app = FLASHBACK_APPLICATION (application);
-
-	if (app->priv->automount) {
-		g_object_unref (app->priv->automount);
-		app->priv->automount = NULL;
-	}
-
-	if (app->priv->background) {
-		g_object_unref (app->priv->background);
-		app->priv->background = NULL;
-	}
-
-	if (app->priv->config) {
-		g_object_unref (app->priv->config);
-		app->priv->config = NULL;
-	}
-
-	if (app->priv->dialog) {
-		g_object_unref (app->priv->dialog);
-		app->priv->dialog = NULL;
-	}
-
-	if (app->priv->idle_monitor) {
-		g_object_unref (app->priv->idle_monitor);
-		app->priv->idle_monitor = NULL;
-	}
-
+	g_clear_object (&app->priv->background);
+	g_clear_object (&app->priv->config);
+	g_clear_object (&app->priv->dialog);
+	g_clear_object (&app->priv->idle_monitor);
 	g_clear_object (&app->priv->applet);
+	g_clear_object (&app->priv->settings);
 
-	if (app->priv->settings) {
-		g_object_unref (app->priv->settings);
-		app->priv->settings = NULL;
-	}
-
-	G_APPLICATION_CLASS (flashback_application_parent_class)->shutdown (application);
+	G_OBJECT_CLASS (flashback_application_parent_class)->finalize (object);
 }
 
 static void
 flashback_application_init (FlashbackApplication *application)
 {
+	FlashbackApplicationPrivate *priv;
+
 	application->priv = flashback_application_get_instance_private (application);
+	priv = application->priv;
+
+	priv->settings = g_settings_new (FLASHBACK_SCHEMA);
+
+	g_signal_connect (priv->settings, "changed",
+	                  G_CALLBACK (flashback_application_settings_changed), application);
+	flashback_application_settings_changed (priv->settings, NULL, application);
 }
 
 static void
 flashback_application_class_init (FlashbackApplicationClass *class)
 {
-	GApplicationClass *application_class = G_APPLICATION_CLASS (class);
+	GObjectClass *object_class;
 
-	application_class->startup  = flashback_application_startup;
-	application_class->shutdown = flashback_application_shutdown;
-	application_class->activate = flashback_application_activate;
+	object_class = G_OBJECT_CLASS (class);
+
+	object_class->finalize = flashback_application_finalize;
 }
 
 FlashbackApplication *
 flashback_application_new (void)
 {
-	return g_object_new (FLASHBACK_TYPE_APPLICATION,
-	                     "application-id", "org.gnome.gnome-flashback",
-	                     "flags", G_APPLICATION_FLAGS_NONE,
-	                     "register-session", TRUE,
-	                     NULL);
+	return g_object_new (FLASHBACK_TYPE_APPLICATION, NULL);
 }
