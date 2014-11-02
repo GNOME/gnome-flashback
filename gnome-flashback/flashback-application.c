@@ -24,6 +24,7 @@
 #include "libdisplay-config/flashback-display-config.h"
 #include "libend-session-dialog/flashback-end-session-dialog.h"
 #include "libidle-monitor/meta-idle-monitor-dbus.h"
+#include "libkey-grabber/flashback-key-grabber.h"
 #include "libsound-applet/gvc-applet.h"
 
 #define FLASHBACK_SCHEMA       "org.gnome.gnome-flashback"
@@ -31,6 +32,7 @@
 #define KEY_DESKTOP_BACKGROUND "desktop-background"
 #define KEY_DISPLAY_CONFIG     "display-config"
 #define KEY_END_SESSION_DIALOG "end-session-dialog"
+#define KEY_KEY_GRABBER        "key-grabber"
 #define KEY_IDLE_MONITOR       "idle-monitor"
 #define KEY_SOUND_APPLET       "sound-applet"
 
@@ -40,6 +42,7 @@ struct _FlashbackApplicationPrivate {
 	DesktopBackground          *background;
 	FlashbackDisplayConfig     *config;
 	FlashbackEndSessionDialog  *dialog;
+	FlashbackKeyGrabber        *grabber;
 	MetaIdleMonitorDBus        *idle_monitor;
 	GvcApplet                  *applet;
 };
@@ -106,6 +109,16 @@ flashback_application_settings_changed (GSettings   *settings,
 		}
 	}
 
+	if (key == NULL || g_strcmp0 (key, KEY_KEY_GRABBER) == 0) {
+		if (g_settings_get_boolean (settings, KEY_KEY_GRABBER)) {
+			if (app->priv->grabber == NULL) {
+				app->priv->grabber = flashback_key_grabber_new ();
+			}
+		} else {
+			g_clear_object (&app->priv->grabber);
+		}
+	}
+
 	if (key == NULL || g_strcmp0 (key, KEY_SOUND_APPLET) == 0) {
 		if (g_settings_get_boolean (settings, KEY_SOUND_APPLET)) {
 			if (app->priv->applet == NULL) {
@@ -126,6 +139,7 @@ flashback_application_finalize (GObject *object)
 	g_clear_object (&app->priv->config);
 	g_clear_object (&app->priv->dialog);
 	g_clear_object (&app->priv->idle_monitor);
+	g_clear_object (&app->priv->grabber);
 	g_clear_object (&app->priv->applet);
 	g_clear_object (&app->priv->settings);
 

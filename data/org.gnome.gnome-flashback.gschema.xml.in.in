@@ -25,6 +25,11 @@
 			<_summary>Idle monitor</_summary>
 			<_description>If set to true, then GNOME Flashback application will be used for user activity monitoring.</_description>
 		</key>
+		<key name="key-grabber" type="b">
+			<default>true</default>
+			<_summary>Key grabber</_summary>
+			<_description>If set to true, then GNOME Flashback application will be used for key grabbing.</_description>
+		</key>
 		<key name="sound-applet" type="b">
 			<default>true</default>
 			<_summary>Sound applet</_summary>

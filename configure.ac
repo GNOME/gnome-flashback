@@ -57,6 +57,10 @@ PKG_CHECK_MODULES(IDLE_MONITOR, gtk+-3.0 >= $GTK_REQUIRED x11 xext)
 AC_SUBST(IDLE_MONITOR_CFLAGS)
 AC_SUBST(IDLE_MONITOR_LIBS)
 
+PKG_CHECK_MODULES(KEY_GRABBER, gtk+-3.0 >= $GTK_REQUIRED x11)
+AC_SUBST(KEY_GRABBER_CFLAGS)
+AC_SUBST(KEY_GRABBER_LIBS)
+
 PKG_CHECK_MODULES(GVC, gobject-2.0 libpulse libpulse-mainloop-glib)
 AM_CONDITIONAL(HAVE_INTROSPECTION, false)
 
@@ -73,6 +77,7 @@ gnome-flashback/libdesktop-background/Makefile
 gnome-flashback/libdisplay-config/Makefile
 gnome-flashback/libend-session-dialog/Makefile
 gnome-flashback/libidle-monitor/Makefile
+gnome-flashback/libkey-grabber/Makefile
 gnome-flashback/libsound-applet/Makefile
 gnome-flashback/libsound-applet/gvc/Makefile
 po/Makefile.in
