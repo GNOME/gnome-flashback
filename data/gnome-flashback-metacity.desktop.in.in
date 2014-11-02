@@ -5,4 +5,4 @@ Exec=@libexecdir@/gnome-flashback-metacity
 TryExec=metacity
 Icon=
 Type=Application
-DesktopNames=GNOME-Flashback;GNOME
+DesktopNames=GNOME-Flashback;GNOME;
