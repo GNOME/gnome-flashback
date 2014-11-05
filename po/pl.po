@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-25 19:28+0200\n"
-"PO-Revision-Date: 2014-10-25 19:29+0200\n"
+"POT-Creation-Date: 2014-11-05 14:13+0100\n"
+"PO-Revision-Date: 2014-11-05 14:14+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -135,6 +135,14 @@ msgid ""
 msgstr ""
 "Jeśli jest ustawione na wartość \"true\", to efekt przejścia będzie używany "
 "do zmieniania tła pulpitu."
+
+#: ../gnome-flashback/flashback-main.c:33
+msgid "Initialize GNOME Flashback session"
+msgstr "Inicjuje sesję tradycyjnego środowiska GNOME"
+
+#: ../gnome-flashback/flashback-main.c:39
+msgid "Replace a currently running application"
+msgstr "Zastępuje obecnie uruchomiony program"
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:327
 msgid "Unknown"
@@ -402,13 +410,13 @@ msgstr "Wejście"
 msgid "Microphone Volume"
 msgstr "Głośność mikrofonu"
 
-#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:611
-#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:620
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:578
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:587
 msgctxt "volume"
 msgid "100%"
 msgstr "100%"
 
-#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:615
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:582
 msgctxt "volume"
 msgid "Unamplified"
 msgstr "Bez wzmocnienia"
