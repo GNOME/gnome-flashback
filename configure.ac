@@ -1,5 +1,5 @@
 m4_define([gnome_flashback_major_version], [3])
-m4_define([gnome_flashback_minor_version], [14])
+m4_define([gnome_flashback_minor_version], [15])
 m4_define([gnome_flashback_micro_version], [0])
 
 AC_INIT([gnome-flashback], [gnome_flashback_major_version.gnome_flashback_minor_version.gnome_flashback_micro_version],
