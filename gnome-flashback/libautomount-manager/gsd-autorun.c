@@ -683,7 +683,8 @@ show_dialog:
 	icon_size = get_icon_size_for_stock_size (GTK_ICON_SIZE_DIALOG);
 	image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_DIALOG);
 	pixbuf = render_icon (icon, icon_size);
-	gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.0);
+	gtk_widget_set_halign (image, GTK_ALIGN_CENTER);
+	gtk_widget_set_valign (image, GTK_ALIGN_START);
 	gtk_box_pack_start (GTK_BOX (hbox), image, TRUE, TRUE, 0);
 	/* also use the icon on the dialog */
 	gtk_window_set_title (GTK_WINDOW (dialog), mount_name);
@@ -736,7 +737,7 @@ show_dialog:
 	gtk_label_set_markup (GTK_LABEL (label), markup);
 	g_free (markup);
 	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_label_set_xalign (GTK_LABEL (label), 0.0);
 	gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 0);
 
 	label = gtk_label_new (NULL);
@@ -746,7 +747,7 @@ show_dialog:
 	gtk_label_set_markup (GTK_LABEL (label), markup);
 	g_free (markup);
 	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_label_set_xalign (GTK_LABEL (label), 0.0);
 	gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 0);
 
 	data = g_new0 (AutorunDialogData, 1);
