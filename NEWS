@@ -1,3 +1,11 @@
+Version 3.15.2
+==============
+- Added key grabber. (Alberts Muktupāvels)
+- Added --disable-acceleration-check to Metacity session. This adds dependency
+  on unreleased gnome-session version. (Alberts Muktupāvels)
+- Updated translations:
+  Marek Černocký (cs), Piotr Drąg (pl), Yosef Or Boczko (he).
+
 Version 3.14.0
 ==============
 - Added automount manager. This is same program that used to be part of GNOME
