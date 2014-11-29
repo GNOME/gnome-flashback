@@ -125,9 +125,15 @@ handle_open (DBusEndSessionDialog *object,
 }
 
 static void
+/*
 on_bus_acquired (GDBusConnection *connection,
                  const gchar     *name,
                  gpointer         user_data)
+*/
+name_appeared_handler (GDBusConnection *connection,
+                       const gchar     *name,
+                       const gchar     *name_owner,
+                       gpointer         user_data)
 {
 	FlashbackEndSessionDialog *dialog;
 	GError *error = NULL;
@@ -146,6 +152,7 @@ on_bus_acquired (GDBusConnection *connection,
 	}
 }
 
+/*
 static void
 on_name_acquired (GDBusConnection *connection,
                   const char      *name,
@@ -159,6 +166,7 @@ on_name_lost (GDBusConnection *connection,
               gpointer         user_data)
 {
 }
+*/
 
 static void
 flashback_end_session_dialog_finalize (GObject *object)
@@ -178,7 +186,10 @@ flashback_end_session_dialog_finalize (GObject *object)
 	}
 
 	if (dialog->priv->bus_name) {
+		/*
 		g_bus_unown_name (dialog->priv->bus_name);
+		*/
+		g_bus_unwatch_name (dialog->priv->bus_name);
 		dialog->priv->bus_name = 0;
 	}
 
@@ -194,6 +205,14 @@ flashback_end_session_dialog_init (FlashbackEndSessionDialog *dialog)
 
 	dialog->priv->dialog = NULL;
 	dialog->priv->iface = NULL;
+	dialog->priv->bus_name = g_bus_watch_name (G_BUS_TYPE_SESSION,
+	                                           "org.gnome.Shell",
+	                                           G_BUS_NAME_WATCHER_FLAGS_NONE,
+	                                           name_appeared_handler,
+	                                           NULL,
+	                                           dialog,
+	                                           NULL);
+	/*
 	dialog->priv->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,
 	                                         "org.gnome.Shell",
 	                                         G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
@@ -203,6 +222,7 @@ flashback_end_session_dialog_init (FlashbackEndSessionDialog *dialog)
 	                                         on_name_lost,
 	                                         dialog,
 	                                         NULL);
+	*/
 }
 
 static void

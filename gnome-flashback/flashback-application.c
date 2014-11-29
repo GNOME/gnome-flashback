@@ -45,6 +45,8 @@ struct _FlashbackApplicationPrivate {
 	FlashbackKeyGrabber        *grabber;
 	MetaIdleMonitorDBus        *idle_monitor;
 	GvcApplet                  *applet;
+
+	gint                        bus_name;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (FlashbackApplication, flashback_application, G_TYPE_OBJECT);
@@ -135,6 +137,11 @@ flashback_application_finalize (GObject *object)
 {
 	FlashbackApplication *app = FLASHBACK_APPLICATION (object);
 
+	if (app->priv->bus_name) {
+		g_bus_unown_name (app->priv->bus_name);
+		app->priv->bus_name = 0;
+	}
+
 	g_clear_object (&app->priv->background);
 	g_clear_object (&app->priv->config);
 	g_clear_object (&app->priv->dialog);
@@ -159,6 +166,16 @@ flashback_application_init (FlashbackApplication *application)
 	g_signal_connect (priv->settings, "changed",
 	                  G_CALLBACK (flashback_application_settings_changed), application);
 	flashback_application_settings_changed (priv->settings, NULL, application);
+
+	priv->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,
+	                                 "org.gnome.Shell",
+	                                 G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
+	                                 G_BUS_NAME_OWNER_FLAGS_REPLACE,
+	                                 NULL,
+	                                 NULL,
+	                                 NULL,
+	                                 NULL,
+	                                 NULL);
 }
 
 static void

@@ -223,9 +223,15 @@ handle_ungrab_accelerator (DBusKeyGrabber        *object,
 }
 
 static void
+/*
 on_bus_acquired (GDBusConnection *connection,
                  const gchar     *name,
                  gpointer         user_data)
+*/
+name_appeared_handler (GDBusConnection *connection,
+                       const gchar     *name,
+                       const gchar     *name_owner,
+                       gpointer         user_data)
 {
 	FlashbackKeyGrabber *grabber;
 	DBusKeyGrabber *skeleton;
@@ -262,7 +268,10 @@ flashback_key_grabber_finalize (GObject *object)
 	grabber = FLASHBACK_KEY_GRABBER (object);
 
 	if (grabber->priv->bus_name) {
+		/*
 		g_bus_unown_name (grabber->priv->bus_name);
+		*/
+		g_bus_unwatch_name (grabber->priv->bus_name);
 		grabber->priv->bus_name = 0;
 	}
 
@@ -293,6 +302,14 @@ flashback_key_grabber_init (FlashbackKeyGrabber *grabber)
 	g_signal_connect (grabber->priv->bindings, "binding-activated",
 	                  G_CALLBACK (binding_activated), grabber);
 
+	grabber->priv->bus_name = g_bus_watch_name (G_BUS_TYPE_SESSION,
+	                                            KEY_GRABBER_DBUS_NAME,
+	                                            G_BUS_NAME_WATCHER_FLAGS_NONE,
+	                                            name_appeared_handler,
+	                                            NULL,
+	                                            grabber,
+	                                            NULL);
+	/*
 	grabber->priv->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,
 	                                          KEY_GRABBER_DBUS_NAME,
 	                                          G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
@@ -302,6 +319,7 @@ flashback_key_grabber_init (FlashbackKeyGrabber *grabber)
 	                                          NULL,
 	                                          grabber,
 	                                          NULL);
+	*/
 }
 
 static void
