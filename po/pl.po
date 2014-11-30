@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-05 14:13+0100\n"
-"PO-Revision-Date: 2014-11-05 14:14+0100\n"
+"POT-Creation-Date: 2014-11-30 18:22+0100\n"
+"PO-Revision-Date: 2014-11-30 18:23+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -111,10 +111,22 @@ msgstr ""
 "GNOME będzie używany do monitorowania aktywności użytkownika."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:11
+msgid "Key grabber"
+msgstr "Przechwytywanie klawiszy"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:12
+msgid ""
+"If set to true, then GNOME Flashback application will be used for key "
+"grabbing."
+msgstr ""
+"Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
+"GNOME będzie używany do przechwytywania klawiszy."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:13
 msgid "Sound applet"
 msgstr "Aplet dźwięku"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:12
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show sound "
 "applet. This is same sound applet that used to be part of GNOME Control "
@@ -124,11 +136,11 @@ msgstr ""
 "GNOME będzie używany do wyświetlania apletu dźwięku. Jest to ten sam aplet, "
 "który wcześniej był częścią Centrum sterowania GNOME."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:13
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:15
 msgid "Fade the background on change"
 msgstr "Efekt przejścia podczas zmiany tła"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:16
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -296,59 +308,59 @@ msgstr "Nie można wysunąć %p"
 msgid "Unable to unmount %p"
 msgstr "Nie można odmontować %p"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:704
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:705
 msgid "You have just inserted an Audio CD."
 msgstr "Włożono płytę CD-Audio."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:706
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:707
 msgid "You have just inserted an Audio DVD."
 msgstr "Włożono płytę DVD-Audio."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:708
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:709
 msgid "You have just inserted a Video DVD."
 msgstr "Włożono płytę wideo DVD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:710
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:711
 msgid "You have just inserted a Video CD."
 msgstr "Włożono płytę Video CD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:712
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:713
 msgid "You have just inserted a Super Video CD."
 msgstr "Włożono płytę Super Video CD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:714
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:715
 msgid "You have just inserted a blank CD."
 msgstr "Włożono pustą płytę CD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:716
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:717
 msgid "You have just inserted a blank DVD."
 msgstr "Włożono pustą płytę DVD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:718
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:719
 msgid "You have just inserted a blank Blu-Ray disc."
 msgstr "Włożono pustą płytę Blu-ray."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:720
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:721
 msgid "You have just inserted a blank HD DVD."
 msgstr "Włożono pustą płytę HD DVD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:722
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:723
 msgid "You have just inserted a Photo CD."
 msgstr "Włożono płytę CD ze zdjęciami."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:724
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:725
 msgid "You have just inserted a Picture CD."
 msgstr "Włożono płytę Picture CD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:726
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:727
 msgid "You have just inserted a medium with digital photos."
 msgstr "Włożono nośnik ze zdjęciami cyfrowymi."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:728
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:729
 msgid "You have just inserted a digital audio player."
 msgstr "Włożono cyfrowy odtwarzacz dźwięku."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:730
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:731
 msgid ""
 "You have just inserted a medium with software intended to be automatically "
 "started."
@@ -357,15 +369,15 @@ msgstr ""
 "uruchamiania."
 
 #. fallback to generic greeting
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:733
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:734
 msgid "You have just inserted a medium."
 msgstr "Włożono nośnik."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:735
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:736
 msgid "Choose what application to launch."
 msgstr "Wybór programu do uruchomienia."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:744
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:745
 #, c-format
 msgid ""
 "Select how to open \"%s\" and whether to perform this action in the future "
@@ -374,23 +386,23 @@ msgstr ""
 "Wybór sposobu otwierania nośników typu \"%s\" i czy wykonywać to działanie w "
 "przyszłości dla innych nośników typu \"%s\"."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:771
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:772
 msgid "_Always perform this action"
 msgstr "Wy_konywanie tego działania za każdym razem"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:780
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:781
 msgid "_Cancel"
 msgstr "_Anuluj"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:781
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:782
 msgid "_OK"
 msgstr "_OK"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:787
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:788
 msgid "_Eject"
 msgstr "_Wysuń"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:792
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:793
 msgid "_Unmount"
 msgstr "Od_montuj"
 
