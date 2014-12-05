@@ -64,10 +64,7 @@ flashback_application_settings_changed (GSettings   *settings,
 				app->priv->automount = gsd_automount_manager_new ();
 			}
 		} else {
-			if (app->priv->automount) {
-				g_object_unref (app->priv->automount);
-				app->priv->automount = NULL;
-			}
+			g_clear_object (&app->priv->automount);
 		}
 	}
 
@@ -142,6 +139,7 @@ flashback_application_finalize (GObject *object)
 		app->priv->bus_name = 0;
 	}
 
+	g_clear_object (&app->priv->automount);
 	g_clear_object (&app->priv->background);
 	g_clear_object (&app->priv->config);
 	g_clear_object (&app->priv->dialog);
