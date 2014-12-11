@@ -332,6 +332,10 @@ gboolean                 flashback_monitor_manager_has_hotplug_mode_update (Flas
 void                     flashback_monitor_manager_read_current_config     (FlashbackMonitorManager  *manager);
 void                     flashback_monitor_manager_on_hotplug              (FlashbackMonitorManager  *manager);
 
+gboolean                 flashback_monitor_manager_get_monitor_matrix      (FlashbackMonitorManager  *manager,
+                                                                            MetaOutput               *output,
+                                                                            gfloat                    matrix[6]);
+
 MetaOutput              *flashback_monitor_manager_get_outputs             (FlashbackMonitorManager  *manager,
                                                                             unsigned int             *n_outputs);
 
