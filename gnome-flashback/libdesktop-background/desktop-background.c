@@ -441,10 +441,9 @@ desktop_background_init (DesktopBackground *background)
 	g_signal_connect (priv->bg, "transitioned",
 	                  G_CALLBACK (desktop_background_transitioned), background);
 
-	gnome_bg_load_from_preferences (priv->bg, priv->gnome_settings);
-
 	g_signal_connect (priv->gnome_settings, "change-event",
 	                  G_CALLBACK (desktop_background_change_event), background);
+	gnome_bg_load_from_preferences (priv->bg, priv->gnome_settings);
 
 	priv->background = desktop_window_new ();
 	g_signal_connect (priv->background, "size-allocate",
