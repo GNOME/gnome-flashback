@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-10-26 23:41+0000\n"
-"PO-Revision-Date: 2014-11-25 08:21+0100\n"
+"POT-Creation-Date: 2014-11-29 16:36+0000\n"
+"PO-Revision-Date: 2014-12-27 07:22+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -32,7 +32,6 @@ msgid "This session logs you into GNOME Flashback with Compiz"
 msgstr "Toto sezení vás přihlásí do GNOME historické s Compizem"
 
 #: ../data/gnome-flashback-init.desktop.in.h:1
-#| msgid "GNOME Flashback (Metacity)"
 msgid "GNOME Flashback Initialization"
 msgstr "Inicializace GNOME historické"
 
@@ -105,10 +104,22 @@ msgstr ""
 "aktivity uživatele."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:11
+msgid "Key grabber"
+msgstr "Zachytávání klávesnice"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:12
+msgid ""
+"If set to true, then GNOME Flashback application will be used for key "
+"grabbing."
+msgstr ""
+"Když je zapnuto, bude aplikace GNOME historické použita k zachytávání "
+"klávesnice."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:13
 msgid "Sound applet"
 msgstr "Zvukový aplet"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:12
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show sound "
 "applet. This is same sound applet that used to be part of GNOME Control "
@@ -118,14 +129,11 @@ msgstr ""
 "zvukového apletu. Jedná se o stejný zvukový aplet, který je použit v části "
 "řídícího centra GNOME."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:13
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:15
 msgid "Fade the background on change"
 msgstr "Prolínat při změně pozadí"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used to draw "
-#| "desktop background."
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:16
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -134,7 +142,6 @@ msgstr ""
 "prolínání."
 
 #: ../gnome-flashback/flashback-main.c:33
-#| msgid "GNOME Flashback"
 msgid "Initialize GNOME Flashback session"
 msgstr "Inicializovat sezení GNOME historické"
 
@@ -231,8 +238,6 @@ msgstr "Uspat hybridně"
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:451
 #, c-format
-#| msgid "The system will restart automatically in %d second."
-#| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
 msgstr[0] "Systém bude uspán hybridně automaticky za %d sekundu."
@@ -291,59 +296,59 @@ msgstr "Nelze vysunout %p"
 msgid "Unable to unmount %p"
 msgstr "Nelze odpojit %p"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:704
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:705
 msgid "You have just inserted an Audio CD."
 msgstr "Právě jste vložili Audio CD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:706
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:707
 msgid "You have just inserted an Audio DVD."
 msgstr "Právě jste vložili Audio DVD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:708
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:709
 msgid "You have just inserted a Video DVD."
 msgstr "Právě jste vložili Video DVD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:710
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:711
 msgid "You have just inserted a Video CD."
 msgstr "Právě jste vložili Video CD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:712
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:713
 msgid "You have just inserted a Super Video CD."
 msgstr "Právě jste vložili Super Video CD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:714
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:715
 msgid "You have just inserted a blank CD."
 msgstr "Právě jste vložili prázdné CD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:716
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:717
 msgid "You have just inserted a blank DVD."
 msgstr "Právě jste vložili prázdné DVD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:718
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:719
 msgid "You have just inserted a blank Blu-Ray disc."
 msgstr "Právě jste vložili prázdný disk Blu-Ray."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:720
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:721
 msgid "You have just inserted a blank HD DVD."
 msgstr "Právě jste vložili prázdné HD DVD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:722
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:723
 msgid "You have just inserted a Photo CD."
 msgstr "Právě jste vložili Photo CD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:724
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:725
 msgid "You have just inserted a Picture CD."
 msgstr "Právě jste vložili Picture CD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:726
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:727
 msgid "You have just inserted a medium with digital photos."
 msgstr "Právě jste vložili médium s digitálními fotografiemi."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:728
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:729
 msgid "You have just inserted a digital audio player."
 msgstr "Právě jste vložili digitální hudební přehrávač."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:730
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:731
 msgid ""
 "You have just inserted a medium with software intended to be automatically "
 "started."
@@ -352,15 +357,15 @@ msgstr ""
 "spustit."
 
 #. fallback to generic greeting
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:733
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:734
 msgid "You have just inserted a medium."
 msgstr "Právě jste vložili médium."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:735
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:736
 msgid "Choose what application to launch."
 msgstr "Zvolte, kterou aplikaci spustit."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:744
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:745
 #, c-format
 msgid ""
 "Select how to open \"%s\" and whether to perform this action in the future "
@@ -369,24 +374,23 @@ msgstr ""
 "Vyberte, jak otevřít „%s“ a jestli se má stejná činnost pro média typu „%s“ "
 "provádět i v budoucnu."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:771
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:772
 msgid "_Always perform this action"
 msgstr "Vž_dy provést tuto činnost"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:780
-#| msgid "Cancel"
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:781
 msgid "_Cancel"
 msgstr "_Zrušit"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:781
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:782
 msgid "_OK"
 msgstr "_Budiž"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:787
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:788
 msgid "_Eject"
 msgstr "_Vysunout"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:792
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:793
 msgid "_Unmount"
 msgstr "_Odpojit"
 
