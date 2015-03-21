@@ -1,0 +1,426 @@
+# Chinese (Hong Kong) translation for gnome-flashback.
+# Copyright (C) 2015 gnome-flashback's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-flashback package.
+# Cheng-Chia Tseng <>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-flashback master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"flashback&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-03-20 13:38+0000\n"
+"PO-Revision-Date: 2015-03-21 18:43+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 1.7.1\n"
+
+#: ../data/gnome-flashback.desktop.in.h:1
+msgid "GNOME Flashback"
+msgstr "GNOME Flashback"
+
+#: ../data/gnome-flashback-compiz.desktop.in.in.h:1
+msgid "GNOME Flashback (Compiz)"
+msgstr "GNOME Flashback (Compiz)"
+
+#: ../data/gnome-flashback-compiz.desktop.in.in.h:2
+msgid "This session logs you into GNOME Flashback with Compiz"
+msgstr "此作業階段帶你登入 Compiz 模式的 GNOME Flashback"
+
+#: ../data/gnome-flashback-init.desktop.in.h:1
+msgid "GNOME Flashback Initialization"
+msgstr "GNOME Flashback 初始化"
+
+#: ../data/gnome-flashback-metacity.desktop.in.in.h:1
+msgid "GNOME Flashback (Metacity)"
+msgstr "GNOME Flashback (Metacity)"
+
+#: ../data/gnome-flashback-metacity.desktop.in.in.h:2
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr "此作業階段帶你登入 Metacity 模式的 GNOME Flashback"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
+msgid "Automount manager"
+msgstr "自動掛載管理員"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:2
+msgid ""
+"If set to true, then GNOME Flashback application will be used to automount "
+"removable media."
+msgstr "若設為真，則 GNOME Flashback 應用程式會用來自動掛載可卸除式媒體。"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:3
+msgid "Desktop background"
+msgstr "桌面背景"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:4
+msgid ""
+"If set to true, then GNOME Flashback application will be used to draw desktop "
+"background."
+msgstr "若設為真，則 GNOME Flashback 應用程式會用來描繪桌面背景。"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:5
+msgid "Display config"
+msgstr "顯示設定"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:6
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide "
+"display configuration."
+msgstr "若設為真，則 GNOME Flashback 應用程式會用來提供顯示組態設定。"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:7
+msgid "End session dialog"
+msgstr "結束作業階段對話盒"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:8
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show end "
+"session dialog."
+msgstr "若設為真，則 GNOME Flashback 應用程式會用來顯示結束作業階段對話盒"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:9
+msgid "Idle monitor"
+msgstr "閒置監控"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:10
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr "若設為真，則 GNOME Flashback 應用程式會用來監控使用者活動。"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:11
+msgid "Key grabber"
+msgstr "按鍵抓取器"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:12
+msgid ""
+"If set to true, then GNOME Flashback application will be used for key grabbing."
+msgstr "若設為真，則 GNOME Flashback 應用程式會用來抓取按鍵。"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:13
+msgid "Sound applet"
+msgstr "音效面板程式"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show sound "
+"applet. This is same sound applet that used to be part of GNOME Control Center."
+msgstr "若設為真，則 GNOME Flashback 應用程式會用來顯示音效面板程式。這是以往 GNOME 控制中心的同個音效面板程式。"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:15
+msgid "Fade the background on change"
+msgstr "背景更改時淡化"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:16
+msgid ""
+"If set to true, then fade effect will be used to change the desktop background."
+msgstr "若設為真，則會以淡化方式更改桌面背景。"
+
+#: ../gnome-flashback/flashback-main.c:33
+msgid "Initialize GNOME Flashback session"
+msgstr "初始化 GNOME Flashback 作業階段"
+
+#: ../gnome-flashback/flashback-main.c:39
+msgid "Replace a currently running application"
+msgstr "取代目前執行中的應用程式"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:327
+msgid "Unknown"
+msgstr "未知"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:408
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:597
+msgid "Log Out"
+msgstr "登出"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:410
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr "請點按「登出」退出這些應用程式，並登出系統。"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:412
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s 將在 %d 秒內自動登出。"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:418
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:600
+msgid "Power Off"
+msgstr "關閉電源"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:420
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "請點按「關閉電源」退出這些應用程式，並關閉系統電源。"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:422
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "系統在 %d 秒內自動關閉電源。"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:428
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:603
+msgid "Restart"
+msgstr "重新啟動"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:430
+msgid "Click Restart to quit these applications and restart the system."
+msgstr "請點按「重新啟動」退出這些應用程式，並重新啟動系統。"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:432
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "系統將在 %d 秒內自動重新啟動。"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:438
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:606
+msgid "Hibernate"
+msgstr "休眠"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:439
+#, c-format
+msgid "The system will hibernate automatically in %d second."
+msgid_plural "The system will hibernate automatically in %d seconds."
+msgstr[0] "系統將在 %d 秒內自動休眠。"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:444
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:609
+msgid "Suspend"
+msgstr "暫停"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:445
+#, c-format
+msgid "The system will suspend automatically in %d second."
+msgid_plural "The system will suspend automatically in %d seconds."
+msgstr[0] "系統將在 %d 秒內自動暫停。"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:450
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:612
+msgid "Hybrid Sleep"
+msgstr "混合式睡眠"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:451
+#, c-format
+msgid "The system will hybrid sleep automatically in %d second."
+msgid_plural "The system will hybrid sleep automatically in %d seconds."
+msgstr[0] "系統將在 %d 秒後自動行混合式睡眠。"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:1
+msgid "Some programs are still running:"
+msgstr "有些程式還在執行中："
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:2
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr "正等候這些應用程式完成作業。若打斷這些程式可能造成資料喪失。"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:3
+msgid "Cancel"
+msgstr "取消"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:4
+msgid "Lock Screen"
+msgstr "鎖定畫面"
+
+#: ../gnome-flashback/libautomount-manager/gsd-automount-manager.c:180
+#, c-format
+msgid "Unable to mount %s"
+msgstr "無法掛載 %s"
+
+#: ../gnome-flashback/libautomount-manager/gsd-automount-manager.c:293
+#, c-format
+msgid "Unable to open a folder for %s"
+msgstr "無法為 %s 開啟資料夾"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:339
+msgid "Ask what to do"
+msgstr "詢問要做什麼"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:345
+msgid "Do Nothing"
+msgstr "不做任何事"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:351
+msgid "Open Folder"
+msgstr "開啟資料夾"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:496
+#, c-format
+msgid "Unable to eject %p"
+msgstr "無法退出 %p"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:498
+#, c-format
+msgid "Unable to unmount %p"
+msgstr "無法卸載 %p"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:705
+msgid "You have just inserted an Audio CD."
+msgstr "你剛插入一張音訊 CD。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:707
+msgid "You have just inserted an Audio DVD."
+msgstr "你剛插入一張音訊 DVD。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:709
+msgid "You have just inserted a Video DVD."
+msgstr "你剛插入一張視像 DVD。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:711
+msgid "You have just inserted a Video CD."
+msgstr "你剛插入一張視像 CD。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:713
+msgid "You have just inserted a Super Video CD."
+msgstr "你剛插入一張超級視像 SVCD。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:715
+msgid "You have just inserted a blank CD."
+msgstr "你剛插入一張空白 CD。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:717
+msgid "You have just inserted a blank DVD."
+msgstr "你剛插入一張空白 DVD。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:719
+msgid "You have just inserted a blank Blu-Ray disc."
+msgstr "你剛插入一張空白 Blu-Ray 光碟。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:721
+msgid "You have just inserted a blank HD DVD."
+msgstr "你剛插入一張空白 HD DVD。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:723
+msgid "You have just inserted a Photo CD."
+msgstr "你剛插入一張相片 CD。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:725
+msgid "You have just inserted a Picture CD."
+msgstr "你剛插入一張圖片 CD。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:727
+msgid "You have just inserted a medium with digital photos."
+msgstr "你剛插入一張內含數碼相片的媒體。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:729
+msgid "You have just inserted a digital audio player."
+msgstr "你剛插入一張數碼音訊播放器。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:731
+msgid ""
+"You have just inserted a medium with software intended to be automatically "
+"started."
+msgstr "你剛插入一張內含試圖自動啟動的軟件媒體。"
+
+#. fallback to generic greeting
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:734
+msgid "You have just inserted a medium."
+msgstr "你剛插入一張媒體。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:736
+msgid "Choose what application to launch."
+msgstr "選擇要啟動的應用程式。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:745
+#, c-format
+msgid ""
+"Select how to open \"%s\" and whether to perform this action in the future for "
+"other media of type \"%s\"."
+msgstr "選取如何開啟「%s」的方式，以及未來是否要對其他的「%s」類型媒體執行此動作。"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:772
+msgid "_Always perform this action"
+msgstr "總是執行此動作(_A)"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:781
+msgid "_Cancel"
+msgstr "取消(_C)"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:782
+msgid "_OK"
+msgstr "確定(_O)"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:788
+msgid "_Eject"
+msgstr "退出(_E)"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:793
+msgid "_Unmount"
+msgstr "卸載(_U)"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:267
+msgid "Output"
+msgstr "輸出"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:269
+msgid "Sound Output Volume"
+msgstr "輸出音量"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:273
+msgid "Input"
+msgstr "輸入"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:275
+msgid "Microphone Volume"
+msgstr "麥克風音量"
+
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:578
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:587
+msgctxt "volume"
+msgid "100%"
+msgstr "100%"
+
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:582
+msgctxt "volume"
+msgid "Unamplified"
+msgstr "未增幅"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:292
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "無法啟動音效偏好設定：%s"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:317
+msgid "_Mute"
+msgstr "靜音(_M)"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:326
+msgid "_Sound Preferences"
+msgstr "音效偏好設定(_S)"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:450
+msgid "Muted"
+msgstr "已靜音"
+
+#. translators:
+#. * The device has been disabled
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1830
+msgid "Disabled"
+msgstr "已停用"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1837
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u 個輸出"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1847
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u 個輸入"
+
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2373
+msgid "System Sounds"
+msgstr "系統音效"
