@@ -53,10 +53,6 @@ PKG_CHECK_MODULES(DISPLAY_CONFIG, gtk+-3.0 >= $GTK_REQUIRED)
 AC_SUBST(DISPLAY_CONFIG_CFLAGS)
 AC_SUBST(DISPLAY_CONFIG_LIBS)
 
-PKG_CHECK_MODULES(IDLE_MONITOR, gtk+-3.0 >= $GTK_REQUIRED x11 xext)
-AC_SUBST(IDLE_MONITOR_CFLAGS)
-AC_SUBST(IDLE_MONITOR_LIBS)
-
 PKG_CHECK_MODULES(KEY_GRABBER, gtk+-3.0 >= $GTK_REQUIRED x11)
 AC_SUBST(KEY_GRABBER_CFLAGS)
 AC_SUBST(KEY_GRABBER_LIBS)
@@ -76,7 +72,6 @@ gnome-flashback/libautomount-manager/Makefile
 gnome-flashback/libdesktop-background/Makefile
 gnome-flashback/libdisplay-config/Makefile
 gnome-flashback/libend-session-dialog/Makefile
-gnome-flashback/libidle-monitor/Makefile
 gnome-flashback/libkey-grabber/Makefile
 gnome-flashback/libsound-applet/Makefile
 gnome-flashback/libsound-applet/gvc/Makefile
