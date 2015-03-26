@@ -22,24 +22,12 @@
 
 G_BEGIN_DECLS
 
-#define FLASHBACK_TYPE_DISPLAY_CONFIG (flashback_display_config_get_type ())
-#define FLASHBACK_DISPLAY_CONFIG(o)   (G_TYPE_CHECK_INSTANCE_CAST ((o), FLASHBACK_TYPE_DISPLAY_CONFIG, FlashbackDisplayConfig))
+#define FLASHBACK_TYPE_DISPLAY_CONFIG flashback_display_config_get_type ()
+G_DECLARE_FINAL_TYPE (FlashbackDisplayConfig, flashback_display_config,
+                      FLASHBACK, DISPLAY_CONFIG,
+                      GObject)
 
-typedef struct _FlashbackDisplayConfig        FlashbackDisplayConfig;
-typedef struct _FlashbackDisplayConfigClass   FlashbackDisplayConfigClass;
-typedef struct _FlashbackDisplayConfigPrivate FlashbackDisplayConfigPrivate;
-
-struct _FlashbackDisplayConfig {
-	GObject                        parent;
-	FlashbackDisplayConfigPrivate *priv;
-};
-
-struct _FlashbackDisplayConfigClass {
-    GObjectClass parent_class;
-};
-
-GType                   flashback_display_config_get_type (void);
-FlashbackDisplayConfig *flashback_display_config_new      (void);
+FlashbackDisplayConfig *flashback_display_config_new (void);
 
 G_END_DECLS
 
