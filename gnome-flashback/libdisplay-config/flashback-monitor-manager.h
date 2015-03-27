@@ -28,6 +28,7 @@
 #include <glib-object.h>
 #include <gdk/gdk.h>
 #include <libgnome-desktop/gnome-pnp-ids.h>
+#include "meta-display-config-shared.h"
 
 G_BEGIN_DECLS
 
@@ -215,33 +216,46 @@ G_DECLARE_FINAL_TYPE (FlashbackMonitorManager, flashback_monitor_manager,
                       FLASHBACK, MONITOR_MANAGER,
                       GObject)
 
+typedef struct _FlashbackMonitorManagerPrivate FlashbackMonitorManagerPrivate;
+
 struct _FlashbackMonitorManager
 {
-  GObject                 parnet;
+  GObject                         parnet;
 
-  unsigned int            serial;
+  gboolean                        in_init;
+  unsigned int                    serial;
 
-  int                     max_screen_width;
-  int                     max_screen_height;
+  MetaPowerSave                   power_save_mode;
+
+  int                             max_screen_width;
+  int                             max_screen_height;
+  int                             screen_width;
+  int                             screen_height;
 
   /* Outputs refer to physical screens,
      CRTCs refer to stuff that can drive outputs
      (like encoders, but less tied to the HW),
      while monitor_infos refer to logical ones.
   */
-  MetaOutput             *outputs;
-  unsigned int            n_outputs;
+  MetaOutput                     *outputs;
+  unsigned int                    n_outputs;
 
-  MetaMonitorMode        *modes;
-  unsigned int            n_modes;
+  MetaMonitorMode                *modes;
+  unsigned int                    n_modes;
 
-  MetaCRTC               *crtcs;
-  unsigned int            n_crtcs;
+  MetaCRTC                       *crtcs;
+  unsigned int                    n_crtcs;
 
-  GnomePnpIds            *pnp_ids;
+  MetaMonitorInfo                *monitor_infos;
+  unsigned int                    n_monitor_infos;
+  int                             primary_monitor_index;
 
-  int                     persistent_timeout_id;
-  FlashbackMonitorConfig *config;
+  int                             persistent_timeout_id;
+  FlashbackMonitorConfig         *config;
+
+  GnomePnpIds                    *pnp_ids;
+
+  FlashbackMonitorManagerPrivate *priv;
 };
 
 FlashbackMonitorManager *flashback_monitor_manager_new                 (void);
@@ -269,13 +283,19 @@ void                     flashback_monitor_manager_set_crtc_gamma      (Flashbac
                                                                         unsigned short           *green,
                                                                         unsigned short           *blue);
 
-char                    *flashback_monitor_manager_get_edid_file       (FlashbackMonitorManager  *manager,
-                                                                        MetaOutput               *output);
 GBytes                  *flashback_monitor_manager_read_edid           (FlashbackMonitorManager  *manager,
                                                                         MetaOutput               *output);
 
+void                     flashback_monitor_manager_set_power_save_mode (FlashbackMonitorManager  *manager,
+                                                                        MetaPowerSave             mode);
+
+void                     meta_output_parse_edid                        (MetaOutput               *output,
+                                                                        GBytes                   *edid);
+
 void                     meta_crtc_info_free                           (MetaCRTCInfo             *info);
 void                     meta_output_info_free                         (MetaOutputInfo           *info);
+
+void                     flashback_monitor_manager_read_current_config (FlashbackMonitorManager  *manager);
 
 G_END_DECLS
 

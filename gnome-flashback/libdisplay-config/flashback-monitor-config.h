@@ -36,8 +36,15 @@ G_DECLARE_FINAL_TYPE (FlashbackMonitorConfig, flashback_monitor_config,
 
 FlashbackMonitorConfig *flashback_monitor_config_new              (void);
 
+gboolean                flashback_monitor_config_apply_stored     (FlashbackMonitorConfig  *config,
+                                                                   FlashbackMonitorManager *manager);
+
+void                    flashback_monitor_config_make_default     (FlashbackMonitorConfig  *config,
+                                                                   FlashbackMonitorManager *manager);
+
 void                    flashback_monitor_config_update_current   (FlashbackMonitorConfig  *config,
                                                                    FlashbackMonitorManager *manager);
+void                    flashback_monitor_config_make_persistent  (FlashbackMonitorConfig  *config);
 
 void                    flashback_monitor_config_restore_previous (FlashbackMonitorConfig  *config,
                                                                    FlashbackMonitorManager *manager);

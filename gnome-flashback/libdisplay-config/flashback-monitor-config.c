@@ -60,9 +60,26 @@ flashback_monitor_config_new (void)
                        NULL);
 }
 
+gboolean
+flashback_monitor_config_apply_stored (FlashbackMonitorConfig  *config,
+                                       FlashbackMonitorManager *manager)
+{
+}
+
+void
+flashback_monitor_config_make_default (FlashbackMonitorConfig  *config,
+                                       FlashbackMonitorManager *manager)
+{
+}
+
 void
 flashback_monitor_config_update_current (FlashbackMonitorConfig  *config,
                                          FlashbackMonitorManager *manager)
+{
+}
+
+void
+flashback_monitor_config_make_persistent (FlashbackMonitorConfig  *config)
 {
 }
 

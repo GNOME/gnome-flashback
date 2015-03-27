@@ -46,6 +46,33 @@ G_DEFINE_TYPE (FlashbackDisplayConfig, flashback_display_config, G_TYPE_OBJECT)
 
 static const double known_diagonals[] = { 12.1, 13.3, 15.6 };
 
+static void
+power_save_mode_changed (MetaDBusDisplayConfig *skeleton,
+                         gpointer               user_data)
+{
+  FlashbackDisplayConfig *config;
+  FlashbackMonitorManager *manager;
+  int mode;
+
+  config = FLASHBACK_DISPLAY_CONFIG (user_data);
+  manager = config->manager;
+
+  mode = meta_dbus_display_config_get_power_save_mode (skeleton);
+
+  if (mode == META_POWER_SAVE_UNSUPPORTED)
+    return;
+
+  /* If DPMS is unsupported, force the property back. */
+  if (manager->power_save_mode == META_POWER_SAVE_UNSUPPORTED)
+    {
+      meta_dbus_display_config_set_power_save_mode (META_DBUS_DISPLAY_CONFIG (manager), META_POWER_SAVE_UNSUPPORTED);
+      return;
+    }
+
+  flashback_monitor_manager_set_power_save_mode (manager, mode);
+  manager->power_save_mode = mode;
+}
+
 static gboolean
 save_config_timeout (gpointer user_data)
 {
@@ -273,7 +300,6 @@ handle_get_resources (MetaDBusDisplayConfig *skeleton,
       GVariantBuilder clones;
       GVariantBuilder properties;
       GBytes *edid;
-      char *edid_file;
 
       output = &manager->outputs[i];
 
@@ -317,23 +343,14 @@ handle_get_resources (MetaDBusDisplayConfig *skeleton,
       g_variant_builder_add (&properties, "{sv}", "connector-type",
                              g_variant_new_string (get_connector_type_name (output->connector_type)));
 
-      edid_file = flashback_monitor_manager_get_edid_file (manager, output);
-      if (edid_file)
-        {
-          g_variant_builder_add (&properties, "{sv}", "edid-file",
-                                 g_variant_new_take_string (edid_file));
-        }
-      else
-        {
-          edid = flashback_monitor_manager_read_edid (manager, output);
+      edid = flashback_monitor_manager_read_edid (manager, output);
 
-          if (edid)
-            {
-              g_variant_builder_add (&properties, "{sv}", "edid",
-                                     g_variant_new_from_bytes (G_VARIANT_TYPE ("ay"),
-                                                               edid, TRUE));
-              g_bytes_unref (edid);
-            }
+      if (edid)
+        {
+          g_variant_builder_add (&properties, "{sv}", "edid",
+                                 g_variant_new_from_bytes (G_VARIANT_TYPE ("ay"),
+                                                           edid, TRUE));
+          g_bytes_unref (edid);
         }
 
       g_variant_builder_add (&output_builder, "(uxiausauaua{sv})",
@@ -836,6 +853,9 @@ on_bus_acquired (GDBusConnection *connection,
                     G_CALLBACK (handle_get_crtc_gamma), config);
   g_signal_connect (skeleton, "handle-set-crtc-gamma",
                     G_CALLBACK (handle_set_crtc_gamma), config);
+
+  g_signal_connect (skeleton, "notify::power-save-mode",
+                    G_CALLBACK (power_save_mode_changed), config);
 
   config->iface = G_DBUS_INTERFACE_SKELETON (skeleton);
   error = NULL;

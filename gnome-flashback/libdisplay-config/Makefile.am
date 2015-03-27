@@ -7,8 +7,11 @@ AM_CPPFLAGS = \
 	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\"
 
 libdisplay_config_la_SOURCES = \
+	edid-parse.c \
+	edid.h \
 	meta-dbus-display-config.c \
 	meta-dbus-display-config.h \
+	meta-display-config-shared.h \
 	flashback-display-config.c \
 	flashback-display-config.h \
 	flashback-monitor-config.c \
