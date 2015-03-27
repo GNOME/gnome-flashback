@@ -295,7 +295,23 @@ void                     meta_output_parse_edid                        (MetaOutp
 void                     meta_crtc_info_free                           (MetaCRTCInfo             *info);
 void                     meta_output_info_free                         (MetaOutputInfo           *info);
 
+gboolean                 flashback_monitor_manager_has_hotplug_mode_update (FlashbackMonitorManager *manager);
 void                     flashback_monitor_manager_read_current_config (FlashbackMonitorManager  *manager);
+
+MetaOutput              *flashback_monitor_manager_get_outputs         (FlashbackMonitorManager  *manager,
+                                                                        unsigned int             *n_outputs);
+
+void                     flashback_monitor_manager_get_resources       (FlashbackMonitorManager  *manager,
+                                                                        MetaMonitorMode         **modes,
+                                                                        unsigned int             *n_modes,
+                                                                        MetaCRTC                **crtcs,
+                                                                        unsigned int             *n_crtcs,
+                                                                        MetaOutput              **outputs,
+                                                                        unsigned int             *n_outputs);
+
+void                     flashback_monitor_manager_get_screen_limits   (FlashbackMonitorManager *manager,
+                                                                        int                     *width,
+                                                                        int                     *height);
 
 G_END_DECLS
 

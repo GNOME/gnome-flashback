@@ -80,7 +80,7 @@ save_config_timeout (gpointer user_data)
 
   manager = FLASHBACK_MONITOR_MANAGER (user_data);
 
-  flashback_monitor_config_restore_previous (manager->config, manager);
+  flashback_monitor_config_restore_previous (manager->config);
 
   manager->persistent_timeout_id = 0;
   return G_SOURCE_REMOVE;
@@ -629,7 +629,7 @@ handle_apply_configuration (MetaDBusDisplayConfig *skeleton,
      appropriate UI. Then wait 20 seconds and if not confirmed, revert the
      configuration.
   */
-  flashback_monitor_config_update_current (manager->config, manager);
+  flashback_monitor_config_update_current (manager->config);
 
   if (persistent)
     {

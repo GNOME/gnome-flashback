@@ -997,12 +997,12 @@ flashback_monitor_manager_constructed (GObject *object)
 
   manager->in_init = TRUE;
 
-  manager->config = flashback_monitor_config_new ();
+  manager->config = flashback_monitor_config_new (manager);
 
   flashback_monitor_manager_read_current_config (manager);
 
-  if (!flashback_monitor_config_apply_stored (manager->config, manager))
-    flashback_monitor_config_make_default (manager->config, manager);
+  if (!flashback_monitor_config_apply_stored (manager->config))
+    flashback_monitor_config_make_default (manager->config);
 
   /* Under XRandR, we don't rebuild our data structures until we see
      the RRScreenNotify event, but at least at startup we want to have
@@ -1457,4 +1457,47 @@ meta_output_parse_edid (MetaOutput *meta_output,
       meta_output->product = g_strdup ("unknown");
       meta_output->serial = g_strdup ("unknown");
     }
+}
+
+MetaOutput *
+flashback_monitor_manager_get_outputs (FlashbackMonitorManager *manager,
+                                       unsigned int            *n_outputs)
+{
+  *n_outputs = manager->n_outputs;
+  return manager->outputs;
+}
+
+void
+flashback_monitor_manager_get_resources (FlashbackMonitorManager  *manager,
+                                         MetaMonitorMode         **modes,
+                                         unsigned int             *n_modes,
+                                         MetaCRTC                **crtcs,
+                                         unsigned int             *n_crtcs,
+                                         MetaOutput              **outputs,
+                                         unsigned int             *n_outputs)
+{
+  if (modes)
+    {
+      *modes = manager->modes;
+      *n_modes = manager->n_modes;
+    }
+  if (crtcs)
+    {
+      *crtcs = manager->crtcs;
+      *n_crtcs = manager->n_crtcs;
+    }
+  if (outputs)
+    {
+      *outputs = manager->outputs;
+      *n_outputs = manager->n_outputs;
+    }
+}
+
+void
+flashback_monitor_manager_get_screen_limits (FlashbackMonitorManager *manager,
+                                             int                     *width,
+                                             int                     *height)
+{
+  *width = manager->max_screen_width;
+  *height = manager->max_screen_height;
 }
