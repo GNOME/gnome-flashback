@@ -19,6 +19,7 @@
 #include <gtk/gtk.h>
 #include "flashback-dbus-shell.h"
 #include "flashback-key-bindings.h"
+#include "flashback-monitor-labeler.h"
 #include "flashback-shell.h"
 
 #define SHELL_DBUS_NAME "org.gnome.Shell"
@@ -32,14 +33,18 @@ typedef struct
 
 struct _FlashbackShell
 {
-  GObject                 parent;
+  GObject                  parent;
 
-  gint                    bus_name;
-  GDBusInterfaceSkeleton *iface;
+  gint                     bus_name;
+  GDBusInterfaceSkeleton  *iface;
 
-  FlashbackKeyBindings   *bindings;
-  GHashTable             *grabbed_accelerators;
-  GHashTable             *grabbers;
+  /* key-grabber */
+  FlashbackKeyBindings    *bindings;
+  GHashTable              *grabbed_accelerators;
+  GHashTable              *grabbers;
+
+  /* monitor labeler */
+  FlashbackMonitorLabeler *labeler;
 };
 
 G_DEFINE_TYPE (FlashbackShell, flashback_shell, G_TYPE_OBJECT)
@@ -182,16 +187,32 @@ handle_show_monitor_labels (FlashbackDBusShell    *dbus_shell,
                             GVariant              *params,
                             gpointer               user_data)
 {
+  FlashbackShell *shell;
+  const gchar *sender;
+
+  shell = FLASHBACK_SHELL (user_data);
+  sender = g_dbus_method_invocation_get_sender (invocation);
+
+  flashback_monitor_labeler_show (shell->labeler, params, sender);
+
   flashback_dbus_shell_complete_show_monitor_labels (dbus_shell, invocation);
 
   return TRUE;
 }
 
 static gboolean
-handle_hide_minitor_labels (FlashbackDBusShell    *dbus_shell,
+handle_hide_monitor_labels (FlashbackDBusShell    *dbus_shell,
                             GDBusMethodInvocation *invocation,
                             gpointer               user_data)
 {
+  FlashbackShell *shell;
+  const gchar *sender;
+
+  shell = FLASHBACK_SHELL (user_data);
+  sender = g_dbus_method_invocation_get_sender (invocation);
+
+  flashback_monitor_labeler_hide (shell->labeler, sender);
+
   flashback_dbus_shell_complete_hide_monitor_labels (dbus_shell, invocation);
 
   return TRUE;
@@ -328,7 +349,7 @@ name_appeared_handler (GDBusConnection *connection,
   g_signal_connect (skeleton, "handle-show-monitor-labels",
                     G_CALLBACK (handle_show_monitor_labels), shell);
   g_signal_connect (skeleton, "handle-hide-monitor-labels",
-                    G_CALLBACK (handle_hide_minitor_labels), shell);
+                    G_CALLBACK (handle_hide_monitor_labels), shell);
   g_signal_connect (skeleton, "handle-focus-app",
                     G_CALLBACK (handle_focus_app), shell);
   g_signal_connect (skeleton, "handle-show-applications",
@@ -383,6 +404,7 @@ flashback_shell_finalize (GObject *object)
     }
 
   g_clear_object (&shell->bindings);
+  g_clear_object (&shell->labeler);
 
   G_OBJECT_CLASS (flashback_shell_parent_class)->finalize (object);
 }
@@ -406,6 +428,8 @@ flashback_shell_init (FlashbackShell *shell)
   shell->bindings = flashback_key_bindings_new ();
   g_signal_connect (shell->bindings, "binding-activated",
                     G_CALLBACK (binding_activated), shell);
+
+  shell->labeler = flashback_monitor_labeler_new ();
 
   shell->bus_name = g_bus_watch_name (G_BUS_TYPE_SESSION,
                                       SHELL_DBUS_NAME,
