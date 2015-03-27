@@ -20,10 +20,10 @@
 			<_summary>End session dialog</_summary>
 			<_description>If set to true, then GNOME Flashback application will be used to show end session dialog.</_description>
 		</key>
-		<key name="key-grabber" type="b">
+		<key name="shell" type="b">
 			<default>true</default>
-			<_summary>Key grabber</_summary>
-			<_description>If set to true, then GNOME Flashback application will be used for key grabbing.</_description>
+			<_summary>Shell</_summary>
+			<_description>If set to true, then GNOME Flashback application will be used as shell.</_description>
 		</key>
 		<key name="sound-applet" type="b">
 			<default>true</default>

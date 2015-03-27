@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Alberts Muktupāvels
+ * Copyright (C) 2014 - 2015 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,39 +84,66 @@ get_real_modifiers (GdkModifierType modifiers)
 	return mods;
 }
 
+static GVariant *
+build_parameters (guint device_id,
+                  guint timestamp,
+                  guint action_mode)
+{
+  GVariantBuilder *builder;
+  GVariant *parameters;
+
+  builder = g_variant_builder_new (G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_add (builder, "{sv}", "device-id", g_variant_new_uint32 (device_id));
+  g_variant_builder_add (builder, "{sv}", "timestamp", g_variant_new_uint32 (timestamp));
+  g_variant_builder_add (builder, "{sv}", "action-mode", g_variant_new_uint32 (action_mode));
+
+  parameters = g_variant_new ("a{sv}", builder);
+  g_variant_builder_unref (builder);
+
+  return parameters;
+}
+
 static GdkFilterReturn
 filter_func (GdkXEvent *xevent,
              GdkEvent  *event,
              gpointer   user_data)
 {
-	FlashbackKeyBindings *bindings;
-	XEvent *ev;
+  FlashbackKeyBindings *bindings;
+  XEvent *ev;
 
-	bindings = FLASHBACK_KEY_BINDINGS (user_data);
-	ev = xevent;
+  bindings = FLASHBACK_KEY_BINDINGS (user_data);
+  ev = xevent;
 
-	XAllowEvents (bindings->priv->xdisplay, AsyncKeyboard, ev->xkey.time);
+  XAllowEvents (bindings->priv->xdisplay, AsyncKeyboard, ev->xkey.time);
 
-	if (ev->type == KeyPress) {
-		GList *values, *l;
+  if (ev->type == KeyPress)
+    {
+      GList *values, *l;
 
-		values = g_hash_table_get_values (bindings->priv->table);
+      values = g_hash_table_get_values (bindings->priv->table);
 
-		for (l = values; l; l = l->next) {
-			KeyBinding *binding = l->data;
+      for (l = values; l; l = l->next)
+        {
+          KeyBinding *binding = l->data;
 
-			if (binding->keycode == ev->xkey.keycode &&
-			    binding->modifiers == (ev->xkey.state & 0xff & ~(bindings->priv->ignored_modifier_mask))) {
-				g_signal_emit (bindings, signals[BINDING_ACTIVATED], 0,
-				               binding->action, 0, 0);
-				break;
-			}
-		}
+          if (binding->keycode == ev->xkey.keycode &&
+              binding->modifiers == (ev->xkey.state & 0xff & ~(bindings->priv->ignored_modifier_mask)))
+            {
+              GVariant *parameters;
 
-		g_list_free (values);
-	}
+              parameters = build_parameters (0, 0, 0);
 
-	return GDK_FILTER_CONTINUE;
+              g_signal_emit (bindings, signals[BINDING_ACTIVATED], 0,
+                             binding->action, parameters);
+
+              break;
+            }
+        }
+
+      g_list_free (values);
+    }
+
+  return GDK_FILTER_CONTINUE;
 }
 
 static void
@@ -217,10 +244,9 @@ flashback_key_bindings_class_init (FlashbackKeyBindingsClass *class)
 		              G_STRUCT_OFFSET (FlashbackKeyBindingsClass, binding_activated),
 		              NULL, NULL, NULL,
 		              G_TYPE_NONE,
-		              3,
+		              2,
 		              G_TYPE_UINT,
-		              G_TYPE_UINT,
-		              G_TYPE_UINT);
+		              G_TYPE_VARIANT);
 }
 
 FlashbackKeyBindings *

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Alberts Muktupāvels
+ * Copyright (C) 2014 - 2015 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,8 +43,7 @@ struct _FlashbackKeyBindingsClass {
 
 	void (*binding_activated) (FlashbackKeyBindings *bindings,
 	                           guint                 action,
-	                           guint                 device,
-	                           guint                 timestamp);
+	                           GVariant             *parameters);
 };
 
 GType                 flashback_key_bindings_get_type (void);
