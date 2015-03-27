@@ -53,6 +53,14 @@ PKG_CHECK_MODULES(DISPLAY_CONFIG, gtk+-3.0 >= $GTK_REQUIRED glib-2.0 >= $GLIB_RE
 AC_SUBST(DISPLAY_CONFIG_CFLAGS)
 AC_SUBST(DISPLAY_CONFIG_LIBS)
 
+PKG_CHECK_MODULES(SCREENCAST, gtk+-3.0 >= $GTK_REQUIRED)
+AC_SUBST(SCREENCAST_CFLAGS)
+AC_SUBST(SCREENCAST_LIBS)
+
+PKG_CHECK_MODULES(SCREENSHOT, gtk+-3.0 >= $GTK_REQUIRED)
+AC_SUBST(SCREENSHOT_CFLAGS)
+AC_SUBST(SCREENSHOT_LIBS)
+
 PKG_CHECK_MODULES(SHELL, gtk+-3.0 >= $GTK_REQUIRED x11)
 AC_SUBST(SHELL_CFLAGS)
 AC_SUBST(SHELL_LIBS)
@@ -72,6 +80,8 @@ gnome-flashback/libautomount-manager/Makefile
 gnome-flashback/libdesktop-background/Makefile
 gnome-flashback/libdisplay-config/Makefile
 gnome-flashback/libend-session-dialog/Makefile
+gnome-flashback/libscreencast/Makefile
+gnome-flashback/libscreenshot/Makefile
 gnome-flashback/libshell/Makefile
 gnome-flashback/libsound-applet/Makefile
 gnome-flashback/libsound-applet/gvc/Makefile

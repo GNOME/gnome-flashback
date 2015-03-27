@@ -20,6 +20,16 @@
 			<_summary>End session dialog</_summary>
 			<_description>If set to true, then GNOME Flashback application will be used to show end session dialog.</_description>
 		</key>
+		<key name="screencast" type="b">
+			<default>true</default>
+			<_summary>Screencast</_summary>
+			<_description>If set to true, then GNOME Flashback application will be used to record screen.</_description>
+		</key>
+		<key name="screenshot" type="b">
+			<default>true</default>
+			<_summary>Screenshot</_summary>
+			<_description>If set to true, then GNOME Flashback application will be used to take screenshot.</_description>
+		</key>
 		<key name="shell" type="b">
 			<default>true</default>
 			<_summary>Shell</_summary>

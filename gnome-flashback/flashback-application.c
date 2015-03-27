@@ -23,6 +23,8 @@
 #include "libdesktop-background/desktop-background.h"
 #include "libdisplay-config/flashback-display-config.h"
 #include "libend-session-dialog/flashback-end-session-dialog.h"
+#include "libscreencast/flashback-screencast.h"
+#include "libscreenshot/flashback-screenshot.h"
 #include "libshell/flashback-shell.h"
 #include "libsound-applet/gvc-applet.h"
 
@@ -31,6 +33,8 @@
 #define KEY_DESKTOP_BACKGROUND "desktop-background"
 #define KEY_DISPLAY_CONFIG     "display-config"
 #define KEY_END_SESSION_DIALOG "end-session-dialog"
+#define KEY_SCREENCAST         "screencast"
+#define KEY_SCREENSHOT         "screenshot"
 #define KEY_SHELL              "shell"
 #define KEY_SOUND_APPLET       "sound-applet"
 
@@ -40,6 +44,8 @@ struct _FlashbackApplicationPrivate {
 	DesktopBackground          *background;
 	FlashbackDisplayConfig     *config;
 	FlashbackEndSessionDialog  *dialog;
+	FlashbackScreencast        *screencast;
+	FlashbackScreenshot        *screenshot;
 	FlashbackShell             *shell;
 	GvcApplet                  *applet;
 
@@ -95,6 +101,26 @@ flashback_application_settings_changed (GSettings   *settings,
 		}
 	}
 
+	if (key == NULL || g_strcmp0 (key, KEY_SCREENCAST) == 0) {
+		if (g_settings_get_boolean (settings, KEY_SCREENCAST)) {
+			if (app->priv->screencast == NULL) {
+				app->priv->screencast = flashback_screencast_new ();
+			}
+		} else {
+			g_clear_object (&app->priv->screencast);
+		}
+	}
+
+	if (key == NULL || g_strcmp0 (key, KEY_SCREENSHOT) == 0) {
+		if (g_settings_get_boolean (settings, KEY_SCREENSHOT)) {
+			if (app->priv->screenshot == NULL) {
+				app->priv->screenshot = flashback_screenshot_new ();
+			}
+		} else {
+			g_clear_object (&app->priv->screenshot);
+		}
+	}
+
 	if (key == NULL || g_strcmp0 (key, KEY_SHELL) == 0) {
 		if (g_settings_get_boolean (settings, KEY_SHELL)) {
 			if (app->priv->shell == NULL) {
@@ -130,6 +156,8 @@ flashback_application_finalize (GObject *object)
 	g_clear_object (&app->priv->background);
 	g_clear_object (&app->priv->config);
 	g_clear_object (&app->priv->dialog);
+	g_clear_object (&app->priv->screencast);
+	g_clear_object (&app->priv->screenshot);
 	g_clear_object (&app->priv->shell);
 	g_clear_object (&app->priv->applet);
 	g_clear_object (&app->priv->settings);
