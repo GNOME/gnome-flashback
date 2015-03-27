@@ -12,6 +12,8 @@ libshell_la_SOURCES = \
 	flashback-key-bindings.h \
 	flashback-monitor-labeler.c \
 	flashback-monitor-labeler.h \
+	flashback-osd.c \
+	flashback-osd.h \
 	flashback-shell.c \
 	flashback-shell.h
 

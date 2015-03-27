@@ -20,6 +20,7 @@
 #include "flashback-dbus-shell.h"
 #include "flashback-key-bindings.h"
 #include "flashback-monitor-labeler.h"
+#include "flashback-osd.h"
 #include "flashback-shell.h"
 
 #define SHELL_DBUS_NAME "org.gnome.Shell"
@@ -45,6 +46,9 @@ struct _FlashbackShell
 
   /* monitor labeler */
   FlashbackMonitorLabeler *labeler;
+
+  /* osd */
+  FlashbackOsd            *osd;
 };
 
 G_DEFINE_TYPE (FlashbackShell, flashback_shell, G_TYPE_OBJECT)
@@ -176,6 +180,12 @@ handle_show_osd (FlashbackDBusShell    *dbus_shell,
                  GVariant              *params,
                  gpointer               user_data)
 {
+  FlashbackShell *shell;
+
+  shell = FLASHBACK_SHELL (user_data);
+
+  flashback_osd_show (shell->osd, params);
+
   flashback_dbus_shell_complete_show_osd (dbus_shell, invocation);
 
   return TRUE;
@@ -193,7 +203,7 @@ handle_show_monitor_labels (FlashbackDBusShell    *dbus_shell,
   shell = FLASHBACK_SHELL (user_data);
   sender = g_dbus_method_invocation_get_sender (invocation);
 
-  flashback_monitor_labeler_show (shell->labeler, params, sender);
+  flashback_monitor_labeler_show (shell->labeler, sender, params);
 
   flashback_dbus_shell_complete_show_monitor_labels (dbus_shell, invocation);
 
@@ -405,6 +415,7 @@ flashback_shell_finalize (GObject *object)
 
   g_clear_object (&shell->bindings);
   g_clear_object (&shell->labeler);
+  g_clear_object (&shell->osd);
 
   G_OBJECT_CLASS (flashback_shell_parent_class)->finalize (object);
 }
@@ -430,6 +441,7 @@ flashback_shell_init (FlashbackShell *shell)
                     G_CALLBACK (binding_activated), shell);
 
   shell->labeler = flashback_monitor_labeler_new ();
+  shell->osd = flashback_osd_new ();
 
   shell->bus_name = g_bus_watch_name (G_BUS_TYPE_SESSION,
                                       SHELL_DBUS_NAME,
