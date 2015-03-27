@@ -1,15 +1,15 @@
 # Czech translation for gnome-flashback.
 # Copyright (C) 2014 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
-# Marek Černocký <marek@manet.cz>, 2014.
+# Marek Černocký <marek@manet.cz>, 2014, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-11-29 16:36+0000\n"
-"PO-Revision-Date: 2014-12-27 07:22+0100\n"
+"POT-Creation-Date: 2015-03-27 12:28+0000\n"
+"PO-Revision-Date: 2015-03-27 15:35+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -92,34 +92,42 @@ msgstr ""
 "dialogového okna pro ukončení sezení."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:9
-msgid "Idle monitor"
-msgstr "Sledovat aktivitu"
+msgid "Screencast"
+msgstr "Záznam obrazovky"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:10
 msgid ""
-"If set to true, then GNOME Flashback application will be used for user "
-"activity monitoring."
+"If set to true, then GNOME Flashback application will be used to record "
+"screen."
 msgstr ""
-"Když je zapnuto, bude aplikace GNOME historické použita ke sledování "
-"aktivity uživatele."
+"Když je zapnuto, bude aplikace GNOME historické použita k pořizování záznamů "
+"obrazovky."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:11
-msgid "Key grabber"
-msgstr "Zachytávání klávesnice"
+msgid "Screenshot"
+msgstr "Snímek obrazovky"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:12
 msgid ""
-"If set to true, then GNOME Flashback application will be used for key "
-"grabbing."
+"If set to true, then GNOME Flashback application will be used to take "
+"screenshot."
 msgstr ""
-"Když je zapnuto, bude aplikace GNOME historické použita k zachytávání "
-"klávesnice."
+"Když je zapnuto, bude aplikace GNOME historické použita k pořizování snímků "
+"obrazovky."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:13
+msgid "Shell"
+msgstr "Shell"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
+msgid "If set to true, then GNOME Flashback application will be used as shell."
+msgstr "Když je zapnuto, bude aplikace GNOME historické použita k jako shell."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:15
 msgid "Sound applet"
 msgstr "Zvukový aplet"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:16
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show sound "
 "applet. This is same sound applet that used to be part of GNOME Control "
@@ -129,11 +137,11 @@ msgstr ""
 "zvukového apletu. Jedná se o stejný zvukový aplet, který je použit v části "
 "řídícího centra GNOME."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:15
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:17
 msgid "Fade the background on change"
 msgstr "Prolínat při změně pozadí"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:16
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:18
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
