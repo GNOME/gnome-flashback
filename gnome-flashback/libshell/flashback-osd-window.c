@@ -25,14 +25,17 @@
 
 struct _FlashbackOsdWindow
 {
-  GtkWindow    parent;
+  GtkWindow     parent;
 
-  GdkRectangle monitor;
+  GdkRectangle  monitor;
 
-  guint        hide_timeout_id;
-  guint        fade_timeout_id;
+  guint         hide_timeout_id;
+  guint         fade_timeout_id;
 
-  gdouble      fade_out_alpha;
+  gdouble       fade_out_alpha;
+
+  GtkWidget    *icon_image;
+  gint          icon_size;
 };
 
 G_DEFINE_TYPE (FlashbackOsdWindow, flashback_osd_window, GTK_TYPE_WINDOW)
@@ -219,7 +222,18 @@ flashback_osd_window_class_init (FlashbackOsdWindowClass *window_class)
 static void
 flashback_osd_window_init (FlashbackOsdWindow *window)
 {
+  GtkWidget *box;
+
   window->fade_out_alpha = 1.0;
+
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_container_add (GTK_CONTAINER (window), box);
+  gtk_widget_show (box);
+
+  window->icon_image = gtk_image_new ();
+  gtk_widget_set_halign (window->icon_image, GTK_ALIGN_CENTER);
+  gtk_widget_set_valign (window->icon_image, GTK_ALIGN_CENTER);
+  gtk_box_pack_start (GTK_BOX (box), window->icon_image, TRUE, FALSE, 0);
 }
 
 FlashbackOsdWindow *
@@ -248,6 +262,8 @@ flashback_osd_window_new (gint monitor)
   height = window->monitor.height;
   size = 110 * MAX (1, MIN (width / 640.0, height / 480.0));
 
+  window->icon_size = size / 2;
+
   gtk_window_resize (GTK_WINDOW (window), size, size);
 
   return window;
@@ -257,6 +273,17 @@ void
 flashback_osd_window_set_icon (FlashbackOsdWindow *window,
                                GIcon              *icon)
 {
+  if (icon == NULL)
+    {
+      gtk_widget_hide (window->icon_image);
+      return;
+    }
+
+  gtk_image_set_pixel_size (GTK_IMAGE (window->icon_image),
+                            window->icon_size);
+  gtk_image_set_from_gicon (GTK_IMAGE (window->icon_image),
+                            icon, GTK_ICON_SIZE_DIALOG);
+  gtk_widget_show (window->icon_image);
 }
 
 void
