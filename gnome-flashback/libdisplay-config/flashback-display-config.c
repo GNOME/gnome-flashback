@@ -48,6 +48,7 @@ static const double known_diagonals[] = { 12.1, 13.3, 15.6 };
 
 static void
 power_save_mode_changed (MetaDBusDisplayConfig *skeleton,
+                         GParamSpec            *pspec,
                          gpointer               user_data)
 {
   FlashbackDisplayConfig *config;
