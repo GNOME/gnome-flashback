@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-27 12:28+0000\n"
-"PO-Revision-Date: 2015-03-27 15:35+0100\n"
+"POT-Creation-Date: 2015-03-28 14:38+0000\n"
+"PO-Revision-Date: 2015-03-29 12:50+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -157,121 +157,6 @@ msgstr "Inicializovat sezení GNOME historické"
 msgid "Replace a currently running application"
 msgstr "Nahradit právě běžící aplikaci"
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:327
-msgid "Unknown"
-msgstr "Neznámý"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:408
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:597
-msgid "Log Out"
-msgstr "Odhlásit"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:410
-msgid "Click Log Out to quit these applications and log out of the system."
-msgstr ""
-"Kliknutím na Odhlásit ukončíte tyto aplikace a odhlásíte se ze systému."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:412
-#, c-format
-msgid "%s will be logged out automatically in %d second."
-msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s bude odhlášen(a) automaticky za %d sekundu."
-msgstr[1] "%s bude odhlášen(a) automaticky za %d sekundy."
-msgstr[2] "%s bude odhlášen(a) automaticky za %d sekund."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:418
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:600
-msgid "Power Off"
-msgstr "Vypnout"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:420
-msgid "Click Power Off to quit these applications and power off the system."
-msgstr "Kliknutím na Vypnout ukončíte tyto aplikace a vypnete systém."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:422
-#, c-format
-msgid "The system will power off automatically in %d second."
-msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Systém bude vypnut automaticky za %d sekundu."
-msgstr[1] "Systém bude vypnut automaticky za %d sekundy."
-msgstr[2] "Systém bude vypnut automaticky za %d sekund."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:428
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:603
-msgid "Restart"
-msgstr "Restartovat"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:430
-msgid "Click Restart to quit these applications and restart the system."
-msgstr "Kliknutím na Restartovat ukončíte tyto aplikace a restartujete systém."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:432
-#, c-format
-msgid "The system will restart automatically in %d second."
-msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "Systém bude restartován automaticky za %d sekundu."
-msgstr[1] "Systém bude restartován automaticky za %d sekundy."
-msgstr[2] "Systém bude restartován automaticky za %d sekund."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:438
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:606
-msgid "Hibernate"
-msgstr "Uspat na disk"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:439
-#, c-format
-msgid "The system will hibernate automatically in %d second."
-msgid_plural "The system will hibernate automatically in %d seconds."
-msgstr[0] "Systém bude uspán na disk automaticky za %d sekundu."
-msgstr[1] "Systém bude uspán na disk automaticky za %d sekundy."
-msgstr[2] "Systém bude uspán na disk automaticky za %d sekund."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:444
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:609
-msgid "Suspend"
-msgstr "Uspat do paměti"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:445
-#, c-format
-msgid "The system will suspend automatically in %d second."
-msgid_plural "The system will suspend automatically in %d seconds."
-msgstr[0] "Systém bude uspán do paměti automaticky za %d sekundu."
-msgstr[1] "Systém bude uspán do paměti automaticky za %d sekundy."
-msgstr[2] "Systém bude uspán do paměti automaticky za %d sekund."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:450
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:612
-msgid "Hybrid Sleep"
-msgstr "Uspat hybridně"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:451
-#, c-format
-msgid "The system will hybrid sleep automatically in %d second."
-msgid_plural "The system will hybrid sleep automatically in %d seconds."
-msgstr[0] "Systém bude uspán hybridně automaticky za %d sekundu."
-msgstr[1] "Systém bude uspán hybridně automaticky za %d sekundy."
-msgstr[2] "Systém bude uspán hybridně automaticky za %d sekund."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:1
-msgid "Some programs are still running:"
-msgstr "Doposud běží některé aplikace:"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:2
-msgid ""
-"Waiting for these applications to finish. Interrupting them can lead to loss "
-"of data."
-msgstr ""
-"Čeká se, až tyto aplikace skončí. Jejich násilné přerušení může způsobit "
-"ztrátu dat."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:3
-msgid "Cancel"
-msgstr "Zrušit"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:4
-msgid "Lock Screen"
-msgstr "Uzamknout obrazovku"
-
 #: ../gnome-flashback/libautomount-manager/gsd-automount-manager.c:180
 #, c-format
 msgid "Unable to mount %s"
@@ -402,6 +287,138 @@ msgstr "_Vysunout"
 msgid "_Unmount"
 msgstr "_Odpojit"
 
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:155
+msgid "Built-in display"
+msgstr "Vestavěný displej"
+
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:182
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:327
+msgid "Unknown"
+msgstr "Neznámý"
+
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:184
+msgid "Unknown Display"
+msgstr "Neznámý displej"
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:192
+#, c-format
+msgid "%s %s"
+msgstr "%s %s"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:408
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:597
+msgid "Log Out"
+msgstr "Odhlásit"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:410
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Kliknutím na Odhlásit ukončíte tyto aplikace a odhlásíte se ze systému."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:412
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s bude odhlášen(a) automaticky za %d sekundu."
+msgstr[1] "%s bude odhlášen(a) automaticky za %d sekundy."
+msgstr[2] "%s bude odhlášen(a) automaticky za %d sekund."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:418
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:600
+msgid "Power Off"
+msgstr "Vypnout"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:420
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "Kliknutím na Vypnout ukončíte tyto aplikace a vypnete systém."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:422
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Systém bude vypnut automaticky za %d sekundu."
+msgstr[1] "Systém bude vypnut automaticky za %d sekundy."
+msgstr[2] "Systém bude vypnut automaticky za %d sekund."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:428
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:603
+msgid "Restart"
+msgstr "Restartovat"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:430
+msgid "Click Restart to quit these applications and restart the system."
+msgstr "Kliknutím na Restartovat ukončíte tyto aplikace a restartujete systém."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:432
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Systém bude restartován automaticky za %d sekundu."
+msgstr[1] "Systém bude restartován automaticky za %d sekundy."
+msgstr[2] "Systém bude restartován automaticky za %d sekund."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:438
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:606
+msgid "Hibernate"
+msgstr "Uspat na disk"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:439
+#, c-format
+msgid "The system will hibernate automatically in %d second."
+msgid_plural "The system will hibernate automatically in %d seconds."
+msgstr[0] "Systém bude uspán na disk automaticky za %d sekundu."
+msgstr[1] "Systém bude uspán na disk automaticky za %d sekundy."
+msgstr[2] "Systém bude uspán na disk automaticky za %d sekund."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:444
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:609
+msgid "Suspend"
+msgstr "Uspat do paměti"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:445
+#, c-format
+msgid "The system will suspend automatically in %d second."
+msgid_plural "The system will suspend automatically in %d seconds."
+msgstr[0] "Systém bude uspán do paměti automaticky za %d sekundu."
+msgstr[1] "Systém bude uspán do paměti automaticky za %d sekundy."
+msgstr[2] "Systém bude uspán do paměti automaticky za %d sekund."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:450
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:612
+msgid "Hybrid Sleep"
+msgstr "Uspat hybridně"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:451
+#, c-format
+msgid "The system will hybrid sleep automatically in %d second."
+msgid_plural "The system will hybrid sleep automatically in %d seconds."
+msgstr[0] "Systém bude uspán hybridně automaticky za %d sekundu."
+msgstr[1] "Systém bude uspán hybridně automaticky za %d sekundy."
+msgstr[2] "Systém bude uspán hybridně automaticky za %d sekund."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:1
+msgid "Some programs are still running:"
+msgstr "Doposud běží některé aplikace:"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:2
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr ""
+"Čeká se, až tyto aplikace skončí. Jejich násilné přerušení může způsobit "
+"ztrátu dat."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:3
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:4
+msgid "Lock Screen"
+msgstr "Uzamknout obrazovku"
+
 #: ../gnome-flashback/libsound-applet/gvc-applet.c:267
 msgid "Output"
 msgstr "Výstup"
@@ -428,23 +445,6 @@ msgstr "100%"
 msgctxt "volume"
 msgid "Unamplified"
 msgstr "Nezesíleno"
-
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:292
-#, c-format
-msgid "Failed to start Sound Preferences: %s"
-msgstr "Selhalo spuštění předvoleb zvuku: %s"
-
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:317
-msgid "_Mute"
-msgstr "_Ztišit"
-
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:326
-msgid "_Sound Preferences"
-msgstr "_Předvolby zvuku"
-
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:450
-msgid "Muted"
-msgstr "Ztišeno"
 
 #. translators:
 #. * The device has been disabled
@@ -475,3 +475,20 @@ msgstr[2] "%u vstupů"
 #: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2373
 msgid "System Sounds"
 msgstr "Systémové zvuky"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:292
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "Selhalo spuštění předvoleb zvuku: %s"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:317
+msgid "_Mute"
+msgstr "_Ztišit"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:326
+msgid "_Sound Preferences"
+msgstr "_Předvolby zvuku"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:450
+msgid "Muted"
+msgstr "Ztišeno"
