@@ -4,14 +4,14 @@
 # pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas:
 # gnomepl@aviary.pl
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# Piotr Drąg <piotrdrag@gmail.com>, 2014.
-# Aviary.pl <gnomepl@aviary.pl>, 2014.
+# Piotr Drąg <piotrdrag@gmail.com>, 2014-2015.
+# Aviary.pl <gnomepl@aviary.pl>, 2014-2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-30 18:22+0100\n"
-"PO-Revision-Date: 2014-11-30 18:23+0100\n"
+"POT-Creation-Date: 2015-03-29 21:08+0200\n"
+"PO-Revision-Date: 2015-03-29 21:09+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -68,19 +68,19 @@ msgstr "Tło pulpitu"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:4
 msgid ""
-"If set to true, then GNOME Flashback application will be used to draw "
+"If set to true, then GNOME Flashback application will be used to draw the "
 "desktop background."
 msgstr ""
 "Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
 "GNOME będzie używany do wyświetlania tła pulpitu."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:5
-msgid "Display config"
+msgid "Display configuration"
 msgstr "Konfiguracja ekranów"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:6
 msgid ""
-"If set to true, then GNOME Flashback application will be used to provide "
+"If set to true, then GNOME Flashback application will be used to provide the "
 "display configuration."
 msgstr ""
 "Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
@@ -92,55 +92,66 @@ msgstr "Okno dialogowe kończenia sesji"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:8
 msgid ""
-"If set to true, then GNOME Flashback application will be used to show end "
-"session dialog."
+"If set to true, then GNOME Flashback application will be used to show the "
+"end session dialog."
 msgstr ""
 "Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
 "GNOME będzie używany do wyświetlania okna dialogowego kończenia sesji."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:9
-msgid "Idle monitor"
-msgstr "Monitorowanie bezczynności"
+msgid "Screencasts"
+msgstr "Nagrywanie ekranu"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:10
 msgid ""
-"If set to true, then GNOME Flashback application will be used for user "
-"activity monitoring."
+"If set to true, then GNOME Flashback application will be used to record the "
+"screen."
 msgstr ""
 "Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
-"GNOME będzie używany do monitorowania aktywności użytkownika."
+"GNOME będzie używany do nagrywania ekranu."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:11
-msgid "Key grabber"
-msgstr "Przechwytywanie klawiszy"
+msgid "Screenshots"
+msgstr "Zrzuty ekranu"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:12
 msgid ""
-"If set to true, then GNOME Flashback application will be used for key "
-"grabbing."
+"If set to true, then GNOME Flashback application will be used to take "
+"screenshots."
 msgstr ""
 "Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
-"GNOME będzie używany do przechwytywania klawiszy."
+"GNOME będzie używany do wykonywania zrzutów ekranu."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:13
-msgid "Sound applet"
-msgstr "Aplet dźwięku"
+msgid "Shell"
+msgstr "Powłoka"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
 msgid ""
-"If set to true, then GNOME Flashback application will be used to show sound "
-"applet. This is same sound applet that used to be part of GNOME Control "
-"Center."
+"If set to true, then GNOME Flashback application will be used as a shell."
+msgstr ""
+"Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
+"GNOME będzie używany jako powłoka."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:15
+msgid "Sound applet"
+msgstr "Aplet dźwięku"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:16
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"sound applet. This is the same sound applet that used to be a part of GNOME "
+"Control Center."
 msgstr ""
 "Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
 "GNOME będzie używany do wyświetlania apletu dźwięku. Jest to ten sam aplet, "
 "który wcześniej był częścią Centrum sterowania GNOME."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:15
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:17
 msgid "Fade the background on change"
 msgstr "Efekt przejścia podczas zmiany tła"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:16
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:18
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -155,126 +166,6 @@ msgstr "Inicjuje sesję tradycyjnego środowiska GNOME"
 #: ../gnome-flashback/flashback-main.c:39
 msgid "Replace a currently running application"
 msgstr "Zastępuje obecnie uruchomiony program"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:327
-msgid "Unknown"
-msgstr "Nieznany"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:408
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:597
-msgid "Log Out"
-msgstr "Wyloguj"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:410
-msgid "Click Log Out to quit these applications and log out of the system."
-msgstr ""
-"Kliknięcie przycisku Wyloguj zakończy działanie tych programów i wyloguje z "
-"systemu."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:412
-#, c-format
-msgid "%s will be logged out automatically in %d second."
-msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "Użytkownik %s zostanie wylogowany za %d sekundę."
-msgstr[1] "Użytkownik %s zostanie wylogowany za %d sekundy."
-msgstr[2] "Użytkownik %s zostanie wylogowany za %d sekund."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:418
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:600
-msgid "Power Off"
-msgstr "Wyłącz komputer"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:420
-msgid "Click Power Off to quit these applications and power off the system."
-msgstr ""
-"Kliknięcie przycisku Wyłącz komputer zakończy działanie tych programów i "
-"wyłączy komputer."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:422
-#, c-format
-msgid "The system will power off automatically in %d second."
-msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Wyłączenie komputera nastąpi za %d sekundę."
-msgstr[1] "Wyłączenie komputera nastąpi za %d sekundy."
-msgstr[2] "Wyłączenie komputera nastąpi za %d sekund."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:428
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:603
-msgid "Restart"
-msgstr "Uruchom ponownie"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:430
-msgid "Click Restart to quit these applications and restart the system."
-msgstr ""
-"Kliknięcie przycisku Uruchom ponownie zakończy działanie tych programów i "
-"ponownie uruchomi komputer."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:432
-#, c-format
-msgid "The system will restart automatically in %d second."
-msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "Ponowne uruchomienie komputera nastąpi za %d sekundę."
-msgstr[1] "Ponowne uruchomienie komputera nastąpi za %d sekundy."
-msgstr[2] "Ponowne uruchomienie komputera nastąpi za %d sekund."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:438
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:606
-msgid "Hibernate"
-msgstr "Hibernuj"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:439
-#, c-format
-msgid "The system will hibernate automatically in %d second."
-msgid_plural "The system will hibernate automatically in %d seconds."
-msgstr[0] "Hibernacja komputera nastąpi za %d sekundę."
-msgstr[1] "Hibernacja komputera nastąpi za %d sekundy."
-msgstr[2] "Hibernacja komputera nastąpi za %d sekund."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:444
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:609
-msgid "Suspend"
-msgstr "Uśpij"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:445
-#, c-format
-msgid "The system will suspend automatically in %d second."
-msgid_plural "The system will suspend automatically in %d seconds."
-msgstr[0] "Uśpienie komputera nastąpi za %d sekundę."
-msgstr[1] "Uśpienie komputera nastąpi za %d sekundy."
-msgstr[2] "Uśpienie komputera nastąpi za %d sekund."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:450
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:612
-msgid "Hybrid Sleep"
-msgstr "Uśpij hybrydowo"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:451
-#, c-format
-msgid "The system will hybrid sleep automatically in %d second."
-msgid_plural "The system will hybrid sleep automatically in %d seconds."
-msgstr[0] "Uśpienie hybrydowe komputera nastąpi za %d sekundę."
-msgstr[1] "Uśpienie hybrydowe komputera nastąpi za %d sekundy."
-msgstr[2] "Uśpienie hybrydowe komputera nastąpi za %d sekund."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:1
-msgid "Some programs are still running:"
-msgstr "Niektóre programy są nadal uruchomione:"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:2
-msgid ""
-"Waiting for these applications to finish. Interrupting them can lead to loss "
-"of data."
-msgstr ""
-"Oczekiwanie na zakończenie działania programów. Przerwanie działania "
-"programów może spowodować utratę niezapisanych wyników pracy."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:3
-msgid "Cancel"
-msgstr "Anuluj"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:4
-msgid "Lock Screen"
-msgstr "Zablokuj ekran"
 
 #: ../gnome-flashback/libautomount-manager/gsd-automount-manager.c:180
 #, c-format
@@ -406,6 +297,143 @@ msgstr "_Wysuń"
 msgid "_Unmount"
 msgstr "Od_montuj"
 
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:156
+msgid "Built-in display"
+msgstr "Wbudowany ekran"
+
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:183
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:326
+msgid "Unknown"
+msgstr "Nieznany"
+
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:185
+msgid "Unknown Display"
+msgstr "Nieznany ekran"
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:193
+#, c-format
+msgid "%s %s"
+msgstr "%s (%s)"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:407
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:596
+msgid "Log Out"
+msgstr "Wyloguj"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:409
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Kliknięcie przycisku Wyloguj zakończy działanie tych programów i wyloguje z "
+"systemu."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:411
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "Użytkownik %s zostanie wylogowany za %d sekundę."
+msgstr[1] "Użytkownik %s zostanie wylogowany za %d sekundy."
+msgstr[2] "Użytkownik %s zostanie wylogowany za %d sekund."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:417
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:599
+msgid "Power Off"
+msgstr "Wyłącz komputer"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:419
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
+"Kliknięcie przycisku Wyłącz komputer zakończy działanie tych programów i "
+"wyłączy komputer."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:421
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Wyłączenie komputera nastąpi za %d sekundę."
+msgstr[1] "Wyłączenie komputera nastąpi za %d sekundy."
+msgstr[2] "Wyłączenie komputera nastąpi za %d sekund."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:427
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:602
+msgid "Restart"
+msgstr "Uruchom ponownie"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:429
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Kliknięcie przycisku Uruchom ponownie zakończy działanie tych programów i "
+"ponownie uruchomi komputer."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:431
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Ponowne uruchomienie komputera nastąpi za %d sekundę."
+msgstr[1] "Ponowne uruchomienie komputera nastąpi za %d sekundy."
+msgstr[2] "Ponowne uruchomienie komputera nastąpi za %d sekund."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:437
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:605
+msgid "Hibernate"
+msgstr "Hibernuj"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:438
+#, c-format
+msgid "The system will hibernate automatically in %d second."
+msgid_plural "The system will hibernate automatically in %d seconds."
+msgstr[0] "Hibernacja komputera nastąpi za %d sekundę."
+msgstr[1] "Hibernacja komputera nastąpi za %d sekundy."
+msgstr[2] "Hibernacja komputera nastąpi za %d sekund."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:443
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:608
+msgid "Suspend"
+msgstr "Uśpij"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:444
+#, c-format
+msgid "The system will suspend automatically in %d second."
+msgid_plural "The system will suspend automatically in %d seconds."
+msgstr[0] "Uśpienie komputera nastąpi za %d sekundę."
+msgstr[1] "Uśpienie komputera nastąpi za %d sekundy."
+msgstr[2] "Uśpienie komputera nastąpi za %d sekund."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:449
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:611
+msgid "Hybrid Sleep"
+msgstr "Uśpij hybrydowo"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:450
+#, c-format
+msgid "The system will hybrid sleep automatically in %d second."
+msgid_plural "The system will hybrid sleep automatically in %d seconds."
+msgstr[0] "Uśpienie hybrydowe komputera nastąpi za %d sekundę."
+msgstr[1] "Uśpienie hybrydowe komputera nastąpi za %d sekundy."
+msgstr[2] "Uśpienie hybrydowe komputera nastąpi za %d sekund."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:1
+msgid "Some programs are still running:"
+msgstr "Niektóre programy są nadal uruchomione:"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:2
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr ""
+"Oczekiwanie na zakończenie działania programów. Przerwanie działania "
+"programów może spowodować utratę niezapisanych wyników pracy."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:3
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:4
+msgid "Lock Screen"
+msgstr "Zablokuj ekran"
+
 #: ../gnome-flashback/libsound-applet/gvc-applet.c:267
 msgid "Output"
 msgstr "Wyjście"
@@ -432,23 +460,6 @@ msgstr "100%"
 msgctxt "volume"
 msgid "Unamplified"
 msgstr "Bez wzmocnienia"
-
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:292
-#, c-format
-msgid "Failed to start Sound Preferences: %s"
-msgstr "Uruchomienie preferencji dźwięku się nie powiodło: %s"
-
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:317
-msgid "_Mute"
-msgstr "_Wycisz"
-
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:326
-msgid "_Sound Preferences"
-msgstr "Preferencje _dźwięku"
-
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:450
-msgid "Muted"
-msgstr "Wyciszone"
 
 #. translators:
 #. * The device has been disabled
@@ -479,3 +490,20 @@ msgstr[2] "%u wejść"
 #: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2373
 msgid "System Sounds"
 msgstr "Dźwięki systemu"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:292
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "Uruchomienie preferencji dźwięku się nie powiodło: %s"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:317
+msgid "_Mute"
+msgstr "_Wycisz"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:326
+msgid "_Sound Preferences"
+msgstr "Preferencje _dźwięku"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:450
+msgid "Muted"
+msgstr "Wyciszone"
