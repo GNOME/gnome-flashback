@@ -21,7 +21,8 @@ gnome_flashback_SOURCES = \
 	flashback-application.h \
 	flashback-main.c \
 	flashback-session.c \
-	flashback-session.h
+	flashback-session.h \
+	$(BUILT_SOURCES)
 
 gnome_flashback_LDADD = \
 	$(GNOME_FLASHBACK_LIBS) \
@@ -33,5 +34,23 @@ gnome_flashback_LDADD = \
 	$(top_builddir)/gnome-flashback/libscreenshot/libscreenshot.la \
 	$(top_builddir)/gnome-flashback/libshell/libshell.la \
 	$(top_builddir)/gnome-flashback/libsound-applet/libsound-applet.la
+
+flashback-resources.c: flashback.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/flashback.gresource.xml)
+	$(AM_V_GEN)$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate --c-name flashback $<
+
+flashback-resources.h: flashback.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/flashback.gresource.xml)
+	$(AM_V_GEN)$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate --c-name flashback $<
+
+BUILT_SOURCES = \
+	flashback-resources.c \
+	flashback-resources.h
+
+EXTRA_DIST = \
+	Adwaita.css \
+	flashback.gresource.xml \
+	HighContrast.css
+
+CLEANFILES = \
+	$(BUILT_SOURCES)
 
 -include $(top_srcdir)/git.mk

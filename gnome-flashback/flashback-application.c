@@ -36,6 +36,8 @@ struct _FlashbackApplication
 
   GSettings                 *settings;
 
+  GtkCssProvider            *provider;
+
   GsdAutomountManager       *automount;
   DesktopBackground         *background;
   FlashbackDisplayConfig    *config;
@@ -49,9 +51,59 @@ struct _FlashbackApplication
 G_DEFINE_TYPE (FlashbackApplication, flashback_application, G_TYPE_OBJECT)
 
 static void
-flashback_application_settings_changed (GSettings   *settings,
-                                        const gchar *key,
-                                        gpointer     user_data)
+remove_style_provider (FlashbackApplication *application,
+                       GdkScreen            *screen)
+{
+  GtkStyleProvider *provider;
+
+  if (application->provider == FALSE)
+    return;
+
+  provider = GTK_STYLE_PROVIDER (application->provider);
+  gtk_style_context_remove_provider_for_screen (screen, provider);
+  g_clear_object (&application->provider);
+}
+
+static void
+theme_changed (GtkSettings *settings,
+               gpointer      user_data)
+{
+  FlashbackApplication *application;
+  GdkScreen *screen;
+  gchar *theme;
+
+  application = FLASHBACK_APPLICATION (user_data);
+  screen = gdk_screen_get_default ();
+
+  g_object_get (settings, "gtk-theme-name", &theme, NULL);
+
+  if (g_strcmp0 (theme, "Adwaita") == 0 || g_strcmp0 (theme, "HighContrast") == 0)
+    {
+      gchar *resource;
+      GtkStyleProvider *provider;
+      gint priority;
+
+      application->provider = gtk_css_provider_new ();
+
+      resource = g_strdup_printf ("/org/gnome/gnome-flashback/%s.css", theme);
+      gtk_css_provider_load_from_resource (application->provider, resource);
+      g_free (resource);
+
+      provider = GTK_STYLE_PROVIDER (application->provider);
+      priority = GTK_STYLE_PROVIDER_PRIORITY_APPLICATION;
+
+      gtk_style_context_add_provider_for_screen (screen, provider, priority);
+    }
+  else
+    remove_style_provider (application, screen);
+
+  g_free (theme);
+}
+
+static void
+settings_changed (GSettings   *settings,
+                  const gchar *key,
+                  gpointer     user_data)
 {
   FlashbackApplication *application;
 
@@ -98,6 +150,8 @@ flashback_application_finalize (GObject *object)
 
   g_clear_object (&application->settings);
 
+  remove_style_provider (application, gdk_screen_get_default ());
+
   g_clear_object (&application->automount);
   g_clear_object (&application->background);
   g_clear_object (&application->config);
@@ -113,14 +167,18 @@ flashback_application_finalize (GObject *object)
 static void
 flashback_application_init (FlashbackApplication *application)
 {
+  GtkSettings *settings;
+
   application->settings = g_settings_new ("org.gnome.gnome-flashback");
+  settings = gtk_settings_get_default ();
 
   g_signal_connect (application->settings, "changed",
-                    G_CALLBACK (flashback_application_settings_changed),
-                    application);
+                    G_CALLBACK (settings_changed), application);
+  g_signal_connect (settings, "notify::gtk-theme-name",
+                    G_CALLBACK (theme_changed), application);
 
-  flashback_application_settings_changed (application->settings,
-                                          NULL, application);
+  settings_changed (application->settings, NULL, application);
+  theme_changed (settings, application);
 
   application->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,
                                           "org.gnome.Shell",

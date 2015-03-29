@@ -12,9 +12,7 @@ libend_session_dialog_la_SOURCES = \
 	flashback-end-session-dialog.c \
 	flashback-end-session-dialog.h \
 	flashback-inhibit-dialog.c \
-	flashback-inhibit-dialog.h \
-	flashback-resources.c \
-	flashback-resources.h
+	flashback-inhibit-dialog.h
 
 libend_session_dialog_la_LIBADD = \
 	$(END_SESSION_DIALOG_LIBS)
@@ -27,20 +25,12 @@ dbus-end-session-dialog.c: org.gnome.SessionManager.EndSessionDialog.xml Makefil
 		--c-namespace DBus \
 		org.gnome.SessionManager.EndSessionDialog.xml
 
-flashback-resources.c: flashback.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/flashback.gresource.xml)
-	$(AM_V_GEN)$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate --c-name flashback --manual-register $<
-flashback-resources.h: flashback.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/flashback.gresource.xml)
-	$(AM_V_GEN)$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate --c-name flashback --manual-register $<
-
 BUILT_SOURCES = \
 	dbus-end-session-dialog.h \
-	dbus-end-session-dialog.c \
-	flashback-resources.c \
-	flashback-resources.h
+	dbus-end-session-dialog.c
 
 EXTRA_DIST = \
 	org.gnome.SessionManager.EndSessionDialog.xml \
-	flashback.gresource.xml \
 	flashback-inhibit-dialog.ui
 
 CLEANFILES = \
