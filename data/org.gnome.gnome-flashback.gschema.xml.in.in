@@ -8,37 +8,37 @@
 		<key name="desktop-background" type="b">
 			<default>true</default>
 			<_summary>Desktop background</_summary>
-			<_description>If set to true, then GNOME Flashback application will be used to draw desktop background.</_description>
+			<_description>If set to true, then GNOME Flashback application will be used to draw the desktop background.</_description>
 		</key>
 		<key name="display-config" type="b">
 			<default>true</default>
-			<_summary>Display config</_summary>
-			<_description>If set to true, then GNOME Flashback application will be used to provide display configuration.</_description>
+			<_summary>Display configuration</_summary>
+			<_description>If set to true, then GNOME Flashback application will be used to provide the display configuration.</_description>
 		</key>
 		<key name="end-session-dialog" type="b">
 			<default>true</default>
 			<_summary>End session dialog</_summary>
-			<_description>If set to true, then GNOME Flashback application will be used to show end session dialog.</_description>
+			<_description>If set to true, then GNOME Flashback application will be used to show the end session dialog.</_description>
 		</key>
 		<key name="screencast" type="b">
 			<default>true</default>
-			<_summary>Screencast</_summary>
-			<_description>If set to true, then GNOME Flashback application will be used to record screen.</_description>
+			<_summary>Screencasts</_summary>
+			<_description>If set to true, then GNOME Flashback application will be used to record the screen.</_description>
 		</key>
 		<key name="screenshot" type="b">
 			<default>true</default>
-			<_summary>Screenshot</_summary>
-			<_description>If set to true, then GNOME Flashback application will be used to take screenshot.</_description>
+			<_summary>Screenshots</_summary>
+			<_description>If set to true, then GNOME Flashback application will be used to take screenshots.</_description>
 		</key>
 		<key name="shell" type="b">
 			<default>true</default>
 			<_summary>Shell</_summary>
-			<_description>If set to true, then GNOME Flashback application will be used as shell.</_description>
+			<_description>If set to true, then GNOME Flashback application will be used as a shell.</_description>
 		</key>
 		<key name="sound-applet" type="b">
 			<default>true</default>
 			<_summary>Sound applet</_summary>
-			<_description>If set to true, then GNOME Flashback application will be used to show sound applet. This is same sound applet that used to be part of GNOME Control Center.</_description>
+			<_description>If set to true, then GNOME Flashback application will be used to show a sound applet. This is the same sound applet that used to be a part of GNOME Control Center.</_description>
 		</key>
 
 		<child name="desktop-background" schema="org.gnome.gnome-flashback.desktop-background"/>
