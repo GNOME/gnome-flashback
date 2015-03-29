@@ -112,16 +112,16 @@ flashback_osd_show (FlashbackOsd *osd,
 
   g_variant_dict_init (&dict, params);
 
-  if (!g_variant_dict_lookup (&dict, "icon", "s", &icon_name))
+  if (!g_variant_dict_lookup (&dict, "icon", "&s", &icon_name))
     icon_name = NULL;
 
-  if (!g_variant_dict_lookup (&dict, "label", "s", &label))
+  if (!g_variant_dict_lookup (&dict, "label", "&s", &label))
     label = NULL;
 
-  if (!g_variant_dict_lookup (&dict, "level", "u", &level))
+  if (!g_variant_dict_lookup (&dict, "level", "i", &level))
     level = -1;
 
-  if (!g_variant_dict_lookup (&dict, "monitor", "u", &monitor))
+  if (!g_variant_dict_lookup (&dict, "monitor", "i", &monitor))
     monitor = -1;
 
   icon = NULL;
