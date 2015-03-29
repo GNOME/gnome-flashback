@@ -36,6 +36,8 @@ struct _FlashbackOsdWindow
 
   GtkWidget    *icon_image;
   gint          icon_size;
+
+  GtkWidget    *label;
 };
 
 G_DEFINE_TYPE (FlashbackOsdWindow, flashback_osd_window, GTK_TYPE_WINDOW)
@@ -226,7 +228,8 @@ flashback_osd_window_init (FlashbackOsdWindow *window)
 
   window->fade_out_alpha = 1.0;
 
-  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10);
+  gtk_container_set_border_width (GTK_CONTAINER (window), 20);
   gtk_container_add (GTK_CONTAINER (window), box);
   gtk_widget_show (box);
 
@@ -234,6 +237,11 @@ flashback_osd_window_init (FlashbackOsdWindow *window)
   gtk_widget_set_halign (window->icon_image, GTK_ALIGN_CENTER);
   gtk_widget_set_valign (window->icon_image, GTK_ALIGN_CENTER);
   gtk_box_pack_start (GTK_BOX (box), window->icon_image, TRUE, FALSE, 0);
+
+  window->label = gtk_label_new ("");
+  gtk_widget_set_halign (window->label, GTK_ALIGN_CENTER);
+  gtk_widget_set_valign (window->label, GTK_ALIGN_CENTER);
+  gtk_box_pack_start (GTK_BOX (box), window->label, FALSE, FALSE, 0);
 }
 
 FlashbackOsdWindow *
@@ -290,6 +298,14 @@ void
 flashback_osd_window_set_label (FlashbackOsdWindow *window,
                                 const gchar        *label)
 {
+  if (label == NULL)
+    {
+      gtk_widget_hide (window->label);
+      return;
+    }
+
+  gtk_label_set_text (GTK_LABEL (window->label), label);
+  gtk_widget_show (window->label);
 }
 
 void
