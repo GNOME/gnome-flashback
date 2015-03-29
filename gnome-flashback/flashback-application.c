@@ -66,7 +66,8 @@ remove_style_provider (FlashbackApplication *application,
 
 static void
 theme_changed (GtkSettings *settings,
-               gpointer      user_data)
+               GParamSpec  *pspec,
+               gpointer     user_data)
 {
   FlashbackApplication *application;
   GdkScreen *screen;
@@ -178,7 +179,7 @@ flashback_application_init (FlashbackApplication *application)
                     G_CALLBACK (theme_changed), application);
 
   settings_changed (application->settings, NULL, application);
-  theme_changed (settings, application);
+  theme_changed (settings, NULL, application);
 
   application->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,
                                           "org.gnome.Shell",
