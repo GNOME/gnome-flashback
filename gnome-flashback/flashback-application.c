@@ -15,9 +15,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <config.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
-#include "config.h"
 #include "flashback-application.h"
 #include "libautomount-manager/gsd-automount-manager.h"
 #include "libdesktop-background/desktop-background.h"
@@ -28,180 +28,119 @@
 #include "libshell/flashback-shell.h"
 #include "libsound-applet/gvc-applet.h"
 
-#define FLASHBACK_SCHEMA       "org.gnome.gnome-flashback"
-#define KEY_AUTOMOUNT_MANAGER  "automount-manager"
-#define KEY_DESKTOP_BACKGROUND "desktop-background"
-#define KEY_DISPLAY_CONFIG     "display-config"
-#define KEY_END_SESSION_DIALOG "end-session-dialog"
-#define KEY_SCREENCAST         "screencast"
-#define KEY_SCREENSHOT         "screenshot"
-#define KEY_SHELL              "shell"
-#define KEY_SOUND_APPLET       "sound-applet"
+struct _FlashbackApplication
+{
+  GObject                    parent;
 
-struct _FlashbackApplicationPrivate {
-	GSettings                  *settings;
-	GsdAutomountManager        *automount;
-	DesktopBackground          *background;
-	FlashbackDisplayConfig     *config;
-	FlashbackEndSessionDialog  *dialog;
-	FlashbackScreencast        *screencast;
-	FlashbackScreenshot        *screenshot;
-	FlashbackShell             *shell;
-	GvcApplet                  *applet;
+  gint                       bus_name;
 
-	gint                        bus_name;
+  GSettings                 *settings;
+
+  GsdAutomountManager       *automount;
+  DesktopBackground         *background;
+  FlashbackDisplayConfig    *config;
+  FlashbackEndSessionDialog *dialog;
+  FlashbackScreencast       *screencast;
+  FlashbackScreenshot       *screenshot;
+  FlashbackShell            *shell;
+  GvcApplet                 *applet;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (FlashbackApplication, flashback_application, G_TYPE_OBJECT);
+G_DEFINE_TYPE (FlashbackApplication, flashback_application, G_TYPE_OBJECT)
 
 static void
 flashback_application_settings_changed (GSettings   *settings,
                                         const gchar *key,
                                         gpointer     user_data)
 {
-	FlashbackApplication *app = FLASHBACK_APPLICATION (user_data);
+  FlashbackApplication *application;
 
-	if (key == NULL || g_strcmp0 (key, KEY_AUTOMOUNT_MANAGER) == 0) {
-		if (g_settings_get_boolean (settings, KEY_AUTOMOUNT_MANAGER)) {
-			if (app->priv->automount == NULL) {
-				app->priv->automount = gsd_automount_manager_new ();
-			}
-		} else {
-			g_clear_object (&app->priv->automount);
-		}
-	}
+  application = FLASHBACK_APPLICATION (user_data);
 
-	if (key == NULL || g_strcmp0 (key, KEY_DESKTOP_BACKGROUND) == 0) {
-		if (g_settings_get_boolean (settings, KEY_DESKTOP_BACKGROUND)) {
-			if (app->priv->background == NULL) {
-				app->priv->background = desktop_background_new ();
-			}
-		} else {
-			g_clear_object (&app->priv->background);
-		}
-	}
+#define SETTING_CHANGED(variable_name, setting_name, function_name) \
+  if (key == NULL || g_strcmp0 (key, setting_name))                 \
+    {                                                               \
+      if (g_settings_get_boolean (settings, setting_name))          \
+        {                                                           \
+          if (application->variable_name == NULL)                   \
+            application->variable_name = function_name ();          \
+        }                                                           \
+      else                                                          \
+        {                                                           \
+          g_clear_object (&application->variable_name);             \
+        }                                                           \
+    }
 
-	if (key == NULL || g_strcmp0 (key, KEY_DISPLAY_CONFIG) == 0) {
-		if (g_settings_get_boolean (settings, KEY_DISPLAY_CONFIG)) {
-			if (app->priv->config == NULL) {
-				app->priv->config = flashback_display_config_new ();
-			}
-		} else {
-			g_clear_object (&app->priv->config);
-		}
-	}
+  SETTING_CHANGED (automount, "automount-manager", gsd_automount_manager_new)
+  SETTING_CHANGED (background, "desktop-background", desktop_background_new)
+  SETTING_CHANGED (config, "display-config", flashback_display_config_new)
+  SETTING_CHANGED (dialog, "end-session-dialog", flashback_end_session_dialog_new)
+  SETTING_CHANGED (screencast, "screencast", flashback_screencast_new)
+  SETTING_CHANGED (screenshot, "screenshot", flashback_screenshot_new)
+  SETTING_CHANGED (shell, "shell", flashback_shell_new)
+  SETTING_CHANGED (applet, "sound-applet", gvc_applet_new)
 
-	if (key == NULL || g_strcmp0 (key, KEY_END_SESSION_DIALOG) == 0) {
-		if (g_settings_get_boolean (settings, KEY_END_SESSION_DIALOG)) {
-			if (app->priv->dialog == NULL) {
-				app->priv->dialog = flashback_end_session_dialog_new ();
-			}
-		} else {
-			g_clear_object (&app->priv->dialog);
-		}
-	}
-
-	if (key == NULL || g_strcmp0 (key, KEY_SCREENCAST) == 0) {
-		if (g_settings_get_boolean (settings, KEY_SCREENCAST)) {
-			if (app->priv->screencast == NULL) {
-				app->priv->screencast = flashback_screencast_new ();
-			}
-		} else {
-			g_clear_object (&app->priv->screencast);
-		}
-	}
-
-	if (key == NULL || g_strcmp0 (key, KEY_SCREENSHOT) == 0) {
-		if (g_settings_get_boolean (settings, KEY_SCREENSHOT)) {
-			if (app->priv->screenshot == NULL) {
-				app->priv->screenshot = flashback_screenshot_new ();
-			}
-		} else {
-			g_clear_object (&app->priv->screenshot);
-		}
-	}
-
-	if (key == NULL || g_strcmp0 (key, KEY_SHELL) == 0) {
-		if (g_settings_get_boolean (settings, KEY_SHELL)) {
-			if (app->priv->shell == NULL) {
-				app->priv->shell = flashback_shell_new ();
-			}
-		} else {
-			g_clear_object (&app->priv->shell);
-		}
-	}
-
-	if (key == NULL || g_strcmp0 (key, KEY_SOUND_APPLET) == 0) {
-		if (g_settings_get_boolean (settings, KEY_SOUND_APPLET)) {
-			if (app->priv->applet == NULL) {
-				app->priv->applet = gvc_applet_new ();
-			}
-		} else {
-			g_clear_object (&app->priv->applet);
-		}
-	}
+#undef SETTING_CHANGED
 }
 
 static void
 flashback_application_finalize (GObject *object)
 {
-	FlashbackApplication *app = FLASHBACK_APPLICATION (object);
+  FlashbackApplication *application;
 
-	if (app->priv->bus_name) {
-		g_bus_unown_name (app->priv->bus_name);
-		app->priv->bus_name = 0;
-	}
+  application = FLASHBACK_APPLICATION (object);
 
-	g_clear_object (&app->priv->automount);
-	g_clear_object (&app->priv->background);
-	g_clear_object (&app->priv->config);
-	g_clear_object (&app->priv->dialog);
-	g_clear_object (&app->priv->screencast);
-	g_clear_object (&app->priv->screenshot);
-	g_clear_object (&app->priv->shell);
-	g_clear_object (&app->priv->applet);
-	g_clear_object (&app->priv->settings);
+  if (application->bus_name)
+    {
+      g_bus_unown_name (application->bus_name);
+      application->bus_name = 0;
+    }
 
-	G_OBJECT_CLASS (flashback_application_parent_class)->finalize (object);
+  g_clear_object (&application->settings);
+
+  g_clear_object (&application->automount);
+  g_clear_object (&application->background);
+  g_clear_object (&application->config);
+  g_clear_object (&application->dialog);
+  g_clear_object (&application->screencast);
+  g_clear_object (&application->screenshot);
+  g_clear_object (&application->shell);
+  g_clear_object (&application->applet);
+
+  G_OBJECT_CLASS (flashback_application_parent_class)->finalize (object);
 }
 
 static void
 flashback_application_init (FlashbackApplication *application)
 {
-	FlashbackApplicationPrivate *priv;
+  application->settings = g_settings_new ("org.gnome.gnome-flashback");
 
-	application->priv = flashback_application_get_instance_private (application);
-	priv = application->priv;
+  g_signal_connect (application->settings, "changed",
+                    G_CALLBACK (flashback_application_settings_changed),
+                    application);
 
-	priv->settings = g_settings_new (FLASHBACK_SCHEMA);
+  flashback_application_settings_changed (application->settings,
+                                          NULL, application);
 
-	g_signal_connect (priv->settings, "changed",
-	                  G_CALLBACK (flashback_application_settings_changed), application);
-	flashback_application_settings_changed (priv->settings, NULL, application);
-
-	priv->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,
-	                                 "org.gnome.Shell",
-	                                 G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
-	                                 G_BUS_NAME_OWNER_FLAGS_REPLACE,
-	                                 NULL,
-	                                 NULL,
-	                                 NULL,
-	                                 NULL,
-	                                 NULL);
+  application->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,
+                                          "org.gnome.Shell",
+                                          G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
+                                          G_BUS_NAME_OWNER_FLAGS_REPLACE,
+                                          NULL, NULL, NULL, NULL, NULL);
 }
 
 static void
-flashback_application_class_init (FlashbackApplicationClass *class)
+flashback_application_class_init (FlashbackApplicationClass *application_class)
 {
-	GObjectClass *object_class;
+  GObjectClass *object_class;
 
-	object_class = G_OBJECT_CLASS (class);
+  object_class = G_OBJECT_CLASS (application_class);
 
-	object_class->finalize = flashback_application_finalize;
+  object_class->finalize = flashback_application_finalize;
 }
 
 FlashbackApplication *
 flashback_application_new (void)
 {
-	return g_object_new (FLASHBACK_TYPE_APPLICATION, NULL);
+  return g_object_new (FLASHBACK_TYPE_APPLICATION, NULL);
 }
