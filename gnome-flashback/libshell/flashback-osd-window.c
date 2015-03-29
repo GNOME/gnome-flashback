@@ -38,6 +38,8 @@ struct _FlashbackOsdWindow
   gint          icon_size;
 
   GtkWidget    *label;
+
+  GtkWidget    *level;
 };
 
 G_DEFINE_TYPE (FlashbackOsdWindow, flashback_osd_window, GTK_TYPE_WINDOW)
@@ -240,8 +242,11 @@ flashback_osd_window_init (FlashbackOsdWindow *window)
 
   window->label = gtk_label_new ("");
   gtk_widget_set_halign (window->label, GTK_ALIGN_CENTER);
-  gtk_widget_set_valign (window->label, GTK_ALIGN_CENTER);
   gtk_box_pack_start (GTK_BOX (box), window->label, FALSE, FALSE, 0);
+
+  window->level = gtk_level_bar_new_for_interval (0, 100);
+  gtk_widget_set_halign (window->level, GTK_ALIGN_FILL);
+  gtk_box_pack_start (GTK_BOX (box), window->level, FALSE, FALSE, 0);
 }
 
 FlashbackOsdWindow *
@@ -312,6 +317,15 @@ void
 flashback_osd_window_set_level (FlashbackOsdWindow *window,
                                 gint                level)
 {
+  if (level == -1)
+    {
+      gtk_widget_hide (window->level);
+      return;
+    }
+
+  level = MAX (0, MIN (level, 100));
+  gtk_level_bar_set_value (GTK_LEVEL_BAR (window->level), level);
+  gtk_widget_show (window->level);
 }
 
 void
