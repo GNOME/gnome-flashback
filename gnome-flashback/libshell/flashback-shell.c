@@ -205,7 +205,10 @@ handle_show_monitor_labels (FlashbackDBusShell    *dbus_shell,
   shell = FLASHBACK_SHELL (user_data);
   sender = g_dbus_method_invocation_get_sender (invocation);
 
-  flashback_monitor_labeler_show (shell->labeler, sender, params);
+  g_assert (shell->manager != NULL);
+
+  flashback_monitor_labeler_show (shell->labeler, shell->manager,
+                                  sender, params);
 
   flashback_dbus_shell_complete_show_monitor_labels (dbus_shell, invocation);
 

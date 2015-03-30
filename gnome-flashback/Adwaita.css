@@ -2,3 +2,9 @@ FlashbackOsdWindow
 {
   border-radius: 20px;
 }
+
+FlashbackLabelWindow
+{
+  border-radius: 20px;
+  font-size: 40px;
+}

@@ -3,6 +3,7 @@ noinst_LTLIBRARIES = \
 
 AM_CPPFLAGS = \
 	$(SHELL_CFLAGS) \
+	-I$(top_builddir)/gnome-flashback \
 	-I$(top_builddir)/gnome-flashback/libshell
 
 libshell_la_SOURCES = \
@@ -10,6 +11,8 @@ libshell_la_SOURCES = \
 	flashback-dbus-shell.h \
 	flashback-key-bindings.c \
 	flashback-key-bindings.h \
+	flashback-label-window.c \
+	flashback-label-window.h \
 	flashback-monitor-labeler.c \
 	flashback-monitor-labeler.h \
 	flashback-osd.c \
