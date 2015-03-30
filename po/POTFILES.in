@@ -12,6 +12,7 @@ gnome-flashback/flashback-main.c
 gnome-flashback/libautomount-manager/gsd-automount-manager.c
 gnome-flashback/libautomount-manager/gsd-autorun.c
 gnome-flashback/libdisplay-config/flashback-display-config.c
+[type: gettext/glade]gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui
 gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c
 [type: gettext/glade]gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui
 gnome-flashback/libsound-applet/gvc-applet.c

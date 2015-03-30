@@ -37,7 +37,8 @@ BUILT_SOURCES = \
 	meta-dbus-display-config.c
 
 EXTRA_DIST = \
-	org.gnome.Mutter.DisplayConfig.xml
+	org.gnome.Mutter.DisplayConfig.xml \
+	flashback-confirm-dialog.ui
 
 CLEANFILES = \
 	$(BUILT_SOURCES)
