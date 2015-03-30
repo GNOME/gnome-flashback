@@ -258,63 +258,63 @@ struct _FlashbackMonitorManager
   FlashbackMonitorManagerPrivate *priv;
 };
 
-FlashbackMonitorManager *flashback_monitor_manager_new                 (void);
+FlashbackMonitorManager *flashback_monitor_manager_new                     (void);
 
-void                     flashback_monitor_manager_apply_configuration (FlashbackMonitorManager  *manager,
-                                                                        MetaCRTCInfo            **crtcs,
-                                                                        unsigned int              n_crtcs,
-                                                                        MetaOutputInfo          **outputs,
-                                                                        unsigned int              n_outputs);
+void                     flashback_monitor_manager_apply_configuration     (FlashbackMonitorManager  *manager,
+                                                                            MetaCRTCInfo            **crtcs,
+                                                                            unsigned int              n_crtcs,
+                                                                            MetaOutputInfo          **outputs,
+                                                                            unsigned int              n_outputs);
 
-void                     flashback_monitor_manager_change_backlight    (FlashbackMonitorManager  *manager,
-                                                                        MetaOutput               *output,
-                                                                        gint                      value);
+void                     flashback_monitor_manager_change_backlight        (FlashbackMonitorManager  *manager,
+                                                                            MetaOutput               *output,
+                                                                            gint                      value);
 
-void                     flashback_monitor_manager_get_crtc_gamma      (FlashbackMonitorManager  *manager,
-                                                                        MetaCRTC                 *crtc,
-                                                                        gsize                    *size,
-                                                                        unsigned short          **red,
-                                                                        unsigned short          **green,
-                                                                        unsigned short          **blue);
-void                     flashback_monitor_manager_set_crtc_gamma      (FlashbackMonitorManager  *manager,
-                                                                        MetaCRTC                 *crtc,
-                                                                        gsize                     size,
-                                                                        unsigned short           *red,
-                                                                        unsigned short           *green,
-                                                                        unsigned short           *blue);
+void                     flashback_monitor_manager_get_crtc_gamma          (FlashbackMonitorManager  *manager,
+                                                                            MetaCRTC                 *crtc,
+                                                                            gsize                    *size,
+                                                                            unsigned short          **red,
+                                                                            unsigned short          **green,
+                                                                            unsigned short          **blue);
+void                     flashback_monitor_manager_set_crtc_gamma          (FlashbackMonitorManager  *manager,
+                                                                            MetaCRTC                 *crtc,
+                                                                            gsize                     size,
+                                                                            unsigned short           *red,
+                                                                            unsigned short           *green,
+                                                                            unsigned short           *blue);
 
-GBytes                  *flashback_monitor_manager_read_edid           (FlashbackMonitorManager  *manager,
-                                                                        MetaOutput               *output);
+GBytes                  *flashback_monitor_manager_read_edid               (FlashbackMonitorManager  *manager,
+                                                                            MetaOutput               *output);
 
-void                     flashback_monitor_manager_set_power_save_mode (FlashbackMonitorManager  *manager,
-                                                                        MetaPowerSave             mode);
+void                     flashback_monitor_manager_set_power_save_mode     (FlashbackMonitorManager  *manager,
+                                                                            MetaPowerSave             mode);
 
-void                     meta_output_parse_edid                        (MetaOutput               *output,
-                                                                        GBytes                   *edid);
+void                     meta_output_parse_edid                            (MetaOutput               *output,
+                                                                            GBytes                   *edid);
 
-void                     meta_crtc_info_free                           (MetaCRTCInfo             *info);
-void                     meta_output_info_free                         (MetaOutputInfo           *info);
+void                     meta_crtc_info_free                               (MetaCRTCInfo             *info);
+void                     meta_output_info_free                             (MetaOutputInfo           *info);
 
 gboolean                 flashback_monitor_manager_has_hotplug_mode_update (FlashbackMonitorManager *manager);
-void                     flashback_monitor_manager_read_current_config (FlashbackMonitorManager  *manager);
+void                     flashback_monitor_manager_read_current_config     (FlashbackMonitorManager  *manager);
 
-MetaOutput              *flashback_monitor_manager_get_outputs         (FlashbackMonitorManager  *manager,
-                                                                        unsigned int             *n_outputs);
+MetaOutput              *flashback_monitor_manager_get_outputs             (FlashbackMonitorManager  *manager,
+                                                                            unsigned int             *n_outputs);
 
-void                     flashback_monitor_manager_get_resources       (FlashbackMonitorManager  *manager,
-                                                                        MetaMonitorMode         **modes,
-                                                                        unsigned int             *n_modes,
-                                                                        MetaCRTC                **crtcs,
-                                                                        unsigned int             *n_crtcs,
-                                                                        MetaOutput              **outputs,
-                                                                        unsigned int             *n_outputs);
+void                     flashback_monitor_manager_get_resources           (FlashbackMonitorManager  *manager,
+                                                                            MetaMonitorMode         **modes,
+                                                                            unsigned int             *n_modes,
+                                                                            MetaCRTC                **crtcs,
+                                                                            unsigned int             *n_crtcs,
+                                                                            MetaOutput              **outputs,
+                                                                            unsigned int             *n_outputs);
 
-void                     flashback_monitor_manager_get_screen_limits   (FlashbackMonitorManager *manager,
-                                                                        int                     *width,
-                                                                        int                     *height);
+void                     flashback_monitor_manager_get_screen_limits       (FlashbackMonitorManager  *manager,
+                                                                            int                      *width,
+                                                                            int                      *height);
 
-gint                     flashback_monitor_manager_get_monitor_for_output (FlashbackMonitorManager *manager,
-                                                                           guint                    id);
+gint                     flashback_monitor_manager_get_monitor_for_output  (FlashbackMonitorManager  *manager,
+                                                                            guint                     id);
 
 G_END_DECLS
 
