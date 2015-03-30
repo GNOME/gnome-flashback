@@ -29,6 +29,7 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <math.h>
+#include "flashback-confirm-dialog.h"
 #include "flashback-display-config.h"
 #include "flashback-monitor-config.h"
 #include "flashback-monitor-manager.h"
@@ -39,6 +40,7 @@ struct _FlashbackDisplayConfig
   gint                     bus_name;
   MetaDBusDisplayConfig   *skeleton;
   FlashbackMonitorManager *manager;
+  GtkWidget               *confirm_dialog;
 };
 
 G_DEFINE_TYPE (FlashbackDisplayConfig, flashback_display_config, G_TYPE_OBJECT)
@@ -73,17 +75,55 @@ power_save_mode_changed (MetaDBusDisplayConfig *skeleton,
   manager->power_save_mode = mode;
 }
 
+static void
+destroy_confirm_dialog (FlashbackDisplayConfig *dialog)
+{
+  if (dialog->confirm_dialog != NULL)
+    {
+      gtk_widget_destroy (GTK_WIDGET (dialog->confirm_dialog));
+      dialog->confirm_dialog = NULL;
+    }
+}
+
 static gboolean
 save_config_timeout (gpointer user_data)
 {
-  FlashbackMonitorManager *manager;
+  FlashbackDisplayConfig *dispay_config;
 
-  manager = FLASHBACK_MONITOR_MANAGER (user_data);
+  dispay_config = FLASHBACK_DISPLAY_CONFIG (user_data);
 
-  flashback_monitor_config_restore_previous (manager->config);
+  destroy_confirm_dialog (dispay_config);
 
-  manager->persistent_timeout_id = 0;
+  flashback_monitor_config_restore_previous (dispay_config->manager->monitor_config);
+
+  dispay_config->manager->persistent_timeout_id = 0;
   return G_SOURCE_REMOVE;
+}
+
+static void
+confirm_dialog_response_cb (FlashbackConfirmDialog *dialog,
+                            gint                    response_id,
+                            gpointer                user_data)
+{
+  FlashbackDisplayConfig *config;
+  gboolean ok;
+
+  config = FLASHBACK_DISPLAY_CONFIG (user_data);
+
+  switch (response_id)
+    {
+      case FLASHBACK_CONFIRM_DIALOG_RESPONSE_KEEP_CHANGES:
+        ok = TRUE;
+        break;
+      case FLASHBACK_CONFIRM_DIALOG_RESPONSE_REVERT_SETTINGS:
+      default:
+        ok = FALSE;
+        break;
+    }
+
+  destroy_confirm_dialog (config);
+
+  flashback_monitor_manager_confirm_configuration (config->manager, ok);
 }
 
 static gboolean
@@ -629,12 +669,18 @@ handle_apply_configuration (MetaDBusDisplayConfig *skeleton,
      appropriate UI. Then wait 20 seconds and if not confirmed, revert the
      configuration.
   */
-  flashback_monitor_config_update_current (manager->config);
+  flashback_monitor_config_update_current (manager->monitor_config);
 
   if (persistent)
     {
-      manager->persistent_timeout_id = g_timeout_add_seconds (20, save_config_timeout, manager);
+      manager->persistent_timeout_id = g_timeout_add_seconds (20, save_config_timeout, config);
       g_source_set_name_by_id (manager->persistent_timeout_id, "[gnome-flashback] save_config_timeout");
+
+      config->confirm_dialog = flashback_confirm_dialog_new (20);
+      g_signal_connect (config->confirm_dialog, "response",
+                        G_CALLBACK (confirm_dialog_response_cb), config);
+
+      gtk_window_present (GTK_WINDOW (config->confirm_dialog));
     }
 
   meta_dbus_display_config_complete_apply_configuration (skeleton,
@@ -901,6 +947,8 @@ flashback_display_config_finalize (GObject *object)
       g_bus_unown_name (config->bus_name);
       config->bus_name = 0;
     }
+
+  destroy_confirm_dialog (config);
 
   g_clear_object (&config->manager);
 

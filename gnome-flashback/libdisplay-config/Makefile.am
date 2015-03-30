@@ -12,6 +12,8 @@ libdisplay_config_la_SOURCES = \
 	meta-dbus-display-config.c \
 	meta-dbus-display-config.h \
 	meta-display-config-shared.h \
+	flashback-confirm-dialog.c \
+	flashback-confirm-dialog.h \
 	flashback-display-config.c \
 	flashback-display-config.h \
 	flashback-monitor-config.c \

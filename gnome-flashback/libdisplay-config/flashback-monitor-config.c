@@ -1923,6 +1923,13 @@ flashback_monitor_config_update_current (FlashbackMonitorConfig *config)
 void
 flashback_monitor_config_make_persistent (FlashbackMonitorConfig *config)
 {
+  g_hash_table_replace (config->configs, config->current, config_ref (config->current));
+  meta_monitor_config_save (config);
+}
+
+void
+flashback_monitor_config_restore_previous (FlashbackMonitorConfig *config)
+{
   if (config->previous)
     {
       /* The user chose to restore the previous configuration. In this
@@ -1940,13 +1947,6 @@ flashback_monitor_config_make_persistent (FlashbackMonitorConfig *config)
       if (!flashback_monitor_config_apply_stored (config))
         flashback_monitor_config_make_default (config);
     }
-}
-
-void
-flashback_monitor_config_restore_previous (FlashbackMonitorConfig *config)
-{
-  g_hash_table_replace (config->configs, config->current, config_ref (config->current));
-  meta_monitor_config_save (config);
 }
 
 gboolean

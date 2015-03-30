@@ -1053,12 +1053,12 @@ flashback_monitor_manager_constructed (GObject *object)
 
   manager->in_init = TRUE;
 
-  manager->config = flashback_monitor_config_new (manager);
+  manager->monitor_config = flashback_monitor_config_new (manager);
 
   flashback_monitor_manager_read_current_config (manager);
 
-  if (!flashback_monitor_config_apply_stored (manager->config))
-    flashback_monitor_config_make_default (manager->config);
+  if (!flashback_monitor_config_apply_stored (manager->monitor_config))
+    flashback_monitor_config_make_default (manager->monitor_config);
 
   /* Under XRandR, we don't rebuild our data structures until we see
      the RRScreenNotify event, but at least at startup we want to have
@@ -1416,6 +1416,25 @@ flashback_monitor_manager_apply_configuration (FlashbackMonitorManager  *manager
 }
 
 void
+flashback_monitor_manager_confirm_configuration (FlashbackMonitorManager *manager,
+                                                 gboolean                 ok)
+{
+  if (!manager->persistent_timeout_id)
+    {
+      /* too late */
+      return;
+    }
+
+  g_source_remove (manager->persistent_timeout_id);
+  manager->persistent_timeout_id = 0;
+
+  if (ok)
+    flashback_monitor_config_make_persistent (manager->monitor_config);
+  else
+    flashback_monitor_config_restore_previous (manager->monitor_config);
+}
+
+void
 flashback_monitor_manager_change_backlight (FlashbackMonitorManager *manager,
 					                                  MetaOutput              *output,
 					                                  gint                     value)
@@ -1587,13 +1606,13 @@ flashback_monitor_manager_on_hotplug (FlashbackMonitorManager *manager)
    */
   if (!flashback_monitor_manager_has_hotplug_mode_update (manager))
     {
-      if (flashback_monitor_config_apply_stored (manager->config))
+      if (flashback_monitor_config_apply_stored (manager->monitor_config))
         applied_config = TRUE;
     }
 
   /* If we haven't applied any configuration, apply the default configuration. */
   if (!applied_config)
-    flashback_monitor_config_make_default (manager->config);
+    flashback_monitor_config_make_default (manager->monitor_config);
 }
 
 MetaOutput *

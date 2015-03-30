@@ -3,6 +3,7 @@
   <gresource prefix="/org/gnome/gnome-flashback">
     <file>Adwaita.css</file>
     <file>HighContrast.css</file>
+    <file alias="flashback-confirm-dialog.ui" compressed="true">libdisplay-config/flashback-confirm-dialog.ui</file>
     <file alias="flashback-inhibit-dialog.ui" compressed="true">libend-session-dialog/flashback-inhibit-dialog.ui</file>
   </gresource>
 </gresources>

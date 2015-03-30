@@ -252,7 +252,7 @@ struct _FlashbackMonitorManager
   int                             primary_monitor_index;
 
   int                             persistent_timeout_id;
-  FlashbackMonitorConfig         *config;
+  FlashbackMonitorConfig         *monitor_config;
 
   GnomePnpIds                    *pnp_ids;
 
@@ -266,6 +266,9 @@ void                     flashback_monitor_manager_apply_configuration     (Flas
                                                                             unsigned int              n_crtcs,
                                                                             MetaOutputInfo          **outputs,
                                                                             unsigned int              n_outputs);
+
+void                     flashback_monitor_manager_confirm_configuration   (FlashbackMonitorManager  *manager,
+                                                                            gboolean                  ok);
 
 void                     flashback_monitor_manager_change_backlight        (FlashbackMonitorManager  *manager,
                                                                             MetaOutput               *output,
