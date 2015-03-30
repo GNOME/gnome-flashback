@@ -134,6 +134,9 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (applet, "sound-applet", gvc_applet_new)
 
 #undef SETTING_CHANGED
+
+  if (application->shell)
+    flashback_shell_set_display_config (application->shell, application->config);
 }
 
 static void

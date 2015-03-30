@@ -17,6 +17,7 @@
 
 #include <config.h>
 #include <gtk/gtk.h>
+#include <libdisplay-config/flashback-display-config.h>
 #include "flashback-dbus-shell.h"
 #include "flashback-key-bindings.h"
 #include "flashback-monitor-labeler.h"
@@ -46,6 +47,7 @@ struct _FlashbackShell
 
   /* monitor labeler */
   FlashbackMonitorLabeler *labeler;
+  FlashbackMonitorManager *manager;
 
   /* osd */
   FlashbackOsd            *osd;
@@ -456,4 +458,11 @@ FlashbackShell *
 flashback_shell_new (void)
 {
 	return g_object_new (FLASHBACK_TYPE_SHELL, NULL);
+}
+
+void
+flashback_shell_set_display_config (FlashbackShell         *shell,
+                                    FlashbackDisplayConfig *config)
+{
+  shell->manager = flashback_display_config_get_monitor_manager (config);
 }

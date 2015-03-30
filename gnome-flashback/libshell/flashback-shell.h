@@ -22,10 +22,15 @@
 
 G_BEGIN_DECLS
 
+typedef struct _FlashbackDisplayConfig FlashbackDisplayConfig;
+
 #define FLASHBACK_TYPE_SHELL flashback_shell_get_type ()
 G_DECLARE_FINAL_TYPE (FlashbackShell, flashback_shell, FLASHBACK, SHELL, GObject)
 
-FlashbackShell *flashback_shell_new (void);
+FlashbackShell *flashback_shell_new                (void);
+
+void            flashback_shell_set_display_config (FlashbackShell         *shell,
+                                                    FlashbackDisplayConfig *config);
 
 G_END_DECLS
 
