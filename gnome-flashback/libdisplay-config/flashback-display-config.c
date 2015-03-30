@@ -940,3 +940,12 @@ flashback_display_config_new (void)
   return g_object_new (FLASHBACK_TYPE_DISPLAY_CONFIG,
                        NULL);
 }
+
+FlashbackMonitorManager *
+flashback_display_config_get_monitor_manager (FlashbackDisplayConfig *config)
+{
+  if (config == NULL)
+    return NULL;
+
+  return config->manager;
+}

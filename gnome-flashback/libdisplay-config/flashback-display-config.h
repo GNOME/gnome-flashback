@@ -22,12 +22,16 @@
 
 G_BEGIN_DECLS
 
+typedef struct _FlashbackMonitorManager FlashbackMonitorManager;
+
 #define FLASHBACK_TYPE_DISPLAY_CONFIG flashback_display_config_get_type ()
 G_DECLARE_FINAL_TYPE (FlashbackDisplayConfig, flashback_display_config,
                       FLASHBACK, DISPLAY_CONFIG,
                       GObject)
 
-FlashbackDisplayConfig *flashback_display_config_new (void);
+FlashbackDisplayConfig  *flashback_display_config_new                 (void);
+
+FlashbackMonitorManager *flashback_display_config_get_monitor_manager (FlashbackDisplayConfig *config);
 
 G_END_DECLS
 
