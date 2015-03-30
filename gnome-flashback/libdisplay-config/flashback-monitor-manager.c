@@ -57,6 +57,17 @@ struct _FlashbackMonitorManagerPrivate
 
 G_DEFINE_TYPE_WITH_PRIVATE (FlashbackMonitorManager, flashback_monitor_manager, G_TYPE_OBJECT)
 
+static gboolean
+rectangle_contains_rect (const GdkRectangle *outer_rect,
+                         const GdkRectangle *inner_rect)
+{
+  return
+    inner_rect->x                      >= outer_rect->x &&
+    inner_rect->y                      >= outer_rect->y &&
+    inner_rect->x + inner_rect->width  <= outer_rect->x + outer_rect->width &&
+    inner_rect->y + inner_rect->height <= outer_rect->y + outer_rect->height;
+}
+
 static Rotation
 meta_monitor_transform_to_xrandr (MetaMonitorTransform transform)
 {
@@ -1500,4 +1511,25 @@ flashback_monitor_manager_get_screen_limits (FlashbackMonitorManager *manager,
 {
   *width = manager->max_screen_width;
   *height = manager->max_screen_height;
+}
+
+gint
+flashback_monitor_manager_get_monitor_for_output (FlashbackMonitorManager *manager,
+                                                  guint                    id)
+{
+  MetaOutput *output;
+  guint i;
+
+  g_return_val_if_fail (FLASHBACK_IS_MONITOR_MANAGER (manager), -1);
+  g_return_val_if_fail (id < manager->n_outputs, -1);
+
+  output = &manager->outputs[id];
+  if (!output || !output->crtc)
+    return -1;
+
+  for (i = 0; i < manager->n_monitor_infos; i++)
+    if (rectangle_contains_rect (&manager->monitor_infos[i].rect, &output->crtc->rect))
+      return i;
+
+  return -1;
 }

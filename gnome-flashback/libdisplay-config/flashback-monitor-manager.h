@@ -313,6 +313,9 @@ void                     flashback_monitor_manager_get_screen_limits   (Flashbac
                                                                         int                     *width,
                                                                         int                     *height);
 
+gint                     flashback_monitor_manager_get_monitor_for_output (FlashbackMonitorManager *manager,
+                                                                           guint                    id);
+
 G_END_DECLS
 
 #endif
