@@ -29,6 +29,7 @@
 #include <gdk/gdk.h>
 #include <libgnome-desktop/gnome-pnp-ids.h>
 #include "meta-display-config-shared.h"
+#include "meta-dbus-display-config.h"
 
 G_BEGIN_DECLS
 
@@ -258,7 +259,7 @@ struct _FlashbackMonitorManager
   FlashbackMonitorManagerPrivate *priv;
 };
 
-FlashbackMonitorManager *flashback_monitor_manager_new                     (void);
+FlashbackMonitorManager *flashback_monitor_manager_new                     (MetaDBusDisplayConfig    *display_config);
 
 void                     flashback_monitor_manager_apply_configuration     (FlashbackMonitorManager  *manager,
                                                                             MetaCRTCInfo            **crtcs,
@@ -295,8 +296,9 @@ void                     meta_output_parse_edid                            (Meta
 void                     meta_crtc_info_free                               (MetaCRTCInfo             *info);
 void                     meta_output_info_free                             (MetaOutputInfo           *info);
 
-gboolean                 flashback_monitor_manager_has_hotplug_mode_update (FlashbackMonitorManager *manager);
+gboolean                 flashback_monitor_manager_has_hotplug_mode_update (FlashbackMonitorManager  *manager);
 void                     flashback_monitor_manager_read_current_config     (FlashbackMonitorManager  *manager);
+void                     flashback_monitor_manager_on_hotplug              (FlashbackMonitorManager  *manager);
 
 MetaOutput              *flashback_monitor_manager_get_outputs             (FlashbackMonitorManager  *manager,
                                                                             unsigned int             *n_outputs);
@@ -315,6 +317,8 @@ void                     flashback_monitor_manager_get_screen_limits       (Flas
 
 gint                     flashback_monitor_manager_get_monitor_for_output  (FlashbackMonitorManager  *manager,
                                                                             guint                     id);
+
+void                     flashback_monitor_manager_rebuild_derived         (FlashbackMonitorManager  *manager);
 
 G_END_DECLS
 

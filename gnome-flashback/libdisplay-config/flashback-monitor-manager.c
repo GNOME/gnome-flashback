@@ -49,13 +49,58 @@
 
 struct _FlashbackMonitorManagerPrivate
 {
-  Display            *xdisplay;
-  XRRScreenResources *resources;
-  int                 rr_event_base;
-  int                 rr_error_base;
+  Display               *xdisplay;
+
+  XRRScreenResources    *resources;
+
+  int                    rr_event_base;
+  int                    rr_error_base;
+
+  MetaDBusDisplayConfig *display_config;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (FlashbackMonitorManager, flashback_monitor_manager, G_TYPE_OBJECT)
+
+enum
+{
+  PROP_0,
+  PROP_DISPLAY_CONFIG,
+  N_PROPERTIES
+};
+
+static GParamSpec *object_properties[N_PROPERTIES] = { NULL, };
+
+static GdkFilterReturn
+filter_func (GdkXEvent *xevent,
+             GdkEvent  *event,
+             gpointer   user_data)
+{
+  FlashbackMonitorManager *manager;
+  XEvent *xev;
+
+  manager = FLASHBACK_MONITOR_MANAGER (user_data);
+  xev = (XEvent *) xevent;
+
+  if ((xev->type - manager->priv->rr_event_base) == RRScreenChangeNotify)
+    {
+      XRRUpdateConfiguration (xev);
+
+      flashback_monitor_manager_read_current_config (manager);
+
+      if (manager->priv->resources->timestamp < manager->priv->resources->configTimestamp)
+        {
+          /* This is a hotplug event, so go ahead and build a new configuration. */
+          flashback_monitor_manager_on_hotplug (manager);
+        }
+      else
+        {
+          /* Something else changed -- tell the world about it. */
+          flashback_monitor_manager_rebuild_derived (manager);
+        }
+    }
+
+  return GDK_FILTER_CONTINUE;
+}
 
 static gboolean
 rectangle_contains_rect (const GdkRectangle *outer_rect,
@@ -1030,11 +1075,57 @@ flashback_monitor_manager_constructed (GObject *object)
 }
 
 static void
+flashback_monitor_manager_set_property (GObject      *object,
+                                        guint         property_id,
+                                        const GValue *value,
+                                        GParamSpec   *pspec)
+{
+  FlashbackMonitorManager *manager;
+
+  manager = FLASHBACK_MONITOR_MANAGER (object);
+
+  switch (property_id)
+    {
+      case PROP_DISPLAY_CONFIG:
+        if (manager->priv->display_config)
+          g_object_unref (manager->priv->display_config);
+        manager->priv->display_config = g_value_get_object (value);
+        break;
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
+
+static void
+flashback_monitor_manager_get_property (GObject    *object,
+                                        guint       property_id,
+                                        GValue     *value,
+                                        GParamSpec *pspec)
+{
+  FlashbackMonitorManager *manager;
+
+  manager = FLASHBACK_MONITOR_MANAGER (object);
+
+  switch (property_id)
+    {
+      case PROP_DISPLAY_CONFIG:
+        g_value_set_object (value, manager->priv->display_config);
+        break;
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
+
+static void
 flashback_monitor_manager_finalize (GObject *object)
 {
   FlashbackMonitorManager *manager;
 
   manager = FLASHBACK_MONITOR_MANAGER (object);
+
+  gdk_window_remove_filter (NULL, filter_func, manager);
 
   if (manager->priv->resources)
     XRRFreeScreenResources (manager->priv->resources);
@@ -1056,7 +1147,19 @@ flashback_monitor_manager_class_init (FlashbackMonitorManagerClass *manager_clas
   object_class = G_OBJECT_CLASS (manager_class);
 
   object_class->constructed = flashback_monitor_manager_constructed;
+  object_class->set_property = flashback_monitor_manager_set_property;
+  object_class->get_property = flashback_monitor_manager_get_property;
   object_class->finalize = flashback_monitor_manager_finalize;
+
+  object_properties[PROP_DISPLAY_CONFIG] =
+    g_param_spec_object ("display-config",
+                         "display-config",
+                         "display-config",
+                         META_DBUS_TYPE_DISPLAY_CONFIG,
+                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
+
+  g_object_class_install_properties (object_class, N_PROPERTIES,
+                                     object_properties);
 }
 
 static void
@@ -1072,6 +1175,8 @@ flashback_monitor_manager_init (FlashbackMonitorManager *manager)
   if (!XRRQueryExtension (priv->xdisplay, &priv->rr_event_base, &priv->rr_error_base))
     return;
 
+  gdk_window_add_filter (NULL, filter_func, manager);
+
   /* We only use ScreenChangeNotify, but GDK uses the others,
      and we don't want to step on its toes */
   XRRSelectInput (priv->xdisplay, DefaultRootWindow (priv->xdisplay),
@@ -1080,9 +1185,10 @@ flashback_monitor_manager_init (FlashbackMonitorManager *manager)
 }
 
 FlashbackMonitorManager *
-flashback_monitor_manager_new (void)
+flashback_monitor_manager_new (MetaDBusDisplayConfig *display_config)
 {
   return g_object_new (FLASHBACK_TYPE_MONITOR_MANAGER,
+                       "display-config", display_config,
                        NULL);
 }
 
@@ -1470,6 +1576,26 @@ meta_output_parse_edid (MetaOutput *meta_output,
     }
 }
 
+void
+flashback_monitor_manager_on_hotplug (FlashbackMonitorManager *manager)
+{
+  gboolean applied_config = FALSE;
+
+  /* If the monitor has hotplug_mode_update (which is used by VMs), don't bother
+   * applying our stored configuration, because it's likely the user just resizing
+   * the window.
+   */
+  if (!flashback_monitor_manager_has_hotplug_mode_update (manager))
+    {
+      if (flashback_monitor_config_apply_stored (manager->config))
+        applied_config = TRUE;
+    }
+
+  /* If we haven't applied any configuration, apply the default configuration. */
+  if (!applied_config)
+    flashback_monitor_config_make_default (manager->config);
+}
+
 MetaOutput *
 flashback_monitor_manager_get_outputs (FlashbackMonitorManager *manager,
                                        unsigned int            *n_outputs)
@@ -1532,4 +1658,21 @@ flashback_monitor_manager_get_monitor_for_output (FlashbackMonitorManager *manag
       return i;
 
   return -1;
+}
+
+void
+flashback_monitor_manager_rebuild_derived (FlashbackMonitorManager *manager)
+{
+  MetaMonitorInfo *old_monitor_infos;
+
+  old_monitor_infos = manager->monitor_infos;
+
+  if (manager->in_init)
+    return;
+
+  make_logical_config (manager);
+
+  g_signal_emit_by_name (manager->priv->display_config, "monitors-changed");
+
+  g_free (old_monitor_infos);
 }

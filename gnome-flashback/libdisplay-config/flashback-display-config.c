@@ -29,7 +29,6 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <math.h>
-#include "meta-dbus-display-config.h"
 #include "flashback-display-config.h"
 #include "flashback-monitor-config.h"
 #include "flashback-monitor-manager.h"
@@ -38,7 +37,7 @@ struct _FlashbackDisplayConfig
 {
   GObject                  parent;
   gint                     bus_name;
-  GDBusInterfaceSkeleton  *iface;
+  MetaDBusDisplayConfig   *skeleton;
   FlashbackMonitorManager *manager;
 };
 
@@ -838,30 +837,29 @@ on_bus_acquired (GDBusConnection *connection,
                  gpointer         user_data)
 {
   FlashbackDisplayConfig *config;
-  MetaDBusDisplayConfig *skeleton;
+  GDBusInterfaceSkeleton *iface;
   GError *error;
 
   config = FLASHBACK_DISPLAY_CONFIG (user_data);
-  skeleton = meta_dbus_display_config_skeleton_new ();
 
-  g_signal_connect (skeleton, "handle-get-resources",
+  g_signal_connect (config->skeleton, "handle-get-resources",
                     G_CALLBACK (handle_get_resources), config);
-  g_signal_connect (skeleton, "handle-apply-configuration",
+  g_signal_connect (config->skeleton, "handle-apply-configuration",
                     G_CALLBACK (handle_apply_configuration), config);
-  g_signal_connect (skeleton, "handle-change-backlight",
+  g_signal_connect (config->skeleton, "handle-change-backlight",
                     G_CALLBACK (handle_change_backlight), config);
-  g_signal_connect (skeleton, "handle-get-crtc-gamma",
+  g_signal_connect (config->skeleton, "handle-get-crtc-gamma",
                     G_CALLBACK (handle_get_crtc_gamma), config);
-  g_signal_connect (skeleton, "handle-set-crtc-gamma",
+  g_signal_connect (config->skeleton, "handle-set-crtc-gamma",
                     G_CALLBACK (handle_set_crtc_gamma), config);
 
-  g_signal_connect (skeleton, "notify::power-save-mode",
+  g_signal_connect (config->skeleton, "notify::power-save-mode",
                     G_CALLBACK (power_save_mode_changed), config);
 
-  config->iface = G_DBUS_INTERFACE_SKELETON (skeleton);
+  iface = G_DBUS_INTERFACE_SKELETON (config->skeleton);
   error = NULL;
 
-  if (!g_dbus_interface_skeleton_export (config->iface, connection,
+  if (!g_dbus_interface_skeleton_export (iface, connection,
                                          "/org/gnome/Mutter/DisplayConfig",
                                          &error))
     {
@@ -892,10 +890,10 @@ flashback_display_config_finalize (GObject *object)
 
   config = FLASHBACK_DISPLAY_CONFIG (object);
 
-  if (config->iface)
+  if (config->skeleton)
     {
-      g_dbus_interface_skeleton_unexport (config->iface);
-      g_clear_object (&config->iface);
+      g_dbus_interface_skeleton_unexport (G_DBUS_INTERFACE_SKELETON (config->skeleton));
+      g_clear_object (&config->skeleton);
     }
 
   if (config->bus_name)
@@ -922,7 +920,10 @@ flashback_display_config_class_init (FlashbackDisplayConfigClass *config_class)
 static void
 flashback_display_config_init (FlashbackDisplayConfig *config)
 {
-  config->manager = flashback_monitor_manager_new ();
+  MetaDBusDisplayConfig *display_config;
+
+  config->skeleton = meta_dbus_display_config_skeleton_new ();
+  config->manager = flashback_monitor_manager_new (config->skeleton);
   config->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,
                                      "org.gnome.Mutter.DisplayConfig",
                                      G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
