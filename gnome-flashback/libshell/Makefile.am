@@ -3,6 +3,7 @@ noinst_LTLIBRARIES = \
 
 AM_CPPFLAGS = \
 	$(SHELL_CFLAGS) \
+	-I$(srcdir)/../../gnome-flashback \
 	-I$(top_builddir)/gnome-flashback \
 	-I$(top_builddir)/gnome-flashback/libshell
 
