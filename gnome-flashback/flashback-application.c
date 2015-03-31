@@ -23,6 +23,7 @@
 #include "libdesktop-background/desktop-background.h"
 #include "libdisplay-config/flashback-display-config.h"
 #include "libend-session-dialog/flashback-end-session-dialog.h"
+#include "libidle-monitor/meta-idle-monitor-dbus.h"
 #include "libscreencast/flashback-screencast.h"
 #include "libscreenshot/flashback-screenshot.h"
 #include "libshell/flashback-shell.h"
@@ -42,6 +43,7 @@ struct _FlashbackApplication
   DesktopBackground         *background;
   FlashbackDisplayConfig    *config;
   FlashbackEndSessionDialog *dialog;
+  MetaIdleMonitorDBus       *idle_monitor;
   FlashbackScreencast       *screencast;
   FlashbackScreenshot       *screenshot;
   FlashbackShell            *shell;
@@ -127,6 +129,7 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (automount, "automount-manager", gsd_automount_manager_new)
   SETTING_CHANGED (background, "desktop-background", desktop_background_new)
   SETTING_CHANGED (config, "display-config", flashback_display_config_new)
+  SETTING_CHANGED (idle_monitor, "idle-monitor", meta_idle_monitor_dbus_new)
   SETTING_CHANGED (dialog, "end-session-dialog", flashback_end_session_dialog_new)
   SETTING_CHANGED (screencast, "screencast", flashback_screencast_new)
   SETTING_CHANGED (screenshot, "screenshot", flashback_screenshot_new)
@@ -160,6 +163,7 @@ flashback_application_finalize (GObject *object)
   g_clear_object (&application->background);
   g_clear_object (&application->config);
   g_clear_object (&application->dialog);
+  g_clear_object (&application->idle_monitor);
   g_clear_object (&application->screencast);
   g_clear_object (&application->screenshot);
   g_clear_object (&application->shell);
