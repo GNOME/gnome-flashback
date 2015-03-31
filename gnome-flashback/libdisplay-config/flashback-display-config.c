@@ -395,6 +395,20 @@ handle_get_resources (MetaDBusDisplayConfig *skeleton,
           g_bytes_unref (edid);
         }
 
+      if (output->tile_info.group_id)
+        {
+          g_variant_builder_add (&properties, "{sv}", "tile",
+                                 g_variant_new ("(uuuuuuuu)",
+                                                output->tile_info.group_id,
+                                                output->tile_info.flags,
+                                                output->tile_info.max_h_tiles,
+                                                output->tile_info.max_v_tiles,
+                                                output->tile_info.loc_h_tile,
+                                                output->tile_info.loc_v_tile,
+                                                output->tile_info.tile_w,
+                                                output->tile_info.tile_h));
+        }
+
       g_variant_builder_add (&output_builder, "(uxiausauaua{sv})",
                              i, /* ID */
                              (gint64) output->winsys_id,
