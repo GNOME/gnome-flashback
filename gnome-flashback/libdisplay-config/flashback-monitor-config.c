@@ -1367,12 +1367,12 @@ meta_monitor_config_get_stored (FlashbackMonitorConfig *self,
  * which are internal monitors), or failing that, the one with the
  * best resolution
  */
-static MetaOutput *
+static int
 find_primary_output (MetaOutput *outputs,
                      unsigned    n_outputs)
 {
   unsigned i;
-  MetaOutput *best;
+  int best;
   int best_width, best_height;
 
   g_assert (n_outputs >= 1);
@@ -1380,23 +1380,23 @@ find_primary_output (MetaOutput *outputs,
   for (i = 0; i < n_outputs; i++)
     {
       if (outputs[i].is_primary)
-        return &outputs[i];
+        return i;
     }
 
   for (i = 0; i < n_outputs; i++)
     {
       if (output_is_laptop (&outputs[i]))
-        return &outputs[i];
+        return i;
     }
 
-  best = NULL;
+  best = -1;
   best_width = 0; best_height = 0;
   for (i = 0; i < n_outputs; i++)
     {
       if (outputs[i].preferred_mode->width * outputs[i].preferred_mode->height >
           best_width * best_height)
         {
-          best = &outputs[i];
+          best = i;
           best_width = outputs[i].preferred_mode->width;
           best_height = outputs[i].preferred_mode->height;
         }
@@ -1413,7 +1413,7 @@ make_linear_config (FlashbackMonitorConfig *self,
                     int                     max_height,
                     MetaConfiguration      *config)
 {
-  MetaOutput *primary;
+  int primary;
   unsigned i;
   int x;
 
@@ -1421,10 +1421,10 @@ make_linear_config (FlashbackMonitorConfig *self,
 
   primary = find_primary_output (outputs, n_outputs);
 
-  x = primary->preferred_mode->width;
+  x = outputs[primary].preferred_mode->width;
   for (i = 0; i < n_outputs; i++)
     {
-      gboolean is_primary = (&outputs[i] == primary);
+      gboolean is_primary = ((int)i == primary);
 
       init_config_from_preferred_mode (&config->outputs[i], &outputs[i]);
       config->outputs[i].is_primary = is_primary;
@@ -1455,7 +1455,7 @@ make_suggested_config (FlashbackMonitorConfig *self,
                        MetaConfiguration      *config)
 {
   unsigned int i;
-  MetaOutput *primary;
+  int primary;
   GList *region = NULL;
 
   g_return_val_if_fail (config != NULL, FALSE);
@@ -1463,7 +1463,7 @@ make_suggested_config (FlashbackMonitorConfig *self,
 
   for (i = 0; i < n_outputs; i++)
     {
-      gboolean is_primary = (&outputs[i] == primary);
+      gboolean is_primary = ((int)i == primary);
 
       if (outputs[i].suggested_x < 0 || outputs[i].suggested_y < 0)
           return FALSE;
@@ -1609,7 +1609,7 @@ ensure_at_least_one_output (FlashbackMonitorConfig *self,
                             unsigned                n_outputs)
 {
   MetaConfiguration *config;
-  MetaOutput *primary;
+  int primary;
   unsigned i;
 
   /* Check that we have at least one active output */
@@ -1627,7 +1627,7 @@ ensure_at_least_one_output (FlashbackMonitorConfig *self,
 
   for (i = 0; i < n_outputs; i++)
     {
-      gboolean is_primary = (&outputs[i] == primary);
+      gboolean is_primary = ((int)i == primary);
 
       if (is_primary)
         {
