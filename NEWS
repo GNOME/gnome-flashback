@@ -1,3 +1,19 @@
+Version 3.16.0
+==============
+- Add preferences and administartion sub menus under System Tools. (Alberts
+  Muktupāvels)
+- Hide Unity settings panels from Other menu category. (Dmitry Shachnev)
+- Implemented display-config, based on mutter 3.16.0 release. (Alberts
+  Muktupāvels)
+- Key grabber replaced with shell that provides osd windows and monitor
+  labels. (Alberts Mutkupāvels)
+- sound-applet: Fix visibility of bar when orientation is the same as the
+  default. (Bastien Nocera)
+- Updated translations:
+  Balázs Úr (hu), Chao-Hsiung Liao (zh_HK, zh_TW), Marek Černocký (cs),
+  Мирослав Николић (sr, sr@latin), Piotr Drąg (pl), Rafael Ferreira (pt_BR),
+  Samir Ribic (bs).
+
 Version 3.15.2
 ==============
 - Added key grabber. (Alberts Muktupāvels)
