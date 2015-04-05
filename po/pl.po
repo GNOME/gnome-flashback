@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-29 21:08+0200\n"
-"PO-Revision-Date: 2015-03-29 21:09+0200\n"
+"POT-Creation-Date: 2015-04-05 22:07+0200\n"
+"PO-Revision-Date: 2015-04-05 22:08+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -34,7 +34,8 @@ msgstr "Tradycyjne środowisko GNOME (Compiz)"
 #: ../data/gnome-flashback-compiz.desktop.in.in.h:2
 msgid "This session logs you into GNOME Flashback with Compiz"
 msgstr ""
-"Ta sesja loguje użytkownika do tradycyjnego środowiska GNOME, używając Compiz"
+"Ta sesja loguje użytkownika do tradycyjnego środowiska GNOME, używając "
+"menedżera okien Compiz"
 
 #: ../data/gnome-flashback-init.desktop.in.h:1
 msgid "GNOME Flashback Initialization"
@@ -48,7 +49,7 @@ msgstr "Tradycyjne środowisko GNOME (Metacity)"
 msgid "This session logs you into GNOME Flashback with Metacity"
 msgstr ""
 "Ta sesja loguje użytkownika do tradycyjnego środowiska GNOME, używając "
-"Metacity"
+"menedżera okien Metacity"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
 msgid "Automount manager"
@@ -99,10 +100,22 @@ msgstr ""
 "GNOME będzie używany do wyświetlania okna dialogowego kończenia sesji."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:9
+msgid "Idle monitor"
+msgstr "Monitorowanie bezczynności"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:10
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr ""
+"Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
+"GNOME będzie używany do monitorowania aktywności użytkownika."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:11
 msgid "Screencasts"
 msgstr "Nagrywanie ekranu"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:10
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:12
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -110,11 +123,11 @@ msgstr ""
 "Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
 "GNOME będzie używany do nagrywania ekranu."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:11
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:13
 msgid "Screenshots"
 msgstr "Zrzuty ekranu"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:12
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -122,22 +135,22 @@ msgstr ""
 "Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
 "GNOME będzie używany do wykonywania zrzutów ekranu."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:13
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:15
 msgid "Shell"
 msgstr "Powłoka"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:16
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr ""
 "Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
 "GNOME będzie używany jako powłoka."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:15
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:17
 msgid "Sound applet"
 msgstr "Aplet dźwięku"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:16
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:18
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -147,11 +160,11 @@ msgstr ""
 "GNOME będzie używany do wyświetlania apletu dźwięku. Jest to ten sam aplet, "
 "który wcześniej był częścią Centrum sterowania GNOME."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:17
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:19
 msgid "Fade the background on change"
 msgstr "Efekt przejścia podczas zmiany tła"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:18
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:20
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -297,26 +310,42 @@ msgstr "_Wysuń"
 msgid "_Unmount"
 msgstr "Od_montuj"
 
-#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:156
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:195
 msgid "Built-in display"
 msgstr "Wbudowany ekran"
 
-#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:183
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:222
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:326
 msgid "Unknown"
 msgstr "Nieznany"
 
-#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:185
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:224
 msgid "Unknown Display"
 msgstr "Nieznany ekran"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:193
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:232
 #, c-format
 msgid "%s %s"
 msgstr "%s (%s)"
+
+#: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:1
+msgid "Confirm"
+msgstr "Potwierdzenie"
+
+#: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:2
+msgid "Do you want to keep these display settings?"
+msgstr "Zachować te ustawienia ekranu?"
+
+#: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:3
+msgid "_Keep Changes"
+msgstr "_Zachowaj zmiany"
+
+#: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:4
+msgid "_Revert Settings"
+msgstr "_Przywróć ustawienia"
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:407
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:596
