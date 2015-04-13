@@ -58,7 +58,7 @@ remove_style_provider (FlashbackApplication *application,
 {
   GtkStyleProvider *provider;
 
-  if (application->provider == FALSE)
+  if (application->provider == NULL)
     return;
 
   provider = GTK_STYLE_PROVIDER (application->provider);
@@ -80,6 +80,8 @@ theme_changed (GtkSettings *settings,
 
   g_object_get (settings, "gtk-theme-name", &theme, NULL);
 
+  remove_style_provider (application, screen);
+
   if (g_strcmp0 (theme, "Adwaita") == 0 || g_strcmp0 (theme, "HighContrast") == 0)
     {
       gchar *resource;
@@ -97,8 +99,6 @@ theme_changed (GtkSettings *settings,
 
       gtk_style_context_add_provider_for_screen (screen, provider, priority);
     }
-  else
-    remove_style_provider (application, screen);
 
   g_free (theme);
 }
