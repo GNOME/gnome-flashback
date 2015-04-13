@@ -394,6 +394,20 @@ size_allocate (GtkWidget     *widget,
                gpointer       user_data)
 {
 	DesktopBackground *background = DESKTOP_BACKGROUND (user_data);
+	DesktopBackgroundPrivate *priv = background->priv;
+
+	if (priv->width == allocation->width && priv->height == allocation->height) {
+		GdkWindow *window;
+		cairo_pattern_t *pattern;
+
+		window = gtk_widget_get_window (priv->background);
+		pattern = cairo_pattern_create_for_surface (priv->surface);
+
+		gdk_window_set_background_pattern (window, pattern);
+		cairo_pattern_destroy (pattern);
+
+		return;
+	}
 
 	queue_background_change (user_data);
 }
