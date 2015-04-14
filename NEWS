@@ -1,3 +1,10 @@
+Version 3.16.1
+==============
+- desktop-background: fixed background flickering. (Alberts Muktupāvels)
+- shell: don't grab keys without modifiers. (Alberts Muktupāvels)
+- Updated translations:
+  Piotr Drąg (pl).
+
 Version 3.16.0
 ==============
 - Add preferences and administartion sub menus under System Tools. (Alberts

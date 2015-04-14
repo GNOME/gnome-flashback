@@ -1,6 +1,6 @@
 m4_define([gnome_flashback_major_version], [3])
 m4_define([gnome_flashback_minor_version], [16])
-m4_define([gnome_flashback_micro_version], [0])
+m4_define([gnome_flashback_micro_version], [1])
 
 AC_INIT([gnome-flashback], [gnome_flashback_major_version.gnome_flashback_minor_version.gnome_flashback_micro_version],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-flashback])
