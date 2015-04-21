@@ -1372,6 +1372,7 @@ read_current_config (FlashbackMonitorManager *manager)
       mode->width = xmode->width;
       mode->height = xmode->height;
       mode->refresh_rate = (xmode->dotClock / ((float)xmode->hTotal * xmode->vTotal));
+      mode->flags = xmode->modeFlags;
       mode->name = get_xmode_name (xmode);
     }
 
