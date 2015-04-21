@@ -89,13 +89,33 @@
     </dependencies>
   </autotools>
 
-  <metamodule id="meta-gnome-flashback">
+  <metamodule id="meta-gnome-flashback-common">
     <dependencies>
       <dep package="gnome-applets" />
       <dep package="gnome-flashback" />
       <dep package="gnome-panel" />
-      <dep package="metacity" />
       <dep package="notification-daemon" />
+    </dependencies>
+  </metamodule>
+
+  <metamodule id="meta-gnome-flashback-compiz">
+    <dependencies>
+      <dep package="meta-gnome-flashback-common" />
+      <dep package="compiz" />
+    </dependencies>
+  </metamodule>
+
+  <metamodule id="meta-gnome-flashback-metacity">
+    <dependencies>
+      <dep package="meta-gnome-flashback-common" />
+      <dep package="metacity" />
+    </dependencies>
+  </metamodule>
+
+  <metamodule id="meta-gnome-flashback">
+    <dependencies>
+      <dep package="meta-gnome-flashback-compiz" />
+      <dep package="meta-gnome-flashback-metacity" />
     </dependencies>
   </metamodule>
 </moduleset>
