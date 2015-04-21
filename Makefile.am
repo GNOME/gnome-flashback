@@ -1,7 +1,10 @@
+NULL =
+
 SUBDIRS = \
 	data \
 	gnome-flashback \
-	po
+	po \
+	$(NULL)
 
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
@@ -25,7 +28,12 @@ MAINTAINERCLEANFILES = \
 	$(srcdir)/m4/ltsugar.m4 \
 	$(srcdir)/m4/ltversion.m4 \
 	$(srcdir)/m4/lt~obsolete.m4 \
-	`find "$(srcdir)" -type f -name Makefile.in -print`
+	`find "$(srcdir)" -type f -name Makefile.in -print` \
+	$(NULL)
+
+EXTRA_DIST = \
+	$(wildcard $(top_srcdir)/modulesets/*.modules) \
+	$(NULL)
 
 GITIGNOREFILES = $(PACKAGE)-\*.tar.{gz,bz2,xz}
 
