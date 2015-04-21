@@ -12,7 +12,7 @@
   </cmake>
 
   <autotools id="gnome-applets" autogenargs="--enable-mini-commander">
-    <branch revision="gnome-3-16" />
+    <branch />
     <dependencies>
       <dep package="intltool" />
       <dep package="gnome-panel" />
