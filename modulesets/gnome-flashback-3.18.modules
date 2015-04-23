@@ -9,6 +9,38 @@
 
   <cmake id="compiz" force-non-srcdir-builds="yes">
     <branch repo="launchpad.net" module="compiz" branch="gwd-support-metacity-3-16" />
+    <dependencies>
+      <dep package="boost" />
+      <dep package="cairo" />
+      <dep package="dbus-glib" />
+      <dep package="glib" />
+      <dep package="glibmm" />
+      <dep package="gtk+" />
+      <dep package="gnome-control-center" />
+      <dep package="gsettings-desktop-schemas" />
+      <dep package="intltool" />
+      <dep package="libnotify" />
+      <dep package="libjpeg" />
+      <dep package="libpng" />
+      <dep package="librsvg" />
+      <dep package="libwnck" />
+      <dep package="libxml2" />
+      <dep package="libX11" />
+      <dep package="libXcomposite" />
+      <dep package="libXcursor" />
+      <dep package="libXdamage" />
+      <dep package="libXext" />
+      <dep package="libXfixes" />
+      <dep package="libXi" />
+      <dep package="libXinerama" />
+      <dep package="libXrandr" />
+      <dep package="metacity" />
+      <dep package="pango" />
+      <dep package="pkg-config" />
+      <dep package="protobuf" />
+      <dep package="sm" />
+      <dep package="startup-notification" />
+    </dependencies>
   </cmake>
 
   <autotools id="gnome-applets" autogenargs="--enable-mini-commander">
