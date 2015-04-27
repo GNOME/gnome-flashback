@@ -112,7 +112,8 @@ struct _FlashbackMonitorConfig
   gboolean                 current_is_for_laptop_lid;
   MetaConfiguration       *previous;
 
-  GFile                   *file;
+  GFile                   *user_file;
+  GFile                   *system_file;
   GCancellable            *save_cancellable;
 
   UpClient                *up_client;
@@ -1188,8 +1189,9 @@ static const GMarkupParser config_parser = {
   .text = handle_text,
 };
 
-static void
-flashback_monitor_config_load (FlashbackMonitorConfig *self)
+static gboolean
+load_config_file (FlashbackMonitorConfig *self,
+                  GFile                  *file)
 {
   char *contents;
   gsize size;
@@ -1207,14 +1209,11 @@ flashback_monitor_config_load (FlashbackMonitorConfig *self)
   */
 
   error = NULL;
-  ok = g_file_load_contents (self->file, NULL, &contents, &size, NULL, &error);
+  ok = g_file_load_contents (file, NULL, &contents, &size, NULL, &error);
   if (!ok)
     {
-      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
-        g_warning ("Failed to load stored monitor configuration: %s\n", error->message);
-
       g_error_free (error);
-      return;
+      return FALSE;
     }
 
   memset (&parser, 0, sizeof (ConfigParser));
@@ -1243,6 +1242,17 @@ flashback_monitor_config_load (FlashbackMonitorConfig *self)
 
   g_markup_parse_context_free (context);
   g_free (contents);
+
+  return ok;
+}
+
+static void
+flashback_monitor_config_load (FlashbackMonitorConfig *self)
+{
+  if (self->user_file && load_config_file (self, self->user_file))
+    return;
+  if (self->system_file && load_config_file (self, self->system_file))
+    return;
 }
 
 static unsigned long
@@ -1762,7 +1772,7 @@ meta_monitor_config_save (FlashbackMonitorConfig *self)
   closure->config = g_object_ref (self);
   closure->buffer = buffer;
 
-  g_file_replace_contents_async (self->file,
+  g_file_replace_contents_async (self->user_file,
                                  buffer->str, buffer->len,
                                  NULL, /* etag */
                                  TRUE,
@@ -1798,6 +1808,7 @@ flashback_monitor_config_init (FlashbackMonitorConfig *config)
 {
   const char *filename;
   char *path;
+  const char * const *system_dirs;
 
   config->configs = g_hash_table_new_full (config_hash, config_equal,
                                            NULL, (GDestroyNotify) config_unref);
@@ -1807,8 +1818,16 @@ flashback_monitor_config_init (FlashbackMonitorConfig *config)
     filename = "monitors.xml";
 
   path = g_build_filename (g_get_user_config_dir (), filename, NULL);
-  config->file = g_file_new_for_path (path);
+  config->user_file = g_file_new_for_path (path);
   g_free (path);
+
+  for (system_dirs = g_get_system_config_dirs (); !config->system_file && *system_dirs; system_dirs++)
+    {
+      path = g_build_filename (*system_dirs, filename, NULL);
+      if (g_file_test (path, G_FILE_TEST_EXISTS))
+        config->system_file = g_file_new_for_path (path);
+      g_free (path);
+    }
 
   config->up_client = up_client_new ();
   config->lid_is_closed = up_client_get_lid_is_closed (config->up_client);
