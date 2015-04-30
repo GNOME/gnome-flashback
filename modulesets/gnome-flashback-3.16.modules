@@ -71,7 +71,7 @@
   </autotools>
 
   <autotools id="gnome-flashback">
-    <branch />
+    <branch revision="gnome-3-16" />
     <dependencies>
       <dep package="intltool" />
       <dep package="gnome-desktop" />
@@ -99,7 +99,7 @@
   </autotools>
 
   <autotools id="metacity">
-    <branch />
+    <branch revision="gnome-3-16" />
     <dependencies>
       <dep package="intltool" />
       <dep package="gdk-pixbuf" />
@@ -112,7 +112,7 @@
   </autotools>
 
   <autotools id="notification-daemon">
-    <branch />
+    <branch revision="gnome-3-16" />
     <dependencies>
       <dep package="dbus" />
       <dep package="glib" />
