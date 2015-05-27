@@ -155,9 +155,6 @@ flashback_key_bindings_change_keygrab (FlashbackKeyBindings *bindings,
 {
 	guint ignored_mask;
 
-	if (modifiers == 0)
-		return;
-
 	gdk_error_trap_push ();
 
 	ignored_mask = 0;
