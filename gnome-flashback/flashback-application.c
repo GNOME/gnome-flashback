@@ -113,7 +113,7 @@ settings_changed (GSettings   *settings,
   application = FLASHBACK_APPLICATION (user_data);
 
 #define SETTING_CHANGED(variable_name, setting_name, function_name) \
-  if (key == NULL || g_strcmp0 (key, setting_name))                 \
+  if (key == NULL || g_strcmp0 (key, setting_name) == 0)            \
     {                                                               \
       if (g_settings_get_boolean (settings, setting_name))          \
         {                                                           \
