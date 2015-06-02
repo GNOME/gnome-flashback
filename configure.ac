@@ -76,6 +76,10 @@ PKG_CHECK_MODULES(SOUND_APPLET, gtk+-3.0 >= $GTK_REQUIRED libcanberra-gtk3 >= $C
 AC_SUBST(SOUND_APPLET_CFLAGS)
 AC_SUBST(SOUND_APPLET_LIBS)
 
+PKG_CHECK_MODULES(WORKAROUNDS, glib-2.0 >= $GLIB_REQUIRED)
+AC_SUBST(WORKAROUNDS_CFLAGS)
+AC_SUBST(WORKAROUNDS_LIBS)
+
 AC_CONFIG_FILES([
 Makefile
 data/Makefile
@@ -90,6 +94,7 @@ gnome-flashback/libscreenshot/Makefile
 gnome-flashback/libshell/Makefile
 gnome-flashback/libsound-applet/Makefile
 gnome-flashback/libsound-applet/gvc/Makefile
+gnome-flashback/libworkarounds/Makefile
 po/Makefile.in
 ])
 

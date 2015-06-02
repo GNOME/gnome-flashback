@@ -28,6 +28,7 @@
 #include "libscreenshot/flashback-screenshot.h"
 #include "libshell/flashback-shell.h"
 #include "libsound-applet/gvc-applet.h"
+#include "libworkarounds/flashback-workarounds.h"
 
 struct _FlashbackApplication
 {
@@ -48,6 +49,7 @@ struct _FlashbackApplication
   FlashbackScreenshot       *screenshot;
   FlashbackShell            *shell;
   GvcApplet                 *applet;
+  FlashbackWorkarounds      *workarounds;
 };
 
 G_DEFINE_TYPE (FlashbackApplication, flashback_application, G_TYPE_OBJECT)
@@ -135,6 +137,7 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (screenshot, "screenshot", flashback_screenshot_new)
   SETTING_CHANGED (shell, "shell", flashback_shell_new)
   SETTING_CHANGED (applet, "sound-applet", gvc_applet_new)
+  SETTING_CHANGED (workarounds, "workarounds", flashback_workarounds_new)
 
 #undef SETTING_CHANGED
 
@@ -168,6 +171,7 @@ flashback_application_finalize (GObject *object)
   g_clear_object (&application->screenshot);
   g_clear_object (&application->shell);
   g_clear_object (&application->applet);
+  g_clear_object (&application->workarounds);
 
   G_OBJECT_CLASS (flashback_application_parent_class)->finalize (object);
 }

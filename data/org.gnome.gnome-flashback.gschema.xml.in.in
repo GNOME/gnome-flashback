@@ -45,8 +45,14 @@
 			<_summary>Sound applet</_summary>
 			<_description>If set to true, then GNOME Flashback application will be used to show a sound applet. This is the same sound applet that used to be a part of GNOME Control Center.</_description>
 		</key>
+		<key name="workarounds" type="b">
+			<default>true</default>
+			<_summary>Workarounds</_summary>
+			<_description>If set to true, then GNOME Flashback application will use workarounds to fix bugs.</_description>
+		</key>
 
 		<child name="desktop-background" schema="org.gnome.gnome-flashback.desktop-background"/>
+		<child name="workarounds" schema="org.gnome.gnome-flashback.workarounds"/>
 	</schema>
 
 	<schema id="org.gnome.gnome-flashback.desktop-background" path="/org/gnome/gnome-flashback/desktop-background/">
@@ -55,5 +61,8 @@
 			<_summary>Fade the background on change</_summary>
 			<_description>If set to true, then fade effect will be used to change the desktop background.</_description>
 		</key>
+	</schema>
+
+	<schema id="org.gnome.gnome-flashback.workarounds" path="/org/gnome/gnome-flashback/workarounds/">
 	</schema>
 </schemalist>
