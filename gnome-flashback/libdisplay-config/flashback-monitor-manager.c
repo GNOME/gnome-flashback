@@ -429,6 +429,42 @@ out:
   free (reply);
 }
 
+static void
+output_get_tile_info (FlashbackMonitorManagerPrivate *priv,
+                      MetaOutput                     *output)
+{
+  Atom tile_atom;
+  unsigned char *prop;
+  unsigned long nitems, bytes_after;
+  int actual_format;
+  Atom actual_type;
+
+  if (priv->has_randr15 == FALSE)
+    return;
+
+  tile_atom = XInternAtom (priv->xdisplay, "TILE", FALSE);
+  XRRGetOutputProperty (priv->xdisplay, output->winsys_id,
+                        tile_atom, 0, 100, False,
+                        False, AnyPropertyType,
+                        &actual_type, &actual_format,
+                        &nitems, &bytes_after, &prop);
+
+  if (actual_type == XA_INTEGER && actual_format == 32 && nitems == 8)
+    {
+      long *values = (long *)prop;
+      output->tile_info.group_id = values[0];
+      output->tile_info.flags = values[1];
+      output->tile_info.max_h_tiles = values[2];
+      output->tile_info.max_v_tiles = values[3];
+      output->tile_info.loc_h_tile = values[4];
+      output->tile_info.loc_v_tile = values[5];
+      output->tile_info.tile_w = values[6];
+      output->tile_info.tile_h = values[7];
+    }
+
+  XFree (prop);
+}
+
 static gboolean
 output_get_hotplug_mode_update (FlashbackMonitorManagerPrivate *priv,
                                 MetaOutput                     *output)
@@ -978,6 +1014,8 @@ read_current_config (FlashbackMonitorManager *manager)
           meta_output->suggested_x = output_get_suggested_x (priv, meta_output);
           meta_output->suggested_y = output_get_suggested_y (priv, meta_output);
           meta_output->connector_type = output_get_connector_type (priv, meta_output);
+
+          output_get_tile_info (priv, meta_output);
 
           meta_output->n_modes = output->nmode;
           meta_output->modes = g_new0 (MetaMonitorMode *, meta_output->n_modes);
