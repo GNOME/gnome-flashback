@@ -64,5 +64,15 @@
 	</schema>
 
 	<schema id="org.gnome.gnome-flashback.workarounds" path="/org/gnome/gnome-flashback/workarounds/">
+		<key name="fix-app-menu" type="b">
+			<default>true</default>
+			<_summary>Fix missing app menu button</_summary>
+			<_description>If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to FALSE. Disable if you want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/ShellShowsAppMenu' property.</_description>
+		</key>
+		<key name="fix-button-layout" type="s">
+			<default>'menu:minimize,maximize,close'</default>
+			<_summary>Fix wrong button layout</_summary>
+			<_description>If set to true, then gnome-flashback will force Gtk/DecorationLayout to value set by this setting. Set to empty string if you want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/DecorationLayout' property.</_description>
+		</key>
 	</schema>
 </schemalist>
