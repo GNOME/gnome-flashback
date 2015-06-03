@@ -72,6 +72,96 @@ enum
 
 static GParamSpec *object_properties[N_PROPERTIES] = { NULL, };
 
+static void
+add_monitor (FlashbackMonitorManager *manager,
+             MetaMonitorInfo         *monitor)
+{
+#ifdef HAVE_XRANDR15
+  XRRMonitorInfo *m;
+  int o;
+  Atom name;
+  char name_buf[40];
+
+  if (manager->priv->has_randr15 == FALSE)
+    return;
+
+  if (monitor->n_outputs <= 1)
+    return;
+
+  if (monitor->outputs[0]->product)
+    snprintf (name_buf, 40, "%s-%d", monitor->outputs[0]->product, monitor->outputs[0]->tile_info.group_id);
+  else
+    snprintf (name_buf, 40, "Tiled-%d", monitor->outputs[0]->tile_info.group_id);
+
+  name = XInternAtom (manager->priv->xdisplay, name_buf, False);
+  monitor->monitor_winsys_xid = name;
+  m = XRRAllocateMonitor (manager->priv->xdisplay, monitor->n_outputs);
+  if (!m)
+    return;
+
+  m->name = name;
+  m->primary = monitor->is_primary;
+  m->automatic = True;
+
+  for (o = 0; o < monitor->n_outputs; o++)
+    {
+      MetaOutput *output = monitor->outputs[o];
+      m->outputs[o] = output->winsys_id;
+    }
+
+  XRRSetMonitor (manager->priv->xdisplay,
+                 DefaultRootWindow (manager->priv->xdisplay),
+                 m);
+
+  XRRFreeMonitors (m);
+#endif
+}
+
+static void
+remove_monitor (FlashbackMonitorManager *manager,
+                int                      monitor_winsys_xid)
+{
+#ifdef HAVE_XRANDR15
+  if (manager->priv->has_randr15 == FALSE)
+    return;
+
+  XRRDeleteMonitor (manager->priv->xdisplay,
+                    DefaultRootWindow (manager->priv->xdisplay),
+                    monitor_winsys_xid);
+#endif
+}
+
+static void
+init_monitors (FlashbackMonitorManager *manager)
+{
+#ifdef HAVE_XRANDR15
+  XRRMonitorInfo *m;
+  int n, i;
+
+  if (manager->priv->has_randr15 == FALSE)
+    return;
+
+  /* delete any tiled monitors setup, as mutter will want to recreate
+     things in its image */
+  m = XRRGetMonitors (manager->priv->xdisplay,
+                      DefaultRootWindow (manager->priv->xdisplay),
+                      FALSE, &n);
+
+  if (n == -1)
+    return;
+
+  for (i = 0; i < n; i++)
+    {
+      if (m[i].noutput > 1)
+        XRRDeleteMonitor (manager->priv->xdisplay,
+                          DefaultRootWindow (manager->priv->xdisplay),
+                          m[i].name);
+    }
+
+  XRRFreeMonitors (m);
+#endif
+}
+
 static GdkFilterReturn
 filter_func (GdkXEvent *xevent,
              GdkEvent  *event,
@@ -880,6 +970,9 @@ make_logical_config (FlashbackMonitorManager *manager)
 
   manager->n_monitor_infos = monitor_infos->len;
   manager->monitor_infos = (void*)g_array_free (monitor_infos, FALSE);
+
+  for (i = 0; i < manager->n_monitor_infos; i++)
+    add_monitor (manager, &manager->monitor_infos[i]);
 }
 
 static void
@@ -1392,6 +1485,8 @@ flashback_monitor_manager_init (FlashbackMonitorManager *manager)
   if (major_version > 1 || (major_version == 1 && minor_version >= 5))
     priv->has_randr15 = TRUE;
 #endif
+
+  init_monitors (manager);
 }
 
 FlashbackMonitorManager *
@@ -1942,13 +2037,33 @@ void
 flashback_monitor_manager_rebuild_derived (FlashbackMonitorManager *manager)
 {
   MetaMonitorInfo *old_monitor_infos;
+  unsigned old_n_monitor_infos;
+  unsigned i, j;
 
   old_monitor_infos = manager->monitor_infos;
+  old_n_monitor_infos = manager->n_monitor_infos;
 
   if (manager->in_init)
     return;
 
   make_logical_config (manager);
+
+  for (i = 0; i < old_n_monitor_infos; i++)
+    {
+      gboolean delete_mon = TRUE;
+
+      for (j = 0; j < manager->n_monitor_infos; j++)
+        {
+          if (manager->monitor_infos[j].monitor_winsys_xid == old_monitor_infos[i].monitor_winsys_xid)
+            {
+              delete_mon = FALSE;
+              break;
+            }
+        }
+
+      if (delete_mon)
+        remove_monitor (manager, old_monitor_infos[i].monitor_winsys_xid);
+    }
 
   g_signal_emit_by_name (manager->priv->display_config, "monitors-changed");
 
