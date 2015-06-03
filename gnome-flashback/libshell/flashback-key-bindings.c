@@ -55,33 +55,44 @@ static guint ScrollLockMask = 0;
 
 G_DEFINE_TYPE_WITH_PRIVATE (FlashbackKeyBindings, flashback_key_bindings, G_TYPE_OBJECT)
 
-static guint
-get_real_modifiers (GdkModifierType modifiers)
+static gboolean
+devirtualize_modifiers (GdkModifierType  modifiers,
+                        GdkModifierType  gdk_mask,
+                        unsigned int     real_mask,
+                        unsigned int    *mask)
 {
-	guint mods = 0;
+  if (modifiers & gdk_mask)
+    {
+      if (real_mask == 0)
+        return FALSE;
 
-	if (modifiers & GDK_SHIFT_MASK)
-		mods |= ShiftMask;
-	if (modifiers & GDK_CONTROL_MASK)
-		mods |= ControlMask;
-	if (modifiers & GDK_MOD1_MASK)
-		mods |= Mod1Mask;
-	if (modifiers & GDK_META_MASK)
-		mods |= MetaMask;
-	if (modifiers & GDK_HYPER_MASK)
-		mods |= HyperMask;
-	if (modifiers & GDK_SUPER_MASK)
-		mods |= SuperMask;
-	if (modifiers & GDK_MOD2_MASK)
-		mods |= Mod2Mask;
-	if (modifiers & GDK_MOD3_MASK)
-		mods |= Mod3Mask;
-	if (modifiers & GDK_MOD4_MASK)
-		mods |= Mod4Mask;
-	if (modifiers & GDK_MOD5_MASK)
-		mods |= Mod5Mask;
+       *mask |= real_mask;
+    }
 
-	return mods;
+  return TRUE;
+}
+
+static gboolean
+get_real_modifiers (GdkModifierType  modifiers,
+                    guint           *mask)
+{
+	gboolean devirtualized;
+
+	devirtualized = TRUE;
+	*mask = 0;
+
+	devirtualized &= devirtualize_modifiers (modifiers, GDK_SHIFT_MASK, ShiftMask, mask);
+	devirtualized &= devirtualize_modifiers (modifiers, GDK_CONTROL_MASK, ControlMask, mask);
+	devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD1_MASK, Mod1Mask, mask);
+	devirtualized &= devirtualize_modifiers (modifiers, GDK_META_MASK, MetaMask, mask);
+	devirtualized &= devirtualize_modifiers (modifiers, GDK_HYPER_MASK, HyperMask, mask);
+	devirtualized &= devirtualize_modifiers (modifiers, GDK_SUPER_MASK, SuperMask, mask);
+	devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD2_MASK, Mod2Mask, mask);
+	devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD3_MASK, Mod3Mask, mask);
+	devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD4_MASK, Mod4Mask, mask);
+	devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD5_MASK, Mod5Mask, mask);
+
+	return devirtualized;
 }
 
 static GVariant *
@@ -278,7 +289,8 @@ flashback_key_bindings_grab (FlashbackKeyBindings *bindings,
 	if (keycode == 0)
 		return 0;
 
-	real_modifiers = get_real_modifiers (modifiers);
+	if (!get_real_modifiers (modifiers, &real_modifiers))
+		return 0;
 
 	flashback_key_bindings_change_keygrab (bindings,
 	                                       TRUE,
