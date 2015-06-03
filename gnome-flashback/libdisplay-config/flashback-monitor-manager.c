@@ -56,6 +56,8 @@ struct _FlashbackMonitorManagerPrivate
   int                    rr_event_base;
   int                    rr_error_base;
 
+  gboolean               has_randr15;
+
   MetaDBusDisplayConfig *display_config;
 };
 
@@ -1199,6 +1201,8 @@ static void
 flashback_monitor_manager_init (FlashbackMonitorManager *manager)
 {
   FlashbackMonitorManagerPrivate *priv;
+  int major_version;
+  int minor_version;
 
   priv = flashback_monitor_manager_get_instance_private (manager);
   manager->priv = priv;
@@ -1215,6 +1219,15 @@ flashback_monitor_manager_init (FlashbackMonitorManager *manager)
   XRRSelectInput (priv->xdisplay, DefaultRootWindow (priv->xdisplay),
                   RRScreenChangeNotifyMask | RRCrtcChangeNotifyMask |
                   RROutputPropertyNotifyMask);
+
+  priv->has_randr15 = FALSE;
+
+  XRRQueryVersion (priv->xdisplay, &major_version, &minor_version);
+
+#ifdef HAVE_XRANDR15
+  if (major_version > 1 || (major_version == 1 && minor_version >= 5))
+    priv->has_randr15 = TRUE;
+#endif
 }
 
 FlashbackMonitorManager *

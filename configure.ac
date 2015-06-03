@@ -80,6 +80,8 @@ PKG_CHECK_MODULES(WORKAROUNDS, glib-2.0 >= $GLIB_REQUIRED gtk+-3.0 >= $GTK_REQUI
 AC_SUBST(WORKAROUNDS_CFLAGS)
 AC_SUBST(WORKAROUNDS_LIBS)
 
+PKG_CHECK_EXISTS([xrandr >= 1.5.0], AC_DEFINE([HAVE_XRANDR15], [1], [Define if you have support for XRandR 1.5 or greater]))
+
 AC_CONFIG_FILES([
 Makefile
 data/Makefile
