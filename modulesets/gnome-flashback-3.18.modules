@@ -5,7 +5,7 @@
   <repository type="git" name="git.gnome.org" default="yes" href="git://git.gnome.org/" />
   <repository type="bzr" name="launchpad.net" href="lp:" branches-template="~albertsmuktupavels/%(module)s/%(branch)s" />
 
-  <include href="https://git.gnome.org/browse/gnome-modulesets/plain/gnome-world.modules" />
+  <include href="https://git.gnome.org/browse/jhbuild/plain/modulesets/gnome-world.modules" />
 
   <cmake id="compiz" force-non-srcdir-builds="yes" cmakeargs="-DUSE_GCONF=OFF">
     <branch repo="launchpad.net" module="compiz" branch="gwd-support-metacity-3-16" />
