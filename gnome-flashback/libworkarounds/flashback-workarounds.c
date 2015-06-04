@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
- * Based on code from Owen Tylor, Copyright(C) 2001, 2007 Red Hat, Inc.
+ * Based on code from Owen Taylor, Copyright(C) 2001, 2007 Red Hat, Inc.
  *
  * https://git.gnome.org/browse/gtk+/tree/gdk/x11/xsettings-client.c
  * https://git.gnome.org/browse/gnome-settings-daemon/tree/plugins/xsettings/xsettings-manager.c
