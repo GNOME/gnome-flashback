@@ -1,3 +1,13 @@
+Version 3.17.2
+==============
+- workarounds: workaround for missing app menu button. (Alberts Muktupāvels)
+- workarounds: workaround for button-layout. (Alberts Muktupāvels)
+- display-config: allow loading from a system file. (Jasper St. Pierre)
+- display-config: add support for overscan compensation. (Tomeu Vizoso)
+- shell: don't grab keybinding if devirtualization failed. (Alberts Muktupāvels)
+- Updated translations:
+  Gábor Kelemen (hy), Yosef Or Boczko (he).
+
 Version 3.17.1
 ==============
 - No changes.
