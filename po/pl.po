@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-05 22:07+0200\n"
-"PO-Revision-Date: 2015-04-05 22:08+0200\n"
+"POT-Creation-Date: 2015-06-07 19:04+0200\n"
+"PO-Revision-Date: 2015-06-07 19:05+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -161,16 +161,59 @@ msgstr ""
 "który wcześniej był częścią Centrum sterowania GNOME."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:19
+msgid "Workarounds"
+msgstr "Obejścia błędów"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:20
+msgid ""
+"If set to true, then GNOME Flashback application will use workarounds to fix "
+"bugs."
+msgstr ""
+"Jeśli jest ustawione na wartość \"true\", to program tradycyjnego środowiska "
+"GNOME będzie używał obejść błędów."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:21
 msgid "Fade the background on change"
 msgstr "Efekt przejścia podczas zmiany tła"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:20
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:22
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
 msgstr ""
 "Jeśli jest ustawione na wartość \"true\", to efekt przejścia będzie używany "
 "do zmieniania tła pulpitu."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:23
+msgid "Fix missing app menu button"
+msgstr "Naprawa brakującego przycisku menu programu"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:24
+msgid ""
+"If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
+"FALSE. Disable if you want to use gnome-settings-daemon overrides in "
+"xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
+msgstr ""
+"Jeśli jest ustawione na wartość \"true\", to gnome-flashback wymusi wartość "
+"\"false\" właściwości Gtk/ShellShowsAppMenu. Należy wyłączyć, aby używać "
+"wtyczki XSettings usługi gnome-settings-daemon dla właściwości \"Gtk/"
+"ShellShowsAppMenu\"."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:25
+msgid "Fix wrong button layout"
+msgstr "Naprawa błędnego układu przycisków"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:26
+msgid ""
+"If set to true, then gnome-flashback will force Gtk/DecorationLayout to "
+"value set by this setting. Set to empty string if you want to use gnome-"
+"settings-daemon overrides in xsettings plugin for 'Gtk/DecorationLayout' "
+"property."
+msgstr ""
+"Jeśli jest ustawione na wartość \"true\", to gnome-flashback wymusi "
+"ustawioną wartość właściwości Gtk/DecorationLayout. Należy pozostawić puste, "
+"aby używać wtyczki XSettings usługi gnome-settings-daemon dla właściwości "
+"\"Gtk/DecorationLayout\"."
 
 #: ../gnome-flashback/flashback-main.c:33
 msgid "Initialize GNOME Flashback session"
