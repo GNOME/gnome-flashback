@@ -72,7 +72,7 @@
 		<key name="fix-button-layout" type="s">
 			<default>'menu:minimize,maximize,close'</default>
 			<_summary>Fix wrong button layout</_summary>
-			<_description>If set to true, then gnome-flashback will force Gtk/DecorationLayout to value set by this setting. Set to empty string if you want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/DecorationLayout' property.</_description>
+			<_description>If set to non-empty string, then gnome-flashback will force Gtk/DecorationLayout to value set by this setting. Set to empty string if you want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/DecorationLayout' property.</_description>
 		</key>
 	</schema>
 </schemalist>
