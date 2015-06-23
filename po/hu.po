@@ -3,22 +3,22 @@
 # This file is distributed under the same license as the gnome-flashback package.
 #
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2014, 2015.
-# Balázs Úr <urbalazs@gmail.com>, 2014.
+# Balázs Úr <urbalazs@gmail.com>, 2014, 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-05-09 07:07+0000\n"
-"PO-Revision-Date: 2015-05-09 10:52+0200\n"
-"Last-Translator: Gabor Kelemen <kelemeng at ubuntu dot com>\n"
+"POT-Creation-Date: 2015-06-23 07:09+0000\n"
+"PO-Revision-Date: 2015-06-23 14:10+0200\n"
+"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 1.2\n"
 
 #: ../data/gnome-flashback.desktop.in.h:1
 msgid "GNOME Flashback"
@@ -61,9 +61,6 @@ msgid "Desktop background"
 msgstr "Asztal háttere"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:4
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used to draw "
-#| "desktop background."
 msgid ""
 "If set to true, then GNOME Flashback application will be used to draw the "
 "desktop background."
@@ -72,14 +69,10 @@ msgstr ""
 "asztal hátterének kirajzolásához."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:5
-#| msgid "Display config"
 msgid "Display configuration"
 msgstr "Kijelző beállítás"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:6
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used to provide "
-#| "display configuration."
 msgid ""
 "If set to true, then GNOME Flashback application will be used to provide the "
 "display configuration."
@@ -92,9 +85,6 @@ msgid "End session dialog"
 msgstr "Munkamenet befejezése párbeszédablak"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:8
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used to show end "
-#| "session dialog."
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
@@ -119,9 +109,6 @@ msgid "Screencasts"
 msgstr "Képernyővideók"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:12
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used for key "
-#| "grabbing."
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -134,9 +121,6 @@ msgid "Screenshots"
 msgstr "Képernyőképek"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used for key "
-#| "grabbing."
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -149,9 +133,6 @@ msgid "Shell"
 msgstr "Parancsértelmező"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:16
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used for key "
-#| "grabbing."
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr ""
@@ -163,10 +144,6 @@ msgid "Sound applet"
 msgstr "Hang kisalkalmazás"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:18
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used to show "
-#| "sound applet. This is same sound applet that used to be part of GNOME "
-#| "Control Center."
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -177,16 +154,61 @@ msgstr ""
 "a GNOME vezérlőpult része volt."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:19
+msgid "Workarounds"
+msgstr "Kerülő megoldások"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:20
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used as a shell."
+msgid ""
+"If set to true, then GNOME Flashback application will use workarounds to fix "
+"bugs."
+msgstr ""
+"Ha igazra van állítva, akkor a GNOME Flashback alkalmazás kerülő megoldásokat "
+"fog használni a hibák kijavításához."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:21
 msgid "Fade the background on change"
 msgstr "A háttér elhalványítása változtatáskor"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:20
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:22
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
 msgstr ""
 "Ha igazra van állítva, akkor elhalványítás hatás lesz használva az asztal "
 "hátterének változtatásához."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:23
+msgid "Fix missing app menu button"
+msgstr "Hiányzó alkalmazásmenü gomb javítása"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:24
+msgid ""
+"If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
+"FALSE. Disable if you want to use gnome-settings-daemon overrides in "
+"xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
+msgstr ""
+"Ha igazra van állítva, akkor a gnome-flashback a Gtk/ShellShowsAppMenu "
+"értékét HAMISRA fogja kényszeríteni. Tiltsa le, ha a gnome-settings-daemon "
+"felülbírálásokat szeretné használni az xsettings bővítményben a "
+"„Gtk/ShellShowsAppMenu” tulajdonságnál."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:25
+msgid "Fix wrong button layout"
+msgstr "Rossz gombelrendezés javítása"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:26
+msgid ""
+"If set to non-empty string, then gnome-flashback will force Gtk/"
+"DecorationLayout to value set by this setting. Set to empty string if you "
+"want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
+"DecorationLayout' property."
+msgstr ""
+"Ha nem üres szövegre van állítva, akkor a gnome-flashback a "
+"Gtk/DecorationLayout értékét ezen beállítás szerint fogja kényszeríteni. "
+"Állítsa üres szövegre, ha a gnome-settings-daemon felülbírálásokat szeretné "
+"használni az xsettings bővítményben a „Gtk/DecorationLayout” tulajdonságnál."
 
 #: ../gnome-flashback/flashback-main.c:33
 msgid "Initialize GNOME Flashback session"
@@ -336,7 +358,6 @@ msgid "Unknown"
 msgstr "Ismeretlen"
 
 #: ../gnome-flashback/libdisplay-config/flashback-display-config.c:224
-#| msgid "Unknown"
 msgid "Unknown Display"
 msgstr "Ismeretlen kijelző"
 
