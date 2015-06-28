@@ -406,11 +406,11 @@ output_set_presentation_xrandr (FlashbackMonitorManagerPrivate *priv,
 
   value = presentation;
   atom = XInternAtom (priv->xdisplay, "_GNOME_FLASHBACK_PRESENTATION_OUTPUT", False);
-  XRRChangeOutputProperty (priv->xdisplay,
-                           (XID) output->winsys_id,
-                           atom,
-                           XA_CARDINAL, 32, PropModeReplace,
-                           (unsigned char*) &value, 1);
+  xcb_randr_change_output_property (XGetXCBConnection (priv->xdisplay),
+                                    (XID) output->winsys_id,
+                                    atom, XCB_ATOM_CARDINAL, 32,
+                                    XCB_PROP_MODE_REPLACE,
+                                    1, &value);
 }
 
 static gboolean
@@ -1553,11 +1553,11 @@ output_set_underscanning_xrandr (FlashbackMonitorManagerPrivate *priv,
   value = underscanning ? "on" : "off";
   valueatom = XInternAtom (priv->xdisplay, value, False);
 
-  XRRChangeOutputProperty (priv->xdisplay,
-                           (XID)output->winsys_id,
-                           prop,
-                           XA_ATOM, 32, PropModeReplace,
-                           (unsigned char*) &valueatom, 1);
+  xcb_randr_change_output_property (XGetXCBConnection (priv->xdisplay),
+                                    (XID) output->winsys_id,
+                                    prop, XCB_ATOM_ATOM, 32,
+                                    XCB_PROP_MODE_REPLACE,
+                                    1, &valueatom);
 
   /* Configure the border at the same time. Currently, we use a
    * 5% of the width/height of the mode. In the future, we should
@@ -1568,19 +1568,21 @@ output_set_underscanning_xrandr (FlashbackMonitorManagerPrivate *priv,
 
       prop = XInternAtom (priv->xdisplay, "underscan hborder", False);
       border_value = output->crtc->current_mode->width * 0.05;
-      XRRChangeOutputProperty (priv->xdisplay,
-                               (XID)output->winsys_id,
-                               prop,
-                               XA_INTEGER, 32, PropModeReplace,
-                               (unsigned char *) &border_value, 1);
+
+      xcb_randr_change_output_property (XGetXCBConnection (priv->xdisplay),
+                                        (XID) output->winsys_id,
+                                        prop, XCB_ATOM_INTEGER, 32,
+                                        XCB_PROP_MODE_REPLACE,
+                                        1, &border_value);
 
       prop = XInternAtom (priv->xdisplay, "underscan vborder", False);
       border_value = output->crtc->current_mode->height * 0.05;
-      XRRChangeOutputProperty (priv->xdisplay,
-                               (XID)output->winsys_id,
-                               prop,
-                               XA_INTEGER, 32, PropModeReplace,
-                               (unsigned char *) &border_value, 1);
+
+      xcb_randr_change_output_property (XGetXCBConnection (priv->xdisplay),
+                                        (XID) output->winsys_id,
+                                        prop, XCB_ATOM_INTEGER, 32,
+                                        XCB_PROP_MODE_REPLACE,
+                                        1, &border_value);
     }
 }
 
@@ -1844,11 +1846,12 @@ flashback_monitor_manager_change_backlight (FlashbackMonitorManager *manager,
   hw_value = round ((double)value / 100.0 * output->backlight_max + output->backlight_min);
 
   atom = XInternAtom (priv->xdisplay, "Backlight", False);
-  XRRChangeOutputProperty (priv->xdisplay,
-                           (XID) output->winsys_id,
-                           atom,
-                           XA_INTEGER, 32, PropModeReplace,
-                           (unsigned char *) &hw_value, 1);
+
+  xcb_randr_change_output_property (XGetXCBConnection (priv->xdisplay),
+                                    (XID) output->winsys_id,
+                                    atom, XCB_ATOM_INTEGER, 32,
+                                    XCB_PROP_MODE_REPLACE,
+                                    1, &hw_value);
 
   /* We're not selecting for property notifies, so update the value immediately */
   output->backlight = normalize_backlight (output, hw_value);
