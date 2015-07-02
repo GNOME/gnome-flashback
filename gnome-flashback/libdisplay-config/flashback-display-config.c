@@ -384,6 +384,8 @@ handle_get_resources (MetaDBusDisplayConfig *skeleton,
                              g_variant_new_string (get_connector_type_name (output->connector_type)));
       g_variant_builder_add (&properties, "{sv}", "underscanning",
                              g_variant_new_boolean (output->is_underscanning));
+      g_variant_builder_add (&properties, "{sv}", "supports-underscanning",
+                             g_variant_new_boolean (output->supports_underscanning));
 
       edid = flashback_monitor_manager_read_edid (manager, output);
 
