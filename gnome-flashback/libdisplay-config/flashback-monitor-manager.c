@@ -1790,9 +1790,10 @@ flashback_monitor_manager_apply_configuration (FlashbackMonitorManager  *manager
                                       output_info->output,
                                       output_info->is_presentation);
 
-      output_set_underscanning_xrandr (priv,
-                                       output_info->output,
-                                       output_info->is_underscanning);
+      if (output_get_supports_underscanning_xrandr (priv, output_info->output))
+        output_set_underscanning_xrandr (priv,
+                                         output_info->output,
+                                         output_info->is_underscanning);
 
       output->is_primary = output_info->is_primary;
       output->is_presentation = output_info->is_presentation;
