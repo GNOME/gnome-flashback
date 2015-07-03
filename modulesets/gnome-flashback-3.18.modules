@@ -4,6 +4,7 @@
 <moduleset>
   <repository type="git" name="git.gnome.org" default="yes" href="git://git.gnome.org/" />
   <repository type="bzr" name="launchpad.net" href="lp:" branches-template="%(module)s" />
+  <repository type="git" name="github.com" href="git://github.com/" />
 
   <include href="https://git.gnome.org/browse/jhbuild/plain/modulesets/gnome-world.modules" />
 
@@ -96,6 +97,13 @@
     <suggests>
       <dep package="polkit-gobject" />
     </suggests>
+  </autotools>
+
+  <autotools id="libstatus-notifier">
+    <branch repo="github.com" module="albertsmuktupavels/libstatus-notifier" />
+    <dependencies>
+      <dep package="glib" />
+    </dependencies>
   </autotools>
 
   <autotools id="metacity">
