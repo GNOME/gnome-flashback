@@ -30,7 +30,6 @@
 
 #include "meta-idle-monitor.h"
 #include "meta-idle-monitor-xsync.h"
-#include "meta-idle-monitor-dbus.h"
 #include "meta-backend.h"
 
 G_STATIC_ASSERT(sizeof(unsigned long) == sizeof(gpointer));
