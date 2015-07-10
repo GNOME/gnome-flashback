@@ -62,6 +62,7 @@
       <dep package="libxklavier" />
       <dep package="libwnck" />
       <dep package="libnotify" />
+      <dep package="m4-common" />
       <dep package="dbus" />
       <dep package="dbus-glib" />
       <dep package="pygobject" />
@@ -96,6 +97,7 @@
       <dep package="librsvg" />
       <dep package="libgweather" />
       <dep package="libcanberra" />
+      <dep package="m4-common" />
       <dep package="yelp-tools" />
     </dependencies>
     <suggests>
@@ -107,6 +109,7 @@
     <branch repo="github.com" module="albertsmuktupavels/libstatus-notifier" />
     <dependencies>
       <dep package="glib" />
+      <dep package="m4-common" />
     </dependencies>
   </autotools>
 
@@ -119,6 +122,7 @@
       <dep package="gsettings-desktop-schemas" />
       <dep package="intltool" />
       <dep package="libcanberra" />
+      <dep package="m4-common" />
       <dep package="zenity" />
     </dependencies>
   </autotools>
@@ -130,6 +134,7 @@
       <dep package="glib" />
       <dep package="gtk+" />
       <dep package="libcanberra" />
+      <dep package="m4-common" />
     </dependencies>
   </autotools>
 
