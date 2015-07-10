@@ -338,6 +338,7 @@ decode_standard_timings (const uchar *edid, MonitorInfo *info)
 	    case 0x01: h = (w / 4) * 3; break;
 	    case 0x02: h = (w / 5) * 4; break;
 	    case 0x03: h = (w / 16) * 9; break;
+	    default: break;
 	    }
 
           info->standard[i].width = w;
@@ -406,6 +407,8 @@ decode_display_descriptor (const uchar *desc,
       /* Established Timings */
       break;
     case 0x10:
+      break;
+    default:
       break;
     }
 }

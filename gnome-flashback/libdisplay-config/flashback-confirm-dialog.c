@@ -48,15 +48,14 @@ static void
 update_text (FlashbackConfirmDialog *dialog)
 {
   FlashbackConfirmDialogPrivate *priv;
-  const gchar *text;
   gchar *description;
 
   priv = flashback_confirm_dialog_get_instance_private (dialog);
-  text = ngettext ("Settings changes will revert in %d second",
-                   "Settings changes will revert in %d seconds",
-                   priv->timeout);
 
-  description = g_strdup_printf (text, priv->timeout);
+  description = g_strdup_printf (ngettext ("Settings changes will revert in %d second",
+                                           "Settings changes will revert in %d seconds",
+                                           priv->timeout), priv->timeout);
+
   gtk_label_set_text (GTK_LABEL (priv->description), description);
   g_free (description);
 }
@@ -165,6 +164,7 @@ flashback_confirm_dialog_class_init (FlashbackConfirmDialogClass *dialog_class)
   GtkWidgetClass *widget_class;
   GtkBindingSet *binding_set;
 
+  object_class = G_OBJECT_CLASS (dialog_class);
   widget_class = GTK_WIDGET_CLASS (dialog_class);
 
   dialog_class->close = flashback_confirm_dialog_close;

@@ -184,19 +184,15 @@ static char *
 make_display_name (FlashbackMonitorManager *manager,
                    MetaOutput              *output)
 {
+  MetaConnectorType type;
   char *inches = NULL;
   char *vendor_name = NULL;
   char *ret;
 
-  switch (output->connector_type)
-    {
-    case META_CONNECTOR_TYPE_LVDS:
-    case META_CONNECTOR_TYPE_eDP:
-      ret = g_strdup (_("Built-in display"));
-      goto out;
-    default:
-      break;
-    }
+  type = output->connector_type;
+
+  if (type == META_CONNECTOR_TYPE_eDP || type == META_CONNECTOR_TYPE_LVDS)
+    return g_strdup (_("Built-in display"));
 
   if (output->width_mm > 0 && output->height_mm > 0)
     {
@@ -236,7 +232,6 @@ make_display_name (FlashbackMonitorManager *manager,
       ret = g_strdup (vendor_name);
     }
 
- out:
   g_free (inches);
   g_free (vendor_name);
 
@@ -469,7 +464,7 @@ handle_apply_configuration (MetaDBusDisplayConfig *skeleton,
   int y;
   int new_screen_width;
   int new_screen_height;
-  guint transform;
+  gint transform;
   guint output_index;
   GPtrArray *crtc_infos;
   GPtrArray *output_infos;
@@ -990,8 +985,6 @@ flashback_display_config_class_init (FlashbackDisplayConfigClass *config_class)
 static void
 flashback_display_config_init (FlashbackDisplayConfig *config)
 {
-  MetaDBusDisplayConfig *display_config;
-
   config->skeleton = meta_dbus_display_config_skeleton_new ();
   config->manager = flashback_monitor_manager_new (config->skeleton);
   config->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,

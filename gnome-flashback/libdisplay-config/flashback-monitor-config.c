@@ -236,15 +236,14 @@ key_is_laptop (MetaOutputKey *key)
 static gboolean
 output_is_laptop (MetaOutput *output)
 {
-  /* FIXME: extend with better heuristics */
-  switch (output->connector_type)
-    {
-    case META_CONNECTOR_TYPE_eDP:
-    case META_CONNECTOR_TYPE_LVDS:
-      return TRUE;
-    default:
-      return FALSE;
-    }
+  MetaConnectorType type;
+
+  type = output->connector_type;
+
+  if (type == META_CONNECTOR_TYPE_eDP || type == META_CONNECTOR_TYPE_LVDS)
+    return TRUE;
+
+  return FALSE;
 }
 
 static gboolean
@@ -489,7 +488,7 @@ crtc_assignment_assign (CrtcAssignment       *assign,
     }
   else
     {
-      MetaCRTCInfo *info = g_slice_new0 (MetaCRTCInfo);
+      info = g_slice_new0 (MetaCRTCInfo);
 
       info->crtc = crtc;
       info->mode = mode;

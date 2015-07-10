@@ -226,9 +226,10 @@ meta_monitor_transform_to_xrandr (MetaMonitorTransform transform)
       return RR_Reflect_X | RR_Rotate_180;
     case META_MONITOR_TRANSFORM_FLIPPED_270:
       return RR_Reflect_X | RR_Rotate_270;
+    default:
+      g_assert_not_reached ();
+      break;
     }
-
-  g_assert_not_reached ();
 }
 
 static MetaMonitorTransform
@@ -539,6 +540,7 @@ output_get_backlight_limits_xrandr (FlashbackMonitorManagerPrivate *priv,
   Atom atom;
   xcb_connection_t *xcb_conn;
   xcb_randr_query_output_property_reply_t *reply;
+  int32_t *values;
 
   atom = XInternAtom (priv->xdisplay, "Backlight", False);
 
@@ -559,7 +561,7 @@ output_get_backlight_limits_xrandr (FlashbackMonitorManagerPrivate *priv,
       goto out;
     }
 
-  int32_t *values = xcb_randr_query_output_property_valid_values (reply);
+  values = xcb_randr_query_output_property_valid_values (reply);
   output->backlight_min = values[0];
   output->backlight_max = values[1];
 
@@ -790,14 +792,6 @@ get_xmode_name (XRRModeInfo *xmode)
   int height = xmode->height;
 
   return g_strdup_printf ("%dx%d", width, height);
-}
-
-static gboolean
-gdk_rectangle_equal (const GdkRectangle *src1,
-                     const GdkRectangle *src2)
-{
-  return ((src1->x == src2->x) && (src1->y == src2->y) &&
-          (src1->width == src2->width) && (src1->height == src2->height));
 }
 
 static gboolean
@@ -1711,17 +1705,16 @@ flashback_monitor_manager_apply_configuration (FlashbackMonitorManager  *manager
       if (crtc_info->mode != NULL)
         {
           MetaMonitorMode *mode;
-          XID *outputs;
-          unsigned int j, n_outputs;
-          int width, height;
+          XID *xids;
+          unsigned int j, n_xids;
           Status ok;
 
           mode = crtc_info->mode;
 
-          n_outputs = crtc_info->outputs->len;
-          outputs = g_new (XID, n_outputs);
+          n_xids = crtc_info->outputs->len;
+          xids = g_new (XID, n_xids);
 
-          for (j = 0; j < n_outputs; j++)
+          for (j = 0; j < n_xids; j++)
             {
               MetaOutput *output;
 
@@ -1730,7 +1723,7 @@ flashback_monitor_manager_apply_configuration (FlashbackMonitorManager  *manager
               output->is_dirty = TRUE;
               output->crtc = crtc;
 
-              outputs[j] = output->winsys_id;
+              xids[j] = output->winsys_id;
             }
 
           ok = XRRSetCrtcConfig (priv->xdisplay,
@@ -1740,7 +1733,7 @@ flashback_monitor_manager_apply_configuration (FlashbackMonitorManager  *manager
                                  crtc_info->x, crtc_info->y,
                                  (XID) mode->mode_id,
                                  meta_monitor_transform_to_xrandr (crtc_info->transform),
-                                 outputs, n_outputs);
+                                 xids, n_xids);
 
           if (ok != Success)
             {
@@ -1770,7 +1763,7 @@ flashback_monitor_manager_apply_configuration (FlashbackMonitorManager  *manager
           crtc->transform = crtc_info->transform;
 
         next:
-          g_free (outputs);
+          g_free (xids);
         }
     }
 
@@ -1921,6 +1914,7 @@ flashback_monitor_manager_set_power_save_mode (FlashbackMonitorManager *manager,
     case META_POWER_SAVE_OFF:
       state = DPMSModeOff;
       break;
+    case META_POWER_SAVE_UNSUPPORTED:
     default:
       return;
   }
