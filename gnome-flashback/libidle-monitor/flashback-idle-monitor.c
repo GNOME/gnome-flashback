@@ -28,6 +28,7 @@
 #include "flashback-idle-monitor.h"
 #include "meta-backend.h"
 #include "meta-idle-monitor.h"
+#include "meta-idle-monitor-xsync.h"
 #include "meta-dbus-idle-monitor.h"
 
 struct _FlashbackIdleMonitor

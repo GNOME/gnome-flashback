@@ -148,8 +148,6 @@ meta_idle_monitor_init (MetaIdleMonitor *monitor)
 {
 }
 
-static MetaIdleMonitor *device_monitors[256];
-
 /**
  * meta_idle_monitor_get_core:
  *

@@ -24,8 +24,6 @@
 #include "meta-backend.h"
 #include "meta-idle-monitor-xsync.h"
 
-static MetaBackend *backend = NULL;
-
 G_DEFINE_TYPE (MetaBackend, meta_backend, G_TYPE_OBJECT);
 
 static void
@@ -143,6 +141,8 @@ meta_backend_init (MetaBackend *backend)
 MetaBackend *
 meta_get_backend (void)
 {
+  static MetaBackend *backend = NULL;
+
   if (!backend)
   	backend = g_object_new (META_TYPE_BACKEND, NULL);
 
