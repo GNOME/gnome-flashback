@@ -8,9 +8,7 @@
   <include href="https://git.gnome.org/browse/gnome-modulesets/plain/gnome-world.modules?h=gnome-3-16" />
 
   <cmake id="compiz" force-non-srcdir-builds="yes"
-         cmakeargs="-DUSE_GCONF=OFF -DUSE_GSETTINGS=ON"
-                   "-DCOMPIZ_DEFAULT_PLUGINS=core,composite,opengl,decor,"
-                   "resize,place,move">
+         cmakeargs="-DUSE_GCONF=OFF -DUSE_GSETTINGS=ON -DCOMPIZ_DEFAULT_PLUGINS=core,composite,opengl,decor,resize,place,move">
     <branch repo="launchpad.net" module="compiz" />
     <dependencies>
       <dep package="boost" />
