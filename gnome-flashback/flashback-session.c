@@ -199,7 +199,7 @@ flashback_session_finalize (GObject *object)
 
 	if (priv->object_path != NULL) {
 		g_free (priv->object_path);
-		priv->object_path;
+		priv->object_path = NULL;
 	}
 
 	g_clear_object (&priv->client_proxy);
