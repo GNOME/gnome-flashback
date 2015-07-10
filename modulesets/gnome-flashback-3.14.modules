@@ -7,7 +7,10 @@
 
   <include href="https://git.gnome.org/browse/gnome-modulesets/plain/gnome-world.modules?h=gnome-3-14" />
 
-  <cmake id="compiz" force-non-srcdir-builds="yes" cmakeargs="-DUSE_GCONF=OFF">
+  <cmake id="compiz" force-non-srcdir-builds="yes"
+         cmakeargs="-DUSE_GCONF=OFF -DUSE_GSETTINGS=ON"
+                   "-DCOMPIZ_DEFAULT_PLUGINS=core,composite,opengl,decor,"
+                   "resize,place,move">
     <branch repo="launchpad-tar" module="compiz/0.9.12/${version}/+download/compiz-${version}.tar.bz2"
             version="0.9.12.1" hash="sha256:8b9d6a72c581c96b820dff182669864aeb8fd1989e95ff56a73203fc478d854e"
             size="4569138">
