@@ -549,12 +549,6 @@ gvc_channel_bar_set_is_amplified (GvcChannelBar *bar, gboolean amplified)
                 }
 
                 g_free (str);
-
-                gtk_misc_set_alignment (GTK_MISC (bar->priv->low_image), 0.5, 0.15);
-                gtk_misc_set_alignment (GTK_MISC (bar->priv->high_image), 0.5, 0.15);
-        } else {
-                gtk_misc_set_alignment (GTK_MISC (bar->priv->low_image), 0.5, 0.5);
-                gtk_misc_set_alignment (GTK_MISC (bar->priv->high_image), 0.5, 0.5);
         }
 }
 
