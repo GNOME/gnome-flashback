@@ -284,6 +284,7 @@ flashback_session_register_client (FlashbackSession *session)
 	GError *error;
 	const gchar *app_id;
 	const gchar *client_startup_id;
+	gchar *startup_id;
 	GVariant *parameters;
 	GVariant *res;
 
@@ -292,7 +293,15 @@ flashback_session_register_client (FlashbackSession *session)
 	app_id = "gnome-flashback";
 	client_startup_id = g_getenv ("DESKTOP_AUTOSTART_ID");
 
-	parameters = g_variant_new ("(ss)", app_id, client_startup_id ? client_startup_id : "");
+	if (client_startup_id != NULL) {
+		startup_id = g_strdup (client_startup_id);
+		g_unsetenv ("DESKTOP_AUTOSTART_ID");
+	} else {
+		startup_id = g_strdup ("");
+	}
+
+	parameters = g_variant_new ("(ss)", app_id, startup_id);
+	g_free (startup_id);
 
 	res = g_dbus_proxy_call_sync (priv->session_manager_proxy,
 	                              "RegisterClient",
