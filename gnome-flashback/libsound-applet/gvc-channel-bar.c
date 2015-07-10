@@ -422,8 +422,9 @@ gvc_channel_bar_scroll (GvcChannelBar *bar, GdkEventScroll *event)
 		case GDK_SCROLL_RIGHT:
 			dy = -1.0;
 			break;
+		case GDK_SCROLL_SMOOTH:
 		default:
-			;
+			break;
 		}
 	}
 
