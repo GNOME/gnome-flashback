@@ -101,9 +101,6 @@ static void
 flashback_inhibit_dialog_set_inhibitor_paths (FlashbackInhibitDialog *dialog,
                                               const gchar *const     *paths)
 {
-	const gchar *const *old_paths;
-
-	old_paths = dialog->priv->inhibitor_paths;
 	dialog->priv->inhibitor_paths = (const gchar *const *) g_strdupv ((gchar **) paths);
 
 	if (dialog->priv->list_store == NULL) {
@@ -359,7 +356,7 @@ model_is_empty (GtkTreeModel *model)
 	return gtk_tree_model_iter_n_children (model, NULL) == 0;
 }
 
-char *
+static char *
 get_user_name (void)
 {
 	char *name;
@@ -383,7 +380,6 @@ update_dialog_text (FlashbackInhibitDialog *dialog)
 	gboolean     inhibited;
 	gint         seconds;
 	const gchar *title;
-	const gchar *tmp;
 	gchar       *description;
 
 	inhibited = !model_is_empty (GTK_TREE_MODEL (dialog->priv->list_store));
@@ -408,49 +404,49 @@ update_dialog_text (FlashbackInhibitDialog *dialog)
 		if (inhibited) {
 			description = g_strdup (_("Click Log Out to quit these applications and log out of the system."));
 		} else {
-			tmp = ngettext ("%s will be logged out automatically in %d second.",
-			                "%s will be logged out automatically in %d seconds.",
-			                seconds);
-			description = g_strdup_printf (tmp, get_user_name (), seconds);
+			description = g_strdup_printf (ngettext ("%s will be logged out automatically in %d second.",
+			                                         "%s will be logged out automatically in %d seconds.",
+			                                         seconds),
+			                               get_user_name (), seconds);
 		}
 	} else if (dialog->priv->action == FLASHBACK_LOGOUT_ACTION_SHUTDOWN) {
 		title = _("Power Off");
 		if (inhibited) {
 			description = g_strdup (_("Click Power Off to quit these applications and power off the system."));
 		} else {
-			tmp = ngettext ("The system will power off automatically in %d second.",
-			                "The system will power off automatically in %d seconds.",
-			                seconds);
-			description = g_strdup_printf (tmp, seconds);
+			description = g_strdup_printf (ngettext ("The system will power off automatically in %d second.",
+			                                         "The system will power off automatically in %d seconds.",
+			                                         seconds),
+			                               seconds);
 		}
 	} else if (dialog->priv->action == FLASHBACK_LOGOUT_ACTION_REBOOT) {
 		title = _("Restart");
 		if (inhibited) {
 			description = g_strdup (_("Click Restart to quit these applications and restart the system."));
 		} else {
-			tmp = ngettext ("The system will restart automatically in %d second.",
-			                "The system will restart automatically in %d seconds.",
-			                seconds);
-			description = g_strdup_printf (tmp, seconds);
+			description = g_strdup_printf (ngettext ("The system will restart automatically in %d second.",
+			                                         "The system will restart automatically in %d seconds.",
+			                                         seconds),
+			                               seconds);
 		}
 	} else if (dialog->priv->action == FLASHBACK_LOGOUT_ACTION_HIBERNATE) {
 		title = _("Hibernate");
-		tmp = ngettext ("The system will hibernate automatically in %d second.",
-		                "The system will hibernate automatically in %d seconds.",
-		                seconds);
-		description = g_strdup_printf (tmp, seconds);
+		description = g_strdup_printf (ngettext ("The system will hibernate automatically in %d second.",
+		                                         "The system will hibernate automatically in %d seconds.",
+		                                         seconds),
+		                               seconds);
 	} else if (dialog->priv->action == FLASHBACK_LOGOUT_ACTION_SUSPEND) {
 		title = _("Suspend");
-		tmp = ngettext ("The system will suspend automatically in %d second.",
-		                "The system will suspend automatically in %d seconds.",
-		                seconds);
-		description = g_strdup_printf (tmp, seconds);
+		description = g_strdup_printf (ngettext ("The system will suspend automatically in %d second.",
+		                                         "The system will suspend automatically in %d seconds.",
+		                                         seconds),
+		                               seconds);
 	} else if (dialog->priv->action == FLASHBACK_LOGOUT_ACTION_HYBRID_SLEEP) {
 		title = _("Hybrid Sleep");
-		tmp = ngettext ("The system will hybrid sleep automatically in %d second.",
-		                "The system will hybrid sleep automatically in %d seconds.",
-		                seconds);
-		description = g_strdup_printf (tmp, seconds);
+		description = g_strdup_printf (ngettext ("The system will hybrid sleep automatically in %d second.",
+		                                         "The system will hybrid sleep automatically in %d seconds.",
+		                                         seconds),
+		                               seconds);
 	} else {
 		g_assert_not_reached ();
 	}
