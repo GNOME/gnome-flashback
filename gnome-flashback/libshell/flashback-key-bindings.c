@@ -15,11 +15,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "config.h"
+
 #include <gtk/gtk.h>
 #include <gtk/gtkx.h>
 
 #include <X11/Xlib.h>
+#include <X11/XKBlib.h>
 
 #include "flashback-key-bindings.h"
 
@@ -275,7 +277,7 @@ flashback_key_bindings_grab (FlashbackKeyBindings *bindings,
 	GdkModifierType modifiers;
 	guint real_modifiers;
 	guint keycode;
-	static next_action = 0;
+	static guint next_action = 0;
 
 	gtk_accelerator_parse (accelerator, &keyval, &modifiers);
 	if (!gtk_accelerator_valid (keyval, modifiers)) {
