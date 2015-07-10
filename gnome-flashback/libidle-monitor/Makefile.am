@@ -4,8 +4,10 @@ noinst_LTLIBRARIES = \
 	libidle-monitor.la \
 	$(NULL)
 
-AM_CPPFLAGS = \
+libidle_monitor_la_CFLAGS = \
 	$(IDLE_MONITOR_CFLAGS) \
+	$(WARN_CFLAGS) \
+	$(AM_CFLAGS) \
 	-I$(top_builddir)/gnome-flashback/libidle-monitor \
 	$(NULL)
 
@@ -20,6 +22,11 @@ libidle_monitor_la_SOURCES = \
 	meta-idle-monitor.h \
 	meta-idle-monitor-xsync.c \
 	meta-idle-monitor-xsync.h \
+	$(NULL)
+
+libidle_monitor_la_LDFLAGS = \
+	$(WARN_LDFLAGS) \
+	$(AM_LDFLAGS) \
 	$(NULL)
 
 libidle_monitor_la_LIBADD = \

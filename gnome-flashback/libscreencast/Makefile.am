@@ -1,18 +1,31 @@
-noinst_LTLIBRARIES = \
-	libscreencast.la
+NULL =
 
-AM_CPPFLAGS = \
+noinst_LTLIBRARIES = \
+	libscreencast.la \
+	$(NULL)
+
+libscreencast_la_CFLAGS = \
 	$(SCREENCAST_CFLAGS) \
-	-I$(top_builddir)/gnome-flashback/libscreencast
+	$(WARN_CFLAGS) \
+	$(AM_CFLAGS) \
+	-I$(top_builddir)/gnome-flashback/libscreencast \
+	$(NULL)
 
 libscreencast_la_SOURCES = \
 	flashback-dbus-screencast.c \
 	flashback-dbus-screencast.h \
 	flashback-screencast.c \
-	flashback-screencast.h
+	flashback-screencast.h \
+	$(NULL)
+
+libscreencast_la_LDFLAGS = \
+	$(WARN_LDFLAGS) \
+	$(AM_LDFLAGS) \
+	$(NULL)
 
 libscreencast_la_LIBADD = \
-	$(SCREENCAST_LIBS)
+	$(SCREENCAST_LIBS) \
+	$(NULL)
 
 flashback-dbus-screencast.h:
 flashback-dbus-screencast.c: org.gnome.Shell.Screencast.xml
@@ -26,12 +39,15 @@ flashback-dbus-screencast.c: org.gnome.Shell.Screencast.xml
 
 BUILT_SOURCES = \
 	flashback-dbus-screencast.c \
-	flashback-dbus-screencast.h
+	flashback-dbus-screencast.h \
+	$(NULL)
 
 EXTRA_DIST = \
-	org.gnome.Shell.Screencast.xml
+	org.gnome.Shell.Screencast.xml \
+	$(NULL)
 
 CLEANFILES = \
-	$(BUILT_SOURCES)
+	$(BUILT_SOURCES) \
+	$(NULL)
 
 -include $(top_srcdir)/git.mk

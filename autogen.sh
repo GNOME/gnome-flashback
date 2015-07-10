@@ -1,25 +1,50 @@
 #!/bin/sh
+#
 # Run this to generate all the initial makefiles, etc.
 
-srcdir=`dirname $0`
+srcdir=$(dirname "$0")
 test -z "$srcdir" && srcdir=.
 
-(test -f $srcdir/configure.ac && test -f $srcdir/gnome-flashback.doap) || {
-    echo -n "**Error**: Directory "\`$srcdir\'" does not look like the"
-    echo " top-level gnome-flashback directory"
-    exit 1
-}
-
-if test ! -f gnome-flashback/libsound-applet/gvc/Makefile.am;
-then
-	echo "+ Setting up submodules"
-	git submodule init
+if [ ! -f $srcdir/configure.ac ]; then
+  echo "**Error**: Directory "\'$srcdir\'" does not look like the top-level" \
+       "project directory."
+  exit 1
 fi
+
+if [ ! -f $srcdir/gnome-flashback/libsound-applet/gvc/Makefile.am ]; then
+	set -x
+	git submodule init
+	{ set +x; } 2>/dev/null
+fi
+
+set -x
 git submodule update
+{ set +x; } 2>/dev/null
 
-which gnome-autogen.sh || {
-    echo "You need to install gnome-common."
-    exit 1
-}
+PKG_NAME=$(autoconf --trace 'AC_INIT:$1' "$srcdir/configure.ac")
 
-. gnome-autogen.sh
+if [ "$#" = 0 ] && [ -z "$NOCONFIGURE" ]; then
+  echo "**Warning**: I am going to run 'configure' with no arguments." >&2
+  echo "If you wish to pass any to it, please specify them on the '$0'" \
+       "command line." >&2
+fi
+
+set -x
+aclocal --install || exit 1
+intltoolize --force --copy --automake || exit 1
+autoreconf --verbose --force --install -Wno-portability || exit 1
+{ set +x; } 2>/dev/null
+
+if [ -z "$NOCONFIGURE" ]; then
+  set -x
+  $srcdir/configure "$@" || exit 1
+  { set +x; } 2>/dev/null
+
+  if [ "$1" = "--help" ]; then
+    exit 0
+  else
+    echo "Now type 'make' to compile $PKG_NAME." || exit 1
+  fi
+else
+  echo "Skipping configure process."
+fi

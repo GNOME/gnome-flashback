@@ -80,6 +80,7 @@
       <dep package="intltool" />
       <dep package="gnome-desktop" />
       <dep package="gtk+" />
+      <dep package="m4-common" />
     </dependencies>
   </autotools>
 

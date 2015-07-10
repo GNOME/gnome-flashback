@@ -14,12 +14,16 @@ SUBDIRS = \
 	$(NULL)
 
 bin_PROGRAMS = \
-	gnome-flashback
+	gnome-flashback \
+	$(NULL)
 
-AM_CPPFLAGS = \
+gnome_flashback_CFLAGS = \
 	$(GNOME_FLASHBACK_CFLAGS) \
+	$(WARN_CFLAGS) \
+	$(AM_CFLAGS) \
 	-I$(top_builddir)/gnome-flashback \
-	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\"
+	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+	$(NULL)
 
 gnome_flashback_SOURCES = \
 	flashback-application.c \
@@ -27,7 +31,13 @@ gnome_flashback_SOURCES = \
 	flashback-main.c \
 	flashback-session.c \
 	flashback-session.h \
-	$(BUILT_SOURCES)
+	$(BUILT_SOURCES) \
+	$(NULL)
+
+gnome_flashback_LDFLAGS = \
+	$(WARN_LDFLAGS) \
+	$(AM_LDFLAGS) \
+	$(NULL)
 
 gnome_flashback_LDADD = \
 	$(GNOME_FLASHBACK_LIBS) \
@@ -51,14 +61,17 @@ flashback-resources.h: flashback.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES)
 
 BUILT_SOURCES = \
 	flashback-resources.c \
-	flashback-resources.h
+	flashback-resources.h \
+	$(NULL)
 
 EXTRA_DIST = \
 	Adwaita.css \
 	flashback.gresource.xml \
-	HighContrast.css
+	HighContrast.css \
+	$(NULL)
 
 CLEANFILES = \
-	$(BUILT_SOURCES)
+	$(BUILT_SOURCES) \
+	$(NULL)
 
 -include $(top_srcdir)/git.mk

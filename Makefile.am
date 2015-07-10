@@ -6,29 +6,16 @@ SUBDIRS = \
 	po \
 	$(NULL)
 
-ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
+ACLOCAL_AMFLAGS = --install -I m4 ${ACLOCAL_FLAGS}
 
 MAINTAINERCLEANFILES = \
+	$(GITIGNORE_MAINTAINERCLEANFILES_TOPLEVEL) \
+	$(GITIGNORE_MAINTAINERCLEANFILES_MAKEFILE_IN) \
+	$(GITIGNORE_MAINTAINERCLEANFILES_M4_LIBTOOL) \
+	`find "m4" -type f -name "*.m4" -print` \
 	$(srcdir)/INSTALL \
-	$(srcdir)/aclocal.m4 \
-	$(srcdir)/compile \
-	$(srcdir)/config.guess \
-	$(srcdir)/config.h.in \
 	$(srcdir)/config.h.in~ \
-	$(srcdir)/config.sub \
-	$(srcdir)/depcomp \
-	$(srcdir)/install-sh \
-	$(srcdir)/ltmain.sh \
-	$(srcdir)/missing \
-	$(srcdir)/mkinstalldirs \
 	$(srcdir)/configure \
-	$(srcdir)/m4/intltool.m4 \
-	$(srcdir)/m4/libtool.m4 \
-	$(srcdir)/m4/ltoptions.m4 \
-	$(srcdir)/m4/ltsugar.m4 \
-	$(srcdir)/m4/ltversion.m4 \
-	$(srcdir)/m4/lt~obsolete.m4 \
-	`find "$(srcdir)" -type f -name Makefile.in -print` \
 	$(NULL)
 
 EXTRA_DIST = \

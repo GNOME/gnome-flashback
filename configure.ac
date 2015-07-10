@@ -5,6 +5,8 @@ m4_define([gnome_flashback_micro_version], [2])
 AC_INIT([gnome-flashback], [gnome_flashback_major_version.gnome_flashback_minor_version.gnome_flashback_micro_version],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-flashback])
 
+AX_IS_RELEASE([git-directory])
+
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -12,11 +14,13 @@ AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz tar-ustar -Wno-portability])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AM_MAINTAINER_MODE([enable])
 
-AC_PROG_CC
-LT_INIT
+AX_CHECK_ENABLE_DEBUG([yes])
 
-GNOME_COMPILE_WARNINGS([maximum])
-GNOME_MAINTAINER_MODE_DEFINES
+AC_PROG_CC
+
+AX_COMPILER_FLAGS([WARN_CFLAGS], [WARN_LDFLAGS])
+
+LT_INIT
 
 AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
 

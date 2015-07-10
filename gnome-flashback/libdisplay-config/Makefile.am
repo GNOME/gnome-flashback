@@ -1,10 +1,16 @@
+NULL =
+
 noinst_LTLIBRARIES = \
 	libdisplay-config.la
+	$(NULL)
 
-AM_CPPFLAGS = \
+libdisplay_config_la_CFLAGS = \
 	$(DISPLAY_CONFIG_CFLAGS) \
+	$(WARN_CFLAGS) \
+	$(AM_CFLAGS) \
 	-I$(top_builddir)/gnome-flashback/libdisplay-config \
-	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\"
+	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+	$(NULL)
 
 libdisplay_config_la_SOURCES = \
 	edid-parse.c \
@@ -19,10 +25,17 @@ libdisplay_config_la_SOURCES = \
 	flashback-monitor-config.c \
 	flashback-monitor-config.h \
 	flashback-monitor-manager.c \
-	flashback-monitor-manager.h
+	flashback-monitor-manager.h \
+	$(NULL)
+
+libdisplay_config_la_LDFLAGS = \
+	$(WARN_LDFLAGS) \
+	$(AM_LDFLAGS) \
+	$(NULL)
 
 libdisplay_config_la_LIBADD = \
-	$(DISPLAY_CONFIG_LIBS)
+	$(DISPLAY_CONFIG_LIBS) \
+	$(NULL)
 
 meta-dbus-display-config.h:
 meta-dbus-display-config.c: org.gnome.Mutter.DisplayConfig.xml
@@ -34,13 +47,16 @@ meta-dbus-display-config.c: org.gnome.Mutter.DisplayConfig.xml
 
 BUILT_SOURCES = \
 	meta-dbus-display-config.h \
-	meta-dbus-display-config.c
+	meta-dbus-display-config.c \
+	$(NULL)
 
 EXTRA_DIST = \
 	org.gnome.Mutter.DisplayConfig.xml \
-	flashback-confirm-dialog.ui
+	flashback-confirm-dialog.ui \
+	$(NULL)
 
 CLEANFILES = \
-	$(BUILT_SOURCES)
+	$(BUILT_SOURCES) \
+	$(NULL)
 
 -include $(top_srcdir)/git.mk

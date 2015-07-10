@@ -1,13 +1,20 @@
+NULL =
+
 SUBDIRS = \
-	gvc
+	gvc \
+	$(NULL)
 
 noinst_LTLIBRARIES = \
-	libsound-applet.la
+	libsound-applet.la \
+	$(NULL)
 
-AM_CPPFLAGS = \
+libsound_applet_la_CFLAGS = \
 	$(SOUND_APPLET_CFLAGS) \
+	$(WARN_CFLAGS) \
+	$(AM_CFLAGS) \
 	-I$(top_builddir)/gnome-flashback/libsound-applet \
-	-I$(srcdir)/gvc
+	-I$(srcdir)/gvc \
+	$(NULL)
 
 libsound_applet_la_SOURCES = \
 	gvc-applet.c \
@@ -15,11 +22,18 @@ libsound_applet_la_SOURCES = \
 	gvc-channel-bar.c \
 	gvc-channel-bar.h \
 	gvc-stream-status-icon.c \
-	gvc-stream-status-icon.h
+	gvc-stream-status-icon.h \
+	$(NULL)
+
+libsound_applet_la_LDFLAGS = \
+	$(WARN_LDFLAGS) \
+	$(AM_LDFLAGS) \
+	$(NULL)
 
 libsound_applet_la_LIBADD = \
 	-lm \
 	$(SOUND_APPLET_LIBS) \
-	gvc/libgvc.la
+	gvc/libgvc.la \
+	$(NULL)
 
 -include $(top_srcdir)/git.mk
