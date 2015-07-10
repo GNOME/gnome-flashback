@@ -136,11 +136,14 @@ popup_dock (GvcStreamStatusIcon *icon,
 
         update_dock (icon);
 
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         screen = gtk_status_icon_get_screen (GTK_STATUS_ICON (icon));
         res = gtk_status_icon_get_geometry (GTK_STATUS_ICON (icon),
                                             &screen,
                                             &area,
                                             &orientation);
+        G_GNUC_END_IGNORE_DEPRECATIONS
+
         if (! res) {
                 g_warning ("Unable to determine geometry of status icon");
                 return FALSE;
@@ -329,6 +332,8 @@ on_status_icon_popup_menu (GtkStatusIcon       *status_icon,
         gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 
         gtk_widget_show_all (menu);
+
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         gtk_menu_popup (GTK_MENU (menu),
                         NULL,
                         NULL,
@@ -336,6 +341,7 @@ on_status_icon_popup_menu (GtkStatusIcon       *status_icon,
                         status_icon,
                         button,
                         activate_time);
+        G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static gboolean
@@ -435,8 +441,11 @@ update_icon (GvcStreamStatusIcon *icon)
         /* apparently status icon will reset icon even if
          * if doesn't change */
         if (icon->priv->current_icon != n) {
+                G_GNUC_BEGIN_IGNORE_DEPRECATIONS
                 gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (icon),
                                                     icon->priv->icon_names [n]);
+                G_GNUC_END_IGNORE_DEPRECATIONS
+
                 icon->priv->current_icon = n;
         }
 
@@ -467,7 +476,11 @@ update_icon (GvcStreamStatusIcon *icon)
                                           100 * (float)volume / PA_VOLUME_NORM,
                                           gvc_mixer_stream_get_description (icon->priv->mixer_stream));
         }
+
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         gtk_status_icon_set_tooltip_markup (GTK_STATUS_ICON (icon), markup);
+        G_GNUC_END_IGNORE_DEPRECATIONS
+
         g_free (markup);
 }
 
@@ -643,8 +656,10 @@ gvc_stream_status_icon_constructor (GType                  type,
 
         icon = GVC_STREAM_STATUS_ICON (object);
 
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (icon),
                                             icon->priv->icon_names[0]);
+        G_GNUC_END_IGNORE_DEPRECATIONS
 
         /* window */
         icon->priv->dock = gtk_window_new (GTK_WINDOW_POPUP);

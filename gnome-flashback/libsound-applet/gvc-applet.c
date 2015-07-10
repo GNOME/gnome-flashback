@@ -76,8 +76,10 @@ maybe_show_status_icons (GvcApplet *applet)
         if (stream == NULL) {
                 show = FALSE;
         }
-        gtk_status_icon_set_visible (GTK_STATUS_ICON (applet->priv->output_status_icon), show);
 
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+        gtk_status_icon_set_visible (GTK_STATUS_ICON (applet->priv->output_status_icon), show);
+        G_GNUC_END_IGNORE_DEPRECATIONS
 
         show = FALSE;
         stream = gvc_mixer_control_get_default_source (applet->priv->control);
@@ -102,7 +104,10 @@ maybe_show_status_icons (GvcApplet *applet)
                         }
                 }
         }
+
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         gtk_status_icon_set_visible (GTK_STATUS_ICON (applet->priv->input_status_icon), show);
+        G_GNUC_END_IGNORE_DEPRECATIONS
 
         g_slist_free (source_outputs);
 }
@@ -263,14 +268,21 @@ gvc_applet_init (GvcApplet *applet)
                                                                        output_icon_names);
         gvc_stream_status_icon_set_display_name (applet->priv->output_status_icon,
                                                  _("Output"));
+
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         gtk_status_icon_set_title (GTK_STATUS_ICON (applet->priv->output_status_icon),
                                    _("Sound Output Volume"));
+        G_GNUC_END_IGNORE_DEPRECATIONS
+
         applet->priv->input_status_icon = gvc_stream_status_icon_new (NULL,
                                                                       input_icon_names);
         gvc_stream_status_icon_set_display_name (applet->priv->input_status_icon,
                                                  _("Input"));
+
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         gtk_status_icon_set_title (GTK_STATUS_ICON (applet->priv->input_status_icon),
                                    _("Microphone Volume"));
+        G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
