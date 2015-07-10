@@ -50,11 +50,8 @@ struct GvcChannelBarPrivate
         GtkWidget     *low_image;
         GtkWidget     *scale;
         GtkWidget     *high_image;
-        GtkWidget     *mute_box;
-        GtkWidget     *mute_switch;
         GtkAdjustment *adjustment;
         GtkAdjustment *zero_adjustment;
-        gboolean       show_mute;
         gboolean       is_muted;
         char          *icon_name;
         char          *low_icon_name;
@@ -70,7 +67,6 @@ enum
 {
         PROP_0,
         PROP_ORIENTATION,
-        PROP_SHOW_MUTE,
         PROP_IS_MUTED,
         PROP_ADJUSTMENT,
         PROP_ICON_NAME,
@@ -124,8 +120,6 @@ _scale_box_new (GvcChannelBar *bar)
 
                 gtk_box_pack_start (GTK_BOX (ebox), priv->low_image, FALSE, FALSE, 0);
                 gtk_widget_hide (priv->low_image);
-
-                gtk_box_pack_start (GTK_BOX (ebox), priv->mute_box, FALSE, FALSE, 0);
         } else {
                 bar->priv->scale_box = box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 
@@ -148,8 +142,6 @@ _scale_box_new (GvcChannelBar *bar)
 
                 gtk_box_pack_start (GTK_BOX (ebox), priv->high_image, FALSE, FALSE, 0);
                 gtk_widget_show (priv->high_image);
-
-                gtk_box_pack_start (GTK_BOX (ebox), priv->mute_box, FALSE, FALSE, 0);
         }
 
         ca_gtk_widget_disable_sounds (bar->priv->scale, FALSE);
@@ -203,12 +195,10 @@ update_layout (GvcChannelBar *bar)
         frame = gtk_widget_get_parent (box);
 
         g_object_ref (bar->priv->image);
-        g_object_ref (bar->priv->mute_box);
         g_object_ref (bar->priv->low_image);
         g_object_ref (bar->priv->high_image);
 
         gtk_container_remove (GTK_CONTAINER (bar->priv->start_box), bar->priv->image);
-        gtk_container_remove (GTK_CONTAINER (bar->priv->end_box), bar->priv->mute_box);
 
         if (bar->priv->orientation == GTK_ORIENTATION_VERTICAL) {
                 gtk_container_remove (GTK_CONTAINER (bar->priv->start_box), bar->priv->low_image);
@@ -227,7 +217,6 @@ update_layout (GvcChannelBar *bar)
         gtk_container_add (GTK_CONTAINER (frame), bar->priv->scale_box);
 
         g_object_unref (bar->priv->image);
-        g_object_unref (bar->priv->mute_box);
         g_object_unref (bar->priv->low_image);
         g_object_unref (bar->priv->high_image);
 
@@ -477,24 +466,15 @@ on_zero_adjustment_value_changed (GtkAdjustment *adjustment,
         value = gtk_adjustment_get_value (bar->priv->zero_adjustment);
         gtk_adjustment_set_value (bar->priv->adjustment, value);
 
-
-        if (bar->priv->show_mute == FALSE) {
-                /* this means the adjustment moved away from zero and
-                 * therefore we should unmute and set the volume. */
-                gvc_channel_bar_set_is_muted (bar, value > 0.0);
-        }
+        /* this means the adjustment moved away from zero and
+         * therefore we should unmute and set the volume. */
+        gvc_channel_bar_set_is_muted (bar, value > 0.0);
 }
 
 static void
 update_mute_switch (GvcChannelBar *bar)
 {
-        if (bar->priv->show_mute) {
-                gtk_widget_show (bar->priv->mute_switch);
-                gtk_switch_set_active (GTK_SWITCH (bar->priv->mute_switch),
-                                       !bar->priv->is_muted);
-        } else {
-                gtk_widget_hide (bar->priv->mute_switch);
-        }
+
 
         if (bar->priv->is_muted) {
                 /* If we aren't showing the mute button then
@@ -541,26 +521,6 @@ gvc_channel_bar_get_is_muted  (GvcChannelBar *bar)
 }
 
 void
-gvc_channel_bar_set_show_mute (GvcChannelBar *bar,
-                               gboolean       show_mute)
-{
-        g_return_if_fail (GVC_IS_CHANNEL_BAR (bar));
-
-        if (show_mute != bar->priv->show_mute) {
-                bar->priv->show_mute = show_mute;
-                g_object_notify (G_OBJECT (bar), "show-mute");
-                update_mute_switch (bar);
-        }
-}
-
-gboolean
-gvc_channel_bar_get_show_mute (GvcChannelBar *bar)
-{
-        g_return_val_if_fail (GVC_IS_CHANNEL_BAR (bar), FALSE);
-        return bar->priv->show_mute;
-}
-
-void
 gvc_channel_bar_set_is_amplified (GvcChannelBar *bar, gboolean amplified)
 {
         g_return_if_fail (GVC_IS_CHANNEL_BAR (bar));
@@ -590,11 +550,10 @@ gvc_channel_bar_set_is_amplified (GvcChannelBar *bar, gboolean amplified)
                 }
 
                 g_free (str);
-                gtk_alignment_set (GTK_ALIGNMENT (bar->priv->mute_box), 0.5, 0, 0, 0);
+
                 gtk_misc_set_alignment (GTK_MISC (bar->priv->low_image), 0.5, 0.15);
                 gtk_misc_set_alignment (GTK_MISC (bar->priv->high_image), 0.5, 0.15);
         } else {
-                gtk_alignment_set (GTK_ALIGNMENT (bar->priv->mute_box), 0.5, 0.5, 0, 0);
                 gtk_misc_set_alignment (GTK_MISC (bar->priv->low_image), 0.5, 0.5);
                 gtk_misc_set_alignment (GTK_MISC (bar->priv->high_image), 0.5, 0.5);
         }
@@ -629,9 +588,6 @@ gvc_channel_bar_set_property (GObject       *object,
                 break;
         case PROP_IS_MUTED:
                 gvc_channel_bar_set_is_muted (self, g_value_get_boolean (value));
-                break;
-        case PROP_SHOW_MUTE:
-                gvc_channel_bar_set_show_mute (self, g_value_get_boolean (value));
                 break;
         case PROP_ICON_NAME:
                 gvc_channel_bar_set_icon_name (self, g_value_get_string (value));
@@ -669,9 +625,6 @@ gvc_channel_bar_get_property (GObject     *object,
                 break;
         case PROP_IS_MUTED:
                 g_value_set_boolean (value, priv->is_muted);
-                break;
-        case PROP_SHOW_MUTE:
-                g_value_set_boolean (value, priv->show_mute);
                 break;
         case PROP_ICON_NAME:
                 g_value_set_string (value, priv->icon_name);
@@ -736,13 +689,6 @@ gvc_channel_bar_class_init (GvcChannelBarClass *klass)
                                                                "Whether stream is muted",
                                                                FALSE,
                                                                G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (object_class,
-                                         PROP_SHOW_MUTE,
-                                         g_param_spec_boolean ("show-mute",
-                                                               "show mute",
-                                                               "Whether stream is muted",
-                                                               FALSE,
-                                                               G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
 
         g_object_class_install_property (object_class,
                                          PROP_ADJUSTMENT,
@@ -784,16 +730,6 @@ gvc_channel_bar_class_init (GvcChannelBarClass *klass)
 }
 
 static void
-on_mute_switch_toggled (GtkSwitch     *sw,
-                        GParamSpec *pspec,
-                        GvcChannelBar *bar)
-{
-        gboolean is_muted;
-        is_muted = gtk_switch_get_active (sw);
-        gvc_channel_bar_set_is_muted (bar, !is_muted);
-}
-
-static void
 gvc_channel_bar_init (GvcChannelBar *bar)
 {
         GtkWidget *frame;
@@ -825,15 +761,6 @@ gvc_channel_bar_init (GvcChannelBar *bar)
                           "value-changed",
                           G_CALLBACK (on_zero_adjustment_value_changed),
                           bar);
-
-        bar->priv->mute_switch = gtk_switch_new ();
-        gtk_widget_set_no_show_all (bar->priv->mute_switch, TRUE);
-        g_signal_connect (bar->priv->mute_switch,
-                          "notify::active",
-                          G_CALLBACK (on_mute_switch_toggled),
-                          bar);
-        bar->priv->mute_box = gtk_alignment_new (0.5, 0.5, 0, 0);
-        gtk_container_add (GTK_CONTAINER (bar->priv->mute_box), bar->priv->mute_switch);
 
         bar->priv->low_image = gtk_image_new_from_icon_name ("audio-volume-low",
                                                              GTK_ICON_SIZE_MENU);
