@@ -29,11 +29,14 @@
 #include "meta-idle-monitor-dbus.h"
 #include "meta-dbus-idle-monitor.h"
 
-struct _MetaIdleMonitorDBusPrivate {
-	gint dbus_name_id;
+struct _MetaIdleMonitorDBusPrivate
+{
+  gint                      dbus_name_id;
 
-	int  xsync_event_base;
-	int  xsync_error_base;
+  gint                      xsync_event_base;
+  gint                      xsync_error_base;
+
+  GDBusObjectManagerServer *server;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (MetaIdleMonitorDBus, meta_idle_monitor_dbus, G_TYPE_OBJECT);
@@ -242,13 +245,17 @@ on_bus_acquired (GDBusConnection *connection,
                  const char      *name,
                  gpointer         user_data)
 {
+  MetaIdleMonitorDBus *monitor_dbus;
   GDBusObjectManagerServer *manager;
   GdkDeviceManager *device_manager;
   MetaIdleMonitor *monitor;
   GList *devices, *iter;
   char *path;
 
+  monitor_dbus = META_IDLE_MONITOR_DBUS (user_data);
   manager = g_dbus_object_manager_server_new ("/org/gnome/Mutter/IdleMonitor");
+
+  monitor_dbus->priv->server = manager;
 
   /* We never clear the core monitor, as that's supposed to cumulate idle times from
      all devices */
@@ -314,14 +321,46 @@ filter_func (GdkXEvent *xevent,
 static void
 meta_idle_monitor_dbus_dispose (GObject *object)
 {
-	MetaIdleMonitorDBus *monitor = META_IDLE_MONITOR_DBUS (object);
+  MetaIdleMonitorDBus *monitor;
+  GdkDisplay *display;
+  GdkDeviceManager *device_manager;
+  GList *master;
+  GList *slave;
+  GList *devices;
+  GList *iter;
+  const gchar *core_path;
 
-	if (monitor->priv->dbus_name_id) {
-		g_bus_unown_name (monitor->priv->dbus_name_id);
-		monitor->priv->dbus_name_id = 0;
-	}
+  monitor = META_IDLE_MONITOR_DBUS (object);
 
-	G_OBJECT_CLASS (meta_idle_monitor_dbus_parent_class)->dispose (object);
+  if (monitor->priv->dbus_name_id)
+    {
+      g_bus_unown_name (monitor->priv->dbus_name_id);
+      monitor->priv->dbus_name_id = 0;
+    }
+
+  display = gdk_display_get_default ();
+  device_manager = gdk_display_get_device_manager (display);
+  master = gdk_device_manager_list_devices (device_manager, GDK_DEVICE_TYPE_MASTER);
+  slave = gdk_device_manager_list_devices (device_manager, GDK_DEVICE_TYPE_SLAVE);
+  devices = g_list_concat (master, slave);
+
+  for (iter = devices; iter; iter = iter->next)
+    {
+      GdkDevice *device;
+
+      device = (GdkDevice *) iter->data;
+
+      on_device_removed (device_manager, device, monitor->priv->server);
+    }
+
+  g_list_free (devices);
+
+  core_path = "/org/gnome/Mutter/IdleMonitor/Core";
+  g_dbus_object_manager_server_unexport (monitor->priv->server, core_path);
+
+  g_clear_object (&monitor->priv->server);
+
+  G_OBJECT_CLASS (meta_idle_monitor_dbus_parent_class)->dispose (object);
 }
 
 static void
@@ -341,7 +380,7 @@ meta_idle_monitor_dbus_init (MetaIdleMonitorDBus *monitor)
 	Display *xdisplay;
 	int major, minor;
 
-    monitor->priv = meta_idle_monitor_dbus_get_instance_private (monitor);
+	monitor->priv = meta_idle_monitor_dbus_get_instance_private (monitor);
 	monitor->priv->dbus_name_id = g_bus_own_name (G_BUS_TYPE_SESSION,
 	                                              "org.gnome.Mutter.IdleMonitor",
 	                                              G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
@@ -349,7 +388,7 @@ meta_idle_monitor_dbus_init (MetaIdleMonitorDBus *monitor)
 	                                              on_bus_acquired,
 	                                              on_name_acquired,
 	                                              on_name_lost,
-	                                              NULL, NULL);
+	                                              monitor, NULL);
 
 	display = gdk_display_get_default ();
 	xdisplay = gdk_x11_display_get_xdisplay (display);
