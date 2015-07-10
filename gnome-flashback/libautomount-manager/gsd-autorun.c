@@ -580,6 +580,8 @@ autorun_dialog_response (GtkDialog *dialog, gint response, AutorunDialogData *da
 				data->open_window_func (data->mount, data->user_data);
 		}
 		break;
+	default:
+		break;
 	}
 
 	autorun_dialog_destroy (data);

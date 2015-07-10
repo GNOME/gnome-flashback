@@ -52,12 +52,9 @@ struct GsdAutomountManagerPrivate
         GList *volume_queue;
 };
 
-static void     gsd_automount_manager_class_init  (GsdAutomountManagerClass *klass);
-static void     gsd_automount_manager_init        (GsdAutomountManager      *gsd_automount_manager);
-
 G_DEFINE_TYPE (GsdAutomountManager, gsd_automount_manager, G_TYPE_OBJECT)
 
-GDBusProxy *
+static GDBusProxy *
 get_session_proxy (void)
 {
         static GDBusProxy *session_proxy;
@@ -514,7 +511,7 @@ setup_automounter (GsdAutomountManager *manager)
 				 manager, NULL);
 }
 
-void
+static void
 gsd_automount_manager_finalize (GObject *object)
 {
         GsdAutomountManager *manager  = GSD_AUTOMOUNT_MANAGER (object);
