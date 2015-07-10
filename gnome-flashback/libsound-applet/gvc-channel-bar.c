@@ -79,8 +79,6 @@ enum
         PROP_IS_AMPLIFIED
 };
 
-static void     gvc_channel_bar_class_init    (GvcChannelBarClass *klass);
-static void     gvc_channel_bar_init          (GvcChannelBar      *channel_bar);
 static void     gvc_channel_bar_finalize      (GObject            *object);
 
 static gboolean on_scale_button_press_event   (GtkWidget      *widget,

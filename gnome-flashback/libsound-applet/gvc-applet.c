@@ -60,8 +60,6 @@ struct GvcAppletPrivate
         GvcMixerControl     *control;
 };
 
-static void     gvc_applet_class_init (GvcAppletClass *klass);
-static void     gvc_applet_init       (GvcApplet      *applet);
 static void     gvc_applet_finalize   (GObject        *object);
 
 G_DEFINE_TYPE (GvcApplet, gvc_applet, G_TYPE_OBJECT)

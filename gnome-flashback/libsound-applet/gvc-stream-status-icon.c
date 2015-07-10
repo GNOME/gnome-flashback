@@ -55,8 +55,6 @@ enum
         PROP_ICON_NAMES,
 };
 
-static void     gvc_stream_status_icon_class_init (GvcStreamStatusIconClass *klass);
-static void     gvc_stream_status_icon_init       (GvcStreamStatusIcon      *stream_status_icon);
 static void     gvc_stream_status_icon_finalize   (GObject                  *object);
 
 G_DEFINE_TYPE (GvcStreamStatusIcon, gvc_stream_status_icon, GTK_TYPE_STATUS_ICON)
