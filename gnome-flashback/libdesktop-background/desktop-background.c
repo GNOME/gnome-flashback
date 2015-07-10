@@ -108,7 +108,7 @@ get_nautilus_window (DesktopBackground *background)
 	unsigned long  items;
 	unsigned long  left;
 	unsigned char *list;
-	int            i;
+	unsigned long  i;
 	Window        *windows;
 	Window         nautilus;
 	Window         desktop;
