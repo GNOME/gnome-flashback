@@ -107,6 +107,7 @@
     <branch repo="github.com" module="albertsmuktupavels/libstatus-notifier" />
     <dependencies>
       <dep package="glib" />
+      <dep package="gtk-doc" />
       <dep package="m4-common" />
     </dependencies>
   </autotools>
