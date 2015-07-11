@@ -211,7 +211,7 @@ popup_dock (GvcStreamStatusIcon *icon,
                                      GDK_OWNERSHIP_NONE, TRUE,
                                      GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
                                      GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK,
-                                     NULL, time) != GDK_GRAB_SUCCESS) {
+                                     NULL, time) == GDK_GRAB_SUCCESS) {
                         icon->priv->grabbed_pointer = g_object_ref (device);
                         grabbed = TRUE;
                         break;
@@ -219,7 +219,7 @@ popup_dock (GvcStreamStatusIcon *icon,
         }
         g_list_free (list);
 
-        if (grabbed) {
+        if (grabbed == FALSE) {
                 ungrab (icon, time);
                 return FALSE;
         }
@@ -233,7 +233,7 @@ popup_dock (GvcStreamStatusIcon *icon,
                 if (gdk_device_grab (device, window,
                                      GDK_OWNERSHIP_NONE, TRUE,
                                      GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK,
-                                     NULL, time) != GDK_GRAB_SUCCESS) {
+                                     NULL, time) == GDK_GRAB_SUCCESS) {
                         icon->priv->grabbed_keyboard = g_object_ref (device);
                         grabbed = TRUE;
                         break;
@@ -241,7 +241,7 @@ popup_dock (GvcStreamStatusIcon *icon,
         }
         g_list_free (list);
 
-        if (grabbed) {
+        if (grabbed == FALSE) {
                 ungrab (icon, time);
                 return FALSE;
         }
