@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback 3.15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-05 09:45+0300\n"
-"PO-Revision-Date: 2015-05-05 09:49+0300\n"
+"POT-Creation-Date: 2015-07-19 13:14+0300\n"
+"PO-Revision-Date: 2015-07-19 13:15+0300\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -152,16 +152,58 @@ msgstr ""
 "Control Center."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:19
+msgid "Workarounds"
+msgstr "Workarounds"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:20
+msgid ""
+"If set to true, then GNOME Flashback application will use workarounds to fix "
+"bugs."
+msgstr ""
+"If set to true, then GNOME Flashback application will use workarounds to fix "
+"bugs."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:21
 msgid "Fade the background on change"
 msgstr "Fade the background on change"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:20
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:22
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
 msgstr ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:23
+msgid "Fix missing app menu button"
+msgstr "Fix missing app menu button"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:24
+msgid ""
+"If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
+"FALSE. Disable if you want to use gnome-settings-daemon overrides in "
+"xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
+msgstr ""
+"If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
+"FALSE. Disable if you want to use gnome-settings-daemon overrides in "
+"xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:25
+msgid "Fix wrong button layout"
+msgstr "Fix wrong button layout"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:26
+msgid ""
+"If set to non-empty string, then gnome-flashback will force Gtk/"
+"DecorationLayout to value set by this setting. Set to empty string if you "
+"want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
+"DecorationLayout' property."
+msgstr ""
+"If set to non-empty string, then gnome-flashback will force Gtk/"
+"DecorationLayout to value set by this setting. Set to empty string if you "
+"want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
+"DecorationLayout' property."
 
 #: ../gnome-flashback/flashback-main.c:33
 msgid "Initialize GNOME Flashback session"
@@ -171,12 +213,12 @@ msgstr "Initialize GNOME Flashback session"
 msgid "Replace a currently running application"
 msgstr "Replace a currently running application"
 
-#: ../gnome-flashback/libautomount-manager/gsd-automount-manager.c:180
+#: ../gnome-flashback/libautomount-manager/gsd-automount-manager.c:177
 #, c-format
 msgid "Unable to mount %s"
 msgstr "לא ניתן לעגן את %s"
 
-#: ../gnome-flashback/libautomount-manager/gsd-automount-manager.c:293
+#: ../gnome-flashback/libautomount-manager/gsd-automount-manager.c:290
 #, c-format
 msgid "Unable to open a folder for %s"
 msgstr "לא ניתן לפתוח תיקייה עבור %s"
@@ -203,74 +245,74 @@ msgstr "לא ניתן לשלוף את %p"
 msgid "Unable to unmount %p"
 msgstr "לא ניתן לבטל עיגון %p"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:705
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:707
 msgid "You have just inserted an Audio CD."
 msgstr "הכנסת תקליטור שמע."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:707
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:709
 msgid "You have just inserted an Audio DVD."
 msgstr "הכנסת תקליטור שמע DVD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:709
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:711
 msgid "You have just inserted a Video DVD."
 msgstr "הכנסת תקליטור וידאו DVD."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:711
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:713
 msgid "You have just inserted a Video CD."
 msgstr "הכנסת תקליטור וידאו."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:713
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:715
 msgid "You have just inserted a Super Video CD."
 msgstr "הכנסת תקליטור Super Video."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:715
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:717
 msgid "You have just inserted a blank CD."
 msgstr "הכנסת תקליטור ריק."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:717
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:719
 msgid "You have just inserted a blank DVD."
 msgstr "הכנסת תקליטור DVD ריק."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:719
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:721
 msgid "You have just inserted a blank Blu-Ray disc."
 msgstr "הכנסת תקליטור Blu-Ray ריק."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:721
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:723
 msgid "You have just inserted a blank HD DVD."
 msgstr "הכנסת תקליטור DVD בהבחנה גבוה ריק."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:723
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:725
 msgid "You have just inserted a Photo CD."
 msgstr "הכנסת תקליטור Photo."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:725
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:727
 msgid "You have just inserted a Picture CD."
 msgstr "הכנסת תקליטור Picture."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:727
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:729
 msgid "You have just inserted a medium with digital photos."
 msgstr "הכנסת אמצעי תמונות ספרתי."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:729
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:731
 msgid "You have just inserted a digital audio player."
 msgstr "הכנסת נגן שמע ספרתי."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:731
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:733
 msgid ""
 "You have just inserted a medium with software intended to be automatically "
 "started."
 msgstr "הכנסת אמצעי עם תכנה המיועדת להפעלה באופן אוטומטי."
 
 #. fallback to generic greeting
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:734
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:736
 msgid "You have just inserted a medium."
 msgstr "הכנסת אמצעי."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:736
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:738
 msgid "Choose what application to launch."
 msgstr "בחירת היישום לשיגור."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:745
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:747
 #, c-format
 msgid ""
 "Select how to open \"%s\" and whether to perform this action in the future "
@@ -278,23 +320,23 @@ msgid ""
 msgstr ""
 "בחירה איך לפתוח את „%s” והאם להעדיף פעולה זו בעתיד למדיה אחרת מסוג „%s”."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:772
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:774
 msgid "_Always perform this action"
 msgstr "_תמיד לבצע פעולה זו"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:781
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:783
 msgid "_Cancel"
 msgstr "_ביטול"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:782
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:784
 msgid "_OK"
 msgstr "_אישור"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:788
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:790
 msgid "_Eject"
 msgstr "_שליפה"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:793
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:795
 msgid "_Unmount"
 msgstr "_ביטול עיגון"
 
@@ -302,19 +344,19 @@ msgstr "_ביטול עיגון"
 msgid "Built-in display"
 msgstr "תצוגה מובנית"
 
-#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:222
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:326
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:218
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:323
 msgid "Unknown"
 msgstr "לא ידוע"
 
-#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:224
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:220
 msgid "Unknown Display"
 msgstr "תצוגה לא ידועה"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:232
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:228
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -335,84 +377,84 @@ msgstr "_שמירת שינויים"
 msgid "_Revert Settings"
 msgstr "ש_חזור הגדרות"
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:407
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:596
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:403
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:592
 msgid "Log Out"
 msgstr "יציאה"
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:409
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:405
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr "לחיצה על יציאה תוציא יישומים אלה ותצא מהמערכת."
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:411
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:407
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "המשתמש %s ייצא אוטומטית בעוד שנייה."
 msgstr[1] "המשתמש %s ייצא אוטומטית בעוד %d שניות."
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:417
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:599
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:413
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:595
 msgid "Power Off"
 msgstr "כיבוי"
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:419
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:415
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "לחיצה על כיבוי תוציא יישומים אלה ותכבה את המערכת."
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:421
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:417
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "המערכת תכבה אוטומטית בעוד שנייה."
 msgstr[1] "המערכת תכבה אוטומטית בעוד %d שניות."
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:427
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:602
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:423
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:598
 msgid "Restart"
 msgstr "הפעלה מחדש"
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:429
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:425
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "לחיצה על הפעלה מחדש תוציא יישומים אלה ותפעיל מחדש את המערכת."
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:431
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:427
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "המערכת תופעל מחדש אוטומטית בעוד שנייה."
 msgstr[1] "המערכת תופעל מחדש אוטומטית בעוד %d שניות"
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:437
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:605
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:433
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:601
 msgid "Hibernate"
 msgstr "תרדמת"
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:438
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:434
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
 msgstr[0] "המערכת תיכנס אוטומטית לתרדמת בעוד שנייה."
 msgstr[1] "המערת תיכנס אוטומטית לתרדמת בעוד %d שניות."
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:443
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:608
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:439
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:604
 msgid "Suspend"
 msgstr "השהיה"
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:444
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:440
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
 msgstr[0] "המערכת תושהה אוטומטית בעוד שנייה."
 msgstr[1] "המערכת תושהה אוטומטית בעוד %d שניות."
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:449
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:611
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:445
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:607
 msgid "Hybrid Sleep"
 msgstr "שינה משולבת"
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:450
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:446
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
@@ -437,29 +479,29 @@ msgstr "ביטול"
 msgid "Lock Screen"
 msgstr "מסך נעילה"
 
-#: ../gnome-flashback/libsound-applet/gvc-applet.c:267
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:270
 msgid "Output"
 msgstr "פלט"
 
-#: ../gnome-flashback/libsound-applet/gvc-applet.c:269
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:274
 msgid "Sound Output Volume"
 msgstr "עצמת פלט שמע"
 
-#: ../gnome-flashback/libsound-applet/gvc-applet.c:273
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:280
 msgid "Input"
 msgstr "קלט"
 
-#: ../gnome-flashback/libsound-applet/gvc-applet.c:275
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:284
 msgid "Microphone Volume"
 msgstr "עצמת רשמקול"
 
-#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:578
-#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:587
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:536
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:545
 msgctxt "volume"
 msgid "100%"
 msgstr "100%"
 
-#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:582
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:540
 msgctxt "volume"
 msgid "Unamplified"
 msgstr "לא מוגבר"
@@ -492,19 +534,19 @@ msgstr[1] "%u התקני קלט"
 msgid "System Sounds"
 msgstr "מערכות שמע"
 
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:292
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:293
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
 msgstr "אירע כשל בהפעלת העדפות שמע: %s"
 
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:317
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:318
 msgid "_Mute"
 msgstr "ה_שתקה"
 
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:326
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:327
 msgid "_Sound Preferences"
 msgstr "העדפות _שמע"
 
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:450
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:457
 msgid "Muted"
 msgstr "מושתק"
