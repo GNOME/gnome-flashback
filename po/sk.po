@@ -1,0 +1,541 @@
+# Slovak translation for gnome-flashback.
+# Copyright (C) 2015 gnome-flashback's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-flashback package.
+# Dušan Kazik <prescott66@gmail.com>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-flashback master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"flashback&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-08-10 07:12+0000\n"
+"PO-Revision-Date: 2015-08-10 10:55+0200\n"
+"Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
+"Last-Translator: \n"
+"X-Generator: Poedit 1.8.2\n"
+
+#: ../data/gnome-flashback.desktop.in.h:1
+msgid "GNOME Flashback"
+msgstr "Klasické prostredie GNOME"
+
+#: ../data/gnome-flashback-compiz.desktop.in.in.h:1
+msgid "GNOME Flashback (Compiz)"
+msgstr "Klasické prostredie GNOME (Compiz)"
+
+#: ../data/gnome-flashback-compiz.desktop.in.in.h:2
+msgid "This session logs you into GNOME Flashback with Compiz"
+msgstr ""
+"Táto relácia vás prihlási do klasického prostredia GNOME s kompozítorom Compiz"
+
+#: ../data/gnome-flashback-init.desktop.in.h:1
+msgid "GNOME Flashback Initialization"
+msgstr "Inicializácia klasického prostredia GNOME"
+
+#: ../data/gnome-flashback-metacity.desktop.in.in.h:1
+msgid "GNOME Flashback (Metacity)"
+msgstr "Klasické prostredie GNOME (Metacity)"
+
+#: ../data/gnome-flashback-metacity.desktop.in.in.h:2
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr ""
+"Táto relácia vás prihlási do klasického prostredia GNOME s kompozítorom "
+"Metacity"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
+msgid "Automount manager"
+msgstr "Správca automatického pripojenia"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:2
+msgid ""
+"If set to true, then GNOME Flashback application will be used to automount "
+"removable media."
+msgstr ""
+"Ak je nastavené na true, bude použitá aplikácia Klasické prostredie GNOME na "
+"automatické pripojenie vymeniteľných médií."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:3
+msgid "Desktop background"
+msgstr "Pozadie pracovnej plochy"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:4
+msgid ""
+"If set to true, then GNOME Flashback application will be used to draw the "
+"desktop background."
+msgstr ""
+"Ak je nastavené na true, bude použitá aplikácia Klasické prostredie GNOME na "
+"vykreslenie pozadia pracovnej plochy."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:5
+msgid "Display configuration"
+msgstr "Konfigurácia displejov"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:6
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide the "
+"display configuration."
+msgstr ""
+"Ak je nastavené na true, bude použitá aplikácia Klasické prostredie GNOME na "
+"poskytnutie konfigurácie displejov."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:7
+msgid "End session dialog"
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:8
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show the end "
+"session dialog."
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:9
+msgid "Idle monitor"
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:10
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:11
+msgid "Screencasts"
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:12
+msgid ""
+"If set to true, then GNOME Flashback application will be used to record the "
+"screen."
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:13
+msgid "Screenshots"
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
+msgid ""
+"If set to true, then GNOME Flashback application will be used to take "
+"screenshots."
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:15
+msgid "Shell"
+msgstr "Shell prostredia GNOME"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:16
+msgid "If set to true, then GNOME Flashback application will be used as a shell."
+msgstr ""
+"Ak je nastavené na true, bude použitá aplikácia Klasické prostredie GNOME ako "
+"shell pracovného prostredia GNOME."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:17
+msgid "Sound applet"
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:18
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a sound "
+"applet. This is the same sound applet that used to be a part of GNOME Control "
+"Center."
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:19
+msgid "Workarounds"
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:20
+msgid ""
+"If set to true, then GNOME Flashback application will use workarounds to fix "
+"bugs."
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:21
+msgid "Fade the background on change"
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:22
+msgid ""
+"If set to true, then fade effect will be used to change the desktop background."
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:23
+msgid "Fix missing app menu button"
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:24
+msgid ""
+"If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
+"FALSE. Disable if you want to use gnome-settings-daemon overrides in xsettings "
+"plugin for 'Gtk/ShellShowsAppMenu' property."
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:25
+msgid "Fix wrong button layout"
+msgstr ""
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:26
+msgid ""
+"If set to non-empty string, then gnome-flashback will force Gtk/"
+"DecorationLayout to value set by this setting. Set to empty string if you want "
+"to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
+"DecorationLayout' property."
+msgstr ""
+
+#: ../gnome-flashback/flashback-main.c:33
+msgid "Initialize GNOME Flashback session"
+msgstr ""
+
+#: ../gnome-flashback/flashback-main.c:39
+msgid "Replace a currently running application"
+msgstr ""
+
+#: ../gnome-flashback/libautomount-manager/gsd-automount-manager.c:177
+#, c-format
+msgid "Unable to mount %s"
+msgstr "Nepodarilo sa pripojiť %s"
+
+#: ../gnome-flashback/libautomount-manager/gsd-automount-manager.c:290
+#, c-format
+msgid "Unable to open a folder for %s"
+msgstr "Nepodarilo sa otvoriť priečinok pre %s"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:339
+msgid "Ask what to do"
+msgstr "Spýtať sa, čo robiť"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:345
+msgid "Do Nothing"
+msgstr "Neurobiť nič"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:351
+msgid "Open Folder"
+msgstr "Otvoriť priečinok"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:496
+#, c-format
+msgid "Unable to eject %p"
+msgstr "Nepodarilo sa vysunúť %p"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:498
+#, c-format
+msgid "Unable to unmount %p"
+msgstr "Nepodarilo sa odpojiť %p"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:707
+msgid "You have just inserted an Audio CD."
+msgstr "Práve ste vložili audio CD."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:709
+msgid "You have just inserted an Audio DVD."
+msgstr "Práve ste vložili audio DVD."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:711
+msgid "You have just inserted a Video DVD."
+msgstr "Práve ste vložili video DVD."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:713
+msgid "You have just inserted a Video CD."
+msgstr "Práve ste vložili video CD."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:715
+msgid "You have just inserted a Super Video CD."
+msgstr "Práve ste vložili super video CD."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:717
+msgid "You have just inserted a blank CD."
+msgstr "Práve ste vložili prázdny disk CD."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:719
+msgid "You have just inserted a blank DVD."
+msgstr "Práve ste vložili prázdny disk DVD."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:721
+msgid "You have just inserted a blank Blu-Ray disc."
+msgstr "Práve ste vložili prázdny disk Blu-Ray."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:723
+msgid "You have just inserted a blank HD DVD."
+msgstr "Práve ste vložili prázdny disk HD DVD."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:725
+msgid "You have just inserted a Photo CD."
+msgstr "Práve ste vložili CD s fotografiami."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:727
+msgid "You have just inserted a Picture CD."
+msgstr "Práve ste vložili CD s obrázkami."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:729
+msgid "You have just inserted a medium with digital photos."
+msgstr "Práve ste vložili médium s digitálnymi fotografiami."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:731
+msgid "You have just inserted a digital audio player."
+msgstr "Práve ste vložili digitálny audio prehrávač."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:733
+msgid ""
+"You have just inserted a medium with software intended to be automatically "
+"started."
+msgstr "Práve ste vložili médium so softvérom určeným na automatické spustenie."
+
+#. fallback to generic greeting
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:736
+msgid "You have just inserted a medium."
+msgstr "Práve ste vložili médium."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:738
+msgid "Choose what application to launch."
+msgstr "Zvoľte, ktorá aplikácia sa má spustiť."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:747
+#, c-format
+msgid ""
+"Select how to open \"%s\" and whether to perform this action in the future for "
+"other media of type \"%s\"."
+msgstr ""
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:774
+msgid "_Always perform this action"
+msgstr "Vždy vykonať _túto akciu"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:783
+msgid "_Cancel"
+msgstr "_Zrušiť"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:784
+msgid "_OK"
+msgstr "_OK"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:790
+msgid "_Eject"
+msgstr "_Vysunúť"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:795
+msgid "_Unmount"
+msgstr "_Odpojiť"
+
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:195
+msgid "Built-in display"
+msgstr "Vstavaný displej"
+
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:218
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:323
+msgid "Unknown"
+msgstr ""
+
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:220
+msgid "Unknown Display"
+msgstr ""
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:228
+#, c-format
+msgid "%s %s"
+msgstr "%s %s"
+
+#: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:1
+msgid "Confirm"
+msgstr ""
+
+#: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:2
+msgid "Do you want to keep these display settings?"
+msgstr ""
+
+#: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:3
+msgid "_Keep Changes"
+msgstr "_Uchovať zmeny"
+
+#: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:4
+msgid "_Revert Settings"
+msgstr "V_rátiť nastavenia"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:403
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:592
+msgid "Log Out"
+msgstr ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:405
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:407
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "Používateľ %s bude automaticky odhlásený o %d sekúnd."
+msgstr[1] "Používateľ %s bude automaticky odhlásený o %d sekundu."
+msgstr[2] "Používateľ %s bude automaticky odhlásený o %d sekundy."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:413
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:595
+msgid "Power Off"
+msgstr ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:415
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:417
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:423
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:598
+msgid "Restart"
+msgstr ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:425
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:427
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:433
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:601
+msgid "Hibernate"
+msgstr ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:434
+#, c-format
+msgid "The system will hibernate automatically in %d second."
+msgid_plural "The system will hibernate automatically in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:439
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:604
+msgid "Suspend"
+msgstr ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:440
+#, c-format
+msgid "The system will suspend automatically in %d second."
+msgid_plural "The system will suspend automatically in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:445
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:607
+msgid "Hybrid Sleep"
+msgstr ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:446
+#, c-format
+msgid "The system will hybrid sleep automatically in %d second."
+msgid_plural "The system will hybrid sleep automatically in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:1
+msgid "Some programs are still running:"
+msgstr "Niektoré programy sú stále spustené:"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:2
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr ""
+"Čaká sa na dokončenie týchto aplikácií. Ich prerušenie môže spôsobiť stratu "
+"údajov."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:3
+msgid "Cancel"
+msgstr ""
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:4
+msgid "Lock Screen"
+msgstr "Uzamknutá obrazovka"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:270
+msgid "Output"
+msgstr "Výstup"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:274
+msgid "Sound Output Volume"
+msgstr "Hlasitosť zvukového výstupu"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:280
+msgid "Input"
+msgstr "Vstup"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:284
+msgid "Microphone Volume"
+msgstr "Hlasitosť mikrofónu"
+
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:536
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:545
+msgctxt "volume"
+msgid "100%"
+msgstr "100%"
+
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:540
+msgctxt "volume"
+msgid "Unamplified"
+msgstr "Nezosilnená"
+
+#. translators:
+#. * The device has been disabled
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1830
+msgid "Disabled"
+msgstr "Zakázané"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1837
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u výstupov"
+msgstr[1] "%u výstup"
+msgstr[2] "%u výstupy"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1847
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u vstupov"
+msgstr[1] "%u vstup"
+msgstr[2] "%u vstupy"
+
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2373
+msgid "System Sounds"
+msgstr "Systémové zvuky"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:293
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "Zlyhalo spustenie nastavení zvuku: %s"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:318
+msgid "_Mute"
+msgstr "_Stlmiť"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:327
+msgid "_Sound Preferences"
+msgstr "Nastavenia _zvuku"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:457
+msgid "Muted"
+msgstr "Stlmené"
