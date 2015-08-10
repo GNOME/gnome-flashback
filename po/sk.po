@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2015-08-10 07:12+0000\n"
-"PO-Revision-Date: 2015-08-10 10:55+0200\n"
+"PO-Revision-Date: 2015-08-10 12:49+0200\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
@@ -84,13 +84,15 @@ msgstr ""
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:7
 msgid "End session dialog"
-msgstr ""
+msgstr "Dialógové okno s ukončením relácie"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:8
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the end "
 "session dialog."
 msgstr ""
+"Ak je nastavené na true, bude použitá aplikácia Klasické prostredie GNOME na "
+"zobrazenie dialógového okna s ukončením relácie."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:9
 msgid "Idle monitor"
@@ -114,13 +116,15 @@ msgstr ""
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:13
 msgid "Screenshots"
-msgstr ""
+msgstr "Snímky obrazoviek"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
 msgstr ""
+"Ak je nastavené na true, bude použitá aplikácia Klasické prostredie GNOME na "
+"zachytenie snímok obrazoviek."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:15
 msgid "Shell"
@@ -134,7 +138,7 @@ msgstr ""
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:17
 msgid "Sound applet"
-msgstr ""
+msgstr "Aplet zvuku"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:18
 msgid ""
@@ -142,6 +146,9 @@ msgid ""
 "applet. This is the same sound applet that used to be a part of GNOME Control "
 "Center."
 msgstr ""
+"Ak je nastavené na true, bude použitá aplikácia Klasické prostredie GNOME na "
+"zobrazenie apletu zvuku. Toto je rovnaký aplet zvuku, ktorý je súčasťou centra "
+"nastavení prostredia GNOME."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:19
 msgid "Workarounds"
@@ -326,11 +333,11 @@ msgstr "Vstavaný displej"
 #: ../gnome-flashback/libdisplay-config/flashback-display-config.c:218
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:323
 msgid "Unknown"
-msgstr ""
+msgstr "Neznámy"
 
 #: ../gnome-flashback/libdisplay-config/flashback-display-config.c:220
 msgid "Unknown Display"
-msgstr ""
+msgstr "Neznámy displej"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
@@ -342,11 +349,11 @@ msgstr "%s %s"
 
 #: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:1
 msgid "Confirm"
-msgstr ""
+msgstr "Potvrdenie"
 
 #: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:2
 msgid "Do you want to keep these display settings?"
-msgstr ""
+msgstr "Chcete ponechať tieto nastavenia displeja?"
 
 #: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:3
 msgid "_Keep Changes"
@@ -359,11 +366,12 @@ msgstr "V_rátiť nastavenia"
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:403
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:592
 msgid "Log Out"
-msgstr ""
+msgstr "Odhlásiť"
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:405
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
+"Kliknutím na Odhlásiť ukončíte tieto aplikácie a odhlásite sa zo systému."
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:407
 #, c-format
@@ -376,75 +384,77 @@ msgstr[2] "Používateľ %s bude automaticky odhlásený o %d sekundy."
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:413
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:595
 msgid "Power Off"
-msgstr ""
+msgstr "Vypnúť"
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:415
 msgid "Click Power Off to quit these applications and power off the system."
-msgstr ""
+msgstr "Kliknutím na Vypnúť ukončíte tieto aplikácie a vypnete systém."
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:417
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Systém sa automaticky vypne o %d sekúnd."
+msgstr[1] "Systém sa automaticky vypne o %d sekundu."
+msgstr[2] "Systém sa automaticky vypne o %d sekundy."
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:423
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:598
 msgid "Restart"
-msgstr ""
+msgstr "Reštartovať"
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:425
 msgid "Click Restart to quit these applications and restart the system."
-msgstr ""
+msgstr "Kliknutím na Reštartovať ukončíte tieto aplikácie a reštartujete systém."
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:427
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Systém sa automaticky reštartuje o %d sekúnd."
+msgstr[1] "Systém sa automaticky reštartuje o %d sekundu."
+msgstr[2] "Systém sa automaticky reštartuje o %d sekundy."
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:433
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:601
 msgid "Hibernate"
-msgstr ""
+msgstr "Hibernovať"
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:434
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Systém sa automaticky prepne do režimu hibernácie o %d sekúnd."
+msgstr[1] "Systém sa automaticky prepne do režimu hibernácie o %d sekundu."
+msgstr[2] "Systém sa automaticky prepne do režimu hibernácie o %d sekundy."
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:439
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:604
 msgid "Suspend"
-msgstr ""
+msgstr "Uspať"
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:440
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Systém sa automaticky uspí o %d sekúnd."
+msgstr[1] "Systém sa automaticky uspí o %d sekundu."
+msgstr[2] "Systém sa automaticky uspí o %d sekundy."
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:445
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:607
 msgid "Hybrid Sleep"
-msgstr ""
+msgstr "Hybridný spánok"
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:446
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
-msgstr[0] ""
+msgstr[0] "Systém sa automaticky prepne do režimu hybridného spánku o %d sekúnd."
 msgstr[1] ""
+"Systém sa automaticky prepne do režimu hybridného spánku o %d sekundu."
 msgstr[2] ""
+"Systém sa automaticky prepne do režimu hybridného spánku o %d sekundy."
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:1
 msgid "Some programs are still running:"
@@ -460,7 +470,7 @@ msgstr ""
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:3
 msgid "Cancel"
-msgstr ""
+msgstr "Zrušiť"
 
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:4
 msgid "Lock Screen"
