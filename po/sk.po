@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-08-10 07:12+0000\n"
-"PO-Revision-Date: 2015-08-10 12:49+0200\n"
+"POT-Creation-Date: 2015-08-15 07:13+0000\n"
+"PO-Revision-Date: 2015-08-15 10:35+0200\n"
+"Last-Translator: \n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"Last-Translator: \n"
-"X-Generator: Poedit 1.8.2\n"
+"X-Generator: Poedit 1.8.4\n"
 
 #: ../data/gnome-flashback.desktop.in.h:1
 msgid "GNOME Flashback"
@@ -194,11 +194,11 @@ msgstr ""
 
 #: ../gnome-flashback/flashback-main.c:33
 msgid "Initialize GNOME Flashback session"
-msgstr ""
+msgstr "Zaháji reláciu klasického prostredia GNOME"
 
 #: ../gnome-flashback/flashback-main.c:39
 msgid "Replace a currently running application"
-msgstr ""
+msgstr "Nahradí aktuálne spustenú aplikáciu"
 
 #: ../gnome-flashback/libautomount-manager/gsd-automount-manager.c:177
 #, c-format
@@ -305,6 +305,8 @@ msgid ""
 "Select how to open \"%s\" and whether to perform this action in the future for "
 "other media of type \"%s\"."
 msgstr ""
+"Vyberte ako otvoriť „%s“, a či sa má vykonať táto akcia aj v budúcnosti pre "
+"ostatné médiá typu „%s“."
 
 #: ../gnome-flashback/libautomount-manager/gsd-autorun.c:774
 msgid "_Always perform this action"
