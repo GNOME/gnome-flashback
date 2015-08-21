@@ -3,13 +3,16 @@
 <?xml-stylesheet type="text/xsl" href="moduleset.xsl"?>
 <moduleset>
   <repository type="git" name="git.gnome.org" default="yes" href="git://git.gnome.org/" />
-  <repository type="bzr" name="launchpad.net" href="lp:" branches-template="%(module)s" />
+  <repository type="tarball" name="launchpad-tar" href="https://launchpad.net/" />
 
   <include href="https://git.gnome.org/browse/gnome-modulesets/plain/gnome-world.modules?h=gnome-3-16" />
 
   <cmake id="compiz" force-non-srcdir-builds="yes"
          cmakeargs="-DUSE_GCONF=OFF -DUSE_GSETTINGS=ON -DCOMPIZ_DEFAULT_PLUGINS=core,composite,opengl,decor,resize,place,move">
-    <branch repo="launchpad.net" module="compiz" />
+    <branch repo="launchpad-tar" module="compiz/0.9.12/${version}/+download/compiz-${version}.tar.bz2"
+            version="0.9.12.2" hash="sha256:8917ac9e6dfdacc740780e1995e932ed865d293ae87821e7a280da5325daec80"
+            size="4537740">
+    </branch>
     <dependencies>
       <dep package="boost" />
       <dep package="cairo" />
