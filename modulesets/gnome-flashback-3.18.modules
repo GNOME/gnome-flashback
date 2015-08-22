@@ -13,6 +13,7 @@
     <branch repo="launchpad-tar" module="compiz/0.9.12/${version}/+download/compiz-${version}.tar.bz2"
             version="0.9.12.2" hash="sha256:8917ac9e6dfdacc740780e1995e932ed865d293ae87821e7a280da5325daec80"
             size="4537740">
+      <patch file="compiz-build-using-std-cpp11.patch" strip="1" />
     </branch>
     <dependencies>
       <dep package="boost" />
