@@ -19,6 +19,10 @@ session_DATA     = $(session_in_files:.session.in=.session)
 
 %.session: %.session.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 
+autostartdir       = $(sysconfdir)/xdg/autostart
+autostart_in_files = gnome-flashback-nm-applet.desktop.in
+autostart_DATA     = $(autostart_in_files:.desktop.in=.desktop)
+
 desktopdir       = $(datadir)/applications
 desktop_in_files = gnome-flashback.desktop.in gnome-flashback-init.desktop.in
 desktop_DATA     = $(desktop_in_files:.desktop.in=.desktop)
@@ -45,6 +49,7 @@ gsettings_SCHEMAS       = $(gsettings_schemas_in:.xml.in=.xml)
 @GSETTINGS_RULES@
 
 EXTRA_DIST = \
+	$(autostart_in_files) \
 	$(desktop_in_files) \
 	$(gsettings_schemas_in_in) \
 	$(menu_DATA) \
@@ -52,6 +57,7 @@ EXTRA_DIST = \
 	$(xsession_in_in_files)
 
 CLEANFILES = \
+	$(autostart_DATA) \
 	$(desktop_DATA) \
 	gnome-flashback-compiz \
 	gnome-flashback-metacity \

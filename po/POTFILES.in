@@ -7,6 +7,7 @@ data/gnome-flashback-compiz.session.in
 data/gnome-flashback-init.desktop.in
 data/gnome-flashback-metacity.desktop.in.in
 data/gnome-flashback-metacity.session.in
+data/gnome-flashback-nm-applet.desktop.in
 data/org.gnome.gnome-flashback.gschema.xml.in.in
 gnome-flashback/gf-main.c
 gnome-flashback/libautomount-manager/gsd-automount-manager.c
