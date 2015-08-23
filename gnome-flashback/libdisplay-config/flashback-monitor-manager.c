@@ -1258,7 +1258,7 @@ read_current_config (FlashbackMonitorManager *manager)
 
       meta_output = &manager->outputs[n_actual_outputs];
 
-      if (output->connection != RR_Disconnected)
+      if (output->connection != RR_Disconnected && output->nmode != 0)
         {
           GBytes *edid;
 
