@@ -15,12 +15,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "config.h"
+
 #include <gtk/gtk.h>
+
 #include "flashback-dbus-screenshot.h"
 #include "flashback-screenshot.h"
 
-#define SHELL_DBUS_NAME "org.gnome.Shell"
+#define SCREENSHOT_DBUS_NAME "org.gnome.Shell.Screenshot"
 #define SCREENSHOT_DBUS_PATH "/org/gnome/Shell/Screenshot"
 
 struct _FlashbackScreenshot
@@ -28,7 +30,7 @@ struct _FlashbackScreenshot
   GObject                  parent;
 
   gint                     bus_name;
-  GDBusInterfaceSkeleton  *iface;
+  FlashbackDBusScreenshot *dbus_screenshot;
 };
 
 G_DEFINE_TYPE (FlashbackScreenshot, flashback_screenshot, G_TYPE_OBJECT)
@@ -110,56 +112,68 @@ handle_select_area (FlashbackDBusScreenshot *dbus_screenshot,
 }
 
 static void
-name_appeared_handler (GDBusConnection *connection,
-                       const gchar     *name,
-                       const gchar     *name_owner,
-                       gpointer         user_data)
+bus_acquired_handler (GDBusConnection *connection,
+                      const gchar     *name,
+                      gpointer         user_data)
 {
   FlashbackScreenshot *screenshot;
-  FlashbackDBusScreenshot *skeleton;
+  FlashbackDBusScreenshot *dbus_screenshot;
+  GDBusInterfaceSkeleton *skeleton;
   GError *error;
+  gboolean exported;
 
   screenshot = FLASHBACK_SCREENSHOT (user_data);
-  skeleton = flashback_dbus_screenshot_skeleton_new ();
 
-  g_signal_connect (skeleton, "handle-screenshot",
+  dbus_screenshot = screenshot->dbus_screenshot;
+  skeleton = G_DBUS_INTERFACE_SKELETON (dbus_screenshot);
+
+  g_signal_connect (dbus_screenshot, "handle-screenshot",
                     G_CALLBACK (handle_screenshot), screenshot);
-  g_signal_connect (skeleton, "handle-screenshot-window",
+  g_signal_connect (dbus_screenshot, "handle-screenshot-window",
                     G_CALLBACK (handle_screenshot_window), screenshot);
-  g_signal_connect (skeleton, "handle-screenshot-area",
+  g_signal_connect (dbus_screenshot, "handle-screenshot-area",
                     G_CALLBACK (handle_screenshot_area), screenshot);
-  g_signal_connect (skeleton, "handle-flash-area",
+  g_signal_connect (dbus_screenshot, "handle-flash-area",
                     G_CALLBACK (handle_flash_area), screenshot);
-  g_signal_connect (skeleton, "handle-select-area",
+  g_signal_connect (dbus_screenshot, "handle-select-area",
                     G_CALLBACK (handle_select_area), screenshot);
 
   error = NULL;
-  screenshot->iface = G_DBUS_INTERFACE_SKELETON (skeleton);
+  exported = g_dbus_interface_skeleton_export (skeleton, connection,
+                                               SCREENSHOT_DBUS_PATH,
+                                               &error);
 
-	if (!g_dbus_interface_skeleton_export (screenshot->iface, connection,
-	                                       SCREENSHOT_DBUS_PATH,
-	                                       &error))
-  {
-    g_warning ("Failed to export interface: %s", error->message);
-    g_error_free (error);
-    return;
-  }
+  if (!exported)
+    {
+      g_warning ("Failed to export interface: %s", error->message);
+      g_error_free (error);
+      return;
+    }
 }
 
 static void
-flashback_screenshot_finalize (GObject *object)
+flashback_screenshot_dispose (GObject *object)
 {
   FlashbackScreenshot *screenshot;
+  GDBusInterfaceSkeleton *skeleton;
 
   screenshot = FLASHBACK_SCREENSHOT (object);
 
+  if (screenshot->dbus_screenshot)
+    {
+      skeleton = G_DBUS_INTERFACE_SKELETON (screenshot->dbus_screenshot);
+
+      g_dbus_interface_skeleton_unexport (skeleton);
+      g_clear_object (&screenshot->dbus_screenshot);
+    }
+
   if (screenshot->bus_name)
     {
-      g_bus_unwatch_name (screenshot->bus_name);
+      g_bus_unown_name (screenshot->bus_name);
       screenshot->bus_name = 0;
     }
 
-  G_OBJECT_CLASS (flashback_screenshot_parent_class)->finalize (object);
+  G_OBJECT_CLASS (flashback_screenshot_parent_class)->dispose (object);
 }
 
 static void
@@ -169,23 +183,23 @@ flashback_screenshot_class_init (FlashbackScreenshotClass *screenshot_class)
 
   object_class = G_OBJECT_CLASS (screenshot_class);
 
-  object_class->finalize = flashback_screenshot_finalize;
+  object_class->dispose = flashback_screenshot_dispose;
 }
 
 static void
 flashback_screenshot_init (FlashbackScreenshot *screenshot)
 {
-  screenshot->bus_name = g_bus_watch_name (G_BUS_TYPE_SESSION,
-                                           SHELL_DBUS_NAME,
-                                           G_BUS_NAME_WATCHER_FLAGS_NONE,
-                                           name_appeared_handler,
-                                           NULL,
-                                           screenshot,
-                                           NULL);
+  screenshot->dbus_screenshot = flashback_dbus_screenshot_skeleton_new ();
+  screenshot->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,
+                                         SCREENSHOT_DBUS_NAME,
+                                         G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
+                                         G_BUS_NAME_OWNER_FLAGS_REPLACE,
+                                         (GBusAcquiredCallback) bus_acquired_handler,
+                                         NULL, NULL, screenshot, NULL);
 }
 
 FlashbackScreenshot *
 flashback_screenshot_new (void)
 {
-	return g_object_new (FLASHBACK_TYPE_SCREENSHOT, NULL);
+  return g_object_new (FLASHBACK_TYPE_SCREENSHOT, NULL);
 }
