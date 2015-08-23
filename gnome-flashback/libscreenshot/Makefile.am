@@ -16,6 +16,8 @@ libscreenshot_la_SOURCES = \
 	flashback-dbus-screenshot.h \
 	flashback-screenshot.c \
 	flashback-screenshot.h \
+	flashback-select-area.c \
+	flashback-select-area.h \
 	$(NULL)
 
 libscreenshot_la_LDFLAGS = \

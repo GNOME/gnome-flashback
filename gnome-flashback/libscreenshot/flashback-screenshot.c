@@ -21,6 +21,7 @@
 
 #include "flashback-dbus-screenshot.h"
 #include "flashback-screenshot.h"
+#include "flashback-select-area.h"
 
 #define SCREENSHOT_DBUS_NAME "org.gnome.Shell.Screenshot"
 #define SCREENSHOT_DBUS_PATH "/org/gnome/Shell/Screenshot"
@@ -104,9 +105,29 @@ handle_select_area (FlashbackDBusScreenshot *dbus_screenshot,
                     GDBusMethodInvocation   *invocation,
                     gpointer                 user_data)
 {
-  g_warning ("screenshot: select-area");
-  flashback_dbus_screenshot_complete_select_area (dbus_screenshot, invocation,
-                                                  0, 0, 0, 0);
+  FlashbackSelectArea *select_area;
+  gint x;
+  gint y;
+  gint width;
+  gint height;
+
+  select_area = flashback_select_area_new ();
+  x = y = width = height = 0;
+
+  if (flashback_select_area_select (select_area, &x, &y, &width, &height))
+    {
+      flashback_dbus_screenshot_complete_select_area (dbus_screenshot,
+                                                      invocation,
+                                                      x, y, width, height);
+    }
+  else
+    {
+      g_dbus_method_invocation_return_error (invocation, G_IO_ERROR,
+                                             G_IO_ERROR_CANCELLED,
+                                             "Operation was cancelled");
+    }
+
+  g_object_unref (select_area);
 
   return TRUE;
 }
