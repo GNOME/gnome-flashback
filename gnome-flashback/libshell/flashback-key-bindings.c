@@ -146,6 +146,7 @@ filter_func (GdkXEvent *xevent,
 
               parameters = build_parameters (0, 0, 0);
 
+              XUngrabKeyboard (bindings->priv->xdisplay, ev->xkey.time);
               g_signal_emit (bindings, signals[BINDING_ACTIVATED], 0,
                              binding->action, parameters);
 
