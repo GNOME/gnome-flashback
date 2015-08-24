@@ -15,6 +15,10 @@ gnome-flashback/libdisplay-config/flashback-display-config.c
 [type: gettext/glade]gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui
 gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c
 [type: gettext/glade]gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui
+gnome-flashback/libpolkit/flashback-authenticator.c
+gnome-flashback/libpolkit/flashback-listener.c
+gnome-flashback/libpolkit/flashback-polkit-dialog.c
+[type: gettext/glade]gnome-flashback/libpolkit/flashback-polkit-dialog.ui
 gnome-flashback/libsound-applet/gvc-applet.c
 gnome-flashback/libsound-applet/gvc-channel-bar.c
 gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c

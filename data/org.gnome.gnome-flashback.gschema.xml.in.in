@@ -25,6 +25,11 @@
 			<_summary>Idle monitor</_summary>
 			<_description>If set to true, then GNOME Flashback application will be used for user activity monitoring.</_description>
 		</key>
+		<key name="polkit" type="b">
+			<default>true</default>
+			<_summary>Authentication Agent for polkit</_summary>
+			<_description>This is same authentication agent that was provided by PolicyKit-gnome.</_description>
+		</key>
 		<key name="screencast" type="b">
 			<default>true</default>
 			<_summary>Screencasts</_summary>

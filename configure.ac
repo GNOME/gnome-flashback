@@ -36,6 +36,8 @@ LIBGNOME_DESKTOP_REQUIRED=3.12.0
 CANBERRA_REQUIRED=0.13
 GLIB_REQUIRED=2.44.0
 GSETTINGS_DESKTOP_SCHEMAS_REQUIRED=3.12.0
+POLKIT_AGENT_REQUIRED=0.97
+POLKIT_GOBJECT_REQUIRED=0.97
 
 PKG_CHECK_MODULES(GNOME_FLASHBACK, gtk+-3.0 >= $GTK_REQUIRED dbus-glib-1)
 AC_SUBST(GNOME_FLASHBACK_CFLAGS)
@@ -60,6 +62,10 @@ AC_SUBST(END_SESSION_DIALOG_LIBS)
 PKG_CHECK_MODULES(IDLE_MONITOR, gtk+-3.0 >= $GTK_REQUIRED x11 xext)
 AC_SUBST(IDLE_MONITOR_CFLAGS)
 AC_SUBST(IDLE_MONITOR_LIBS)
+
+PKG_CHECK_MODULES(POLKIT, gtk+-3.0 >= $GTK_REQUIRED glib-2.0 >= $GLIB_REQUIRED polkit-agent-1 >= $POLKIT_AGENT_REQUIRED polkit-gobject-1 >= $POLKIT_GOBJECT_REQUIRED)
+AC_SUBST(POLKIT_CFLAGS)
+AC_SUBST(POLKIT_LIBS)
 
 PKG_CHECK_MODULES(SCREENCAST, gtk+-3.0 >= $GTK_REQUIRED)
 AC_SUBST(SCREENCAST_CFLAGS)
@@ -95,6 +101,7 @@ gnome-flashback/libdesktop-background/Makefile
 gnome-flashback/libdisplay-config/Makefile
 gnome-flashback/libend-session-dialog/Makefile
 gnome-flashback/libidle-monitor/Makefile
+gnome-flashback/libpolkit/Makefile
 gnome-flashback/libscreencast/Makefile
 gnome-flashback/libscreenshot/Makefile
 gnome-flashback/libshell/Makefile
