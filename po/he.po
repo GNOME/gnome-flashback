@@ -2,22 +2,22 @@
 # Copyright (C) 2014 THE gnome-flashback'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
 # יוֹסֵף אוֹר בּוֹצְ׳קוֹ <yoseforb@gnome.org>, 2014.
-# Yosef Or Boczko <yoseforb@gnome.org>, 2014.
+# Yosef Or Boczko <yoseforb@gnome.org>, 2014, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback 3.15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-19 13:14+0300\n"
-"PO-Revision-Date: 2015-07-19 13:15+0300\n"
-"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
+"POT-Creation-Date: 2015-08-30 11:41+0300\n"
+"PO-Revision-Date: 2015-08-30 11:45+0300\n"
+"Last-Translator: Yosef Or Boczko <yoseforb@gnome.org>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"Plural-Forms: nplurals=2; plural= (n!=1);\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: ../data/gnome-flashback.desktop.in.h:1
 msgid "GNOME Flashback"
@@ -104,82 +104,92 @@ msgstr ""
 "activity monitoring."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:11
-msgid "Screencasts"
-msgstr "Screencasts"
+msgid "Authentication agent for polkit"
+msgstr "Authentication agent for polkit"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:12
 msgid ""
-"If set to true, then GNOME Flashback application will be used to record the "
-"screen."
+"This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
-"If set to true, then GNOME Flashback application will be used to record the "
-"screen."
+"This is the same authentication agent that was provided by PolicyKit-gnome."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:13
-msgid "Screenshots"
-msgstr "Screenshots"
+msgid "Screencasts"
+msgstr "Screencasts"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
 msgid ""
-"If set to true, then GNOME Flashback application will be used to take "
-"screenshots."
+"If set to true, then GNOME Flashback application will be used to record the "
+"screen."
 msgstr ""
-"If set to true, then GNOME Flashback application will be used to take "
-"screenshots."
+"If set to true, then GNOME Flashback application will be used to record the "
+"screen."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:15
-msgid "Shell"
-msgstr "Shell"
+msgid "Screenshots"
+msgstr "Screenshots"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:16
 msgid ""
-"If set to true, then GNOME Flashback application will be used as a shell."
+"If set to true, then GNOME Flashback application will be used to take "
+"screenshots."
 msgstr ""
-"If set to true, then GNOME Flashback application will be used as a shell."
+"If set to true, then GNOME Flashback application will be used to take "
+"screenshots."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:17
-msgid "Sound applet"
-msgstr "Sound applet"
+msgid "Shell"
+msgstr "Shell"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:18
 msgid ""
-"If set to true, then GNOME Flashback application will be used to show a "
-"sound applet. This is the same sound applet that used to be a part of GNOME "
-"Control Center."
+"If set to true, then GNOME Flashback application will be used as a shell."
 msgstr ""
-"If set to true, then GNOME Flashback application will be used to show a "
-"sound applet. This is the same sound applet that used to be a part of GNOME "
-"Control Center."
+"If set to true, then GNOME Flashback application will be used as a shell."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:19
-msgid "Workarounds"
-msgstr "Workarounds"
+msgid "Sound applet"
+msgstr "Sound applet"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:20
 msgid ""
-"If set to true, then GNOME Flashback application will use workarounds to fix "
-"bugs."
+"If set to true, then GNOME Flashback application will be used to show a "
+"sound applet. This is the same sound applet that used to be a part of GNOME "
+"Control Center."
 msgstr ""
-"If set to true, then GNOME Flashback application will use workarounds to fix "
-"bugs."
+"If set to true, then GNOME Flashback application will be used to show a "
+"sound applet. This is the same sound applet that used to be a part of GNOME "
+"Control Center."
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:21
-msgid "Fade the background on change"
-msgstr "Fade the background on change"
+msgid "Workarounds"
+msgstr "Workarounds"
 
 #: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:22
 msgid ""
+"If set to true, then GNOME Flashback application will use workarounds to fix "
+"bugs."
+msgstr ""
+"If set to true, then GNOME Flashback application will use workarounds to fix "
+"bugs."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:23
+msgid "Fade the background on change"
+msgstr "Fade the background on change"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:24
+msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
 msgstr ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:23
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:25
 msgid "Fix missing app menu button"
 msgstr "Fix missing app menu button"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:24
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:26
 msgid ""
 "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
 "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
@@ -189,11 +199,11 @@ msgstr ""
 "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
 "xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:25
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:27
 msgid "Fix wrong button layout"
 msgstr "Fix wrong button layout"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:26
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:28
 msgid ""
 "If set to non-empty string, then gnome-flashback will force Gtk/"
 "DecorationLayout to value set by this setting. Set to empty string if you "
@@ -325,6 +335,7 @@ msgid "_Always perform this action"
 msgstr "_תמיד לבצע פעולה זו"
 
 #: ../gnome-flashback/libautomount-manager/gsd-autorun.c:783
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.ui.h:6
 msgid "_Cancel"
 msgstr "_ביטול"
 
@@ -478,6 +489,89 @@ msgstr "ביטול"
 #: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:4
 msgid "Lock Screen"
 msgstr "מסך נעילה"
+
+#: ../gnome-flashback/libpolkit/flashback-authenticator.c:93
+#, c-format
+msgid "_Password for %s:"
+msgstr "_ססמה עבור %s:"
+
+#: ../gnome-flashback/libpolkit/flashback-authenticator.c:97
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.ui.h:4
+msgid "_Password:"
+msgstr "_ססמה:"
+
+#: ../gnome-flashback/libpolkit/flashback-authenticator.c:254
+msgid "Authentication Failure"
+msgstr "אימות נכשל"
+
+#: ../gnome-flashback/libpolkit/flashback-listener.c:139
+msgid "Authentication dialog was dismissed by the user"
+msgstr "דו־שיח לאימות פוספס על ידי המשתמש"
+
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.c:201
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as one of the users below is required to perform this action."
+msgstr ""
+"יישום מנסה לבצע פעולה הדורשת הרשאות. אימות מאחד המשתמשים להלן נדרש לביצוע "
+"פעולה זו."
+
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.c:211
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.ui.h:3
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication is required to perform this action."
+msgstr "יישום מנסה לבצע פעולה הדורשת הרשאות. אימות נדרש לביצוע פעולה זו."
+
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.c:216
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as the super user is required to perform this action."
+msgstr ""
+"יישום מנסה לבצע פעולה הדורשת הרשאות. אימות נדרש ממשתמש על לביצוע פעולה זו."
+
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.c:288
+msgid "Select user..."
+msgstr "בחירת משתמש…"
+
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.c:324
+#, c-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.c:494
+msgid "Action:"
+msgstr "פעולה:"
+
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.c:497
+#, c-format
+msgid "Click to edit %s"
+msgstr "יש ללחוץ לעריכת %s"
+
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.c:505
+msgid "Vendor:"
+msgstr "ספק:"
+
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.c:508
+#, c-format
+msgid "Click to open %s"
+msgstr "יש ללחוץ לפתיחת %s"
+
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.ui.h:1
+msgid "Authenticate"
+msgstr "אימות"
+
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.ui.h:2
+msgid "<big><b>Title</b></big>"
+msgstr "<big><b>כותרת</b></big>"
+
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.ui.h:5
+msgid "<small><b>_Details</b></small>"
+msgstr "<small><b>_פרטים</b></small>"
+
+#: ../gnome-flashback/libpolkit/flashback-polkit-dialog.ui.h:7
+msgid "_Authenticate"
+msgstr "_אימות"
 
 #: ../gnome-flashback/libsound-applet/gvc-applet.c:270
 msgid "Output"
