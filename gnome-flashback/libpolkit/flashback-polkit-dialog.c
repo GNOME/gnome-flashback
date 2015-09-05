@@ -389,6 +389,7 @@ static void
 setup_users_combobox (FlashbackPolkitDialog *dialog)
 {
   gtk_widget_hide (dialog->users_combobox);
+  gtk_widget_set_no_show_all (dialog->users_combobox, TRUE);
 
   if (dialog->users == NULL)
     return;
