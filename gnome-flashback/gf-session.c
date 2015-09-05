@@ -15,11 +15,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "config.h"
+
 #include <dbus/dbus-glib.h>
 #include <gtk/gtk.h>
 
-#include "flashback-session.h"
+#include "gf-session.h"
 
 #define FLASHBACK_DBUS_SERVICE "org.gnome.Flashback"
 

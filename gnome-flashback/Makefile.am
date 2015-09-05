@@ -30,8 +30,8 @@ gnome_flashback_SOURCES = \
 	flashback-application.c \
 	flashback-application.h \
 	flashback-main.c \
-	flashback-session.c \
-	flashback-session.h \
+	gf-session.c \
+	gf-session.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 

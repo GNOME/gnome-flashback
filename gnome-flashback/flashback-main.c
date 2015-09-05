@@ -15,13 +15,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "config.h"
+
 #include <glib-unix.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 #include "flashback-application.h"
-#include "flashback-session.h"
+#include "gf-session.h"
 
 static gboolean initialize = FALSE;
 static gboolean replace = FALSE;
