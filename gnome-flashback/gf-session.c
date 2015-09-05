@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Alberts Muktupāvels
+ * Copyright (C) 2014 - 2015 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,327 +17,339 @@
 
 #include "config.h"
 
-#include <dbus/dbus-glib.h>
-#include <gtk/gtk.h>
+#include <gio/gio.h>
 
 #include "gf-session.h"
 
-#define FLASHBACK_DBUS_SERVICE "org.gnome.Flashback"
+#define GF_DBUS_NAME "org.gnome.Flashback"
 
-#define SESSION_MANAGER_NAME      "org.gnome.SessionManager"
-#define SESSION_MANAGER_PATH      "/org/gnome/SessionManager"
-#define SESSION_MANAGER_INTERFACE "org.gnome.SessionManager"
+#define GSM_DBUS_NAME  "org.gnome.SessionManager"
+#define GSM_DBUS_PATH  "/org/gnome/SessionManager"
+#define GSM_DBUS_IFACE "org.gnome.SessionManager"
 
-#define SESSION_MANAGER_CLIENT_PRIVATE_INTERFACE "org.gnome.SessionManager.ClientPrivate"
+#define GSM_CLIENT_PRIVATE_DBUS_IFACE "org.gnome.SessionManager.ClientPrivate"
 
-struct _FlashbackSessionPrivate {
-	GDBusConnection *connection;
-	guint            name_lost_id;
+struct _GfSession
+{
+  GObject                 parent;
 
-	GDBusProxy      *session_manager_proxy;
+  GfSessionReadyCallback  ready_cb;
+  GfSessionEndCallback    end_cb;
+  gpointer                user_data;
 
-	gchar           *object_path;
-	GDBusProxy      *client_proxy;
+  gulong                  name_id;
+
+  GDBusProxy             *manager_proxy;
+
+  gchar                  *object_path;
+  GDBusProxy             *client_proxy;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (FlashbackSession, flashback_session, G_TYPE_OBJECT)
+G_DEFINE_TYPE (GfSession, gf_session, G_TYPE_OBJECT)
 
 static void
 respond_to_end_session (GDBusProxy *proxy)
 {
-	g_dbus_proxy_call (proxy,
-	                   "EndSessionResponse",
-	                   g_variant_new ("(bs)", TRUE, ""),
-	                   G_DBUS_CALL_FLAGS_NONE,
-	                   -1,
-	                   NULL,
-	                   NULL,
-	                   NULL);
+  GVariant *parameters;
+
+  parameters = g_variant_new ("(bs)", TRUE, "");
+
+  g_dbus_proxy_call (proxy,
+                     "EndSessionResponse", parameters,
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1, NULL, NULL, NULL);
 }
 
 static void
-flashback_session_client_proxy_signal_cb (GDBusProxy *proxy,
-                                          gchar      *sender_name,
-                                          gchar      *signal_name,
-                                          GVariant   *parameters,
-                                          gpointer    user_data)
+g_signal_cb (GDBusProxy *proxy,
+             gchar      *sender_name,
+             gchar      *signal_name,
+             GVariant   *parameters,
+             gpointer    user_data)
 {
-	if (g_str_equal (signal_name, "QueryEndSession"))
-		respond_to_end_session (proxy);
-	else if (g_str_equal (signal_name, "EndSession"))
-		respond_to_end_session (proxy);
-	else if (g_str_equal (signal_name, "Stop"))
-		gtk_main_quit ();
-}
+  GfSession *session;
 
-static gboolean
-flashback_session_get_session_manager_proxy (FlashbackSession *session)
-{
-	FlashbackSessionPrivate *priv;
-	GError *error;
-	GDBusProxyFlags flags;
+  session = GF_SESSION (user_data);
 
-	if (!session)
-		return FALSE;
-
-	priv = session->priv;
-	error = NULL;
-	flags = G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
-	        G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS;
-
-	priv->session_manager_proxy = g_dbus_proxy_new_sync (priv->connection,
-	                                                     flags,
-	                                                     NULL,
-	                                                     SESSION_MANAGER_NAME,
-	                                                     SESSION_MANAGER_PATH,
-	                                                     SESSION_MANAGER_INTERFACE,
-	                                                     NULL,
-	                                                     &error);
-
-	if (error) {
-		g_warning ("Failed to get session manager proxy: %s", error->message);
-		g_error_free (error);
-		return FALSE;
-	}
-
-	return TRUE;
+  if (g_strcmp0 (signal_name, "QueryEndSession") == 0)
+    {
+      respond_to_end_session (proxy);
+    }
+  else if (g_strcmp0 (signal_name, "EndSession") == 0)
+    {
+      respond_to_end_session (proxy);
+    }
+  else if (g_strcmp0 (signal_name, "Stop") == 0)
+    {
+      if (session->end_cb != NULL)
+        session->end_cb (session, session->user_data);
+    }
 }
 
 static void
-flashback_session_name_lost (GDBusConnection *connection,
-                             const gchar     *sender_name,
-                             const gchar     *object_path,
-                             const gchar     *interface_name,
-                             const gchar     *signal_name,
-                             GVariant        *parameters,
-                             gpointer         user_data)
+client_proxy_ready_cb (GObject      *source_object,
+                       GAsyncResult *res,
+                       gpointer      user_data)
 {
-	gtk_main_quit ();
-}
+  GfSession *session;
+  GError *error;
 
-static gboolean
-flashback_session_request_name (FlashbackSession *session,
-                                gboolean          replace)
-{
-	FlashbackSessionPrivate *priv;
-	GBusNameOwnerFlags flags;
-	GError *error;
-	GVariant *result;
-	guint32 reply;
+  session = GF_SESSION (user_data);
 
-	priv = session->priv;
-	flags = G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT;
-	error = NULL;
+  error = NULL;
+  session->client_proxy = g_dbus_proxy_new_for_bus_finish (res, &error);
 
-	priv->connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+  if (error != NULL)
+    {
+      g_warning ("Failed to get a client proxy: %s", error->message);
+      g_error_free (error);
 
-	if (error) {
-		g_warning ("Failed to get session bus: %s", error->message);
-		g_error_free (error);
-		return FALSE;
-	}
+      return;
+    }
 
-	if (replace)
-		flags |= G_BUS_NAME_OWNER_FLAGS_REPLACE;
-
-	result = g_dbus_connection_call_sync (priv->connection,
-	                                      DBUS_SERVICE_DBUS,
-	                                      DBUS_PATH_DBUS,
-	                                      DBUS_INTERFACE_DBUS,
-	                                      "RequestName",
-	                                      g_variant_new ("(su)",
-	                                                     FLASHBACK_DBUS_SERVICE,
-	                                                     flags),
-	                                      G_VARIANT_TYPE ("(u)"),
-	                                      G_DBUS_CALL_FLAGS_NONE,
-	                                      -1,
-	                                      NULL,
-	                                      &error);
-
-	if (error) {
-		g_warning ("Failed to request name: %s", error->message);
-		g_error_free (error);
-		return FALSE;
-	}
-
-	g_variant_get (result, "(u)", &reply);
-	g_variant_unref (result);
-
-	switch (reply) {
-		case DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER:
-		case DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER:
-			priv->name_lost_id = g_dbus_connection_signal_subscribe (priv->connection,
-			                                                         DBUS_SERVICE_DBUS,
-			                                                         DBUS_INTERFACE_DBUS,
-			                                                         "NameLost",
-			                                                         DBUS_PATH_DBUS,
-			                                                         FLASHBACK_DBUS_SERVICE,
-			                                                         G_DBUS_SIGNAL_FLAGS_NONE,
-			                                                         (GDBusSignalCallback) flashback_session_name_lost,
-			                                                         session,
-			                                                         NULL);
-			break;
-		case DBUS_REQUEST_NAME_REPLY_IN_QUEUE:
-		case DBUS_REQUEST_NAME_REPLY_EXISTS:
-			g_warning ("Failed to request name: the name already has an owner");
-			return FALSE;
-		default:
-			g_warning ("Failed to request name: unhandled reply %u from RequestName", reply);
-			return FALSE;
-	}
-
-	return TRUE;
+  g_signal_connect (session->client_proxy, "g-signal",
+                    G_CALLBACK (g_signal_cb), session);
 }
 
 static void
-flashback_session_finalize (GObject *object)
+manager_proxy_ready_cb (GObject      *source_object,
+                        GAsyncResult *res,
+                        gpointer      user_data)
 {
-	FlashbackSession *session;
-	FlashbackSessionPrivate *priv;
+  GfSession *session;
+  GError *error;
 
-	session = FLASHBACK_SESSION (object);
-	priv = session->priv;
+  session = GF_SESSION (user_data);
 
-	if (priv->object_path != NULL) {
-		g_free (priv->object_path);
-		priv->object_path = NULL;
-	}
+  error = NULL;
+  session->manager_proxy = g_dbus_proxy_new_for_bus_finish (res, &error);
 
-	g_clear_object (&priv->client_proxy);
-	g_clear_object (&priv->session_manager_proxy);
+  if (error != NULL)
+    {
+      g_warning ("Failed to get session manager proxy: %s", error->message);
+      g_error_free (error);
 
-	if (priv->name_lost_id > 0) {
-		g_dbus_connection_signal_unsubscribe (priv->connection, priv->name_lost_id);
-		priv->name_lost_id = 0;
-	}
+      if (session->end_cb != NULL)
+        session->end_cb (session, session->user_data);
 
-	g_clear_object (&priv->connection);
+      return;
+    }
 
-	G_OBJECT_CLASS (flashback_session_parent_class)->finalize (object);
+  if (session->ready_cb != NULL)
+    session->ready_cb (session, session->user_data);
 }
 
 static void
-flashback_session_class_init (FlashbackSessionClass *class)
+name_acquired_cb (GDBusConnection *connection,
+                  const gchar     *name,
+                  gpointer         user_data)
 {
-	GObjectClass *object_class;
+  GDBusProxyFlags flags;
 
-	object_class = G_OBJECT_CLASS (class);
+  flags = G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
+          G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS;
 
-	object_class->finalize = flashback_session_finalize;
+  g_dbus_proxy_new_for_bus (G_BUS_TYPE_SESSION, flags, NULL,
+                            GSM_DBUS_NAME, GSM_DBUS_PATH, GSM_DBUS_IFACE,
+                            NULL, manager_proxy_ready_cb, user_data);
 }
 
 static void
-flashback_session_init (FlashbackSession *session)
+name_lost_cb (GDBusConnection *connection,
+              const gchar     *name,
+              gpointer         user_data)
 {
-	session->priv = flashback_session_get_instance_private (session);
+  GfSession *session;
+
+  session = GF_SESSION (user_data);
+
+  if (session->end_cb != NULL)
+    session->end_cb (session, session->user_data);
 }
 
-FlashbackSession *
-flashback_session_new (gboolean replace)
+static void
+gf_session_dispose (GObject *object)
 {
-	FlashbackSession *session;
+  GfSession *session;
 
-	session = g_object_new (FLASHBACK_TYPE_SESSION, NULL);
+  session = GF_SESSION (object);
 
-	if (!flashback_session_request_name (session, replace))
-		g_clear_object (&session);
+  if (session->name_id > 0)
+    {
+      g_bus_unown_name (session->name_id);
+      session->name_id = 0;
+    }
 
-	if (!flashback_session_get_session_manager_proxy (session))
-		g_clear_object (&session);
+  g_clear_object (&session->manager_proxy);
+  g_clear_object (&session->client_proxy);
 
-	return session;
+  G_OBJECT_CLASS (gf_session_parent_class)->dispose (object);
 }
 
+static void
+gf_session_finalize (GObject *object)
+{
+  GfSession *session;
+
+  session = GF_SESSION (object);
+
+  g_free (session->object_path);
+
+  G_OBJECT_CLASS (gf_session_parent_class)->finalize (object);
+}
+
+static void
+gf_session_class_init (GfSessionClass *session_class)
+{
+  GObjectClass *object_class;
+
+  object_class = G_OBJECT_CLASS (session_class);
+
+  object_class->dispose = gf_session_dispose;
+  object_class->finalize = gf_session_finalize;
+}
+
+static void
+gf_session_init (GfSession *session)
+{
+}
+
+/**
+ * gf_session_new:
+ * @replace: %TRUE to replace current session
+ * @ready_cb:
+ * @end_cb:
+ * @user_data: user data
+ *
+ * Creates a new #GfSession.
+ *
+ * Returns: (transfer full): a newly created #GfSession.
+ */
+GfSession *
+gf_session_new (gboolean                replace,
+                GfSessionReadyCallback  ready_cb,
+                GfSessionEndCallback    end_cb,
+                gpointer                user_data)
+{
+  GfSession *session;
+  GBusNameOwnerFlags flags;
+
+  session = g_object_new (GF_TYPE_SESSION, NULL);
+
+  session->ready_cb = ready_cb;
+  session->end_cb = end_cb;
+  session->user_data = user_data;
+
+  flags = G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT;
+  if (replace)
+    flags |= G_BUS_NAME_OWNER_FLAGS_REPLACE;
+
+  session->name_id = g_bus_own_name (G_BUS_TYPE_SESSION, GF_DBUS_NAME, flags,
+                                     NULL, name_acquired_cb, name_lost_cb,
+                                     session, NULL);
+
+  return session;
+}
+
+/**
+ * gf_session_set_environment:
+ * @session: a #GfSession
+ * @name: the variable name
+ * @value: the value
+ *
+ * Set environment variable to specified value. May only be used during the
+ * Session Manager initialization phase.
+ *
+ * Returns: %TRUE if environment was set, %FALSE otherwise.
+ */
 gboolean
-flashback_session_set_environment (FlashbackSession *session,
-                                   const gchar      *name,
-                                   const gchar      *value)
+gf_session_set_environment (GfSession   *session,
+                            const gchar *name,
+                            const gchar *value)
 {
-	GError *error;
-	GVariant *parameters;
-	GVariant *res;
+  GVariant *parameters;
+  GError *error;
+  GVariant *variant;
 
-	error = NULL;
-	parameters = g_variant_new ("(ss)", name, value);
-	res = g_dbus_proxy_call_sync (session->priv->session_manager_proxy,
-	                              "Setenv",
-	                              parameters,
-	                              G_DBUS_CALL_FLAGS_NONE,
-	                              -1,
-	                              NULL,
-	                              &error);
+  parameters = g_variant_new ("(ss)", name, value);
 
-	if (error) {
-		g_debug ("Failed to set the environment: %s", error->message);
-		g_error_free (error);
-		return FALSE;
-	}
+  error = NULL;
+  variant = g_dbus_proxy_call_sync (session->manager_proxy,
+                                    "Setenv", parameters,
+                                    G_DBUS_CALL_FLAGS_NONE,
+                                    -1, NULL, &error);
 
-	g_variant_unref (res);
+  if (error != NULL)
+    {
+      g_warning ("Failed to set the environment: %s", error->message);
+      g_error_free (error);
 
-	return TRUE;
+      return FALSE;
+    }
+
+  g_variant_unref (variant);
+
+  return TRUE;
 }
 
+/**
+ * gf_session_register:
+ * @session: a #GfSession
+ *
+ * Register as a Session Management client.
+ *
+ * Returns: %TRUE if we have registered as client, %FALSE otherwise.
+ */
 gboolean
-flashback_session_register_client (FlashbackSession *session)
+gf_session_register (GfSession *session)
 {
-	FlashbackSessionPrivate *priv;
-	GError *error;
-	const gchar *app_id;
-	const gchar *client_startup_id;
-	gchar *startup_id;
-	GVariant *parameters;
-	GVariant *res;
+  const gchar *app_id;
+  const gchar *autostart_id;
+  gchar *client_startup_id;
+  GVariant *parameters;
+  GError *error;
+  GVariant *variant;
+  GDBusProxyFlags flags;
 
-	priv = session->priv;
-	error = NULL;
-	app_id = "gnome-flashback";
-	client_startup_id = g_getenv ("DESKTOP_AUTOSTART_ID");
+  app_id = "gnome-flashback";
+  autostart_id = g_getenv ("DESKTOP_AUTOSTART_ID");
 
-	if (client_startup_id != NULL) {
-		startup_id = g_strdup (client_startup_id);
-		g_unsetenv ("DESKTOP_AUTOSTART_ID");
-	} else {
-		startup_id = g_strdup ("");
-	}
+  if (autostart_id != NULL)
+    {
+      client_startup_id = g_strdup (autostart_id);
+      g_unsetenv ("DESKTOP_AUTOSTART_ID");
+    }
+  else
+    {
+      client_startup_id = g_strdup ("");
+    }
 
-	parameters = g_variant_new ("(ss)", app_id, startup_id);
-	g_free (startup_id);
+  parameters = g_variant_new ("(ss)", app_id, client_startup_id);
+  g_free (client_startup_id);
 
-	res = g_dbus_proxy_call_sync (priv->session_manager_proxy,
-	                              "RegisterClient",
-	                              parameters,
-	                              G_DBUS_CALL_FLAGS_NONE,
-	                              -1,
-	                              NULL,
-	                              &error);
+  error = NULL;
+  variant = g_dbus_proxy_call_sync (session->manager_proxy,
+                                    "RegisterClient", parameters,
+                                    G_DBUS_CALL_FLAGS_NONE,
+                                    -1, NULL, &error);
 
-	if (error) {
-		g_warning ("Failed to register client: %s", error->message);
-		g_error_free (error);
-		return FALSE;
-	}
+  if (error != NULL)
+    {
+      g_warning ("Failed to register client: %s", error->message);
+      g_error_free (error);
 
-	g_variant_get (res, "(o)", &priv->object_path);
-	g_variant_unref (res);
+      return FALSE;
+    }
 
-	priv->client_proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
-	                                                    G_DBUS_PROXY_FLAGS_NONE,
-	                                                    NULL,
-	                                                    SESSION_MANAGER_NAME,
-	                                                    priv->object_path,
-	                                                    SESSION_MANAGER_CLIENT_PRIVATE_INTERFACE,
-	                                                    NULL,
-	                                                    &error);
+  g_variant_get (variant, "(o)", &session->object_path);
+  g_variant_unref (variant);
 
-	if (error) {
-		g_warning ("Failed to get a client proxy: %s", error->message);
-		g_error_free (error);
-		return FALSE;
-	}
+  flags = G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES;
 
-	g_signal_connect (priv->client_proxy, "g-signal",
-	                  G_CALLBACK (flashback_session_client_proxy_signal_cb), session);
+  g_dbus_proxy_new_for_bus (G_BUS_TYPE_SESSION, flags, NULL,
+                            GSM_DBUS_NAME, session->object_path,
+                            GSM_CLIENT_PRIVATE_DBUS_IFACE,
+                            NULL, client_proxy_ready_cb, session);
 
-	return TRUE;
+  return TRUE;
 }

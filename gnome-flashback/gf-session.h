@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Alberts Muktupāvels
+ * Copyright (C) 2014 - 2015 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,41 +15,42 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FLASHBACK_SESSION_H
-#define FLASHBACK_SESSION_H
+#ifndef GF_SESSION_H
+#define GF_SESSION_H
 
 #include <glib-object.h>
 
 G_BEGIN_DECLS
 
-#define FLASHBACK_TYPE_SESSION         (flashback_session_get_type ())
-#define FLASHBACK_SESSION(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), FLASHBACK_TYPE_SESSION, FlashbackSession))
-#define FLASHBACK_IS_SESSION(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), FLASHBACK_TYPE_SESSION))
-#define FLASHBACK_SESSION_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST ((c),    FLASHBACK_TYPE_SESSION, FlashbackSessionClass))
-#define FLASHBACK_IS_SESSION_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE ((c),    FLASHBACK_TYPE_SESSION))
-#define FLASHBACK_SESSION_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o),  FLASHBACK_TYPE_SESSION, FlashbackSessionClass))
+#define GF_TYPE_SESSION gf_session_get_type ()
+G_DECLARE_FINAL_TYPE (GfSession, gf_session, GF, SESSION, GObject)
 
-typedef struct _FlashbackSession        FlashbackSession;
-typedef struct _FlashbackSessionClass   FlashbackSessionClass;
-typedef struct _FlashbackSessionPrivate FlashbackSessionPrivate;
+/**
+ * GfSessionReadyCallback:
+ * @session: a #GfSession
+ * @user_data: user data
+ */
+typedef void (*GfSessionReadyCallback) (GfSession *session,
+                                        gpointer   user_data);
 
-struct _FlashbackSession {
-	GObject                  parent;
-	FlashbackSessionPrivate *priv;
-};
+/**
+ * GfSessionEndCallback:
+ * @session: a #GfSession
+ * @user_data: user data
+ */
+typedef void (*GfSessionEndCallback) (GfSession *session,
+                                      gpointer   user_data);
 
-struct _FlashbackSessionClass {
-	GObjectClass parent_class;
-};
+GfSession *gf_session_new             (gboolean                replace,
+                                       GfSessionReadyCallback  ready_cb,
+                                       GfSessionEndCallback    end_cb,
+                                       gpointer                user_data);
 
-GType             flashback_session_get_type        (void);
+gboolean   gf_session_set_environment (GfSession              *session,
+                                       const gchar            *name,
+                                       const gchar            *value);
 
-FlashbackSession *flashback_session_new             (gboolean          replace);
-
-gboolean          flashback_session_set_environment (FlashbackSession *session,
-                                                     const gchar      *name,
-                                                     const gchar      *value);
-gboolean          flashback_session_register_client (FlashbackSession *session);
+gboolean   gf_session_register        (GfSession              *session);
 
 G_END_DECLS
 
