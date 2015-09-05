@@ -29,7 +29,7 @@ gnome_flashback_CFLAGS = \
 gnome_flashback_SOURCES = \
 	flashback-application.c \
 	flashback-application.h \
-	flashback-main.c \
+	gf-main.c \
 	gf-session.c \
 	gf-session.h \
 	$(BUILT_SOURCES) \
