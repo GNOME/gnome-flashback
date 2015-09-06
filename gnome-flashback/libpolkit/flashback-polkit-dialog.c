@@ -273,6 +273,8 @@ setup_users_store (FlashbackPolkitDialog *dialog)
 {
   GtkTreeIter iter;
   gint i;
+  gint index;
+  gint selected_index;
   GtkComboBox *combobox;
   GtkCellRenderer *renderer;
 
@@ -288,6 +290,9 @@ setup_users_store (FlashbackPolkitDialog *dialog)
                       COLUMN_TEXT, _("Select user..."),
                       COLUMN_USERNAME, NULL,
                       -1);
+
+  index = 0;
+  selected_index = 0;
 
   for (i = 0; dialog->users[i] != NULL; i++)
     {
@@ -354,6 +359,15 @@ setup_users_store (FlashbackPolkitDialog *dialog)
                           COLUMN_USERNAME, dialog->users[i],
                           -1);
 
+      index++;
+      if (passwd->pw_uid == getuid ())
+        {
+          selected_index = index;
+
+          g_free (dialog->selected_user);
+          dialog->selected_user = g_strdup (dialog->users[i]);
+        }
+
       g_free (real_name);
       g_object_unref (pixbuf);
     }
@@ -377,7 +391,7 @@ setup_users_store (FlashbackPolkitDialog *dialog)
                                       (GtkCellLayoutDataFunc) combobox_set_sensitive,
                                       NULL, NULL);
 
-  gtk_combo_box_set_active (GTK_COMBO_BOX (combobox), 0);
+  gtk_combo_box_set_active (GTK_COMBO_BOX (combobox), selected_index);
 
   g_signal_connect (dialog->users_combobox, "changed",
                     G_CALLBACK (users_combobox_changed_cb), dialog);
