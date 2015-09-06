@@ -28,6 +28,7 @@
 #include "libend-session-dialog/flashback-end-session-dialog.h"
 #include "libidle-monitor/flashback-idle-monitor.h"
 #include "libpolkit/flashback-polkit.h"
+#include "libpower-applet/gf-power-applet.h"
 #include "libscreencast/flashback-screencast.h"
 #include "libscreenshot/flashback-screenshot.h"
 #include "libshell/flashback-shell.h"
@@ -54,6 +55,7 @@ struct _FlashbackApplication
   FlashbackScreenshot       *screenshot;
   FlashbackShell            *shell;
   GfBluetoothApplet         *bluetooth;
+  GfPowerApplet             *power;
   GvcApplet                 *applet;
   FlashbackWorkarounds      *workarounds;
 };
@@ -144,6 +146,7 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (screenshot, "screenshot", flashback_screenshot_new)
   SETTING_CHANGED (shell, "shell", flashback_shell_new)
   SETTING_CHANGED (bluetooth, "bluetooth-applet", gf_bluetooth_applet_new)
+  SETTING_CHANGED (power, "power-applet", gf_power_applet_new)
   SETTING_CHANGED (applet, "sound-applet", gvc_applet_new)
   SETTING_CHANGED (workarounds, "workarounds", flashback_workarounds_new)
 
@@ -180,6 +183,7 @@ flashback_application_finalize (GObject *object)
   g_clear_object (&application->screenshot);
   g_clear_object (&application->shell);
   g_clear_object (&application->bluetooth);
+  g_clear_object (&application->power);
   g_clear_object (&application->applet);
   g_clear_object (&application->workarounds);
 

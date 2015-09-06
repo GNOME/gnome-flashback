@@ -71,6 +71,10 @@ PKG_CHECK_MODULES(POLKIT, gtk+-3.0 >= $GTK_REQUIRED glib-2.0 >= $GLIB_REQUIRED p
 AC_SUBST(POLKIT_CFLAGS)
 AC_SUBST(POLKIT_LIBS)
 
+PKG_CHECK_MODULES(POWER_APPLET, gtk+-3.0 >= $GTK_REQUIRED)
+AC_SUBST(POWER_APPLET_CFLAGS)
+AC_SUBST(POWER_APPLET_LIBS)
+
 PKG_CHECK_MODULES(SCREENCAST, gtk+-3.0 >= $GTK_REQUIRED)
 AC_SUBST(SCREENCAST_CFLAGS)
 AC_SUBST(SCREENCAST_LIBS)
@@ -107,6 +111,7 @@ gnome-flashback/libdisplay-config/Makefile
 gnome-flashback/libend-session-dialog/Makefile
 gnome-flashback/libidle-monitor/Makefile
 gnome-flashback/libpolkit/Makefile
+gnome-flashback/libpower-applet/Makefile
 gnome-flashback/libscreencast/Makefile
 gnome-flashback/libscreenshot/Makefile
 gnome-flashback/libshell/Makefile

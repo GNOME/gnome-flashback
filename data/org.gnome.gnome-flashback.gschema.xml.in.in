@@ -35,6 +35,11 @@
 			<_summary>Authentication agent for polkit</_summary>
 			<_description>This is the same authentication agent that was provided by PolicyKit-gnome.</_description>
 		</key>
+		<key name="power-applet" type="b">
+			<default>true</default>
+			<_summary>Power applet</_summary>
+			<_description>If set to true, then GNOME Flashback application will be used to show a power applet.</_description>
+		</key>
 		<key name="screencast" type="b">
 			<default>true</default>
 			<_summary>Screencasts</_summary>
