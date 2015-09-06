@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2008 Red Hat, Inc.
+ * Copyright (C) 2015 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,38 +16,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GVC_APPLET_H
-#define __GVC_APPLET_H
+#ifndef GF_SOUND_APPLET_H
+#define GF_SOUND_APPLET_H
 
 #include <glib-object.h>
 
 G_BEGIN_DECLS
 
-#define GVC_TYPE_APPLET         (gvc_applet_get_type ())
-#define GVC_APPLET(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), GVC_TYPE_APPLET, GvcApplet))
-#define GVC_APPLET_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), GVC_TYPE_APPLET, GvcAppletClass))
-#define GVC_IS_APPLET(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), GVC_TYPE_APPLET))
-#define GVC_IS_APPLET_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), GVC_TYPE_APPLET))
-#define GVC_APPLET_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GVC_TYPE_APPLET, GvcAppletClass))
+#define GF_TYPE_SOUND_APPLET gf_sound_applet_get_type ()
+G_DECLARE_FINAL_TYPE (GfSoundApplet, gf_sound_applet, GF, SOUND_APPLET, GObject)
 
-typedef struct GvcAppletPrivate GvcAppletPrivate;
-
-typedef struct
-{
-        GObject            parent;
-        GvcAppletPrivate *priv;
-} GvcApplet;
-
-typedef struct
-{
-        GObjectClass   parent_class;
-} GvcAppletClass;
-
-GType               gvc_applet_get_type            (void);
-
-GvcApplet *         gvc_applet_new                 (void);
-void                gvc_applet_start               (GvcApplet     *applet);
+GfSoundApplet *gf_sound_applet_new (void);
 
 G_END_DECLS
 
-#endif /* __GVC_APPLET_H */
+#endif
