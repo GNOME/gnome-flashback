@@ -6,4 +6,4 @@ OnlyShowIn=GNOME-Flashback;
 NoDisplay=true
 X-GNOME-Autostart-Phase=Desktop
 X-GNOME-Autostart-Notify=true
-X-GNOME-AutoRestart=false
+X-GNOME-AutoRestart=true
