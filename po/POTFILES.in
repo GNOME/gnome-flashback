@@ -8,11 +8,11 @@ data/gnome-flashback-init.desktop.in
 data/gnome-flashback-metacity.desktop.in.in
 data/gnome-flashback-metacity.session.in
 data/org.gnome.gnome-flashback.gschema.xml.in.in
-gnome-flashback/flashback-main.c
+gnome-flashback/gf-main.c
 gnome-flashback/libautomount-manager/gsd-automount-manager.c
 gnome-flashback/libautomount-manager/gsd-autorun.c
-gnome-flashback/libdisplay-config/flashback-display-config.c
 [type: gettext/glade]gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui
+gnome-flashback/libdisplay-config/flashback-display-config.c
 gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c
 [type: gettext/glade]gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui
 gnome-flashback/libpolkit/flashback-authenticator.c
