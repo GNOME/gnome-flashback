@@ -29,7 +29,7 @@
 #include <gtk/gtk.h>
 #include <pulse/pulseaudio.h>
 
-#include "gvc-applet.h"
+#include "gf-sound-applet.h"
 #include "gvc-mixer-control.h"
 #include "gvc-stream-status-icon.h"
 

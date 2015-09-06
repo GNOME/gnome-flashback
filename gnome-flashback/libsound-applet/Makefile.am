@@ -17,8 +17,8 @@ libsound_applet_la_CFLAGS = \
 	$(NULL)
 
 libsound_applet_la_SOURCES = \
-	gvc-applet.c \
-	gvc-applet.h \
+	gf-sound-applet.c \
+	gf-sound-applet.h \
 	gvc-channel-bar.c \
 	gvc-channel-bar.h \
 	gvc-stream-status-icon.c \
