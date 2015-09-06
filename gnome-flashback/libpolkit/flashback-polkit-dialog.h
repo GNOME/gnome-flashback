@@ -54,6 +54,8 @@ void       flashback_polkit_dialog_indicate_error                (FlashbackPolki
 void       flashback_polkit_dialog_set_info_message              (FlashbackPolkitDialog  *dialog,
                                                                   const gchar            *info_markup);
 
+void       flashback_polkit_dialog_present                       (FlashbackPolkitDialog  *dialog);
+
 G_END_DECLS
 
 #endif

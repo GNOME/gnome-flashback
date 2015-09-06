@@ -102,8 +102,7 @@ session_request (PolkitAgentSession *session,
       modified_request = g_strdup (request);
     }
 
-  gtk_widget_show_all (authenticator->dialog);
-  gtk_window_present (GTK_WINDOW (dialog));
+  flashback_polkit_dialog_present (dialog);
 
   password = flashback_polkit_dialog_run_until_response_for_prompt (dialog,
                                                                     modified_request,
@@ -140,8 +139,7 @@ session_show_info (PolkitAgentSession *session,
   flashback_polkit_dialog_set_info_message (dialog, s);
   g_free (s);
 
-  gtk_widget_show_all (authenticator->dialog);
-  gtk_window_present (GTK_WINDOW (dialog));
+  flashback_polkit_dialog_present (dialog);
 }
 
 static void
@@ -187,8 +185,7 @@ do_initiate (gpointer user_data)
   authenticator = FLASHBACK_AUTHENTICATOR (user_data);
   dialog = FLASHBACK_POLKIT_DIALOG (authenticator->dialog);
 
-  gtk_widget_show_all (authenticator->dialog);
-  gtk_window_present (GTK_WINDOW (dialog));
+  flashback_polkit_dialog_present (dialog);
 
   if (!flashback_polkit_dialog_run_until_user_is_selected (dialog))
     {

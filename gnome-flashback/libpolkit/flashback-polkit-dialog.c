@@ -23,6 +23,7 @@
 #include "config.h"
 
 #include <errno.h>
+#include <gdk/gdkx.h>
 #include <glib/gi18n-lib.h>
 #include <pwd.h>
 
@@ -1113,4 +1114,24 @@ flashback_polkit_dialog_set_info_message (FlashbackPolkitDialog *dialog,
                                           const gchar           *info_markup)
 {
   gtk_label_set_markup (GTK_LABEL (dialog->info_label), info_markup);
+}
+
+void
+flashback_polkit_dialog_present (FlashbackPolkitDialog *dialog)
+{
+  GtkWidget *widget;
+  GdkWindow *window;
+  guint32 server_time;
+
+  widget = GTK_WIDGET (dialog);
+
+  gtk_widget_show_all (widget);
+
+  window = gtk_widget_get_window (widget);
+
+  server_time = GDK_CURRENT_TIME;
+  if (window != NULL)
+    server_time = gdk_x11_get_server_time (window);
+
+  gtk_window_present_with_time (GTK_WINDOW (dialog), server_time);
 }
