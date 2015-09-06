@@ -33,7 +33,7 @@
 #include "libscreenshot/flashback-screenshot.h"
 #include "libshell/flashback-shell.h"
 #include "libsound-applet/gf-sound-applet.h"
-#include "libworkarounds/flashback-workarounds.h"
+#include "libworkarounds/gf-workarounds.h"
 
 struct _FlashbackApplication
 {

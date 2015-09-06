@@ -27,7 +27,7 @@
 #include <gtk/gtk.h>
 #include <X11/Xmd.h>
 
-#include "flashback-workarounds.h"
+#include "gf-workarounds.h"
 
 #define BYTES_LEFT(buffer) ((buffer)->data + (buffer)->len - (buffer)->pos)
 #define RETURN_IF_FAIL_BYTES(buffer, n_bytes) if (BYTES_LEFT (buffer) < (n_bytes)) return FALSE;

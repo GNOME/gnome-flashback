@@ -12,8 +12,8 @@ libworkarounds_la_CFLAGS = \
 	$(NULL)
 
 libworkarounds_la_SOURCES = \
-	flashback-workarounds.c \
-	flashback-workarounds.h \
+	gf-workarounds.c \
+	gf-workarounds.h \
 	$(NULL)
 
 libworkarounds_la_LDFLAGS = \
