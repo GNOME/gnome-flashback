@@ -104,20 +104,6 @@ fetch_card16 (XSettingsBuffer *buffer,
 }
 
 static gboolean
-fetch_ushort (XSettingsBuffer *buffer,
-              gushort         *result)
-{
-  CARD16 x;
-  gboolean r;
-
-  r = fetch_card16 (buffer, &x);
-  if (r)
-    *result = x;
-
-  return r;
-}
-
-static gboolean
 fetch_card32 (XSettingsBuffer *buffer,
               CARD32          *result)
 {
