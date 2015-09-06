@@ -249,11 +249,13 @@ do_initiate (gpointer user_data)
         {
           if (authenticator->dialog != NULL)
             {
-              gchar *s;
+              const gchar *s;
+              gchar *m;
 
-              s = g_strconcat ("<b>", _("Authentication Failure"), "</b>", NULL);
-              flashback_polkit_dialog_set_info_message (dialog, s);
-              g_free (s);
+              s = _("Your authentication attempt was unsuccessful. Please try again.");
+              m = g_strconcat ("<b>", s, "</b>", NULL);
+              flashback_polkit_dialog_set_info_message (dialog, m);
+              g_free (m);
 
               gtk_widget_queue_draw (authenticator->dialog);
 
