@@ -15,11 +15,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "config.h"
+
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
+
 #include "flashback-application.h"
 #include "libautomount-manager/gsd-automount-manager.h"
+#include "libbluetooth-applet/gf-bluetooth-applet.h"
 #include "libdesktop-background/desktop-background.h"
 #include "libdisplay-config/flashback-display-config.h"
 #include "libend-session-dialog/flashback-end-session-dialog.h"
@@ -50,6 +53,7 @@ struct _FlashbackApplication
   FlashbackScreencast       *screencast;
   FlashbackScreenshot       *screenshot;
   FlashbackShell            *shell;
+  GfBluetoothApplet         *bluetooth;
   GvcApplet                 *applet;
   FlashbackWorkarounds      *workarounds;
 };
@@ -139,6 +143,7 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (screencast, "screencast", flashback_screencast_new)
   SETTING_CHANGED (screenshot, "screenshot", flashback_screenshot_new)
   SETTING_CHANGED (shell, "shell", flashback_shell_new)
+  SETTING_CHANGED (bluetooth, "bluetooth-applet", gf_bluetooth_applet_new)
   SETTING_CHANGED (applet, "sound-applet", gvc_applet_new)
   SETTING_CHANGED (workarounds, "workarounds", flashback_workarounds_new)
 
@@ -174,6 +179,7 @@ flashback_application_finalize (GObject *object)
   g_clear_object (&application->screencast);
   g_clear_object (&application->screenshot);
   g_clear_object (&application->shell);
+  g_clear_object (&application->bluetooth);
   g_clear_object (&application->applet);
   g_clear_object (&application->workarounds);
 
