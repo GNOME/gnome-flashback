@@ -131,6 +131,7 @@
       <dep package="gnome-applets" />
       <dep package="gnome-flashback" />
       <dep package="gnome-panel" />
+      <dep package="gnome-screensaver" />
       <dep package="notification-daemon" />
     </dependencies>
   </metamodule>
