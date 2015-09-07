@@ -20,7 +20,7 @@ session_DATA     = $(session_in_files:.session.in=.session)
 %.session: %.session.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 
 autostartdir       = $(sysconfdir)/xdg/autostart
-autostart_in_files = gnome-flashback-nm-applet.desktop.in
+autostart_in_files = gnome-flashback-nm-applet.desktop.in gnome-flashback-screensaver.desktop.in
 autostart_DATA     = $(autostart_in_files:.desktop.in=.desktop)
 
 desktopdir       = $(datadir)/applications
