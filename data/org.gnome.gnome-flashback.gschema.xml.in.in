@@ -8,7 +8,7 @@
 		<key name="bluetooth-applet" type="b">
 			<default>true</default>
 			<_summary>Bluetooth applet</_summary>
-			<_description>If set to true, then GNOME Flashback application will be used to show a bluetooth applet.</_description>
+			<_description>If set to true, then GNOME Flashback application will be used to show a Bluetooth applet.</_description>
 		</key>
 		<key name="desktop-background" type="b">
 			<default>true</default>
