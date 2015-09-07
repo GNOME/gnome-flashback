@@ -33,7 +33,7 @@
 #define RETURN_IF_FAIL_BYTES(buffer, n_bytes) if (BYTES_LEFT (buffer) < (n_bytes)) return FALSE;
 #define XSETTINGS_PAD(n,m) ((n + m - 1) & (~(m-1)))
 
-struct _FlashbackWorkarounds
+struct _GfWorkarounds
 {
   GObject      parent;
 
@@ -57,9 +57,9 @@ struct _FlashbackWorkarounds
   CARD32       serial;
 };
 
-G_DEFINE_TYPE (FlashbackWorkarounds, flashback_workarounds, G_TYPE_OBJECT)
+G_DEFINE_TYPE (GfWorkarounds, gf_workarounds, G_TYPE_OBJECT)
 
-static void add_workarounds (FlashbackWorkarounds *workarounds);
+static void add_workarounds (GfWorkarounds *workarounds);
 
 typedef enum
 {
@@ -177,9 +177,9 @@ free_xsetting (gpointer data)
 }
 
 static GHashTable *
-parse_settings (FlashbackWorkarounds *workarounds,
-                guchar               *data,
-                gulong                n_items)
+parse_settings (GfWorkarounds *workarounds,
+                guchar        *data,
+                gulong         n_items)
 {
   XSettingsBuffer buffer;
   GHashTable *settings;
@@ -304,7 +304,7 @@ out:
 }
 
 static gboolean
-read_settings (FlashbackWorkarounds *workarounds)
+read_settings (GfWorkarounds *workarounds)
 {
   GdkDisplay *display;
   gint result;
@@ -394,7 +394,7 @@ setting_store (XSettingsSetting *setting,
 }
 
 static void
-write_settings (FlashbackWorkarounds *workarounds)
+write_settings (GfWorkarounds *workarounds)
 {
   GString *buffer;
   GHashTableIter iter;
@@ -426,7 +426,7 @@ write_settings (FlashbackWorkarounds *workarounds)
 }
 
 static void
-apply_app_menu_workaround (FlashbackWorkarounds *workarounds)
+apply_app_menu_workaround (GfWorkarounds *workarounds)
 {
   const gchar *key;
   XSettingsSetting *setting;
@@ -455,7 +455,7 @@ apply_app_menu_workaround (FlashbackWorkarounds *workarounds)
 }
 
 static void
-apply_button_layout_workaround (FlashbackWorkarounds *workarounds)
+apply_button_layout_workaround (GfWorkarounds *workarounds)
 {
   const gchar *key;
   XSettingsSetting *setting;
@@ -484,7 +484,7 @@ apply_button_layout_workaround (FlashbackWorkarounds *workarounds)
 }
 
 static gboolean
-apply_workarounds (FlashbackWorkarounds *workarounds)
+apply_workarounds (GfWorkarounds *workarounds)
 {
   gboolean gtk_shell_shows_app_menu;
   gchar *gtk_decoration_layout;
@@ -530,9 +530,9 @@ apply_workarounds (FlashbackWorkarounds *workarounds)
 static gboolean
 try_again (gpointer user_data)
 {
-  FlashbackWorkarounds *workarounds;
+  GfWorkarounds *workarounds;
 
-  workarounds = FLASHBACK_WORKAROUNDS (user_data);
+  workarounds = GF_WORKAROUNDS (user_data);
 
   add_workarounds (workarounds);
 
@@ -543,11 +543,11 @@ try_again (gpointer user_data)
 static gboolean
 add_workarounds_real (gpointer user_data)
 {
-  FlashbackWorkarounds *workarounds;
+  GfWorkarounds *workarounds;
   gboolean fix_app_menu;
   gchar *fix_button_layout;
 
-  workarounds = FLASHBACK_WORKAROUNDS (user_data);
+  workarounds = GF_WORKAROUNDS (user_data);
 
   fix_app_menu = g_settings_get_boolean (workarounds->g_settings,
                                          "fix-app-menu");
@@ -580,7 +580,7 @@ add_workarounds_real (gpointer user_data)
 }
 
 static void
-add_workarounds (FlashbackWorkarounds *workarounds)
+add_workarounds (GfWorkarounds *workarounds)
 {
   if (workarounds->idle_id > 0)
     g_source_remove (workarounds->idle_id);
@@ -610,12 +610,12 @@ g_settings_changed (GSettings   *settings,
                     const gchar *key,
                     gpointer     user_data)
 {
-  FlashbackWorkarounds *workarounds;
+  GfWorkarounds *workarounds;
   gboolean fix_app_menu;
   gchar *fix_button_layout;
   gboolean reset;
 
-  workarounds = FLASHBACK_WORKAROUNDS (user_data);
+  workarounds = GF_WORKAROUNDS (user_data);
 
   fix_app_menu = g_settings_get_boolean (workarounds->g_settings,
                                          "fix-app-menu");
@@ -647,15 +647,15 @@ gtk_settings_changed (GtkSettings *settings,
                       GParamSpec  *pspec,
                       gpointer     user_data)
 {
-  FlashbackWorkarounds *workarounds;
+  GfWorkarounds *workarounds;
 
-  workarounds = FLASHBACK_WORKAROUNDS (user_data);
+  workarounds = GF_WORKAROUNDS (user_data);
 
   add_workarounds (workarounds);
 }
 
 static void
-x11_init (FlashbackWorkarounds *workarounds)
+x11_init (GfWorkarounds *workarounds)
 {
   GdkDisplay *display;
   Display *xdisplay;
@@ -677,11 +677,11 @@ x11_init (FlashbackWorkarounds *workarounds)
 }
 
 static void
-flashback_workarounds_dispose (GObject *object)
+gf_workarounds_dispose (GObject *object)
 {
-  FlashbackWorkarounds *workarounds;
+  GfWorkarounds *workarounds;
 
-  workarounds = FLASHBACK_WORKAROUNDS (object);
+  workarounds = GF_WORKAROUNDS (object);
 
   g_clear_object (&workarounds->g_settings);
   g_signal_handlers_disconnect_by_func (workarounds->gtk_settings,
@@ -710,21 +710,21 @@ flashback_workarounds_dispose (GObject *object)
 
   remove_workarounds ();
 
-  G_OBJECT_CLASS (flashback_workarounds_parent_class)->dispose (object);
+  G_OBJECT_CLASS (gf_workarounds_parent_class)->dispose (object);
 }
 
 static void
-flashback_workarounds_class_init (FlashbackWorkaroundsClass *workarounds_class)
+gf_workarounds_class_init (GfWorkaroundsClass *workarounds_class)
 {
   GObjectClass *object_class;
 
   object_class = G_OBJECT_CLASS (workarounds_class);
 
-  object_class->dispose = flashback_workarounds_dispose;
+  object_class->dispose = gf_workarounds_dispose;
 }
 
 static void
-flashback_workarounds_init (FlashbackWorkarounds *workarounds)
+gf_workarounds_init (GfWorkarounds *workarounds)
 {
   x11_init (workarounds);
 
@@ -741,8 +741,8 @@ flashback_workarounds_init (FlashbackWorkarounds *workarounds)
   add_workarounds (workarounds);
 }
 
-FlashbackWorkarounds *
-flashback_workarounds_new (void)
+GfWorkarounds *
+gf_workarounds_new (void)
 {
-	return g_object_new (FLASHBACK_TYPE_WORKAROUNDS, NULL);
+  return g_object_new (GF_TYPE_WORKAROUNDS, NULL);
 }

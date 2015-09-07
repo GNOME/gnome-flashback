@@ -57,7 +57,7 @@ struct _FlashbackApplication
   GfBluetoothApplet         *bluetooth;
   GfPowerApplet             *power;
   GfSoundApplet             *sound;
-  FlashbackWorkarounds      *workarounds;
+  GfWorkarounds             *workarounds;
 };
 
 G_DEFINE_TYPE (FlashbackApplication, flashback_application, G_TYPE_OBJECT)
@@ -148,7 +148,7 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (bluetooth, "bluetooth-applet", gf_bluetooth_applet_new)
   SETTING_CHANGED (power, "power-applet", gf_power_applet_new)
   SETTING_CHANGED (sound, "sound-applet", gf_sound_applet_new)
-  SETTING_CHANGED (workarounds, "workarounds", flashback_workarounds_new)
+  SETTING_CHANGED (workarounds, "workarounds", gf_workarounds_new)
 
 #undef SETTING_CHANGED
 

@@ -15,18 +15,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FLASHBACK_WORKAROUNDS_H
-#define FLASHBACK_WORKAROUNDS_H
+#ifndef GF_WORKAROUNDS_H
+#define GF_WORKAROUNDS_H
 
 #include <glib-object.h>
 
 G_BEGIN_DECLS
 
-#define FLASHBACK_TYPE_WORKAROUNDS flashback_workarounds_get_type ()
-G_DECLARE_FINAL_TYPE (FlashbackWorkarounds, flashback_workarounds,
-                      FLASHBACK, WORKAROUNDS, GObject)
+#define GF_TYPE_WORKAROUNDS gf_workarounds_get_type ()
+G_DECLARE_FINAL_TYPE (GfWorkarounds, gf_workarounds, GF, WORKAROUNDS, GObject)
 
-FlashbackWorkarounds *flashback_workarounds_new (void);
+GfWorkarounds *gf_workarounds_new (void);
 
 G_END_DECLS
 
