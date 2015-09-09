@@ -13,6 +13,7 @@ data/org.gnome.gnome-flashback.gschema.xml.in.in
 gnome-flashback/gf-main.c
 gnome-flashback/libautomount-manager/gsd-automount-manager.c
 gnome-flashback/libautomount-manager/gsd-autorun.c
+gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c
 [type: gettext/glade]gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui
 gnome-flashback/libdisplay-config/flashback-display-config.c
 gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c
