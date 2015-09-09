@@ -321,8 +321,9 @@ gf_power_applet_init (GfPowerApplet *applet)
 {
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
-  applet->status_icon = gtk_status_icon_new ();
+  applet->status_icon = gtk_status_icon_new_from_icon_name ("battery");
 
+  gtk_status_icon_set_visible (applet->status_icon, FALSE);
   gtk_status_icon_set_title (applet->status_icon, _("Power status"));
   gtk_status_icon_set_tooltip_text (applet->status_icon, _("Power"));
 
