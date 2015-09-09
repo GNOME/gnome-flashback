@@ -27,17 +27,17 @@ libbluetooth_applet_la_LIBADD = \
 	$(BLUETOOTH_APPLET_LIBS) \
 	$(NULL)
 
-gf-settings-daemon-rfkill.h:
-gf-settings-daemon-rfkill.c: org.gnome.SettingsDaemon.Rfkill.xml
+gf-sd-rfkill.h:
+gf-sd-rfkill.c: org.gnome.SettingsDaemon.Rfkill.xml
 	$(AM_V_GEN) gdbus-codegen \
 		--interface-prefix org.gnome.SettingsDaemon.Rfkill. \
 		--c-namespace Gf \
-		--generate-c-code gf-settings-daemon-rfkill \
+		--generate-c-code gf-sd-rfkill \
 		$(srcdir)/org.gnome.SettingsDaemon.Rfkill.xml
 
 BUILT_SOURCES = \
-	gf-settings-daemon-rfkill.c \
-	gf-settings-daemon-rfkill.h \
+	gf-sd-rfkill.c \
+	gf-sd-rfkill.h \
 	$(NULL)
 
 EXTRA_DIST = \

@@ -1,7 +1,7 @@
 <node>
   <interface name="org.gnome.SettingsDaemon.Rfkill">
 
-    <annotation name="org.gtk.GDBus.C.Name" value="SettingsDaemonRfkill" />
+    <annotation name="org.gtk.GDBus.C.Name" value="SdRfkill" />
 
     <property name="AirplaneMode" type="b" access="readwrite" />
     <property name="HardwareAirplaneMode" type="b" access="read" />
