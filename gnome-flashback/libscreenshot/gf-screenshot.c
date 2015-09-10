@@ -26,7 +26,7 @@
 #define SCREENSHOT_DBUS_NAME "org.gnome.Shell.Screenshot"
 #define SCREENSHOT_DBUS_PATH "/org/gnome/Shell/Screenshot"
 
-struct _FlashbackScreenshot
+struct _GfScreenshot
 {
   GObject                  parent;
 
@@ -34,7 +34,7 @@ struct _FlashbackScreenshot
   FlashbackDBusScreenshot *dbus_screenshot;
 };
 
-G_DEFINE_TYPE (FlashbackScreenshot, flashback_screenshot, G_TYPE_OBJECT)
+G_DEFINE_TYPE (GfScreenshot, gf_screenshot, G_TYPE_OBJECT)
 
 static gboolean
 handle_screenshot (FlashbackDBusScreenshot *dbus_screenshot,
@@ -137,13 +137,13 @@ bus_acquired_handler (GDBusConnection *connection,
                       const gchar     *name,
                       gpointer         user_data)
 {
-  FlashbackScreenshot *screenshot;
+  GfScreenshot *screenshot;
   FlashbackDBusScreenshot *dbus_screenshot;
   GDBusInterfaceSkeleton *skeleton;
   GError *error;
   gboolean exported;
 
-  screenshot = FLASHBACK_SCREENSHOT (user_data);
+  screenshot = GF_SCREENSHOT (user_data);
 
   dbus_screenshot = screenshot->dbus_screenshot;
   skeleton = G_DBUS_INTERFACE_SKELETON (dbus_screenshot);
@@ -173,12 +173,12 @@ bus_acquired_handler (GDBusConnection *connection,
 }
 
 static void
-flashback_screenshot_dispose (GObject *object)
+gf_screenshot_dispose (GObject *object)
 {
-  FlashbackScreenshot *screenshot;
+  GfScreenshot *screenshot;
   GDBusInterfaceSkeleton *skeleton;
 
-  screenshot = FLASHBACK_SCREENSHOT (object);
+  screenshot = GF_SCREENSHOT (object);
 
   if (screenshot->dbus_screenshot)
     {
@@ -194,21 +194,21 @@ flashback_screenshot_dispose (GObject *object)
       screenshot->bus_name = 0;
     }
 
-  G_OBJECT_CLASS (flashback_screenshot_parent_class)->dispose (object);
+  G_OBJECT_CLASS (gf_screenshot_parent_class)->dispose (object);
 }
 
 static void
-flashback_screenshot_class_init (FlashbackScreenshotClass *screenshot_class)
+gf_screenshot_class_init (GfScreenshotClass *screenshot_class)
 {
   GObjectClass *object_class;
 
   object_class = G_OBJECT_CLASS (screenshot_class);
 
-  object_class->dispose = flashback_screenshot_dispose;
+  object_class->dispose = gf_screenshot_dispose;
 }
 
 static void
-flashback_screenshot_init (FlashbackScreenshot *screenshot)
+gf_screenshot_init (GfScreenshot *screenshot)
 {
   screenshot->dbus_screenshot = flashback_dbus_screenshot_skeleton_new ();
   screenshot->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,
@@ -219,8 +219,8 @@ flashback_screenshot_init (FlashbackScreenshot *screenshot)
                                          NULL, NULL, screenshot, NULL);
 }
 
-FlashbackScreenshot *
-flashback_screenshot_new (void)
+GfScreenshot *
+gf_screenshot_new (void)
 {
-  return g_object_new (FLASHBACK_TYPE_SCREENSHOT, NULL);
+  return g_object_new (GF_TYPE_SCREENSHOT, NULL);
 }

@@ -52,10 +52,10 @@ struct _FlashbackApplication
   FlashbackIdleMonitor      *idle_monitor;
   FlashbackPolkit           *polkit;
   FlashbackScreencast       *screencast;
-  FlashbackScreenshot       *screenshot;
   FlashbackShell            *shell;
   GfBluetoothApplet         *bluetooth;
   GfPowerApplet             *power;
+  GfScreenshot              *screenshot;
   GfSoundApplet             *sound;
   GfWorkarounds             *workarounds;
 };
@@ -143,10 +143,10 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (dialog, "end-session-dialog", flashback_end_session_dialog_new)
   SETTING_CHANGED (polkit, "polkit", flashback_polkit_new)
   SETTING_CHANGED (screencast, "screencast", flashback_screencast_new)
-  SETTING_CHANGED (screenshot, "screenshot", flashback_screenshot_new)
   SETTING_CHANGED (shell, "shell", flashback_shell_new)
   SETTING_CHANGED (bluetooth, "bluetooth-applet", gf_bluetooth_applet_new)
   SETTING_CHANGED (power, "power-applet", gf_power_applet_new)
+  SETTING_CHANGED (screenshot, "screenshot", gf_screenshot_new)
   SETTING_CHANGED (sound, "sound-applet", gf_sound_applet_new)
   SETTING_CHANGED (workarounds, "workarounds", gf_workarounds_new)
 
@@ -180,10 +180,10 @@ flashback_application_finalize (GObject *object)
   g_clear_object (&application->idle_monitor);
   g_clear_object (&application->polkit);
   g_clear_object (&application->screencast);
-  g_clear_object (&application->screenshot);
   g_clear_object (&application->shell);
   g_clear_object (&application->bluetooth);
   g_clear_object (&application->power);
+  g_clear_object (&application->screenshot);
   g_clear_object (&application->sound);
   g_clear_object (&application->workarounds);
 

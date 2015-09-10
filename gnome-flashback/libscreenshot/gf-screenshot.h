@@ -15,18 +15,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FLASHBACK_SCREENSHOT_H
-#define FLASHBACK_SCREENSHOT_H
+#ifndef GF_SCREENSHOT_H
+#define GF_SCREENSHOT_H
 
 #include <glib-object.h>
 
 G_BEGIN_DECLS
 
-#define FLASHBACK_TYPE_SCREENSHOT flashback_screenshot_get_type ()
-G_DECLARE_FINAL_TYPE (FlashbackScreenshot, flashback_screenshot,
-                      FLASHBACK, SCREENSHOT, GObject)
+#define GF_TYPE_SCREENSHOT gf_screenshot_get_type ()
+G_DECLARE_FINAL_TYPE (GfScreenshot, gf_screenshot, GF, SCREENSHOT, GObject)
 
-FlashbackScreenshot *flashback_screenshot_new (void);
+GfScreenshot *gf_screenshot_new (void);
 
 G_END_DECLS
 
