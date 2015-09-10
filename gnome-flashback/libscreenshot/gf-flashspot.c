@@ -28,7 +28,6 @@
 
 #define FLASH_DURATION 100
 #define FLASH_ANIMATION_RATE 200
-#define FLASH_FADE_FACTOR 0.95
 
 struct _GfFlashspot
 {
@@ -60,7 +59,9 @@ fade (gpointer user_data)
   flashspot = GF_FLASHSPOT (user_data);
   opacity = gtk_widget_get_opacity (flashspot->window);
 
-  gtk_widget_set_opacity (flashspot->window, opacity * FLASH_FADE_FACTOR);
+  opacity -= 0.02;
+
+  gtk_widget_set_opacity (flashspot->window, opacity);
 
   if (opacity <= 0.01)
     {
