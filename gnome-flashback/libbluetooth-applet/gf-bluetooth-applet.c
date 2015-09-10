@@ -50,7 +50,7 @@ turn_off_cb (GtkMenuItem *item,
   if (applet->rfkill == NULL)
     return;
 
-  gf_sd_rfkill_set_bluetooth_airplane_mode (applet->rfkill, FALSE);
+  gf_sd_rfkill_set_bluetooth_airplane_mode (applet->rfkill, TRUE);
 }
 
 static void
@@ -97,7 +97,7 @@ turn_on_cb (GtkMenuItem *item,
   if (applet->rfkill == NULL)
     return;
 
-  gf_sd_rfkill_set_bluetooth_airplane_mode (applet->rfkill, TRUE);
+  gf_sd_rfkill_set_bluetooth_airplane_mode (applet->rfkill, FALSE);
 }
 
 static void
