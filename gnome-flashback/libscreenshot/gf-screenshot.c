@@ -20,6 +20,7 @@
 #include <gtk/gtk.h>
 
 #include "gf-dbus-screenshot.h"
+#include "gf-flashspot.h"
 #include "gf-screenshot.h"
 #include "gf-select-area.h"
 
@@ -32,9 +33,45 @@ struct _GfScreenshot
 
   gint              bus_name;
   GfDBusScreenshot *dbus_screenshot;
+
+  GfFlashspot      *flashspot;
 };
 
 G_DEFINE_TYPE (GfScreenshot, gf_screenshot, G_TYPE_OBJECT)
+
+static void
+scale_area (gint *x,
+            gint *y,
+            gint *width,
+            gint *height)
+{
+}
+
+static void
+unscale_area (gint *x,
+              gint *y,
+              gint *width,
+              gint *height)
+{
+}
+
+static gboolean
+check_area (gint x,
+            gint y,
+            gint width,
+            gint height)
+{
+  GdkScreen *screen;
+  gint screen_width;
+  gint screen_height;
+
+  screen = gdk_screen_get_default ();
+  screen_width = gdk_screen_get_width (screen);
+  screen_height = gdk_screen_get_height (screen);
+
+  return x >= 0 && y >= 0 && width > 0 && height > 0 &&
+         x + width <= screen_width && y + height <= screen_height;
+}
 
 static gboolean
 handle_screenshot (GfDBusScreenshot      *dbus_screenshot,
@@ -78,6 +115,17 @@ handle_screenshot_area (GfDBusScreenshot      *dbus_screenshot,
                         const gchar           *filename,
                         gpointer               user_data)
 {
+  if (!check_area (x, y, width, height))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_IO_ERROR,
+                                             G_IO_ERROR_CANCELLED,
+                                             "Invalid params");
+
+      return TRUE;
+    }
+
+  scale_area (&x, &y, &width, &height);
+
   g_warning ("screenshot: screenshot-area");
   gf_dbus_screenshot_complete_screenshot_area (dbus_screenshot, invocation,
                                                FALSE, "");
@@ -94,7 +142,22 @@ handle_flash_area (GfDBusScreenshot      *dbus_screenshot,
                    gint                   height,
                    gpointer               user_data)
 {
-  g_warning ("screenshot: flash-area");
+  GfScreenshot *screenshot;
+
+  if (!check_area (x, y, width, height))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_IO_ERROR,
+                                             G_IO_ERROR_CANCELLED,
+                                             "Invalid params");
+
+      return TRUE;
+    }
+
+  screenshot = GF_SCREENSHOT (user_data);
+
+  scale_area (&x, &y, &width, &height);
+  gf_flashspot_fire (screenshot->flashspot, x, y, width, height);
+
   gf_dbus_screenshot_complete_flash_area (dbus_screenshot, invocation);
 
   return TRUE;
@@ -116,6 +179,7 @@ handle_select_area (GfDBusScreenshot      *dbus_screenshot,
 
   if (gf_select_area_select (select_area, &x, &y, &width, &height))
     {
+      unscale_area (&x, &y, &width, &height);
       gf_dbus_screenshot_complete_select_area (dbus_screenshot, invocation,
                                                x, y, width, height);
     }
@@ -193,6 +257,8 @@ gf_screenshot_dispose (GObject *object)
       screenshot->bus_name = 0;
     }
 
+  g_clear_object (&screenshot->flashspot);
+
   G_OBJECT_CLASS (gf_screenshot_parent_class)->dispose (object);
 }
 
@@ -216,6 +282,7 @@ gf_screenshot_init (GfScreenshot *screenshot)
                                          G_BUS_NAME_OWNER_FLAGS_REPLACE,
                                          (GBusAcquiredCallback) bus_acquired_handler,
                                          NULL, NULL, screenshot, NULL);
+  screenshot->flashspot = gf_flashspot_new ();
 }
 
 GfScreenshot *

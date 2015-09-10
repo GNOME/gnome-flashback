@@ -12,6 +12,8 @@ libscreenshot_la_CFLAGS = \
 	$(NULL)
 
 libscreenshot_la_SOURCES = \
+	gf-flashspot.c \
+	gf-flashspot.h \
 	gf-screenshot.c \
 	gf-screenshot.h \
 	gf-select-area.c \
