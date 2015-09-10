@@ -12,12 +12,11 @@ libscreenshot_la_CFLAGS = \
 	$(NULL)
 
 libscreenshot_la_SOURCES = \
-	flashback-dbus-screenshot.c \
-	flashback-dbus-screenshot.h \
 	gf-screenshot.c \
 	gf-screenshot.h \
 	gf-select-area.c \
 	gf-select-area.h \
+	$(BUILT_SOURCES) \
 	$(NULL)
 
 libscreenshot_la_LDFLAGS = \
@@ -29,19 +28,19 @@ libscreenshot_la_LIBADD = \
 	$(SCREENSHOT_LIBS) \
 	$(NULL)
 
-flashback-dbus-screenshot.h:
-flashback-dbus-screenshot.c: org.gnome.Shell.Screenshot.xml
+gf-dbus-screenshot.h:
+gf-dbus-screenshot.c: org.gnome.Shell.Screenshot.xml
 	$(AM_V_GEN) gdbus-codegen \
 		--interface-prefix org.gnome.Shell. \
-		--c-namespace Flashback \
-		--generate-c-code flashback-dbus-screenshot \
+		--c-namespace Gf \
+		--generate-c-code gf-dbus-screenshot \
 		--annotate "org.gnome.Shell.Screenshot" \
 		           "org.gtk.GDBus.C.Name" DBusScreenshot \
 		$(srcdir)/org.gnome.Shell.Screenshot.xml
 
 BUILT_SOURCES = \
-	flashback-dbus-screenshot.c \
-	flashback-dbus-screenshot.h \
+	gf-dbus-screenshot.c \
+	gf-dbus-screenshot.h \
 	$(NULL)
 
 EXTRA_DIST = \

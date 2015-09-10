@@ -19,7 +19,7 @@
 
 #include <gtk/gtk.h>
 
-#include "flashback-dbus-screenshot.h"
+#include "gf-dbus-screenshot.h"
 #include "gf-screenshot.h"
 #include "gf-select-area.h"
 
@@ -28,82 +28,82 @@
 
 struct _GfScreenshot
 {
-  GObject                  parent;
+  GObject           parent;
 
-  gint                     bus_name;
-  FlashbackDBusScreenshot *dbus_screenshot;
+  gint              bus_name;
+  GfDBusScreenshot *dbus_screenshot;
 };
 
 G_DEFINE_TYPE (GfScreenshot, gf_screenshot, G_TYPE_OBJECT)
 
 static gboolean
-handle_screenshot (FlashbackDBusScreenshot *dbus_screenshot,
-                   GDBusMethodInvocation   *invocation,
-                   gboolean                 include_cursor,
-                   gboolean                 flash,
-                   const gchar             *filename,
-                   gpointer                 user_data)
+handle_screenshot (GfDBusScreenshot      *dbus_screenshot,
+                   GDBusMethodInvocation *invocation,
+                   gboolean               include_cursor,
+                   gboolean               flash,
+                   const gchar           *filename,
+                   gpointer               user_data)
 {
   g_warning ("screenshot: screenshot");
-  flashback_dbus_screenshot_complete_screenshot (dbus_screenshot, invocation,
+  gf_dbus_screenshot_complete_screenshot (dbus_screenshot, invocation,
+                                          FALSE, "");
+
+  return TRUE;
+}
+
+static gboolean
+handle_screenshot_window (GfDBusScreenshot      *dbus_screenshot,
+                          GDBusMethodInvocation *invocation,
+                          gboolean               include_frame,
+                          gboolean               include_cursor,
+                          gboolean               flash,
+                          const gchar           *filename,
+                          gpointer               user_data)
+{
+  g_warning ("screenshot: screenshot-window");
+  gf_dbus_screenshot_complete_screenshot_window (dbus_screenshot, invocation,
                                                  FALSE, "");
 
   return TRUE;
 }
 
 static gboolean
-handle_screenshot_window (FlashbackDBusScreenshot *dbus_screenshot,
-                          GDBusMethodInvocation   *invocation,
-                          gboolean                 include_frame,
-                          gboolean                 include_cursor,
-                          gboolean                 flash,
-                          const gchar             *filename,
-                          gpointer                 user_data)
-{
-  g_warning ("screenshot: screenshot-window");
-  flashback_dbus_screenshot_complete_screenshot_window (dbus_screenshot, invocation,
-                                                        FALSE, "");
-
-  return TRUE;
-}
-
-static gboolean
-handle_screenshot_area (FlashbackDBusScreenshot *dbus_screenshot,
-                        GDBusMethodInvocation   *invocation,
-                        gint                     x,
-                        gint                     y,
-                        gint                     width,
-                        gint                     height,
-                        const gchar             *file_template,
-                        GVariant                *options,
-                        gpointer                 user_data)
+handle_screenshot_area (GfDBusScreenshot      *dbus_screenshot,
+                        GDBusMethodInvocation *invocation,
+                        gint                   x,
+                        gint                   y,
+                        gint                   width,
+                        gint                   height,
+                        const gchar           *file_template,
+                        GVariant              *options,
+                        gpointer               user_data)
 {
   g_warning ("screenshot: screenshot-area");
-  flashback_dbus_screenshot_complete_screenshot_area (dbus_screenshot, invocation,
-                                                      FALSE, "");
+  gf_dbus_screenshot_complete_screenshot_area (dbus_screenshot, invocation,
+                                               FALSE, "");
 
   return TRUE;
 }
 
 static gboolean
-handle_flash_area (FlashbackDBusScreenshot *dbus_screenshot,
-                   GDBusMethodInvocation   *invocation,
-                   gint                     x,
-                   gint                     y,
-                   gint                     width,
-                   gint                     height,
-                   gpointer                 user_data)
+handle_flash_area (GfDBusScreenshot      *dbus_screenshot,
+                   GDBusMethodInvocation *invocation,
+                   gint                   x,
+                   gint                   y,
+                   gint                   width,
+                   gint                   height,
+                   gpointer               user_data)
 {
   g_warning ("screenshot: flash-area");
-  flashback_dbus_screenshot_complete_flash_area (dbus_screenshot, invocation);
+  gf_dbus_screenshot_complete_flash_area (dbus_screenshot, invocation);
 
   return TRUE;
 }
 
 static gboolean
-handle_select_area (FlashbackDBusScreenshot *dbus_screenshot,
-                    GDBusMethodInvocation   *invocation,
-                    gpointer                 user_data)
+handle_select_area (GfDBusScreenshot      *dbus_screenshot,
+                    GDBusMethodInvocation *invocation,
+                    gpointer               user_data)
 {
   GfSelectArea *select_area;
   gint x;
@@ -116,9 +116,8 @@ handle_select_area (FlashbackDBusScreenshot *dbus_screenshot,
 
   if (gf_select_area_select (select_area, &x, &y, &width, &height))
     {
-      flashback_dbus_screenshot_complete_select_area (dbus_screenshot,
-                                                      invocation,
-                                                      x, y, width, height);
+      gf_dbus_screenshot_complete_select_area (dbus_screenshot, invocation,
+                                               x, y, width, height);
     }
   else
     {
@@ -138,7 +137,7 @@ bus_acquired_handler (GDBusConnection *connection,
                       gpointer         user_data)
 {
   GfScreenshot *screenshot;
-  FlashbackDBusScreenshot *dbus_screenshot;
+  GfDBusScreenshot *dbus_screenshot;
   GDBusInterfaceSkeleton *skeleton;
   GError *error;
   gboolean exported;
@@ -210,7 +209,7 @@ gf_screenshot_class_init (GfScreenshotClass *screenshot_class)
 static void
 gf_screenshot_init (GfScreenshot *screenshot)
 {
-  screenshot->dbus_screenshot = flashback_dbus_screenshot_skeleton_new ();
+  screenshot->dbus_screenshot = gf_dbus_screenshot_skeleton_new ();
   screenshot->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,
                                          SCREENSHOT_DBUS_NAME,
                                          G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
