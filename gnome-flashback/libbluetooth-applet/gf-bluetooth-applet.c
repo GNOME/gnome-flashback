@@ -157,7 +157,7 @@ popup_menu_cb (GtkStatusIcon *status_icon,
     {
       item = gtk_menu_item_new_with_label (_("Turn Off"));
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-      g_signal_connect (item, "activate", G_CALLBACK (turn_off_cb), NULL);
+      g_signal_connect (item, "activate", G_CALLBACK (turn_off_cb), applet);
 
       item = gtk_menu_item_new_with_label (_("Send Files"));
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
@@ -167,7 +167,7 @@ popup_menu_cb (GtkStatusIcon *status_icon,
     {
       item = gtk_menu_item_new_with_label (_("Turn On"));
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-      g_signal_connect (item, "activate", G_CALLBACK (turn_on_cb), NULL);
+      g_signal_connect (item, "activate", G_CALLBACK (turn_on_cb), applet);
     }
 
   item = gtk_menu_item_new_with_label (_("Bluetooth Settings"));
