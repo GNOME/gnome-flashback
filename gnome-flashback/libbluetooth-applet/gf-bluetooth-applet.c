@@ -207,7 +207,7 @@ get_default_adapter (GfBluetoothApplet *applet)
   return NULL;
 }
 
-static guint
+static gint
 get_n_connected_devices (GfBluetoothApplet *applet)
 {
   GtkTreeIter *adapter;
@@ -216,11 +216,11 @@ get_n_connected_devices (GfBluetoothApplet *applet)
   GtkTreeIter iter;
 
   adapter = get_default_adapter (applet);
-  devices = 0;
 
   if (adapter == NULL)
-    return 0;
+    return -1;
 
+  devices = 0;
   valid = gtk_tree_model_iter_children (applet->model, &iter, adapter);
 
   while (valid)
@@ -245,7 +245,7 @@ get_n_connected_devices (GfBluetoothApplet *applet)
 static void
 gf_bluetooth_applet_sync (GfBluetoothApplet *applet)
 {
-  guint devices;
+  gint devices;
   gboolean airplane_mode;
   const gchar *title;
   const gchar *icon_name;
@@ -253,7 +253,7 @@ gf_bluetooth_applet_sync (GfBluetoothApplet *applet)
 
   devices = get_n_connected_devices (applet);
 
-  if (devices == 0)
+  if (devices == -1)
     {
       G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       gtk_status_icon_set_visible (applet->status_icon, FALSE);
@@ -277,9 +277,16 @@ gf_bluetooth_applet_sync (GfBluetoothApplet *applet)
       icon_name = "bluetooth-disabled";
     }
 
-  tooltip_text = g_strdup_printf (ngettext ("%d Connected Device",
-			                                      "%d Connected Devices",
-			                                      devices), devices);
+  if (devices > 0)
+    {
+      tooltip_text = g_strdup_printf (ngettext ("%d Connected Device",
+                                                "%d Connected Devices",
+                                                devices), devices);
+    }
+  else
+    {
+      tooltip_text = g_strdup (_("Not Connected"));
+    }
 
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
