@@ -74,8 +74,8 @@ handle_screenshot_area (GfDBusScreenshot      *dbus_screenshot,
                         gint                   y,
                         gint                   width,
                         gint                   height,
-                        const gchar           *file_template,
-                        GVariant              *options,
+                        gboolean               flash,
+                        const gchar           *filename,
                         gpointer               user_data)
 {
   g_warning ("screenshot: screenshot-area");
