@@ -40,6 +40,15 @@ struct _GfFlashspot
   guint      fade_id;
 };
 
+enum
+{
+  SIGNAL_FINISHED,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
 G_DEFINE_TYPE (GfFlashspot, gf_flashspot, G_TYPE_OBJECT)
 
 static gboolean
@@ -56,6 +65,8 @@ fade (gpointer user_data)
   if (opacity <= 0.01)
     {
       gtk_widget_hide (flashspot->window);
+
+      g_signal_emit (flashspot, signals[SIGNAL_FINISHED], 0);
 
       flashspot->fade_id = 0;
       return G_SOURCE_REMOVE;
@@ -76,6 +87,8 @@ start_fade (gpointer user_data)
   if (!gdk_screen_is_composited (screen))
     {
       gtk_widget_hide (flashspot->window);
+
+      g_signal_emit (flashspot, signals[SIGNAL_FINISHED], 0);
 
       flashspot->flash_id = 0;
       return G_SOURCE_REMOVE;
@@ -127,6 +140,13 @@ gf_flashspot_class_init (GfFlashspotClass *flashspot_class)
   object_class = G_OBJECT_CLASS (flashspot_class);
 
   object_class->dispose = gf_flashspot_dispose;
+
+  signals[SIGNAL_FINISHED] =
+    g_signal_new ("finished",
+                  G_OBJECT_CLASS_TYPE (flashspot_class),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
 }
 
 static void
