@@ -15,24 +15,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FLASHBACK_SELECT_AREA_H
-#define FLASHBACK_SELECT_AREA_H
+#ifndef GF_SELECT_AREA_H
+#define GF_SELECT_AREA_H
 
 #include <glib-object.h>
 
 G_BEGIN_DECLS
 
-#define FLASHBACK_TYPE_SELECT_AREA flashback_select_area_get_type ()
-G_DECLARE_FINAL_TYPE (FlashbackSelectArea, flashback_select_area,
-                      FLASHBACK, SELECT_AREA, GObject)
+#define GF_TYPE_SELECT_AREA gf_select_area_get_type ()
+G_DECLARE_FINAL_TYPE (GfSelectArea, gf_select_area, GF, SELECT_AREA, GObject)
 
-FlashbackSelectArea *flashback_select_area_new    (void);
+GfSelectArea *gf_select_area_new    (void);
 
-gboolean             flashback_select_area_select (FlashbackSelectArea *select_area,
-                                                   gint                *x,
-                                                   gint                *y,
-                                                   gint                *width,
-                                                   gint                *height);
+gboolean      gf_select_area_select (GfSelectArea *select_area,
+                                     gint         *x,
+                                     gint         *y,
+                                     gint         *width,
+                                     gint         *height);
 
 G_END_DECLS
 

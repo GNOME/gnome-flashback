@@ -21,7 +21,7 @@
 
 #include "flashback-dbus-screenshot.h"
 #include "gf-screenshot.h"
-#include "flashback-select-area.h"
+#include "gf-select-area.h"
 
 #define SCREENSHOT_DBUS_NAME "org.gnome.Shell.Screenshot"
 #define SCREENSHOT_DBUS_PATH "/org/gnome/Shell/Screenshot"
@@ -105,16 +105,16 @@ handle_select_area (FlashbackDBusScreenshot *dbus_screenshot,
                     GDBusMethodInvocation   *invocation,
                     gpointer                 user_data)
 {
-  FlashbackSelectArea *select_area;
+  GfSelectArea *select_area;
   gint x;
   gint y;
   gint width;
   gint height;
 
-  select_area = flashback_select_area_new ();
+  select_area = gf_select_area_new ();
   x = y = width = height = 0;
 
-  if (flashback_select_area_select (select_area, &x, &y, &width, &height))
+  if (gf_select_area_select (select_area, &x, &y, &width, &height))
     {
       flashback_dbus_screenshot_complete_select_area (dbus_screenshot,
                                                       invocation,

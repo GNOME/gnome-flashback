@@ -23,9 +23,9 @@
 
 #include <gtk/gtk.h>
 
-#include "flashback-select-area.h"
+#include "gf-select-area.h"
 
-struct _FlashbackSelectArea
+struct _GfSelectArea
 {
   GObject    parent;
 
@@ -41,19 +41,19 @@ struct _FlashbackSelectArea
   gint       height;
 };
 
-G_DEFINE_TYPE (FlashbackSelectArea, flashback_select_area, G_TYPE_OBJECT)
+G_DEFINE_TYPE (GfSelectArea, gf_select_area, G_TYPE_OBJECT)
 
 static gboolean
 draw_cb (GtkWidget *widget,
          cairo_t   *cr,
          gpointer   user_data)
 {
-  FlashbackSelectArea *select_area;
+  GfSelectArea *select_area;
   GtkStyleContext *context;
   gint width;
   gint height;
 
-  select_area = FLASHBACK_SELECT_AREA (user_data);
+  select_area = GF_SELECT_AREA (user_data);
 
   if (select_area->composited == FALSE)
     return TRUE;
@@ -93,9 +93,9 @@ button_press_event_cb (GtkWidget      *widget,
                        GdkEventButton *event,
                        gpointer        user_data)
 {
-  FlashbackSelectArea *select_area;
+  GfSelectArea *select_area;
 
-  select_area = FLASHBACK_SELECT_AREA (user_data);
+  select_area = GF_SELECT_AREA (user_data);
 
   if (select_area->selecting)
     return TRUE;
@@ -112,9 +112,9 @@ button_release_event_cb (GtkWidget      *widget,
                          GdkEventButton *event,
                          gpointer        user_data)
 {
-  FlashbackSelectArea *select_area;
+  GfSelectArea *select_area;
 
-  select_area = FLASHBACK_SELECT_AREA (user_data);
+  select_area = GF_SELECT_AREA (user_data);
 
   select_area->width = ABS (select_area->x - event->x_root);
   select_area->height = ABS (select_area->y - event->y_root);
@@ -134,14 +134,14 @@ motion_notify_event_cb (GtkWidget      *widget,
                         GdkEventMotion *event,
                         gpointer        user_data)
 {
-  FlashbackSelectArea *select_area;
+  GfSelectArea *select_area;
   gint x;
   gint y;
   gint width;
   gint height;
   GtkWindow *window;
 
-  select_area = FLASHBACK_SELECT_AREA (user_data);
+  select_area = GF_SELECT_AREA (user_data);
 
   if (select_area->selecting == FALSE)
     return TRUE;
@@ -202,7 +202,7 @@ motion_notify_event_cb (GtkWidget      *widget,
 }
 
 static void
-setup_window (FlashbackSelectArea *select_area)
+setup_window (GfSelectArea *select_area)
 {
   GdkScreen *screen;
   GdkVisual *visual;
@@ -236,11 +236,11 @@ setup_window (FlashbackSelectArea *select_area)
 }
 
 static void
-flashback_select_area_dispose (GObject *object)
+gf_select_area_dispose (GObject *object)
 {
-  FlashbackSelectArea *select_area;
+  GfSelectArea *select_area;
 
-  select_area = FLASHBACK_SELECT_AREA (object);
+  select_area = GF_SELECT_AREA (object);
 
   if (select_area->window != NULL)
     {
@@ -248,37 +248,37 @@ flashback_select_area_dispose (GObject *object)
       select_area->window = NULL;
     }
 
-  G_OBJECT_CLASS (flashback_select_area_parent_class)->dispose (object);
+  G_OBJECT_CLASS (gf_select_area_parent_class)->dispose (object);
 }
 
 static void
-flashback_select_area_class_init (FlashbackSelectAreaClass *select_area_class)
+gf_select_area_class_init (GfSelectAreaClass *select_area_class)
 {
   GObjectClass *object_class;
 
   object_class = G_OBJECT_CLASS (select_area_class);
 
-  object_class->dispose = flashback_select_area_dispose;
+  object_class->dispose = gf_select_area_dispose;
 }
 
 static void
-flashback_select_area_init (FlashbackSelectArea *select_area)
+gf_select_area_init (GfSelectArea *select_area)
 {
   select_area->window = gtk_window_new (GTK_WINDOW_POPUP);
 }
 
-FlashbackSelectArea *
-flashback_select_area_new (void)
+GfSelectArea *
+gf_select_area_new (void)
 {
-  return g_object_new (FLASHBACK_TYPE_SELECT_AREA, NULL);
+  return g_object_new (GF_TYPE_SELECT_AREA, NULL);
 }
 
 gboolean
-flashback_select_area_select (FlashbackSelectArea *select_area,
-                              gint                *x,
-                              gint                *y,
-                              gint                *width,
-                              gint                *height)
+gf_select_area_select (GfSelectArea *select_area,
+                       gint         *x,
+                       gint         *y,
+                       gint         *width,
+                       gint         *height)
 {
   GdkDisplay *display;
   GdkCursor *cursor;
