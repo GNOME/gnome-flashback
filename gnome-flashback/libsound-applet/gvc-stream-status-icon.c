@@ -568,6 +568,11 @@ gvc_stream_status_icon_set_mixer_stream (GvcStreamStatusIcon *icon,
                                   "notify::is-muted",
                                   G_CALLBACK (on_stream_is_muted_notify),
                                   icon);
+
+                gvc_channel_bar_set_base_volume (GVC_CHANNEL_BAR (icon->priv->bar),
+                                                 gvc_mixer_stream_get_base_volume (stream));
+                gvc_channel_bar_set_is_amplified (GVC_CHANNEL_BAR (icon->priv->bar),
+                                                  gvc_mixer_stream_get_can_decibel (stream));
         }
 
         update_icon (icon);
