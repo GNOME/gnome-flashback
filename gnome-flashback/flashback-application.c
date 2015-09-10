@@ -30,7 +30,7 @@
 #include "libpolkit/flashback-polkit.h"
 #include "libpower-applet/gf-power-applet.h"
 #include "libscreencast/flashback-screencast.h"
-#include "libscreenshot/flashback-screenshot.h"
+#include "libscreenshot/gf-screenshot.h"
 #include "libshell/flashback-shell.h"
 #include "libsound-applet/gf-sound-applet.h"
 #include "libworkarounds/gf-workarounds.h"

@@ -20,7 +20,7 @@
 #include <gtk/gtk.h>
 
 #include "flashback-dbus-screenshot.h"
-#include "flashback-screenshot.h"
+#include "gf-screenshot.h"
 #include "flashback-select-area.h"
 
 #define SCREENSHOT_DBUS_NAME "org.gnome.Shell.Screenshot"
