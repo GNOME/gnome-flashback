@@ -206,7 +206,7 @@ get_tooltip_text (GfPowerApplet *applet)
   if (state == UP_DEVICE_STATE_CHARGING)
     {
       /* Translators: this is <hours>:<minutes> Until Full (<percentage>) */
-      return g_strdup_printf (_("%.0f:%02.0f Remaining (%.0f%%)"),
+      return g_strdup_printf (_("%.0f:%02.0f Until Full (%.0f%%)"),
                               hours, minutes, percentage);
     }
 
