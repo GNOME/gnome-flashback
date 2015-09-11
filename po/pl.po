@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-09 19:14+0200\n"
-"PO-Revision-Date: 2015-09-09 19:15+0200\n"
+"POT-Creation-Date: 2015-09-11 22:49+0200\n"
+"PO-Revision-Date: 2015-09-11 22:50+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -409,6 +409,47 @@ msgstr "_Wysuń"
 msgid "_Unmount"
 msgstr "Od_montuj"
 
+#: ../gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:158
+msgid "Turn Off"
+msgstr "Wyłącz"
+
+#: ../gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:162
+msgid "Send Files"
+msgstr "Wyślij pliki"
+
+#: ../gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:168
+msgid "Turn On"
+msgstr "Włącz"
+
+#: ../gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:173
+msgid "Bluetooth Settings"
+msgstr "Ustawienia Bluetooth"
+
+#: ../gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:271
+msgid "Bluetooth active"
+msgstr "Bluetooth jest aktywne"
+
+#: ../gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:276
+msgid "Bluetooth disabled"
+msgstr "Bluetooth jest wyłączone"
+
+#: ../gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:282
+#, c-format
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "%d połączone urządzenie"
+msgstr[1] "%d połączone urządzenia"
+msgstr[2] "%d połączonych urządzeń"
+
+#: ../gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
+msgid "Not Connected"
+msgstr "Nie połączono"
+
+#: ../gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:414
+#: ../gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:415
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
 #: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:1
 msgid "Confirm"
 msgstr "Potwierdzenie"
@@ -647,6 +688,51 @@ msgstr "<small><b>_Szczegóły</b></small>"
 #: ../gnome-flashback/libpolkit/flashback-polkit-dialog.ui.h:7
 msgid "_Authenticate"
 msgstr "_Uwierzytelnij"
+
+#: ../gnome-flashback/libpower-applet/gf-power-applet.c:133
+msgid "Power Settings"
+msgstr "Ustawienia zasilania"
+
+#: ../gnome-flashback/libpower-applet/gf-power-applet.c:180
+msgid "Fully Charged"
+msgstr "Naładowane"
+
+#: ../gnome-flashback/libpower-applet/gf-power-applet.c:182
+msgid "Empty"
+msgstr "Puste"
+
+#: ../gnome-flashback/libpower-applet/gf-power-applet.c:188
+#: ../gnome-flashback/libpower-applet/gf-power-applet.c:193
+msgid "Estimating..."
+msgstr "Obliczanie…"
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: ../gnome-flashback/libpower-applet/gf-power-applet.c:202
+#, c-format
+msgid "%.0f:%02.0f Remaining (%.0f%%)"
+msgstr "Pozostało: %.0f∶%02.0f (%.0f%%)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: ../gnome-flashback/libpower-applet/gf-power-applet.c:209
+#, c-format
+msgid "%.0f:%02.0f Until Full (%.0f%%)"
+msgstr "Do naładowania: %.0f∶%02.0f (%.0f%%)"
+
+#: ../gnome-flashback/libpower-applet/gf-power-applet.c:224
+msgid "UPS"
+msgstr "UPS"
+
+#: ../gnome-flashback/libpower-applet/gf-power-applet.c:226
+msgid "Battery"
+msgstr "Akumulator"
+
+#: ../gnome-flashback/libpower-applet/gf-power-applet.c:327
+msgid "Power status"
+msgstr "Stan zasilania"
+
+#: ../gnome-flashback/libpower-applet/gf-power-applet.c:328
+msgid "Power"
+msgstr "Zasilanie"
 
 #: ../gnome-flashback/libsound-applet/gf-sound-applet.c:283
 msgid "Output"
