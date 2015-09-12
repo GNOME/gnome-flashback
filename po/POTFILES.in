@@ -1,6 +1,5 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-[encoding: UTF-8]
 data/gnome-flashback.desktop.in
 data/gnome-flashback-compiz.desktop.in.in
 data/gnome-flashback-compiz.session.in
@@ -9,19 +8,19 @@ data/gnome-flashback-metacity.desktop.in.in
 data/gnome-flashback-metacity.session.in
 data/gnome-flashback-nm-applet.desktop.in
 data/gnome-flashback-screensaver.desktop.in
-data/org.gnome.gnome-flashback.gschema.xml.in.in
+data/org.gnome.gnome-flashback.gschema.xml
 gnome-flashback/gf-main.c
 gnome-flashback/libautomount-manager/gsd-automount-manager.c
 gnome-flashback/libautomount-manager/gsd-autorun.c
 gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c
-[type: gettext/glade]gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui
+gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui
 gnome-flashback/libdisplay-config/flashback-display-config.c
 gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c
-[type: gettext/glade]gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui
+gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui
 gnome-flashback/libpolkit/flashback-authenticator.c
 gnome-flashback/libpolkit/flashback-listener.c
 gnome-flashback/libpolkit/flashback-polkit-dialog.c
-[type: gettext/glade]gnome-flashback/libpolkit/flashback-polkit-dialog.ui
+gnome-flashback/libpolkit/flashback-polkit-dialog.ui
 gnome-flashback/libpower-applet/gf-power-applet.c
 gnome-flashback/libsound-applet/gf-sound-applet.c
 gnome-flashback/libsound-applet/gvc-channel-bar.c

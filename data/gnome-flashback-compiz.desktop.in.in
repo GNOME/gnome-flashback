@@ -1,6 +1,6 @@
 [Desktop Entry]
-_Name=GNOME Flashback (Compiz)
-_Comment=This session logs you into GNOME Flashback with Compiz
+Name=GNOME Flashback (Compiz)
+Comment=This session logs you into GNOME Flashback with Compiz
 Exec=@libexecdir@/gnome-flashback-compiz
 TryExec=compiz
 Icon=

@@ -1,0 +1,111 @@
+<schemalist gettext-domain="gnome-flashback">
+  <schema id="org.gnome.gnome-flashback" path="/org/gnome/gnome-flashback/">
+
+    <key name="automount-manager" type="b">
+      <default>true</default>
+      <summary>Automount manager</summary>
+      <description>If set to true, then GNOME Flashback application will be used to automount removable media.</description>
+    </key>
+
+    <key name="bluetooth-applet" type="b">
+      <default>true</default>
+      <summary>Bluetooth applet</summary>
+      <description>If set to true, then GNOME Flashback application will be used to show a Bluetooth applet.</description>
+    </key>
+
+    <key name="desktop-background" type="b">
+      <default>true</default>
+      <summary>Desktop background</summary>
+      <description>If set to true, then GNOME Flashback application will be used to draw the desktop background.</description>
+    </key>
+
+    <key name="display-config" type="b">
+      <default>true</default>
+      <summary>Display configuration</summary>
+      <description>If set to true, then GNOME Flashback application will be used to provide the display configuration.</description>
+    </key>
+
+    <key name="end-session-dialog" type="b">
+      <default>true</default>
+      <summary>End session dialog</summary>
+      <description>If set to true, then GNOME Flashback application will be used to show the end session dialog.</description>
+    </key>
+
+    <key name="idle-monitor" type="b">
+      <default>true</default>
+      <summary>Idle monitor</summary>
+      <description>If set to true, then GNOME Flashback application will be used for user activity monitoring.</description>
+    </key>
+
+    <key name="polkit" type="b">
+      <default>true</default>
+      <summary>Authentication agent for polkit</summary>
+      <description>This is the same authentication agent that was provided by PolicyKit-gnome.</description>
+    </key>
+
+    <key name="power-applet" type="b">
+      <default>true</default>
+      <summary>Power applet</summary>
+      <description>If set to true, then GNOME Flashback application will be used to show a power applet.</description>
+    </key>
+
+    <key name="screencast" type="b">
+      <default>true</default>
+      <summary>Screencasts</summary>
+      <description>If set to true, then GNOME Flashback application will be used to record the screen.</description>
+    </key>
+
+    <key name="screenshot" type="b">
+      <default>true</default>
+      <summary>Screenshots</summary>
+      <description>If set to true, then GNOME Flashback application will be used to take screenshots.</description>
+    </key>
+
+    <key name="shell" type="b">
+      <default>true</default>
+      <summary>Shell</summary>
+      <description>If set to true, then GNOME Flashback application will be used as a shell.</description>
+    </key>
+
+    <key name="sound-applet" type="b">
+      <default>true</default>
+      <summary>Sound applet</summary>
+      <description>If set to true, then GNOME Flashback application will be used to show a sound applet. This is the same sound applet that used to be a part of GNOME Control Center.</description>
+    </key>
+
+    <key name="workarounds" type="b">
+      <default>true</default>
+      <summary>Workarounds</summary>
+      <description>If set to true, then GNOME Flashback application will use workarounds to fix bugs.</description>
+    </key>
+
+    <child name="desktop-background" schema="org.gnome.gnome-flashback.desktop-background"/>
+    <child name="workarounds" schema="org.gnome.gnome-flashback.workarounds"/>
+  </schema>
+
+  <schema id="org.gnome.gnome-flashback.desktop-background" path="/org/gnome/gnome-flashback/desktop-background/">
+
+    <key name="fade" type="b">
+      <default>true</default>
+      <summary>Fade the background on change</summary>
+      <description>If set to true, then fade effect will be used to change the desktop background.</description>
+    </key>
+
+  </schema>
+
+  <schema id="org.gnome.gnome-flashback.workarounds" path="/org/gnome/gnome-flashback/workarounds/">
+
+    <key name="fix-app-menu" type="b">
+      <default>true</default>
+      <summary>Fix missing app menu button</summary>
+      <description>If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to FALSE. Disable if you want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/ShellShowsAppMenu' property.</description>
+    </key>
+
+    <key name="fix-button-layout" type="s">
+      <default>'menu:minimize,maximize,close'</default>
+      <summary>Fix wrong button layout</summary>
+      <description>If set to non-empty string, then gnome-flashback will force Gtk/DecorationLayout to value set by this setting. Set to empty string if you want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/DecorationLayout' property.</description>
+    </key>
+
+  </schema>
+</schemalist>

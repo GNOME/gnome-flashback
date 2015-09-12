@@ -1,6 +1,6 @@
 [Desktop Entry]
-_Name=Network (GNOME Flashback)
-_Comment=Manage your network connections
+Name=Network (GNOME Flashback)
+Comment=Manage your network connections
 Icon=nm-device-wireless
 Exec=nm-applet
 TryExec=nm-applet

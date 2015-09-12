@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-_Name=GNOME Flashback Initialization
+Name=GNOME Flashback Initialization
 Exec=gnome-flashback --initialize
 OnlyShowIn=GNOME-Flashback;
 NoDisplay=true
