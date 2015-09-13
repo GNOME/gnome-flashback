@@ -36,9 +36,9 @@ struct _GfEndSessionDialog
 G_DEFINE_TYPE (GfEndSessionDialog, gf_end_session_dialog, G_TYPE_OBJECT)
 
 static void
-inhibit_dialog_response (FlashbackInhibitDialog *dialog,
-                         guint                   response_id,
-                         gpointer                user_data)
+inhibit_dialog_response (GfInhibitDialog *dialog,
+                         guint            response_id,
+                         gpointer         user_data)
 {
   DBusEndSessionDialog *object;
   gint action;
@@ -48,21 +48,21 @@ inhibit_dialog_response (FlashbackInhibitDialog *dialog,
 
   switch (response_id)
     {
-      case FLASHBACK_RESPONSE_CANCEL:
+      case GF_RESPONSE_CANCEL:
         break;
 
-      case FLASHBACK_RESPONSE_ACCEPT:
-        if (action == FLASHBACK_LOGOUT_ACTION_LOGOUT)
+      case GF_RESPONSE_ACCEPT:
+        if (action == GF_LOGOUT_ACTION_LOGOUT)
           dbus_end_session_dialog_emit_confirmed_logout (object);
-        else if (action == FLASHBACK_LOGOUT_ACTION_SHUTDOWN)
+        else if (action == GF_LOGOUT_ACTION_SHUTDOWN)
           dbus_end_session_dialog_emit_confirmed_shutdown (object);
-        else if (action == FLASHBACK_LOGOUT_ACTION_REBOOT)
+        else if (action == GF_LOGOUT_ACTION_REBOOT)
           dbus_end_session_dialog_emit_confirmed_reboot (object);
-        else if (action == FLASHBACK_LOGOUT_ACTION_HIBERNATE)
+        else if (action == GF_LOGOUT_ACTION_HIBERNATE)
           dbus_end_session_dialog_emit_confirmed_hibernate (object);
-        else if (action == FLASHBACK_LOGOUT_ACTION_SUSPEND)
+        else if (action == GF_LOGOUT_ACTION_SUSPEND)
           dbus_end_session_dialog_emit_confirmed_suspend (object);
-        else if (action == FLASHBACK_LOGOUT_ACTION_HYBRID_SLEEP)
+        else if (action == GF_LOGOUT_ACTION_HYBRID_SLEEP)
           dbus_end_session_dialog_emit_confirmed_hybrid_sleep (object);
         else
           g_assert_not_reached ();
@@ -73,12 +73,12 @@ inhibit_dialog_response (FlashbackInhibitDialog *dialog,
         break;
     }
 
-  flashback_inhibit_dialog_close (dialog);
+  gf_inhibit_dialog_close (dialog);
 }
 
 static void
-inhibit_dialog_close (FlashbackInhibitDialog *dialog,
-                      gpointer                user_data)
+inhibit_dialog_close (GfInhibitDialog *dialog,
+                      gpointer         user_data)
 {
   DBusEndSessionDialog *object;
 
@@ -109,29 +109,28 @@ handle_open (DBusEndSessionDialog  *object,
              gpointer               user_data)
 {
   GfEndSessionDialog *dialog;
-  FlashbackInhibitDialog *inhibit_dialog;
+  GfInhibitDialog *inhibit_dialog;
 
   dialog = GF_END_SESSION_DIALOG (user_data);
 
   if (dialog->dialog != NULL)
     {
-      inhibit_dialog = FLASHBACK_INHIBIT_DIALOG (dialog->dialog);
+      inhibit_dialog = GF_INHIBIT_DIALOG (dialog->dialog);
 
       g_object_set (dialog->dialog,
                     "inhibitor-paths", inhibitor_object_paths,
                     NULL);
 
-      flashback_inhibit_dialog_present (inhibit_dialog, timestamp);
-
+      gf_inhibit_dialog_present (inhibit_dialog, timestamp);
       dbus_end_session_dialog_complete_open (object, invocation);
 
       return TRUE;
     }
 
-  dialog->dialog = flashback_inhibit_dialog_new (type, seconds_to_stay_open,
-                                                 inhibitor_object_paths);
+  dialog->dialog = gf_inhibit_dialog_new (type, seconds_to_stay_open,
+                                          inhibitor_object_paths);
 
-  inhibit_dialog = FLASHBACK_INHIBIT_DIALOG (dialog->dialog);
+  inhibit_dialog = GF_INHIBIT_DIALOG (dialog->dialog);
 
   g_signal_connect (dialog->dialog, "response",
                     G_CALLBACK (inhibit_dialog_response), object);
@@ -143,7 +142,7 @@ handle_open (DBusEndSessionDialog  *object,
   g_signal_connect (object, "closed",
                     G_CALLBACK (closed), dialog);
 
-  flashback_inhibit_dialog_present (inhibit_dialog, timestamp);
+  gf_inhibit_dialog_present (inhibit_dialog, timestamp);
   dbus_end_session_dialog_complete_open (object, invocation);
 
   return TRUE;
