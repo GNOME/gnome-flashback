@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Alberts Muktupāvels
+ * Copyright (C) 2014 - 2015 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,32 +15,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DESKTOP_BACKGROUND_H
-#define DESKTOP_BACKGROUND_H
+#ifndef GF_DESKTOP_BACKGROUND_H
+#define GF_DESKTOP_BACKGROUND_H
 
 #include <glib-object.h>
 
 G_BEGIN_DECLS
 
-#define DESKTOP_BACKGROUND_TYPE     (desktop_background_get_type ())
-#define DESKTOP_BACKGROUND(o)       (G_TYPE_CHECK_INSTANCE_CAST ((o), DESKTOP_BACKGROUND_TYPE, DesktopBackground))
-#define DESKTOP_BACKGROUND_CLASS(c) (G_TYPE_CHECK_CLASS_CAST ((c), DESKTOP_BACKGROUND_TYPE, DesktopBackgroundClass))
+#define GF_TYPE_DESKTOP_BACKGROUND gf_desktop_background_get_type ()
+G_DECLARE_FINAL_TYPE (GfDesktopBackground, gf_desktop_background,
+                      GF, DESKTOP_BACKGROUND, GObject)
 
-typedef struct _DesktopBackground        DesktopBackground;
-typedef struct _DesktopBackgroundClass   DesktopBackgroundClass;
-typedef struct _DesktopBackgroundPrivate DesktopBackgroundPrivate;
-
-struct _DesktopBackground {
-	GObject                   parent;
-	DesktopBackgroundPrivate *priv;
-};
-
-struct _DesktopBackgroundClass {
-    GObjectClass parent_class;
-};
-
-GType              desktop_background_get_type (void);
-DesktopBackground *desktop_background_new      (void);
+GfDesktopBackground *gf_desktop_background_new (void);
 
 G_END_DECLS
 
