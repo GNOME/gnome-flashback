@@ -42,6 +42,17 @@ xsession_DATA        = $(xsession_in_files:.desktop.in=.desktop)
 %.desktop: %.desktop.in
 	$(AM_V_GEN) $(MSGFMT) --desktop --template $< -o $@-t -d $(top_srcdir)/po && mv $@-t $@
 
+directorydir = $(datadir)/desktop-directories
+
+directory_in_files =					\
+	X-GNOME-Flashback-Settings.directory.desktop.in		\
+	X-GNOME-Flashback-Settings-System.directory.desktop.in
+
+directory_DATA = $(directory_in_files:.directory.desktop.in=.directory)
+
+%.directory: %.directory.desktop.in
+	$(AM_V_GEN) $(MSGFMT) --desktop --template $< -o $@-t -d $(top_srcdir)/po && mv $@-t $@
+
 gsettings_SCHEMAS = org.gnome.gnome-flashback.gschema.xml
 @GSETTINGS_RULES@
 
@@ -52,6 +63,7 @@ EXTRA_DIST = \
 	$(session_in_files) \
 	$(xsession_in_in_files) \
 	$(gsettings_SCHEMAS) \
+	$(directory_in_files) \
 	$(NULL)
 
 CLEANFILES = \
@@ -63,6 +75,7 @@ CLEANFILES = \
 	$(xsession_in_files) \
 	$(xsession_DATA) \
 	*.gschema.valid \
+	$(directory_DATA) \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk

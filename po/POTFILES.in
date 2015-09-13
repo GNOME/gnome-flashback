@@ -9,6 +9,8 @@ data/gnome-flashback-metacity.session.in
 data/gnome-flashback-nm-applet.desktop.in
 data/gnome-flashback-screensaver.desktop.in
 data/org.gnome.gnome-flashback.gschema.xml
+data/X-GNOME-Flashback-Settings.directory.desktop.in
+data/X-GNOME-Flashback-Settings-System.directory.desktop.in
 gnome-flashback/gf-main.c
 gnome-flashback/libautomount-manager/gsd-automount-manager.c
 gnome-flashback/libautomount-manager/gsd-autorun.c

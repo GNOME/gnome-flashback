@@ -152,7 +152,7 @@
     </Include>
     <Menu>
       <Name>Preferences</Name>
-      <Directory>Settings.directory</Directory>
+      <Directory>X-GNOME-Flashback-Settings.directory</Directory>
       <Include>
         <And>
           <Category>Settings</Category>
@@ -209,7 +209,7 @@
     </Menu>
     <Menu>
       <Name>Administration</Name>
-      <Directory>Settings-System.directory</Directory>
+      <Directory>X-GNOME-Flashback-Settings-System.directory</Directory>
       <Include>
         <And>
           <Category>Settings</Category>
