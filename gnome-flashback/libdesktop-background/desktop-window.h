@@ -28,11 +28,9 @@ G_BEGIN_DECLS
 
 typedef struct _DesktopWindow        DesktopWindow;
 typedef struct _DesktopWindowClass   DesktopWindowClass;
-typedef struct _DesktopWindowPrivate DesktopWindowPrivate;
 
 struct _DesktopWindow {
-	GtkWindow             parent;
-	DesktopWindowPrivate *priv;
+	GtkWindow parent;
 };
 
 struct _DesktopWindowClass {

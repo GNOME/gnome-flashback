@@ -19,12 +19,7 @@
 #include <X11/Xatom.h>
 #include "desktop-window.h"
 
-struct _DesktopWindowPrivate {
-	gulong size_changed_id;
-	gulong monitors_changed_id;
-};
-
-G_DEFINE_TYPE_WITH_PRIVATE (DesktopWindow, desktop_window, GTK_TYPE_WINDOW);
+G_DEFINE_TYPE (DesktopWindow, desktop_window, GTK_TYPE_WINDOW)
 
 static void
 desktop_window_screen_changed (GdkScreen *screen,
@@ -57,7 +52,6 @@ desktop_window_init (DesktopWindow *window)
 {
 	GdkScreen *screen;
 
-	window->priv = desktop_window_get_instance_private (window);
 	screen = gdk_screen_get_default ();
 
 	g_signal_connect_object (screen, "monitors-changed",
