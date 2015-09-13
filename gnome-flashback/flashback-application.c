@@ -47,13 +47,13 @@ struct _FlashbackApplication
 
   GsdAutomountManager       *automount;
   FlashbackDisplayConfig    *config;
-  FlashbackEndSessionDialog *dialog;
   FlashbackIdleMonitor      *idle_monitor;
   FlashbackPolkit           *polkit;
   FlashbackScreencast       *screencast;
   FlashbackShell            *shell;
   GfBluetoothApplet         *bluetooth;
   GfDesktopBackground       *background;
+  GfEndSessionDialog        *dialog;
   GfPowerApplet             *power;
   GfScreenshot              *screenshot;
   GfSoundApplet             *sound;
@@ -139,12 +139,12 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (automount, "automount-manager", gsd_automount_manager_new)
   SETTING_CHANGED (config, "display-config", flashback_display_config_new)
   SETTING_CHANGED (idle_monitor, "idle-monitor", flashback_idle_monitor_new)
-  SETTING_CHANGED (dialog, "end-session-dialog", flashback_end_session_dialog_new)
   SETTING_CHANGED (polkit, "polkit", flashback_polkit_new)
   SETTING_CHANGED (screencast, "screencast", flashback_screencast_new)
   SETTING_CHANGED (shell, "shell", flashback_shell_new)
   SETTING_CHANGED (bluetooth, "bluetooth-applet", gf_bluetooth_applet_new)
   SETTING_CHANGED (background, "desktop-background", gf_desktop_background_new)
+  SETTING_CHANGED (dialog, "end-session-dialog", gf_end_session_dialog_new)
   SETTING_CHANGED (power, "power-applet", gf_power_applet_new)
   SETTING_CHANGED (screenshot, "screenshot", gf_screenshot_new)
   SETTING_CHANGED (sound, "sound-applet", gf_sound_applet_new)
@@ -175,13 +175,13 @@ flashback_application_finalize (GObject *object)
 
   g_clear_object (&application->automount);
   g_clear_object (&application->config);
-  g_clear_object (&application->dialog);
   g_clear_object (&application->idle_monitor);
   g_clear_object (&application->polkit);
   g_clear_object (&application->screencast);
   g_clear_object (&application->shell);
   g_clear_object (&application->bluetooth);
   g_clear_object (&application->background);
+  g_clear_object (&application->dialog);
   g_clear_object (&application->power);
   g_clear_object (&application->screenshot);
   g_clear_object (&application->sound);

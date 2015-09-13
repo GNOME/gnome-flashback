@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Alberts Muktupāvels
+ * Copyright (C) 2014 - 2015 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,229 +15,226 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtk/gtk.h>
 #include "config.h"
-#include "dbus-end-session-dialog.h"
-#include "gf-end-session-dialog.h"
-#include "flashback-inhibit-dialog.h"
 
-struct _FlashbackEndSessionDialogPrivate {
-	gint                    bus_name;
-	GDBusInterfaceSkeleton *iface;
-	GtkWidget              *dialog;
+#include <gtk/gtk.h>
+
+#include "dbus-end-session-dialog.h"
+#include "flashback-inhibit-dialog.h"
+#include "gf-end-session-dialog.h"
+
+struct _GfEndSessionDialog
+{
+  GObject                 parent;
+
+  gint                    bus_name;
+  GDBusInterfaceSkeleton *iface;
+
+  GtkWidget              *dialog;
 };
 
-G_DEFINE_TYPE (FlashbackEndSessionDialog, flashback_end_session_dialog, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GfEndSessionDialog, gf_end_session_dialog, G_TYPE_OBJECT)
 
 static void
 inhibit_dialog_response (FlashbackInhibitDialog *dialog,
                          guint                   response_id,
-                         DBusEndSessionDialog   *object)
+                         gpointer                user_data)
 {
-	int action;
+  DBusEndSessionDialog *object;
+  gint action;
 
-	g_object_get (dialog, "action", &action, NULL);
+  object = DBUS_END_SESSION_DIALOG (user_data);
+  g_object_get (dialog, "action", &action, NULL);
 
-	switch (response_id) {
-	case FLASHBACK_RESPONSE_CANCEL:
-		break;
-	case FLASHBACK_RESPONSE_ACCEPT:
-		if (action == FLASHBACK_LOGOUT_ACTION_LOGOUT) {
-			dbus_end_session_dialog_emit_confirmed_logout (object);
-		} else if (action == FLASHBACK_LOGOUT_ACTION_SHUTDOWN) {
-			dbus_end_session_dialog_emit_confirmed_shutdown (object);
-		} else if (action == FLASHBACK_LOGOUT_ACTION_REBOOT) {
-			dbus_end_session_dialog_emit_confirmed_reboot (object);
-		} else if (action == FLASHBACK_LOGOUT_ACTION_HIBERNATE) {
-			dbus_end_session_dialog_emit_confirmed_hibernate (object);
-		} else if (action == FLASHBACK_LOGOUT_ACTION_SUSPEND) {
-			dbus_end_session_dialog_emit_confirmed_suspend (object);
-		} else if (action == FLASHBACK_LOGOUT_ACTION_HYBRID_SLEEP) {
-			dbus_end_session_dialog_emit_confirmed_hybrid_sleep (object);
-		} else {
-			g_assert_not_reached ();
-		}
-		break;
-	default:
-		g_assert_not_reached ();
-		break;
-	}
+  switch (response_id)
+    {
+      case FLASHBACK_RESPONSE_CANCEL:
+        break;
 
-	flashback_inhibit_dialog_close (dialog);
+      case FLASHBACK_RESPONSE_ACCEPT:
+        if (action == FLASHBACK_LOGOUT_ACTION_LOGOUT)
+          dbus_end_session_dialog_emit_confirmed_logout (object);
+        else if (action == FLASHBACK_LOGOUT_ACTION_SHUTDOWN)
+          dbus_end_session_dialog_emit_confirmed_shutdown (object);
+        else if (action == FLASHBACK_LOGOUT_ACTION_REBOOT)
+          dbus_end_session_dialog_emit_confirmed_reboot (object);
+        else if (action == FLASHBACK_LOGOUT_ACTION_HIBERNATE)
+          dbus_end_session_dialog_emit_confirmed_hibernate (object);
+        else if (action == FLASHBACK_LOGOUT_ACTION_SUSPEND)
+          dbus_end_session_dialog_emit_confirmed_suspend (object);
+        else if (action == FLASHBACK_LOGOUT_ACTION_HYBRID_SLEEP)
+          dbus_end_session_dialog_emit_confirmed_hybrid_sleep (object);
+        else
+          g_assert_not_reached ();
+        break;
+
+      default:
+        g_assert_not_reached ();
+        break;
+    }
+
+  flashback_inhibit_dialog_close (dialog);
 }
 
 static void
 inhibit_dialog_close (FlashbackInhibitDialog *dialog,
-                      DBusEndSessionDialog   *object)
+                      gpointer                user_data)
 {
-	dbus_end_session_dialog_emit_canceled (object);
-	dbus_end_session_dialog_emit_closed (object);
+  DBusEndSessionDialog *object;
+
+  object = DBUS_END_SESSION_DIALOG (user_data);
+
+  dbus_end_session_dialog_emit_canceled (object);
+  dbus_end_session_dialog_emit_closed (object);
 }
 
 static void
-closed (DBusEndSessionDialog      *object,
-        FlashbackEndSessionDialog *dialog)
+closed (DBusEndSessionDialog *object,
+        gpointer              user_data)
 {
-	dialog->priv->dialog = NULL;
+  GfEndSessionDialog *dialog;
+
+  dialog = GF_END_SESSION_DIALOG (user_data);
+
+  dialog->dialog = NULL;
 }
 
 static gboolean
-handle_open (DBusEndSessionDialog *object,
-             GDBusMethodInvocation          *invocation,
-             guint                           arg_type,
-             guint                           arg_timestamp,
-             guint                           arg_seconds_to_stay_open,
-             const gchar *const             *arg_inhibitor_object_paths,
-             gpointer                        user_data)
+handle_open (DBusEndSessionDialog  *object,
+             GDBusMethodInvocation *invocation,
+             guint                  type,
+             guint                  timestamp,
+             guint                  seconds_to_stay_open,
+             const gchar *const    *inhibitor_object_paths,
+             gpointer               user_data)
 {
-	FlashbackEndSessionDialog *dialog = user_data;
+  GfEndSessionDialog *dialog;
 
-	if (dialog->priv->dialog != NULL) {
-		g_object_set (dialog->priv->dialog, "inhibitor-paths", arg_inhibitor_object_paths, NULL);
+  dialog = GF_END_SESSION_DIALOG (user_data);
 
-		if (arg_timestamp != 0) {
-			gtk_window_present_with_time (GTK_WINDOW (dialog->priv->dialog), arg_timestamp);
-		} else {
-			gtk_window_present (GTK_WINDOW (dialog->priv->dialog));
-		}
+  if (dialog->dialog != NULL)
+    {
+      g_object_set (dialog->dialog,
+                    "inhibitor-paths", inhibitor_object_paths,
+                    NULL);
 
-		dbus_end_session_dialog_complete_open (object, invocation);
-		return TRUE;
-	}
+      if (timestamp != 0)
+        gtk_window_present_with_time (GTK_WINDOW (dialog->dialog), timestamp);
+      else
+        gtk_window_present (GTK_WINDOW (dialog->dialog));
 
-	dialog->priv->dialog = flashback_inhibit_dialog_new (arg_type,
-	                                                     arg_seconds_to_stay_open,
-	                                                     arg_inhibitor_object_paths);
+      dbus_end_session_dialog_complete_open (object, invocation);
 
-	g_signal_connect (dialog->priv->dialog, "response", G_CALLBACK (inhibit_dialog_response), object);
-	g_signal_connect (dialog->priv->dialog, "destroy", G_CALLBACK (inhibit_dialog_close), object);
-	g_signal_connect (dialog->priv->dialog, "close", G_CALLBACK (inhibit_dialog_close), object);
-	g_signal_connect (object, "closed", G_CALLBACK (closed), dialog);
+      return TRUE;
+    }
 
-	if (arg_timestamp != 0) {
-		gtk_window_present_with_time (GTK_WINDOW (dialog->priv->dialog), arg_timestamp);
-	} else {
-		gtk_window_present (GTK_WINDOW (dialog->priv->dialog));
-	}
+  dialog->dialog = flashback_inhibit_dialog_new (type, seconds_to_stay_open,
+                                                 inhibitor_object_paths);
 
-	dbus_end_session_dialog_complete_open (object, invocation);
-	return TRUE;
+  g_signal_connect (dialog->dialog, "response",
+                    G_CALLBACK (inhibit_dialog_response), object);
+  g_signal_connect (dialog->dialog, "destroy",
+                    G_CALLBACK (inhibit_dialog_close), object);
+  g_signal_connect (dialog->dialog, "close",
+                    G_CALLBACK (inhibit_dialog_close), object);
+
+  g_signal_connect (object, "closed",
+                    G_CALLBACK (closed), dialog);
+
+  if (timestamp != 0)
+    gtk_window_present_with_time (GTK_WINDOW (dialog->dialog), timestamp);
+  else
+    gtk_window_present (GTK_WINDOW (dialog->dialog));
+
+  dbus_end_session_dialog_complete_open (object, invocation);
+
+  return TRUE;
 }
 
 static void
-/*
-on_bus_acquired (GDBusConnection *connection,
-                 const gchar     *name,
-                 gpointer         user_data)
-*/
 name_appeared_handler (GDBusConnection *connection,
                        const gchar     *name,
                        const gchar     *name_owner,
                        gpointer         user_data)
 {
-	FlashbackEndSessionDialog *dialog;
-	GError *error = NULL;
+  GfEndSessionDialog *dialog;
+  DBusEndSessionDialog *skeleton;
+  GError *error;
 
-	dialog = FLASHBACK_END_SESSION_DIALOG (user_data);
-	dialog->priv->iface = G_DBUS_INTERFACE_SKELETON (dbus_end_session_dialog_skeleton_new ());
-	g_signal_connect (dialog->priv->iface, "handle-open", G_CALLBACK (handle_open), dialog);
+  dialog = GF_END_SESSION_DIALOG (user_data);
+  skeleton = dbus_end_session_dialog_skeleton_new ();
 
-	if (!g_dbus_interface_skeleton_export (dialog->priv->iface,
-	                                       connection,
-	                                       "/org/gnome/SessionManager/EndSessionDialog",
-	                                       &error)) {
-		g_warning ("Failed to export interface: %s", error->message);
-		g_error_free (error);
-		return;
-	}
-}
+  dialog->iface = G_DBUS_INTERFACE_SKELETON (skeleton);
 
-/*
-static void
-on_name_acquired (GDBusConnection *connection,
-                  const char      *name,
-                  gpointer         user_data)
-{
-}
+  g_signal_connect (skeleton, "handle-open",
+                    G_CALLBACK (handle_open), dialog);
 
-static void
-on_name_lost (GDBusConnection *connection,
-              const char      *name,
-              gpointer         user_data)
-{
-}
-*/
+  error = NULL;
+  if (!g_dbus_interface_skeleton_export (dialog->iface, connection,
+                                         "/org/gnome/SessionManager/EndSessionDialog",
+                                         &error))
+    {
+      g_warning ("Failed to export interface: %s", error->message);
+      g_error_free (error);
 
-static void
-flashback_end_session_dialog_finalize (GObject *object)
-{
-	FlashbackEndSessionDialog *dialog = FLASHBACK_END_SESSION_DIALOG (object);
-
-	if (dialog->priv->dialog) {
-		gtk_widget_destroy (dialog->priv->dialog);
-		dialog->priv->dialog = NULL;
-	}
-
-	if (dialog->priv->iface) {
-		g_dbus_interface_skeleton_unexport (dialog->priv->iface);
-
-		g_object_unref (dialog->priv->iface);
-		dialog->priv->iface = NULL;
-	}
-
-	if (dialog->priv->bus_name) {
-		/*
-		g_bus_unown_name (dialog->priv->bus_name);
-		*/
-		g_bus_unwatch_name (dialog->priv->bus_name);
-		dialog->priv->bus_name = 0;
-	}
-
-	G_OBJECT_CLASS (flashback_end_session_dialog_parent_class)->finalize (object);
+      return;
+    }
 }
 
 static void
-flashback_end_session_dialog_init (FlashbackEndSessionDialog *dialog)
+gf_end_session_dialog_finalize (GObject *object)
 {
-	dialog->priv = G_TYPE_INSTANCE_GET_PRIVATE (dialog,
-	                                            FLASHBACK_TYPE_END_SESSION_DIALOG,
-	                                            FlashbackEndSessionDialogPrivate);
+  GfEndSessionDialog *dialog;
 
-	dialog->priv->dialog = NULL;
-	dialog->priv->iface = NULL;
-	dialog->priv->bus_name = g_bus_watch_name (G_BUS_TYPE_SESSION,
-	                                           "org.gnome.Shell",
-	                                           G_BUS_NAME_WATCHER_FLAGS_NONE,
-	                                           name_appeared_handler,
-	                                           NULL,
-	                                           dialog,
-	                                           NULL);
-	/*
-	dialog->priv->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,
-	                                         "org.gnome.Shell",
-	                                         G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
-	                                         G_BUS_NAME_OWNER_FLAGS_REPLACE,
-	                                         on_bus_acquired,
-	                                         on_name_acquired,
-	                                         on_name_lost,
-	                                         dialog,
-	                                         NULL);
-	*/
+  dialog = GF_END_SESSION_DIALOG (object);
+
+  if (dialog->dialog != NULL)
+    {
+      gtk_widget_destroy (dialog->dialog);
+      dialog->dialog = NULL;
+    }
+
+  if (dialog->iface != NULL)
+    {
+      g_dbus_interface_skeleton_unexport (dialog->iface);
+
+      g_object_unref (dialog->iface);
+      dialog->iface = NULL;
+    }
+
+  if (dialog->bus_name > 0)
+    {
+      g_bus_unwatch_name (dialog->bus_name);
+      dialog->bus_name = 0;
+    }
+
+  G_OBJECT_CLASS (gf_end_session_dialog_parent_class)->finalize (object);
 }
 
 static void
-flashback_end_session_dialog_class_init (FlashbackEndSessionDialogClass *class)
+gf_end_session_dialog_class_init (GfEndSessionDialogClass *dialog_class)
 {
-	GObjectClass *object_class = G_OBJECT_CLASS (class);
+  GObjectClass *object_class;
 
-	object_class->finalize = flashback_end_session_dialog_finalize;
+  object_class = G_OBJECT_CLASS (dialog_class);
 
-	g_type_class_add_private (class, sizeof (FlashbackEndSessionDialogPrivate));
+  object_class->finalize = gf_end_session_dialog_finalize;
 }
 
-FlashbackEndSessionDialog *
-flashback_end_session_dialog_new (void)
+static void
+gf_end_session_dialog_init (GfEndSessionDialog *dialog)
 {
-	return g_object_new (FLASHBACK_TYPE_END_SESSION_DIALOG,
-	                     NULL);
+  dialog->bus_name = g_bus_watch_name (G_BUS_TYPE_SESSION,
+                                       "org.gnome.Shell",
+                                       G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                       name_appeared_handler,
+                                       NULL,
+                                       dialog,
+                                       NULL);
+}
+
+GfEndSessionDialog *
+gf_end_session_dialog_new (void)
+{
+  return g_object_new (GF_TYPE_END_SESSION_DIALOG, NULL);
 }
