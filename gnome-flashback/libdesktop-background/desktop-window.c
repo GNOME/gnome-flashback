@@ -119,7 +119,7 @@ desktop_window_new (void)
 	GtkWindow *window;
 
 	object = g_object_new (DESKTOP_WINDOW_TYPE,
-	                       "type", GTK_WINDOW_TOPLEVEL,
+	                       "type", GTK_WINDOW_POPUP,
 	                       "type-hint", GDK_WINDOW_TYPE_HINT_DESKTOP,
 	                       "decorated", FALSE,
 	                       "skip-pager-hint", TRUE,
