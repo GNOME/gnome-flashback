@@ -889,3 +889,31 @@ flashback_inhibit_dialog_close (FlashbackInhibitDialog *dialog)
 
 	gtk_window_close (GTK_WINDOW (dialog));
 }
+
+void
+flashback_inhibit_dialog_present (FlashbackInhibitDialog *dialog,
+                                  guint32                 timestamp)
+{
+  GtkWidget *widget;
+  GdkWindow *window;
+  guint32 server_time;
+
+  if (timestamp != 0)
+    {
+      gtk_window_present_with_time (GTK_WINDOW (dialog), timestamp);
+
+      return;
+    }
+
+  widget = GTK_WIDGET (dialog);
+
+  gtk_widget_show (widget);
+
+  window = gtk_widget_get_window (widget);
+  server_time = GDK_CURRENT_TIME;
+
+  if (window != NULL)
+    server_time = gdk_x11_get_server_time (window);
+
+  gtk_window_present_with_time (GTK_WINDOW (dialog), server_time);
+}

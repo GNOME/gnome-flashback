@@ -109,19 +109,19 @@ handle_open (DBusEndSessionDialog  *object,
              gpointer               user_data)
 {
   GfEndSessionDialog *dialog;
+  FlashbackInhibitDialog *inhibit_dialog;
 
   dialog = GF_END_SESSION_DIALOG (user_data);
 
   if (dialog->dialog != NULL)
     {
+      inhibit_dialog = FLASHBACK_INHIBIT_DIALOG (dialog->dialog);
+
       g_object_set (dialog->dialog,
                     "inhibitor-paths", inhibitor_object_paths,
                     NULL);
 
-      if (timestamp != 0)
-        gtk_window_present_with_time (GTK_WINDOW (dialog->dialog), timestamp);
-      else
-        gtk_window_present (GTK_WINDOW (dialog->dialog));
+      flashback_inhibit_dialog_present (inhibit_dialog, timestamp);
 
       dbus_end_session_dialog_complete_open (object, invocation);
 
@@ -130,6 +130,8 @@ handle_open (DBusEndSessionDialog  *object,
 
   dialog->dialog = flashback_inhibit_dialog_new (type, seconds_to_stay_open,
                                                  inhibitor_object_paths);
+
+  inhibit_dialog = FLASHBACK_INHIBIT_DIALOG (dialog->dialog);
 
   g_signal_connect (dialog->dialog, "response",
                     G_CALLBACK (inhibit_dialog_response), object);
@@ -141,11 +143,7 @@ handle_open (DBusEndSessionDialog  *object,
   g_signal_connect (object, "closed",
                     G_CALLBACK (closed), dialog);
 
-  if (timestamp != 0)
-    gtk_window_present_with_time (GTK_WINDOW (dialog->dialog), timestamp);
-  else
-    gtk_window_present (GTK_WINDOW (dialog->dialog));
-
+  flashback_inhibit_dialog_present (inhibit_dialog, timestamp);
   dbus_end_session_dialog_complete_open (object, invocation);
 
   return TRUE;

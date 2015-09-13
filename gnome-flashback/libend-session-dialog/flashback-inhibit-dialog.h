@@ -68,6 +68,10 @@ GtkWidget *flashback_inhibit_dialog_new      (gint                action,
 void       flashback_inhibit_dialog_response (FlashbackInhibitDialog *dialog,
                                               gint                    response_id);
 void       flashback_inhibit_dialog_close    (FlashbackInhibitDialog *dialog);
+
+void       flashback_inhibit_dialog_present  (FlashbackInhibitDialog *dialog,
+                                              guint32                 timestamp);
+
 G_END_DECLS
 
 #endif
