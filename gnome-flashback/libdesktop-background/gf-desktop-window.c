@@ -89,6 +89,7 @@ gf_desktop_window_new (void)
   GtkWidget *window;
 
   window = g_object_new (GF_TYPE_DESKTOP_WINDOW,
+                         "accept-focus", FALSE,
                          "app-paintable", TRUE,
                          "decorated", FALSE,
                          "resizable", FALSE,
