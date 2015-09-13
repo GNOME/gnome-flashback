@@ -837,14 +837,6 @@ gf_inhibit_dialog_stop_timer (GfInhibitDialog *dialog)
 }
 
 static void
-gf_inhibit_dialog_get_preferred_width (GtkWidget *widget,
-                                       gint      *minimum_width,
-                                       gint      *natural_width)
-{
-  *minimum_width = *natural_width = 460;
-}
-
-static void
 gf_inhibit_dialog_class_init (GfInhibitDialogClass *dialog_class)
 {
   GObjectClass *object_class;
@@ -861,8 +853,6 @@ gf_inhibit_dialog_class_init (GfInhibitDialogClass *dialog_class)
   object_class->set_property = gf_inhibit_dialog_set_property;
   object_class->constructor = gf_inhibit_dialog_constructor;
   object_class->dispose = gf_inhibit_dialog_dispose;
-
-  widget_class->get_preferred_width = gf_inhibit_dialog_get_preferred_width;
 
   signals[SIGNAL_RESPONSE] =
     g_signal_new ("response",

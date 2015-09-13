@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.19.0 -->
 <interface domain="gnome-flashback">
   <requires lib="gtk+" version="3.10"/>
   <template class="GfInhibitDialog" parent="GtkWindow">
@@ -77,9 +77,10 @@
             <property name="label" translatable="yes">Waiting for these applications to finish. Interrupting them can lead to loss of data.</property>
             <property name="justify">center</property>
             <property name="wrap">True</property>
+            <property name="max_width_chars">70</property>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
