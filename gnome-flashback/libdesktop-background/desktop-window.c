@@ -69,28 +69,6 @@ desktop_window_dispose (GObject *object)
 }
 
 static void
-desktop_window_relaize (GtkWidget *widget)
-{
-	GdkWindow *window;
-	GdkAtom    atom;
-
-	GTK_WIDGET_CLASS (desktop_window_parent_class)->realize (widget);
-
-	window = gtk_widget_get_window (widget);
-	atom = gdk_atom_intern ("_NET_WM_WINDOW_TYPE_DESKTOP", FALSE);
-	gdk_property_change (window,
-	                     gdk_atom_intern ("_NET_WM_WINDOW_TYPE", FALSE),
-	                     gdk_x11_xatom_to_atom (XA_ATOM), 32,
-	                     GDK_PROP_MODE_REPLACE, (guchar *) &atom, 1);
-}
-
-static void
-desktop_window_unrelaize (GtkWidget *widget)
-{
-	GTK_WIDGET_CLASS (desktop_window_parent_class)->unrealize (widget);
-}
-
-static void
 desktop_window_map (GtkWidget *widget)
 {
 	GTK_WIDGET_CLASS (desktop_window_parent_class)->map (widget);
@@ -130,8 +108,6 @@ desktop_window_class_init (DesktopWindowClass *class)
 
 	object_class->dispose = desktop_window_dispose;
 
-	widget_class->realize = desktop_window_relaize;
-	widget_class->unrealize = desktop_window_unrelaize;
 	widget_class->map = desktop_window_map;
 }
 
@@ -144,6 +120,7 @@ desktop_window_new (void)
 
 	object = g_object_new (DESKTOP_WINDOW_TYPE,
 	                       "type", GTK_WINDOW_TOPLEVEL,
+	                       "type-hint", GDK_WINDOW_TYPE_HINT_DESKTOP,
 	                       "decorated", FALSE,
 	                       "skip-pager-hint", TRUE,
 	                       "skip-taskbar-hint", TRUE,
