@@ -45,30 +45,6 @@ desktop_window_screen_changed (GdkScreen *screen,
 }
 
 static void
-desktop_window_dispose (GObject *object)
-{
-	DesktopWindow        *window;
-	DesktopWindowPrivate *priv;
-	GdkScreen            *screen;
-
-	window = DESKTOP_WINDOW (object);
-	priv = window->priv;
-	screen = gdk_screen_get_default ();
-
-	if (priv->size_changed_id > 0) {
-		g_signal_handler_disconnect (screen, priv->size_changed_id);
-		priv->size_changed_id = 0;
-	}
-
-	if (priv->monitors_changed_id > 0) {
-		g_signal_handler_disconnect (screen, priv->monitors_changed_id);
-		priv->monitors_changed_id = 0;
-	}
-
-	G_OBJECT_CLASS (desktop_window_parent_class)->dispose (object);
-}
-
-static void
 desktop_window_map (GtkWidget *widget)
 {
 	GTK_WIDGET_CLASS (desktop_window_parent_class)->map (widget);
@@ -79,20 +55,18 @@ desktop_window_map (GtkWidget *widget)
 static void
 desktop_window_init (DesktopWindow *window)
 {
-	DesktopWindowPrivate *priv;
-	gint                  id;
-	GdkScreen            *screen;
+	GdkScreen *screen;
 
-	priv = window->priv = desktop_window_get_instance_private (window);
+	window->priv = desktop_window_get_instance_private (window);
 	screen = gdk_screen_get_default ();
 
-	id = g_signal_connect (screen, "monitors-changed",
-	                       G_CALLBACK (desktop_window_screen_changed), window);
-	priv->monitors_changed_id = id;
+	g_signal_connect_object (screen, "monitors-changed",
+	                         G_CALLBACK (desktop_window_screen_changed), window,
+	                         G_CONNECT_AFTER);
 
-	id = g_signal_connect (screen, "size-changed",
-	                       G_CALLBACK (desktop_window_screen_changed), window);
-	priv->size_changed_id = id;
+	g_signal_connect_object (screen, "size-changed",
+	                         G_CALLBACK (desktop_window_screen_changed), window,
+	                         G_CONNECT_AFTER);
 
 	desktop_window_screen_changed (screen, window);
 }
@@ -100,13 +74,9 @@ desktop_window_init (DesktopWindow *window)
 static void
 desktop_window_class_init (DesktopWindowClass *class)
 {
-	GObjectClass   *object_class;
 	GtkWidgetClass *widget_class;
 
-	object_class = G_OBJECT_CLASS (class);
 	widget_class = GTK_WIDGET_CLASS (class);
-
-	object_class->dispose = desktop_window_dispose;
 
 	widget_class->map = desktop_window_map;
 }
