@@ -20,8 +20,8 @@
 #include <X11/Xatom.h>
 #include <libgnome-desktop/gnome-bg.h>
 
-#include "desktop-window.h"
-#include "desktop-background.h"
+#include "gf-desktop-window.h"
+#include "gf-desktop-background.h"
 
 struct _DesktopBackgroundPrivate {
 	GnomeBG          *bg;

@@ -23,7 +23,7 @@
 #include "flashback-application.h"
 #include "libautomount-manager/gsd-automount-manager.h"
 #include "libbluetooth-applet/gf-bluetooth-applet.h"
-#include "libdesktop-background/desktop-background.h"
+#include "libdesktop-background/gf-desktop-background.h"
 #include "libdisplay-config/flashback-display-config.h"
 #include "libend-session-dialog/flashback-end-session-dialog.h"
 #include "libidle-monitor/flashback-idle-monitor.h"

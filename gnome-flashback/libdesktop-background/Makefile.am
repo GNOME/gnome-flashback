@@ -13,10 +13,10 @@ libdesktop_background_la_CFLAGS = \
 	$(NULL)
 
 libdesktop_background_la_SOURCES = \
-	desktop-background.c \
-	desktop-background.h \
-	desktop-window.c \
-	desktop-window.h \
+	gf-desktop-background.c \
+	gf-desktop-background.h \
+	gf-desktop-window.c \
+	gf-desktop-window.h \
 	$(NULL)
 
 libdesktop_background_la_LDFLAGS = \

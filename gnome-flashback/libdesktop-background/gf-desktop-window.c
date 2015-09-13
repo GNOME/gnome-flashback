@@ -17,7 +17,7 @@
 
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
-#include "desktop-window.h"
+#include "gf-desktop-window.h"
 
 G_DEFINE_TYPE (DesktopWindow, desktop_window, GTK_TYPE_WINDOW)
 
