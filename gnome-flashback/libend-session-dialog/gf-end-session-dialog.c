@@ -20,8 +20,8 @@
 #include <gtk/gtk.h>
 
 #include "dbus-end-session-dialog.h"
-#include "flashback-inhibit-dialog.h"
 #include "gf-end-session-dialog.h"
+#include "gf-inhibit-dialog.h"
 
 struct _GfEndSessionDialog
 {

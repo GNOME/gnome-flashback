@@ -15,10 +15,10 @@ libend_session_dialog_la_CFLAGS = \
 libend_session_dialog_la_SOURCES = \
 	dbus-end-session-dialog.c \
 	dbus-end-session-dialog.h \
-	flashback-inhibit-dialog.c \
-	flashback-inhibit-dialog.h \
 	gf-end-session-dialog.c \
 	gf-end-session-dialog.h \
+	gf-inhibit-dialog.c \
+	gf-inhibit-dialog.h \
 	$(NULL)
 
 libend_session_dialog_la_LDFLAGS = \
@@ -45,7 +45,7 @@ BUILT_SOURCES = \
 
 EXTRA_DIST = \
 	org.gnome.SessionManager.EndSessionDialog.xml \
-	flashback-inhibit-dialog.ui \
+	gf-inhibit-dialog.ui \
 	$(NULL)
 
 CLEANFILES = \

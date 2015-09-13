@@ -4,7 +4,7 @@
     <file>Adwaita.css</file>
     <file>HighContrast.css</file>
     <file alias="flashback-confirm-dialog.ui" compressed="true">libdisplay-config/flashback-confirm-dialog.ui</file>
-    <file alias="flashback-inhibit-dialog.ui" compressed="true">libend-session-dialog/flashback-inhibit-dialog.ui</file>
+    <file alias="gf-inhibit-dialog.ui" compressed="true">libend-session-dialog/gf-inhibit-dialog.ui</file>
     <file alias="flashback-polkit-dialog.ui" compressed="true">libpolkit/flashback-polkit-dialog.ui</file>
   </gresource>
 </gresources>

@@ -29,7 +29,7 @@
 #include <cairo-xlib.h>
 
 #include "config.h"
-#include "flashback-inhibit-dialog.h"
+#include "gf-inhibit-dialog.h"
 
 #define IS_STRING_EMPTY(string) ((string) == NULL || (string)[0] == '\0')
 
@@ -791,7 +791,7 @@ flashback_inhibit_dialog_class_init (FlashbackInhibitDialogClass *klass)
 
 	//flashback_register_resource ();
 
-	gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gnome-flashback/flashback-inhibit-dialog.ui");
+	gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gnome-flashback/gf-inhibit-dialog.ui");
 	gtk_widget_class_bind_template_child_private (widget_class, FlashbackInhibitDialog, main_box);
 	gtk_widget_class_bind_template_child_private (widget_class, FlashbackInhibitDialog, inhibitors_treeview);
 	gtk_widget_class_bind_template_child_private (widget_class, FlashbackInhibitDialog, description_label);
