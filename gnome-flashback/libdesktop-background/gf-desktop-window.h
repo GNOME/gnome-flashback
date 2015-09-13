@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Alberts Muktupāvels
+ * Copyright (C) 2014 - 2015 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,30 +15,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DESKTOP_WINDOW_H
-#define DESKTOP_WINDOW_H
+#ifndef GF_DESKTOP_WINDOW_H
+#define GF_DESKTOP_WINDOW_H
 
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-#define DESKTOP_WINDOW_TYPE     (desktop_window_get_type ())
-#define DESKTOP_WINDOW(o)       (G_TYPE_CHECK_INSTANCE_CAST ((o), DESKTOP_WINDOW_TYPE, DesktopWindow))
-#define DESKTOP_WINDOW_CLASS(c) (G_TYPE_CHECK_CLASS_CAST ((c), DESKTOP_WINDOW_TYPE, DesktopWindowClass))
+#define GF_TYPE_DESKTOP_WINDOW gf_desktop_window_get_type ()
+G_DECLARE_FINAL_TYPE (GfDesktopWindow, gf_desktop_window,
+                      GF, DESKTOP_WINDOW, GtkWindow)
 
-typedef struct _DesktopWindow        DesktopWindow;
-typedef struct _DesktopWindowClass   DesktopWindowClass;
-
-struct _DesktopWindow {
-	GtkWindow parent;
-};
-
-struct _DesktopWindowClass {
-	GtkWindowClass parent_class;
-};
-
-GType      desktop_window_get_type (void);
-GtkWidget *desktop_window_new      (void);
+GtkWidget *gf_desktop_window_new (void);
 
 G_END_DECLS
 

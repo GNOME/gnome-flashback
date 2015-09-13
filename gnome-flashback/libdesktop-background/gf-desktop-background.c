@@ -459,7 +459,7 @@ desktop_background_init (DesktopBackground *background)
 	                  G_CALLBACK (desktop_background_change_event), background);
 	gnome_bg_load_from_preferences (priv->bg, priv->gnome_settings);
 
-	priv->background = desktop_window_new ();
+	priv->background = gf_desktop_window_new ();
 	g_signal_connect (priv->background, "size-allocate",
 	                  G_CALLBACK (size_allocate), background);
 
