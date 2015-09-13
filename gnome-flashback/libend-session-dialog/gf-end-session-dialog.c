@@ -18,7 +18,7 @@
 #include <gtk/gtk.h>
 #include "config.h"
 #include "dbus-end-session-dialog.h"
-#include "flashback-end-session-dialog.h"
+#include "gf-end-session-dialog.h"
 #include "flashback-inhibit-dialog.h"
 
 struct _FlashbackEndSessionDialogPrivate {

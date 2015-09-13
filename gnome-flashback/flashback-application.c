@@ -25,7 +25,7 @@
 #include "libbluetooth-applet/gf-bluetooth-applet.h"
 #include "libdesktop-background/gf-desktop-background.h"
 #include "libdisplay-config/flashback-display-config.h"
-#include "libend-session-dialog/flashback-end-session-dialog.h"
+#include "libend-session-dialog/gf-end-session-dialog.h"
 #include "libidle-monitor/flashback-idle-monitor.h"
 #include "libpolkit/flashback-polkit.h"
 #include "libpower-applet/gf-power-applet.h"

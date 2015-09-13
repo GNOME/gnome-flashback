@@ -15,10 +15,10 @@ libend_session_dialog_la_CFLAGS = \
 libend_session_dialog_la_SOURCES = \
 	dbus-end-session-dialog.c \
 	dbus-end-session-dialog.h \
-	flashback-end-session-dialog.c \
-	flashback-end-session-dialog.h \
 	flashback-inhibit-dialog.c \
 	flashback-inhibit-dialog.h \
+	gf-end-session-dialog.c \
+	gf-end-session-dialog.h \
 	$(NULL)
 
 libend_session_dialog_la_LDFLAGS = \
