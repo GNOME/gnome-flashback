@@ -117,10 +117,13 @@ gf_inhibit_dialog_set_inhibitor_paths (GfInhibitDialog    *dialog,
                                        const gchar *const *paths)
 {
   GfInhibitDialogPrivate *priv;
+  gchar **old_inhibitors;
 
   priv = gf_inhibit_dialog_get_instance_private (dialog);
 
+  old_inhibitors = priv->inhibitor_paths;
   priv->inhibitor_paths = g_strdupv ((gchar **) paths);
+  g_strfreev (old_inhibitors);
 
   if (priv->list_store == NULL)
     return;
