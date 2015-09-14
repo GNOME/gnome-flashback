@@ -12,6 +12,8 @@ libinput_sources_la_CFLAGS = \
 	$(NULL)
 
 libinput_sources_la_SOURCES = \
+	gf-candidate-popup.c \
+	gf-candidate-popup.h \
 	gf-input-sources.c \
 	gf-input-sources.h \
 	$(NULL)
