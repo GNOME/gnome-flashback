@@ -9,7 +9,7 @@ libend_session_dialog_la_CFLAGS = \
 	$(WARN_CFLAGS) \
 	$(AM_CFLAGS) \
 	-I$(top_builddir)/gnome-flashback/libend-session-dialog \
-	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+	-DLOCALE_DIR=\""$(datadir)/locale"\" \
 	$(NULL)
 
 libend_session_dialog_la_SOURCES = \

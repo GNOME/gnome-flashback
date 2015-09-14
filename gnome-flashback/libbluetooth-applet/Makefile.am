@@ -9,7 +9,7 @@ libbluetooth_applet_la_CFLAGS = \
 	$(WARN_CFLAGS) \
 	$(AM_CFLAGS) \
 	-I$(top_builddir)/gnome-flashback/libbluetooth-applet \
-	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+	-DLOCALE_DIR=\""$(datadir)/locale"\" \
 	$(NULL)
 
 libbluetooth_applet_la_SOURCES = \

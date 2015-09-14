@@ -144,7 +144,7 @@ main (int argc, char *argv[])
 {
   GfSession *session;
 
-  bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
+  bindtextdomain (GETTEXT_PACKAGE, LOCALE_DIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
