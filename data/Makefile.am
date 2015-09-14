@@ -1,6 +1,7 @@
 NULL =
 
 SUBDIRS = \
+	autostart \
 	sessions \
 	xsessions \
 	$(NULL)
@@ -20,10 +21,6 @@ gnome-flashback-metacity: Makefile
 
 menudir   = $(sysconfdir)/xdg/menus
 menu_DATA = gnome-flashback-applications.menu
-
-autostartdir       = $(sysconfdir)/xdg/autostart
-autostart_in_files = gnome-flashback-nm-applet.desktop.in gnome-flashback-screensaver.desktop.in
-autostart_DATA     = $(autostart_in_files:.desktop.in=.desktop)
 
 desktopdir       = $(datadir)/applications
 desktop_in_files = gnome-flashback.desktop.in gnome-flashback-init.desktop.in
@@ -47,7 +44,6 @@ gsettings_SCHEMAS = org.gnome.gnome-flashback.gschema.xml
 @GSETTINGS_RULES@
 
 EXTRA_DIST = \
-	$(autostart_in_files) \
 	$(desktop_in_files) \
 	$(menu_DATA) \
 	$(gsettings_SCHEMAS) \
@@ -55,7 +51,6 @@ EXTRA_DIST = \
 	$(NULL)
 
 CLEANFILES = \
-	$(autostart_DATA) \
 	$(desktop_DATA) \
 	gnome-flashback-compiz \
 	gnome-flashback-metacity \
