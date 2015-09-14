@@ -44,6 +44,7 @@
                 <property name="can_focus">True</property>
                 <property name="vexpand">True</property>
                 <property name="shadow_type">in</property>
+                <property name="min_content_height">120</property>
                 <child>
                   <object class="GtkTreeView" id="inhibitors_treeview">
                     <property name="visible">True</property>
