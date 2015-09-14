@@ -1,14 +1,14 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
 data/gnome-flashback.desktop.in
-data/gnome-flashback-compiz.desktop.in.in
 data/gnome-flashback-init.desktop.in
-data/gnome-flashback-metacity.desktop.in.in
 data/gnome-flashback-nm-applet.desktop.in
 data/gnome-flashback-screensaver.desktop.in
 data/org.gnome.gnome-flashback.gschema.xml
 data/X-GNOME-Flashback-Settings.directory.desktop.in
 data/X-GNOME-Flashback-Settings-System.directory.desktop.in
+data/xsessions/gnome-flashback-compiz.desktop.in.in
+data/xsessions/gnome-flashback-metacity.desktop.in.in
 gnome-flashback/gf-main.c
 gnome-flashback/libautomount-manager/gsd-automount-manager.c
 gnome-flashback/libautomount-manager/gsd-autorun.c

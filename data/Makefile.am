@@ -2,6 +2,7 @@ NULL =
 
 SUBDIRS = \
 	sessions \
+	xsessions \
 	$(NULL)
 
 libexec_SCRIPTS = \
@@ -28,14 +29,6 @@ desktopdir       = $(datadir)/applications
 desktop_in_files = gnome-flashback.desktop.in gnome-flashback-init.desktop.in
 desktop_DATA     = $(desktop_in_files:.desktop.in=.desktop)
 
-xsessiondir          = $(datadir)/xsessions
-xsession_in_in_files = gnome-flashback-compiz.desktop.in.in gnome-flashback-metacity.desktop.in.in
-xsession_in_files    = gnome-flashback-compiz.desktop.in gnome-flashback-metacity.desktop.in
-xsession_DATA        = $(xsession_in_files:.desktop.in=.desktop)
-
-%.desktop.in: %.desktop.in.in
-	$(AM_V_GEN) sed -e 's,[@]libexecdir[@],$(libexecdir),g' < $< > $@
-
 %.desktop: %.desktop.in
 	$(AM_V_GEN) $(MSGFMT) --desktop --template $< -o $@-t -d $(top_srcdir)/po && mv $@-t $@
 
@@ -57,7 +50,6 @@ EXTRA_DIST = \
 	$(autostart_in_files) \
 	$(desktop_in_files) \
 	$(menu_DATA) \
-	$(xsession_in_in_files) \
 	$(gsettings_SCHEMAS) \
 	$(directory_in_files) \
 	$(NULL)
@@ -67,8 +59,6 @@ CLEANFILES = \
 	$(desktop_DATA) \
 	gnome-flashback-compiz \
 	gnome-flashback-metacity \
-	$(xsession_in_files) \
-	$(xsession_DATA) \
 	*.gschema.valid \
 	$(directory_DATA) \
 	$(NULL)

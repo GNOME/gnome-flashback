@@ -107,6 +107,7 @@ AC_CONFIG_FILES([
 Makefile
 data/Makefile
 data/sessions/Makefile
+data/xsessions/Makefile
 gnome-flashback/Makefile
 gnome-flashback/libautomount-manager/Makefile
 gnome-flashback/libbluetooth-applet/Makefile
