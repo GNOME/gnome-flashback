@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Alberts Muktupāvels
+ * Copyright (C) 2014 - 2015 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,18 +15,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FLASHBACK_APPLICATION_H
-#define FLASHBACK_APPLICATION_H
+#ifndef GF_APPLICATION_H
+#define GF_APPLICATION_H
 
 #include <glib-object.h>
 
 G_BEGIN_DECLS
 
-#define FLASHBACK_TYPE_APPLICATION flashback_application_get_type ()
-G_DECLARE_FINAL_TYPE (FlashbackApplication, flashback_application,
-                      FLASHBACK, APPLICATION, GObject)
+#define GF_TYPE_APPLICATION gf_application_get_type ()
+G_DECLARE_FINAL_TYPE (GfApplication, gf_application,
+                      GF, APPLICATION, GObject)
 
-FlashbackApplication *flashback_application_new (void);
+GfApplication *gf_application_new (void);
 
 G_END_DECLS
 

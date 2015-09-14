@@ -26,7 +26,7 @@
 #include "gf-session.h"
 
 static GMainLoop *loop = NULL;
-static FlashbackApplication *application = NULL;
+static GfApplication *application = NULL;
 
 static gboolean debug = FALSE;
 static gboolean initialize = FALSE;
@@ -127,7 +127,7 @@ session_ready_cb (GfSession *session,
     }
   else
     {
-      application = flashback_application_new ();
+      application = gf_application_new ();
       gf_session_register (session);
     }
 }

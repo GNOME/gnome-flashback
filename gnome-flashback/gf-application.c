@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Alberts Muktupāvels
+ * Copyright (C) 2014 - 2015 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,36 +35,36 @@
 #include "libsound-applet/gf-sound-applet.h"
 #include "libworkarounds/gf-workarounds.h"
 
-struct _FlashbackApplication
+struct _GfApplication
 {
-  GObject                    parent;
+  GObject                 parent;
 
-  gint                       bus_name;
+  gint                    bus_name;
 
-  GSettings                 *settings;
+  GSettings              *settings;
 
-  GtkCssProvider            *provider;
+  GtkCssProvider         *provider;
 
-  GsdAutomountManager       *automount;
-  FlashbackDisplayConfig    *config;
-  FlashbackIdleMonitor      *idle_monitor;
-  FlashbackPolkit           *polkit;
-  FlashbackScreencast       *screencast;
-  FlashbackShell            *shell;
-  GfBluetoothApplet         *bluetooth;
-  GfDesktopBackground       *background;
-  GfEndSessionDialog        *dialog;
-  GfPowerApplet             *power;
-  GfScreenshot              *screenshot;
-  GfSoundApplet             *sound;
-  GfWorkarounds             *workarounds;
+  GsdAutomountManager    *automount;
+  FlashbackDisplayConfig *config;
+  FlashbackIdleMonitor   *idle_monitor;
+  FlashbackPolkit        *polkit;
+  FlashbackScreencast    *screencast;
+  FlashbackShell         *shell;
+  GfBluetoothApplet      *bluetooth;
+  GfDesktopBackground    *background;
+  GfEndSessionDialog     *dialog;
+  GfPowerApplet          *power;
+  GfScreenshot           *screenshot;
+  GfSoundApplet          *sound;
+  GfWorkarounds          *workarounds;
 };
 
-G_DEFINE_TYPE (FlashbackApplication, flashback_application, G_TYPE_OBJECT)
+G_DEFINE_TYPE (GfApplication, gf_application, G_TYPE_OBJECT)
 
 static void
-remove_style_provider (FlashbackApplication *application,
-                       GdkScreen            *screen)
+remove_style_provider (GfApplication *application,
+                       GdkScreen     *screen)
 {
   GtkStyleProvider *provider;
 
@@ -81,11 +81,11 @@ theme_changed (GtkSettings *settings,
                GParamSpec  *pspec,
                gpointer     user_data)
 {
-  FlashbackApplication *application;
+  GfApplication *application;
   GdkScreen *screen;
   gchar *theme;
 
-  application = FLASHBACK_APPLICATION (user_data);
+  application = GF_APPLICATION (user_data);
   screen = gdk_screen_get_default ();
 
   g_object_get (settings, "gtk-theme-name", &theme, NULL);
@@ -118,9 +118,9 @@ settings_changed (GSettings   *settings,
                   const gchar *key,
                   gpointer     user_data)
 {
-  FlashbackApplication *application;
+  GfApplication *application;
 
-  application = FLASHBACK_APPLICATION (user_data);
+  application = GF_APPLICATION (user_data);
 
 #define SETTING_CHANGED(variable_name, setting_name, function_name) \
   if (key == NULL || g_strcmp0 (key, setting_name) == 0)            \
@@ -157,11 +157,13 @@ settings_changed (GSettings   *settings,
 }
 
 static void
-flashback_application_finalize (GObject *object)
+gf_application_dispose (GObject *object)
 {
-  FlashbackApplication *application;
+  GfApplication *application;
+  GdkScreen *screen;
 
-  application = FLASHBACK_APPLICATION (object);
+  application = GF_APPLICATION (object);
+  screen = gdk_screen_get_default ();
 
   if (application->bus_name)
     {
@@ -171,7 +173,7 @@ flashback_application_finalize (GObject *object)
 
   g_clear_object (&application->settings);
 
-  remove_style_provider (application, gdk_screen_get_default ());
+  remove_style_provider (application, screen);
 
   g_clear_object (&application->automount);
   g_clear_object (&application->config);
@@ -187,11 +189,11 @@ flashback_application_finalize (GObject *object)
   g_clear_object (&application->sound);
   g_clear_object (&application->workarounds);
 
-  G_OBJECT_CLASS (flashback_application_parent_class)->finalize (object);
+  G_OBJECT_CLASS (gf_application_parent_class)->dispose (object);
 }
 
 static void
-flashback_application_init (FlashbackApplication *application)
+gf_application_init (GfApplication *application)
 {
   GtkSettings *settings;
 
@@ -214,17 +216,17 @@ flashback_application_init (FlashbackApplication *application)
 }
 
 static void
-flashback_application_class_init (FlashbackApplicationClass *application_class)
+gf_application_class_init (GfApplicationClass *application_class)
 {
   GObjectClass *object_class;
 
   object_class = G_OBJECT_CLASS (application_class);
 
-  object_class->finalize = flashback_application_finalize;
+  object_class->dispose = gf_application_dispose;
 }
 
-FlashbackApplication *
-flashback_application_new (void)
+GfApplication *
+gf_application_new (void)
 {
-  return g_object_new (FLASHBACK_TYPE_APPLICATION, NULL);
+  return g_object_new (GF_TYPE_APPLICATION, NULL);
 }
