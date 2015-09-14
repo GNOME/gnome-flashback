@@ -20,7 +20,7 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-#include "flashback-application.h"
+#include "gf-application.h"
 #include "libautomount-manager/gsd-automount-manager.h"
 #include "libbluetooth-applet/gf-bluetooth-applet.h"
 #include "libdesktop-background/gf-desktop-background.h"

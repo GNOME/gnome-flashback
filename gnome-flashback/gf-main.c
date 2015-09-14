@@ -22,7 +22,7 @@
 #include <gtk/gtk.h>
 #include <stdlib.h>
 
-#include "flashback-application.h"
+#include "gf-application.h"
 #include "gf-session.h"
 
 static GMainLoop *loop = NULL;
