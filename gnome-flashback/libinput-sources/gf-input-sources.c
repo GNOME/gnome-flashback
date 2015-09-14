@@ -17,23 +17,44 @@
 
 #include "config.h"
 
+#include "gf-ibus-manager.h"
 #include "gf-input-sources.h"
 
 struct _GfInputSources
 {
-  GObject parent;
+  GObject        parent;
+
+  GfIBusManager *ibus_manager;
 };
 
 G_DEFINE_TYPE (GfInputSources, gf_input_sources, G_TYPE_OBJECT)
 
 static void
+gf_input_sources_dispose (GObject *object)
+{
+  GfInputSources *input_sources;
+
+  input_sources = GF_INPUT_SOURCES (object);
+
+  g_clear_object (&input_sources->ibus_manager);
+
+  G_OBJECT_CLASS (gf_input_sources_parent_class)->dispose (object);
+}
+
+static void
 gf_input_sources_class_init (GfInputSourcesClass *input_sources_class)
 {
+  GObjectClass *object_class;
+
+  object_class = G_OBJECT_CLASS (input_sources_class);
+
+  object_class->dispose = gf_input_sources_dispose;
 }
 
 static void
 gf_input_sources_init (GfInputSources *input_sources)
 {
+  input_sources->ibus_manager = gf_ibus_manager_new ();
 }
 
 GfInputSources *

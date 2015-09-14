@@ -14,6 +14,8 @@ libinput_sources_la_CFLAGS = \
 libinput_sources_la_SOURCES = \
 	gf-candidate-popup.c \
 	gf-candidate-popup.h \
+	gf-ibus-manager.c \
+	gf-ibus-manager.h \
 	gf-input-sources.c \
 	gf-input-sources.h \
 	$(NULL)
