@@ -89,27 +89,24 @@ is_desktop_window (Display *display,
   int format;
   unsigned long items;
   unsigned long left;
-  unsigned char *data;
 
   window_type = XInternAtom (display, "_NET_WM_WINDOW_TYPE", False);
   desktop = XInternAtom (display, "_NET_WM_WINDOW_TYPE_DESKTOP", False);
 
   result = XGetWindowProperty (display, window, window_type,
                                0L, 1L, False, XA_ATOM, &type, &format,
-                               &items, &left, &data);
+                               &items, &left, (unsigned char **) &atoms);
 
   if (result != Success)
     return FALSE;
 
-  atoms = (Atom *) data;
-
   if (items && atoms[0] == desktop)
     {
-      XFree (data);
+      XFree (atoms);
       return TRUE;
     }
 
-  XFree (data);
+  XFree (atoms);
   return FALSE;
 }
 
@@ -126,7 +123,6 @@ get_nautilus_window (GfDesktopBackground *background)
   int format;
   unsigned long items;
   unsigned long left;
-  unsigned char *list;
   unsigned long i;
   Window *windows;
   Window nautilus;
@@ -142,7 +138,7 @@ get_nautilus_window (GfDesktopBackground *background)
 
   result = XGetWindowProperty (xdisplay, root, client_list,
                                0L, 1024L, False, XA_WINDOW, &type, &format,
-                               &items, &left, &list);
+                               &items, &left, (unsigned char **) &windows);
 
   if (result != Success)
     {
@@ -153,7 +149,6 @@ get_nautilus_window (GfDesktopBackground *background)
   nautilus = None;
   background_window = gtk_widget_get_window (background->background);
   desktop = GDK_WINDOW_XID (background_window);
-  windows = (Window *) list;
 
   for (i = 0; i < items; i++)
     {
@@ -164,7 +159,7 @@ get_nautilus_window (GfDesktopBackground *background)
         }
     }
 
-  XFree (list);
+  XFree (windows);
 
   window = NULL;
   if (nautilus != None)
