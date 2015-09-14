@@ -1,5 +1,9 @@
 NULL =
 
+SUBDIRS = \
+	sessions \
+	$(NULL)
+
 libexec_SCRIPTS = \
 	gnome-flashback-compiz \
 	gnome-flashback-metacity \
@@ -15,13 +19,6 @@ gnome-flashback-metacity: Makefile
 
 menudir   = $(sysconfdir)/xdg/menus
 menu_DATA = gnome-flashback-applications.menu
-
-sessiondir       = $(datadir)/gnome-session/sessions
-session_in_files = gnome-flashback-compiz.session.in gnome-flashback-metacity.session.in
-session_DATA     = $(session_in_files:.session.in=.session)
-
-%.session: %.session.in
-	$(AM_V_GEN) $(MSGFMT) --desktop --template $< -o $@-t -d $(top_srcdir)/po && mv $@-t $@
 
 autostartdir       = $(sysconfdir)/xdg/autostart
 autostart_in_files = gnome-flashback-nm-applet.desktop.in gnome-flashback-screensaver.desktop.in
@@ -60,7 +57,6 @@ EXTRA_DIST = \
 	$(autostart_in_files) \
 	$(desktop_in_files) \
 	$(menu_DATA) \
-	$(session_in_files) \
 	$(xsession_in_in_files) \
 	$(gsettings_SCHEMAS) \
 	$(directory_in_files) \
@@ -71,7 +67,6 @@ CLEANFILES = \
 	$(desktop_DATA) \
 	gnome-flashback-compiz \
 	gnome-flashback-metacity \
-	$(session_DATA) \
 	$(xsession_in_files) \
 	$(xsession_DATA) \
 	*.gschema.valid \
