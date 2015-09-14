@@ -9,7 +9,6 @@ libdisplay_config_la_CFLAGS = \
 	$(WARN_CFLAGS) \
 	$(AM_CFLAGS) \
 	-I$(top_builddir)/gnome-flashback/libdisplay-config \
-	-DLOCALE_DIR=\""$(datadir)/locale"\" \
 	$(NULL)
 
 libdisplay_config_la_SOURCES = \

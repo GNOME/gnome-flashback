@@ -9,7 +9,6 @@ libpolkit_la_CFLAGS = \
 	$(WARN_CFLAGS) \
 	$(AM_CFLAGS) \
 	-I$(top_builddir)/gnome-flashback/libpolkit \
-	-DLOCALE_DIR=\""$(datadir)/locale"\" \
 	-DPOLKIT_AGENT_I_KNOW_API_IS_SUBJECT_TO_CHANGE \
 	$(NULL)
 
