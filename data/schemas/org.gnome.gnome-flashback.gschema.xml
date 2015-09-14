@@ -37,6 +37,12 @@
       <description>If set to true, then GNOME Flashback application will be used for user activity monitoring.</description>
     </key>
 
+    <key name="input-sources" type="b">
+      <default>true</default>
+      <summary>Keyboard layouts and input methods</summary>
+      <description>If set to true, then GNOME Flashback application will be used to manage keyboard layouts and input methods.</description>
+    </key>
+
     <key name="polkit" type="b">
       <default>true</default>
       <summary>Authentication agent for polkit</summary>

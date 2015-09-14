@@ -70,6 +70,10 @@ PKG_CHECK_MODULES(IDLE_MONITOR, gtk+-3.0 >= $GTK_REQUIRED x11 xext)
 AC_SUBST(IDLE_MONITOR_CFLAGS)
 AC_SUBST(IDLE_MONITOR_LIBS)
 
+PKG_CHECK_MODULES([INPUT_SOURCES], [gtk+-3.0 >= $GTK_REQUIRED])
+AC_SUBST([INPUT_SOURCES_CFLAGS])
+AC_SUBST([INPUT_SOURCES_LIBS])
+
 PKG_CHECK_MODULES(POLKIT, gtk+-3.0 >= $GTK_REQUIRED glib-2.0 >= $GLIB_REQUIRED polkit-agent-1 >= $POLKIT_AGENT_REQUIRED polkit-gobject-1 >= $POLKIT_GOBJECT_REQUIRED)
 AC_SUBST(POLKIT_CFLAGS)
 AC_SUBST(POLKIT_LIBS)
@@ -120,6 +124,7 @@ gnome-flashback/libdesktop-background/Makefile
 gnome-flashback/libdisplay-config/Makefile
 gnome-flashback/libend-session-dialog/Makefile
 gnome-flashback/libidle-monitor/Makefile
+gnome-flashback/libinput-sources/Makefile
 gnome-flashback/libpolkit/Makefile
 gnome-flashback/libpower-applet/Makefile
 gnome-flashback/libscreencast/Makefile
