@@ -1,6 +1,7 @@
 NULL =
 
 SUBDIRS = \
+	applications \
 	autostart \
 	sessions \
 	xsessions \
@@ -22,13 +23,6 @@ gnome-flashback-metacity: Makefile
 menudir   = $(sysconfdir)/xdg/menus
 menu_DATA = gnome-flashback-applications.menu
 
-desktopdir       = $(datadir)/applications
-desktop_in_files = gnome-flashback.desktop.in gnome-flashback-init.desktop.in
-desktop_DATA     = $(desktop_in_files:.desktop.in=.desktop)
-
-%.desktop: %.desktop.in
-	$(AM_V_GEN) $(MSGFMT) --desktop --template $< -o $@-t -d $(top_srcdir)/po && mv $@-t $@
-
 directorydir = $(datadir)/desktop-directories
 
 directory_in_files =					\
@@ -44,14 +38,12 @@ gsettings_SCHEMAS = org.gnome.gnome-flashback.gschema.xml
 @GSETTINGS_RULES@
 
 EXTRA_DIST = \
-	$(desktop_in_files) \
 	$(menu_DATA) \
 	$(gsettings_SCHEMAS) \
 	$(directory_in_files) \
 	$(NULL)
 
 CLEANFILES = \
-	$(desktop_DATA) \
 	gnome-flashback-compiz \
 	gnome-flashback-metacity \
 	*.gschema.valid \

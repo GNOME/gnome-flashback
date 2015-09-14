@@ -106,6 +106,7 @@ PKG_CHECK_EXISTS([xrandr >= 1.5.0], AC_DEFINE([HAVE_XRANDR15], [1], [Define if y
 AC_CONFIG_FILES([
 Makefile
 data/Makefile
+data/applications/Makefile
 data/autostart/Makefile
 data/sessions/Makefile
 data/xsessions/Makefile
