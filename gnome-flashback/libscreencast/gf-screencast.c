@@ -18,7 +18,7 @@
 #include <config.h>
 #include <gtk/gtk.h>
 #include "flashback-dbus-screencast.h"
-#include "flashback-screencast.h"
+#include "gf-screencast.h"
 
 #define SHELL_DBUS_NAME "org.gnome.Shell"
 #define SCREENCAST_DBUS_PATH "/org/gnome/Shell/Screencast"

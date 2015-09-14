@@ -14,8 +14,8 @@ libscreencast_la_CFLAGS = \
 libscreencast_la_SOURCES = \
 	flashback-dbus-screencast.c \
 	flashback-dbus-screencast.h \
-	flashback-screencast.c \
-	flashback-screencast.h \
+	gf-screencast.c \
+	gf-screencast.h \
 	$(NULL)
 
 libscreencast_la_LDFLAGS = \

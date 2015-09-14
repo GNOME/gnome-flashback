@@ -29,7 +29,7 @@
 #include "libidle-monitor/flashback-idle-monitor.h"
 #include "libpolkit/flashback-polkit.h"
 #include "libpower-applet/gf-power-applet.h"
-#include "libscreencast/flashback-screencast.h"
+#include "libscreencast/gf-screencast.h"
 #include "libscreenshot/gf-screenshot.h"
 #include "libshell/flashback-shell.h"
 #include "libsound-applet/gf-sound-applet.h"
