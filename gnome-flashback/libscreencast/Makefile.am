@@ -12,10 +12,9 @@ libscreencast_la_CFLAGS = \
 	$(NULL)
 
 libscreencast_la_SOURCES = \
-	flashback-dbus-screencast.c \
-	flashback-dbus-screencast.h \
 	gf-screencast.c \
 	gf-screencast.h \
+	$(BUILT_SOURCES)
 	$(NULL)
 
 libscreencast_la_LDFLAGS = \
@@ -27,19 +26,19 @@ libscreencast_la_LIBADD = \
 	$(SCREENCAST_LIBS) \
 	$(NULL)
 
-flashback-dbus-screencast.h:
-flashback-dbus-screencast.c: org.gnome.Shell.Screencast.xml
+gf-dbus-screencast.h:
+gf-dbus-screencast.c: org.gnome.Shell.Screencast.xml
 	$(AM_V_GEN) gdbus-codegen \
 		--interface-prefix org.gnome.Shell. \
-		--c-namespace Flashback \
-		--generate-c-code flashback-dbus-screencast \
+		--c-namespace Gf \
+		--generate-c-code gf-dbus-screencast \
 		--annotate "org.gnome.Shell.Screencast" \
 		           "org.gtk.GDBus.C.Name" DBusScreencast \
 		$(srcdir)/org.gnome.Shell.Screencast.xml
 
 BUILT_SOURCES = \
-	flashback-dbus-screencast.c \
-	flashback-dbus-screencast.h \
+	gf-dbus-screencast.c \
+	gf-dbus-screencast.h \
 	$(NULL)
 
 EXTRA_DIST = \

@@ -19,7 +19,7 @@
 
 #include <gtk/gtk.h>
 
-#include "flashback-dbus-screencast.h"
+#include "gf-dbus-screencast.h"
 #include "gf-screencast.h"
 
 #define SCREENCAST_DBUS_NAME "org.gnome.Shell.Screencast"
@@ -36,45 +36,45 @@ struct _GfScreencast
 G_DEFINE_TYPE (GfScreencast, gf_screencast, G_TYPE_OBJECT)
 
 static gboolean
-handle_screencast (FlashbackDBusScreencast *dbus_screencast,
-                   GDBusMethodInvocation   *invocation,
-                   const gchar             *file_template,
-                   GVariant                *options,
-                   gpointer                 user_data)
+handle_screencast (GfDBusScreencast      *dbus_screencast,
+                   GDBusMethodInvocation *invocation,
+                   const gchar           *file_template,
+                   GVariant              *options,
+                   gpointer               user_data)
 {
   g_warning ("screencast: screencast");
-  flashback_dbus_screencast_complete_screencast (dbus_screencast, invocation,
-                                                 FALSE, "");
+  gf_dbus_screencast_complete_screencast (dbus_screencast, invocation,
+                                          FALSE, "");
 
   return TRUE;
 }
 
 static gboolean
-handle_screencast_area (FlashbackDBusScreencast *dbus_screencast,
-                        GDBusMethodInvocation   *invocation,
-                        gint                     x,
-                        gint                     y,
-                        gint                     width,
-                        gint                     height,
-                        const gchar             *file_template,
-                        GVariant                *options,
-                        gpointer                 user_data)
+handle_screencast_area (GfDBusScreencast      *dbus_screencast,
+                        GDBusMethodInvocation *invocation,
+                        gint                   x,
+                        gint                   y,
+                        gint                   width,
+                        gint                   height,
+                        const gchar           *file_template,
+                        GVariant              *options,
+                        gpointer               user_data)
 {
   g_warning ("screencast: screencast-area");
-  flashback_dbus_screencast_complete_screencast_area (dbus_screencast, invocation,
-                                                      FALSE, "");
+  gf_dbus_screencast_complete_screencast_area (dbus_screencast, invocation,
+                                               FALSE, "");
 
   return TRUE;
 }
 
 static gboolean
-handle_stop_screencast (FlashbackDBusScreencast *dbus_screencast,
-                        GDBusMethodInvocation   *invocation,
-                        gpointer                 user_data)
+handle_stop_screencast (GfDBusScreencast      *dbus_screencast,
+                        GDBusMethodInvocation *invocation,
+                        gpointer               user_data)
 {
   g_warning ("screencast: stop-screencast");
-  flashback_dbus_screencast_complete_stop_screencast (dbus_screencast, invocation,
-                                                      TRUE);
+  gf_dbus_screencast_complete_stop_screencast (dbus_screencast, invocation,
+                                               TRUE);
 
   return TRUE;
 }
@@ -86,11 +86,11 @@ name_appeared_handler (GDBusConnection *connection,
                        gpointer         user_data)
 {
   GfScreencast *screencast;
-  FlashbackDBusScreencast *skeleton;
+  GfDBusScreencast *skeleton;
   GError *error;
 
   screencast = GF_SCREENCAST (user_data);
-  skeleton = flashback_dbus_screencast_skeleton_new ();
+  skeleton = gf_dbus_screencast_skeleton_new ();
 
   g_signal_connect (skeleton, "handle-screencast",
                     G_CALLBACK (handle_screencast), screencast);
