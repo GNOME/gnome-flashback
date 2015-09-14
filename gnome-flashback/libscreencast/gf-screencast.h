@@ -15,18 +15,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FLASHBACK_SCREENCAST_H
-#define FLASHBACK_SCREENCAST_H
+#ifndef GF_SCREENCAST_H
+#define GF_SCREENCAST_H
 
 #include <glib-object.h>
 
 G_BEGIN_DECLS
 
-#define FLASHBACK_TYPE_SCREENCAST flashback_screencast_get_type ()
-G_DECLARE_FINAL_TYPE (FlashbackScreencast, flashback_screencast,
-                      FLASHBACK, SCREENCAST, GObject)
+#define GF_TYPE_SCREENCAST gf_screencast_get_type ()
+G_DECLARE_FINAL_TYPE (GfScreencast, gf_screencast, GF, SCREENCAST, GObject)
 
-FlashbackScreencast *flashback_screencast_new (void);
+GfScreencast *gf_screencast_new (void);
 
 G_END_DECLS
 

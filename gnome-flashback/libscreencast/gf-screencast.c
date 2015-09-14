@@ -15,23 +15,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "config.h"
+
 #include <gtk/gtk.h>
+
 #include "flashback-dbus-screencast.h"
 #include "gf-screencast.h"
 
-#define SHELL_DBUS_NAME "org.gnome.Shell"
+#define SCREENCAST_DBUS_NAME "org.gnome.Shell.Screencast"
 #define SCREENCAST_DBUS_PATH "/org/gnome/Shell/Screencast"
 
-struct _FlashbackScreencast
+struct _GfScreencast
 {
-  GObject                  parent;
+  GObject                 parent;
 
-  gint                     bus_name;
-  GDBusInterfaceSkeleton  *iface;
+  gint                    bus_name;
+  GDBusInterfaceSkeleton *iface;
 };
 
-G_DEFINE_TYPE (FlashbackScreencast, flashback_screencast, G_TYPE_OBJECT)
+G_DEFINE_TYPE (GfScreencast, gf_screencast, G_TYPE_OBJECT)
 
 static gboolean
 handle_screencast (FlashbackDBusScreencast *dbus_screencast,
@@ -83,11 +85,11 @@ name_appeared_handler (GDBusConnection *connection,
                        const gchar     *name_owner,
                        gpointer         user_data)
 {
-  FlashbackScreencast *screencast;
+  GfScreencast *screencast;
   FlashbackDBusScreencast *skeleton;
   GError *error;
 
-  screencast = FLASHBACK_SCREENCAST (user_data);
+  screencast = GF_SCREENCAST (user_data);
   skeleton = flashback_dbus_screencast_skeleton_new ();
 
   g_signal_connect (skeleton, "handle-screencast",
@@ -111,11 +113,11 @@ name_appeared_handler (GDBusConnection *connection,
 }
 
 static void
-flashback_screencast_finalize (GObject *object)
+gf_screencast_finalize (GObject *object)
 {
-  FlashbackScreencast *screencast;
+  GfScreencast *screencast;
 
-  screencast = FLASHBACK_SCREENCAST (object);
+  screencast = GF_SCREENCAST (object);
 
   if (screencast->bus_name)
     {
@@ -123,24 +125,24 @@ flashback_screencast_finalize (GObject *object)
       screencast->bus_name = 0;
     }
 
-  G_OBJECT_CLASS (flashback_screencast_parent_class)->finalize (object);
+  G_OBJECT_CLASS (gf_screencast_parent_class)->finalize (object);
 }
 
 static void
-flashback_screencast_class_init (FlashbackScreencastClass *screencast_class)
+gf_screencast_class_init (GfScreencastClass *screencast_class)
 {
   GObjectClass *object_class;
 
   object_class = G_OBJECT_CLASS (screencast_class);
 
-  object_class->finalize = flashback_screencast_finalize;
+  object_class->finalize = gf_screencast_finalize;
 }
 
 static void
-flashback_screencast_init (FlashbackScreencast *screencast)
+gf_screencast_init (GfScreencast *screencast)
 {
   screencast->bus_name = g_bus_watch_name (G_BUS_TYPE_SESSION,
-                                           SHELL_DBUS_NAME,
+                                           SCREENCAST_DBUS_NAME,
                                            G_BUS_NAME_WATCHER_FLAGS_NONE,
                                            name_appeared_handler,
                                            NULL,
@@ -148,8 +150,8 @@ flashback_screencast_init (FlashbackScreencast *screencast)
                                            NULL);
 }
 
-FlashbackScreencast *
-flashback_screencast_new (void)
+GfScreencast *
+gf_screencast_new (void)
 {
-	return g_object_new (FLASHBACK_TYPE_SCREENCAST, NULL);
+  return g_object_new (GF_TYPE_SCREENCAST, NULL);
 }
