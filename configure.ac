@@ -110,6 +110,7 @@ data/applications/Makefile
 data/autostart/Makefile
 data/directories/Makefile
 data/menus/Makefile
+data/schemas/Makefile
 data/sessions/Makefile
 data/xsessions/Makefile
 gnome-flashback/Makefile
