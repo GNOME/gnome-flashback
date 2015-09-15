@@ -418,6 +418,7 @@ static GdkWindow *
 find_current_window (GdkDisplay *display)
 {
   GdkWindow *window;
+  GdkWindow *toplevel;
 
   window = find_active_window ();
 
@@ -430,17 +431,26 @@ find_current_window (GdkDisplay *display)
       device = gdk_device_manager_get_client_pointer (manager);
 
       window = gdk_device_get_window_at_position (device, NULL, NULL);
+
+      if (window)
+        g_object_ref (window);
     }
 
   if (window)
     {
       if (window_is_desktop (window))
-        return NULL;
+        {
+          g_object_unref (window);
+          return NULL;
+        }
 
-      window = gdk_window_get_toplevel (window);
+      toplevel = gdk_window_get_toplevel (window);
+
+      g_object_unref (window);
+      return toplevel;
     }
 
-  return window;
+  return NULL;
 }
 
 static GdkWindow *
