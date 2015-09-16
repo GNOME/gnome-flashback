@@ -4,7 +4,7 @@
          xmlns:gnome="http://api.gnome.org/doap-extensions#"
          xmlns="http://usefulinc.com/ns/doap#">
 
-  <name xml:lang="en">GNOME Flashback</name>
+  <name xml:lang="en">gnome-flashback</name>
   <shortdesc xml:lang="en">GNOME Flashback session</shortdesc>
   <description>GNOME Flashback provides unofficial session and helper application.
 
