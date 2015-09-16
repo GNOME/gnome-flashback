@@ -31,6 +31,8 @@ struct _GfBluetoothApplet
 {
   GObject          parent;
 
+  gint             bus_name_id;
+
   GtkStatusIcon   *status_icon;
   GfSdRfkill      *rfkill;
   BluetoothClient *client;
@@ -255,9 +257,7 @@ gf_bluetooth_applet_sync (GfBluetoothApplet *applet)
 
   if (devices == -1)
     {
-      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-      gtk_status_icon_set_visible (applet->status_icon, FALSE);
-      G_GNUC_END_IGNORE_DEPRECATIONS
+      g_clear_object (&applet->status_icon);
 
       return;
     }
@@ -289,6 +289,14 @@ gf_bluetooth_applet_sync (GfBluetoothApplet *applet)
     }
 
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
+  if (applet->status_icon == NULL)
+    {
+      applet->status_icon = gtk_status_icon_new ();
+
+      g_signal_connect (applet->status_icon, "popup-menu",
+                        G_CALLBACK (popup_menu_cb), applet);
+    }
 
   gtk_status_icon_set_title (applet->status_icon, title);
   gtk_status_icon_set_from_icon_name (applet->status_icon, icon_name);
@@ -330,12 +338,6 @@ rfkill_proxy_ready_cb (GObject      *source_object,
     {
       g_warning ("Failed to get Rfkill proxy - %s", error->message);
       g_error_free (error);
-
-      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-
-      gtk_status_icon_set_visible (applet->status_icon, FALSE);
-
-      G_GNUC_END_IGNORE_DEPRECATIONS
 
       return;
     }
@@ -385,11 +387,42 @@ row_inserted_cb (GtkTreeModel *tree_model,
 }
 
 static void
+name_appeared_handler (GDBusConnection *connection,
+                       const gchar     *name,
+                       const gchar     *name_owner,
+                       gpointer         user_data)
+{
+  gf_sd_rfkill_proxy_new_for_bus (G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE,
+                                  GSM_DBUS_NAME, GSM_DBUS_PATH, NULL,
+                                  rfkill_proxy_ready_cb, user_data);
+}
+
+static void
+name_vanished_handler (GDBusConnection *connection,
+                       const gchar     *name,
+                       gpointer         user_data)
+{
+  GfBluetoothApplet *applet;
+
+  applet = GF_BLUETOOTH_APPLET (user_data);
+
+  g_clear_object (&applet->rfkill);
+
+  gf_bluetooth_applet_sync (applet);
+}
+
+static void
 gf_bluetooth_applet_dispose (GObject *object)
 {
   GfBluetoothApplet *applet;
 
   applet = GF_BLUETOOTH_APPLET (object);
+
+  if (applet->bus_name_id)
+    {
+      g_bus_unwatch_name (applet->bus_name_id);
+      applet->bus_name_id = 0;
+    }
 
   g_clear_object (&applet->status_icon);
   g_clear_object (&applet->rfkill);
@@ -412,25 +445,11 @@ gf_bluetooth_applet_class_init (GfBluetoothAppletClass *applet_class)
 static void
 gf_bluetooth_applet_init (GfBluetoothApplet *applet)
 {
-  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-
-  applet->status_icon = gtk_status_icon_new_from_icon_name ("bluetooth-active");
-
-  gtk_status_icon_set_title (applet->status_icon, _("Bluetooth"));
-  gtk_status_icon_set_tooltip_text (applet->status_icon, _("Bluetooth"));
-
-  G_GNUC_END_IGNORE_DEPRECATIONS
-
-  g_signal_connect (applet->status_icon, "popup-menu",
-                    G_CALLBACK (popup_menu_cb), applet);
-
-  gf_sd_rfkill_proxy_new_for_bus (G_BUS_TYPE_SESSION,
-                                  G_DBUS_PROXY_FLAGS_NONE,
-                                  GSM_DBUS_NAME,
-                                  GSM_DBUS_PATH,
-                                  NULL,
-                                  rfkill_proxy_ready_cb,
-                                  applet);
+  applet->bus_name_id = g_bus_watch_name (G_BUS_TYPE_SESSION, GSM_DBUS_NAME,
+                                          G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                          name_appeared_handler,
+                                          name_vanished_handler,
+                                          applet, NULL);
 
   applet->client = bluetooth_client_new ();
   applet->model = bluetooth_client_get_model (applet->client);
@@ -441,6 +460,8 @@ gf_bluetooth_applet_init (GfBluetoothApplet *applet)
                     G_CALLBACK (row_deleted_cb), applet);
   g_signal_connect (applet->model, "row-inserted",
                     G_CALLBACK (row_inserted_cb), applet);
+
+  gf_bluetooth_applet_sync (applet);
 }
 
 GfBluetoothApplet *
