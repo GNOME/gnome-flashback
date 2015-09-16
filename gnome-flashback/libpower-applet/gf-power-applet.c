@@ -32,6 +32,8 @@ struct _GfPowerApplet
 {
   GObject         parent;
 
+  gint            bus_name_id;
+
   GtkStatusIcon  *status_icon;
   GfUPowerDevice *device;
 };
@@ -236,6 +238,14 @@ gf_power_applet_sync (GfPowerApplet *applet)
 
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
+  if (applet->status_icon == NULL)
+    {
+      applet->status_icon = gtk_status_icon_new ();
+
+      g_signal_connect (applet->status_icon, "popup-menu",
+                        G_CALLBACK (popup_menu_cb), applet);
+    }
+
   icon_name = get_icon_name (applet);
   gtk_status_icon_set_from_icon_name (applet->status_icon, icon_name);
   g_free (icon_name);
@@ -284,12 +294,6 @@ device_proxy_ready_cb (GObject      *source_object,
       g_warning ("Failed to get UPower device proxy - %s", error->message);
       g_error_free (error);
 
-      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-
-      gtk_status_icon_set_visible (applet->status_icon, FALSE);
-
-      G_GNUC_END_IGNORE_DEPRECATIONS
-
       return;
     }
 
@@ -300,11 +304,45 @@ device_proxy_ready_cb (GObject      *source_object,
 }
 
 static void
+name_appeared_handler (GDBusConnection *connection,
+                       const gchar     *name,
+                       const gchar     *name_owner,
+                       gpointer         user_data)
+{
+  gf_upower_device_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
+                                      G_DBUS_PROXY_FLAGS_NONE,
+                                      UPOWER_DBUS_NAME,
+                                      UPOWER_DEVICE_DBUS_PATH,
+                                      NULL,
+                                      device_proxy_ready_cb,
+                                      user_data);
+}
+
+static void
+name_vanished_handler (GDBusConnection *connection,
+                       const gchar     *name,
+                       gpointer         user_data)
+{
+  GfPowerApplet *applet;
+
+  applet = GF_POWER_APPLET (user_data);
+
+  g_clear_object (&applet->status_icon);
+  g_clear_object (&applet->device);
+}
+
+static void
 gf_power_applet_dispose (GObject *object)
 {
   GfPowerApplet *applet;
 
   applet = GF_POWER_APPLET (object);
+
+  if (applet->bus_name_id)
+    {
+      g_bus_unwatch_name (applet->bus_name_id);
+      applet->bus_name_id = 0;
+    }
 
   g_clear_object (&applet->status_icon);
   g_clear_object (&applet->device);
@@ -325,25 +363,12 @@ gf_power_applet_class_init (GfPowerAppletClass *applet_class)
 static void
 gf_power_applet_init (GfPowerApplet *applet)
 {
-  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-
-  applet->status_icon = gtk_status_icon_new_from_icon_name ("battery");
-
-  gtk_status_icon_set_title (applet->status_icon, _("Power status"));
-  gtk_status_icon_set_tooltip_text (applet->status_icon, _("Power"));
-
-  G_GNUC_END_IGNORE_DEPRECATIONS
-
-  g_signal_connect (applet->status_icon, "popup-menu",
-                    G_CALLBACK (popup_menu_cb), applet);
-
-  gf_upower_device_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
-                                      G_DBUS_PROXY_FLAGS_NONE,
-                                      UPOWER_DBUS_NAME,
-                                      UPOWER_DEVICE_DBUS_PATH,
-                                      NULL,
-                                      device_proxy_ready_cb,
-                                      applet);
+  applet->bus_name_id = g_bus_watch_name (G_BUS_TYPE_SYSTEM,
+                                          UPOWER_DBUS_NAME,
+                                          G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                          name_appeared_handler,
+                                          name_vanished_handler,
+                                          applet, NULL);
 }
 
 GfPowerApplet *
