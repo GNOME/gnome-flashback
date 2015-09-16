@@ -331,6 +331,12 @@ rfkill_proxy_ready_cb (GObject      *source_object,
       g_warning ("Failed to get Rfkill proxy - %s", error->message);
       g_error_free (error);
 
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
+      gtk_status_icon_set_visible (applet->status_icon, FALSE);
+
+      G_GNUC_END_IGNORE_DEPRECATIONS
+
       return;
     }
 
@@ -410,7 +416,6 @@ gf_bluetooth_applet_init (GfBluetoothApplet *applet)
 
   applet->status_icon = gtk_status_icon_new_from_icon_name ("bluetooth-active");
 
-  gtk_status_icon_set_visible (applet->status_icon, FALSE);
   gtk_status_icon_set_title (applet->status_icon, _("Bluetooth"));
   gtk_status_icon_set_tooltip_text (applet->status_icon, _("Bluetooth"));
 
@@ -436,8 +441,6 @@ gf_bluetooth_applet_init (GfBluetoothApplet *applet)
                     G_CALLBACK (row_deleted_cb), applet);
   g_signal_connect (applet->model, "row-inserted",
                     G_CALLBACK (row_inserted_cb), applet);
-
-  gf_bluetooth_applet_sync (applet);
 }
 
 GfBluetoothApplet *
