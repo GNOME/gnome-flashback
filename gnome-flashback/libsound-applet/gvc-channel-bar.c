@@ -378,7 +378,8 @@ gvc_channel_bar_scroll (GvcChannelBar *bar, GdkEventScroll *event)
         g_return_val_if_fail (bar != NULL, FALSE);
         g_return_val_if_fail (GVC_IS_CHANNEL_BAR (bar), FALSE);
 
-        direction = event->direction;
+        if (!gdk_event_get_scroll_direction ((GdkEvent*) event, &direction))
+                return FALSE;
 
         if (bar->priv->orientation == GTK_ORIENTATION_VERTICAL) {
                 if (direction == GDK_SCROLL_LEFT || direction == GDK_SCROLL_RIGHT)
