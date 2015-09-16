@@ -5,7 +5,7 @@
          xmlns="http://usefulinc.com/ns/doap#">
 
   <name xml:lang="en">gnome-flashback</name>
-  <shortdesc xml:lang="en">GNOME Flashback session</shortdesc>
+  <shortdesc xml:lang="en">GNOME Flashback session and helper application</shortdesc>
   <description>GNOME Flashback provides unofficial session and helper application.
 
 This session consists of gnome-applets, gnome-flashback, gnome-panel and
