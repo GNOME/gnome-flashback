@@ -95,7 +95,7 @@ gf_desktop_window_new (void)
                          "resizable", FALSE,
                          "skip-pager-hint", TRUE,
                          "skip-taskbar-hint", TRUE,
-                         "type", GTK_WINDOW_POPUP,
+                         "type", GTK_WINDOW_TOPLEVEL,
                          "type-hint", GDK_WINDOW_TYPE_HINT_DESKTOP,
                          NULL);
 
