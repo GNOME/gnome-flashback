@@ -16,7 +16,7 @@
  */
 
 #include "config.h"
-#include "gf-desktop-window.h"
+#include "gf-background-window.h"
 
 struct _GfDesktopWindow
 {

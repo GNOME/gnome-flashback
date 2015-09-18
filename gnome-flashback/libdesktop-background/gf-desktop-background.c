@@ -22,8 +22,8 @@
 #include <libgnome-desktop/gnome-bg.h>
 #include <X11/Xatom.h>
 
+#include "gf-background-window.h"
 #include "gf-desktop-background.h"
-#include "gf-desktop-window.h"
 
 #define DESKTOP_BG "org.gnome.desktop.background"
 #define GNOME_FLASHBACK_BG "org.gnome.gnome-flashback.desktop-background"
