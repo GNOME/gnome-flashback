@@ -18,6 +18,8 @@ libinput_sources_la_SOURCES = \
 	gf-ibus-manager.h \
 	gf-input-sources.c \
 	gf-input-sources.h \
+	gf-input-source-manager.c \
+	gf-input-source-manager.h \
 	$(NULL)
 
 libinput_sources_la_LDFLAGS = \

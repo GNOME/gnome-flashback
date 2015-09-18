@@ -19,12 +19,14 @@
 
 #include "gf-ibus-manager.h"
 #include "gf-input-sources.h"
+#include "gf-input-source-manager.h"
 
 struct _GfInputSources
 {
-  GObject        parent;
+  GObject               parent;
 
-  GfIBusManager *ibus_manager;
+  GfIBusManager        *ibus_manager;
+  GfInputSourceManager *input_source_manager;
 };
 
 G_DEFINE_TYPE (GfInputSources, gf_input_sources, G_TYPE_OBJECT)
@@ -37,6 +39,7 @@ gf_input_sources_dispose (GObject *object)
   sources = GF_INPUT_SOURCES (object);
 
   g_clear_object (&sources->ibus_manager);
+  g_clear_object (&sources->input_source_manager);
 
   G_OBJECT_CLASS (gf_input_sources_parent_class)->dispose (object);
 }
@@ -55,6 +58,7 @@ static void
 gf_input_sources_init (GfInputSources *sources)
 {
   sources->ibus_manager = gf_ibus_manager_new ();
+  sources->input_source_manager = gf_input_source_manager_new (sources->ibus_manager);
 }
 
 GfInputSources *
