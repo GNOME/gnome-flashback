@@ -260,6 +260,62 @@ event_filter_func (GdkXEvent *xevent,
 }
 
 static void
+update_wm_hints (Display *display,
+                 Window   window)
+{
+  XWMHints wm_hints;
+
+  wm_hints.flags = InputHint;
+  wm_hints.input = False;
+
+  gdk_error_trap_push ();
+  XSetWMHints (display, window, &wm_hints);
+  gdk_error_trap_pop_ignored ();
+}
+
+static void
+update_wm_protocols (Display *display,
+                     Window   window)
+{
+  Atom *protocols;
+  int count;
+  Atom take_focus;
+  int i;
+
+  if (XGetWMProtocols (display, window, &protocols, &count) == 0)
+    return;
+
+  take_focus = XInternAtom (display, "WM_TAKE_FOCUS", False);
+
+  for (i = 0; i < count; i++)
+    {
+      if (protocols[i] == take_focus)
+        {
+          protocols[i] = None;
+          break;
+        }
+    }
+
+  XSetWMProtocols (display, window, protocols, count);
+  XFree (protocols);
+}
+
+static void
+set_no_input_and_no_focus (GdkWindow *window)
+{
+  GdkDisplay *display;
+  Display *xdisplay;
+  Window xwindow;
+
+  display = gdk_display_get_default ();
+  xdisplay = gdk_x11_display_get_xdisplay (display);
+  xwindow = gdk_x11_window_get_xid (window);
+
+  update_wm_hints (xdisplay, xwindow);
+  update_wm_protocols (xdisplay, xwindow);
+}
+
+static void
 gf_background_window_screen_changed (GdkScreen *screen,
                                      gpointer   user_data)
 {
@@ -332,6 +388,8 @@ gf_background_window_realize (GtkWidget *widget)
 
   window->xbackground = gdk_x11_window_get_xid (gdk_window);
   window->background = gdk_window;
+
+  set_no_input_and_no_focus (gdk_window);
 }
 
 static void
