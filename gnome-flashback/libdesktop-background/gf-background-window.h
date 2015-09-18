@@ -15,18 +15,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GF_DESKTOP_WINDOW_H
-#define GF_DESKTOP_WINDOW_H
+#ifndef GF_BACKGROUND_WINDOW_H
+#define GF_BACKGROUND_WINDOW_H
 
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-#define GF_TYPE_DESKTOP_WINDOW gf_desktop_window_get_type ()
-G_DECLARE_FINAL_TYPE (GfDesktopWindow, gf_desktop_window,
-                      GF, DESKTOP_WINDOW, GtkWindow)
+#define GF_TYPE_BACKGROUND_WINDOW gf_background_window_get_type ()
+G_DECLARE_FINAL_TYPE (GfBackgroundWindow, gf_background_window,
+                      GF, BACKGROUND_WINDOW, GtkWindow)
 
-GtkWidget *gf_desktop_window_new (void);
+GtkWidget *gf_background_window_new (void);
 
 G_END_DECLS
 

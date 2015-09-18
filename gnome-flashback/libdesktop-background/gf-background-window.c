@@ -18,22 +18,22 @@
 #include "config.h"
 #include "gf-background-window.h"
 
-struct _GfDesktopWindow
+struct _GfBackgroundWindow
 {
   GtkWindow parent;
 };
 
-G_DEFINE_TYPE (GfDesktopWindow, gf_desktop_window, GTK_TYPE_WINDOW)
+G_DEFINE_TYPE (GfBackgroundWindow, gf_background_window, GTK_TYPE_WINDOW)
 
 static void
 screen_changed (GdkScreen *screen,
                 gpointer   user_data)
 {
-  GfDesktopWindow *window;
+  GfBackgroundWindow *window;
   gint width;
   gint height;
 
-  window = GF_DESKTOP_WINDOW (user_data);
+  window = GF_BACKGROUND_WINDOW (user_data);
   width = gdk_screen_get_width (screen);
   height = gdk_screen_get_height (screen);
 
@@ -44,11 +44,11 @@ screen_changed (GdkScreen *screen,
 }
 
 static void
-gf_desktop_window_map (GtkWidget *widget)
+gf_background_window_map (GtkWidget *widget)
 {
   GdkWindow *window;
 
-  GTK_WIDGET_CLASS (gf_desktop_window_parent_class)->map (widget);
+  GTK_WIDGET_CLASS (gf_background_window_parent_class)->map (widget);
 
   window = gtk_widget_get_window (widget);
 
@@ -56,17 +56,17 @@ gf_desktop_window_map (GtkWidget *widget)
 }
 
 static void
-gf_desktop_window_class_init (GfDesktopWindowClass *window_class)
+gf_background_window_class_init (GfBackgroundWindowClass *window_class)
 {
   GtkWidgetClass *widget_class;
 
   widget_class = GTK_WIDGET_CLASS (window_class);
 
-  widget_class->map = gf_desktop_window_map;
+  widget_class->map = gf_background_window_map;
 }
 
 static void
-gf_desktop_window_init (GfDesktopWindow *window)
+gf_background_window_init (GfBackgroundWindow *window)
 {
   GdkScreen *screen;
 
@@ -84,11 +84,11 @@ gf_desktop_window_init (GfDesktopWindow *window)
 }
 
 GtkWidget *
-gf_desktop_window_new (void)
+gf_background_window_new (void)
 {
   GtkWidget *window;
 
-  window = g_object_new (GF_TYPE_DESKTOP_WINDOW,
+  window = g_object_new (GF_TYPE_BACKGROUND_WINDOW,
                          "accept-focus", FALSE,
                          "app-paintable", TRUE,
                          "decorated", FALSE,
