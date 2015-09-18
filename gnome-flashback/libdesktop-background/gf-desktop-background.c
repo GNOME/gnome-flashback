@@ -17,10 +17,8 @@
 
 #include "config.h"
 
-#include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <libgnome-desktop/gnome-bg.h>
-#include <X11/Xatom.h>
 
 #include "gf-background-window.h"
 #include "gf-desktop-background.h"
@@ -48,162 +46,6 @@ struct _GfDesktopBackground
 };
 
 G_DEFINE_TYPE (GfDesktopBackground, gf_desktop_background, G_TYPE_OBJECT)
-
-static gboolean
-is_nautilus_desktop_manager (void)
-{
-  GdkDisplay *display;
-  Display *xdisplay;
-  GdkScreen *screen;
-  gint screen_number;
-  gchar *name;
-  Atom atom;
-  Window window;
-
-  display = gdk_display_get_default ();
-  xdisplay = GDK_DISPLAY_XDISPLAY (display);
-  screen = gdk_display_get_default_screen (display);
-  screen_number = gdk_screen_get_number (screen);
-
-  name = g_strdup_printf ("_NET_DESKTOP_MANAGER_S%d", screen_number);
-  atom = XInternAtom (xdisplay, name, False);
-  g_free (name);
-
-  window = XGetSelectionOwner (xdisplay, atom);
-
-  if (window != None)
-    return TRUE;
-
-  return FALSE;
-}
-
-static gboolean
-is_desktop_window (Display *display,
-                   Window   window)
-{
-  Atom window_type;
-  Atom desktop;
-  Atom type;
-  Atom *atoms;
-  int result;
-  int format;
-  unsigned long items;
-  unsigned long left;
-
-  window_type = XInternAtom (display, "_NET_WM_WINDOW_TYPE", False);
-  desktop = XInternAtom (display, "_NET_WM_WINDOW_TYPE_DESKTOP", False);
-
-  result = XGetWindowProperty (display, window, window_type,
-                               0L, 1L, False, XA_ATOM, &type, &format,
-                               &items, &left, (unsigned char **) &atoms);
-
-  if (result != Success)
-    return FALSE;
-
-  if (items && atoms[0] == desktop)
-    {
-      XFree (atoms);
-      return TRUE;
-    }
-
-  XFree (atoms);
-  return FALSE;
-}
-
-static GdkWindow *
-get_nautilus_window (GfDesktopBackground *background)
-{
-  GdkDisplay *display;
-  GdkWindow *window;
-  Display *xdisplay;
-  Atom client_list;
-  Window root;
-  Atom type;
-  int result;
-  int format;
-  unsigned long items;
-  unsigned long left;
-  unsigned long i;
-  Window *windows;
-  Window nautilus;
-  GdkWindow *background_window;
-  Window desktop;
-
-  gdk_error_trap_push ();
-
-  display = gdk_display_get_default ();
-  xdisplay = GDK_DISPLAY_XDISPLAY (display);
-  client_list = XInternAtom (xdisplay, "_NET_CLIENT_LIST", False);
-  root = XDefaultRootWindow (xdisplay);
-
-  result = XGetWindowProperty (xdisplay, root, client_list,
-                               0L, 1024L, False, XA_WINDOW, &type, &format,
-                               &items, &left, (unsigned char **) &windows);
-
-  if (result != Success)
-    {
-      gdk_error_trap_pop_ignored ();
-      return NULL;
-    }
-
-  nautilus = None;
-  background_window = gtk_widget_get_window (background->background);
-  desktop = GDK_WINDOW_XID (background_window);
-
-  for (i = 0; i < items; i++)
-    {
-      if (is_desktop_window (xdisplay, windows[i]) && windows[i] != desktop)
-        {
-          nautilus = windows[i];
-          break;
-        }
-    }
-
-  XFree (windows);
-
-  window = NULL;
-  if (nautilus != None)
-    window = gdk_x11_window_foreign_new_for_display (display, nautilus);
-
-  gdk_error_trap_pop_ignored ();
-
-  return window;
-}
-
-static GdkFilterReturn
-event_filter_func (GdkXEvent *xevent,
-                   GdkEvent  *event,
-                   gpointer   data)
-{
-  static gboolean nautilus_raised = FALSE;
-  GfDesktopBackground *background;
-
-  background = GF_DESKTOP_BACKGROUND (data);
-
-  if (is_nautilus_desktop_manager ())
-    {
-      if (nautilus_raised == FALSE)
-        {
-          GdkWindow *nautilus;
-
-          nautilus = get_nautilus_window (background);
-
-          if (GDK_IS_WINDOW (nautilus))
-            {
-              gdk_window_hide (nautilus);
-              gdk_window_show (nautilus);
-
-              nautilus_raised = TRUE;
-            }
-        }
-    }
-  else
-    {
-      nautilus_raised = FALSE;
-    }
-
-  return GDK_FILTER_CONTINUE;
-}
 
 static void
 free_fade (GfDesktopBackground *background)
@@ -484,8 +326,6 @@ gf_desktop_background_finalize (GObject *object)
   g_clear_object (&background->gnome_settings);
   g_clear_object (&background->background_settings);
 
-  gdk_window_remove_filter (NULL, event_filter_func, background);
-
   G_OBJECT_CLASS (gf_desktop_background_parent_class)->finalize (object);
 }
 
@@ -520,8 +360,6 @@ gf_desktop_background_init (GfDesktopBackground *background)
                     G_CALLBACK (size_allocate), background);
 
   queue_background_change (background);
-
-  gdk_window_add_filter (NULL, event_filter_func, background);
 }
 
 GfDesktopBackground *
