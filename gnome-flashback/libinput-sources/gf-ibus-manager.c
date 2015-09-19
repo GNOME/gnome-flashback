@@ -17,8 +17,8 @@
 
 #include "config.h"
 
-#include "gf-ibus-manager.h"
 #include "gf-candidate-popup.h"
+#include "gf-ibus-manager.h"
 
 struct _GfIBusManager
 {
@@ -26,6 +26,18 @@ struct _GfIBusManager
 
   GfCandidatePopup *candidate_popup;
 };
+
+enum
+{
+  SIGNAL_READY,
+  SIGNAL_PROPERTIES_REGISTERED,
+  SIGNAL_PROPERTY_UPDATED,
+  SIGNAL_SET_CONTENT_TYPE,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GfIBusManager, gf_ibus_manager, G_TYPE_OBJECT)
 
@@ -49,6 +61,26 @@ gf_ibus_manager_class_init (GfIBusManagerClass *manager_class)
   object_class = G_OBJECT_CLASS (manager_class);
 
   object_class->dispose = gf_ibus_manager_dispose;
+
+  signals[SIGNAL_READY] =
+    g_signal_new ("ready", G_TYPE_FROM_CLASS (manager_class),
+                  G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 1, G_TYPE_BOOLEAN);
+
+  signals[SIGNAL_PROPERTIES_REGISTERED] =
+    g_signal_new ("properties-registered", G_TYPE_FROM_CLASS (manager_class),
+                  G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 2, G_TYPE_STRING, IBUS_TYPE_PROP_LIST);
+
+  signals[SIGNAL_PROPERTY_UPDATED] =
+    g_signal_new ("property-updated", G_TYPE_FROM_CLASS (manager_class),
+                  G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 2, G_TYPE_STRING, IBUS_TYPE_PROPERTY);
+
+  signals[SIGNAL_SET_CONTENT_TYPE] =
+    g_signal_new ("set-content-type", G_TYPE_FROM_CLASS (manager_class),
+                  G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_UINT);
 }
 
 static void
