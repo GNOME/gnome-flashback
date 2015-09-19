@@ -3,6 +3,7 @@ NULL =
 SUBDIRS = \
 	libautomount-manager \
 	libbluetooth-applet \
+	libcommon \
 	libdesktop-background \
 	libdisplay-config \
 	libend-session-dialog \

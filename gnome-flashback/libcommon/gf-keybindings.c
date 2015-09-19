@@ -23,7 +23,7 @@
 #include <X11/Xlib.h>
 #include <X11/XKBlib.h>
 
-#include "flashback-key-bindings.h"
+#include "gf-keybindings.h"
 
 struct _FlashbackKeyBindingsPrivate {
 	GHashTable *table;

@@ -108,6 +108,11 @@ PKG_CHECK_MODULES([BLUETOOTH_APPLET], [
   gnome-bluetooth-1.0
 ])
 
+PKG_CHECK_MODULES([COMMON], [
+  gtk+-3.0 >= $GTK_REQUIRED
+  x11
+])
+
 PKG_CHECK_MODULES([DESKTOP_BACKGROUND], [
   gtk+-3.0 >= $GTK_REQUIRED
   gnome-desktop-3.0 >= $LIBGNOME_DESKTOP_REQUIRED
@@ -166,7 +171,6 @@ PKG_CHECK_MODULES([SHELL], [
   gtk+-3.0 >= $GTK_REQUIRED
   glib-2.0 >= $GLIB_REQUIRED
   gnome-desktop-3.0 >= $LIBGNOME_DESKTOP_REQUIRED
-  x11
 ])
 
 PKG_CHECK_MODULES([GVC], [
@@ -220,6 +224,7 @@ AC_CONFIG_FILES([
   gnome-flashback/Makefile
   gnome-flashback/libautomount-manager/Makefile
   gnome-flashback/libbluetooth-applet/Makefile
+  gnome-flashback/libcommon/Makefile
   gnome-flashback/libdesktop-background/Makefile
   gnome-flashback/libdisplay-config/Makefile
   gnome-flashback/libend-session-dialog/Makefile

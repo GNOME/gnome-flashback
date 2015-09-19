@@ -10,14 +10,13 @@ libshell_la_CFLAGS = \
 	$(AM_CFLAGS) \
 	-I$(srcdir)/../../gnome-flashback \
 	-I$(top_builddir)/gnome-flashback \
+	-I$(top_builddir)/gnome-flashback/libcommon \
 	-I$(top_builddir)/gnome-flashback/libshell \
 	$(NULL)
 
 libshell_la_SOURCES = \
 	flashback-dbus-shell.c \
 	flashback-dbus-shell.h \
-	flashback-key-bindings.c \
-	flashback-key-bindings.h \
 	flashback-label-window.c \
 	flashback-label-window.h \
 	flashback-monitor-labeler.c \
@@ -37,6 +36,7 @@ libshell_la_LDFLAGS = \
 
 libshell_la_LIBADD = \
 	$(SHELL_LIBS) \
+	$(top_builddir)/gnome-flashback/libcommon/libcommon.la \
 	$(NULL)
 
 flashback-dbus-shell.h:

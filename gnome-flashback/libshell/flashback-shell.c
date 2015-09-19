@@ -17,9 +17,9 @@
 
 #include <config.h>
 #include <gtk/gtk.h>
+#include <libcommon/gf-keybindings.h>
 #include <libdisplay-config/flashback-display-config.h>
 #include "flashback-dbus-shell.h"
-#include "flashback-key-bindings.h"
 #include "flashback-monitor-labeler.h"
 #include "flashback-osd.h"
 #include "flashback-shell.h"
