@@ -20,6 +20,8 @@ libinput_sources_la_SOURCES = \
 	gf-input-sources.h \
 	gf-input-source-manager.c \
 	gf-input-source-manager.h \
+	gf-input-source-settings.c \
+	gf-input-source-settings.h \
 	$(NULL)
 
 libinput_sources_la_LDFLAGS = \

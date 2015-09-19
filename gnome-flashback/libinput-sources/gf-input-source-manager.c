@@ -18,13 +18,16 @@
 #include "config.h"
 
 #include "gf-input-source-manager.h"
+#include "gf-input-source-settings.h"
 #include "gf-ibus-manager.h"
 
 struct _GfInputSourceManager
 {
-  GObject        parent;
+  GObject                parent;
 
-  GfIBusManager *ibus_manager;
+  GfInputSourceSettings *settings;
+
+  GfIBusManager         *ibus_manager;
 };
 
 G_DEFINE_TYPE (GfInputSourceManager, gf_input_source_manager, G_TYPE_OBJECT)
@@ -39,6 +42,49 @@ enum
 };
 
 static GParamSpec *properties[LAST_PROP] = { NULL };
+
+static void
+sources_changed_cb (GfInputSourceSettings *settings,
+                    gpointer               user_data)
+{
+}
+
+static void
+xkb_options_changed_cb (GfInputSourceSettings *settings,
+                        gpointer               user_data)
+{
+}
+
+static void
+per_window_changed_cb (GfInputSourceSettings *settings,
+                       gpointer               user_data)
+{
+}
+
+static void
+input_source_settings_init (GfInputSourceManager *manager)
+{
+  manager->settings = gf_input_source_settings_new ();
+
+  g_signal_connect (manager->settings, "sources-changed",
+                    G_CALLBACK (sources_changed_cb), manager);
+  g_signal_connect (manager->settings, "xkb-options-changed",
+                    G_CALLBACK (xkb_options_changed_cb), manager);
+  g_signal_connect (manager->settings, "per-window-changed",
+                    G_CALLBACK (per_window_changed_cb), manager);
+}
+
+static void
+gf_input_source_manager_dispose (GObject *object)
+{
+  GfInputSourceManager *manager;
+
+  manager = GF_INPUT_SOURCE_MANAGER (object);
+
+  g_clear_object (&manager->settings);
+
+  G_OBJECT_CLASS (gf_input_source_manager_parent_class)->dispose (object);
+}
 
 static void
 gf_input_source_manager_set_property (GObject      *object,
@@ -91,6 +137,7 @@ gf_input_source_manager_class_init (GfInputSourceManagerClass *manager_class)
 
   object_class = G_OBJECT_CLASS (manager_class);
 
+  object_class->dispose = gf_input_source_manager_dispose;
   object_class->get_property = gf_input_source_manager_get_property;
   object_class->set_property = gf_input_source_manager_set_property;
 
@@ -107,6 +154,7 @@ gf_input_source_manager_class_init (GfInputSourceManagerClass *manager_class)
 static void
 gf_input_source_manager_init (GfInputSourceManager *manager)
 {
+  input_source_settings_init (manager);
 }
 
 GfInputSourceManager *
