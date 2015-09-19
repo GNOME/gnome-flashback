@@ -41,7 +41,7 @@ struct _FlashbackShell
   GDBusInterfaceSkeleton  *iface;
 
   /* key-grabber */
-  FlashbackKeyBindings    *bindings;
+  GfKeybindings           *keybindings;
   GHashTable              *grabbed_accelerators;
   GHashTable              *grabbers;
 
@@ -56,10 +56,10 @@ struct _FlashbackShell
 G_DEFINE_TYPE (FlashbackShell, flashback_shell, G_TYPE_OBJECT)
 
 static void
-binding_activated (FlashbackKeyBindings *bindings,
-                   guint                 action,
-                   GVariant             *parameters,
-                   gpointer              user_data)
+accelerator_activated (GfKeybindings *keybindings,
+                       guint          action,
+                       GVariant      *parameters,
+                       gpointer       user_data)
 {
 	FlashbackShell *shell;
 	FlashbackDBusShell *dbus_shell;
@@ -74,14 +74,14 @@ static gint
 real_grab (FlashbackShell *shell,
            const gchar    *accelerator)
 {
-	return flashback_key_bindings_grab (shell->bindings, accelerator);
+  return gf_keybindings_grab (shell->keybindings, accelerator);
 }
 
 static gboolean
 real_ungrab (FlashbackShell *shell,
              gint            action)
 {
-	return flashback_key_bindings_ungrab (shell->bindings, action);
+  return gf_keybindings_ungrab (shell->keybindings, action);
 }
 
 static void
@@ -418,7 +418,7 @@ flashback_shell_finalize (GObject *object)
       shell->grabbers = NULL;
     }
 
-  g_clear_object (&shell->bindings);
+  g_clear_object (&shell->keybindings);
   g_clear_object (&shell->labeler);
   g_clear_object (&shell->osd);
 
@@ -441,9 +441,9 @@ flashback_shell_init (FlashbackShell *shell)
   shell->grabbed_accelerators = g_hash_table_new_full (NULL, NULL, NULL, g_free);
   shell->grabbers = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-  shell->bindings = flashback_key_bindings_new ();
-  g_signal_connect (shell->bindings, "binding-activated",
-                    G_CALLBACK (binding_activated), shell);
+  shell->keybindings = gf_keybindings_new ();
+  g_signal_connect (shell->keybindings, "accelerator-activated",
+                    G_CALLBACK (accelerator_activated), shell);
 
   shell->labeler = flashback_monitor_labeler_new ();
   shell->osd = flashback_osd_new ();

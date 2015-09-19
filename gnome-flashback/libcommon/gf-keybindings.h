@@ -15,45 +15,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FLASHBACK_KEY_BINDINGS_H
-#define FLASHBACK_KEY_BINDINGS_H
+#ifndef GF_KEYBINDINGS_H
+#define GF_KEYBINDINGS_H
 
 #include <glib-object.h>
 
 G_BEGIN_DECLS
 
-#define FLASHBACK_TYPE_KEY_BINDINGS         (flashback_key_bindings_get_type ())
-#define FLASHBACK_KEY_BINDINGS(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), FLASHBACK_TYPE_KEY_BINDINGS, FlashbackKeyBindings))
-#define FLASHBACK_KEY_BINDINGS_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST ((c),    FLASHBACK_TYPE_KEY_BINDINGS, FlashbackKeyBindingsClass))
-#define FLASHBACK_IS_KEY_BINDINGS(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), FLASHBACK_TYPE_KEY_BINDINGS))
-#define FLASHBACK_IS_KEY_BINDINGS_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE ((c),    FLASHBACK_TYPE_KEY_BINDINGS))
-#define FLASHBACK_KEY_BINDINGS_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS((o),   FLASHBACK_TYPE_KEY_BINDINGS, FlashbackKeyBindingsClass))
+#define GF_TYPE_KEYBINDINGS gf_keybindings_get_type ()
+G_DECLARE_FINAL_TYPE (GfKeybindings, gf_keybindings, GF, KEYBINDINGS, GObject)
 
-typedef struct _FlashbackKeyBindings        FlashbackKeyBindings;
-typedef struct _FlashbackKeyBindingsClass   FlashbackKeyBindingsClass;
-typedef struct _FlashbackKeyBindingsPrivate FlashbackKeyBindingsPrivate;
+GfKeybindings *gf_keybindings_new    (void);
 
-struct _FlashbackKeyBindings {
-	GObject                      parent;
-	FlashbackKeyBindingsPrivate *priv;
-};
+guint          gf_keybindings_grab   (GfKeybindings *keybindings,
+                                      const gchar   *accelerator);
 
-struct _FlashbackKeyBindingsClass {
-    GObjectClass parent_class;
-
-	void (*binding_activated) (FlashbackKeyBindings *bindings,
-	                           guint                 action,
-	                           GVariant             *parameters);
-};
-
-GType                 flashback_key_bindings_get_type (void);
-
-FlashbackKeyBindings *flashback_key_bindings_new      (void);
-
-guint                 flashback_key_bindings_grab     (FlashbackKeyBindings *bindings,
-                                                       const gchar          *accelerator);
-gboolean              flashback_key_bindings_ungrab   (FlashbackKeyBindings *bindings,
-                                                       guint                 action);
+gboolean       gf_keybindings_ungrab (GfKeybindings *keybindings,
+                                      guint          action);
 
 G_END_DECLS
 

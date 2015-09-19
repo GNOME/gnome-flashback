@@ -19,43 +19,166 @@
 
 #include <gtk/gtk.h>
 #include <gtk/gtkx.h>
-
 #include <X11/Xlib.h>
 #include <X11/XKBlib.h>
 
 #include "gf-keybindings.h"
 
-struct _FlashbackKeyBindingsPrivate {
-	GHashTable *table;
+struct _GfKeybindings
+{
+  GObject     parent;
 
-	Display    *xdisplay;
-	Window      xwindow;
+  GHashTable *table;
 
-	guint       ignored_modifier_mask;
+  Display    *xdisplay;
+  Window      xwindow;
+
+  guint       meta_mask;
+  guint       super_mask;
+  guint       hyper_mask;
+  guint       ignore_mask;
 };
 
-enum {
-	BINDING_ACTIVATED,
-	LAST_SIGNAL
+typedef struct
+{
+  const gchar *name;
+  guint        action;
+  guint        keyval;
+  guint        keycode;
+  guint        modifiers;
+} Keybinding;
+
+enum
+{
+  SIGNAL_ACCELERATOR_ACTIVATED,
+
+  LAST_SIGNAL
 };
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-typedef struct {
-	const gchar *name;
-	guint        action;
-	guint        keyval;
-	guint        keycode;
-	guint        modifiers;
-} KeyBinding;
+G_DEFINE_TYPE (GfKeybindings, gf_keybindings, G_TYPE_OBJECT)
 
-static guint MetaMask = 0;
-static guint SuperMask = 0;
-static guint HyperMask = 0;
-static guint NumLockMask = 0;
-static guint ScrollLockMask = 0;
+static GVariant *
+build_parameters (guint device_id,
+                  guint timestamp,
+                  guint action_mode)
+{
+  GVariantBuilder *builder;
+  GVariant *parameters;
 
-G_DEFINE_TYPE_WITH_PRIVATE (FlashbackKeyBindings, flashback_key_bindings, G_TYPE_OBJECT)
+  builder = g_variant_builder_new (G_VARIANT_TYPE ("a{sv}"));
+
+  g_variant_builder_add (builder, "{sv}", "device-id",
+                         g_variant_new_uint32 (device_id));
+  g_variant_builder_add (builder, "{sv}", "timestamp",
+                         g_variant_new_uint32 (timestamp));
+  g_variant_builder_add (builder, "{sv}", "action-mode",
+                         g_variant_new_uint32 (action_mode));
+
+  parameters = g_variant_new ("a{sv}", builder);
+  g_variant_builder_unref (builder);
+
+  return parameters;
+}
+
+static GdkFilterReturn
+filter_func (GdkXEvent *xevent,
+             GdkEvent  *event,
+             gpointer   user_data)
+{
+  GfKeybindings *keybindings;
+  XEvent *ev;
+  GList *values;
+  GList *l;
+
+  keybindings = GF_KEYBINDINGS (user_data);
+  ev = (XEvent *) xevent;
+
+  XAllowEvents (keybindings->xdisplay, AsyncKeyboard, ev->xkey.time);
+
+  if (ev->type != KeyPress)
+    return GDK_FILTER_CONTINUE;
+
+  values = g_hash_table_get_values (keybindings->table);
+
+  for (l = values; l; l = l->next)
+    {
+      Keybinding *keybinding;
+      guint state;
+
+      keybinding = (Keybinding *) l->data;
+      state = ev->xkey.state & 0xff & ~(keybindings->ignore_mask);
+
+      if (keybinding->keycode == ev->xkey.keycode &&
+          keybinding->modifiers == state)
+        {
+          GVariant *parameters;
+
+          parameters = build_parameters (0, 0, 0);
+
+          XUngrabKeyboard (keybindings->xdisplay, ev->xkey.time);
+          g_signal_emit (keybindings, signals[SIGNAL_ACCELERATOR_ACTIVATED],
+                         0, keybinding->action, parameters);
+
+          break;
+        }
+    }
+
+  g_list_free (values);
+
+  return GDK_FILTER_CONTINUE;
+}
+
+static void
+change_keygrab (GfKeybindings *keybindings,
+                gboolean       grab,
+                gint           keyval,
+                guint          keycode,
+                guint          modifiers)
+{
+  guint ignore_mask;
+  gint error_code;
+
+  ignore_mask = 0;
+  while (ignore_mask <= keybindings->ignore_mask)
+    {
+      if (ignore_mask & ~(keybindings->ignore_mask))
+        {
+          ++ignore_mask;
+          continue;
+        }
+
+      gdk_error_trap_push ();
+
+      if (grab)
+        {
+          XGrabKey (keybindings->xdisplay, keycode, modifiers | ignore_mask,
+                    keybindings->xwindow, True, GrabModeAsync, GrabModeSync);
+        }
+      else
+        {
+          XUngrabKey (keybindings->xdisplay, keycode, modifiers | ignore_mask,
+                      keybindings->xwindow);
+        }
+
+      error_code = gdk_error_trap_pop ();
+      if (error_code != 0)
+        {
+          g_debug ("Failed to grab/ ungrab key. Error code - %d", error_code);
+        }
+
+      ++ignore_mask;
+    }
+}
+
+static guint
+get_next_action (void)
+{
+  static guint action;
+
+  return ++action;
+}
 
 static gboolean
 devirtualize_modifiers (GdkModifierType  modifiers,
@@ -75,265 +198,239 @@ devirtualize_modifiers (GdkModifierType  modifiers,
 }
 
 static gboolean
-get_real_modifiers (GdkModifierType  modifiers,
+get_real_modifiers (GfKeybindings   *keybindings,
+                    GdkModifierType  modifiers,
                     guint           *mask)
 {
-	gboolean devirtualized;
+  gboolean devirtualized;
 
-	devirtualized = TRUE;
-	*mask = 0;
+  devirtualized = TRUE;
+  *mask = 0;
 
-	devirtualized &= devirtualize_modifiers (modifiers, GDK_SHIFT_MASK, ShiftMask, mask);
-	devirtualized &= devirtualize_modifiers (modifiers, GDK_CONTROL_MASK, ControlMask, mask);
-	devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD1_MASK, Mod1Mask, mask);
-	devirtualized &= devirtualize_modifiers (modifiers, GDK_META_MASK, MetaMask, mask);
-	devirtualized &= devirtualize_modifiers (modifiers, GDK_HYPER_MASK, HyperMask, mask);
-	devirtualized &= devirtualize_modifiers (modifiers, GDK_SUPER_MASK, SuperMask, mask);
-	devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD2_MASK, Mod2Mask, mask);
-	devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD3_MASK, Mod3Mask, mask);
-	devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD4_MASK, Mod4Mask, mask);
-	devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD5_MASK, Mod5Mask, mask);
+  devirtualized &= devirtualize_modifiers (modifiers, GDK_SHIFT_MASK,
+                                           ShiftMask, mask);
 
-	return devirtualized;
+  devirtualized &= devirtualize_modifiers (modifiers, GDK_CONTROL_MASK,
+                                           ControlMask, mask);
+
+  devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD1_MASK,
+                                           Mod1Mask, mask);
+
+  devirtualized &= devirtualize_modifiers (modifiers, GDK_META_MASK,
+                                           keybindings->meta_mask, mask);
+
+  devirtualized &= devirtualize_modifiers (modifiers, GDK_HYPER_MASK,
+                                           keybindings->hyper_mask, mask);
+
+  devirtualized &= devirtualize_modifiers (modifiers, GDK_SUPER_MASK,
+                                           keybindings->super_mask, mask);
+
+  devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD2_MASK,
+                                           Mod2Mask, mask);
+
+  devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD3_MASK,
+                                           Mod3Mask, mask);
+
+  devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD4_MASK,
+                                           Mod4Mask, mask);
+
+  devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD5_MASK,
+                                           Mod5Mask, mask);
+
+  return devirtualized;
 }
 
-static GVariant *
-build_parameters (guint device_id,
-                  guint timestamp,
-                  guint action_mode)
+static void
+gf_keybindings_dispose (GObject *object)
 {
-  GVariantBuilder *builder;
-  GVariant *parameters;
+  GfKeybindings *keybindings;
 
-  builder = g_variant_builder_new (G_VARIANT_TYPE ("a{sv}"));
-  g_variant_builder_add (builder, "{sv}", "device-id", g_variant_new_uint32 (device_id));
-  g_variant_builder_add (builder, "{sv}", "timestamp", g_variant_new_uint32 (timestamp));
-  g_variant_builder_add (builder, "{sv}", "action-mode", g_variant_new_uint32 (action_mode));
+  keybindings = GF_KEYBINDINGS (object);
 
-  parameters = g_variant_new ("a{sv}", builder);
-  g_variant_builder_unref (builder);
-
-  return parameters;
-}
-
-static GdkFilterReturn
-filter_func (GdkXEvent *xevent,
-             GdkEvent  *event,
-             gpointer   user_data)
-{
-  FlashbackKeyBindings *bindings;
-  XEvent *ev;
-
-  bindings = FLASHBACK_KEY_BINDINGS (user_data);
-  ev = xevent;
-
-  XAllowEvents (bindings->priv->xdisplay, AsyncKeyboard, ev->xkey.time);
-
-  if (ev->type == KeyPress)
+  if (keybindings->table != NULL)
     {
-      GList *values, *l;
-
-      values = g_hash_table_get_values (bindings->priv->table);
-
-      for (l = values; l; l = l->next)
-        {
-          KeyBinding *binding = l->data;
-
-          if (binding->keycode == ev->xkey.keycode &&
-              binding->modifiers == (ev->xkey.state & 0xff & ~(bindings->priv->ignored_modifier_mask)))
-            {
-              GVariant *parameters;
-
-              parameters = build_parameters (0, 0, 0);
-
-              XUngrabKeyboard (bindings->priv->xdisplay, ev->xkey.time);
-              g_signal_emit (bindings, signals[BINDING_ACTIVATED], 0,
-                             binding->action, parameters);
-
-              break;
-            }
-        }
-
-      g_list_free (values);
+      g_hash_table_destroy (keybindings->table);
+      keybindings->table = NULL;
     }
 
-  return GDK_FILTER_CONTINUE;
+  G_OBJECT_CLASS (gf_keybindings_parent_class)->dispose (object);
 }
 
 static void
-flashback_key_bindings_change_keygrab (FlashbackKeyBindings *bindings,
-                                       gboolean              grab,
-                                       gint                  keyval,
-                                       guint                 keycode,
-                                       guint                 modifiers)
+gf_keybindings_finalize (GObject *object)
 {
-	guint ignored_mask;
+  GfKeybindings *keybindings;
 
-	gdk_error_trap_push ();
+  keybindings = GF_KEYBINDINGS (object);
 
-	ignored_mask = 0;
-	while (ignored_mask <= bindings->priv->ignored_modifier_mask) {
-		if (ignored_mask & ~(bindings->priv->ignored_modifier_mask)) {
-			++ignored_mask;
-			continue;
-		}
+  gdk_window_remove_filter (NULL, filter_func, keybindings);
 
-		if (grab)
-			XGrabKey (bindings->priv->xdisplay, keycode,
-			          modifiers | ignored_mask,
-			          bindings->priv->xwindow,
-			          True,
-			          GrabModeAsync, GrabModeSync);
-		else
-			XUngrabKey (bindings->priv->xdisplay, keycode,
-			            modifiers | ignored_mask,
-			            bindings->priv->xwindow);
-
-		++ignored_mask;
-	}
-
-	gdk_error_trap_pop_ignored ();
+  G_OBJECT_CLASS (gf_keybindings_parent_class)->finalize (object);
 }
 
 static void
-flashback_key_bindings_finalize (GObject *object)
+gf_keybindings_class_init (GfKeybindingsClass *keybindings_class)
 {
-	FlashbackKeyBindings *bindings;
+  GObjectClass *object_class;
 
-	bindings = FLASHBACK_KEY_BINDINGS (object);
+  object_class = G_OBJECT_CLASS (keybindings_class);
 
-	gdk_window_remove_filter (NULL, filter_func, bindings);
+  object_class->dispose = gf_keybindings_dispose;
+  object_class->finalize = gf_keybindings_finalize;
 
-	if (bindings->priv->table) {
-		g_hash_table_destroy (bindings->priv->table);
-		bindings->priv->table = NULL;
-	}
-
-	G_OBJECT_CLASS (flashback_key_bindings_parent_class)->finalize (object);
+  /**
+   * GfKeybindings::accelerator-activated:
+   * @keybindings: the object on which the signal is emitted
+   * @action: keybinding action from gf_keybindings_grab
+   * @parameters: keybinding parameters - a{sv}
+   *
+   * The ::accelerator-activated signal is emitted each time when keybinding
+   * is activated by user.
+   */
+  signals[SIGNAL_ACCELERATOR_ACTIVATED] =
+    g_signal_new ("accelerator-activated",
+                  G_TYPE_FROM_CLASS (keybindings_class),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE,
+                  2, G_TYPE_UINT, G_TYPE_VARIANT);
 }
 
 static void
-flashback_key_bindings_init (FlashbackKeyBindings *bindings)
+gf_keybindings_init (GfKeybindings *keybindings)
 {
-	FlashbackKeyBindingsPrivate *priv;
+  GdkDisplay *display;
+  guint meta_mask;
+  guint super_mask;
+  guint hyper_mask;
+  guint num_lock_mask;
+  guint scroll_lock_mask;
 
-	bindings->priv = flashback_key_bindings_get_instance_private (bindings);
-	priv = bindings->priv;
+  keybindings->table = g_hash_table_new_full (NULL, NULL, NULL, g_free);
 
-	priv->xdisplay = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
-	priv->xwindow = XDefaultRootWindow (priv->xdisplay);
-	priv->table = g_hash_table_new_full (NULL, NULL, NULL, g_free);
+  display = gdk_display_get_default ();
+  keybindings->xdisplay = gdk_x11_display_get_xdisplay (display);
+  keybindings->xwindow = XDefaultRootWindow (keybindings->xdisplay);
 
-	MetaMask = XkbKeysymToModifiers (priv->xdisplay, XK_Meta_L);
-	if (MetaMask == 0)
-		MetaMask = XkbKeysymToModifiers (priv->xdisplay, XK_Meta_R);
+  meta_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Meta_L);
+  if (meta_mask == 0)
+    meta_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Meta_R);
 
-	SuperMask = XkbKeysymToModifiers (priv->xdisplay, XK_Super_L);
-	if (SuperMask == 0)
-		SuperMask = XkbKeysymToModifiers (priv->xdisplay, XK_Super_R);
+  super_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Super_L);
+  if (super_mask == 0)
+    super_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Super_R);
 
-	HyperMask = XkbKeysymToModifiers (priv->xdisplay, XK_Hyper_L);
-	if (HyperMask == 0)
-		HyperMask = XkbKeysymToModifiers (priv->xdisplay, XK_Hyper_R);
+  hyper_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Hyper_L);
+  if (hyper_mask == 0)
+    hyper_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Hyper_R);
 
-	NumLockMask = XkbKeysymToModifiers (priv->xdisplay, XK_Num_Lock);
-	ScrollLockMask = XkbKeysymToModifiers (priv->xdisplay, XK_Scroll_Lock);
+  num_lock_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Num_Lock);
+  scroll_lock_mask = XkbKeysymToModifiers (keybindings->xdisplay,
+                                           XK_Scroll_Lock);
 
-	priv->ignored_modifier_mask = NumLockMask | ScrollLockMask | LockMask;
+  keybindings->meta_mask = meta_mask;
+  keybindings->super_mask = super_mask;
+  keybindings->hyper_mask = hyper_mask;
+  keybindings->ignore_mask = num_lock_mask | scroll_lock_mask | LockMask;
 
-	gdk_window_add_filter (NULL, filter_func, bindings);
+  gdk_window_add_filter (NULL, filter_func, keybindings);
 }
 
-static void
-flashback_key_bindings_class_init (FlashbackKeyBindingsClass *class)
+/**
+ * gf_keybindings_new:
+ *
+ * Creates a new #GfKeybindings.
+ *
+ * Returns: (transfer full): a newly created #GfKeybindings.
+ */
+GfKeybindings *
+gf_keybindings_new (void)
 {
-	GObjectClass *object_class = G_OBJECT_CLASS (class);
-
-	object_class->finalize = flashback_key_bindings_finalize;
-
-	signals[BINDING_ACTIVATED] =
-		g_signal_new ("binding-activated",
-		              G_OBJECT_CLASS_TYPE (object_class),
-		              G_SIGNAL_RUN_LAST,
-		              G_STRUCT_OFFSET (FlashbackKeyBindingsClass, binding_activated),
-		              NULL, NULL, NULL,
-		              G_TYPE_NONE,
-		              2,
-		              G_TYPE_UINT,
-		              G_TYPE_VARIANT);
+  return g_object_new (GF_TYPE_KEYBINDINGS, NULL);
 }
 
-FlashbackKeyBindings *
-flashback_key_bindings_new (void)
-{
-	return g_object_new (FLASHBACK_TYPE_KEY_BINDINGS, NULL);
-}
-
+/**
+ * gf_keybindings_grab:
+ * @keybindings: a #GfKeybindings
+ * @accelerator: a string representing an accelerator
+ *
+ * Add keybinding.
+ *
+ * Returns: the keybinding action if the keybinding was added successfully,
+ *          otherwise 0.
+ */
 guint
-flashback_key_bindings_grab (FlashbackKeyBindings *bindings,
-                             const gchar          *accelerator)
+gf_keybindings_grab (GfKeybindings *keybindings,
+                     const gchar   *accelerator)
 {
-	KeyBinding *binding;
-	guint keyval;
-	GdkModifierType modifiers;
-	guint real_modifiers;
-	guint keycode;
-	static guint next_action = 0;
+  guint keyval;
+  GdkModifierType modifiers;
+  guint keycode;
+  guint real_modifiers;
+  guint action;
+  gpointer paction;
+  Keybinding *keybinding;
 
-	gtk_accelerator_parse (accelerator, &keyval, &modifiers);
-	if (!gtk_accelerator_valid (keyval, modifiers)) {
-		return 0;
-	}
+  gtk_accelerator_parse (accelerator, &keyval, &modifiers);
 
-	if (keyval == 0)
-		return 0;
+  if (!gtk_accelerator_valid (keyval, modifiers))
+    return 0;
 
-	keycode = XKeysymToKeycode (bindings->priv->xdisplay, keyval);
-	if (keycode == 0)
-		return 0;
+  if (keyval == 0)
+    return 0;
 
-	if (!get_real_modifiers (modifiers, &real_modifiers))
-		return 0;
+  keycode = XKeysymToKeycode (keybindings->xdisplay, keyval);
 
-	flashback_key_bindings_change_keygrab (bindings,
-	                                       TRUE,
-	                                       keyval,
-	                                       keycode,
-	                                       real_modifiers);
+  if (keycode == 0)
+    return 0;
 
-	binding = g_new0 (KeyBinding, 1);
+  if (!get_real_modifiers (keybindings, modifiers, &real_modifiers))
+    return 0;
 
-	binding->name = accelerator;
-	binding->action = ++next_action;
-	binding->keyval = keyval;
-	binding->keycode = keycode;
-	binding->modifiers = real_modifiers;
+  action = get_next_action();
+  paction = GUINT_TO_POINTER (action);
+  keybinding = g_new0 (Keybinding, 1);
 
-	g_hash_table_insert (bindings->priv->table, GUINT_TO_POINTER (binding->action), binding);
+  keybinding->name = accelerator;
+  keybinding->action = action;
+  keybinding->keyval = keyval;
+  keybinding->keycode = keycode;
+  keybinding->modifiers = real_modifiers;
 
-	return binding->action;
+  change_keygrab (keybindings, TRUE, keyval, keycode, real_modifiers);
+
+  g_hash_table_insert (keybindings->table, paction, keybinding);
+
+  return action;
 }
 
+/**
+ * gf_keybindings_ungrab:
+ * @keybindings: a #GfKeybindings
+ * @action: a keybinding action
+ *
+ * Remove keybinding.
+ *
+ * Returns: %TRUE if the keybinding was removed successfully
+ */
 gboolean
-flashback_key_bindings_ungrab (FlashbackKeyBindings *bindings,
-                               guint                 action)
+gf_keybindings_ungrab (GfKeybindings *keybindings,
+                       guint          action)
 {
-	KeyBinding *binding;
+  gpointer paction;
+  gpointer pkeybinding;
+  Keybinding *keybinding;
 
-	binding = (KeyBinding *) g_hash_table_lookup (bindings->priv->table,
-	                                              GUINT_TO_POINTER (action));
+  paction = GUINT_TO_POINTER (action);
+  pkeybinding = g_hash_table_lookup (keybindings->table, paction);
+  keybinding = (Keybinding *) pkeybinding;
 
-	if (binding == NULL)
-		return FALSE;
+  if (keybinding == NULL)
+    return FALSE;
 
-	flashback_key_bindings_change_keygrab (bindings,
-	                                       FALSE,
-	                                       binding->keyval,
-	                                       binding->keycode,
-	                                       binding->modifiers);
+  change_keygrab (keybindings, FALSE, keybinding->keyval,
+                  keybinding->keycode, keybinding->modifiers);
 
-	g_hash_table_remove (bindings->priv->table,
-	                     GUINT_TO_POINTER (action));
+  g_hash_table_remove (keybindings->table, paction);
 
-	return TRUE;
+  return TRUE;
 }
