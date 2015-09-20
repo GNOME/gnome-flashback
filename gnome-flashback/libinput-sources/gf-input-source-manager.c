@@ -17,13 +17,26 @@
 
 #include "config.h"
 
+#include <gio/gio.h>
+#include <libcommon/gf-keybindings.h>
+
 #include "gf-input-source-manager.h"
 #include "gf-input-source-settings.h"
 #include "gf-ibus-manager.h"
 
+#define DESKTOP_WM_KEYBINDINGS_SCHEMA "org.gnome.desktop.wm.keybindings"
+
+#define KEY_SWITCH_INPUT_SOURCE "switch-input-source"
+#define KEY_SWITCH_INPUT_SOURCE_BACKWARD "switch-input-source-backward"
+
 struct _GfInputSourceManager
 {
   GObject                parent;
+
+  GSettings             *wm_keybindings;
+  GfKeybindings         *keybindings;
+  guint                  switch_source_action;
+  guint                  switch_source_backward_action;
 
   GfInputSourceSettings *settings;
 
@@ -42,6 +55,107 @@ enum
 };
 
 static GParamSpec *properties[LAST_PROP] = { NULL };
+
+static void
+switch_input_changed_cb (GSettings *settings,
+                         gchar     *key,
+                         gpointer   user_data)
+{
+  GfInputSourceManager *manager;
+  guint action;
+  gchar **keybindings;
+  gint i;
+
+  manager = GF_INPUT_SOURCE_MANAGER (user_data);
+  action = manager->switch_source_action;
+
+  if (action != 0)
+    {
+      gf_keybindings_ungrab (manager->keybindings, action);
+      action = 0;
+    }
+
+  keybindings = g_settings_get_strv (settings, KEY_SWITCH_INPUT_SOURCE);
+
+  /* There might be multiple keybindings set, but we will grab only one. */
+  for (i = 0; keybindings[i] != NULL; i++)
+    {
+      action = gf_keybindings_grab (manager->keybindings, keybindings[i]);
+
+      if (action != 0)
+        break;
+    }
+
+  g_free (keybindings);
+
+  manager->switch_source_action = action;
+}
+
+static void
+switch_input_backward_changed_cb (GSettings *settings,
+                                  gchar     *key,
+                                  gpointer   user_data)
+{
+  GfInputSourceManager *manager;
+  guint action;
+  gchar **keybindings;
+  gint i;
+
+  manager = GF_INPUT_SOURCE_MANAGER (user_data);
+  action = manager->switch_source_backward_action;
+
+  if (action != 0)
+    {
+      gf_keybindings_ungrab (manager->keybindings, action);
+      action = 0;
+    }
+
+  keybindings = g_settings_get_strv (settings, KEY_SWITCH_INPUT_SOURCE);
+
+  /* There might be multiple keybindings set, but we will grab only one. */
+  for (i = 0; keybindings[i] != NULL; i++)
+    {
+      action = gf_keybindings_grab (manager->keybindings, keybindings[i]);
+
+      if (action != 0)
+        break;
+    }
+
+  g_free (keybindings);
+
+  manager->switch_source_backward_action = action;
+}
+
+static void
+accelerator_activated_cb (GfKeybindings *keybindings,
+                          guint          action,
+                          GVariant      *parameters,
+                          gpointer       user_data)
+{
+}
+
+static void
+keybindings_init (GfInputSourceManager *manager)
+{
+  manager->wm_keybindings = g_settings_new (DESKTOP_WM_KEYBINDINGS_SCHEMA);
+  manager->keybindings = gf_keybindings_new ();
+
+  g_signal_connect (manager->wm_keybindings,
+                    "changed::" KEY_SWITCH_INPUT_SOURCE,
+                    G_CALLBACK (switch_input_changed_cb),
+                    manager);
+
+  g_signal_connect (manager->wm_keybindings,
+                    "changed::" KEY_SWITCH_INPUT_SOURCE_BACKWARD,
+                    G_CALLBACK (switch_input_backward_changed_cb),
+                    manager);
+
+  g_signal_connect (manager->keybindings, "accelerator-activated",
+                    G_CALLBACK (accelerator_activated_cb), manager);
+
+  switch_input_changed_cb (manager->wm_keybindings, NULL, manager);
+  switch_input_backward_changed_cb (manager->wm_keybindings, NULL, manager);
+}
 
 static void
 sources_changed_cb (GfInputSourceSettings *settings,
@@ -80,6 +194,9 @@ gf_input_source_manager_dispose (GObject *object)
   GfInputSourceManager *manager;
 
   manager = GF_INPUT_SOURCE_MANAGER (object);
+
+  g_clear_object (&manager->wm_keybindings);
+  g_clear_object (&manager->keybindings);
 
   g_clear_object (&manager->settings);
 
@@ -154,6 +271,7 @@ gf_input_source_manager_class_init (GfInputSourceManagerClass *manager_class)
 static void
 gf_input_source_manager_init (GfInputSourceManager *manager)
 {
+  keybindings_init (manager);
   input_source_settings_init (manager);
 }
 

@@ -8,6 +8,8 @@ libinput_sources_la_CFLAGS = \
 	$(INPUT_SOURCES_CFLAGS) \
 	$(WARN_CFLAGS) \
 	$(AM_CFLAGS) \
+	-I$(srcdir)/../../gnome-flashback \
+	-I$(top_builddir)/gnome-flashback \
 	-I$(top_builddir)/gnome-flashback/libinput-sources \
 	$(NULL)
 
@@ -30,6 +32,7 @@ libinput_sources_la_LDFLAGS = \
 	$(NULL)
 
 libinput_sources_la_LIBADD = \
+	$(top_builddir)/gnome-flashback/libcommon/libcommon.la \
 	$(INPUT_SOURCES_LIBS) \
 	$(NULL)
 
