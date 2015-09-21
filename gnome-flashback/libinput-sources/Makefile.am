@@ -11,6 +11,7 @@ libinput_sources_la_CFLAGS = \
 	-I$(srcdir)/../../gnome-flashback \
 	-I$(top_builddir)/gnome-flashback \
 	-I$(top_builddir)/gnome-flashback/libinput-sources \
+	-DGNOME_DESKTOP_USE_UNSTABLE_API \
 	$(NULL)
 
 libinput_sources_la_SOURCES = \
@@ -24,6 +25,8 @@ libinput_sources_la_SOURCES = \
 	gf-input-source-manager.h \
 	gf-input-source-settings.c \
 	gf-input-source-settings.h \
+	gf-keyboard-manager.c \
+	gf-keyboard-manager.h \
 	$(NULL)
 
 libinput_sources_la_LDFLAGS = \

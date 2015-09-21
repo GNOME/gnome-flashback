@@ -23,6 +23,7 @@
 #include "gf-input-source-manager.h"
 #include "gf-input-source-settings.h"
 #include "gf-ibus-manager.h"
+#include "gf-keyboard-manager.h"
 
 #define DESKTOP_WM_KEYBINDINGS_SCHEMA "org.gnome.desktop.wm.keybindings"
 
@@ -39,6 +40,8 @@ struct _GfInputSourceManager
   guint                  switch_source_backward_action;
 
   GfInputSourceSettings *settings;
+
+  GfKeyboardManager     *keyboard_manager;
 
   GfIBusManager         *ibus_manager;
 };
@@ -167,6 +170,17 @@ static void
 xkb_options_changed_cb (GfInputSourceSettings *settings,
                         gpointer               user_data)
 {
+  GfInputSourceManager *manager;
+  gchar **options;
+
+  manager = GF_INPUT_SOURCE_MANAGER (user_data);
+
+  options = gf_input_source_settings_get_xkb_options (manager->settings);
+
+  gf_keyboard_manager_set_xkb_options (manager->keyboard_manager, options);
+  g_strfreev (options);
+
+  gf_keyboard_manager_reapply (manager->keyboard_manager);
 }
 
 static void
@@ -199,6 +213,8 @@ gf_input_source_manager_dispose (GObject *object)
   g_clear_object (&manager->keybindings);
 
   g_clear_object (&manager->settings);
+
+  g_clear_object (&manager->keyboard_manager);
 
   G_OBJECT_CLASS (gf_input_source_manager_parent_class)->dispose (object);
 }
@@ -271,6 +287,8 @@ gf_input_source_manager_class_init (GfInputSourceManagerClass *manager_class)
 static void
 gf_input_source_manager_init (GfInputSourceManager *manager)
 {
+  manager->keyboard_manager = gf_keyboard_manager_new ();
+
   keybindings_init (manager);
   input_source_settings_init (manager);
 }
@@ -281,4 +299,17 @@ gf_input_source_manager_new (GfIBusManager *ibus_manager)
   return g_object_new (GF_TYPE_INPUT_SOURCE_MANAGER,
                        "ibus-manager", ibus_manager,
                        NULL);
+}
+
+void
+gf_input_source_manager_reload (GfInputSourceManager *manager)
+{
+  gchar **options;
+
+  options = gf_input_source_settings_get_xkb_options (manager->settings);
+
+  gf_keyboard_manager_set_xkb_options (manager->keyboard_manager, options);
+  g_strfreev (options);
+
+  sources_changed_cb (manager->settings, manager);
 }

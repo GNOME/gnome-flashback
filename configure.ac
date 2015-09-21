@@ -141,8 +141,12 @@ PKG_CHECK_MODULES([IDLE_MONITOR], [
 ])
 
 PKG_CHECK_MODULES([INPUT_SOURCES], [
+  gnome-desktop-3.0 >= $LIBGNOME_DESKTOP_REQUIRED
   gtk+-3.0 >= $GTK_REQUIRED
   ibus-1.0 >= $IBUS_REQUIRED
+  xkbcommon-x11
+  xkbfile
+  xkeyboard-config
 ])
 
 PKG_CHECK_MODULES([POLKIT], [
@@ -190,6 +194,14 @@ PKG_CHECK_MODULES([WORKAROUNDS], [
   gtk+-3.0 >= $GTK_REQUIRED
   x11
 ])
+
+dnl **************************************************************************
+dnl Define XKB base directory
+dnl **************************************************************************
+
+AC_DEFINE_UNQUOTED([XKB_BASE],
+                   ["`$PKG_CONFIG --variable xkb_base xkeyboard-config`"],
+                   [Define XKB base directory])
 
 dnl **************************************************************************
 dnl Tell gvc submodule to not build introspection

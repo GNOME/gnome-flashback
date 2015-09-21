@@ -25,6 +25,8 @@
 G_DECLARE_FINAL_TYPE (GfInputSourceManager, gf_input_source_manager,
                       GF, INPUT_SOURCE_MANAGER, GObject)
 
-GfInputSourceManager *gf_input_source_manager_new (GfIBusManager *manager);
+GfInputSourceManager *gf_input_source_manager_new    (GfIBusManager        *manager);
+
+void                  gf_input_source_manager_reload (GfInputSourceManager *manager);
 
 #endif
