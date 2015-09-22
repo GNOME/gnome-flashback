@@ -122,7 +122,7 @@ gf_input_source_get_property (GObject    *object,
         break;
 
       case PROP_INDEX:
-        g_value_set_int (value, source->index);
+        g_value_set_uint (value, source->index);
         break;
 
       default:
@@ -164,7 +164,7 @@ gf_input_source_set_property (GObject      *object,
         break;
 
       case PROP_INDEX:
-        source->index = g_value_get_int (value);
+        source->index = g_value_get_uint (value);
         break;
 
       default:
@@ -252,7 +252,7 @@ gf_input_source_class_init (GfInputSourceClass *source_class)
 
   properties[PROP_INDEX] =
     g_param_spec_uint ("index", "Index", "The index of the input source",
-                       0, G_MAXINT, 0,
+                       0, G_MAXUINT, 0,
                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE |
                        G_PARAM_STATIC_STRINGS);
 
