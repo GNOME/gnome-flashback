@@ -22,12 +22,14 @@
 #include "gf-ibus-manager.h"
 
 #define GF_TYPE_INPUT_SOURCE gf_input_source_get_type ()
-G_DECLARE_FINAL_TYPE (GfInputSource, gf_input_source, GF, INPUT_SOURCE, GObject)
+G_DECLARE_FINAL_TYPE (GfInputSource, gf_input_source,
+                      GF, INPUT_SOURCE, GObject)
 
 GfInputSource *gf_input_source_new (GfIBusManager *ibus_manager,
-                                    const char    *id,
-                                    const char    *display_name,
-                                    const char    *short_name,
+                                    const gchar   *type,
+                                    const gchar   *id,
+                                    const gchar   *display_name,
+                                    const gchar   *short_name,
                                     guint          index);
 
 #endif

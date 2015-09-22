@@ -29,6 +29,7 @@ struct _GfInputSource
 
   GfIBusManager *ibus_manager;
 
+  gchar         *type;
   gchar         *id;
   gchar         *display_name;
   gchar         *short_name;
@@ -53,6 +54,7 @@ enum
 
   PROP_IBUS_MANAGER,
 
+  PROP_TYPE,
   PROP_ID,
   PROP_DISPLAY_NAME,
   PROP_SHORT_NAME,
@@ -103,6 +105,10 @@ gf_input_source_get_property (GObject    *object,
         g_value_set_object (value, source->ibus_manager);
         break;
 
+      case PROP_TYPE:
+        g_value_set_string (value, source->type);
+        break;
+
       case PROP_ID:
         g_value_set_string (value, source->id);
         break;
@@ -141,6 +147,10 @@ gf_input_source_set_property (GObject      *object,
         source->ibus_manager = g_value_get_object (value);
         break;
 
+      case PROP_TYPE:
+        source->type = g_value_dup_string (value);
+        break;
+
       case PROP_ID:
         source->id = g_value_dup_string (value);
         break;
@@ -170,6 +180,7 @@ gf_input_source_finalize (GObject *object)
 
   source = GF_INPUT_SOURCE (object);
 
+  g_free (source->type);
   g_free (source->id);
   g_free (source->display_name);
   g_free (source->short_name);
@@ -217,6 +228,11 @@ gf_input_source_class_init (GfInputSourceClass *source_class)
                          G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE |
                          G_PARAM_STATIC_STRINGS);
 
+  properties[PROP_TYPE] =
+    g_param_spec_string ("type", "type", "The type of the input source",
+                         NULL, G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS);
+
   properties[PROP_ID] =
     g_param_spec_string ("id", "ID", "The ID of the input source",
                          NULL, G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE |
@@ -251,13 +267,15 @@ gf_input_source_init (GfInputSource *source)
 
 GfInputSource *
 gf_input_source_new (GfIBusManager *ibus_manager,
-                     const char    *id,
-                     const char    *display_name,
-                     const char    *short_name,
+                     const gchar   *type,
+                     const gchar   *id,
+                     const gchar   *display_name,
+                     const gchar   *short_name,
                      guint          index)
 {
   return g_object_new (GF_TYPE_INPUT_SOURCE,
                        "ibus-manager", ibus_manager,
+                       "type", type,
                        "id", id,
                        "display-name", display_name,
                        "short-name", short_name,
