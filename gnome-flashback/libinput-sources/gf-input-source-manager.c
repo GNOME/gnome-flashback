@@ -1,4 +1,5 @@
 /*
+ * Copyright (C) 2015 Alberts Muktupāvels
  * Copyright (C) 2015 Sebastian Geiger
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,6 +19,7 @@
 #include "config.h"
 
 #include <gio/gio.h>
+#include <glib/gi18n.h>
 #include <libcommon/gf-keybindings.h>
 
 #include "gf-input-source-manager.h"
@@ -29,6 +31,20 @@
 
 #define KEY_SWITCH_INPUT_SOURCE "switch-input-source"
 #define KEY_SWITCH_INPUT_SOURCE_BACKWARD "switch-input-source-backward"
+
+#define INPUT_SOURCE_TYPE_XKB "xkb"
+#define INPUT_SOURCE_TYPE_IBUS "ibus"
+
+typedef struct _SourceInfo SourceInfo;
+struct _SourceInfo
+{
+  gchar *type;
+
+  gchar *id;
+
+  gchar *display_name;
+  gchar *short_name;
+};
 
 struct _GfInputSourceManager
 {
@@ -44,9 +60,8 @@ struct _GfInputSourceManager
   GfKeyboardManager     *keyboard_manager;
 
   GfIBusManager         *ibus_manager;
+  gboolean               disable_ibus;
 };
-
-G_DEFINE_TYPE (GfInputSourceManager, gf_input_source_manager, G_TYPE_OBJECT)
 
 enum
 {
@@ -58,6 +73,41 @@ enum
 };
 
 static GParamSpec *properties[LAST_PROP] = { NULL };
+
+G_DEFINE_TYPE (GfInputSourceManager, gf_input_source_manager, G_TYPE_OBJECT)
+
+static SourceInfo *
+source_info_new (const gchar *type,
+                 const gchar *id,
+                 const gchar *display_name,
+                 const gchar *short_name)
+{
+  SourceInfo *info;
+
+  info = g_new0 (SourceInfo, 1);
+
+  info->type = g_strdup (type);
+  info->id = g_strdup (id);
+  info->display_name = g_strdup (display_name);
+  info->short_name = g_strdup (short_name);
+
+  return info;
+}
+
+static void
+source_info_free (gpointer data)
+{
+  SourceInfo *info;
+
+  info = (SourceInfo *) data;
+
+  g_free (info->type);
+  g_free (info->id);
+  g_free (info->display_name);
+  g_free (info->short_name);
+
+  g_free (info);
+}
 
 static void
 switch_input_changed_cb (GSettings *settings,
@@ -160,10 +210,153 @@ keybindings_init (GfInputSourceManager *manager)
   switch_input_backward_changed_cb (manager->wm_keybindings, NULL, manager);
 }
 
+static gchar *
+make_engine_short_name (IBusEngineDesc *engine_desc)
+{
+  const gchar *symbol;
+  const gchar *language_code;
+  gchar **codes;
+
+  symbol = ibus_engine_desc_get_symbol (engine_desc);
+
+  if (symbol != NULL && symbol[0] != '\0')
+    return g_strdup (symbol);
+
+  language_code = ibus_engine_desc_get_language (engine_desc);
+  codes = g_strsplit (language_code, "_", 2);
+
+  if (strlen (codes[0]) == 2 || strlen (codes[0]) == 3)
+    {
+      gchar *short_name;
+
+      short_name = g_ascii_strdown (codes[0], -1);
+      g_strfreev (codes);
+
+      return short_name;
+    }
+
+  g_strfreev (codes);
+
+  return g_strdup_printf ("\u2328");
+}
+
+static GList *
+get_source_info_list (GfInputSourceManager *manager)
+{
+  GVariant *sources;
+  GnomeXkbInfo *xkb_info;
+  GList *list;
+  gsize size;
+  gsize i;
+
+  sources = gf_input_source_settings_get_sources (manager->settings);
+  xkb_info = gf_keyboard_manager_get_xkb_info (manager->keyboard_manager);
+
+  list = NULL;
+  size = g_variant_n_children (sources);
+
+  for (i = 0; i < size; i++)
+    {
+      const gchar *type;
+      const gchar *id;
+      SourceInfo *info;
+
+      g_variant_get_child (sources, i, "(&s&s)", &type, &id);
+      info = NULL;
+
+      if (g_strcmp0 (type, INPUT_SOURCE_TYPE_XKB) == 0)
+        {
+          gboolean exists;
+          const gchar *display_name;
+          const gchar *short_name;
+
+          exists = gnome_xkb_info_get_layout_info (xkb_info, id, &display_name,
+                                                   &short_name, NULL, NULL);
+
+          if (exists)
+            info = source_info_new (type, id, display_name, short_name);
+        }
+      else if (g_strcmp0 (type, INPUT_SOURCE_TYPE_IBUS) == 0)
+        {
+          IBusEngineDesc *engine_desc;
+          const gchar *language_code;
+          const gchar *language;
+          const gchar *longname;
+          const gchar *textdomain;
+          gchar *display_name;
+          gchar *short_name;
+
+          if (manager->disable_ibus)
+            continue;
+
+          engine_desc = gf_ibus_manager_get_engine_desc (manager->ibus_manager,
+                                                         id);
+
+          if (engine_desc == NULL)
+            continue;
+
+          language_code = ibus_engine_desc_get_language (engine_desc);
+          language = ibus_get_language_name (language_code);
+          longname = ibus_engine_desc_get_longname (engine_desc);
+          textdomain = ibus_engine_desc_get_textdomain (engine_desc);
+
+          if (*textdomain != '\0' && *longname != '\0')
+            longname = g_dgettext (textdomain, longname);
+
+          display_name = g_strdup_printf ("%s (%s)", language, longname);
+          short_name = make_engine_short_name (engine_desc);
+
+          info = source_info_new (type, id, display_name, short_name);
+
+          g_free (display_name);
+          g_free (short_name);
+        }
+
+      if (info != NULL)
+        list = g_list_append (list, info);
+    }
+
+  g_variant_unref (sources);
+
+  if (list == NULL)
+    {
+      const gchar *type;
+      const gchar *id;
+      const gchar *display_name;
+      const gchar *short_name;
+      SourceInfo *info;
+
+      type = INPUT_SOURCE_TYPE_XKB;
+      id = gf_keyboard_manager_get_default_layout (manager->keyboard_manager);
+
+      gnome_xkb_info_get_layout_info (xkb_info, id, &display_name,
+                                      &short_name, NULL, NULL);
+
+      info = source_info_new (type, id, display_name, short_name);
+      list = g_list_append (list, info);
+    }
+
+  g_object_unref (xkb_info);
+
+  return list;
+}
+
 static void
 sources_changed_cb (GfInputSourceSettings *settings,
                     gpointer               user_data)
 {
+  GfInputSourceManager *manager;
+  GList *source_infos;
+  GList *l;
+
+  manager = GF_INPUT_SOURCE_MANAGER (user_data);
+  source_infos = get_source_info_list (manager);
+
+  for (l = source_infos; l != NULL; l = g_list_next (l))
+    {
+    }
+
+  g_list_free_full (source_infos, source_info_free);
 }
 
 static void

@@ -680,3 +680,13 @@ gf_keyboard_manager_ungrab (GfKeyboardManager *manager,
 
   gdk_device_ungrab (manager->keyboard, timestamp);
 }
+
+/**
+ * gf_keyboard_manager_get_default_layout:
+ * @manager: a #GfKeyboardManager
+ */
+const gchar *
+gf_keyboard_manager_get_default_layout (GfKeyboardManager *manager)
+{
+  return DEFAULT_LAYOUT;
+}

@@ -27,26 +27,28 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (GfKeyboardManager, gf_keyboard_manager,
                       GF, KEYBOARD_MANAGER, GObject)
 
-GfKeyboardManager *gf_keyboard_manager_new              (void);
+GfKeyboardManager *gf_keyboard_manager_new                (void);
 
-GnomeXkbInfo      *gf_keyboard_manager_get_xkb_info     (GfKeyboardManager  *manager);
+GnomeXkbInfo      *gf_keyboard_manager_get_xkb_info       (GfKeyboardManager  *manager);
 
-void               gf_keyboard_manager_set_xkb_options  (GfKeyboardManager  *manager,
-                                                         gchar             **options);
+void               gf_keyboard_manager_set_xkb_options    (GfKeyboardManager  *manager,
+                                                           gchar             **options);
 
-void               gf_keyboard_manager_set_user_layouts (GfKeyboardManager  *manager,
-                                                         gchar             **ids);
+void               gf_keyboard_manager_set_user_layouts   (GfKeyboardManager  *manager,
+                                                           gchar             **ids);
 
-void               gf_keyboard_manager_apply            (GfKeyboardManager  *manager,
-                                                         const gchar        *id);
+void               gf_keyboard_manager_apply              (GfKeyboardManager  *manager,
+                                                           const gchar        *id);
 
-void               gf_keyboard_manager_reapply          (GfKeyboardManager  *manager);
+void               gf_keyboard_manager_reapply            (GfKeyboardManager  *manager);
 
-void               gf_keyboard_manager_grab             (GfKeyboardManager  *manager,
-                                                         guint32             timestamp);
+void               gf_keyboard_manager_grab               (GfKeyboardManager  *manager,
+                                                           guint32             timestamp);
 
-void               gf_keyboard_manager_ungrab           (GfKeyboardManager  *manager,
-                                                         guint32             timestamp);
+void               gf_keyboard_manager_ungrab             (GfKeyboardManager  *manager,
+                                                           guint32             timestamp);
+
+const gchar       *gf_keyboard_manager_get_default_layout (GfKeyboardManager  *manager);
 
 G_END_DECLS
 

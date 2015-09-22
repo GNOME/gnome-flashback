@@ -59,6 +59,8 @@ gf_input_sources_init (GfInputSources *sources)
 {
   sources->ibus_manager = gf_ibus_manager_new ();
   sources->input_source_manager = gf_input_source_manager_new (sources->ibus_manager);
+
+  gf_input_source_manager_reload (sources->input_source_manager);
 }
 
 GfInputSources *

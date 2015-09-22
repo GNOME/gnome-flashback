@@ -62,3 +62,10 @@ gf_ibus_manager_new (void)
 {
   return g_object_new (GF_TYPE_IBUS_MANAGER, NULL);
 }
+
+IBusEngineDesc *
+gf_ibus_manager_get_engine_desc (GfIBusManager *manager,
+                                 const gchar   *id)
+{
+  return NULL;
+}
