@@ -282,3 +282,46 @@ gf_input_source_new (GfIBusManager *ibus_manager,
                        "index", index,
                        NULL);
 }
+
+const gchar *
+gf_input_source_get_source_type (GfInputSource *source)
+{
+  return source->type;
+}
+
+const gchar *
+gf_input_source_get_id (GfInputSource *source)
+{
+  return source->id;
+}
+
+const gchar *
+gf_input_source_get_short_name (GfInputSource *source)
+{
+  return source->short_name;
+}
+
+void
+gf_input_source_set_short_name  (GfInputSource *source,
+                                 const gchar   *short_name)
+{
+  if (g_strcmp0 (source->short_name, short_name) == 0)
+    return;
+
+  g_free (source->short_name);
+  source->short_name = g_strdup (short_name);
+
+  g_signal_emit (source, signals[SIGNAL_CHANGED], 0);
+}
+
+const gchar *
+gf_input_source_get_xkb_id (GfInputSource *source)
+{
+  return source->xkb_id;
+}
+
+void
+gf_input_source_activate (GfInputSource *source)
+{
+  g_signal_emit (source, signals[SIGNAL_ACTIVATE], 0);
+}

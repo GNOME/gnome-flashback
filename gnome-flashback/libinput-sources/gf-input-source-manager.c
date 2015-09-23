@@ -18,13 +18,15 @@
 
 #include "config.h"
 
+#include <gdk/gdk.h>
 #include <gio/gio.h>
 #include <glib/gi18n.h>
 #include <libcommon/gf-keybindings.h>
 
+#include "gf-ibus-manager.h"
+#include "gf-input-source.h"
 #include "gf-input-source-manager.h"
 #include "gf-input-source-settings.h"
-#include "gf-ibus-manager.h"
 #include "gf-keyboard-manager.h"
 
 #define DESKTOP_WM_KEYBINDINGS_SCHEMA "org.gnome.desktop.wm.keybindings"
@@ -60,8 +62,24 @@ struct _GfInputSourceManager
   GfKeyboardManager     *keyboard_manager;
 
   GfIBusManager         *ibus_manager;
+  gboolean               ibus_ready;
   gboolean               disable_ibus;
+
+  GHashTable            *input_sources;
+  GHashTable            *ibus_sources;
+
+  GList                 *mru_sources;
+  GList                 *mru_sources_backup;
 };
+
+enum
+{
+  SIGNAL_SOURCES_CHANGED,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
 
 enum
 {
@@ -75,6 +93,18 @@ enum
 static GParamSpec *properties[LAST_PROP] = { NULL };
 
 G_DEFINE_TYPE (GfInputSourceManager, gf_input_source_manager, G_TYPE_OBJECT)
+
+static gchar *
+get_symbol_from_char_code (gunichar code)
+{
+  gchar buffer[6];
+  gint length;
+
+  length = g_unichar_to_utf8 (code, buffer);
+  buffer[length] = '\0';
+
+  return g_strdup_printf ("%s", buffer);
+}
 
 static SourceInfo *
 source_info_new (const gchar *type,
@@ -237,7 +267,7 @@ make_engine_short_name (IBusEngineDesc *engine_desc)
 
   g_strfreev (codes);
 
-  return g_strdup_printf ("\u2328");
+  return get_symbol_from_char_code (0x2328);
 }
 
 static GList *
@@ -342,21 +372,330 @@ get_source_info_list (GfInputSourceManager *manager)
 }
 
 static void
+current_input_source_changed (GfInputSourceManager *manager,
+                              GfInputSource        *new_source)
+{
+}
+
+static void
+engine_set_cb (GfIBusManager *manager,
+               gpointer       user_data)
+{
+  GfInputSourceManager *source_manager;
+
+  source_manager = GF_INPUT_SOURCE_MANAGER (user_data);
+
+  gf_keyboard_manager_ungrab (source_manager->keyboard_manager,
+                              GDK_CURRENT_TIME);
+}
+
+static void
+activate_cb (GfInputSource *source,
+             gpointer       user_data)
+{
+  GfInputSourceManager *manager;
+  const gchar *xkb_id;
+  const gchar *type;
+  const gchar *engine;
+
+  manager = GF_INPUT_SOURCE_MANAGER (user_data);
+  xkb_id = gf_input_source_get_xkb_id (source);
+
+  gf_keyboard_manager_grab (manager->keyboard_manager, GDK_CURRENT_TIME);
+  gf_keyboard_manager_apply (manager->keyboard_manager, xkb_id);
+
+  if (manager->ibus_manager == NULL)
+    {
+      current_input_source_changed (manager, source);
+      return;
+    }
+
+  type = gf_input_source_get_source_type (source);
+
+  /*
+   * All the "xkb:..." IBus engines simply "echo" back symbols, despite their
+   * naming implying differently, so we always set one in order for XIM
+   * applications to work given that we set XMODIFIERS=@im=ibus in the first
+   * place so that they can work without restarting when/if the user adds an
+   * IBus input source.
+   */
+  if (g_strcmp0 (type, INPUT_SOURCE_TYPE_IBUS) == 0)
+    engine = gf_input_source_get_id (source);
+  else
+    engine = "xkb:us::eng";
+
+  g_signal_connect (manager->ibus_manager, "engine-set",
+                    G_CALLBACK (engine_set_cb), manager);
+
+  gf_ibus_manager_set_engine (manager->ibus_manager, engine);
+  current_input_source_changed (manager, source);
+}
+
+static gchar **
+get_ibus_engine_list (GHashTable *sources)
+{
+  GList *list;
+  guint size;
+  guint i;
+  gchar **engines;
+  GList *l;
+
+  list = g_hash_table_get_keys (sources);
+  size = g_hash_table_size (sources);
+  i = 0;
+
+  engines = g_new0 (gchar *, size + 1);
+
+  for (l = list; l != NULL; l = g_list_next (l))
+    {
+      const gchar *engine;
+
+      engine = (const gchar *) l->data;
+      engines[i++] = g_strdup (engine);
+    }
+
+  engines[i] = NULL;
+
+  g_list_free (list);
+
+  return engines;
+}
+
+static void
+sources_by_name_add (GHashTable    *sources,
+                     GfInputSource *source)
+{
+  const gchar *short_name;
+  GList *list;
+
+  short_name = gf_input_source_get_short_name (source);
+  list = g_hash_table_lookup (sources, short_name);
+
+  if (list == NULL)
+    g_hash_table_insert (sources, g_strdup (short_name), list);
+
+  list = g_list_append (list, source);
+  g_hash_table_replace (sources, g_strdup (short_name), list);
+}
+
+static void
+sources_by_name_update (GHashTable *input_sources,
+                        GHashTable *sources_by_name)
+{
+  GHashTableIter iter;
+  gpointer value;
+
+  g_hash_table_iter_init (&iter, input_sources);
+
+  while (g_hash_table_iter_next (&iter, NULL, &value))
+    {
+      GfInputSource *source;
+      const gchar *short_name;
+      GList *list;
+
+      source = (GfInputSource *) value;
+      short_name = gf_input_source_get_short_name (source);
+
+      list = g_hash_table_lookup (sources_by_name, short_name);
+      if (list == NULL)
+        continue;
+
+      if (g_list_length (list) > 1)
+        {
+          guint index;
+          gchar *symbol;
+          gchar *new_name;
+
+          index = g_list_index (list, source);
+
+          symbol = get_symbol_from_char_code (0x2080 + index + 1);
+          new_name = g_strdup_printf ("%s%s", short_name, symbol);
+          g_free (symbol);
+
+          gf_input_source_set_short_name (source, new_name);
+          g_free (new_name);
+        }
+    }
+}
+
+static gboolean
+sources_by_name_free (gpointer key,
+                      gpointer value,
+                      gpointer user_data)
+{
+  GList *list;
+
+  list = (GList *) value;
+
+  g_list_free (list);
+
+  return TRUE;
+}
+
+static gboolean
+compare_sources (GfInputSource *source1,
+                 GfInputSource *source2)
+{
+  const gchar *type1;
+  const gchar *type2;
+  const gchar *id1;
+  const gchar *id2;
+
+  type1 = gf_input_source_get_source_type (source1);
+  type2 = gf_input_source_get_source_type (source2);
+
+  id1 = gf_input_source_get_id (source1);
+  id2 = gf_input_source_get_id (source2);
+
+  if (g_strcmp0 (type1, type2) == 0 && g_strcmp0 (id1, id2) == 0)
+    return TRUE;
+
+  return FALSE;
+}
+
+static void
+update_mru_sources_list (GfInputSourceManager *manager)
+{
+  GList *sources;
+  GList *mru_sources;
+  GList *l1;
+  GList *l2;
+
+  if (manager->mru_sources != NULL)
+    {
+      g_list_free (manager->mru_sources);
+      manager->mru_sources = NULL;
+    }
+
+  if (!manager->disable_ibus && manager->mru_sources_backup != NULL)
+    {
+      manager->mru_sources = manager->mru_sources_backup;
+      manager->mru_sources_backup = NULL;
+    }
+
+  sources = g_hash_table_get_values (manager->input_sources);
+  sources = g_list_reverse (sources);
+
+  mru_sources = NULL;
+  for (l1 = manager->mru_sources; l1 != NULL; l1 = g_list_next (l1))
+    {
+      for (l2 = sources; l2 != NULL; l2 = g_list_next (l2))
+        {
+          GfInputSource *source1;
+          GfInputSource *source2;
+          GList *source;
+
+          source1 = (GfInputSource *) l1->data;
+          source2 = (GfInputSource *) l2->data;
+
+          if (!compare_sources (source1, source2))
+            continue;
+
+          g_warning ("equal...");
+
+          source = g_list_remove_link (sources, l2);
+          mru_sources = g_list_concat (mru_sources, source);
+
+          break;
+        }
+    }
+
+  mru_sources = g_list_concat (mru_sources, sources);
+
+  g_list_free (manager->mru_sources);
+  manager->mru_sources = mru_sources;
+
+  if (manager->mru_sources != NULL)
+    {
+      GfInputSource *source;
+
+      source = (GfInputSource *) g_list_nth_data (manager->mru_sources, 0);
+
+      gf_input_source_activate (source);
+    }
+}
+
+static void
 sources_changed_cb (GfInputSourceSettings *settings,
                     gpointer               user_data)
 {
   GfInputSourceManager *manager;
   GList *source_infos;
   GList *l;
+  GHashTable *sources_by_name;
+  guint length;
+  gchar **ids;
 
   manager = GF_INPUT_SOURCE_MANAGER (user_data);
   source_infos = get_source_info_list (manager);
 
+  if (manager->input_sources != NULL)
+    g_hash_table_destroy (manager->input_sources);
+  manager->input_sources = g_hash_table_new_full (NULL, NULL, NULL,
+                                                  g_object_unref);
+
+  if (manager->ibus_sources != NULL)
+    g_hash_table_destroy (manager->ibus_sources);
+  manager->ibus_sources = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                 g_free, g_object_unref);
+
+  sources_by_name = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                           g_free, NULL);
+
+  length = g_list_length (source_infos);
+  ids = g_new0 (gchar *, length + 1);
+
   for (l = source_infos; l != NULL; l = g_list_next (l))
     {
+      SourceInfo *info;
+      gint position;
+      GfInputSource *source;
+
+      info = (SourceInfo *) l->data;
+      position = g_list_position (source_infos, l);
+
+      source = gf_input_source_new (manager->ibus_manager, info->type,
+                                    info->id, info->display_name,
+                                    info->short_name, position);
+
+      g_signal_connect (source, "activate",
+                        G_CALLBACK (activate_cb), manager);
+
+      g_hash_table_insert (manager->input_sources, GINT_TO_POINTER (position),
+                           g_object_ref (source));
+
+      if (g_strcmp0 (info->type, INPUT_SOURCE_TYPE_IBUS) == 0)
+        g_hash_table_insert (manager->ibus_sources, g_strdup (info->id),
+                             g_object_ref (source));
+
+      sources_by_name_add (sources_by_name, source);
+
+      ids[position] = g_strdup (gf_input_source_get_xkb_id (source));
+      g_object_unref (source);
     }
 
+  ids[length] = NULL;
+
   g_list_free_full (source_infos, source_info_free);
+
+  sources_by_name_update (manager->input_sources, sources_by_name);
+  g_hash_table_foreach_remove (sources_by_name, sources_by_name_free, NULL);
+  g_hash_table_destroy (sources_by_name);
+
+  g_signal_emit (manager, signals[SIGNAL_SOURCES_CHANGED], 0);
+
+  gf_keyboard_manager_set_user_layouts (manager->keyboard_manager, ids);
+  g_strfreev (ids);
+
+  update_mru_sources_list (manager);
+
+  /*
+   * All IBus engines are preloaded here to reduce the launching time when
+   * users switch the input sources.
+   */
+  ids = get_ibus_engine_list (manager->ibus_sources);
+  gf_ibus_manager_preload_engines (manager->ibus_manager, ids);
+  g_strfreev (ids);
 }
 
 static void
@@ -396,6 +735,110 @@ input_source_settings_init (GfInputSourceManager *manager)
 }
 
 static void
+ready_cb (GfIBusManager *ibus_manager,
+          gboolean       ready,
+          gpointer       user_data)
+{
+  GfInputSourceManager *manager;
+
+  manager = GF_INPUT_SOURCE_MANAGER (user_data);
+
+  if (manager->ibus_ready == ready)
+    return;
+
+  manager->ibus_ready = ready;
+
+  if (manager->mru_sources != NULL)
+    {
+      g_list_free (manager->mru_sources);
+      manager->mru_sources = NULL;
+    }
+
+  sources_changed_cb (manager->settings, manager);
+}
+
+static void
+properties_registered_cb (GfIBusManager *ibus_manager,
+                          const gchar   *engine_name,
+                          IBusPropList  *prop_list,
+                          gpointer       user_data)
+{
+}
+
+static void
+property_updated_cb (GfIBusManager *ibus_manager,
+                     const gchar   *engine_name,
+                     IBusProperty  *property,
+                     gpointer       user_data)
+{
+}
+
+static void
+set_content_type_cb (GfIBusManager *ibus_manager,
+                     guint          purpose,
+                     guint          hints,
+                     gpointer       user_data)
+{
+  GfInputSourceManager *manager;
+
+  manager = GF_INPUT_SOURCE_MANAGER (user_data);
+
+  if (purpose == IBUS_INPUT_PURPOSE_PASSWORD)
+    {
+      GList *keys1;
+      GList *keys2;
+
+      keys1 = g_hash_table_get_keys (manager->input_sources);
+      keys2 = g_hash_table_get_keys (manager->ibus_sources);
+
+      if (g_list_length (keys1) == g_list_length (keys2))
+        {
+          g_list_free (keys1);
+          g_list_free (keys2);
+
+          return;
+        }
+
+      g_list_free (keys1);
+      g_list_free (keys2);
+
+      if (manager->disable_ibus)
+        return;
+
+      manager->disable_ibus = TRUE;
+      manager->mru_sources_backup = g_list_copy (manager->mru_sources);
+    }
+  else
+    {
+      if (!manager->disable_ibus)
+        return;
+
+      manager->disable_ibus = FALSE;
+    }
+
+  gf_input_source_manager_reload (manager);
+}
+
+static void
+gf_input_source_manager_constructed (GObject *object)
+{
+  GfInputSourceManager *manager;
+
+  manager = GF_INPUT_SOURCE_MANAGER (object);
+
+  G_OBJECT_CLASS (gf_input_source_manager_parent_class)->constructed (object);
+
+  g_signal_connect (manager->ibus_manager, "ready",
+                    G_CALLBACK (ready_cb), manager);
+  g_signal_connect (manager->ibus_manager, "properties-registered",
+                    G_CALLBACK (properties_registered_cb), manager);
+  g_signal_connect (manager->ibus_manager, "property-updated",
+                    G_CALLBACK (property_updated_cb), manager);
+  g_signal_connect (manager->ibus_manager, "set-content-type",
+                    G_CALLBACK (set_content_type_cb), manager);
+}
+
+static void
 gf_input_source_manager_dispose (GObject *object)
 {
   GfInputSourceManager *manager;
@@ -408,6 +851,30 @@ gf_input_source_manager_dispose (GObject *object)
   g_clear_object (&manager->settings);
 
   g_clear_object (&manager->keyboard_manager);
+
+  if (manager->input_sources != 0)
+    {
+      g_hash_table_destroy (manager->input_sources);
+      manager->input_sources = NULL;
+    }
+
+  if (manager->ibus_sources != 0)
+    {
+      g_hash_table_destroy (manager->ibus_sources);
+      manager->ibus_sources = NULL;
+    }
+
+  if (manager->mru_sources != NULL)
+    {
+      g_list_free (manager->mru_sources);
+      manager->mru_sources = NULL;
+    }
+
+  if (manager->mru_sources_backup != NULL)
+    {
+      g_list_free (manager->mru_sources_backup);
+      manager->mru_sources_backup = NULL;
+    }
 
   G_OBJECT_CLASS (gf_input_source_manager_parent_class)->dispose (object);
 }
@@ -463,9 +930,14 @@ gf_input_source_manager_class_init (GfInputSourceManagerClass *manager_class)
 
   object_class = G_OBJECT_CLASS (manager_class);
 
+  object_class->constructed = gf_input_source_manager_constructed;
   object_class->dispose = gf_input_source_manager_dispose;
   object_class->get_property = gf_input_source_manager_get_property;
   object_class->set_property = gf_input_source_manager_set_property;
+
+  signals[SIGNAL_SOURCES_CHANGED] =
+    g_signal_new ("sources-changed", G_TYPE_FROM_CLASS (manager_class),
+                  G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 
   properties[PROP_IBUS_MANAGER] =
     g_param_spec_object ("ibus-manager", "IBus Manager",

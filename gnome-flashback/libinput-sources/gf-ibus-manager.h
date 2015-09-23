@@ -27,7 +27,13 @@ G_DECLARE_FINAL_TYPE (GfIBusManager, gf_ibus_manager,
 
 GfIBusManager  *gf_ibus_manager_new             (void);
 
-IBusEngineDesc *gf_ibus_manager_get_engine_desc (GfIBusManager *manager,
-                                                 const gchar   *id);
+IBusEngineDesc *gf_ibus_manager_get_engine_desc (GfIBusManager  *manager,
+                                                 const gchar    *id);
+
+void            gf_ibus_manager_set_engine      (GfIBusManager  *manager,
+                                                 const gchar    *id);
+
+void            gf_ibus_manager_preload_engines (GfIBusManager  *manager,
+                                                 gchar         **engines);
 
 #endif

@@ -32,6 +32,12 @@ struct _GfInputSources
 G_DEFINE_TYPE (GfInputSources, gf_input_sources, G_TYPE_OBJECT)
 
 static void
+sources_changed_cb (GfInputSourceManager *manager,
+                    gpointer              user_data)
+{
+}
+
+static void
 gf_input_sources_dispose (GObject *object)
 {
   GfInputSources *sources;
@@ -59,6 +65,9 @@ gf_input_sources_init (GfInputSources *sources)
 {
   sources->ibus_manager = gf_ibus_manager_new ();
   sources->input_source_manager = gf_input_source_manager_new (sources->ibus_manager);
+
+  g_signal_connect (sources->input_source_manager, "sources-changed",
+                    G_CALLBACK (sources_changed_cb), sources);
 
   gf_input_source_manager_reload (sources->input_source_manager);
 }

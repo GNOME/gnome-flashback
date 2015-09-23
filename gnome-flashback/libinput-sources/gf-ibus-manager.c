@@ -34,6 +34,8 @@ enum
   SIGNAL_PROPERTY_UPDATED,
   SIGNAL_SET_CONTENT_TYPE,
 
+  SIGNAL_ENGINE_SET,
+
   LAST_SIGNAL
 };
 
@@ -81,6 +83,10 @@ gf_ibus_manager_class_init (GfIBusManagerClass *manager_class)
     g_signal_new ("set-content-type", G_TYPE_FROM_CLASS (manager_class),
                   G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL,
                   G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_UINT);
+
+  signals[SIGNAL_ENGINE_SET] =
+    g_signal_new ("engine-set", G_TYPE_FROM_CLASS (manager_class),
+                  G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 }
 
 static void
@@ -100,4 +106,17 @@ gf_ibus_manager_get_engine_desc (GfIBusManager *manager,
                                  const gchar   *id)
 {
   return NULL;
+}
+
+void
+gf_ibus_manager_set_engine (GfIBusManager *manager,
+                            const gchar   *id)
+{
+  g_signal_emit (manager, signals[SIGNAL_ENGINE_SET], 0);
+}
+
+void
+gf_ibus_manager_preload_engines (GfIBusManager  *manager,
+                                 gchar         **engines)
+{
 }
