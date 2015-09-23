@@ -193,7 +193,7 @@ switch_input_backward_changed_cb (GSettings *settings,
       action = 0;
     }
 
-  keybindings = g_settings_get_strv (settings, KEY_SWITCH_INPUT_SOURCE);
+  keybindings = g_settings_get_strv (settings, KEY_SWITCH_INPUT_SOURCE_BACKWARD);
 
   /* There might be multiple keybindings set, but we will grab only one. */
   for (i = 0; keybindings[i] != NULL; i++)
