@@ -15,22 +15,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FLASHBACK_LABEL_WINDOW_H
-#define FLASHBACK_LABEL_WINDOW_H
+#ifndef GF_POPUP_WINDOW_H
+#define GF_POPUP_WINDOW_H
 
-#include <libcommon/gf-popup-window.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-#define FLASHBACK_TYPE_LABEL_WINDOW flashback_label_window_get_type ()
-G_DECLARE_FINAL_TYPE (FlashbackLabelWindow, flashback_label_window,
-                      FLASHBACK, LABEL_WINDOW, GfPopupWindow)
+#define GF_TYPE_POPUP_WINDOW gf_popup_window_get_type ()
+G_DECLARE_DERIVABLE_TYPE (GfPopupWindow, gf_popup_window,
+                          GF, POPUP_WINDOW, GtkWindow)
 
-FlashbackLabelWindow *flashback_label_window_new  (gint                  monitor,
-                                                   const gchar          *label);
+struct _GfPopupWindowClass
+{
+  GtkWindowClass parent_class;
+};
 
-void                  flashback_label_window_show (FlashbackLabelWindow *window);
-void                  flashback_label_window_hide (FlashbackLabelWindow *window);
+void gf_popup_window_fade_start  (GfPopupWindow *window);
+void gf_popup_window_fade_cancel (GfPopupWindow *window);
 
 G_END_DECLS
 

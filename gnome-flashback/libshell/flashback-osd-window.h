@@ -18,13 +18,13 @@
 #ifndef FLASHBACK_OSD_WINDOW_H
 #define FLASHBACK_OSD_WINDOW_H
 
-#include <gtk/gtk.h>
+#include <libcommon/gf-popup-window.h>
 
 G_BEGIN_DECLS
 
 #define FLASHBACK_TYPE_OSD_WINDOW flashback_osd_window_get_type ()
 G_DECLARE_FINAL_TYPE (FlashbackOsdWindow, flashback_osd_window,
-                      FLASHBACK, OSD_WINDOW, GtkWindow)
+                      FLASHBACK, OSD_WINDOW, GfPopupWindow)
 
 FlashbackOsdWindow *flashback_osd_window_new       (gint                monitor);
 

@@ -14,6 +14,8 @@ libcommon_la_CFLAGS = \
 libcommon_la_SOURCES = \
   gf-keybindings.c \
 	gf-keybindings.h \
+	gf-popup-window.c \
+	gf-popup-window.h \
 	$(NULL)
 
 libcommon_la_LDFLAGS = \
