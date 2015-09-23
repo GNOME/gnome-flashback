@@ -43,6 +43,8 @@ const gchar   *gf_input_source_get_short_name   (GfInputSource *source);
 void           gf_input_source_set_short_name   (GfInputSource *source,
                                                  const gchar   *short_name);
 
+guint          gf_input_source_get_index        (GfInputSource *source);
+
 const gchar   *gf_input_source_get_xkb_id       (GfInputSource *source);
 
 void           gf_input_source_activate         (GfInputSource *source);

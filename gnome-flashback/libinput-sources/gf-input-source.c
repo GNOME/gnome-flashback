@@ -320,6 +320,12 @@ gf_input_source_set_short_name  (GfInputSource *source,
   g_signal_emit (source, signals[SIGNAL_CHANGED], 0);
 }
 
+guint
+gf_input_source_get_index (GfInputSource *source)
+{
+  return source->index;
+}
+
 const gchar *
 gf_input_source_get_xkb_id (GfInputSource *source)
 {
