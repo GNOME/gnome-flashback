@@ -286,8 +286,8 @@ gf_input_source_popup_set_property (GObject      *object,
 }
 
 static gboolean
-gf_input_source_popup_button_press_event (GtkWidget	     *widget,
-					                                GdkEventButton *event)
+gf_input_source_popup_button_press_event (GtkWidget      *widget,
+                                          GdkEventButton *event)
 {
   GfInputSourcePopup *popup;
   GfPopupWindow *popup_window;
@@ -372,8 +372,8 @@ gf_input_source_popup_key_release_event (GtkWidget   *widget,
 }
 
 static gboolean
-gf_input_source_popup_motion_notify_event (GtkWidget	    *widget,
-					                                 GdkEventMotion *event)
+gf_input_source_popup_motion_notify_event (GtkWidget      *widget,
+                                           GdkEventMotion *event)
 {
   GfInputSourcePopup *popup;
   gint index;
