@@ -1,5 +1,35 @@
 Version 3.17.2
 ==============
+- Added bluetooth applet. (Alberts Muktupāvels, Balló György)
+- Added power applet. (Alberts Muktupāvels, Balló György)
+- Added autostart file for nm-applet. (Balló György)
+- Added autostart file for gnome-screensaver. (Alberts Muktupāvels)
+- Added custom menu directories. (Balló György)
+- Internationalization fixes. (Alberts Muktupāvels)
+- Ported away from gnome-common. (Alberts Muktupāvels)
+- Ported away from intltool, now upstream gettext is used. (Alberts Muktupāvels)
+- Small fixes to user visible strings. (Dmitry Shachnev, Piotr Drąg)
+- Added polkit, based on original PolicyKit-gnome. (Alberts Muktupāvels)
+- desktop-background: don't show in Ctrl-Alt-Tab switcher. (Alberts Muktupāvels)
+- display-config: randr 1.5 support, based on mutter. (Alberts Muktupāvels,
+  Dave Airlie)
+- display-config: Added underscan property, based on mutter. (Cosimo Cecchi)
+- display-config: other small fixes. (Alberts Muktupāvels, Matthias Clasen,
+  Rui Matos)
+- input-sources: initial version for input source switching. (Alberts
+  Muktupāvels, Sebastian Geiger)
+- polkit: use accountsservice to fetch user icon. (Marc Deslauriers)
+- sound-applet: allow to set volume more then 100%. (Alberts Muktupāvels)
+- sound-applet: fix voulume changing with mouse wheel. (Alberts Muktupāvels)
+- screenshot: finally screenshot taking is implemented, based on
+  gnome-screensaver. (Alberts Muktupāvels, Balló György)
+- Updated translations:
+  Balázs Úr (hu), Daniel Mustieles (es), Dimitris Spingos (el),
+  Dušan Kazik (sk), Gábor Kelemen (hu), Marek Černocký (cs), Piotr Drąg (pl),
+  Yosef Or Boczko (he).
+
+Version 3.17.2
+==============
 - workarounds: workaround for missing app menu button. (Alberts Muktupāvels)
 - workarounds: workaround for button-layout. (Alberts Muktupāvels)
 - display-config: allow loading from a system file. (Jasper St. Pierre)
