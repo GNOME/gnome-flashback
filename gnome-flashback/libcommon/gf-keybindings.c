@@ -41,11 +41,14 @@ struct _GfKeybindings
 
 typedef struct
 {
-  const gchar *name;
-  guint        action;
-  guint        keyval;
-  guint        keycode;
-  guint        modifiers;
+  gchar           *name;
+
+  guint            action;
+  guint            keyval;
+  guint            keycode;
+
+  GdkModifierType  modifiers;
+  guint            real_modifiers;
 } Keybinding;
 
 enum
@@ -58,6 +61,57 @@ enum
 static guint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GfKeybindings, gf_keybindings, G_TYPE_OBJECT)
+
+static Keybinding *
+keybinding_new (const gchar     *name,
+                guint            action,
+                guint            keyval,
+                guint            keycode,
+                GdkModifierType  modifiers,
+                guint            real_modifiers)
+{
+  Keybinding *keybinding;
+
+  keybinding = g_new0 (Keybinding, 1);
+
+  keybinding->name = g_strdup (name);
+
+  keybinding->action = action;
+  keybinding->keyval = keyval;
+  keybinding->keycode = keycode;
+
+  keybinding->modifiers = modifiers;
+  keybinding->real_modifiers = real_modifiers;
+
+  return keybinding;
+}
+
+static void
+keybinding_free (gpointer data)
+{
+  Keybinding *keybinding;
+
+  keybinding = (Keybinding *) data;
+
+  g_free (keybinding->name);
+
+  g_free (keybinding);
+}
+
+static Keybinding *
+get_keybinding (GfKeybindings *keybindings,
+                guint          action)
+{
+  gpointer paction;
+  gpointer pkeybinding;
+  Keybinding *keybinding;
+
+  paction = GUINT_TO_POINTER (action);
+  pkeybinding = g_hash_table_lookup (keybindings->table, paction);
+  keybinding = (Keybinding *) pkeybinding;
+
+  return keybinding;
+}
 
 static GVariant *
 build_parameters (guint device_id,
@@ -111,7 +165,7 @@ filter_func (GdkXEvent *xevent,
       state = ev->xkey.state & 0xff & ~(keybindings->ignore_mask);
 
       if (keybinding->keycode == ev->xkey.keycode &&
-          keybinding->modifiers == state)
+          keybinding->real_modifiers == state)
         {
           GVariant *parameters;
 
@@ -305,7 +359,8 @@ gf_keybindings_init (GfKeybindings *keybindings)
   guint num_lock_mask;
   guint scroll_lock_mask;
 
-  keybindings->table = g_hash_table_new_full (NULL, NULL, NULL, g_free);
+  keybindings->table = g_hash_table_new_full (NULL, NULL, NULL,
+                                              keybinding_free);
 
   display = gdk_display_get_default ();
   keybindings->xdisplay = gdk_x11_display_get_xdisplay (display);
@@ -388,13 +443,8 @@ gf_keybindings_grab (GfKeybindings *keybindings,
 
   action = get_next_action();
   paction = GUINT_TO_POINTER (action);
-  keybinding = g_new0 (Keybinding, 1);
-
-  keybinding->name = accelerator;
-  keybinding->action = action;
-  keybinding->keyval = keyval;
-  keybinding->keycode = keycode;
-  keybinding->modifiers = real_modifiers;
+  keybinding = keybinding_new (accelerator, action, keyval, keycode,
+                               modifiers, real_modifiers);
 
   change_keygrab (keybindings, TRUE, keyval, keycode, real_modifiers);
 
@@ -428,9 +478,37 @@ gf_keybindings_ungrab (GfKeybindings *keybindings,
     return FALSE;
 
   change_keygrab (keybindings, FALSE, keybinding->keyval,
-                  keybinding->keycode, keybinding->modifiers);
+                  keybinding->keycode, keybinding->real_modifiers);
 
   g_hash_table_remove (keybindings->table, paction);
 
   return TRUE;
+}
+
+guint
+gf_keybindings_get_keyval (GfKeybindings *keybindings,
+                           guint          action)
+{
+  Keybinding *keybinding;
+
+  keybinding = get_keybinding (keybindings, action);
+
+  if (keybinding == NULL)
+    return 0;
+
+  return keybinding->keyval;
+}
+
+GdkModifierType
+gf_keybindings_get_modifiers (GfKeybindings *keybindings,
+                              guint          action)
+{
+  Keybinding *keybinding;
+
+  keybinding = get_keybinding (keybindings, action);
+
+  if (keybinding == NULL)
+    return 0;
+
+  return keybinding->modifiers;
 }
