@@ -48,8 +48,8 @@ fade_out_cb (gpointer user_data)
   widget = GTK_WIDGET (window);
   opacity = gtk_widget_get_opacity (widget);
 
-  opacity -= 0.02;
-  if (opacity <= 0.00)
+  opacity -= 0.04;
+  if (opacity < 0.00)
     {
       gtk_widget_set_opacity (widget, 1.0);
 
