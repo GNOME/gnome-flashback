@@ -236,6 +236,22 @@ gf_input_source_popup_constructed (GObject *object)
 }
 
 static void
+gf_input_source_popup_dispose (GObject *object)
+{
+  GfInputSourcePopup *popup;
+
+  popup = GF_INPUT_SOURCE_POPUP (object);
+
+  if (popup->mru_sources != NULL)
+    {
+      g_list_free (popup->mru_sources);
+      popup->mru_sources = NULL;
+    }
+
+  G_OBJECT_CLASS (gf_input_source_popup_parent_class)->dispose (object);
+}
+
+static void
 gf_input_source_popup_set_property (GObject      *object,
                                     guint         prop_id,
                                     const GValue *value,
@@ -248,7 +264,7 @@ gf_input_source_popup_set_property (GObject      *object,
   switch (prop_id)
     {
       case PROP_MRU_SOURCES:
-        popup->mru_sources = g_value_get_pointer (value);
+        popup->mru_sources = g_list_copy (g_value_get_pointer (value));
         break;
 
       case PROP_BACKWARD:
@@ -428,6 +444,7 @@ gf_input_source_popup_class_init (GfInputSourcePopupClass *popup_class)
   widget_class = GTK_WIDGET_CLASS (popup_class);
 
   object_class->constructed = gf_input_source_popup_constructed;
+  object_class->dispose = gf_input_source_popup_dispose;
   object_class->set_property = gf_input_source_popup_set_property;
 
   widget_class->button_press_event = gf_input_source_popup_button_press_event;
