@@ -296,6 +296,12 @@ gf_input_source_get_id (GfInputSource *source)
 }
 
 const gchar *
+gf_input_source_get_display_name (GfInputSource *source)
+{
+  return source->display_name;
+}
+
+const gchar *
 gf_input_source_get_short_name (GfInputSource *source)
 {
   return source->short_name;

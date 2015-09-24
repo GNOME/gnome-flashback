@@ -25,24 +25,26 @@
 G_DECLARE_FINAL_TYPE (GfInputSource, gf_input_source,
                       GF, INPUT_SOURCE, GObject)
 
-GfInputSource *gf_input_source_new             (GfIBusManager *ibus_manager,
-                                                const gchar   *type,
-                                                const gchar   *id,
-                                                const gchar   *display_name,
-                                                const gchar   *short_name,
-                                                guint          index);
+GfInputSource *gf_input_source_new              (GfIBusManager *ibus_manager,
+                                                 const gchar   *type,
+                                                 const gchar   *id,
+                                                 const gchar   *display_name,
+                                                 const gchar   *short_name,
+                                                 guint          index);
 
-const gchar   *gf_input_source_get_source_type (GfInputSource *source);
+const gchar   *gf_input_source_get_source_type  (GfInputSource *source);
 
-const gchar   *gf_input_source_get_id          (GfInputSource *source);
+const gchar   *gf_input_source_get_id           (GfInputSource *source);
 
-const gchar   *gf_input_source_get_short_name  (GfInputSource *source);
+const gchar   *gf_input_source_get_display_name (GfInputSource *source);
 
-void           gf_input_source_set_short_name  (GfInputSource *source,
-                                                const gchar   *short_name);
+const gchar   *gf_input_source_get_short_name   (GfInputSource *source);
 
-const gchar   *gf_input_source_get_xkb_id      (GfInputSource *source);
+void           gf_input_source_set_short_name   (GfInputSource *source,
+                                                 const gchar   *short_name);
 
-void           gf_input_source_activate        (GfInputSource *source);
+const gchar   *gf_input_source_get_xkb_id       (GfInputSource *source);
+
+void           gf_input_source_activate         (GfInputSource *source);
 
 #endif
