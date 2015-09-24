@@ -26,6 +26,7 @@
 #include "gf-ibus-manager.h"
 #include "gf-input-source.h"
 #include "gf-input-source-manager.h"
+#include "gf-input-source-popup.h"
 #include "gf-input-source-settings.h"
 #include "gf-keyboard-manager.h"
 
@@ -70,6 +71,8 @@ struct _GfInputSourceManager
 
   GList                 *mru_sources;
   GList                 *mru_sources_backup;
+
+  GtkWidget             *popup;
 };
 
 enum
@@ -210,11 +213,53 @@ switch_input_backward_changed_cb (GSettings *settings,
 }
 
 static void
+fade_finished_cb (GfInputSourcePopup *popup,
+                  gpointer            user_data)
+{
+  GfInputSourceManager *manager;
+  GtkWidget *widget;
+
+  manager = GF_INPUT_SOURCE_MANAGER (user_data);
+  widget = GTK_WIDGET (popup);
+
+  gtk_widget_destroy (widget);
+  manager->popup = NULL;
+}
+
+static void
 accelerator_activated_cb (GfKeybindings *keybindings,
                           guint          action,
                           GVariant      *parameters,
                           gpointer       user_data)
 {
+  GfInputSourceManager *manager;
+  gboolean backward;
+  guint keyval;
+  guint modifiers;
+
+  manager = GF_INPUT_SOURCE_MANAGER (user_data);
+
+  if (action != manager->switch_source_action &&
+      action != manager->switch_source_backward_action)
+    return;
+
+  if (g_list_length (manager->mru_sources) < 2)
+    return;
+
+  if (manager->popup != NULL)
+    return;
+
+  backward = action == manager->switch_source_backward_action;
+  keyval = gf_keybindings_get_keyval (manager->keybindings, action);
+  modifiers = gf_keybindings_get_modifiers (manager->keybindings, action);
+
+  manager->popup = gf_input_source_popup_new (manager->mru_sources, backward,
+                                              keyval, modifiers);
+
+  g_signal_connect (manager->popup, "fade-finished",
+                    G_CALLBACK (fade_finished_cb), manager);
+
+  gtk_widget_show (manager->popup);
 }
 
 static void
@@ -371,10 +416,47 @@ get_source_info_list (GfInputSourceManager *manager)
   return list;
 }
 
+static gboolean
+compare_sources (GfInputSource *source1,
+                 GfInputSource *source2)
+{
+  const gchar *type1;
+  const gchar *type2;
+  const gchar *id1;
+  const gchar *id2;
+
+  type1 = gf_input_source_get_source_type (source1);
+  type2 = gf_input_source_get_source_type (source2);
+
+  id1 = gf_input_source_get_id (source1);
+  id2 = gf_input_source_get_id (source2);
+
+  if (g_strcmp0 (type1, type2) == 0 && g_strcmp0 (id1, id2) == 0)
+    return TRUE;
+
+  return FALSE;
+}
+
 static void
 current_input_source_changed (GfInputSourceManager *manager,
                               GfInputSource        *new_source)
 {
+  GList *l;
+
+  for (l = manager->mru_sources; l != NULL; l = g_list_next (l))
+    {
+      GfInputSource *source;
+
+      source = GF_INPUT_SOURCE (l->data);
+
+      if (compare_sources (source, new_source))
+        {
+          manager->mru_sources = g_list_remove_link (manager->mru_sources, l);
+          manager->mru_sources = g_list_concat (l, manager->mru_sources);
+
+          break;
+        }
+    }
 }
 
 static void
@@ -532,27 +614,6 @@ sources_by_name_free (gpointer key,
   return TRUE;
 }
 
-static gboolean
-compare_sources (GfInputSource *source1,
-                 GfInputSource *source2)
-{
-  const gchar *type1;
-  const gchar *type2;
-  const gchar *id1;
-  const gchar *id2;
-
-  type1 = gf_input_source_get_source_type (source1);
-  type2 = gf_input_source_get_source_type (source2);
-
-  id1 = gf_input_source_get_id (source1);
-  id2 = gf_input_source_get_id (source2);
-
-  if (g_strcmp0 (type1, type2) == 0 && g_strcmp0 (id1, id2) == 0)
-    return TRUE;
-
-  return FALSE;
-}
-
 static void
 update_mru_sources_list (GfInputSourceManager *manager)
 {
@@ -590,8 +651,6 @@ update_mru_sources_list (GfInputSourceManager *manager)
 
           if (!compare_sources (source1, source2))
             continue;
-
-          g_warning ("equal...");
 
           source = g_list_remove_link (sources, l2);
           mru_sources = g_list_concat (mru_sources, source);
@@ -874,6 +933,12 @@ gf_input_source_manager_dispose (GObject *object)
     {
       g_list_free (manager->mru_sources_backup);
       manager->mru_sources_backup = NULL;
+    }
+
+  if (manager->popup != NULL)
+    {
+      gtk_widget_destroy (manager->popup);
+      manager->popup = NULL;
     }
 
   G_OBJECT_CLASS (gf_input_source_manager_parent_class)->dispose (object);

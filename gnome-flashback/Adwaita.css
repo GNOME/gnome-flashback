@@ -4,6 +4,16 @@ GfPopupWindow
   border: 1px solid rgba(0, 0, 0, 0.23);
 }
 
+GfInputSourcePopup #input-source
+{
+   font-size: 22px;
+}
+
+GfInputSourcePopup #input-source:selected
+{
+  border-radius: 10px;
+}
+
 FlashbackLabelWindow
 {
   font-size: 40px;
