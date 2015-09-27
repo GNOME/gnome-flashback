@@ -27,7 +27,7 @@ gnome_flashback_CFLAGS = \
 	$(WARN_CFLAGS) \
 	$(AM_CFLAGS) \
 	-I$(top_builddir)/gnome-flashback \
-	-DLOCALE_DIR=\""$(datadir)/locale"\" \
+	-DLOCALE_DIR=\""$(localedir)"\" \
 	$(NULL)
 
 gnome_flashback_SOURCES = \
