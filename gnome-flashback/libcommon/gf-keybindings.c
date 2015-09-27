@@ -36,7 +36,8 @@ struct _GfKeybindings
   guint       meta_mask;
   guint       super_mask;
   guint       hyper_mask;
-  guint       ignore_mask;
+
+  guint       ignored_mask;
 };
 
 typedef struct
@@ -164,7 +165,7 @@ filter_func (GdkXEvent *xevent,
       guint state;
 
       keybinding = (Keybinding *) l->data;
-      state = ev->xkey.state & 0xff & ~(keybindings->ignore_mask);
+      state = ev->xkey.state & 0xff & ~(keybindings->ignored_mask);
 
       if (keybinding->keycode == ev->xkey.keycode &&
           keybinding->mask == state)
@@ -191,20 +192,20 @@ change_keygrab (GfKeybindings *keybindings,
                 gboolean       grab,
                 Keybinding    *keybinding)
 {
-  guint ignore_mask;
+  guint ignored_mask;
   guint keycode;
   guint mask;
   gint error_code;
 
-  ignore_mask = 0;
+  ignored_mask = 0;
   keycode = keybinding->keycode;
   mask = keybinding->mask;
 
-  while (ignore_mask <= keybindings->ignore_mask)
+  while (ignored_mask <= keybindings->ignored_mask)
     {
-      if (ignore_mask & ~(keybindings->ignore_mask))
+      if (ignored_mask & ~(keybindings->ignored_mask))
         {
-          ++ignore_mask;
+          ++ignored_mask;
           continue;
         }
 
@@ -212,12 +213,12 @@ change_keygrab (GfKeybindings *keybindings,
 
       if (grab)
         {
-          XGrabKey (keybindings->xdisplay, keycode, mask | ignore_mask,
+          XGrabKey (keybindings->xdisplay, keycode, mask | ignored_mask,
                     keybindings->xwindow, True, GrabModeAsync, GrabModeSync);
         }
       else
         {
-          XUngrabKey (keybindings->xdisplay, keycode, mask | ignore_mask,
+          XUngrabKey (keybindings->xdisplay, keycode, mask | ignored_mask,
                       keybindings->xwindow);
         }
 
@@ -227,7 +228,7 @@ change_keygrab (GfKeybindings *keybindings,
           g_debug ("Failed to grab/ ungrab key. Error code - %d", error_code);
         }
 
-      ++ignore_mask;
+      ++ignored_mask;
     }
 }
 
@@ -390,7 +391,7 @@ gf_keybindings_init (GfKeybindings *keybindings)
   keybindings->meta_mask = meta_mask;
   keybindings->super_mask = super_mask;
   keybindings->hyper_mask = hyper_mask;
-  keybindings->ignore_mask = num_lock_mask | scroll_lock_mask | LockMask;
+  keybindings->ignored_mask = num_lock_mask | scroll_lock_mask | LockMask;
 
   gdk_window_add_filter (NULL, filter_func, keybindings);
 }
