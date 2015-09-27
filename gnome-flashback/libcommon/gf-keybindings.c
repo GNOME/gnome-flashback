@@ -43,12 +43,13 @@ typedef struct
 {
   gchar           *name;
 
-  guint            action;
   guint            keyval;
-  guint            keycode;
-
   GdkModifierType  modifiers;
-  guint            real_modifiers;
+
+  guint            keycode;
+  guint            mask;
+
+  guint            action;
 } Keybinding;
 
 enum
@@ -64,11 +65,11 @@ G_DEFINE_TYPE (GfKeybindings, gf_keybindings, G_TYPE_OBJECT)
 
 static Keybinding *
 keybinding_new (const gchar     *name,
-                guint            action,
                 guint            keyval,
-                guint            keycode,
                 GdkModifierType  modifiers,
-                guint            real_modifiers)
+                guint            keycode,
+                guint            mask,
+                guint            action)
 {
   Keybinding *keybinding;
 
@@ -76,12 +77,13 @@ keybinding_new (const gchar     *name,
 
   keybinding->name = g_strdup (name);
 
-  keybinding->action = action;
   keybinding->keyval = keyval;
-  keybinding->keycode = keycode;
-
   keybinding->modifiers = modifiers;
-  keybinding->real_modifiers = real_modifiers;
+
+  keybinding->keycode = keycode;
+  keybinding->mask = mask;
+
+  keybinding->action = action;
 
   return keybinding;
 }
@@ -165,7 +167,7 @@ filter_func (GdkXEvent *xevent,
       state = ev->xkey.state & 0xff & ~(keybindings->ignore_mask);
 
       if (keybinding->keycode == ev->xkey.keycode &&
-          keybinding->real_modifiers == state)
+          keybinding->mask == state)
         {
           GVariant *parameters;
 
@@ -235,10 +237,10 @@ get_next_action (void)
 }
 
 static gboolean
-devirtualize_modifiers (GdkModifierType  modifiers,
-                        GdkModifierType  gdk_mask,
-                        unsigned int     real_mask,
-                        unsigned int    *mask)
+devirtualize_modifier (GdkModifierType  modifiers,
+                       GdkModifierType  gdk_mask,
+                       unsigned int     real_mask,
+                       unsigned int    *mask)
 {
   if (modifiers & gdk_mask)
     {
@@ -252,44 +254,44 @@ devirtualize_modifiers (GdkModifierType  modifiers,
 }
 
 static gboolean
-get_real_modifiers (GfKeybindings   *keybindings,
-                    GdkModifierType  modifiers,
-                    guint           *mask)
+devirtualize_modifiers (GfKeybindings   *keybindings,
+                        GdkModifierType  modifiers,
+                        guint           *mask)
 {
   gboolean devirtualized;
 
   devirtualized = TRUE;
   *mask = 0;
 
-  devirtualized &= devirtualize_modifiers (modifiers, GDK_SHIFT_MASK,
-                                           ShiftMask, mask);
+  devirtualized &= devirtualize_modifier (modifiers, GDK_SHIFT_MASK,
+                                          ShiftMask, mask);
 
-  devirtualized &= devirtualize_modifiers (modifiers, GDK_CONTROL_MASK,
-                                           ControlMask, mask);
+  devirtualized &= devirtualize_modifier (modifiers, GDK_CONTROL_MASK,
+                                          ControlMask, mask);
 
-  devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD1_MASK,
-                                           Mod1Mask, mask);
+  devirtualized &= devirtualize_modifier (modifiers, GDK_MOD1_MASK,
+                                          Mod1Mask, mask);
 
-  devirtualized &= devirtualize_modifiers (modifiers, GDK_META_MASK,
-                                           keybindings->meta_mask, mask);
+  devirtualized &= devirtualize_modifier (modifiers, GDK_META_MASK,
+                                          keybindings->meta_mask, mask);
 
-  devirtualized &= devirtualize_modifiers (modifiers, GDK_HYPER_MASK,
-                                           keybindings->hyper_mask, mask);
+  devirtualized &= devirtualize_modifier (modifiers, GDK_HYPER_MASK,
+                                          keybindings->hyper_mask, mask);
 
-  devirtualized &= devirtualize_modifiers (modifiers, GDK_SUPER_MASK,
-                                           keybindings->super_mask, mask);
+  devirtualized &= devirtualize_modifier (modifiers, GDK_SUPER_MASK,
+                                          keybindings->super_mask, mask);
 
-  devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD2_MASK,
-                                           Mod2Mask, mask);
+  devirtualized &= devirtualize_modifier (modifiers, GDK_MOD2_MASK,
+                                          Mod2Mask, mask);
 
-  devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD3_MASK,
-                                           Mod3Mask, mask);
+  devirtualized &= devirtualize_modifier (modifiers, GDK_MOD3_MASK,
+                                          Mod3Mask, mask);
 
-  devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD4_MASK,
-                                           Mod4Mask, mask);
+  devirtualized &= devirtualize_modifier (modifiers, GDK_MOD4_MASK,
+                                          Mod4Mask, mask);
 
-  devirtualized &= devirtualize_modifiers (modifiers, GDK_MOD5_MASK,
-                                           Mod5Mask, mask);
+  devirtualized &= devirtualize_modifier (modifiers, GDK_MOD5_MASK,
+                                          Mod5Mask, mask);
 
   return devirtualized;
 }
@@ -420,7 +422,7 @@ gf_keybindings_grab (GfKeybindings *keybindings,
   guint keyval;
   GdkModifierType modifiers;
   guint keycode;
-  guint real_modifiers;
+  guint mask;
   guint action;
   gpointer paction;
   Keybinding *keybinding;
@@ -438,15 +440,15 @@ gf_keybindings_grab (GfKeybindings *keybindings,
   if (keycode == 0)
     return 0;
 
-  if (!get_real_modifiers (keybindings, modifiers, &real_modifiers))
+  if (!devirtualize_modifiers (keybindings, modifiers, &mask))
     return 0;
 
   action = get_next_action();
   paction = GUINT_TO_POINTER (action);
-  keybinding = keybinding_new (accelerator, action, keyval, keycode,
-                               modifiers, real_modifiers);
+  keybinding = keybinding_new (accelerator, keyval, modifiers,
+                               keycode, mask, action);
 
-  change_keygrab (keybindings, TRUE, keyval, keycode, real_modifiers);
+  change_keygrab (keybindings, TRUE, keyval, keycode, mask);
 
   g_hash_table_insert (keybindings->table, paction, keybinding);
 
@@ -478,7 +480,7 @@ gf_keybindings_ungrab (GfKeybindings *keybindings,
     return FALSE;
 
   change_keygrab (keybindings, FALSE, keybinding->keyval,
-                  keybinding->keycode, keybinding->real_modifiers);
+                  keybinding->keycode, keybinding->mask);
 
   g_hash_table_remove (keybindings->table, paction);
 
