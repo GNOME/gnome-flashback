@@ -189,14 +189,17 @@ filter_func (GdkXEvent *xevent,
 static void
 change_keygrab (GfKeybindings *keybindings,
                 gboolean       grab,
-                gint           keyval,
-                guint          keycode,
-                guint          modifiers)
+                Keybinding    *keybinding)
 {
   guint ignore_mask;
+  guint keycode;
+  guint mask;
   gint error_code;
 
   ignore_mask = 0;
+  keycode = keybinding->keycode;
+  mask = keybinding->mask;
+
   while (ignore_mask <= keybindings->ignore_mask)
     {
       if (ignore_mask & ~(keybindings->ignore_mask))
@@ -209,12 +212,12 @@ change_keygrab (GfKeybindings *keybindings,
 
       if (grab)
         {
-          XGrabKey (keybindings->xdisplay, keycode, modifiers | ignore_mask,
+          XGrabKey (keybindings->xdisplay, keycode, mask | ignore_mask,
                     keybindings->xwindow, True, GrabModeAsync, GrabModeSync);
         }
       else
         {
-          XUngrabKey (keybindings->xdisplay, keycode, modifiers | ignore_mask,
+          XUngrabKey (keybindings->xdisplay, keycode, mask | ignore_mask,
                       keybindings->xwindow);
         }
 
@@ -448,8 +451,7 @@ gf_keybindings_grab (GfKeybindings *keybindings,
   keybinding = keybinding_new (accelerator, keyval, modifiers,
                                keycode, mask, action);
 
-  change_keygrab (keybindings, TRUE, keyval, keycode, mask);
-
+  change_keygrab (keybindings, TRUE, keybinding);
   g_hash_table_insert (keybindings->table, paction, keybinding);
 
   return action;
@@ -479,9 +481,7 @@ gf_keybindings_ungrab (GfKeybindings *keybindings,
   if (keybinding == NULL)
     return FALSE;
 
-  change_keygrab (keybindings, FALSE, keybinding->keyval,
-                  keybinding->keycode, keybinding->mask);
-
+  change_keygrab (keybindings, FALSE, keybinding);
   g_hash_table_remove (keybindings->table, paction);
 
   return TRUE;
