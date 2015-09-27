@@ -33,7 +33,7 @@ struct _GfInputSource
   gchar         *id;
   gchar         *display_name;
   gchar         *short_name;
-  gint           index;
+  guint          index;
 
   gchar         *xkb_id;
 };
