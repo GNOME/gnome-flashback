@@ -116,29 +116,6 @@ get_keybinding (GfKeybindings *keybindings,
   return keybinding;
 }
 
-static GVariant *
-build_parameters (guint device_id,
-                  guint timestamp,
-                  guint action_mode)
-{
-  GVariantBuilder *builder;
-  GVariant *parameters;
-
-  builder = g_variant_builder_new (G_VARIANT_TYPE ("a{sv}"));
-
-  g_variant_builder_add (builder, "{sv}", "device-id",
-                         g_variant_new_uint32 (device_id));
-  g_variant_builder_add (builder, "{sv}", "timestamp",
-                         g_variant_new_uint32 (timestamp));
-  g_variant_builder_add (builder, "{sv}", "action-mode",
-                         g_variant_new_uint32 (action_mode));
-
-  parameters = g_variant_new ("a{sv}", builder);
-  g_variant_builder_unref (builder);
-
-  return parameters;
-}
-
 static GdkFilterReturn
 filter_func (GdkXEvent *xevent,
              GdkEvent  *event,
@@ -170,13 +147,9 @@ filter_func (GdkXEvent *xevent,
       if (keybinding->keycode == ev->xkey.keycode &&
           keybinding->mask == state)
         {
-          GVariant *parameters;
-
-          parameters = build_parameters (0, 0, 0);
-
           XUngrabKeyboard (keybindings->xdisplay, ev->xkey.time);
           g_signal_emit (keybindings, signals[SIGNAL_ACCELERATOR_ACTIVATED],
-                         0, keybinding->action, parameters);
+                         0, keybinding->action);
 
           break;
         }
@@ -342,17 +315,14 @@ gf_keybindings_class_init (GfKeybindingsClass *keybindings_class)
    * GfKeybindings::accelerator-activated:
    * @keybindings: the object on which the signal is emitted
    * @action: keybinding action from gf_keybindings_grab
-   * @parameters: keybinding parameters - a{sv}
    *
    * The ::accelerator-activated signal is emitted each time when keybinding
    * is activated by user.
    */
   signals[SIGNAL_ACCELERATOR_ACTIVATED] =
     g_signal_new ("accelerator-activated",
-                  G_TYPE_FROM_CLASS (keybindings_class),
-                  G_SIGNAL_RUN_LAST,
-                  0, NULL, NULL, NULL, G_TYPE_NONE,
-                  2, G_TYPE_UINT, G_TYPE_VARIANT);
+                  G_TYPE_FROM_CLASS (keybindings_class), G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 1, G_TYPE_UINT);
 }
 
 static void

@@ -229,7 +229,6 @@ fade_finished_cb (GfInputSourcePopup *popup,
 static void
 accelerator_activated_cb (GfKeybindings *keybindings,
                           guint          action,
-                          GVariant      *parameters,
                           gpointer       user_data)
 {
   GfInputSourceManager *manager;

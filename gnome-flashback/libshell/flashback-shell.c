@@ -55,17 +55,41 @@ struct _FlashbackShell
 
 G_DEFINE_TYPE (FlashbackShell, flashback_shell, G_TYPE_OBJECT)
 
+static GVariant *
+build_parameters (guint device_id,
+                  guint timestamp,
+                  guint action_mode)
+{
+  GVariantBuilder *builder;
+  GVariant *parameters;
+
+  builder = g_variant_builder_new (G_VARIANT_TYPE ("a{sv}"));
+
+  g_variant_builder_add (builder, "{sv}", "device-id",
+                         g_variant_new_uint32 (device_id));
+  g_variant_builder_add (builder, "{sv}", "timestamp",
+                         g_variant_new_uint32 (timestamp));
+  g_variant_builder_add (builder, "{sv}", "action-mode",
+                         g_variant_new_uint32 (action_mode));
+
+  parameters = g_variant_new ("a{sv}", builder);
+  g_variant_builder_unref (builder);
+
+  return parameters;
+}
+
 static void
 accelerator_activated (GfKeybindings *keybindings,
                        guint          action,
-                       GVariant      *parameters,
                        gpointer       user_data)
 {
 	FlashbackShell *shell;
 	FlashbackDBusShell *dbus_shell;
+	GVariant *parameters;
 
 	shell = FLASHBACK_SHELL (user_data);
 	dbus_shell = FLASHBACK_DBUS_SHELL (shell->iface);
+	parameters = build_parameters (0, 0, 0);
 
 	flashback_dbus_shell_emit_accelerator_activated (dbus_shell, action, parameters);
 }
