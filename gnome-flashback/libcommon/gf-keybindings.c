@@ -28,7 +28,7 @@ struct _GfKeybindings
 {
   GObject     parent;
 
-  GHashTable *table;
+  GHashTable *keybindings;
 
   Display    *xdisplay;
   Window      xwindow;
@@ -110,7 +110,7 @@ get_keybinding (GfKeybindings *keybindings,
   Keybinding *keybinding;
 
   paction = GUINT_TO_POINTER (action);
-  pkeybinding = g_hash_table_lookup (keybindings->table, paction);
+  pkeybinding = g_hash_table_lookup (keybindings->keybindings, paction);
   keybinding = (Keybinding *) pkeybinding;
 
   return keybinding;
@@ -134,7 +134,7 @@ filter_func (GdkXEvent *xevent,
   if (ev->type != KeyPress)
     return GDK_FILTER_CONTINUE;
 
-  values = g_hash_table_get_values (keybindings->table);
+  values = g_hash_table_get_values (keybindings->keybindings);
 
   for (l = values; l; l = l->next)
     {
@@ -280,10 +280,10 @@ gf_keybindings_dispose (GObject *object)
 
   keybindings = GF_KEYBINDINGS (object);
 
-  if (keybindings->table != NULL)
+  if (keybindings->keybindings != NULL)
     {
-      g_hash_table_destroy (keybindings->table);
-      keybindings->table = NULL;
+      g_hash_table_destroy (keybindings->keybindings);
+      keybindings->keybindings = NULL;
     }
 
   G_OBJECT_CLASS (gf_keybindings_parent_class)->dispose (object);
@@ -335,8 +335,8 @@ gf_keybindings_init (GfKeybindings *keybindings)
   guint num_lock_mask;
   guint scroll_lock_mask;
 
-  keybindings->table = g_hash_table_new_full (NULL, NULL, NULL,
-                                              keybinding_free);
+  keybindings->keybindings = g_hash_table_new_full (NULL, NULL, NULL,
+                                                    keybinding_free);
 
   display = gdk_display_get_default ();
   keybindings->xdisplay = gdk_x11_display_get_xdisplay (display);
@@ -423,7 +423,7 @@ gf_keybindings_grab (GfKeybindings *keybindings,
                                keycode, mask, action);
 
   change_keygrab (keybindings, TRUE, keybinding);
-  g_hash_table_insert (keybindings->table, paction, keybinding);
+  g_hash_table_insert (keybindings->keybindings, paction, keybinding);
 
   return action;
 }
@@ -446,14 +446,14 @@ gf_keybindings_ungrab (GfKeybindings *keybindings,
   Keybinding *keybinding;
 
   paction = GUINT_TO_POINTER (action);
-  pkeybinding = g_hash_table_lookup (keybindings->table, paction);
+  pkeybinding = g_hash_table_lookup (keybindings->keybindings, paction);
   keybinding = (Keybinding *) pkeybinding;
 
   if (keybinding == NULL)
     return FALSE;
 
   change_keygrab (keybindings, FALSE, keybinding);
-  g_hash_table_remove (keybindings->table, paction);
+  g_hash_table_remove (keybindings->keybindings, paction);
 
   return TRUE;
 }
