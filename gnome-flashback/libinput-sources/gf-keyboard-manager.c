@@ -20,7 +20,6 @@
 #include <glib.h>
 #include <gdk/gdkx.h>
 #include <libgnome-desktop/gnome-languages.h>
-#include <xkbcommon/xkbcommon-x11.h>
 #include <X11/XKBlib.h>
 #include <X11/extensions/XKBrules.h>
 
@@ -445,17 +444,16 @@ gf_keyboard_manager_init (GfKeyboardManager *manager)
   manager->xkb_info = gnome_xkb_info_new ();
   manager->options = g_strdup ("");
 
-  xkb_major = XKB_X11_MIN_MAJOR_XKB_VERSION;
-  xkb_minor = XKB_X11_MIN_MINOR_XKB_VERSION;
+  xkb_major = XkbMajorVersion;
+  xkb_minor = XkbMinorVersion;
 
   manager->have_xkb = TRUE;
   if (!XkbQueryExtension (manager->xdisplay, &xkb_opcode,
                           &manager->xkb_event_base, &manager->xkb_error_base,
                           &xkb_major, &xkb_minor))
     {
-      g_warning ("X server doesn't have the XKB extension, "
-                 "version %d.%d or newer", XKB_X11_MIN_MAJOR_XKB_VERSION,
-                 XKB_X11_MIN_MINOR_XKB_VERSION);
+      g_warning ("X server doesn't have the XKB extension, version %d.%d or "
+                 "newer", XkbMajorVersion, XkbMinorVersion);
       manager->have_xkb = FALSE;
     }
 
