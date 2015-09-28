@@ -33,6 +33,9 @@ struct _GfKeybindings
   Display    *xdisplay;
   Window      xwindow;
 
+  gint        xkb_event_base;
+  gint        xkb_error_base;
+
   guint       meta_mask;
   guint       super_mask;
   guint       hyper_mask;
@@ -63,155 +66,6 @@ enum
 static guint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GfKeybindings, gf_keybindings, G_TYPE_OBJECT)
-
-static Keybinding *
-keybinding_new (const gchar     *name,
-                guint            keyval,
-                GdkModifierType  modifiers,
-                guint            keycode,
-                guint            mask,
-                guint            action)
-{
-  Keybinding *keybinding;
-
-  keybinding = g_new0 (Keybinding, 1);
-
-  keybinding->name = g_strdup (name);
-
-  keybinding->keyval = keyval;
-  keybinding->modifiers = modifiers;
-
-  keybinding->keycode = keycode;
-  keybinding->mask = mask;
-
-  keybinding->action = action;
-
-  return keybinding;
-}
-
-static void
-keybinding_free (gpointer data)
-{
-  Keybinding *keybinding;
-
-  keybinding = (Keybinding *) data;
-
-  g_free (keybinding->name);
-
-  g_free (keybinding);
-}
-
-static Keybinding *
-get_keybinding (GfKeybindings *keybindings,
-                guint          action)
-{
-  gpointer paction;
-  gpointer pkeybinding;
-  Keybinding *keybinding;
-
-  paction = GUINT_TO_POINTER (action);
-  pkeybinding = g_hash_table_lookup (keybindings->keybindings, paction);
-  keybinding = (Keybinding *) pkeybinding;
-
-  return keybinding;
-}
-
-static GdkFilterReturn
-filter_func (GdkXEvent *xevent,
-             GdkEvent  *event,
-             gpointer   user_data)
-{
-  GfKeybindings *keybindings;
-  XEvent *ev;
-  GList *values;
-  GList *l;
-
-  keybindings = GF_KEYBINDINGS (user_data);
-  ev = (XEvent *) xevent;
-
-  XAllowEvents (keybindings->xdisplay, AsyncKeyboard, ev->xkey.time);
-
-  if (ev->type != KeyPress)
-    return GDK_FILTER_CONTINUE;
-
-  values = g_hash_table_get_values (keybindings->keybindings);
-
-  for (l = values; l; l = l->next)
-    {
-      Keybinding *keybinding;
-      guint state;
-
-      keybinding = (Keybinding *) l->data;
-      state = ev->xkey.state & 0xff & ~(keybindings->ignored_mask);
-
-      if (keybinding->keycode == ev->xkey.keycode &&
-          keybinding->mask == state)
-        {
-          XUngrabKeyboard (keybindings->xdisplay, ev->xkey.time);
-          g_signal_emit (keybindings, signals[SIGNAL_ACCELERATOR_ACTIVATED],
-                         0, keybinding->action);
-
-          break;
-        }
-    }
-
-  g_list_free (values);
-
-  return GDK_FILTER_CONTINUE;
-}
-
-static void
-change_keygrab (GfKeybindings *keybindings,
-                gboolean       grab,
-                Keybinding    *keybinding)
-{
-  guint ignored_mask;
-  guint keycode;
-  guint mask;
-  gint error_code;
-
-  ignored_mask = 0;
-  keycode = keybinding->keycode;
-  mask = keybinding->mask;
-
-  while (ignored_mask <= keybindings->ignored_mask)
-    {
-      if (ignored_mask & ~(keybindings->ignored_mask))
-        {
-          ++ignored_mask;
-          continue;
-        }
-
-      gdk_error_trap_push ();
-
-      if (grab)
-        {
-          XGrabKey (keybindings->xdisplay, keycode, mask | ignored_mask,
-                    keybindings->xwindow, True, GrabModeAsync, GrabModeSync);
-        }
-      else
-        {
-          XUngrabKey (keybindings->xdisplay, keycode, mask | ignored_mask,
-                      keybindings->xwindow);
-        }
-
-      error_code = gdk_error_trap_pop ();
-      if (error_code != 0)
-        {
-          g_debug ("Failed to grab/ ungrab key. Error code - %d", error_code);
-        }
-
-      ++ignored_mask;
-    }
-}
-
-static guint
-get_next_action (void)
-{
-  static guint action;
-
-  return ++action;
-}
 
 static gboolean
 devirtualize_modifier (GdkModifierType  modifiers,
@@ -274,6 +128,281 @@ devirtualize_modifiers (GfKeybindings   *keybindings,
 }
 
 static void
+change_keygrab (GfKeybindings *keybindings,
+                gboolean       grab,
+                Keybinding    *keybinding)
+{
+  guint ignored_mask;
+  guint keycode;
+  guint mask;
+  gint error_code;
+
+  ignored_mask = 0;
+  keycode = keybinding->keycode;
+  mask = keybinding->mask;
+
+  while (ignored_mask <= keybindings->ignored_mask)
+    {
+      if (ignored_mask & ~(keybindings->ignored_mask))
+        {
+          ++ignored_mask;
+          continue;
+        }
+
+      gdk_error_trap_push ();
+
+      if (grab)
+        {
+          XGrabKey (keybindings->xdisplay, keycode, mask | ignored_mask,
+                    keybindings->xwindow, True, GrabModeAsync, GrabModeSync);
+        }
+      else
+        {
+          XUngrabKey (keybindings->xdisplay, keycode, mask | ignored_mask,
+                      keybindings->xwindow);
+        }
+
+      error_code = gdk_error_trap_pop ();
+      if (error_code != 0)
+        {
+          g_debug ("Failed to grab/ ungrab key. Error code - %d", error_code);
+        }
+
+      ++ignored_mask;
+    }
+}
+
+static Keybinding *
+keybinding_new (const gchar     *name,
+                guint            keyval,
+                GdkModifierType  modifiers,
+                guint            keycode,
+                guint            mask,
+                guint            action)
+{
+  Keybinding *keybinding;
+
+  keybinding = g_new0 (Keybinding, 1);
+
+  keybinding->name = g_strdup (name);
+
+  keybinding->keyval = keyval;
+  keybinding->modifiers = modifiers;
+
+  keybinding->keycode = keycode;
+  keybinding->mask = mask;
+
+  keybinding->action = action;
+
+  return keybinding;
+}
+
+static void
+keybinding_free (gpointer data)
+{
+  Keybinding *keybinding;
+
+  keybinding = (Keybinding *) data;
+
+  g_free (keybinding->name);
+
+  g_free (keybinding);
+}
+
+static Keybinding *
+get_keybinding (GfKeybindings *keybindings,
+                guint          action)
+{
+  gpointer paction;
+  gpointer pkeybinding;
+  Keybinding *keybinding;
+
+  paction = GUINT_TO_POINTER (action);
+  pkeybinding = g_hash_table_lookup (keybindings->keybindings, paction);
+  keybinding = (Keybinding *) pkeybinding;
+
+  return keybinding;
+}
+
+static void
+ungrab_keybindings (GfKeybindings *keybindings)
+{
+  GHashTableIter iter;
+  gpointer value;
+
+  g_hash_table_iter_init (&iter, keybindings->keybindings);
+  while (g_hash_table_iter_next (&iter, NULL, &value))
+    {
+      Keybinding *keybinding;
+
+      keybinding = (Keybinding *) value;
+
+      change_keygrab (keybindings, FALSE, keybinding);
+    }
+}
+
+static void
+reload_modmap (GfKeybindings *keybindings)
+{
+  guint meta_mask;
+  guint super_mask;
+  guint hyper_mask;
+  guint num_lock_mask;
+  guint scroll_lock_mask;
+
+  meta_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Meta_L);
+  if (meta_mask == 0)
+    meta_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Meta_R);
+
+  super_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Super_L);
+  if (super_mask == 0)
+    super_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Super_R);
+
+  hyper_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Hyper_L);
+  if (hyper_mask == 0)
+    hyper_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Hyper_R);
+
+  num_lock_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Num_Lock);
+  scroll_lock_mask = XkbKeysymToModifiers (keybindings->xdisplay,
+                                           XK_Scroll_Lock);
+
+  keybindings->meta_mask = meta_mask;
+  keybindings->super_mask = super_mask;
+  keybindings->hyper_mask = hyper_mask;
+  keybindings->ignored_mask = num_lock_mask | scroll_lock_mask | LockMask;
+}
+
+static void
+reload_keybindings (GfKeybindings *keybindings)
+{
+  GHashTableIter iter;
+  gpointer value;
+
+  g_hash_table_iter_init (&iter, keybindings->keybindings);
+  while (g_hash_table_iter_next (&iter, NULL, &value))
+    {
+      Keybinding *keybinding;
+      guint keyval;
+      GdkModifierType modifiers;
+      guint keycode;
+      guint mask;
+
+      keybinding = (Keybinding *) value;
+
+      gtk_accelerator_parse (keybinding->name, &keyval, &modifiers);
+
+      if (gtk_accelerator_valid (keyval, modifiers) && keyval != 0)
+        {
+          keycode = XKeysymToKeycode (keybindings->xdisplay, keyval);
+
+          if (!devirtualize_modifiers (keybindings, modifiers, &mask))
+            mask = 0;
+        }
+      else
+        {
+          keyval = 0;
+          modifiers = 0;
+          keycode = 0;
+          mask = 0;
+        }
+
+      keybinding->keyval = keyval;
+      keybinding->modifiers = modifiers;
+      keybinding->keycode = keycode;
+      keybinding->mask = mask;
+    }
+}
+
+static void
+regrab_keybindings (GfKeybindings *keybindings)
+{
+  GHashTableIter iter;
+  gpointer value;
+
+  g_hash_table_iter_init (&iter, keybindings->keybindings);
+  while (g_hash_table_iter_next (&iter, NULL, &value))
+    {
+      Keybinding *keybinding;
+
+      keybinding = (Keybinding *) value;
+
+      change_keygrab (keybindings, TRUE, keybinding);
+    }
+}
+
+static GdkFilterReturn
+filter_func (GdkXEvent *xevent,
+             GdkEvent  *event,
+             gpointer   user_data)
+{
+  GfKeybindings *keybindings;
+  XEvent *ev;
+  GList *values;
+  GList *l;
+
+  keybindings = GF_KEYBINDINGS (user_data);
+  ev = (XEvent *) xevent;
+
+  if (ev->type == keybindings->xkb_event_base)
+    {
+      XkbEvent *xkb_ev;
+
+      xkb_ev = (XkbEvent *) ev;
+
+      switch (xkb_ev->any.xkb_type)
+        {
+        case XkbNewKeyboardNotify:
+        case XkbMapNotify:
+          ungrab_keybindings (keybindings);
+          reload_modmap (keybindings);
+          reload_keybindings (keybindings);
+          regrab_keybindings (keybindings);
+          break;
+        default:
+          break;
+        }
+    }
+
+  XAllowEvents (keybindings->xdisplay, AsyncKeyboard, ev->xkey.time);
+
+  if (ev->type != KeyPress)
+    return GDK_FILTER_CONTINUE;
+
+  values = g_hash_table_get_values (keybindings->keybindings);
+
+  for (l = values; l; l = l->next)
+    {
+      Keybinding *keybinding;
+      guint state;
+
+      keybinding = (Keybinding *) l->data;
+      state = ev->xkey.state & 0xff & ~(keybindings->ignored_mask);
+
+      if (keybinding->keycode == ev->xkey.keycode &&
+          keybinding->mask == state)
+        {
+          XUngrabKeyboard (keybindings->xdisplay, ev->xkey.time);
+          g_signal_emit (keybindings, signals[SIGNAL_ACCELERATOR_ACTIVATED],
+                         0, keybinding->action);
+
+          break;
+        }
+    }
+
+  g_list_free (values);
+
+  return GDK_FILTER_CONTINUE;
+}
+
+static guint
+get_next_action (void)
+{
+  static guint action;
+
+  return ++action;
+}
+
+static void
 gf_keybindings_dispose (GObject *object)
 {
   GfKeybindings *keybindings;
@@ -329,39 +458,38 @@ static void
 gf_keybindings_init (GfKeybindings *keybindings)
 {
   GdkDisplay *display;
-  guint meta_mask;
-  guint super_mask;
-  guint hyper_mask;
-  guint num_lock_mask;
-  guint scroll_lock_mask;
+  gint xkb_opcode;
+  gint xkb_major;
+  gint xkb_minor;
 
   keybindings->keybindings = g_hash_table_new_full (NULL, NULL, NULL,
                                                     keybinding_free);
 
   display = gdk_display_get_default ();
+  xkb_major = XkbMajorVersion;
+  xkb_minor = XkbMinorVersion;
+
   keybindings->xdisplay = gdk_x11_display_get_xdisplay (display);
   keybindings->xwindow = XDefaultRootWindow (keybindings->xdisplay);
 
-  meta_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Meta_L);
-  if (meta_mask == 0)
-    meta_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Meta_R);
+  if (!XkbQueryExtension (keybindings->xdisplay, &xkb_opcode,
+                          &keybindings->xkb_event_base,
+                          &keybindings->xkb_error_base,
+                          &xkb_major, &xkb_minor))
+    {
+      keybindings->xkb_event_base = -1;
 
-  super_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Super_L);
-  if (super_mask == 0)
-    super_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Super_R);
+      g_warning ("X server doesn't have the XKB extension, version %d.%d or "
+                 "newer", XkbMajorVersion, XkbMinorVersion);
+    }
+  else
+    {
+      XkbSelectEvents (keybindings->xdisplay, XkbUseCoreKbd,
+                       XkbNewKeyboardNotifyMask | XkbMapNotifyMask,
+                       XkbNewKeyboardNotifyMask | XkbMapNotifyMask);
+    }
 
-  hyper_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Hyper_L);
-  if (hyper_mask == 0)
-    hyper_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Hyper_R);
-
-  num_lock_mask = XkbKeysymToModifiers (keybindings->xdisplay, XK_Num_Lock);
-  scroll_lock_mask = XkbKeysymToModifiers (keybindings->xdisplay,
-                                           XK_Scroll_Lock);
-
-  keybindings->meta_mask = meta_mask;
-  keybindings->super_mask = super_mask;
-  keybindings->hyper_mask = hyper_mask;
-  keybindings->ignored_mask = num_lock_mask | scroll_lock_mask | LockMask;
+  reload_modmap (keybindings);
 
   gdk_window_add_filter (NULL, filter_func, keybindings);
 }
