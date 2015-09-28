@@ -52,7 +52,6 @@ struct _GfKeyboardManager
 
   Display      *xdisplay;
 
-  gboolean      have_xkb;
   gint          xkb_event_base;
   gint          xkb_error_base;
 
@@ -212,7 +211,7 @@ set_keymap (GfKeyboardManager *manager)
   XkbRF_VarDefsRec *xkb_var_defs;
   XkbRF_RulesRec *xkb_rules;
 
-  if (manager->have_xkb == FALSE)
+  if (manager->xkb_event_base == -1)
     return;
 
   if (!manager->layouts || !manager->variants || !manager->options)
@@ -330,7 +329,7 @@ static void
 apply_layout_index (GfKeyboardManager *manager,
                     guint              index)
 {
-  if (manager->have_xkb == FALSE)
+  if (manager->xkb_event_base == -1)
     return;
 
   XkbLockGroup (manager->xdisplay, XkbUseCoreKbd, index);
@@ -447,14 +446,14 @@ gf_keyboard_manager_init (GfKeyboardManager *manager)
   xkb_major = XkbMajorVersion;
   xkb_minor = XkbMinorVersion;
 
-  manager->have_xkb = TRUE;
   if (!XkbQueryExtension (manager->xdisplay, &xkb_opcode,
                           &manager->xkb_event_base, &manager->xkb_error_base,
                           &xkb_major, &xkb_minor))
     {
+      manager->xkb_event_base = -1;
+
       g_warning ("X server doesn't have the XKB extension, version %d.%d or "
                  "newer", XkbMajorVersion, XkbMinorVersion);
-      manager->have_xkb = FALSE;
     }
 
   g_signal_connect_object (device_manager, "device-added",
