@@ -20,13 +20,16 @@
 
 #include <glib-object.h>
 #include "gf-ibus-manager.h"
+#include "gf-input-source.h"
 
 #define GF_TYPE_INPUT_SOURCE_MANAGER gf_input_source_manager_get_type ()
 G_DECLARE_FINAL_TYPE (GfInputSourceManager, gf_input_source_manager,
                       GF, INPUT_SOURCE_MANAGER, GObject)
 
-GfInputSourceManager *gf_input_source_manager_new    (GfIBusManager        *manager);
+GfInputSourceManager *gf_input_source_manager_new                (GfIBusManager        *manager);
 
-void                  gf_input_source_manager_reload (GfInputSourceManager *manager);
+void                  gf_input_source_manager_reload             (GfInputSourceManager *manager);
+
+GfInputSource        *gf_input_source_manager_get_current_source (GfInputSourceManager *manager);
 
 #endif

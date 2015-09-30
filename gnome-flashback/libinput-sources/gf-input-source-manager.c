@@ -80,6 +80,7 @@ struct _GfInputSourceManager
 enum
 {
   SIGNAL_SOURCES_CHANGED,
+  SIGNAL_CURRENT_SOURCE_CHANGED,
 
   LAST_SIGNAL
 };
@@ -491,9 +492,14 @@ static void
 current_input_source_changed (GfInputSourceManager *manager,
                               GfInputSource        *new_source)
 {
+  GfInputSource *old_source;
   GList *l;
 
+  old_source = manager->current_source;
   manager->current_source = new_source;
+
+  g_signal_emit (manager, signals[SIGNAL_CURRENT_SOURCE_CHANGED],
+                 0, old_source);
 
   for (l = manager->mru_sources; l != NULL; l = g_list_next (l))
     {
@@ -1056,6 +1062,11 @@ gf_input_source_manager_class_init (GfInputSourceManagerClass *manager_class)
     g_signal_new ("sources-changed", G_TYPE_FROM_CLASS (manager_class),
                   G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 
+  signals[SIGNAL_CURRENT_SOURCE_CHANGED] =
+    g_signal_new ("current-source-changed", G_TYPE_FROM_CLASS (manager_class),
+                  G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 1,
+                  GF_TYPE_INPUT_SOURCE);
+
   properties[PROP_IBUS_MANAGER] =
     g_param_spec_object ("ibus-manager", "IBus Manager",
                          "An instance of GfIBusManager",
@@ -1094,4 +1105,10 @@ gf_input_source_manager_reload (GfInputSourceManager *manager)
   g_strfreev (options);
 
   sources_changed_cb (manager->settings, manager);
+}
+
+GfInputSource *
+gf_input_source_manager_get_current_source (GfInputSourceManager *manager)
+{
+  return manager->current_source;
 }
