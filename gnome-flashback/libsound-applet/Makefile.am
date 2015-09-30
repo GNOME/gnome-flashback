@@ -31,9 +31,9 @@ libsound_applet_la_LDFLAGS = \
 	$(NULL)
 
 libsound_applet_la_LIBADD = \
-	-lm \
-	$(SOUND_APPLET_LIBS) \
 	gvc/libgvc.la \
+	$(SOUND_APPLET_LIBS) \
+	$(LIBM) \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk
