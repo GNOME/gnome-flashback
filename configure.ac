@@ -145,6 +145,7 @@ PKG_CHECK_MODULES([INPUT_SOURCES], [
   gnome-desktop-3.0 >= $LIBGNOME_DESKTOP_REQUIRED
   gtk+-3.0 >= $GTK_REQUIRED
   ibus-1.0 >= $IBUS_REQUIRED
+  pango
   xkbfile
   xkeyboard-config
 ])

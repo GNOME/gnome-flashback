@@ -41,6 +41,7 @@ libinput_sources_la_LDFLAGS = \
 libinput_sources_la_LIBADD = \
 	$(top_builddir)/gnome-flashback/libcommon/libcommon.la \
 	$(INPUT_SOURCES_LIBS) \
+	$(LIBM) \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk
