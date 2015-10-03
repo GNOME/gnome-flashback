@@ -11,6 +11,8 @@ top_builddir = ..
 XGETTEXT_OPTIONS = \
   --keyword=_ --flag=_:1:pass-c-format \
   --keyword=N_ --flag=N_:1:pass-c-format \
+  --keyword=C_:1c,2 --flag=C_:1:pass-c-format \
+  --keyword=NC_:1c,2 --flag=NC_:1:pass-c-format \
   --flag=error:3:c-format --flag=error_at_line:5:c-format
 
 # This is the copyright holder that gets inserted into the header of the
@@ -54,7 +56,7 @@ EXTRA_LOCALE_CATEGORIES =
 # context.  Possible values are "yes" and "no".  Set this to yes if the
 # package uses functions taking also a message context, like pgettext(), or
 # if in $(XGETTEXT_OPTIONS) you define keywords with a context argument.
-USE_MSGCTXT = no
+USE_MSGCTXT = yes
 
 # These options get passed to msgmerge.
 # Useful options are in particular:
