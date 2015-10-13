@@ -505,9 +505,6 @@ activate_cb (GfInputSource *source,
   else
     engine = "xkb:us::eng";
 
-  g_signal_connect (manager->ibus_manager, "engine-set",
-                    G_CALLBACK (engine_set_cb), manager);
-
   gf_ibus_manager_set_engine (manager->ibus_manager, engine);
   current_input_source_changed (manager, source);
 }
@@ -894,6 +891,9 @@ gf_input_source_manager_constructed (GObject *object)
                     G_CALLBACK (property_updated_cb), manager);
   g_signal_connect (manager->ibus_manager, "set-content-type",
                     G_CALLBACK (set_content_type_cb), manager);
+
+  g_signal_connect (manager->ibus_manager, "engine-set",
+                    G_CALLBACK (engine_set_cb), manager);
 }
 
 static void
