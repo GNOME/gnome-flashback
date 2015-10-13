@@ -42,7 +42,7 @@ void               gf_keyboard_manager_apply              (GfKeyboardManager  *m
 
 void               gf_keyboard_manager_reapply            (GfKeyboardManager  *manager);
 
-void               gf_keyboard_manager_grab               (GfKeyboardManager  *manager,
+gboolean           gf_keyboard_manager_grab               (GfKeyboardManager  *manager,
                                                            guint32             timestamp);
 
 void               gf_keyboard_manager_ungrab             (GfKeyboardManager  *manager,

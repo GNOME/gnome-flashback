@@ -65,8 +65,6 @@ struct _GfKeyboardManager
   gchar        *layouts;
   gchar        *variants;
   gchar        *options;
-
-  GdkDevice    *keyboard;
 };
 
 G_DEFINE_TYPE (GfKeyboardManager, gf_keyboard_manager, G_TYPE_OBJECT)
@@ -385,7 +383,6 @@ gf_keyboard_manager_dispose (GObject *object)
   manager = GF_KEYBOARD_MANAGER (object);
 
   g_clear_object (&manager->xkb_info);
-  g_clear_object (&manager->keyboard);
 
   G_OBJECT_CLASS (gf_keyboard_manager_parent_class)->dispose (object);
 }
@@ -618,48 +615,38 @@ gf_keyboard_manager_reapply (GfKeyboardManager *manager)
  * @manager: a #GfKeyboardManager
  * @timestamp: the timestamp of the user interaction (typically a button or
  *     key press event) which triggered this call
+ *
+ * Returns: %TRUE if grab was successful, %FALSE otherwise
  */
-void
+gboolean
 gf_keyboard_manager_grab (GfKeyboardManager *manager,
                           guint32            timestamp)
 {
   GdkDisplay *display;
   GdkScreen *screen;
-  GdkDeviceManager *device_manager;
   GdkWindow *root;
-  GList *devices;
-  GList *l;
+  Window xroot;
+  gint status;
+  gint error;
 
   display = gdk_display_get_default ();
   screen = gdk_display_get_default_screen (display);
-
-  device_manager = gdk_display_get_device_manager (display);
   root = gdk_screen_get_root_window (screen);
+  xroot = gdk_x11_window_get_xid (root);
 
-  devices = gdk_device_manager_list_devices (device_manager,
-                                             GDK_DEVICE_TYPE_MASTER);
+  gdk_error_trap_push ();
+  status = XGrabKeyboard (manager->xdisplay, xroot, False,
+                          GrabModeAsync, GrabModeSync,
+                          timestamp);
+  error = gdk_error_trap_pop ();
 
-  for (l = devices; l != NULL; l = g_list_next (l))
-    {
-      GdkDevice *device;
-      GdkGrabStatus status;
+  if (error != 0)
+    return FALSE;
 
-      device = GDK_DEVICE (l->data);
+  if (status != 0)
+    return FALSE;
 
-      if (gdk_device_get_source (device) == GDK_SOURCE_KEYBOARD)
-        continue;
-
-      status = gdk_device_grab (device, root, GDK_OWNERSHIP_NONE, TRUE, 0,
-                                NULL, timestamp);
-
-      if (status == GDK_GRAB_SUCCESS)
-        {
-          manager->keyboard = device;
-          break;
-        }
-    }
-
-  g_list_free (devices);
+  return TRUE;
 }
 
 /**
@@ -672,10 +659,7 @@ void
 gf_keyboard_manager_ungrab (GfKeyboardManager *manager,
                             guint32            timestamp)
 {
-  if (manager->keyboard == NULL)
-    return;
-
-  gdk_device_ungrab (manager->keyboard, timestamp);
+  XUngrabKeyboard (manager->xdisplay, timestamp);
 }
 
 /**
