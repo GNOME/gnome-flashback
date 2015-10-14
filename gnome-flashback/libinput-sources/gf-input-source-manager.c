@@ -73,6 +73,8 @@ struct _GfInputSourceManager
   GList                 *mru_sources_backup;
 
   GtkWidget             *popup;
+
+  GfInputSource         *current_source;
 };
 
 enum
@@ -226,6 +228,53 @@ fade_finished_cb (GfInputSourcePopup *popup,
   manager->popup = NULL;
 }
 
+static gint
+compare_indexes (gconstpointer a,
+                 gconstpointer b)
+{
+  return GPOINTER_TO_UINT (a) - GPOINTER_TO_UINT (b);
+}
+
+static gboolean
+modifiers_accelerator_activated_cb (GfKeybindings *keybindings,
+                                    gpointer       user_data)
+{
+  GfInputSourceManager *manager;
+  guint size;
+  GfInputSource *source;
+  GList *keys;
+  guint next_index;
+
+  manager = GF_INPUT_SOURCE_MANAGER (user_data);
+
+  size = g_hash_table_size (manager->input_sources);
+  if (size == 0)
+    {
+      gf_keyboard_manager_ungrab (manager->keyboard_manager, GDK_CURRENT_TIME);
+      return TRUE;
+    }
+
+  source = manager->current_source;
+  if (source == NULL)
+    source = (GfInputSource *) g_hash_table_lookup (manager->input_sources,
+                                                    GUINT_TO_POINTER (0));
+
+  keys = g_hash_table_get_keys (manager->input_sources);
+  keys = g_list_sort (keys, compare_indexes);
+
+  next_index = gf_input_source_get_index (source ) + 1;
+  if (next_index > GPOINTER_TO_UINT (g_list_nth_data (keys, size - 1)))
+    next_index = 0;
+
+  source = (GfInputSource *) g_hash_table_lookup (manager->input_sources,
+                                                  GUINT_TO_POINTER (next_index));
+
+  gf_input_source_activate (source);
+  g_list_free (keys);
+
+  return TRUE;
+}
+
 static void
 accelerator_activated_cb (GfKeybindings *keybindings,
                           guint          action,
@@ -279,6 +328,8 @@ keybindings_init (GfInputSourceManager *manager)
 
   g_signal_connect (manager->keybindings, "accelerator-activated",
                     G_CALLBACK (accelerator_activated_cb), manager);
+  g_signal_connect (manager->keybindings, "modifiers-accelerator-activated",
+                    G_CALLBACK (modifiers_accelerator_activated_cb), manager);
 
   switch_input_changed_cb (manager->wm_keybindings, NULL, manager);
   switch_input_backward_changed_cb (manager->wm_keybindings, NULL, manager);
@@ -441,6 +492,8 @@ current_input_source_changed (GfInputSourceManager *manager,
                               GfInputSource        *new_source)
 {
   GList *l;
+
+  manager->current_source = new_source;
 
   for (l = manager->mru_sources; l != NULL; l = g_list_next (l))
     {
