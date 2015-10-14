@@ -65,6 +65,8 @@ struct _GfKeyboardManager
   gchar        *layouts;
   gchar        *variants;
   gchar        *options;
+
+  guint         locked_group;
 };
 
 G_DEFINE_TYPE (GfKeyboardManager, gf_keyboard_manager, G_TYPE_OBJECT)
@@ -330,6 +332,7 @@ apply_layout_index (GfKeyboardManager *manager,
   if (manager->xkb_event_base == -1)
     return;
 
+  manager->locked_group = index;
   XkbLockGroup (manager->xdisplay, XkbUseCoreKbd, index);
 }
 
@@ -375,6 +378,33 @@ get_locale_layout_info (GfKeyboardManager *manager)
     }
 }
 
+static GdkFilterReturn
+filter_func (GdkXEvent *xevent,
+             GdkEvent  *event,
+             gpointer   user_data)
+{
+  GfKeyboardManager *manager;
+  XEvent *ev;
+  XkbEvent *xkb_ev;
+
+  manager = GF_KEYBOARD_MANAGER (user_data);
+  ev = (XEvent *) xevent;
+
+  if (ev->type != manager->xkb_event_base)
+    return GDK_FILTER_CONTINUE;
+
+  xkb_ev = (XkbEvent *) ev;
+
+  if (xkb_ev->any.xkb_type == XkbStateNotify &&
+      xkb_ev->state.changed & XkbGroupLockMask)
+    {
+      if ((gint) manager->locked_group != xkb_ev->state.locked_group)
+        apply_layout_index (manager, manager->locked_group);
+    }
+
+  return GDK_FILTER_CONTINUE;
+}
+
 static void
 gf_keyboard_manager_dispose (GObject *object)
 {
@@ -393,6 +423,8 @@ gf_keyboard_manager_finalize (GObject *object)
   GfKeyboardManager *manager;
 
   manager = GF_KEYBOARD_MANAGER (object);
+
+  gdk_window_remove_filter (NULL, filter_func, manager);
 
   if (manager->locale != 0)
     {
@@ -458,6 +490,8 @@ gf_keyboard_manager_init (GfKeyboardManager *manager)
                            G_CONNECT_AFTER);
 
   get_locale_layout_info (manager);
+
+  gdk_window_add_filter (NULL, filter_func, manager);
 }
 
 /**
