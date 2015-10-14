@@ -25,7 +25,7 @@ G_BEGIN_DECLS
 #define GF_TYPE_KEYBINDINGS gf_keybindings_get_type ()
 G_DECLARE_FINAL_TYPE (GfKeybindings, gf_keybindings, GF, KEYBINDINGS, GObject)
 
-GfKeybindings   *gf_keybindings_new           (void);
+GfKeybindings   *gf_keybindings_new           (gboolean       iso_next_group);
 
 guint            gf_keybindings_grab          (GfKeybindings *keybindings,
                                                const gchar   *accelerator);

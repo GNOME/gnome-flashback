@@ -265,7 +265,7 @@ static void
 keybindings_init (GfInputSourceManager *manager)
 {
   manager->wm_keybindings = g_settings_new (DESKTOP_WM_KEYBINDINGS_SCHEMA);
-  manager->keybindings = gf_keybindings_new ();
+  manager->keybindings = gf_keybindings_new (TRUE);
 
   g_signal_connect (manager->wm_keybindings,
                     "changed::" KEY_SWITCH_INPUT_SOURCE,

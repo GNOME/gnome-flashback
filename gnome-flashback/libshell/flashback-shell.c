@@ -465,7 +465,7 @@ flashback_shell_init (FlashbackShell *shell)
   shell->grabbed_accelerators = g_hash_table_new_full (NULL, NULL, NULL, g_free);
   shell->grabbers = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-  shell->keybindings = gf_keybindings_new ();
+  shell->keybindings = gf_keybindings_new (FALSE);
   g_signal_connect (shell->keybindings, "accelerator-activated",
                     G_CALLBACK (accelerator_activated), shell);
 
