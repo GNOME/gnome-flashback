@@ -187,7 +187,6 @@ build_prop_section (GfInputSources *sources,
                     GtkMenu        *menu)
 {
   IBusPropList *prop_list;
-  GtkWidget *separator;
 
   prop_list = gf_input_source_get_properties (sources->current_source);
 
