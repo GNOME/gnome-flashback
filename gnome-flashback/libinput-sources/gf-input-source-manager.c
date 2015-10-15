@@ -75,6 +75,8 @@ struct _GfInputSourceManager
   GtkWidget             *popup;
 
   GfInputSource         *current_source;
+
+  gboolean               sources_per_window;
 };
 
 enum
@@ -99,6 +101,15 @@ enum
 static GParamSpec *properties[LAST_PROP] = { NULL };
 
 G_DEFINE_TYPE (GfInputSourceManager, gf_input_source_manager, G_TYPE_OBJECT)
+
+static void
+change_per_window_source (GfInputSourceManager *manager)
+{
+  if (!manager->sources_per_window)
+    return;
+
+  /* FIXME: */
+}
 
 static gint
 compare_sources_by_index (gconstpointer a,
@@ -533,6 +544,8 @@ current_input_source_changed (GfInputSourceManager *manager,
           break;
         }
     }
+
+  change_per_window_source (manager);
 }
 
 static void
@@ -853,6 +866,15 @@ static void
 per_window_changed_cb (GfInputSourceSettings *settings,
                        gpointer               user_data)
 {
+  GfInputSourceManager *manager;
+  gboolean per_window;
+
+  manager = GF_INPUT_SOURCE_MANAGER (user_data);
+  per_window = gf_input_source_settings_get_per_window (settings);
+
+  manager->sources_per_window = per_window;
+
+  /* FIXME: */
 }
 
 static void
@@ -866,6 +888,8 @@ input_source_settings_init (GfInputSourceManager *manager)
                     G_CALLBACK (xkb_options_changed_cb), manager);
   g_signal_connect (manager->settings, "per-window-changed",
                     G_CALLBACK (per_window_changed_cb), manager);
+
+  per_window_changed_cb (manager->settings, manager);
 }
 
 static void
