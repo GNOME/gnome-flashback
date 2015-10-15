@@ -17,7 +17,6 @@
 
 #include "config.h"
 
-#include <ibus-1.0/ibus.h>
 #include <string.h>
 
 #include "gf-ibus-manager.h"
@@ -36,6 +35,8 @@ struct _GfInputSource
   guint          index;
 
   gchar         *xkb_id;
+
+  IBusPropList  *prop_list;
 };
 
 enum
@@ -174,6 +175,18 @@ gf_input_source_set_property (GObject      *object,
 }
 
 static void
+gf_input_source_dispose (GObject *object)
+{
+  GfInputSource *source;
+
+  source = GF_INPUT_SOURCE (object);
+
+  g_clear_object (&source->prop_list);
+
+  G_OBJECT_CLASS (gf_input_source_parent_class)->dispose (object);
+}
+
+static void
 gf_input_source_finalize (GObject *object)
 {
   GfInputSource *source;
@@ -209,6 +222,7 @@ gf_input_source_class_init (GfInputSourceClass *source_class)
   object_class = G_OBJECT_CLASS (source_class);
 
   object_class->constructed = gf_input_source_constructed;
+  object_class->dispose = gf_input_source_dispose;
   object_class->finalize = gf_input_source_finalize;
   object_class->get_property = gf_input_source_get_property;
   object_class->set_property = gf_input_source_set_property;
@@ -262,7 +276,6 @@ gf_input_source_class_init (GfInputSourceClass *source_class)
 static void
 gf_input_source_init (GfInputSource *source)
 {
-
 }
 
 GfInputSource *
@@ -336,4 +349,20 @@ void
 gf_input_source_activate (GfInputSource *source)
 {
   g_signal_emit (source, signals[SIGNAL_ACTIVATE], 0);
+}
+
+IBusPropList *
+gf_input_source_get_properties (GfInputSource *source)
+{
+  return source->prop_list;
+}
+
+void
+gf_input_source_set_properties (GfInputSource *source,
+                                IBusPropList  *prop_list)
+{
+  g_clear_object (&source->prop_list);
+
+  if (prop_list != NULL)
+    source->prop_list = g_object_ref (prop_list);
 }

@@ -19,6 +19,8 @@
 #define GF_INPUT_SOURCE_H
 
 #include <glib-object.h>
+#include <ibus-1.0/ibus.h>
+
 #include "gf-ibus-manager.h"
 
 #define GF_TYPE_INPUT_SOURCE gf_input_source_get_type ()
@@ -48,5 +50,10 @@ guint          gf_input_source_get_index        (GfInputSource *source);
 const gchar   *gf_input_source_get_xkb_id       (GfInputSource *source);
 
 void           gf_input_source_activate         (GfInputSource *source);
+
+IBusPropList  *gf_input_source_get_properties   (GfInputSource *source);
+
+void           gf_input_source_set_properties   (GfInputSource *source,
+                                                 IBusPropList  *prop_list);
 
 #endif
