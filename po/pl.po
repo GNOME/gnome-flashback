@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-15 06:39+0200\n"
-"PO-Revision-Date: 2015-09-15 06:44+0200\n"
+"POT-Creation-Date: 2015-10-14 19:42+0000\n"
+"PO-Revision-Date: 2015-10-15 04:14+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -248,11 +248,11 @@ msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
 "GNOME będzie używał obejść błędów."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid "Fade the background on change"
 msgstr "Efekt przejścia podczas zmiany tła"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:98
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -260,11 +260,31 @@ msgstr ""
 "Jeśli jest ustawione na wartość „true”, to efekt przejścia będzie używany do "
 "zmieniania tła pulpitu."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+msgid "The background color for the status icon."
+msgstr "Kolor tła dla ikony stanu."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
+msgid ""
+"This contains the background color for the status icon that is shown in the "
+"system tray."
+msgstr "Kolor tła dla ikony stanu wyświetlanej w obszarze powiadamiania."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
+msgid "The foreground color for the status icon."
+msgstr "Kolor ikony stanu."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
+msgid ""
+"This contains the foreground color for the status icon that is shown in the "
+"system tray."
+msgstr "Kolor ikony stanu wyświetlanej w obszarze powiadamiania."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:123
 msgid "Fix missing app menu button"
 msgstr "Naprawa brakującego przycisku menu programu"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:124
 msgid ""
 "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
 "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
@@ -275,11 +295,11 @@ msgstr ""
 "wtyczki XSettings usługi gnome-settings-daemon dla właściwości „Gtk/"
 "ShellShowsAppMenu”."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:112
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:129
 msgid "Fix wrong button layout"
 msgstr "Naprawa błędnego układu przycisków"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:130
 msgid ""
 "If set to non-empty string, then gnome-flashback will force Gtk/"
 "DecorationLayout to value set by this setting. Set to empty string if you "
@@ -454,19 +474,19 @@ msgstr "_Wysuń"
 msgid "_Unmount"
 msgstr "Od_montuj"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:158
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
 msgid "Turn Off"
 msgstr "Wyłącz"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:162
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:164
 msgid "Send Files"
 msgstr "Wyślij pliki"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:168
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
 msgid "Turn On"
 msgstr "Włącz"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:173
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
 msgid "Bluetooth Settings"
 msgstr "Ustawienia Bluetooth"
 
@@ -489,11 +509,6 @@ msgstr[2] "%d połączonych urządzeń"
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
 msgid "Not Connected"
 msgstr "Nie połączono"
-
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:414
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:415
-msgid "Bluetooth"
-msgstr "Bluetooth"
 
 #: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:8
 msgid "Confirm"
@@ -734,50 +749,42 @@ msgstr "<small><b>_Szczegóły</b></small>"
 msgid "_Authenticate"
 msgstr "_Uwierzytelnij"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:133
+#: gnome-flashback/libpower-applet/gf-power-applet.c:135
 msgid "Power Settings"
 msgstr "Ustawienia zasilania"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:180
+#: gnome-flashback/libpower-applet/gf-power-applet.c:182
 msgid "Fully Charged"
 msgstr "Naładowane"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:182
+#: gnome-flashback/libpower-applet/gf-power-applet.c:184
 msgid "Empty"
 msgstr "Puste"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:188
-#: gnome-flashback/libpower-applet/gf-power-applet.c:193
+#: gnome-flashback/libpower-applet/gf-power-applet.c:190
+#: gnome-flashback/libpower-applet/gf-power-applet.c:195
 msgid "Estimating..."
 msgstr "Obliczanie…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:202
+#: gnome-flashback/libpower-applet/gf-power-applet.c:204
 #, c-format
 msgid "%.0f:%02.0f Remaining (%.0f%%)"
 msgstr "Pozostało: %.0f∶%02.0f (%.0f%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:209
+#: gnome-flashback/libpower-applet/gf-power-applet.c:211
 #, c-format
 msgid "%.0f:%02.0f Until Full (%.0f%%)"
 msgstr "Do naładowania: %.0f∶%02.0f (%.0f%%)"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:224
+#: gnome-flashback/libpower-applet/gf-power-applet.c:226
 msgid "UPS"
 msgstr "UPS"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:226
+#: gnome-flashback/libpower-applet/gf-power-applet.c:228
 msgid "Battery"
 msgstr "Akumulator"
-
-#: gnome-flashback/libpower-applet/gf-power-applet.c:327
-msgid "Power status"
-msgstr "Stan zasilania"
-
-#: gnome-flashback/libpower-applet/gf-power-applet.c:328
-msgid "Power"
-msgstr "Zasilanie"
 
 #: gnome-flashback/libsound-applet/gf-sound-applet.c:283
 msgid "Output"
@@ -795,13 +802,13 @@ msgstr "Wejście"
 msgid "Microphone Volume"
 msgstr "Głośność mikrofonu"
 
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:536
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:545
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:537
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:546
 msgctxt "volume"
 msgid "100%"
 msgstr "100%"
 
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:540
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:541
 msgctxt "volume"
 msgid "Unamplified"
 msgstr "Bez wzmocnienia"
