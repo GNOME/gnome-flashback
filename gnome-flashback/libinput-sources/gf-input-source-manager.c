@@ -899,12 +899,73 @@ properties_registered_cb (GfIBusManager *ibus_manager,
 {
 }
 
+static gboolean
+update_sub_property (IBusPropList *prop_list,
+                     IBusProperty *prop)
+{
+  IBusProperty *p;
+  guint index;
+
+  if (!prop_list)
+    return FALSE;
+
+  index = 0;
+  while ((p = ibus_prop_list_get (prop_list, index)) != NULL)
+    {
+      const gchar *p_key;
+      IBusPropType p_type;
+      const gchar *prop_key;
+      IBusPropType prop_type;
+
+      p_key = ibus_property_get_key (p);
+      p_type = ibus_property_get_prop_type (p);
+      prop_key = ibus_property_get_key (prop);
+      prop_type = ibus_property_get_prop_type (prop);
+
+      if (g_strcmp0 (p_key, prop_key) == 0 && p_type == prop_type)
+        {
+          ibus_prop_list_update_property (prop_list, prop);
+          return TRUE;
+        }
+      else if (p_type == PROP_TYPE_MENU)
+        {
+          IBusPropList *sub_props;
+
+          sub_props = ibus_property_get_sub_props (p);
+          if (update_sub_property (sub_props, prop))
+            return TRUE;
+        }
+
+      index++;
+    }
+
+  return FALSE;
+}
+
 static void
 property_updated_cb (GfIBusManager *ibus_manager,
                      const gchar   *engine_name,
                      IBusProperty  *property,
                      gpointer       user_data)
 {
+  GfInputSourceManager *manager;
+  GfInputSource *source;
+  IBusPropList *prop_list;
+
+  manager = GF_INPUT_SOURCE_MANAGER (user_data);
+  source = (GfInputSource *) g_hash_table_lookup (manager->ibus_sources,
+                                                  engine_name);
+
+  if (!source)
+    return;
+
+  prop_list = gf_input_source_get_properties (source);
+
+  if (!update_sub_property (prop_list, property))
+    return;
+
+  if (compare_sources (source, manager->current_source))
+    g_signal_emit (manager, signals[SIGNAL_CURRENT_SOURCE_CHANGED], 0, NULL);
 }
 
 static void
