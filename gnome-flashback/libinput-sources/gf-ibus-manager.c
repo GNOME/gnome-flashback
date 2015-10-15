@@ -484,6 +484,18 @@ gf_ibus_manager_new (void)
   return g_object_new (GF_TYPE_IBUS_MANAGER, NULL);
 }
 
+void
+gf_ibus_manager_activate_property (GfIBusManager *manager,
+                                   const gchar   *prop_name,
+                                   guint          prop_state)
+{
+  if (!manager->panel_service)
+    return;
+
+  ibus_panel_service_property_activate (manager->panel_service,
+                                        prop_name, prop_state);
+}
+
 IBusEngineDesc *
 gf_ibus_manager_get_engine_desc (GfIBusManager *manager,
                                  const gchar   *id)

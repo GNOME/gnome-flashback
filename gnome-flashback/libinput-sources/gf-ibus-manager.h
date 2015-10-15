@@ -25,15 +25,19 @@
 G_DECLARE_FINAL_TYPE (GfIBusManager, gf_ibus_manager,
                       GF, IBUS_MANAGER, GObject)
 
-GfIBusManager  *gf_ibus_manager_new             (void);
+GfIBusManager  *gf_ibus_manager_new               (void);
 
-IBusEngineDesc *gf_ibus_manager_get_engine_desc (GfIBusManager  *manager,
-                                                 const gchar    *id);
+void            gf_ibus_manager_activate_property (GfIBusManager  *manager,
+                                                   const gchar    *prop_name,
+                                                   guint           prop_state);
 
-void            gf_ibus_manager_set_engine      (GfIBusManager  *manager,
-                                                 const gchar    *id);
+IBusEngineDesc *gf_ibus_manager_get_engine_desc   (GfIBusManager  *manager,
+                                                   const gchar    *id);
 
-void            gf_ibus_manager_preload_engines (GfIBusManager  *manager,
-                                                 gchar         **engines);
+void            gf_ibus_manager_set_engine        (GfIBusManager  *manager,
+                                                   const gchar    *id);
+
+void            gf_ibus_manager_preload_engines   (GfIBusManager  *manager,
+                                                   gchar         **engines);
 
 #endif
