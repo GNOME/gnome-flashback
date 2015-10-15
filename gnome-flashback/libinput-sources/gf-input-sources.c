@@ -185,6 +185,7 @@ update_status_icon (GfInputSources *sources)
 {
   GfInputSourceManager *manager;
   GfInputSource *source;
+  GList *input_sources;
   const gchar *display_name;
 
   manager = sources->input_source_manager;
@@ -196,6 +197,18 @@ update_status_icon (GfInputSources *sources)
     {
       g_clear_object (&sources->status_icon);
       return;
+    }
+
+  input_sources = gf_input_source_manager_get_input_sources (manager);
+
+  if (g_list_length (input_sources) < 2)
+    {
+      g_list_free (input_sources);
+      return;
+    }
+  else
+    {
+      g_list_free (input_sources);
     }
 
   sources->current_source = g_object_ref (source);
@@ -222,6 +235,11 @@ static void
 sources_changed_cb (GfInputSourceManager *manager,
                     gpointer              user_data)
 {
+  GfInputSources *sources;
+
+  sources = GF_INPUT_SOURCES (user_data);
+
+  update_status_icon (sources);
 }
 
 static void
