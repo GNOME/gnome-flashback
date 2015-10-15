@@ -897,6 +897,20 @@ properties_registered_cb (GfIBusManager *ibus_manager,
                           IBusPropList  *prop_list,
                           gpointer       user_data)
 {
+  GfInputSourceManager *manager;
+  GfInputSource *source;
+
+  manager = GF_INPUT_SOURCE_MANAGER (user_data);
+  source = (GfInputSource *) g_hash_table_lookup (manager->ibus_sources,
+                                                  engine_name);
+
+  if (!source)
+    return;
+
+  gf_input_source_set_properties (source, prop_list);
+
+  if (compare_sources (source, manager->current_source))
+    g_signal_emit (manager, signals[SIGNAL_CURRENT_SOURCE_CHANGED], 0, NULL);
 }
 
 static gboolean
