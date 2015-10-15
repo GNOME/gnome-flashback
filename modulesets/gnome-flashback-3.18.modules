@@ -107,15 +107,6 @@
     </suggests>
   </autotools>
 
-  <autotools id="libstatus-notifier">
-    <branch repo="github.com" module="albertsmuktupavels/libstatus-notifier" />
-    <dependencies>
-      <dep package="glib" />
-      <dep package="gtk-doc" />
-      <dep package="m4-common" />
-    </dependencies>
-  </autotools>
-
   <autotools id="metacity">
     <branch revision="gnome-3-18" />
     <dependencies>
