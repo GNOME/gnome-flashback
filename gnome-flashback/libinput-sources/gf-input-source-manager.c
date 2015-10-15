@@ -35,9 +35,6 @@
 #define KEY_SWITCH_INPUT_SOURCE "switch-input-source"
 #define KEY_SWITCH_INPUT_SOURCE_BACKWARD "switch-input-source-backward"
 
-#define INPUT_SOURCE_TYPE_XKB "xkb"
-#define INPUT_SOURCE_TYPE_IBUS "ibus"
-
 typedef struct _SourceInfo SourceInfo;
 struct _SourceInfo
 {

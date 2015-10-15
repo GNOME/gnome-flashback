@@ -17,7 +17,9 @@
 
 #include "config.h"
 
+#include <glib/gi18n.h>
 #include <gtk/gtk.h>
+#include <libgnome-desktop/gnome-xkb-info.h>
 #include <pango/pangocairo.h>
 
 #define _XOPEN_SOURCE
@@ -181,11 +183,197 @@ update_status_icon_pixbuf (GfInputSources *sources)
 }
 
 static void
+build_prop_section (GfInputSources *sources,
+                    GtkMenu        *menu)
+{
+  IBusPropList *prop_list;
+  GtkWidget *separator;
+
+  prop_list = gf_input_source_get_properties (sources->current_source);
+
+  if (!prop_list)
+    return;
+
+  /* FIXME: */
+}
+
+static void
+watch_child (GPid     pid,
+             gint     status,
+             gpointer user_data)
+{
+}
+
+static void
+spawn_kayboard_display (const gchar *description)
+{
+  gchar **argv;
+  GSpawnFlags flags;
+  GPid pid;
+  GError *error;
+
+  argv = g_new0 (gchar *, 4);
+  flags = G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD;
+  error = NULL;
+
+  argv[0] = g_strdup ("gkbd-keyboard-display");
+  argv[1] = g_strdup ("-l");
+  argv[2] = g_strdup (description);
+  argv[3] = NULL;
+
+  g_spawn_async (NULL, argv, NULL, flags, NULL, NULL, &pid, &error);
+  g_strfreev (argv);
+
+  if (error != NULL)
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+
+      return;
+    }
+
+  g_child_watch_add (pid, watch_child, NULL);
+}
+
+static void
+show_layout_cb (GtkMenuItem *menuitem,
+                gpointer     user_data)
+{
+  GfInputSources *sources;
+  GfInputSource *source;
+  const gchar *type;
+  const gchar *id;
+  GnomeXkbInfo *info;
+  const gchar *xkb_layout;
+  const gchar *xkb_variant;
+  gchar *description;
+
+  sources = GF_INPUT_SOURCES (user_data);
+  source = sources->current_source;
+
+  type = gf_input_source_get_source_type (source);
+  id = gf_input_source_get_id (source);
+
+  info = NULL;
+  xkb_layout = "";
+  xkb_variant = "";
+
+  if (g_strcmp0 (type, INPUT_SOURCE_TYPE_XKB) == 0)
+    {
+      info = gnome_xkb_info_new ();
+
+      gnome_xkb_info_get_layout_info (info, id, NULL, NULL,
+                                      &xkb_layout, &xkb_variant);
+    }
+  else if (g_strcmp0 (type, INPUT_SOURCE_TYPE_IBUS) == 0)
+    {
+      IBusEngineDesc *engine_desc;
+
+      engine_desc = gf_ibus_manager_get_engine_desc (sources->ibus_manager, id);
+
+      if (engine_desc)
+        {
+          xkb_layout = ibus_engine_desc_get_layout (engine_desc);
+          xkb_variant = ibus_engine_desc_get_layout_variant (engine_desc);
+        }
+    }
+
+  if (!xkb_layout || *xkb_layout == '\0')
+    return;
+
+  if (xkb_variant && *xkb_variant != '\0')
+    description = g_strdup_printf ("%s\t%s", xkb_layout, xkb_variant);
+  else
+    description = g_strdup (xkb_layout);
+
+  g_clear_object (&info);
+
+  spawn_kayboard_display (description);
+  g_free (description);
+}
+
+static void
+status_icon_activate_cb (GtkStatusIcon *status_icon,
+                         gpointer       user_data)
+{
+  GfInputSources *sources;
+  GtkWidget *menu;
+  GfInputSourceManager *manager;
+  GList *input_sources;
+  GList *is;
+  GtkWidget *item;
+  GtkWidget *separator;
+
+  sources = GF_INPUT_SOURCES (user_data);
+
+  menu = gtk_menu_new ();
+
+  manager = sources->input_source_manager;
+  input_sources = gf_input_source_manager_get_input_sources (manager);
+
+  for (is = input_sources; is != NULL; is = g_list_next (is))
+    {
+      GfInputSource *source;
+      GtkWidget *hbox;
+      const gchar *text;
+      GtkWidget *label;
+
+      source = GF_INPUT_SOURCE (is->data);
+
+      item = gtk_check_menu_item_new ();
+
+      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+      gtk_container_add (GTK_CONTAINER (item), hbox);
+
+      text = gf_input_source_get_display_name (source);
+      label = gtk_label_new (text);
+      gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 10);
+      gtk_label_set_xalign (GTK_LABEL (label), 0.0);
+
+      text = gf_input_source_get_short_name (source);
+      label = gtk_label_new (text);
+      gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 10);
+      gtk_label_set_xalign (GTK_LABEL (label), 0.0);
+
+      if (source == sources->current_source)
+        gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), TRUE);
+      gtk_check_menu_item_set_draw_as_radio (GTK_CHECK_MENU_ITEM (item), TRUE);
+
+      g_signal_connect_swapped (item, "activate",
+                                G_CALLBACK (gf_input_source_activate),
+                                source);
+
+      gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    }
+
+  g_list_free (input_sources);
+
+  build_prop_section (sources, GTK_MENU (menu));
+
+  separator = gtk_separator_menu_item_new ();
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), separator);
+
+  item = gtk_menu_item_new_with_label (_("Show Keyboard Layout"));
+  g_signal_connect (item, "activate", G_CALLBACK (show_layout_cb), sources);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
+  gtk_widget_show_all (menu);
+  gtk_menu_popup (GTK_MENU (menu), NULL, NULL,
+                  gtk_status_icon_position_menu, status_icon,
+                  0, gtk_get_current_event_time ());
+
+  G_GNUC_END_IGNORE_DEPRECATIONS
+}
+
+static void
 update_status_icon (GfInputSources *sources)
 {
   GfInputSourceManager *manager;
   GfInputSource *source;
   GList *input_sources;
+  IBusPropList *prop_list;
   const gchar *display_name;
 
   manager = sources->input_source_manager;
@@ -200,8 +388,9 @@ update_status_icon (GfInputSources *sources)
     }
 
   input_sources = gf_input_source_manager_get_input_sources (manager);
+  prop_list = gf_input_source_get_properties (source);
 
-  if (g_list_length (input_sources) < 2)
+  if (g_list_length (input_sources) < 2 && !prop_list)
     {
       g_list_free (input_sources);
       return;
@@ -221,10 +410,13 @@ update_status_icon (GfInputSources *sources)
 
       g_signal_connect_swapped (sources->status_icon, "size-changed",
                                 G_CALLBACK (update_status_icon), sources);
+      g_signal_connect (sources->status_icon, "activate",
+                        G_CALLBACK (status_icon_activate_cb), sources);
     }
 
   display_name = gf_input_source_get_display_name (source);
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  gtk_status_icon_set_title (sources->status_icon, _("Keyboard"));
   gtk_status_icon_set_tooltip_text (sources->status_icon, display_name);
   G_GNUC_END_IGNORE_DEPRECATIONS
 
