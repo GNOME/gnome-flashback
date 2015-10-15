@@ -785,6 +785,32 @@ compare_outputs (const void *one,
   return strcmp (o_one->name, o_two->name);
 }
 
+static void
+output_get_modes (FlashbackMonitorManager *manager,
+                  MetaOutput              *meta_output,
+                  XRROutputInfo           *output)
+{
+  guint j, k;
+  guint n_actual_modes;
+
+  meta_output->modes = g_new0 (MetaMonitorMode *, output->nmode);
+
+  n_actual_modes = 0;
+  for (j = 0; j < (guint)output->nmode; j++)
+    {
+      for (k = 0; k < manager->n_modes; k++)
+        {
+          if (output->modes[j] == (XID)manager->modes[k].mode_id)
+            {
+              meta_output->modes[n_actual_modes] = &manager->modes[k];
+              n_actual_modes += 1;
+              break;
+            }
+        }
+    }
+  meta_output->n_modes = n_actual_modes;
+}
+
 static char *
 get_xmode_name (XRRModeInfo *xmode)
 {
@@ -1255,6 +1281,8 @@ read_current_config (FlashbackMonitorManager *manager)
       MetaOutput *meta_output;
 
       output = XRRGetOutputInfo (priv->xdisplay, resources, resources->outputs[i]);
+      if (!output)
+        continue;
 
       meta_output = &manager->outputs[n_actual_outputs];
 
@@ -1277,21 +1305,7 @@ read_current_config (FlashbackMonitorManager *manager)
           meta_output->connector_type = output_get_connector_type (priv, meta_output);
 
           output_get_tile_info (priv, meta_output);
-
-          meta_output->n_modes = output->nmode;
-          meta_output->modes = g_new0 (MetaMonitorMode *, meta_output->n_modes);
-
-          for (j = 0; j < meta_output->n_modes; j++)
-            {
-              for (k = 0; k < manager->n_modes; k++)
-                {
-                  if (output->modes[j] == (XID)manager->modes[k].mode_id)
-                    {
-                      meta_output->modes[j] = &manager->modes[k];
-                      break;
-                    }
-                }
-            }
+          output_get_modes (manager, meta_output, output);
 
           meta_output->preferred_mode = meta_output->modes[0];
 
