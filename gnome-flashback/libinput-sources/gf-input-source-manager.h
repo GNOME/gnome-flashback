@@ -32,4 +32,6 @@ void                  gf_input_source_manager_reload             (GfInputSourceM
 
 GfInputSource        *gf_input_source_manager_get_current_source (GfInputSourceManager *manager);
 
+GList                *gf_input_source_manager_get_input_sources  (GfInputSourceManager *manager);
+
 #endif

@@ -100,6 +100,24 @@ static GParamSpec *properties[LAST_PROP] = { NULL };
 
 G_DEFINE_TYPE (GfInputSourceManager, gf_input_source_manager, G_TYPE_OBJECT)
 
+static gint
+compare_sources_by_index (gconstpointer a,
+                          gconstpointer b)
+{
+  GfInputSource *source1;
+  GfInputSource *source2;
+  guint index1;
+  guint index2;
+
+  source1 = (GfInputSource *) a;
+  source2 = (GfInputSource *) b;
+
+  index1 = gf_input_source_get_index (source1);
+  index2 = gf_input_source_get_index (source2);
+
+  return index1 - index2;
+}
+
 static gchar *
 get_symbol_from_char_code (gunichar code)
 {
@@ -690,7 +708,7 @@ update_mru_sources_list (GfInputSourceManager *manager)
     }
 
   sources = g_hash_table_get_values (manager->input_sources);
-  sources = g_list_reverse (sources);
+  sources = g_list_sort (sources, compare_sources_by_index);
 
   mru_sources = NULL;
   for (l1 = manager->mru_sources; l1 != NULL; l1 = g_list_next (l1))
@@ -1113,4 +1131,15 @@ GfInputSource *
 gf_input_source_manager_get_current_source (GfInputSourceManager *manager)
 {
   return manager->current_source;
+}
+
+GList *
+gf_input_source_manager_get_input_sources (GfInputSourceManager *manager)
+{
+  GList *sources;
+
+  sources = g_hash_table_get_values (manager->input_sources);
+  sources = g_list_sort (sources, compare_sources_by_index);
+
+  return sources;
 }
