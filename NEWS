@@ -1,3 +1,10 @@
+Version 3.18.1
+==============
+- Improved input source switching. (Alberts Muktupāvels, Sebastian Geiger)
+- Updated translations:
+  Gábor Kelemen (hu), Piotr Drąg (pl), Rafael Fontenelle (pt_BR),
+  Stas Solovey (ru), Tom Tryfonidis (el).
+
 Version 3.18.0
 ==============
 - Added bluetooth applet. (Alberts Muktupāvels, Balló György)
