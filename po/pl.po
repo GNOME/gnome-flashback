@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-14 19:42+0000\n"
-"PO-Revision-Date: 2015-10-15 04:14+0200\n"
+"POT-Creation-Date: 2015-10-17 22:41+0000\n"
+"PO-Revision-Date: 2015-10-18 00:50+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -662,6 +662,14 @@ msgstr "Anuluj"
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
 msgid "Lock Screen"
 msgstr "Zablokuj ekran"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:355
+msgid "Show Keyboard Layout"
+msgstr "Wyświetl układ klawiatury"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:418
+msgid "Keyboard"
+msgstr "Klawiatura"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:93
 #, c-format
