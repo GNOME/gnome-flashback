@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-03 08:09-0300\n"
-"PO-Revision-Date: 2015-10-03 08:30-0300\n"
+"POT-Creation-Date: 2015-10-18 07:41+0000\n"
+"PO-Revision-Date: 2015-10-18 17:33-0200\n"
 "Last-Translator: Rafael Fontenelle <rffontenelle@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -239,22 +239,46 @@ msgstr ""
 "Se ligado, o aplicativo GNOME Flashback usará soluções alternativas para "
 "corrigir erros."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid "Fade the background on change"
 msgstr "Esmaecer o fundo de tela ao alterar"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:98
 msgid ""
 "If set to true, then fade effect will be used to change the desktop background."
 msgstr ""
 "Se ligado, um efeito de esmaecimento será usado para alterar o plano de fundo "
 "da área de trabalho."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+msgid "The background color for the status icon."
+msgstr "A cor de plano de fundo para o ícone de status."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
+msgid ""
+"This contains the background color for the status icon that is shown in the "
+"system tray."
+msgstr ""
+"Isto contém a cor de fundo do ícone de status que é mostrada na bandeja do "
+"sistema."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
+msgid "The foreground color for the status icon."
+msgstr "A cor de primeiro plano do ícone de status."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
+msgid ""
+"This contains the foreground color for the status icon that is shown in the "
+"system tray."
+msgstr ""
+"Isto contém a cor de primeiro plano do ícone de status que é mostrada na "
+"bandeja de sistema."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:123
 msgid "Fix missing app menu button"
 msgstr "Corrigir botão de menu de aplicativos faltando"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:124
 msgid ""
 "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
 "FALSE. Disable if you want to use gnome-settings-daemon overrides in xsettings "
@@ -264,11 +288,11 @@ msgstr ""
 "Desabilite isso se você quiser usar gnome-settings-daemon definições no plug-"
 "in xsettings para a propriedade \"Gtk/ShellShowsAppMenu\"."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:112
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:129
 msgid "Fix wrong button layout"
 msgstr "Corrigir layout incorreto de botão"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:130
 msgid ""
 "If set to non-empty string, then gnome-flashback will force Gtk/"
 "DecorationLayout to value set by this setting. Set to empty string if you want "
@@ -619,6 +643,14 @@ msgstr "Cancelar"
 msgid "Lock Screen"
 msgstr "Bloquear tela"
 
+#: gnome-flashback/libinput-sources/gf-input-sources.c:356
+msgid "Show Keyboard Layout"
+msgstr "Mostrar disposição do teclado"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:419
+msgid "Keyboard"
+msgstr "Teclado"
+
 #: gnome-flashback/libpolkit/flashback-authenticator.c:93
 #, c-format
 msgid "_Password for %s:"
@@ -758,6 +790,17 @@ msgstr "Entrada"
 msgid "Microphone Volume"
 msgstr "Volume do microfone"
 
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:537
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:546
+msgctxt "volume"
+msgid "100%"
+msgstr "100%"
+
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:541
+msgctxt "volume"
+msgid "Unamplified"
+msgstr "Não amplificado"
+
 #. translators:
 #. * The device has been disabled
 #: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1828
@@ -802,14 +845,6 @@ msgstr "Preferências de _som"
 #: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:457
 msgid "Muted"
 msgstr "Mudo"
-
-#~ msgctxt "volume"
-#~ msgid "100%"
-#~ msgstr "100%"
-
-#~ msgctxt "volume"
-#~ msgid "Unamplified"
-#~ msgstr "Não amplificado"
 
 #~ msgid "Key grabber"
 #~ msgstr "Captura de teclas"
