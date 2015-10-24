@@ -1,0 +1,513 @@
+# GNOME FlashBack
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Pedro Albuquerque <palbuquerque73@gmail.com>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: GNOME FlashBack\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"flashback&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-08-13 07:11+0000\n"
+"PO-Revision-Date: 2015-10-24 08:04+0100\n"
+"Last-Translator: Pedro Albuquerque <palbuquerque73@gmail.com>\n"
+"Language-Team: Português <palbuquerque73@gmail.com>\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\\n\n"
+"X-Generator: Gtranslator 2.91.6\n"
+"X-Project-Style: gnome\n"
+
+#: ../data/gnome-flashback.desktop.in.h:1
+msgid "GNOME Flashback"
+msgstr "GNOME Flashback"
+
+#: ../data/gnome-flashback-compiz.desktop.in.in.h:1
+msgid "GNOME Flashback (Compiz)"
+msgstr "GNOME Flashback (Compiz)"
+
+#: ../data/gnome-flashback-compiz.desktop.in.in.h:2
+msgid "This session logs you into GNOME Flashback with Compiz"
+msgstr "Esta sessão liga-o ao GNOME Flashback com o Compiz"
+
+#: ../data/gnome-flashback-init.desktop.in.h:1
+msgid "GNOME Flashback Initialization"
+msgstr "Inicialização do GNOME Flashback"
+
+#: ../data/gnome-flashback-metacity.desktop.in.in.h:1
+msgid "GNOME Flashback (Metacity)"
+msgstr "GNOME Flashback (Metacity)"
+
+#: ../data/gnome-flashback-metacity.desktop.in.in.h:2
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr "Esta sessão liga-o ao GNOME Flashback com o Metacity"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
+msgid "Automount manager"
+msgstr "Gestor de montagem automática"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:2
+msgid ""
+"If set to true, then GNOME Flashback application will be used to automount "
+"removable media."
+msgstr ""
+"Se definido como verdadeiro, o GNOME Flashback será usado para montar "
+"automaticamente suportes removíveis."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:3
+msgid "Desktop background"
+msgstr "Fundo da área de trabalho"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:4
+msgid ""
+"If set to true, then GNOME Flashback application will be used to draw the "
+"desktop background."
+msgstr ""
+"Se definido como verdadeiro, o GNOME Flashback será usado para desenhar o "
+"fundo da área de trabalho."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:5
+msgid "Display configuration"
+msgstr "Configuração de exibição"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:6
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide the "
+"display configuration."
+msgstr ""
+"Se definido como verdadeiro, o GNOME Flashback será usado para fornecer a "
+"configuração de exibição."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:7
+msgid "End session dialog"
+msgstr "Diálogo do fim de sessão"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:8
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show the "
+"end session dialog."
+msgstr ""
+"Se definido como verdadeiro, o GNOME Flashback será usado para mostrar o "
+"diálogo de fim de sessão."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:9
+msgid "Idle monitor"
+msgstr "Monitor inativo"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:10
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr ""
+"Se definido como verdadeiro, o GNOME Flashback será usado para monitorizar "
+"atividade do utilizador."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:11
+msgid "Screencasts"
+msgstr "Filmes de ecrã"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:12
+msgid ""
+"If set to true, then GNOME Flashback application will be used to record the "
+"screen."
+msgstr ""
+"Se definido como verdadeiro, o GNOME Flashback será usado para gravar o ecrã"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:13
+msgid "Screenshots"
+msgstr "Capturas de ecrã"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
+msgid ""
+"If set to true, then GNOME Flashback application will be used to take "
+"screenshots."
+msgstr ""
+"Se definido como verdadeiro, o GNOME Flashback será usado para fazer "
+"capturas de ecrã."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:15
+msgid "Shell"
+msgstr "Terminal"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:16
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a shell."
+msgstr ""
+"Se definido como verdadeiro, o GNOME Flashback será usado como terminal."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:17
+msgid "Sound applet"
+msgstr "Aplicação de som"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:18
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"sound applet. This is the same sound applet that used to be a part of GNOME "
+"Control Center."
+msgstr ""
+"Se definido como verdadeiro, o GNOME Flashback será usado para mostrar uma "
+"aplicação de som. Esta será a mesma que costumava ser parte do Centro de "
+"controlo GNOME."
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:19
+msgid "Fade the background on change"
+msgstr "Desvanecer o fundo quando alterado"
+
+#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:20
+msgid ""
+"If set to true, then fade effect will be used to change the desktop "
+"background."
+msgstr ""
+"Se definido como verdadeiro, o GNOME Flashback será usado para alterar o "
+"fundo da área de trabalho"
+
+#: ../gnome-flashback/flashback-main.c:33
+msgid "Initialize GNOME Flashback session"
+msgstr "Initializar sessão do GNOME Flashback"
+
+#: ../gnome-flashback/flashback-main.c:39
+msgid "Replace a currently running application"
+msgstr "Substituir uma aplicação em execução"
+
+#: ../gnome-flashback/libautomount-manager/gsd-automount-manager.c:180
+#, c-format
+msgid "Unable to mount %s"
+msgstr "Impossível montar %s"
+
+#: ../gnome-flashback/libautomount-manager/gsd-automount-manager.c:293
+#, c-format
+msgid "Unable to open a folder for %s"
+msgstr "Impossível abrir uma pasta para %s"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:339
+msgid "Ask what to do"
+msgstr "Perguntar o que fazer"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:345
+msgid "Do Nothing"
+msgstr "Não fazer nada"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:351
+msgid "Open Folder"
+msgstr "Abrir pasta"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:496
+#, c-format
+msgid "Unable to eject %p"
+msgstr "Impossível ejetar %p"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:498
+#, c-format
+msgid "Unable to unmount %p"
+msgstr "Impossível montar %p"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:705
+msgid "You have just inserted an Audio CD."
+msgstr "Inseriu um CD de áudio."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:707
+msgid "You have just inserted an Audio DVD."
+msgstr "Inseriu um DVD de áudio."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:709
+msgid "You have just inserted a Video DVD."
+msgstr "Inseriu um DVD de vídeo."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:711
+msgid "You have just inserted a Video CD."
+msgstr "Inseriu um CD de vídeo."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:713
+msgid "You have just inserted a Super Video CD."
+msgstr "Inseriu um CD de super vídeo."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:715
+msgid "You have just inserted a blank CD."
+msgstr "Inseriu um CD vazio."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:717
+msgid "You have just inserted a blank DVD."
+msgstr "Inseriu um DVD vazio."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:719
+msgid "You have just inserted a blank Blu-Ray disc."
+msgstr "Inseriu um disco Blu-Ray vazio."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:721
+msgid "You have just inserted a blank HD DVD."
+msgstr "Inseriu um DVD HD vazio."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:723
+msgid "You have just inserted a Photo CD."
+msgstr "Inseriu um Photo CD."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:725
+msgid "You have just inserted a Picture CD."
+msgstr "Inseriu um Picture CD."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:727
+msgid "You have just inserted a medium with digital photos."
+msgstr "Inseriu um suporte com fotografias digitais."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:729
+msgid "You have just inserted a digital audio player."
+msgstr "Inseriu um reprodutor de áudio digital."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:731
+msgid ""
+"You have just inserted a medium with software intended to be automatically "
+"started."
+msgstr "Inseriu um suporte com programas preparados para arranque automático."
+
+#. fallback to generic greeting
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:734
+msgid "You have just inserted a medium."
+msgstr "Inseriu um suporte."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:736
+msgid "Choose what application to launch."
+msgstr "Escolha que aplicação iniciar."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:745
+#, c-format
+msgid ""
+"Select how to open \"%s\" and whether to perform this action in the future "
+"for other media of type \"%s\"."
+msgstr ""
+"Selecione como abrir \"%s\" e se esta ação deve ser repetida no futuro para "
+"outros suportes do tipo \"%s\"."
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:772
+msgid "_Always perform this action"
+msgstr "_Realizar sempre esta ação"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:781
+msgid "_Cancel"
+msgstr "_Cancelar"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:782
+msgid "_OK"
+msgstr "_Aceitar"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:788
+msgid "_Eject"
+msgstr "_Ejetar"
+
+#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:793
+msgid "_Unmount"
+msgstr "_Desmontar"
+
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:195
+msgid "Built-in display"
+msgstr "Ecrã embutido"
+
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:222
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:326
+msgid "Unknown"
+msgstr "Desconhecido"
+
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:224
+msgid "Unknown Display"
+msgstr "Ecrã desconhecido"
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: ../gnome-flashback/libdisplay-config/flashback-display-config.c:232
+#, c-format
+msgid "%s %s"
+msgstr "%s %s"
+
+#: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:1
+msgid "Confirm"
+msgstr "Confirmar"
+
+#: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:2
+msgid "Do you want to keep these display settings?"
+msgstr "Quer manter estas definições de ecrã?"
+
+#: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:3
+msgid "_Keep Changes"
+msgstr "_Manter alterações"
+
+#: ../gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui.h:4
+msgid "_Revert Settings"
+msgstr "_Reverter alterações"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:407
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:596
+msgid "Log Out"
+msgstr "Sair da sessão"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:409
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr "Clique em Sair da sessão para fechar as aplicações e sair do sistema."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:411
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s sairá automaticamente da sessão em %d segundo."
+msgstr[1] "%s sairá automaticamente da sessão em %d segundos."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:417
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:599
+msgid "Power Off"
+msgstr "Encerrar"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:419
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "Clique em Encerrar para fechar as aplicações e encerrar o sistema."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:421
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "O sistema encerrará automaticamente em %d segundo."
+msgstr[1] "O sistema encerrará automaticamente em %d segundos."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:427
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:602
+msgid "Restart"
+msgstr "Reiniciar"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:429
+msgid "Click Restart to quit these applications and restart the system."
+msgstr "Clique em Reiniciar para fechar as aplicações e reiniciar o sistema."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:431
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "O sistema reiniciará automaticamente em %d segundo."
+msgstr[1] "O sistema reiniciará automaticamente em %d segundos."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:437
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:605
+msgid "Hibernate"
+msgstr "Hibernar"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:438
+#, c-format
+msgid "The system will hibernate automatically in %d second."
+msgid_plural "The system will hibernate automatically in %d seconds."
+msgstr[0] "O sistema hibernará automaticamente em %d segundo."
+msgstr[1] "O sistema hibernará automaticamente em %d segundos."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:443
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:608
+msgid "Suspend"
+msgstr "Suspender"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:444
+#, c-format
+msgid "The system will suspend automatically in %d second."
+msgid_plural "The system will suspend automatically in %d seconds."
+msgstr[0] "O sistema suspender-se-á automaticamente em %d segundo."
+msgstr[1] "O sistema suspender-se-á automaticamente em %d segundos."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:449
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:611
+msgid "Hybrid Sleep"
+msgstr "Sono híbrido"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:450
+#, c-format
+msgid "The system will hybrid sleep automatically in %d second."
+msgid_plural "The system will hybrid sleep automatically in %d seconds."
+msgstr[0] "O sistema entrará no sono híbrido automaticamente em %d segundo."
+msgstr[1] "O sistema entrará no sono híbrido automaticamente em %d segundos."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:1
+msgid "Some programs are still running:"
+msgstr "Alguns programas ainda estão em execução:"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:2
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr ""
+"A aguardar que estas aplicações terminem. Interrompê-las pode levar à perda "
+"de dados."
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:3
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:4
+msgid "Lock Screen"
+msgstr "Bloquear ecrã"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:267
+msgid "Output"
+msgstr "Saída"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:269
+msgid "Sound Output Volume"
+msgstr "Volume do som de saída"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:273
+msgid "Input"
+msgstr "Entrada"
+
+#: ../gnome-flashback/libsound-applet/gvc-applet.c:275
+msgid "Microphone Volume"
+msgstr "Volume do microfone"
+
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:578
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:587
+msgctxt "volume"
+msgid "100%"
+msgstr "100%"
+
+#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:582
+msgctxt "volume"
+msgid "Unamplified"
+msgstr "Sem amplificação"
+
+#. translators:
+#. * The device has been disabled
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1830
+msgid "Disabled"
+msgstr "Desativado"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1837
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u saída"
+msgstr[1] "%u saídas"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1847
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u entrada"
+msgstr[1] "%u entradas"
+
+#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2373
+msgid "System Sounds"
+msgstr "Sons de sistema"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:292
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "Falha ao iniciar as preferências de som: %s"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:317
+msgid "_Mute"
+msgstr "_Mudo"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:326
+msgid "_Sound Preferences"
+msgstr "_Preferências de som"
+
+#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:450
+msgid "Muted"
+msgstr "Silenciado"
