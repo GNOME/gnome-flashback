@@ -809,6 +809,8 @@ output_get_modes (FlashbackMonitorManager *manager,
         }
     }
   meta_output->n_modes = n_actual_modes;
+  if (n_actual_modes > 0)
+    meta_output->preferred_mode = meta_output->modes[0];
 }
 
 static char *
@@ -1337,8 +1339,6 @@ read_current_config (FlashbackMonitorManager *manager)
           output_get_tile_info (priv, meta_output);
           output_get_modes (manager, meta_output, output);
 
-          meta_output->preferred_mode = meta_output->modes[0];
-
           meta_output->n_possible_crtcs = output->ncrtc;
           meta_output->possible_crtcs = g_new0 (MetaCRTC *, meta_output->n_possible_crtcs);
 
@@ -1387,7 +1387,10 @@ read_current_config (FlashbackMonitorManager *manager)
         else
           meta_output->backlight = -1;
 
-        n_actual_outputs++;
+        if (meta_output->n_modes == 0)
+          clear_output (meta_output);
+        else
+          n_actual_outputs++;
       }
 
       XRRFreeOutputInfo (output);
