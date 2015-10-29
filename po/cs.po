@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-14 07:46+0000\n"
-"PO-Revision-Date: 2015-10-15 11:57+0200\n"
+"POT-Creation-Date: 2015-10-29 09:07+0000\n"
+"PO-Revision-Date: 2015-10-29 15:30+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -649,6 +649,14 @@ msgstr "Zrušit"
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
 msgid "Lock Screen"
 msgstr "Uzamknout obrazovku"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:355
+msgid "Show Keyboard Layout"
+msgstr "Zobrazit rozložení klávesnice"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:418
+msgid "Keyboard"
+msgstr "Klávesnice"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:93
 #, c-format
