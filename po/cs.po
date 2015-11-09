@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback gnome-3.18\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-15 19:37+0000\n"
-"PO-Revision-Date: 2015-10-15 22:00+0200\n"
+"POT-Creation-Date: 2015-11-09 09:09+0000\n"
+"PO-Revision-Date: 2015-11-09 12:27+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -28,7 +28,6 @@ msgid "GNOME Flashback Initialization"
 msgstr "Inicializace GNOME historické"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
-#| msgid "GNOME Flashback"
 msgid "Network (GNOME Flashback)"
 msgstr "Síť (GNOME historické)"
 
@@ -41,7 +40,6 @@ msgid "nm-device-wireless"
 msgstr "nm-device-wireless"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:4
-#| msgid "GNOME Flashback"
 msgid "Screensaver (GNOME Flashback)"
 msgstr "Šetřič obrazovky (GNOME historické)"
 
@@ -54,12 +52,10 @@ msgid "preferences-desktop-screensaver"
 msgstr "preferences-desktop-screensaver"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
-#| msgid "_Sound Preferences"
 msgid "Preferences"
 msgstr "Předvolby"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:5
-#| msgid "_Sound Preferences"
 msgid "Personal preferences"
 msgstr "Osobní předvolby"
 
@@ -96,8 +92,6 @@ msgid "Bluetooth applet"
 msgstr "Aplet Bluetooth"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:13
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used as a shell."
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "Bluetooth applet."
@@ -158,9 +152,6 @@ msgid "Keyboard layouts and input methods"
 msgstr "Rozložení klávesnice a vstupní metody"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:43
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used to take "
-#| "screenshots."
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -179,13 +170,10 @@ msgstr ""
 "Jedná se o toho samého ověřovacího agenta, které poskytuje PolicyKit-gnome."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
-#| msgid "Sound applet"
 msgid "Power applet"
 msgstr "Aplet napájení"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used as a shell."
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
@@ -491,7 +479,6 @@ msgid "Turn On"
 msgstr "Zapnout"
 
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
-#| msgid "_Revert Settings"
 msgid "Bluetooth Settings"
 msgstr "Nastavení Bluetooth"
 
@@ -663,6 +650,14 @@ msgstr "Zrušit"
 msgid "Lock Screen"
 msgstr "Uzamknout obrazovku"
 
+#: gnome-flashback/libinput-sources/gf-input-sources.c:356
+msgid "Show Keyboard Layout"
+msgstr "Zobrazit rozložení klávesnice"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:419
+msgid "Keyboard"
+msgstr "Klávesnice"
+
 #: gnome-flashback/libpolkit/flashback-authenticator.c:93
 #, c-format
 msgid "_Password for %s:"
@@ -750,7 +745,6 @@ msgid "_Authenticate"
 msgstr "_Ověřit"
 
 #: gnome-flashback/libpower-applet/gf-power-applet.c:135
-#| msgid "_Revert Settings"
 msgid "Power Settings"
 msgstr "Nastavení napájení"
 
