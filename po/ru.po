@@ -1,17 +1,17 @@
 # Russian translation for gnome-flashback.
 # Copyright (C) 2014 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
-# Stas Solovey <whats_up@tut.by>, 2015.
 # Dmitry Shachnev <mitya57@ubuntu.com>, 2014, 2015.
+# Stas Solovey <whats_up@tut.by>, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-18 19:40+0000\n"
-"PO-Revision-Date: 2015-10-19 10:11+0300\n"
-"Last-Translator: Dmitry Shachnev <mitya57@ubuntu.com>\n"
+"POT-Creation-Date: 2015-11-13 09:06+0000\n"
+"PO-Revision-Date: 2015-11-13 19:28+0300\n"
+"Last-Translator: Stas Solovey <whats_up@tut.by>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -22,66 +22,60 @@ msgstr ""
 "X-Generator: Gtranslator 2.91.7\n"
 
 #: data/applications/gnome-flashback.desktop.in:4
-#| msgid "GNOME Flashback (Compiz)"
 msgid "GNOME Flashback"
 msgstr "GNOME Flashback"
 
 #: data/applications/gnome-flashback-init.desktop.in:4
-#| msgid "GNOME Flashback (Metacity)"
 msgid "GNOME Flashback Initialization"
 msgstr "Инициализация GNOME Flashback"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
-#| msgid "GNOME Flashback (Compiz)"
 msgid "Network (GNOME Flashback)"
 msgstr "Сеть (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:4
 msgid "Manage your network connections"
-msgstr ""
+msgstr "Управление сетевыми подключениями"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:5
 msgid "nm-device-wireless"
-msgstr ""
+msgstr "nm-device-wireless"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:4
-#| msgid "GNOME Flashback (Compiz)"
 msgid "Screensaver (GNOME Flashback)"
 msgstr "Хранитель экрана (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:5
 msgid "Launch screensaver and locker program"
-msgstr ""
+msgstr "Запустить программу хранителя экрана и блокировки"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:6
 msgid "preferences-desktop-screensaver"
-msgstr ""
+msgstr "preferences-desktop-screensaver"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
-#| msgid "_Sound Preferences"
 msgid "Preferences"
 msgstr "Настройки"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:5
-#| msgid "_Sound Preferences"
 msgid "Personal preferences"
 msgstr "Персональные настройки"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:6
 msgid "preferences-desktop"
-msgstr ""
+msgstr "preferences-desktop"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
-msgstr ""
+msgstr "Администрирование"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
 msgid "Change system-wide settings (affects all users)"
-msgstr ""
+msgstr "Изменить общесистемные настройки (затрагивает всех пользователей)"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:6
 msgid "preferences-system"
-msgstr ""
+msgstr "preferences-system"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
 msgid "Automount manager"
@@ -264,23 +258,26 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
 msgid "The background color for the status icon."
-msgstr ""
+msgstr "Цвет фона значка статуса."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
 msgid ""
 "This contains the background color for the status icon that is shown in the "
 "system tray."
 msgstr ""
+"Содержит цвет фона для значка статуса, отображаемого в системном лотке."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
 msgid "The foreground color for the status icon."
-msgstr ""
+msgstr "Цвет переднего плана значка статуса."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
 msgid ""
 "This contains the foreground color for the status icon that is shown in the "
 "system tray."
 msgstr ""
+"Содержит цвет переднего плана  для значка статуса, отображаемого в системном "
+"лотке."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:123
 msgid "Fix missing app menu button"
@@ -373,66 +370,68 @@ msgstr "Не удалось отмонтировать %p"
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:707
 msgid "You have just inserted an Audio CD."
-msgstr ""
+msgstr "Был вставлен Audio CD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:709
 msgid "You have just inserted an Audio DVD."
-msgstr ""
+msgstr "Был вставлен Audio DVD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:711
 msgid "You have just inserted a Video DVD."
-msgstr ""
+msgstr "Был вставлен Video DVD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:713
 msgid "You have just inserted a Video CD."
-msgstr ""
+msgstr "Был вставлен Video CD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:715
 msgid "You have just inserted a Super Video CD."
-msgstr ""
+msgstr "Был вставлен Super Video CD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:717
 msgid "You have just inserted a blank CD."
-msgstr ""
+msgstr "Был вставлен пустой CD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:719
 msgid "You have just inserted a blank DVD."
-msgstr ""
+msgstr "Был вставлен пустой DVD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:721
 msgid "You have just inserted a blank Blu-Ray disc."
-msgstr ""
+msgstr "Был вставлен пустой диск Blu-Ray."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:723
 msgid "You have just inserted a blank HD DVD."
-msgstr ""
+msgstr "Был вставлен пустой диск HD DVD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:725
 msgid "You have just inserted a Photo CD."
-msgstr ""
+msgstr "Был вставлен Photo CD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:727
 msgid "You have just inserted a Picture CD."
-msgstr ""
+msgstr "Был вставлен Picture CD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:729
 msgid "You have just inserted a medium with digital photos."
-msgstr ""
+msgstr "Подключён носитель с цифровыми фотографиями."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:731
 msgid "You have just inserted a digital audio player."
-msgstr ""
+msgstr "Подключён цифровой аудио-плеер."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:733
 msgid ""
 "You have just inserted a medium with software intended to be automatically "
 "started."
 msgstr ""
+"Подключён носитель с программным обеспечением, предназначенным для "
+"автоматического запуска."
 
 #. fallback to generic greeting
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:736
 msgid "You have just inserted a medium."
-msgstr ""
+msgstr "Подключён носитель"
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:738
 msgid "Choose what application to launch."
@@ -444,6 +443,8 @@ msgid ""
 "Select how to open \"%s\" and whether to perform this action in the future "
 "for other media of type \"%s\"."
 msgstr ""
+"Выберите, чем открыть «%s» и выполнять ли это действие в следующий раз для "
+"других носителей типа «%s»."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:774
 msgid "_Always perform this action"
@@ -515,7 +516,6 @@ msgid "_Keep Changes"
 msgstr "_Оставить изменения"
 
 #: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:116
-#| msgid "Power Settings"
 msgid "_Revert Settings"
 msgstr "Возврат к исходным настройкам"
 
@@ -602,8 +602,6 @@ msgstr "Спящий режим"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:501
 #, c-format
-#| msgid "The system will restart automatically in %d second."
-#| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
 msgstr[0] ""
@@ -620,8 +618,6 @@ msgstr "Ждущий режим"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:509
 #, c-format
-#| msgid "The system will power off automatically in %d second."
-#| msgid_plural "The system will power off automatically in %d seconds."
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
 msgstr[0] ""
@@ -638,8 +634,6 @@ msgstr "Гибридный спящий режим"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
 #, c-format
-#| msgid "The system will restart automatically in %d second."
-#| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
 msgstr[0] ""
@@ -665,7 +659,6 @@ msgstr ""
 "может привести к потере данных."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
-#| msgid "_Cancel"
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -679,7 +672,7 @@ msgstr "Показать раскладку клавиатуры"
 
 #: gnome-flashback/libinput-sources/gf-input-sources.c:418
 msgid "Keyboard"
-msgstr ""
+msgstr "Клавиатура"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:93
 #, c-format
@@ -693,17 +686,20 @@ msgstr "_Пароль:"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:252
 msgid "Your authentication attempt was unsuccessful. Please try again."
-msgstr ""
+msgstr "Попытка аутентификации не удалась. Попробуйте снова."
 
 #: gnome-flashback/libpolkit/flashback-listener.c:139
 msgid "Authentication dialog was dismissed by the user"
-msgstr ""
+msgstr "Диалоговое окно аутентификации было отклонено пользователем"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:202
 msgid ""
 "An application is attempting to perform an action that requires privileges. "
 "Authentication as one of the users below is required to perform this action."
 msgstr ""
+"Приложение пытается выполнить действие, которое требует дополнительные права "
+"доступа. Для получения дополнительных прав доступа требуется аутентификация "
+"одной учётной записи пользователя из ниже указанных."
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
@@ -711,12 +707,17 @@ msgid ""
 "An application is attempting to perform an action that requires privileges. "
 "Authentication is required to perform this action."
 msgstr ""
+"Приложение пытается выполнить действие, которое требует дополнительные права "
+"доступа. Для получения дополнительных прав доступа требуется аутентификация."
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:217
 msgid ""
 "An application is attempting to perform an action that requires privileges. "
 "Authentication as the super user is required to perform this action."
 msgstr ""
+"Приложение пытается выполнить действие, которое требует дополнительные права "
+"доступа. Для получения дополнительных прав доступа требуется аутентификация "
+"учётной записи root."
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:383
 msgid "Select user..."
@@ -747,19 +748,19 @@ msgstr "Нажмите чтобы открыть %s"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:8
 msgid "Authenticate"
-msgstr ""
+msgstr "Авторизоваться"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:53
 msgid "<big><b>Title</b></big>"
-msgstr ""
+msgstr "<big><b>Название</b></big>"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:192
 msgid "<small><b>_Details</b></small>"
-msgstr ""
+msgstr "<small><b>_Подробности</b></small>"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:228
 msgid "_Authenticate"
-msgstr ""
+msgstr "_Авторизоваться"
 
 #: gnome-flashback/libpower-applet/gf-power-applet.c:135
 msgid "Power Settings"
