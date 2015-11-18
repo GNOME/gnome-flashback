@@ -39,7 +39,7 @@ msgstr "Faça a gestão das suas ligações de rede"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:5
 msgid "nm-device-wireless"
-msgstr "nm-device-wireless"
+msgstr "nm-dispositivo-sem fios"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:4
 #| msgid "GNOME Flashback"
@@ -120,7 +120,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
 msgid "Display configuration"
-msgstr "Configuração de exibição"
+msgstr "Configuração de ecrã"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:25
 msgid ""
@@ -128,11 +128,11 @@ msgid ""
 "display configuration."
 msgstr ""
 "Se definido como verdadeiro, o GNOME Flashback será usado para fornecer a "
-"configuração de exibição."
+"configuração de ecrã."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
 msgid "End session dialog"
-msgstr "Diálogo do fim de sessão"
+msgstr "Diálogo de fim de sessão"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:31
 msgid ""
@@ -171,13 +171,13 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:48
 msgid "Authentication agent for polkit"
-msgstr "Agente de autenticação para o polkit"
+msgstr "Agente de autenticação para polkit"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
-"Este é o mesmo agente de autenticação que foi fornecido pelo PolicyKit-gnome."
+"Este é o mesmo agente de autenticação que foi fornecido por PolicyKit-gnome."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
 #| msgid "Sound applet"
@@ -196,7 +196,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:60
 msgid "Screencasts"
-msgstr "Filmes de ecrã"
+msgstr "Gravação de ecrã"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid ""
@@ -243,7 +243,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
 msgid "Workarounds"
-msgstr "Contornos"
+msgstr "Contorno de problemas"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 #| msgid ""
@@ -276,7 +276,7 @@ msgid ""
 "This contains the background color for the status icon that is shown in the "
 "system tray."
 msgstr ""
-"Isto contém a cor de fundo para o ícone de estado mostrado no tabuleiro de "
+"Isto contém a cor de fundo do ícone de estado mostrado na bandeja de "
 "sistema."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
@@ -293,7 +293,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:123
 msgid "Fix missing app menu button"
-msgstr "Reparar botão de aplicação em falta"
+msgstr "Corrigir botão de menu da aplicação em falta"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:124
 msgid ""
@@ -308,7 +308,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:129
 msgid "Fix wrong button layout"
-msgstr "Reparar disposição errada de botão"
+msgstr "Corrigir disposição errada de botões"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:130
 msgid ""
@@ -328,7 +328,7 @@ msgstr "GNOME Flashback (Compiz)"
 
 #: data/xsessions/gnome-flashback-compiz.desktop.in.in:4
 msgid "This session logs you into GNOME Flashback with Compiz"
-msgstr "Esta sessão liga-o ao GNOME Flashback com o Compiz"
+msgstr "Esta sessão acede ao GNOME Flashback com o Compiz"
 
 #: data/xsessions/gnome-flashback-metacity.desktop.in.in:3
 msgid "GNOME Flashback (Metacity)"
@@ -336,7 +336,7 @@ msgstr "GNOME Flashback (Metacity)"
 
 #: data/xsessions/gnome-flashback-metacity.desktop.in.in:4
 msgid "This session logs you into GNOME Flashback with Metacity"
-msgstr "Esta sessão liga-o ao GNOME Flashback com o Metacity"
+msgstr "Esta sessão acede ao GNOME Flashback com o Metacity"
 
 #: gnome-flashback/gf-main.c:40
 msgid "Enable debugging code"
@@ -348,7 +348,7 @@ msgstr "Initializar sessão do GNOME Flashback"
 
 #: gnome-flashback/gf-main.c:52
 msgid "Replace a currently running application"
-msgstr "Substituir uma aplicação em execução"
+msgstr "Substituir uma aplicação actualmente em execução"
 
 #: gnome-flashback/libautomount-manager/gsd-automount-manager.c:177
 #, c-format
@@ -404,19 +404,19 @@ msgstr "Inseriu um CD de super vídeo."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:717
 msgid "You have just inserted a blank CD."
-msgstr "Inseriu um CD vazio."
+msgstr "Inseriu um CD virgem."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:719
 msgid "You have just inserted a blank DVD."
-msgstr "Inseriu um DVD vazio."
+msgstr "Inseriu um DVD virgem."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:721
 msgid "You have just inserted a blank Blu-Ray disc."
-msgstr "Inseriu um disco Blu-Ray vazio."
+msgstr "Inseriu um Blu-Ray virgem."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:723
 msgid "You have just inserted a blank HD DVD."
-msgstr "Inseriu um DVD HD vazio."
+msgstr "Inseriu um HD DVD virgem."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:725
 msgid "You have just inserted a Photo CD."
@@ -432,7 +432,7 @@ msgstr "Inseriu um suporte com fotografias digitais."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:731
 msgid "You have just inserted a digital audio player."
-msgstr "Inseriu um reprodutor de áudio digital."
+msgstr "Inseriu um leitor de áudio digital."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:733
 msgid ""
@@ -447,7 +447,7 @@ msgstr "Inseriu um suporte."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:738
 msgid "Choose what application to launch."
-msgstr "Escolha que aplicação iniciar."
+msgstr "Escolha a aplicação a executar."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:747
 #, c-format
@@ -494,7 +494,7 @@ msgstr "Ligar"
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
 #| msgid "_Revert Settings"
 msgid "Bluetooth Settings"
-msgstr "Definições de Bluetooth"
+msgstr "Definições Bluetooth"
 
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:271
 msgid "Bluetooth active"
@@ -555,18 +555,18 @@ msgstr "%s %s"
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:464
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:689
 msgid "Log Out"
-msgstr "Sair da sessão"
+msgstr "Terminar Sessão"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
 msgid "Click Log Out to quit these applications and log out of the system."
-msgstr "Clique em Sair da sessão para fechar as aplicações e sair do sistema."
+msgstr "Clique em Terminar sessão para sair das aplicações e terminar sessão no sistema."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:469
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s sairá automaticamente da sessão em %d segundo."
-msgstr[1] "%s sairá automaticamente da sessão em %d segundos."
+msgstr[0] "%s terminará automaticamente da sessão em %d segundo."
+msgstr[1] "%s terminará automaticamente da sessão em %d segundos."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:476
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:693
@@ -575,7 +575,7 @@ msgstr "Encerrar"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
 msgid "Click Power Off to quit these applications and power off the system."
-msgstr "Clique em Encerrar para fechar as aplicações e encerrar o sistema."
+msgstr "Clique em Encerrar para sair das aplicações e desligar o sistema."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:481
 #, c-format
@@ -591,7 +591,7 @@ msgstr "Reiniciar"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
 msgid "Click Restart to quit these applications and restart the system."
-msgstr "Clique em Reiniciar para fechar as aplicações e reiniciar o sistema."
+msgstr "Clique em Reiniciar para sair das aplicações e reiniciar o sistema."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:493
 #, c-format
@@ -627,14 +627,14 @@ msgstr[1] "O sistema suspender-se-á automaticamente em %d segundos."
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:516
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:709
 msgid "Hybrid Sleep"
-msgstr "Sono híbrido"
+msgstr "Suspensão Híbrida"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
-msgstr[0] "O sistema entrará no sono híbrido automaticamente em %d segundo."
-msgstr[1] "O sistema entrará no sono híbrido automaticamente em %d segundos."
+msgstr[0] "O sistema entrará na suspensão híbrida automaticamente em %d segundo."
+msgstr[1] "O sistema entrará na suspensão híbrida automaticamente em %d segundos."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:29
 msgid "Some programs are still running:"
@@ -710,7 +710,7 @@ msgstr ""
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:383
 msgid "Select user..."
-msgstr "Selecionar utilizador..."
+msgstr "Selecione o utilizador..."
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:422
 #, c-format
@@ -795,7 +795,7 @@ msgstr "Saída"
 
 #: gnome-flashback/libsound-applet/gf-sound-applet.c:286
 msgid "Sound Output Volume"
-msgstr "Volume do som de saída"
+msgstr "Volume de saída de som"
 
 #: gnome-flashback/libsound-applet/gf-sound-applet.c:293
 msgid "Input"
