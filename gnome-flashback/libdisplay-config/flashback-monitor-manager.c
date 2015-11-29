@@ -1044,26 +1044,43 @@ make_logical_config (FlashbackMonitorManager *manager)
 }
 
 static void
+clear_output (MetaOutput *output)
+{
+  g_free (output->name);
+  g_free (output->vendor);
+  g_free (output->product);
+  g_free (output->serial);
+  g_free (output->modes);
+  g_free (output->possible_crtcs);
+  g_free (output->possible_clones);
+
+  if (output->driver_notify)
+    output->driver_notify (output);
+
+  memset (output, 0, sizeof (*output));
+}
+
+static void
 free_output_array (MetaOutput *old_outputs,
                    int         n_old_outputs)
 {
   int i;
 
   for (i = 0; i < n_old_outputs; i++)
-    {
-      g_free (old_outputs[i].name);
-      g_free (old_outputs[i].vendor);
-      g_free (old_outputs[i].product);
-      g_free (old_outputs[i].serial);
-      g_free (old_outputs[i].modes);
-      g_free (old_outputs[i].possible_crtcs);
-      g_free (old_outputs[i].possible_clones);
-
-      if (old_outputs[i].driver_notify)
-        old_outputs[i].driver_notify (&old_outputs[i]);
-    }
+    clear_output (&old_outputs[i]);
 
   g_free (old_outputs);
+}
+
+static void
+clear_mode (MetaMonitorMode *mode)
+{
+  g_free (mode->name);
+
+  if (mode->driver_notify)
+    mode->driver_notify (mode);
+
+  memset (mode, 0, sizeof (*mode));
 }
 
 static void
@@ -1073,14 +1090,27 @@ free_mode_array (MetaMonitorMode *old_modes,
   int i;
 
   for (i = 0; i < n_old_modes; i++)
-    {
-      g_free (old_modes[i].name);
-
-      if (old_modes[i].driver_notify)
-        old_modes[i].driver_notify (&old_modes[i]);
-    }
+    clear_mode (&old_modes[i]);
 
   g_free (old_modes);
+}
+
+static void
+clear_crtc (MetaCRTC *crtc)
+{
+  memset (crtc, 0, sizeof (*crtc));
+}
+
+static void
+free_crtc_array (MetaCRTC *old_crtcs,
+                 int       n_old_crtcs)
+{
+  int i;
+
+  for (i = 0; i < n_old_crtcs; i++)
+    clear_crtc (&old_crtcs[i]);
+
+  g_free (old_crtcs);
 }
 
 static guint8 *
@@ -1482,8 +1512,8 @@ flashback_monitor_manager_finalize (GObject *object)
 
   free_output_array (manager->outputs, manager->n_outputs);
   free_mode_array (manager->modes, manager->n_modes);
+  free_crtc_array (manager->crtcs, manager->n_crtcs);
   g_free (manager->monitor_infos);
-  g_free (manager->crtcs);
 
   G_OBJECT_CLASS (flashback_monitor_manager_parent_class)->finalize (object);
 }
@@ -1954,6 +1984,7 @@ flashback_monitor_manager_read_current_config (FlashbackMonitorManager *manager)
   MetaCRTC *old_crtcs;
   MetaMonitorMode *old_modes;
   unsigned int n_old_outputs;
+  unsigned int n_old_crtcs;
   unsigned int n_old_modes;
 
   /* Some implementations of read_current use the existing information
@@ -1964,6 +1995,7 @@ flashback_monitor_manager_read_current_config (FlashbackMonitorManager *manager)
   old_modes = manager->modes;
   n_old_modes = manager->n_modes;
   old_crtcs = manager->crtcs;
+  n_old_crtcs = manager->n_crtcs;
 
   manager->serial++;
 
@@ -1971,7 +2003,7 @@ flashback_monitor_manager_read_current_config (FlashbackMonitorManager *manager)
 
   free_output_array (old_outputs, n_old_outputs);
   free_mode_array (old_modes, n_old_modes);
-  g_free (old_crtcs);
+  free_crtc_array (old_crtcs, n_old_crtcs);
 }
 
 void
