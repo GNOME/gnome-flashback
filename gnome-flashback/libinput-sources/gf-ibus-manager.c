@@ -254,7 +254,6 @@ get_global_engine_cb (GObject      *source_object,
 
   if (engine_desc == NULL)
     {
-      g_warning ("Failed to get global engine - %s", error->message);
       g_error_free (error);
 
       return;
