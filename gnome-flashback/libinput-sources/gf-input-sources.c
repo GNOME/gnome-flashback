@@ -164,6 +164,9 @@ update_status_icon_pixbuf (GfInputSources *sources)
   size = gtk_status_icon_get_size (sources->status_icon);
   G_GNUC_END_IGNORE_DEPRECATIONS
 
+  if (size <= 0)
+    return;
+
   surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, size, size);
   cr = cairo_create (surface);
 
