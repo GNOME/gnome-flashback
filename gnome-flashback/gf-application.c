@@ -36,6 +36,10 @@
 #include "libsound-applet/gf-sound-applet.h"
 #include "libworkarounds/gf-workarounds.h"
 
+#ifdef WITH_LIBSTATUS_NOTIFIER
+#include "libwatcher/gf-watcher.h"
+#endif
+
 struct _GfApplication
 {
   GObject                 parent;
@@ -60,6 +64,10 @@ struct _GfApplication
   GfScreenshot           *screenshot;
   GfSoundApplet          *sound;
   GfWorkarounds          *workarounds;
+
+#ifdef WITH_LIBSTATUS_NOTIFIER
+  GfWatcher              *watcher;
+#endif
 };
 
 G_DEFINE_TYPE (GfApplication, gf_application, G_TYPE_OBJECT)
@@ -153,6 +161,10 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (sound, "sound-applet", gf_sound_applet_new)
   SETTING_CHANGED (workarounds, "workarounds", gf_workarounds_new)
 
+#ifdef WITH_LIBSTATUS_NOTIFIER
+  SETTING_CHANGED (watcher, "watcher", gf_watcher_new)
+#endif
+
 #undef SETTING_CHANGED
 
   if (application->shell)
@@ -192,6 +204,10 @@ gf_application_dispose (GObject *object)
   g_clear_object (&application->screenshot);
   g_clear_object (&application->sound);
   g_clear_object (&application->workarounds);
+
+#ifdef WITH_LIBSTATUS_NOTIFIER
+  g_clear_object (&application->watcher);
+#endif
 
   G_OBJECT_CLASS (gf_application_parent_class)->dispose (object);
 }

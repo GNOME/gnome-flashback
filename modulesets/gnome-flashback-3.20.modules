@@ -77,12 +77,13 @@
     </after>
   </autotools>
 
-  <autotools id="gnome-flashback">
+  <autotools id="gnome-flashback" autogenargs="--with-libstatus-notifier=yes">
     <branch />
     <dependencies>
       <dep package="intltool" />
       <dep package="gnome-desktop" />
       <dep package="gtk+" />
+      <dep package="libstatus-notifier" />
       <dep package="m4-common" />
     </dependencies>
   </autotools>
@@ -112,6 +113,7 @@
     <dependencies>
       <dep package="glib" />
       <dep package="gtk-doc" />
+      <dep package="gtk+" />
       <dep package="m4-common" />
     </dependencies>
   </autotools>

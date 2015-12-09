@@ -82,7 +82,7 @@ dnl **************************************************************************
 GLIB_GSETTINGS
 
 dnl **************************************************************************
-dnl Check forrequired packages
+dnl Check for required packages
 dnl **************************************************************************
 
 GTK_REQUIRED=3.15.2
@@ -197,6 +197,25 @@ PKG_CHECK_MODULES([WORKAROUNDS], [
 ])
 
 dnl **************************************************************************
+dnl Build with libstatus-notifier (experimental)
+dnl **************************************************************************
+
+AC_ARG_WITH([libstatus-notifier],
+            [AS_HELP_STRING([--with-libstatus-notifier],
+                           [Build with libstatus-notifier (experimental)])],
+            [with_libstatus_notifier="$withval"],
+            [with_libstatus_notifier=no])
+
+AS_IF([test "x$with_libstatus_notifier" = "xyes"], [
+  PKG_CHECK_MODULES([WATCHER], [libstatus-notifier-3.0])
+  AC_DEFINE([WITH_LIBSTATUS_NOTIFIER], [1],
+            [Define to 1 if libstatus-notifier is available])
+])
+
+AM_CONDITIONAL([WITH_LIBSTATUS_NOTIFIER],
+               [test "x$with_libstatus_notifier" = "xyes"])
+
+dnl **************************************************************************
 dnl Define XKB base directory
 dnl **************************************************************************
 
@@ -250,6 +269,7 @@ AC_CONFIG_FILES([
   gnome-flashback/libshell/Makefile
   gnome-flashback/libsound-applet/Makefile
   gnome-flashback/libsound-applet/gvc/Makefile
+  gnome-flashback/libwatcher/Makefile
   gnome-flashback/libworkarounds/Makefile
 
   po/Makefile.in
@@ -275,4 +295,6 @@ echo "  exec_prefix .................: ${exec_prefix}"
 echo "  libdir ......................: ${libdir}"
 echo "  sysconfdir ..................: ${sysconfdir}"
 echo "  libexecdir ..................: ${libexecdir}"
+echo ""
+echo "  with libstatus-notifier .....: ${with_libstatus_notifier}"
 echo ""

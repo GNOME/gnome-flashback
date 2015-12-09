@@ -79,6 +79,12 @@
       <description>If set to true, then GNOME Flashback application will be used to show a sound applet. This is the same sound applet that used to be a part of GNOME Control Center.</description>
     </key>
 
+    <key name="watcher" type="b">
+      <default>true</default>
+      <summary>Status Notifier Watcher</summary>
+      <description>If set to true, then GNOME Flashback application will be used as Status Notifier Watcher.</description>
+    </key>
+
     <key name="workarounds" type="b">
       <default>true</default>
       <summary>Workarounds</summary>
