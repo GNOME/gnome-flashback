@@ -88,7 +88,7 @@
     </dependencies>
   </autotools>
 
-  <autotools id="gnome-panel">
+  <autotools id="gnome-panel" autogenargs="--with-libstatus-notifier=yes">
     <branch />
     <dependencies>
       <dep package="intltool" />
