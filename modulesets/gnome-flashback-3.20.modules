@@ -100,6 +100,7 @@
       <dep package="librsvg" />
       <dep package="libgweather" />
       <dep package="libcanberra" />
+      <dep package="libstatus-notifier" />
       <dep package="m4-common" />
       <dep package="yelp-tools" />
     </dependencies>
