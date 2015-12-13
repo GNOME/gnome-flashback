@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-18 19:40+0000\n"
-"PO-Revision-Date: 2015-11-18 06:57+0000\n"
-"Last-Translator:  <>\n"
-"Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
+"POT-Creation-Date: 2015-12-12 21:07+0000\n"
+"PO-Revision-Date: 2015-12-13 09:03+0000\n"
+"Last-Translator: Pedro Albuquerque <palbuquerque73@gmail.com>\n"
+"Language-Team: Português <palbuquerque73@gmail.com>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\\n\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
@@ -230,10 +230,24 @@ msgstr ""
 "controlo GNOME."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
+msgid "Status Notifier Watcher"
+msgstr "Observador do notificador de estado"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used as a shell."
+msgid ""
+"If set to true, then GNOME Flashback application will be used as Status "
+"Notifier Watcher."
+msgstr ""
+"Se definido como verdadeiro, o GNOME Flashback será usado como Observador de "
+"notificador de estado."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid "Workarounds"
 msgstr "Contorno de problemas"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
 msgid ""
 "If set to true, then GNOME Flashback application will use workarounds to fix "
 "bugs."
@@ -241,11 +255,11 @@ msgstr ""
 "Se definido como verdadeiro, o GNOME Flashback usará contornos para reparar "
 "erros."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
 msgid "Fade the background on change"
 msgstr "Desvanecer o fundo quando alterado"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:98
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:104
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -253,23 +267,22 @@ msgstr ""
 "Se definido como verdadeiro, o GNOME Flashback será usado para alterar o "
 "fundo da área de trabalho"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
 msgid "The background color for the status icon."
 msgstr "A cor de fundo para o ícone de estado."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
 msgid ""
 "This contains the background color for the status icon that is shown in the "
 "system tray."
 msgstr ""
-"Isto contém a cor de fundo do ícone de estado mostrado na bandeja de "
-"sistema."
+"Isto contém a cor de fundo do ícone de estado mostrado na bandeja de sistema."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:119
 msgid "The foreground color for the status icon."
 msgstr "A cor de 1º plano para o ícone de estado."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:120
 msgid ""
 "This contains the foreground color for the status icon that is shown in the "
 "system tray."
@@ -277,11 +290,11 @@ msgstr ""
 "Isto contém a cor de 1º plano para o ícone de estado mostrado no tabuleiro "
 "de sistema."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:123
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:129
 msgid "Fix missing app menu button"
 msgstr "Corrigir botão de menu da aplicação em falta"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:124
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:130
 msgid ""
 "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
 "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
@@ -292,11 +305,11 @@ msgstr ""
 "gnome-settings-daemon na extensão xsettings para a propriedade \"Gtk/"
 "ShellShowsAppMenu\"."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:129
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:135
 msgid "Fix wrong button layout"
 msgstr "Corrigir disposição errada de botões"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:130
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:136
 msgid ""
 "If set to non-empty string, then gnome-flashback will force Gtk/"
 "DecorationLayout to value set by this setting. Set to empty string if you "
@@ -544,7 +557,9 @@ msgstr "Terminar Sessão"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
 msgid "Click Log Out to quit these applications and log out of the system."
-msgstr "Clique em Terminar sessão para sair das aplicações e terminar sessão no sistema."
+msgstr ""
+"Clique em Terminar sessão para sair das aplicações e terminar sessão no "
+"sistema."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:469
 #, c-format
@@ -618,8 +633,10 @@ msgstr "Suspensão Híbrida"
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
-msgstr[0] "O sistema entrará na suspensão híbrida automaticamente em %d segundo."
-msgstr[1] "O sistema entrará na suspensão híbrida automaticamente em %d segundos."
+msgstr[0] ""
+"O sistema entrará na suspensão híbrida automaticamente em %d segundo."
+msgstr[1] ""
+"O sistema entrará na suspensão híbrida automaticamente em %d segundos."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:29
 msgid "Some programs are still running:"
@@ -641,11 +658,11 @@ msgstr "Cancelar"
 msgid "Lock Screen"
 msgstr "Bloquear ecrã"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:355
+#: gnome-flashback/libinput-sources/gf-input-sources.c:358
 msgid "Show Keyboard Layout"
 msgstr "Mostrar disposição do teclado"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:418
+#: gnome-flashback/libinput-sources/gf-input-sources.c:421
 msgid "Keyboard"
 msgstr "Teclado"
 
