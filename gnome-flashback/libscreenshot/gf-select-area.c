@@ -282,10 +282,9 @@ gf_select_area_select (GfSelectArea *select_area,
 {
   GdkDisplay *display;
   GdkCursor *cursor;
-  GdkDeviceManager *manager;
-  GdkDevice *pointer;
-  GdkDevice *keyboard;
+  GdkSeat *seat;
   GdkWindow *window;
+  GdkSeatCapabilities capabilities;
   GdkGrabStatus status;
 
   *x = *y = *width = *height = 0;
@@ -294,40 +293,24 @@ gf_select_area_select (GfSelectArea *select_area,
 
   display = gdk_display_get_default ();
   cursor = gdk_cursor_new_for_display (display, GDK_CROSSHAIR);
-  manager = gdk_display_get_device_manager (display);
-  pointer = gdk_device_manager_get_client_pointer (manager);
-  keyboard = gdk_device_get_associated_device (pointer);
+  seat = gdk_display_get_default_seat (display);
   window = gtk_widget_get_window (select_area->window);
 
-  status = gdk_device_grab (pointer, window, GDK_OWNERSHIP_NONE, FALSE,
-                            GDK_POINTER_MOTION_MASK | GDK_BUTTON_PRESS_MASK |
-                            GDK_BUTTON_RELEASE_MASK,
-                            cursor, GDK_CURRENT_TIME);
+  capabilities = GDK_SEAT_CAPABILITY_POINTER |
+                 GDK_SEAT_CAPABILITY_KEYBOARD;
+
+  status = gdk_seat_grab (seat, window, capabilities, FALSE, cursor,
+                          NULL, NULL, NULL);
 
   if (status != GDK_GRAB_SUCCESS)
     {
-      g_object_unref (cursor);
-      return FALSE;
-    }
-
-  if (gdk_display_device_is_grabbed (display, keyboard))
-    gdk_device_ungrab (keyboard, GDK_CURRENT_TIME);
-
-  status = gdk_device_grab (keyboard, window, GDK_OWNERSHIP_NONE, FALSE,
-                            GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK,
-                            NULL, GDK_CURRENT_TIME);
-
-  if (status != GDK_GRAB_SUCCESS)
-    {
-      gdk_device_ungrab (pointer, GDK_CURRENT_TIME);
       g_object_unref (cursor);
       return FALSE;
     }
 
   gtk_main ();
 
-  gdk_device_ungrab (pointer, GDK_CURRENT_TIME);
-  gdk_device_ungrab (keyboard, GDK_CURRENT_TIME);
+  gdk_seat_ungrab (seat);
 
   if (select_area->selected == FALSE)
     return FALSE;

@@ -424,11 +424,11 @@ find_current_window (GdkDisplay *display)
 
   if (window == NULL)
     {
-      GdkDeviceManager *manager;
+      GdkSeat *seat;
       GdkDevice *device;
 
-      manager = gdk_display_get_device_manager (display);
-      device = gdk_device_manager_get_client_pointer (manager);
+      seat = gdk_display_get_default_seat (display);
+      device = gdk_seat_get_pointer (seat);
 
       window = gdk_device_get_window_at_position (device, NULL, NULL);
 
@@ -634,7 +634,7 @@ take_screenshot_real (GfScreenshot    *screenshot,
 
       if (cursor_pixbuf != NULL)
         {
-          GdkDeviceManager *manager;
+          GdkSeat *seat;
           GdkDevice *device;
           GdkRectangle rect;
           gint cx;
@@ -642,8 +642,8 @@ take_screenshot_real (GfScreenshot    *screenshot,
           gint xhot;
           gint yhot;
 
-          manager = gdk_display_get_device_manager (display);
-          device = gdk_device_manager_get_client_pointer (manager);
+          seat = gdk_display_get_default_seat (display);
+          device = gdk_seat_get_pointer (seat);
 
           if (wm_window != NULL)
             gdk_window_get_device_position (wm_window, device, &cx, &cy, NULL);
