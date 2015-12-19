@@ -85,7 +85,7 @@ dnl **************************************************************************
 dnl Check for required packages
 dnl **************************************************************************
 
-GTK_REQUIRED=3.15.2
+GTK_REQUIRED=3.19.5
 LIBGNOME_DESKTOP_REQUIRED=3.12.0
 CANBERRA_REQUIRED=0.13
 GLIB_REQUIRED=2.44.0

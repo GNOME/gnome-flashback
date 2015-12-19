@@ -218,9 +218,9 @@ create_monitor_skeleton (GDBusObjectManagerServer *server,
 }
 
 static void
-on_device_added (GdkDeviceManager *device_manager,
-                 GdkDevice        *device,
-                 gpointer          user_data)
+on_device_added (GdkSeat   *seat,
+                 GdkDevice *device,
+                 gpointer   user_data)
 {
   FlashbackIdleMonitor *idle_monitor;
   MetaIdleMonitor *monitor;
@@ -238,9 +238,9 @@ on_device_added (GdkDeviceManager *device_manager,
 }
 
 static void
-on_device_removed (GdkDeviceManager *device_manager,
-                   GdkDevice        *device,
-                   gpointer          user_data)
+on_device_removed (GdkSeat   *seat,
+                   GdkDevice *device,
+                   gpointer   user_data)
 {
   FlashbackIdleMonitor *monitor;
   gint device_id;
@@ -256,21 +256,6 @@ on_device_removed (GdkDeviceManager *device_manager,
 }
 
 static void
-on_device_changed (GdkDeviceManager *device_manager,
-                   GdkDevice        *device,
-                   gpointer          user_data)
-{
-  FlashbackIdleMonitor *monitor;
-
-  monitor = FLASHBACK_IDLE_MONITOR (user_data);
-
-  if (gdk_device_get_device_type (device) == GDK_DEVICE_TYPE_FLOATING)
-    on_device_removed (device_manager, device, monitor);
-  else
-    on_device_added (device_manager, device, monitor);
-}
-
-static void
 on_bus_acquired (GDBusConnection *connection,
                  const char      *name,
                  gpointer         user_data)
@@ -280,9 +265,7 @@ on_bus_acquired (GDBusConnection *connection,
   MetaIdleMonitor *monitor;
   const gchar *core_path;
   GdkDisplay *display;
-  GdkDeviceManager *device_manager;
-  GList *master;
-  GList *slave;
+  GdkSeat *seat;
   GList *devices;
   GList *iter;
 
@@ -296,10 +279,12 @@ on_bus_acquired (GDBusConnection *connection,
   create_monitor_skeleton (idle_monitor->server, monitor, core_path);
 
   display = gdk_display_get_default ();
-  device_manager = gdk_display_get_device_manager (display);
-  master = gdk_device_manager_list_devices (device_manager, GDK_DEVICE_TYPE_MASTER);
-  slave = gdk_device_manager_list_devices (device_manager, GDK_DEVICE_TYPE_SLAVE);
-  devices = g_list_concat (master, slave);
+  seat = gdk_display_get_default_seat (display);
+  devices = NULL;
+
+  devices = g_list_append (devices, gdk_seat_get_pointer (seat));
+  devices = g_list_append (devices, gdk_seat_get_keyboard (seat));
+  devices = g_list_concat (devices, gdk_seat_get_slaves (seat, GDK_SEAT_CAPABILITY_ALL));
 
   for (iter = devices; iter; iter = iter->next)
     {
@@ -307,17 +292,15 @@ on_bus_acquired (GDBusConnection *connection,
 
       device = (GdkDevice *) iter->data;
 
-      on_device_added (device_manager, device, idle_monitor);
+      on_device_added (seat, device, idle_monitor);
     }
 
   g_list_free (devices);
 
-  g_signal_connect_object (device_manager, "device-added",
+  g_signal_connect_object (seat, "device-added",
                            G_CALLBACK (on_device_added), idle_monitor, 0);
-  g_signal_connect_object (device_manager, "device-removed",
+  g_signal_connect_object (seat, "device-removed",
                            G_CALLBACK (on_device_removed), idle_monitor, 0);
-  g_signal_connect_object (device_manager, "device-changed",
-                           G_CALLBACK (on_device_changed), idle_monitor, 0);
 
   g_dbus_object_manager_server_set_connection (idle_monitor->server, connection);
 }
@@ -368,9 +351,7 @@ flashback_idle_monitor_dispose (GObject *object)
 {
   FlashbackIdleMonitor *monitor;
   GdkDisplay *display;
-  GdkDeviceManager *device_manager;
-  GList *master;
-  GList *slave;
+  GdkSeat *seat;
   GList *devices;
   GList *iter;
   const gchar *core_path;
@@ -384,10 +365,12 @@ flashback_idle_monitor_dispose (GObject *object)
     }
 
   display = gdk_display_get_default ();
-  device_manager = gdk_display_get_device_manager (display);
-  master = gdk_device_manager_list_devices (device_manager, GDK_DEVICE_TYPE_MASTER);
-  slave = gdk_device_manager_list_devices (device_manager, GDK_DEVICE_TYPE_SLAVE);
-  devices = g_list_concat (master, slave);
+  seat = gdk_display_get_default_seat (display);
+  devices = NULL;
+
+  devices = g_list_append (devices, gdk_seat_get_pointer (seat));
+  devices = g_list_append (devices, gdk_seat_get_keyboard (seat));
+  devices = g_list_concat (devices, gdk_seat_get_slaves (seat, GDK_SEAT_CAPABILITY_ALL));
 
   for (iter = devices; iter; iter = iter->next)
     {
@@ -395,7 +378,7 @@ flashback_idle_monitor_dispose (GObject *object)
 
       device = (GdkDevice *) iter->data;
 
-      on_device_removed (device_manager, device, monitor);
+      on_device_removed (seat, device, monitor);
     }
 
   g_list_free (devices);

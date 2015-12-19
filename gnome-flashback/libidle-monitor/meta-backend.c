@@ -71,9 +71,9 @@ destroy_device_monitor (MetaBackend *backend,
 }
 
 static void
-on_device_added (GdkDeviceManager *device_manager,
-                 GdkDevice        *device,
-                 gpointer          user_data)
+on_device_added (GdkSeat   *seat,
+                 GdkDevice *device,
+                 gpointer   user_data)
 {
   MetaBackend *backend = META_BACKEND (user_data);
   int device_id = gdk_x11_device_get_id (device);
@@ -82,27 +82,14 @@ on_device_added (GdkDeviceManager *device_manager,
 }
 
 static void
-on_device_removed (GdkDeviceManager *device_manager,
-                   GdkDevice        *device,
-                   gpointer          user_data)
+on_device_removed (GdkSeat   *seat,
+                   GdkDevice *device,
+                   gpointer   user_data)
 {
   MetaBackend *backend = META_BACKEND (user_data);
   int device_id = gdk_x11_device_get_id (device);
 
   destroy_device_monitor (backend, device_id);
-}
-
-static void
-on_device_changed (GdkDeviceManager *device_manager,
-                   GdkDevice        *device,
-                   gpointer          user_data)
-{
-    MetaBackend *backend = META_BACKEND (user_data);
-
-	if (gdk_device_get_device_type (device) == GDK_DEVICE_TYPE_FLOATING)
-		on_device_removed (device_manager, device, backend);
-	else
-		on_device_added (device_manager, device, backend);
 }
 
 static void
@@ -116,26 +103,35 @@ meta_backend_class_init (MetaBackendClass *klass)
 static void
 meta_backend_init (MetaBackend *backend)
 {
-	GdkDeviceManager *manager;
-	GList *devices, *l;
+  GdkDisplay *display;
+  GdkSeat *seat;
+  GList *devices;
+  GList *l;
 
-	/* Create the core device monitor. */
-	create_device_monitor (backend, 0);
+  /* Create the core device monitor. */
+  create_device_monitor (backend, 0);
 
-	manager = gdk_display_get_device_manager (gdk_display_get_default ());
-	g_signal_connect_object (manager, "device-added", G_CALLBACK (on_device_added), backend, 0);
-	g_signal_connect_object (manager, "device-removed", G_CALLBACK (on_device_removed), backend, 0);
-	g_signal_connect_object (manager, "device-changed", G_CALLBACK (on_device_changed), backend, 0);
+  display = gdk_display_get_default ();
+  seat = gdk_display_get_default_seat (display);
+  devices = NULL;
 
-	devices = gdk_device_manager_list_devices (manager, GDK_DEVICE_TYPE_MASTER);
-	devices = g_list_concat (devices, gdk_device_manager_list_devices (manager, GDK_DEVICE_TYPE_SLAVE));
+  g_signal_connect_object (seat, "device-added", G_CALLBACK (on_device_added), backend, 0);
+  g_signal_connect_object (seat, "device-removed", G_CALLBACK (on_device_removed), backend, 0);
 
-	for (l = devices; l != NULL; l = l->next) {
-		GdkDevice *device = l->data;
-		on_device_added (manager, device, backend);
-	}
+  devices = g_list_append (devices, gdk_seat_get_pointer (seat));
+  devices = g_list_append (devices, gdk_seat_get_keyboard (seat));
+  devices = g_list_concat (devices, gdk_seat_get_slaves (seat, GDK_SEAT_CAPABILITY_ALL));
 
-	g_list_free (devices);
+  for (l = devices; l != NULL; l = l->next)
+    {
+      GdkDevice *device;
+
+      device = (GdkDevice *) l->data;
+
+      on_device_added (seat, device, backend);
+    }
+
+  g_list_free (devices);
 }
 
 MetaBackend *
