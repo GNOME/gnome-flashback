@@ -43,8 +43,6 @@ struct GvcStreamStatusIconPrivate
         guint           current_icon;
         char           *display_name;
         gboolean        thaw;
-        GdkDevice      *grabbed_pointer;
-        GdkDevice      *grabbed_keyboard;
 };
 
 enum
@@ -99,15 +97,14 @@ static void
 ungrab (GvcStreamStatusIcon *icon,
         guint                time)
 {
-	/* ungrab focus */
-	if (icon->priv->grabbed_pointer != NULL) {
-		gdk_device_ungrab (icon->priv->grabbed_pointer, time);
-		g_clear_object (&icon->priv->grabbed_pointer);
-	}
-	if (icon->priv->grabbed_keyboard != NULL) {
-		gdk_device_ungrab (icon->priv->grabbed_keyboard, time);
-		g_clear_object (&icon->priv->grabbed_keyboard);
-	}
+	GdkDisplay *display;
+	GdkSeat *seat;
+
+	display = gtk_widget_get_display (icon->priv->dock);
+	seat = gdk_display_get_default_seat (display);
+
+	gdk_seat_ungrab (seat);
+
 	gtk_grab_remove (icon->priv->dock);
 
 	/* hide again */
@@ -129,10 +126,9 @@ popup_dock (GvcStreamStatusIcon *icon,
         GdkRectangle   monitor;
         GtkRequisition dock_req;
         GdkWindow     *window;
-        GdkDeviceManager *device_manager;
-        GList         *list;
-        GList         *link;
-        gboolean       grabbed;
+        GdkSeat *seat;
+        GdkSeatCapabilities capabilities;
+        GdkGrabStatus status;
 
         update_dock (icon);
 
@@ -199,49 +195,15 @@ popup_dock (GvcStreamStatusIcon *icon,
 
         display = gtk_widget_get_display (icon->priv->dock);
         window = gtk_widget_get_window (icon->priv->dock);
-        device_manager = gdk_display_get_device_manager (display);
+        seat = gdk_display_get_default_seat (display);
 
-        grabbed = FALSE;
-        list = gdk_device_manager_list_devices (device_manager, GDK_DEVICE_TYPE_MASTER);
-        for (link = list; link != NULL; link = g_list_next (link)) {
-                GdkDevice *device = GDK_DEVICE (link->data);
-                if (gdk_device_get_source (device) == GDK_SOURCE_KEYBOARD)
-                        continue;
-                if (gdk_device_grab (device, window,
-                                     GDK_OWNERSHIP_NONE, TRUE,
-                                     GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
-                                     GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK,
-                                     NULL, time) == GDK_GRAB_SUCCESS) {
-                        icon->priv->grabbed_pointer = g_object_ref (device);
-                        grabbed = TRUE;
-                        break;
-                }
-        }
-        g_list_free (list);
+        capabilities = GDK_SEAT_CAPABILITY_POINTER |
+                       GDK_SEAT_CAPABILITY_KEYBOARD;
 
-        if (grabbed == FALSE) {
-                ungrab (icon, time);
-                return FALSE;
-        }
+        status = gdk_seat_grab (seat, window, capabilities, TRUE, NULL,
+                                NULL, NULL, NULL);
 
-        grabbed = FALSE;
-        list = gdk_device_manager_list_devices (device_manager, GDK_DEVICE_TYPE_MASTER);
-        for (link = list; link != NULL; link = g_list_next (link)) {
-                GdkDevice *device = GDK_DEVICE (link->data);
-                if (gdk_device_get_source (device) != GDK_SOURCE_KEYBOARD)
-                        continue;
-                if (gdk_device_grab (device, window,
-                                     GDK_OWNERSHIP_NONE, TRUE,
-                                     GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK,
-                                     NULL, time) == GDK_GRAB_SUCCESS) {
-                        icon->priv->grabbed_keyboard = g_object_ref (device);
-                        grabbed = TRUE;
-                        break;
-                }
-        }
-        g_list_free (list);
-
-        if (grabbed == FALSE) {
+        if (status != GDK_GRAB_SUCCESS) {
                 ungrab (icon, time);
                 return FALSE;
         }
@@ -727,9 +689,6 @@ gvc_stream_status_icon_dispose (GObject *object)
                 icon->priv->mixer_stream = NULL;
         }
 
-        g_clear_object (&icon->priv->grabbed_pointer);
-        g_clear_object (&icon->priv->grabbed_keyboard);
-
         G_OBJECT_CLASS (gvc_stream_status_icon_parent_class)->dispose (object);
 }
 
@@ -805,8 +764,6 @@ gvc_stream_status_icon_init (GvcStreamStatusIcon *icon)
                           NULL);
 
         icon->priv->thaw = FALSE;
-        icon->priv->grabbed_pointer = NULL;
-        icon->priv->grabbed_keyboard = NULL;
 }
 
 static void
