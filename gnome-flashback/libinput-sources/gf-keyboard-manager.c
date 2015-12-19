@@ -337,9 +337,9 @@ apply_layout_index (GfKeyboardManager *manager,
 }
 
 static void
-device_added_cb (GdkDeviceManager *device_manager,
-                 GdkDevice        *device,
-                 gpointer          user_data)
+device_added_cb (GdkSeat   *seat,
+                 GdkDevice *device,
+                 gpointer   user_data)
 {
   GfKeyboardManager *manager;
 
@@ -460,13 +460,13 @@ static void
 gf_keyboard_manager_init (GfKeyboardManager *manager)
 {
   GdkDisplay *display;
-  GdkDeviceManager *device_manager;
+  GdkSeat *seat;
   gint xkb_opcode;
   gint xkb_major;
   gint xkb_minor;
 
   display = gdk_display_get_default ();
-  device_manager = gdk_display_get_device_manager (display);
+  seat = gdk_display_get_default_seat (display);
 
   manager->xdisplay = gdk_x11_display_get_xdisplay (display);
   manager->xkb_info = gnome_xkb_info_new ();
@@ -485,7 +485,7 @@ gf_keyboard_manager_init (GfKeyboardManager *manager)
                  "newer", XkbMajorVersion, XkbMinorVersion);
     }
 
-  g_signal_connect_object (device_manager, "device-added",
+  g_signal_connect_object (seat, "device-added",
                            G_CALLBACK (device_added_cb), manager,
                            G_CONNECT_AFTER);
 

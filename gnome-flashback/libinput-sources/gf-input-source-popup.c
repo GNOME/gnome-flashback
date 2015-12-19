@@ -26,9 +26,6 @@ struct _GfInputSourcePopup
 {
   GfPopupWindow  parent;
 
-  GdkDevice     *pointer;
-  GdkDevice     *keyboard;
-
   GList         *mru_sources;
   gboolean       backward;
   guint          keyval;
@@ -189,17 +186,13 @@ setup_popup_window (GfInputSourcePopup *popup)
 static void
 ungrab (GfInputSourcePopup *popup)
 {
-  if (popup->pointer != NULL)
-    {
-      gdk_device_ungrab (popup->pointer, GDK_CURRENT_TIME);
-      popup->pointer = NULL;
-    }
+  GdkDisplay *display;
+  GdkSeat *seat;
 
-  if (popup->keyboard != NULL)
-    {
-      gdk_device_ungrab (popup->keyboard, GDK_CURRENT_TIME);
-      popup->keyboard = NULL;
-    }
+  display = gdk_display_get_default ();
+  seat = gdk_display_get_default_seat (display);
+
+  gdk_seat_ungrab (seat);
 }
 
 static void
@@ -392,46 +385,26 @@ gf_input_source_popup_motion_notify_event (GtkWidget      *widget,
 static void
 gf_input_source_popup_show (GtkWidget *widget)
 {
-  GfInputSourcePopup *popup;
   GdkDisplay *display;
-  GdkDeviceManager *manager;
+  GdkSeat *seat;
   GdkWindow *window;
+  GdkSeatCapabilities capabilities;
   GdkGrabStatus status;
-
-  popup = GF_INPUT_SOURCE_POPUP (widget);
 
   GTK_WIDGET_CLASS (gf_input_source_popup_parent_class)->show (widget);
 
   display = gdk_display_get_default ();
-  manager = gdk_display_get_device_manager (display);
+  seat = gdk_display_get_default_seat (display);
   window = gtk_widget_get_window (widget);
 
-  popup->pointer = gdk_device_manager_get_client_pointer (manager);
-  status = gdk_device_grab (popup->pointer, window, GDK_OWNERSHIP_NONE, FALSE,
-                            GDK_POINTER_MOTION_MASK | GDK_BUTTON_PRESS_MASK,
-                            NULL, GDK_CURRENT_TIME);
+  capabilities = GDK_SEAT_CAPABILITY_POINTER |
+                 GDK_SEAT_CAPABILITY_KEYBOARD;
+
+  status = gdk_seat_grab (seat, window, capabilities, FALSE, NULL,
+                          NULL, NULL, NULL);
 
   if (status != GDK_GRAB_SUCCESS)
-    {
-      popup->pointer = NULL;
-
-      return;
-    }
-
-  popup->keyboard = gdk_device_get_associated_device (popup->pointer);
-  status = gdk_device_grab (popup->keyboard, window, GDK_OWNERSHIP_NONE, FALSE,
-                            GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK,
-                            NULL, GDK_CURRENT_TIME);
-
-  if (status != GDK_GRAB_SUCCESS)
-    {
-      gdk_device_ungrab (popup->pointer, GDK_CURRENT_TIME);
-
-      popup->pointer = NULL;
-      popup->keyboard = NULL;
-
-      return;
-    }
+    return;
 }
 
 static void
