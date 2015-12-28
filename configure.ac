@@ -251,6 +251,9 @@ AC_CONFIG_FILES([
   data/menus/Makefile
   data/schemas/Makefile
   data/sessions/Makefile
+  data/theme/Makefile
+  data/theme/Adwaita/Makefile
+  data/theme/HighContrast/Makefile
   data/xsessions/Makefile
 
   gnome-flashback/Makefile

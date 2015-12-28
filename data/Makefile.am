@@ -7,6 +7,7 @@ SUBDIRS = \
 	menus \
 	schemas \
 	sessions \
+	theme \
 	xsessions \
 	$(NULL)
 

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
+  <gresource prefix="/org/gnome/gnome-flashback/theme">
+    <file alias="Adwaita/gnome-flashback.css">../data/theme/Adwaita/gnome-flashback.css</file>
+    <file alias="Adwaita/gnome-flashback-dark.css">../data/theme/Adwaita/gnome-flashback-dark.css</file>
+    <file alias="HighContrast/gnome-flashback.css">../data/theme/HighContrast/gnome-flashback.css</file>
+    <file alias="HighContrast/gnome-flashback-dark.css">../data/theme/HighContrast/gnome-flashback-dark.css</file>
+  </gresource>
   <gresource prefix="/org/gnome/gnome-flashback">
     <file>Adwaita.css</file>
     <file>HighContrast.css</file>

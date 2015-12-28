@@ -48,7 +48,7 @@ struct _GfApplication
 
   GSettings              *settings;
 
-  GtkCssProvider         *provider;
+  GtkStyleProvider       *provider;
 
   GsdAutomountManager    *automount;
   FlashbackDisplayConfig *config;
@@ -73,54 +73,53 @@ struct _GfApplication
 G_DEFINE_TYPE (GfApplication, gf_application, G_TYPE_OBJECT)
 
 static void
-remove_style_provider (GfApplication *application,
-                       GdkScreen     *screen)
-{
-  GtkStyleProvider *provider;
-
-  if (application->provider == NULL)
-    return;
-
-  provider = GTK_STYLE_PROVIDER (application->provider);
-  gtk_style_context_remove_provider_for_screen (screen, provider);
-  g_clear_object (&application->provider);
-}
-
-static void
 theme_changed (GtkSettings *settings,
                GParamSpec  *pspec,
                gpointer     user_data)
 {
   GfApplication *application;
   GdkScreen *screen;
-  gchar *theme;
+  gchar *theme_name;
+  gboolean dark_theme;
+  guint priority;
+  gchar *resource;
+  GtkCssProvider *css;
 
   application = GF_APPLICATION (user_data);
   screen = gdk_screen_get_default ();
 
-  g_object_get (settings, "gtk-theme-name", &theme, NULL);
-
-  remove_style_provider (application, screen);
-
-  if (g_strcmp0 (theme, "Adwaita") == 0 || g_strcmp0 (theme, "HighContrast") == 0)
+  if (application->provider != NULL)
     {
-      gchar *resource;
-      GtkStyleProvider *provider;
-      gint priority;
-
-      application->provider = gtk_css_provider_new ();
-
-      resource = g_strdup_printf ("/org/gnome/gnome-flashback/%s.css", theme);
-      gtk_css_provider_load_from_resource (application->provider, resource);
-      g_free (resource);
-
-      provider = GTK_STYLE_PROVIDER (application->provider);
-      priority = GTK_STYLE_PROVIDER_PRIORITY_APPLICATION;
-
-      gtk_style_context_add_provider_for_screen (screen, provider, priority);
+      gtk_style_context_remove_provider_for_screen (screen, application->provider);
+      g_clear_object (&application->provider);
     }
 
-  g_free (theme);
+  g_object_get (settings, "gtk-theme-name", &theme_name, NULL);
+
+  if (g_strcmp0 (theme_name, "Adwaita") != 0 &&
+      g_strcmp0 (theme_name, "HighContrast") != 0)
+    {
+      g_free (theme_name);
+      return;
+    }
+
+  g_object_get (settings,
+                "gtk-application-prefer-dark-theme", &dark_theme,
+                NULL);
+
+  priority = GTK_STYLE_PROVIDER_PRIORITY_APPLICATION;
+  resource = g_strdup_printf ("/org/gnome/gnome-flashback/theme/%s/gnome-flashback%s.css",
+                              theme_name, dark_theme ? "-dark" : "");
+
+  css = gtk_css_provider_new ();
+  application->provider =  GTK_STYLE_PROVIDER (css);
+
+  gtk_css_provider_load_from_resource (css, resource);
+  gtk_style_context_add_provider_for_screen (screen, application->provider,
+                                             priority);
+
+  g_free (theme_name);
+  g_free (resource);
 }
 
 static void
@@ -175,10 +174,8 @@ static void
 gf_application_dispose (GObject *object)
 {
   GfApplication *application;
-  GdkScreen *screen;
 
   application = GF_APPLICATION (object);
-  screen = gdk_screen_get_default ();
 
   if (application->bus_name)
     {
@@ -188,7 +185,7 @@ gf_application_dispose (GObject *object)
 
   g_clear_object (&application->settings);
 
-  remove_style_provider (application, screen);
+  g_clear_object (&application->provider);
 
   g_clear_object (&application->automount);
   g_clear_object (&application->config);
