@@ -55,7 +55,7 @@ gf_watcher_class_init (GfWatcherClass *watcher_class)
 static void
 gf_watcher_init (GfWatcher *watcher)
 {
-  watcher->watcher = sn_watcher_new ();
+  watcher->watcher = sn_watcher_new (SN_WATCHER_FLAGS_NONE);
 }
 
 GfWatcher *
