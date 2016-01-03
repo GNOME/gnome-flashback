@@ -1,14 +1,14 @@
 # Serbian translation for gnome-flashback.
 # Copyright (C) 2014 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
-# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2014.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2014—2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-11-29 16:36+0000\n"
-"PO-Revision-Date: 2014-12-27 15:00+0200\n"
+"POT-Creation-Date: 2016-01-03 09:09+0000\n"
+"PO-Revision-Date: 2016-01-03 15:08+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -19,35 +19,71 @@ msgstr ""
 "n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
-#: ../data/gnome-flashback.desktop.in.h:1
+#: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
 msgstr "Стари Гном"
 
-#: ../data/gnome-flashback-compiz.desktop.in.in.h:1
-msgid "GNOME Flashback (Compiz)"
-msgstr "Стари Гном (Компиз)"
-
-#: ../data/gnome-flashback-compiz.desktop.in.in.h:2
-msgid "This session logs you into GNOME Flashback with Compiz"
-msgstr "Ова сесија вас пријављује у стари Гном са Компизом"
-
-#: ../data/gnome-flashback-init.desktop.in.h:1
+#: data/applications/gnome-flashback-init.desktop.in:4
 msgid "GNOME Flashback Initialization"
 msgstr "Покретање старог Гнома"
 
-#: ../data/gnome-flashback-metacity.desktop.in.in.h:1
-msgid "GNOME Flashback (Metacity)"
-msgstr "Стари Гном (Метасити)"
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:3
+#| msgid "GNOME Flashback"
+msgid "Network (GNOME Flashback)"
+msgstr "Мрежа (Стари Гном)"
 
-#: ../data/gnome-flashback-metacity.desktop.in.in.h:2
-msgid "This session logs you into GNOME Flashback with Metacity"
-msgstr "Ова сесија вас пријављује у стари Гном са Метаситијем"
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:4
+msgid "Manage your network connections"
+msgstr "Управљајте мрежним повезивањима"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:1
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:5
+msgid "nm-device-wireless"
+msgstr "ум—уређај—бежична"
+
+#: data/autostart/gnome-flashback-screensaver.desktop.in:4
+#| msgid "GNOME Flashback"
+msgid "Screensaver (GNOME Flashback)"
+msgstr "Чувар екрана (Стари Гном)"
+
+#: data/autostart/gnome-flashback-screensaver.desktop.in:5
+msgid "Launch screensaver and locker program"
+msgstr "Покрените чувара екрана и програм закључавања"
+
+#: data/autostart/gnome-flashback-screensaver.desktop.in:6
+msgid "preferences-desktop-screensaver"
+msgstr "поставке—радна површ—чувар екрана"
+
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
+#| msgid "_Sound Preferences"
+msgid "Preferences"
+msgstr "Поставке"
+
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:5
+#| msgid "_Sound Preferences"
+msgid "Personal preferences"
+msgstr "Личне поставке"
+
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:6
+msgid "preferences-desktop"
+msgstr "поставке—радна површ"
+
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
+msgid "Administration"
+msgstr "Администрација"
+
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
+msgid "Change system-wide settings (affects all users)"
+msgstr "Измените подешавања свеопштег система (утиче на све кориснике)"
+
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:6
+msgid "preferences-system"
+msgstr "поставке—систем"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
 msgid "Automount manager"
 msgstr "Управник самомонтирања"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:2
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:7
 msgid ""
 "If set to true, then GNOME Flashback application will be used to automount "
 "removable media."
@@ -55,47 +91,72 @@ msgstr ""
 "Ако је изабрано, тада ће програм старог Гнома бити коришћен за самомонтирање "
 "уклоњивих уређаја."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:3
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
+msgid "Bluetooth applet"
+msgstr "Програмче блутута"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:13
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to show end "
+#| "session dialog."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"Bluetooth applet."
+msgstr ""
+"Ако је изабрано, тада ће програм старог Гнома бити коришћен за приказивање "
+"програмчета блутута."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
 msgid "Desktop background"
 msgstr "Позадина радне површи"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:4
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:19
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to draw "
+#| "desktop background."
 msgid ""
-"If set to true, then GNOME Flashback application will be used to draw "
+"If set to true, then GNOME Flashback application will be used to draw the "
 "desktop background."
 msgstr ""
 "Ако је изабрано, тада ће програм старог Гнома бити коришћен за исцртавање "
 "позадине радне површи."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:5
-msgid "Display config"
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
+#| msgid "Display config"
+msgid "Display configuration"
 msgstr "Подешавање приказа"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:6
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:25
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to provide "
+#| "display configuration."
 msgid ""
-"If set to true, then GNOME Flashback application will be used to provide "
+"If set to true, then GNOME Flashback application will be used to provide the "
 "display configuration."
 msgstr ""
 "Ако је изабрано, тада ће програм старог Гнома бити коришћен за обезбеђивање "
 "подешавања приказа."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:7
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
 msgid "End session dialog"
 msgstr "Прозорче краја сесије"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:8
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:31
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to show end "
+#| "session dialog."
 msgid ""
-"If set to true, then GNOME Flashback application will be used to show end "
-"session dialog."
+"If set to true, then GNOME Flashback application will be used to show the "
+"end session dialog."
 msgstr ""
 "Ако је изабрано, тада ће програм старог Гнома бити коришћен за приказивање "
 "прозорчета краја сесије."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:9
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
 msgid "Idle monitor"
 msgstr "Праћење мировања"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:10
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:37
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
@@ -103,40 +164,143 @@ msgstr ""
 "Ако је изабрано, тада ће програм старог Гнома бити коришћен за надгледање "
 "корисникових радњи."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:11
-msgid "Key grabber"
-msgstr "Хватач тастера"
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:42
+msgid "Keyboard layouts and input methods"
+msgstr "Распореди тастатуре и начини уноса"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:12
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:43
 #| msgid ""
-#| "If set to true, then GNOME Flashback application will be used for user "
-#| "activity monitoring."
+#| "If set to true, then GNOME Flashback application will be used to "
+#| "automount removable media."
 msgid ""
-"If set to true, then GNOME Flashback application will be used for key "
-"grabbing."
+"If set to true, then GNOME Flashback application will be used to manage "
+"keyboard layouts and input methods."
 msgstr ""
-"Ако је изабрано, тада ће програм старог Гнома бити коришћен за хватање "
-"тастера."
+"Ако је изабрано, тада ће програм старог Гнома бити коришћен за управљање "
+"распоредима тастатуре и начинима уноса."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:13
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:48
+msgid "Authentication agent for polkit"
+msgstr "Агент потврђивања идентитета за полкит"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
+msgid ""
+"This is the same authentication agent that was provided by PolicyKit-gnome."
+msgstr ""
+"Ово је исти агент потврђивања идентитета кога обезбеђује гномов прибор "
+"политике."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
+#| msgid "Sound applet"
+msgid "Power applet"
+msgstr "Програмче напајања"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to show end "
+#| "session dialog."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"power applet."
+msgstr ""
+"Ако је изабрано, тада ће програм старог Гнома бити коришћен за приказивање "
+"програмчета напајања."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:60
+msgid "Screencasts"
+msgstr "Снимци екрана"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used for key "
+#| "grabbing."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to record the "
+"screen."
+msgstr ""
+"Ако је изабрано, тада ће програм старог Гнома бити коришћен за снимање "
+"екрана."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:66
+msgid "Screenshots"
+msgstr "Слике екрана"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used for key "
+#| "grabbing."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to take "
+"screenshots."
+msgstr ""
+"Ако је изабрано, тада ће програм старог Гнома бити коришћен за прављење "
+"слика екрана."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
+msgid "Shell"
+msgstr "Шкољка"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used for key "
+#| "grabbing."
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a shell."
+msgstr "Ако је изабрано, тада ће програм старог Гнома бити коришћен за шкољку."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
 msgid "Sound applet"
 msgstr "Програмче звука"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:14
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to show "
+#| "sound applet. This is same sound applet that used to be part of GNOME "
+#| "Control Center."
 msgid ""
-"If set to true, then GNOME Flashback application will be used to show sound "
-"applet. This is same sound applet that used to be part of GNOME Control "
-"Center."
+"If set to true, then GNOME Flashback application will be used to show a "
+"sound applet. This is the same sound applet that used to be a part of GNOME "
+"Control Center."
 msgstr ""
 "Ако је изабрано, тада ће програм старог Гнома бити коришћен за приказивање "
 "програмчета звука. То је исто оно програмче које је обично део Гномовог "
 "управљачког центра."
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:15
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
+msgid "Status Notifier Watcher"
+msgstr "Осматрач обавештења стања"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used for user "
+#| "activity monitoring."
+msgid ""
+"If set to true, then GNOME Flashback application will be used as Status "
+"Notifier Watcher."
+msgstr ""
+"Ако је изабрано, тада ће програм старог Гнома бити коришћен за осматрача "
+"обавештења стања."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
+msgid "Workarounds"
+msgstr "Решења"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used for key "
+#| "grabbing."
+msgid ""
+"If set to true, then GNOME Flashback application will use workarounds to fix "
+"bugs."
+msgstr ""
+"Ако је изабрано, тада ће програм старог Гнома користити решења за исправљање "
+"грешака."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
 msgid "Fade the background on change"
 msgstr "Претапање позадине приликом измене"
 
-#: ../data/org.gnome.gnome-flashback.gschema.xml.in.in.h:16
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:104
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -144,238 +308,189 @@ msgstr ""
 "Уколико је изабрано, тада ће благи прелаз бити коришћен при промени позадине "
 "радне површи."
 
-#: ../gnome-flashback/flashback-main.c:33
-#| msgid "GNOME Flashback"
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
+msgid "The background color for the status icon."
+msgstr "Позадинска боја за иконицу стања."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
+msgid ""
+"This contains the background color for the status icon that is shown in the "
+"system tray."
+msgstr ""
+"Ово садржи позадинску боју за иконицу стања која је приказана у системској "
+"фиоци."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:119
+msgid "The foreground color for the status icon."
+msgstr "Боја исцртавања за иконицу стања."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:120
+msgid ""
+"This contains the foreground color for the status icon that is shown in the "
+"system tray."
+msgstr ""
+"Ово садржи боју исцртавања за иконицу стања која је приказана у системској "
+"фиоци."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:129
+msgid "Fix missing app menu button"
+msgstr "Поправља недостајуће дугме изборника програма"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:130
+msgid ""
+"If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
+"FALSE. Disable if you want to use gnome-settings-daemon overrides in "
+"xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
+msgstr ""
+"Ако је изабрано, тада ће стари Гном да примора Гтк/"
+"Шкољка_приказује_изборник_програма да се искључи. Искључите ово ако желите "
+"да користите преписивања позадинца-гномових-подешавања у прикључку икс-"
+"подешавања за својство „Gtk/ShellShowsAppMenu“."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:135
+msgid "Fix wrong button layout"
+msgstr "Поправља погрешан распоред дугмета"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:136
+msgid ""
+"If set to non-empty string, then gnome-flashback will force Gtk/"
+"DecorationLayout to value set by this setting. Set to empty string if you "
+"want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
+"DecorationLayout' property."
+msgstr ""
+"Ако је постављено на не-празну ниску, тада ће стари Гном да примора Гтк/"
+"Распоред_украса на вредност постављену овим подешавањем. Поставите на празну "
+"ниску ако желите да користите преписивања позадинца-гномових-подешавања у "
+"прикључку икс-подешавања за својство „Gtk/DecorationLayout“."
+
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:3
+msgid "GNOME Flashback (Compiz)"
+msgstr "Стари Гном (Компиз)"
+
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:4
+msgid "This session logs you into GNOME Flashback with Compiz"
+msgstr "Ова сесија вас пријављује у стари Гном са Компизом"
+
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:3
+msgid "GNOME Flashback (Metacity)"
+msgstr "Стари Гном (Метасити)"
+
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:4
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr "Ова сесија вас пријављује у стари Гном са Метаситијем"
+
+#: gnome-flashback/gf-main.c:40
+msgid "Enable debugging code"
+msgstr "Укључује код прочишћавања"
+
+#: gnome-flashback/gf-main.c:46
 msgid "Initialize GNOME Flashback session"
 msgstr "Покреће сесију Старог Гнома"
 
-#: ../gnome-flashback/flashback-main.c:39
+#: gnome-flashback/gf-main.c:52
 msgid "Replace a currently running application"
 msgstr "Мења тренутно покренут програм"
 
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:327
-msgid "Unknown"
-msgstr "Непознато"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:408
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:597
-msgid "Log Out"
-msgstr "Одјави"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:410
-msgid "Click Log Out to quit these applications and log out of the system."
-msgstr ""
-"Притисните на „Одјави“ да напустите ове програме и да се одјавите са система."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:412
-#, c-format
-msgid "%s will be logged out automatically in %d second."
-msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s ће бити одјављен за %d секунду."
-msgstr[1] "%s ће бити одјављен за %d секунде."
-msgstr[2] "%s ће бити одјављен за %d секунди."
-msgstr[3] "%s ће бити одјављен за једну секунду."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:418
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:600
-msgid "Power Off"
-msgstr "Искључи"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:420
-msgid "Click Power Off to quit these applications and power off the system."
-msgstr ""
-"Притисните на „Искључи“ да напустите ове програме и да искључите рачунар."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:422
-#, c-format
-msgid "The system will power off automatically in %d second."
-msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Рачунар ће се искључити за %d секунду."
-msgstr[1] "Рачунар ће се искључити за %d секунде."
-msgstr[2] "Рачунар ће се искључити за %d секунди."
-msgstr[3] "Рачунар ће се искључити за једну секунду."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:428
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:603
-msgid "Restart"
-msgstr "Поново покрени"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:430
-msgid "Click Restart to quit these applications and restart the system."
-msgstr ""
-"Притисните на „Поново покрени“ да напустите ове програме и да поново "
-"покренете систем."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:432
-#, c-format
-msgid "The system will restart automatically in %d second."
-msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "Систем ће се поново покренути за %d секунду."
-msgstr[1] "Систем ће се поново покренути за %d секунде."
-msgstr[2] "Систем ће се поново покренути за %d секунди."
-msgstr[3] "Систем ће се поново покренути за једну секунду."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:438
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:606
-msgid "Hibernate"
-msgstr "Замрзни"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:439
-#, c-format
-msgid "The system will hibernate automatically in %d second."
-msgid_plural "The system will hibernate automatically in %d seconds."
-msgstr[0] "Систем ће се замрзнути за %d секунду."
-msgstr[1] "Систем ће се замрзнути за %d секунде."
-msgstr[2] "Систем ће се замрзнути за %d секунди."
-msgstr[3] "Систем ће се замрзнути за једну секунду."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:444
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:609
-msgid "Suspend"
-msgstr "Примири"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:445
-#, c-format
-msgid "The system will suspend automatically in %d second."
-msgid_plural "The system will suspend automatically in %d seconds."
-msgstr[0] "Рачунар ће се примирити за %d секунду."
-msgstr[1] "Рачунар ће се примирити за %d секунде."
-msgstr[2] "Рачунар ће се примирити за %d секунди."
-msgstr[3] "Рачунар ће се примирити за једну секунду."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:450
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:612
-msgid "Hybrid Sleep"
-msgstr "Успавај"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.c:451
-#, c-format
-msgid "The system will hybrid sleep automatically in %d second."
-msgid_plural "The system will hybrid sleep automatically in %d seconds."
-msgstr[0] "Систем ће се успавати за %d секунду."
-msgstr[1] "Систем ће се успавати за %d секунде."
-msgstr[2] "Систем ће се успавати за %d секунди."
-msgstr[3] "Систем ће се успавати за једну секунду."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:1
-msgid "Some programs are still running:"
-msgstr "Неки програми су још увек покренути:"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:2
-msgid ""
-"Waiting for these applications to finish. Interrupting them can lead to loss "
-"of data."
-msgstr ""
-"Чекам на њих да заврше. Њихово прекидање може довести до губитка података."
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:3
-msgid "Cancel"
-msgstr "Откажи"
-
-#: ../gnome-flashback/libend-session-dialog/flashback-inhibit-dialog.ui.h:4
-msgid "Lock Screen"
-msgstr "Закључај екран"
-
-#: ../gnome-flashback/libautomount-manager/gsd-automount-manager.c:180
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:177
 #, c-format
 msgid "Unable to mount %s"
 msgstr "Не могу да прикачим „%s“"
 
-#: ../gnome-flashback/libautomount-manager/gsd-automount-manager.c:293
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:290
 #, c-format
 msgid "Unable to open a folder for %s"
 msgstr "Не могу да отворим фасциклу за „%s“"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:339
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:339
 msgid "Ask what to do"
 msgstr "Питај шта да радиш"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:345
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:345
 msgid "Do Nothing"
 msgstr "Не ради ништа"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:351
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:351
 msgid "Open Folder"
 msgstr "Отворите фасциклу"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:496
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:496
 #, c-format
 msgid "Unable to eject %p"
 msgstr "Не могу да избацим „%p“"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:498
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
 #, c-format
 msgid "Unable to unmount %p"
 msgstr "Не могу да откачим „%p“"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:705
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:707
 msgid "You have just inserted an Audio CD."
 msgstr "Управо сте убацили звучни ЦД."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:707
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
 msgid "You have just inserted an Audio DVD."
 msgstr "Управо сте убацили звучни ДВД."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:709
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
 msgid "You have just inserted a Video DVD."
 msgstr "Управо сте убацили видео ДВД."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:711
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
 msgid "You have just inserted a Video CD."
 msgstr "Управо сте убацили видео ЦД."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:713
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
 msgid "You have just inserted a Super Video CD."
 msgstr "Управо сте убацили супер видео ЦД."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:715
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
 msgid "You have just inserted a blank CD."
 msgstr "Управо сте убацили празан ЦД."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:717
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
 msgid "You have just inserted a blank DVD."
 msgstr "Управо сте убацили празан ДВД."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:719
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
 msgid "You have just inserted a blank Blu-Ray disc."
 msgstr "Управо сте убацили празан плаво-зрачни диск."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:721
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
 msgid "You have just inserted a blank HD DVD."
 msgstr "Управо сте убацили празан ДВД високе резолуције."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:723
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
 msgid "You have just inserted a Photo CD."
 msgstr "Управо сте убацили ЦД са фотографијама."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:725
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
 msgid "You have just inserted a Picture CD."
 msgstr "Управо сте убацили ЦД са сликама."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:727
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
 msgid "You have just inserted a medium with digital photos."
 msgstr "Управо сте убацили носач са дигиталним фотографијама."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:729
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
 msgid "You have just inserted a digital audio player."
 msgstr "Управо сте убацили дигитални пуштач звука."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:731
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
 msgid ""
 "You have just inserted a medium with software intended to be automatically "
 "started."
 msgstr "Управо сте убацили носач са самопокретачким програмима."
 
 #. fallback to generic greeting
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:734
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:736
 msgid "You have just inserted a medium."
 msgstr "Управо сте убацили носач."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:736
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
 msgid "Choose what application to launch."
 msgstr "Изаберите програм за покретање."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:745
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:747
 #, c-format
 msgid ""
 "Select how to open \"%s\" and whether to perform this action in the future "
@@ -384,79 +499,389 @@ msgstr ""
 "Изаберите како ће се отворити „%s“ и да ли ће се та радња извршавати убудуће "
 "и за друге носаче врсте „%s“."
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:772
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:774
 msgid "_Always perform this action"
 msgstr "_Увек изврши ову радњу"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:781
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:783
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
 msgid "_Cancel"
 msgstr "_Откажи"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:782
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:784
 msgid "_OK"
 msgstr "У _реду"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:788
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:790
 msgid "_Eject"
 msgstr "_Избаци"
 
-#: ../gnome-flashback/libautomount-manager/gsd-autorun.c:793
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:795
 msgid "_Unmount"
 msgstr "_Откачи"
 
-#: ../gnome-flashback/libsound-applet/gvc-applet.c:267
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
+msgid "Turn Off"
+msgstr "Искључи"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:164
+msgid "Send Files"
+msgstr "Пошаљи датотеке"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
+msgid "Turn On"
+msgstr "Укључи"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
+msgid "Bluetooth Settings"
+msgstr "Подешавања Блутута"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:271
+msgid "Bluetooth active"
+msgstr "Блутут је покренут"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:276
+msgid "Bluetooth disabled"
+msgstr "Блутут је искључен"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:282
+#, c-format
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "%d повезани уређај"
+msgstr[1] "%d повезана уређаја"
+msgstr[2] "%d повезаних уређаја"
+msgstr[3] "Један повезани уређај"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
+msgid "Not Connected"
+msgstr "Није повезано"
+
+#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:8
+msgid "Confirm"
+msgstr "Потврди"
+
+#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:53
+msgid "Do you want to keep these display settings?"
+msgstr "Да ли желите да задржите ова подешавања екрана?"
+
+#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:96
+msgid "_Keep Changes"
+msgstr "_Задржи измене"
+
+#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:116
+msgid "_Revert Settings"
+msgstr "_Врати подешавања"
+
+#: gnome-flashback/libdisplay-config/flashback-display-config.c:195
+msgid "Built-in display"
+msgstr "Уграђени екран"
+
+#: gnome-flashback/libdisplay-config/flashback-display-config.c:218
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:383
+msgid "Unknown"
+msgstr "Непознато"
+
+#: gnome-flashback/libdisplay-config/flashback-display-config.c:220
+#| msgid "Unknown"
+msgid "Unknown Display"
+msgstr "Непознати екран"
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: gnome-flashback/libdisplay-config/flashback-display-config.c:228
+#, c-format
+msgid "%s %s"
+msgstr "%s %s"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:464
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:689
+msgid "Log Out"
+msgstr "Одјави"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Притисните на „Одјави“ да напустите ове програме и да се одјавите са система."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:469
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s ће бити одјављен за %d секунду."
+msgstr[1] "%s ће бити одјављен за %d секунде."
+msgstr[2] "%s ће бити одјављен за %d секунди."
+msgstr[3] "%s ће бити одјављен за једну секунду."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:476
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:693
+msgid "Power Off"
+msgstr "Искључи"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
+"Притисните на „Искључи“ да напустите ове програме и да искључите рачунар."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:481
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Рачунар ће се искључити за %d секунду."
+msgstr[1] "Рачунар ће се искључити за %d секунде."
+msgstr[2] "Рачунар ће се искључити за %d секунди."
+msgstr[3] "Рачунар ће се искључити за једну секунду."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:488
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:697
+msgid "Restart"
+msgstr "Поново покрени"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Притисните на „Поново покрени“ да напустите ове програме и да поново "
+"покренете систем."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:493
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Систем ће се поново покренути за %d секунду."
+msgstr[1] "Систем ће се поново покренути за %d секунде."
+msgstr[2] "Систем ће се поново покренути за %d секунди."
+msgstr[3] "Систем ће се поново покренути за једну секунду."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:500
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:701
+msgid "Hibernate"
+msgstr "Замрзни"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:501
+#, c-format
+msgid "The system will hibernate automatically in %d second."
+msgid_plural "The system will hibernate automatically in %d seconds."
+msgstr[0] "Систем ће се замрзнути за %d секунду."
+msgstr[1] "Систем ће се замрзнути за %d секунде."
+msgstr[2] "Систем ће се замрзнути за %d секунди."
+msgstr[3] "Систем ће се замрзнути за једну секунду."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:508
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:705
+msgid "Suspend"
+msgstr "Примири"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:509
+#, c-format
+msgid "The system will suspend automatically in %d second."
+msgid_plural "The system will suspend automatically in %d seconds."
+msgstr[0] "Рачунар ће се примирити за %d секунду."
+msgstr[1] "Рачунар ће се примирити за %d секунде."
+msgstr[2] "Рачунар ће се примирити за %d секунди."
+msgstr[3] "Рачунар ће се примирити за једну секунду."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:516
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:709
+msgid "Hybrid Sleep"
+msgstr "Успавај"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
+#, c-format
+msgid "The system will hybrid sleep automatically in %d second."
+msgid_plural "The system will hybrid sleep automatically in %d seconds."
+msgstr[0] "Систем ће се успавати за %d секунду."
+msgstr[1] "Систем ће се успавати за %d секунде."
+msgstr[2] "Систем ће се успавати за %d секунди."
+msgstr[3] "Систем ће се успавати за једну секунду."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:29
+msgid "Some programs are still running:"
+msgstr "Неки програми су још увек покренути:"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:78
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr ""
+"Чекам на њих да заврше. Њихово прекидање може довести до губитка података."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
+msgid "Cancel"
+msgstr "Откажи"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
+msgid "Lock Screen"
+msgstr "Закључај екран"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:358
+msgid "Show Keyboard Layout"
+msgstr "Прикажи распоред тастатуре"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:421
+msgid "Keyboard"
+msgstr "Тастатура"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:93
+#, c-format
+msgid "_Password for %s:"
+msgstr "_Лозинка за %s:"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:97
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
+msgid "_Password:"
+msgstr "_Лозинка:"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:252
+msgid "Your authentication attempt was unsuccessful. Please try again."
+msgstr "Ваш покушај потврђивања идентитета није успео. Покушајте поново."
+
+#: gnome-flashback/libpolkit/flashback-listener.c:139
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Корисник је одбацио прозорче потврђивања идентитета"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:202
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as one of the users below is required to perform this action."
+msgstr ""
+"Један програм покушава да обави радњу која захтева овлашћења. За обављање "
+"ове радње потребно је потврђивање идентитета као један од наведених "
+"корисника."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication is required to perform this action."
+msgstr ""
+"Један програм покушава да обави радњу која захтева овлашћења. За обављање "
+"ове радње потребно је потврђивање идентитета."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:217
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as the super user is required to perform this action."
+msgstr ""
+"Један програм покушава да обави радњу која захтева овлашћења. За обављање "
+"ове радње потребно је потврђивање идентитета као администратор."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:383
+msgid "Select user..."
+msgstr "Изабери корисника..."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:422
+#, c-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:593
+msgid "Action:"
+msgstr "Радња:"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:596
+#, c-format
+msgid "Click to edit %s"
+msgstr "Притисните да уредите „%s“"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:604
+msgid "Vendor:"
+msgstr "Продавац:"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:607
+#, c-format
+msgid "Click to open %s"
+msgstr "Притисните да отворите „%s“"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:8
+msgid "Authenticate"
+msgstr "Потврди идентитет"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:53
+msgid "<big><b>Title</b></big>"
+msgstr "<big><b>Наслов</b></big>"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:192
+msgid "<small><b>_Details</b></small>"
+msgstr "<small><b>_Појединости</b></small>"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:228
+msgid "_Authenticate"
+msgstr "_Потврди идентитет"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:135
+msgid "Power Settings"
+msgstr "Подешавања напајања"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:182
+msgid "Fully Charged"
+msgstr "Потпуно напуњена"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:184
+msgid "Empty"
+msgstr "Празна"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:190
+#: gnome-flashback/libpower-applet/gf-power-applet.c:195
+msgid "Estimating..."
+msgstr "Процењујем..."
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: gnome-flashback/libpower-applet/gf-power-applet.c:204
+#, c-format
+msgid "%.0f:%02.0f Remaining (%.0f%%)"
+msgstr "%.0f:%02.0f Преостало је (%.0f%%)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: gnome-flashback/libpower-applet/gf-power-applet.c:211
+#, c-format
+msgid "%.0f:%02.0f Until Full (%.0f%%)"
+msgstr "%.0f:%02.0f Док се не напуни (%.0f%%)"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:226
+msgid "UPS"
+msgstr "Резервно напајање"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:228
+msgid "Battery"
+msgstr "Батерија"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:283
 msgid "Output"
 msgstr "Излаз"
 
-#: ../gnome-flashback/libsound-applet/gvc-applet.c:269
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:286
 msgid "Sound Output Volume"
 msgstr "Јачина излазног звука"
 
-#: ../gnome-flashback/libsound-applet/gvc-applet.c:273
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:293
 msgid "Input"
 msgstr "Улаз"
 
-#: ../gnome-flashback/libsound-applet/gvc-applet.c:275
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:296
 msgid "Microphone Volume"
 msgstr "Јачина звука микрофона"
 
-#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:578
-#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:587
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:537
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:546
 msgctxt "volume"
 msgid "100%"
 msgstr "100%"
 
-#: ../gnome-flashback/libsound-applet/gvc-channel-bar.c:582
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:541
 msgctxt "volume"
 msgid "Unamplified"
 msgstr "Без појачања"
 
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:292
-#, c-format
-msgid "Failed to start Sound Preferences: %s"
-msgstr "Нисам успео да покренем поставке звука: %s"
-
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:317
-msgid "_Mute"
-msgstr "_Утишај"
-
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:326
-msgid "_Sound Preferences"
-msgstr "Поставке _звука"
-
-#: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:450
-msgid "Muted"
-msgstr "Утишан"
-
 #. translators:
 #. * The device has been disabled
-#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1830
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1828
 msgid "Disabled"
 msgstr "Искључен"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1837
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1835
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -467,7 +892,7 @@ msgstr[3] "један излаз"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1847
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1845
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -476,6 +901,26 @@ msgstr[1] "%u улаза"
 msgstr[2] "%u улаза"
 msgstr[3] "један улаз"
 
-#: ../gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2373
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2371
 msgid "System Sounds"
 msgstr "Системски звуци"
+
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "Нисам успео да покренем поставке звука: %s"
+
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:280
+msgid "_Mute"
+msgstr "_Утишај"
+
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:289
+msgid "_Sound Preferences"
+msgstr "Поставке _звука"
+
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
+msgid "Muted"
+msgstr "Утишан"
+
+#~ msgid "Key grabber"
+#~ msgstr "Хватач тастера"
