@@ -25,6 +25,13 @@ libsound_applet_la_SOURCES = \
 	gvc-stream-status-icon.h \
 	$(NULL)
 
+if WITH_LIBSTATUS_NOTIFIER
+libsound_applet_la_SOURCES += \
+	gf-sound-item.c \
+	gf-sound-item.h \
+	$(NULL)
+endif
+
 libsound_applet_la_LDFLAGS = \
 	$(WARN_LDFLAGS) \
 	$(AM_LDFLAGS) \

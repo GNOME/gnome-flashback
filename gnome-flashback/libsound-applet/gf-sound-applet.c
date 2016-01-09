@@ -34,6 +34,10 @@
 #include "gvc-mixer-control.h"
 #include "gvc-stream-status-icon.h"
 
+#ifdef WITH_LIBSTATUS_NOTIFIER
+#include "gf-sound-item.h"
+#endif
+
 static const gchar *output_icons[] =
 {
   "audio-volume-muted",
@@ -59,6 +63,11 @@ struct _GfSoundApplet
   GvcStreamStatusIcon *input_status_icon;
   GvcStreamStatusIcon *output_status_icon;
   GvcMixerControl     *control;
+
+#ifdef WITH_LIBSTATUS_NOTIFIER
+  GfSoundItem         *output_item;
+  GfSoundItem         *input_item;
+#endif
 };
 
 G_DEFINE_TYPE (GfSoundApplet, gf_sound_applet, G_TYPE_OBJECT)
@@ -80,6 +89,13 @@ maybe_show_status_icons (GfSoundApplet *applet)
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gtk_status_icon_set_visible (GTK_STATUS_ICON (applet->output_status_icon), show);
   G_GNUC_END_IGNORE_DEPRECATIONS
+
+#ifdef WITH_LIBSTATUS_NOTIFIER
+  if (show)
+    sn_item_register (SN_ITEM (applet->output_item));
+  else
+    sn_item_unregister (SN_ITEM (applet->output_item));
+#endif
 
   show = FALSE;
   stream = gvc_mixer_control_get_default_source (applet->control);
@@ -114,6 +130,13 @@ maybe_show_status_icons (GfSoundApplet *applet)
   gtk_status_icon_set_visible (GTK_STATUS_ICON (applet->input_status_icon), show);
   G_GNUC_END_IGNORE_DEPRECATIONS
 
+#ifdef WITH_LIBSTATUS_NOTIFIER
+  if (show)
+    sn_item_register (SN_ITEM (applet->input_item));
+  else
+    sn_item_unregister (SN_ITEM (applet->input_item));
+#endif
+
   g_slist_free (source_outputs);
 }
 
@@ -127,6 +150,9 @@ update_default_sink (GfSoundApplet *applet)
   if (stream != NULL)
     {
       gvc_stream_status_icon_set_mixer_stream (applet->output_status_icon, stream);
+#ifdef WITH_LIBSTATUS_NOTIFIER
+      gf_sound_item_set_mixer_stream (applet->output_item, stream);
+#endif
       maybe_show_status_icons (applet);
     }
   else
@@ -145,6 +171,9 @@ update_default_source (GfSoundApplet *applet)
   if (stream != NULL)
     {
       gvc_stream_status_icon_set_mixer_stream (applet->input_status_icon, stream);
+#ifdef WITH_LIBSTATUS_NOTIFIER
+      gf_sound_item_set_mixer_stream (applet->input_item, stream);
+#endif
       maybe_show_status_icons (applet);
     }
   else
@@ -259,6 +288,11 @@ gf_sound_applet_dispose (GObject *object)
   g_clear_object (&applet->input_status_icon);
   g_clear_object (&applet->control);
 
+#ifdef WITH_LIBSTATUS_NOTIFIER
+  g_clear_object (&applet->output_item);
+  g_clear_object (&applet->input_item);
+#endif
+
   G_OBJECT_CLASS (gf_sound_applet_parent_class)->dispose (object);
 }
 
@@ -277,6 +311,9 @@ static void
 gf_sound_applet_init (GfSoundApplet *applet)
 {
   GvcStreamStatusIcon *icon;
+#ifdef WITH_LIBSTATUS_NOTIFIER
+  SnItemCategory category;
+#endif
 
   /* Output icon */
   icon = gvc_stream_status_icon_new (NULL, output_icons);
@@ -297,6 +334,22 @@ gf_sound_applet_init (GfSoundApplet *applet)
   G_GNUC_END_IGNORE_DEPRECATIONS
 
   applet->input_status_icon = icon;
+
+#ifdef WITH_LIBSTATUS_NOTIFIER
+  category = SN_ITEM_CATEGORY_HARDWARE;
+
+  applet->output_item = gf_sound_item_new (category,
+                                           "gf-sound-output",
+                                           _("Sound Output Volume"),
+                                           _("Output"),
+                                           output_icons);
+
+  applet->input_item = gf_sound_item_new (category,
+                                          "gf-sound-input",
+                                          _("Microphone Volume"),
+                                          _("Input"),
+                                          input_icons);
+#endif
 }
 
 GfSoundApplet *

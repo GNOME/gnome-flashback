@@ -82,6 +82,26 @@ dnl **************************************************************************
 GLIB_GSETTINGS
 
 dnl **************************************************************************
+dnl Build with libstatus-notifier (experimental)
+dnl **************************************************************************
+
+AC_ARG_WITH([libstatus-notifier],
+            [AS_HELP_STRING([--with-libstatus-notifier],
+                           [Build with libstatus-notifier (experimental)])],
+            [with_libstatus_notifier="$withval"],
+            [with_libstatus_notifier=no])
+
+LIBSTATUS_NOTIFIER_PKG=""
+AS_IF([test "x$with_libstatus_notifier" = "xyes"], [
+  LIBSTATUS_NOTIFIER_PKG="libstatus-notifier-3.0"
+  AC_DEFINE([WITH_LIBSTATUS_NOTIFIER], [1],
+            [Define to 1 if libstatus-notifier is available])
+])
+
+AM_CONDITIONAL([WITH_LIBSTATUS_NOTIFIER],
+               [test "x$with_libstatus_notifier" = "xyes"])
+
+dnl **************************************************************************
 dnl Check for required packages
 dnl **************************************************************************
 
@@ -188,6 +208,15 @@ PKG_CHECK_MODULES([SOUND_APPLET], [
   gtk+-3.0 >= $GTK_REQUIRED
   libcanberra-gtk3 >= $CANBERRA_REQUIRED
   glib-2.0 >= $GLIB_REQUIRED
+  $LIBSTATUS_NOTIFIER_PKG
+])
+
+AS_IF([test "x$with_libstatus_notifier" = "xyes"], [
+  PKG_CHECK_MODULES([WATCHER], [
+    glib-2.0 >= $GLIB_REQUIRED
+    gtk+-3.0 >= $GTK_REQUIRED
+    $LIBSTATUS_NOTIFIER_PKG
+  ])
 ])
 
 PKG_CHECK_MODULES([WORKAROUNDS], [
@@ -195,25 +224,6 @@ PKG_CHECK_MODULES([WORKAROUNDS], [
   gtk+-3.0 >= $GTK_REQUIRED
   x11
 ])
-
-dnl **************************************************************************
-dnl Build with libstatus-notifier (experimental)
-dnl **************************************************************************
-
-AC_ARG_WITH([libstatus-notifier],
-            [AS_HELP_STRING([--with-libstatus-notifier],
-                           [Build with libstatus-notifier (experimental)])],
-            [with_libstatus_notifier="$withval"],
-            [with_libstatus_notifier=no])
-
-AS_IF([test "x$with_libstatus_notifier" = "xyes"], [
-  PKG_CHECK_MODULES([WATCHER], [libstatus-notifier-3.0])
-  AC_DEFINE([WITH_LIBSTATUS_NOTIFIER], [1],
-            [Define to 1 if libstatus-notifier is available])
-])
-
-AM_CONDITIONAL([WITH_LIBSTATUS_NOTIFIER],
-               [test "x$with_libstatus_notifier" = "xyes"])
 
 dnl **************************************************************************
 dnl Define XKB base directory
