@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-12 08:16+0100\n"
-"PO-Revision-Date: 2016-01-12 08:20+0100\n"
+"PO-Revision-Date: 2016-01-12 08:23+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmal\n"
 "Language: nb\n"
@@ -505,11 +505,11 @@ msgstr[1] ""
 
 #: ../gnome-flashback/libinput-sources/gf-input-sources.c:358
 msgid "Show Keyboard Layout"
-msgstr ""
+msgstr "Vis tastaturutforming"
 
 #: ../gnome-flashback/libinput-sources/gf-input-sources.c:421
 msgid "Keyboard"
-msgstr ""
+msgstr "Tastatur"
 
 #: ../gnome-flashback/libpolkit/flashback-authenticator.c:93
 #, c-format
@@ -566,7 +566,7 @@ msgstr "Klikk for å redigere %s"
 
 #: ../gnome-flashback/libpolkit/flashback-polkit-dialog.c:604
 msgid "Vendor:"
-msgstr ""
+msgstr "Leverandør:"
 
 #: ../gnome-flashback/libpolkit/flashback-polkit-dialog.c:607
 #, c-format
@@ -579,11 +579,11 @@ msgstr "Innstillinger for strømstyring"
 
 #: ../gnome-flashback/libpower-applet/gf-power-applet.c:182
 msgid "Fully Charged"
-msgstr ""
+msgstr "Fullt ladet"
 
 #: ../gnome-flashback/libpower-applet/gf-power-applet.c:184
 msgid "Empty"
-msgstr ""
+msgstr "Tomt"
 
 #: ../gnome-flashback/libpower-applet/gf-power-applet.c:190
 #: ../gnome-flashback/libpower-applet/gf-power-applet.c:195
@@ -604,7 +604,7 @@ msgstr ""
 
 #: ../gnome-flashback/libpower-applet/gf-power-applet.c:226
 msgid "UPS"
-msgstr ""
+msgstr "UPS"
 
 #: ../gnome-flashback/libpower-applet/gf-power-applet.c:228
 msgid "Battery"
@@ -613,33 +613,33 @@ msgstr "Batteri"
 #: ../gnome-flashback/libsound-applet/gf-sound-applet.c:320
 #: ../gnome-flashback/libsound-applet/gf-sound-applet.c:344
 msgid "Output"
-msgstr ""
+msgstr "Utgang"
 
 #: ../gnome-flashback/libsound-applet/gf-sound-applet.c:323
 #: ../gnome-flashback/libsound-applet/gf-sound-applet.c:343
 msgid "Sound Output Volume"
-msgstr ""
+msgstr "Utgangsvolum for lyd"
 
 #: ../gnome-flashback/libsound-applet/gf-sound-applet.c:330
 #: ../gnome-flashback/libsound-applet/gf-sound-applet.c:350
 msgid "Input"
-msgstr ""
+msgstr "Inngang"
 
 #: ../gnome-flashback/libsound-applet/gf-sound-applet.c:333
 #: ../gnome-flashback/libsound-applet/gf-sound-applet.c:349
 msgid "Microphone Volume"
-msgstr ""
+msgstr "Volum for mikrofon"
 
 #: ../gnome-flashback/libsound-applet/gf-sound-item.c:161
 #: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
 msgid "Muted"
-msgstr ""
+msgstr "Dempet"
 
 #: ../gnome-flashback/libsound-applet/gf-sound-item.c:395
 #: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
-msgstr ""
+msgstr "Klarte ikke å starte brukervalg for lyd: %s"
 
 #: ../gnome-flashback/libsound-applet/gf-sound-item.c:452
 #: ../gnome-flashback/libsound-applet/gvc-stream-status-icon.c:280
