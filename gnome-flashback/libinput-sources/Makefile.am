@@ -17,6 +17,8 @@ libinput_sources_la_CFLAGS = \
 libinput_sources_la_SOURCES = \
 	gf-candidate-box.c \
 	gf-candidate-box.h \
+	gf-candidate-area.c \
+	gf-candidate-area.h \
 	gf-candidate-popup.c \
 	gf-candidate-popup.h \
 	gf-ibus-manager.c \
