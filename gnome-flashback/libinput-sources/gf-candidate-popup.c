@@ -17,6 +17,7 @@
 
 #include "config.h"
 
+#include "gf-candidate-area.h"
 #include "gf-candidate-popup.h"
 
 struct _GfCandidatePopup
@@ -24,6 +25,10 @@ struct _GfCandidatePopup
   GfPopupWindow     parent;
 
   IBusPanelService *service;
+
+  GtkWidget        *pre_edit_text;
+  GtkWidget        *aux_text;
+  GtkWidget        *candidate_area;
 };
 
 G_DEFINE_TYPE (GfCandidatePopup, gf_candidate_popup, GF_TYPE_POPUP_WINDOW)
@@ -107,6 +112,35 @@ focus_out_cb (IBusPanelService *service,
 }
 
 static void
+previous_page_cb (GfCandidateArea  *area,
+                  GfCandidatePopup *popup)
+{
+  ibus_panel_service_page_up (popup->service);
+}
+
+static void
+next_page_cb (GfCandidateArea  *area,
+              GfCandidatePopup *popup)
+{
+  ibus_panel_service_page_down (popup->service);
+}
+
+static void
+candidate_clicked_cb (GfCandidateArea  *area,
+                      guint             index,
+                      GdkEvent         *event,
+                      GfCandidatePopup *popup)
+{
+  guint button;
+  GdkModifierType state;
+
+  gdk_event_get_button (event, &button);
+  gdk_event_get_state (event, &state);
+
+  ibus_panel_service_candidate_clicked (popup->service, index, button, state);
+}
+
+static void
 gf_candidate_popup_dispose (GObject *object)
 {
   GfCandidatePopup *popup;
@@ -132,11 +166,33 @@ static void
 gf_candidate_popup_init (GfCandidatePopup *popup)
 {
   GtkWindow *window;
+  GtkWidget *layout;
 
   window = GTK_WINDOW (popup);
 
   gtk_window_set_focus_on_map (window, TRUE);
   gtk_window_set_type_hint (window, GDK_WINDOW_TYPE_HINT_NORMAL);
+
+  layout = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_container_add (GTK_CONTAINER (popup), layout);
+  gtk_widget_show (layout);
+
+  popup->pre_edit_text = gtk_label_new (NULL);
+  gtk_container_add (GTK_CONTAINER (layout), popup->pre_edit_text);
+
+  popup->aux_text = gtk_label_new (NULL);
+  gtk_container_add (GTK_CONTAINER (layout), popup->aux_text);
+
+  popup->candidate_area = gf_candidate_area_new();
+  gtk_container_add (GTK_CONTAINER (layout), popup->candidate_area);
+  gtk_widget_show (popup->candidate_area);
+
+  g_signal_connect (popup->candidate_area, "previous-page",
+                    G_CALLBACK (previous_page_cb), popup);
+  g_signal_connect (popup->candidate_area, "next-page",
+                    G_CALLBACK (next_page_cb), popup);
+  g_signal_connect (popup->candidate_area, "candidate-clicked",
+                    G_CALLBACK (candidate_clicked_cb), popup);
 }
 
 GfCandidatePopup *
