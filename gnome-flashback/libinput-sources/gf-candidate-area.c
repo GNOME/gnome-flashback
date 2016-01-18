@@ -149,9 +149,11 @@ gf_candidate_area_init (GfCandidateArea *area)
                         G_CALLBACK (button_clicked_cb), area);
     }
 
-  area->button_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  area->button_box = gtk_button_box_new (0);
   gtk_container_add (GTK_CONTAINER (area), area->button_box);
   gtk_widget_show (area->button_box);
+
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (area->button_box), GTK_BUTTONBOX_EXPAND);
 
   size = GTK_ICON_SIZE_BUTTON;
 
