@@ -64,6 +64,24 @@ gf_candidate_box_set_property (GObject      *object,
     }
 }
 
+static gboolean
+gf_candidate_box_enter_notify_event (GtkWidget        *widget,
+                                     GdkEventCrossing *event)
+{
+  gtk_widget_set_state_flags (widget, GTK_STATE_FLAG_PRELIGHT, TRUE);
+
+  return GDK_EVENT_PROPAGATE;
+}
+
+static gboolean
+gf_candidate_box_leave_notify_event (GtkWidget        *widget,
+                                     GdkEventCrossing *event)
+{
+  gtk_widget_set_state_flags (widget, GTK_STATE_FLAG_NORMAL, TRUE);
+
+  return GDK_EVENT_PROPAGATE;
+}
+
 static void
 gf_candidate_box_class_init (GfCandidateBoxClass *box_class)
 {
@@ -72,6 +90,9 @@ gf_candidate_box_class_init (GfCandidateBoxClass *box_class)
   object_class = G_OBJECT_CLASS (box_class);
 
   object_class->set_property = gf_candidate_box_set_property;
+
+  widget_class->enter_notify_event = gf_candidate_box_enter_notify_event;
+  widget_class->leave_notify_event = gf_candidate_box_leave_notify_event;
 
   properties[PROP_INDEX] =
     g_param_spec_uint ("index", "index", "index", 0, G_MAXUINT, 0,
