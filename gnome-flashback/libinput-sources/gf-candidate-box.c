@@ -23,10 +23,12 @@ struct _GfCandidateBox
 {
   GtkEventBox  parent;
 
+  guint        index;
+
   GtkWidget   *index_label;
   GtkWidget   *candidate_label;
 
-  guint        index;
+  gboolean     selected;
 };
 
 enum
@@ -77,7 +79,16 @@ static gboolean
 gf_candidate_box_leave_notify_event (GtkWidget        *widget,
                                      GdkEventCrossing *event)
 {
-  gtk_widget_set_state_flags (widget, GTK_STATE_FLAG_NORMAL, TRUE);
+  GfCandidateBox *box;
+  GtkStateFlags flags;
+
+  box = GF_CANDIDATE_BOX (widget);
+  flags = GTK_STATE_FLAG_NORMAL;
+
+  if (box->selected)
+    flags |= GTK_STATE_FLAG_SELECTED;
+
+  gtk_widget_set_state_flags (widget, flags, TRUE);
 
   return GDK_EVENT_PROPAGATE;
 }
@@ -143,4 +154,20 @@ guint
 gf_candidate_box_get_index (GfCandidateBox *box)
 {
   return box->index;
+}
+
+void
+gf_candidate_box_set_selected (GfCandidateBox *box,
+                               gboolean        selected)
+{
+  GtkStateFlags flags;
+
+  if (box->selected == selected)
+    return;
+
+  box->selected = selected;
+
+  flags = selected ? GTK_STATE_FLAG_SELECTED : GTK_STATE_FLAG_NORMAL;
+
+  gtk_widget_set_state_flags (GTK_WIDGET (box), flags, TRUE);
 }

@@ -263,6 +263,9 @@ gf_candidate_area_set_candidates (GfCandidateArea *area,
 
       gf_candidate_box_set_labels (GF_CANDIDATE_BOX (candidate_box),
                                    index_text, candidate_text);
+
+      gf_candidate_box_set_selected (GF_CANDIDATE_BOX (candidate_box),
+                                     cursor_visible && i == cursor_position);
     }
 }
 
