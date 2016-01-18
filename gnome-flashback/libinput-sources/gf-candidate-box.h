@@ -26,13 +26,16 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (GfCandidateBox, gf_candidate_box,
                       GF, CANDIDATE_BOX, GtkEventBox)
 
-GtkWidget *gf_candidate_box_new        (guint           index);
+GtkWidget *gf_candidate_box_new          (guint           index);
 
-void       gf_candidate_box_set_labels (GfCandidateBox *box,
-                                        const gchar    *index_label,
-                                        const gchar    *candidate_label);
+void       gf_candidate_box_set_labels   (GfCandidateBox *box,
+                                          const gchar    *index_label,
+                                          const gchar    *candidate_label);
 
-guint      gf_candidate_box_get_index  (GfCandidateBox *box);
+guint      gf_candidate_box_get_index    (GfCandidateBox *box);
+
+void       gf_candidate_box_set_selected (GfCandidateBox *box,
+                                          gboolean        selected);
 
 G_END_DECLS
 
