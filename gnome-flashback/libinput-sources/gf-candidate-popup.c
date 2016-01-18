@@ -131,12 +131,20 @@ gf_candidate_popup_class_init (GfCandidatePopupClass *popup_class)
 static void
 gf_candidate_popup_init (GfCandidatePopup *popup)
 {
+  GtkWindow *window;
+
+  window = GTK_WINDOW (popup);
+
+  gtk_window_set_focus_on_map (window, TRUE);
+  gtk_window_set_type_hint (window, GDK_WINDOW_TYPE_HINT_NORMAL);
 }
 
 GfCandidatePopup *
 gf_candidate_popup_new (void)
 {
-  return g_object_new (GF_TYPE_CANDIDATE_POPUP, NULL);
+  return g_object_new (GF_TYPE_CANDIDATE_POPUP,
+                       "type", GTK_WINDOW_POPUP,
+                       NULL);
 }
 
 void
