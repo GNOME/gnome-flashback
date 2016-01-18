@@ -21,12 +21,12 @@
 
 struct _GfCandidatePopup
 {
-  GObject           parent;
+  GfPopupWindow     parent;
 
   IBusPanelService *service;
 };
 
-G_DEFINE_TYPE (GfCandidatePopup, gf_candidate_popup, G_TYPE_OBJECT)
+G_DEFINE_TYPE (GfCandidatePopup, gf_candidate_popup, GF_TYPE_POPUP_WINDOW)
 
 static void
 set_cursor_location_cb (IBusPanelService *service,
