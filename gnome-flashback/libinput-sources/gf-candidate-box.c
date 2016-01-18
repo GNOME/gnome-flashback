@@ -29,6 +29,8 @@ struct _GfCandidateBox
   GtkWidget   *candidate_label;
 
   gboolean     selected;
+
+  gboolean     is_mouse_over;
 };
 
 enum
@@ -70,6 +72,11 @@ static gboolean
 gf_candidate_box_enter_notify_event (GtkWidget        *widget,
                                      GdkEventCrossing *event)
 {
+  GfCandidateBox *box;
+
+  box = GF_CANDIDATE_BOX (widget);
+  box->is_mouse_over = TRUE;
+
   gtk_widget_set_state_flags (widget, GTK_STATE_FLAG_PRELIGHT, TRUE);
 
   return GDK_EVENT_PROPAGATE;
@@ -83,10 +90,11 @@ gf_candidate_box_leave_notify_event (GtkWidget        *widget,
   GtkStateFlags flags;
 
   box = GF_CANDIDATE_BOX (widget);
-  flags = GTK_STATE_FLAG_NORMAL;
+  box->is_mouse_over = FALSE;
 
+  flags = GTK_STATE_FLAG_NORMAL;
   if (box->selected)
-    flags |= GTK_STATE_FLAG_SELECTED;
+    flags = GTK_STATE_FLAG_SELECTED;
 
   gtk_widget_set_state_flags (widget, flags, TRUE);
 
@@ -167,7 +175,12 @@ gf_candidate_box_set_selected (GfCandidateBox *box,
 
   box->selected = selected;
 
-  flags = selected ? GTK_STATE_FLAG_SELECTED : GTK_STATE_FLAG_NORMAL;
+  if (selected)
+    flags = GTK_STATE_FLAG_SELECTED;
+  else if (box->is_mouse_over)
+    flags = GTK_STATE_FLAG_PRELIGHT;
+  else
+    flags = GTK_STATE_FLAG_NORMAL;
 
   gtk_widget_set_state_flags (GTK_WIDGET (box), flags, TRUE);
 }
