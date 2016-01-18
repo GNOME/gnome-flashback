@@ -48,40 +48,78 @@ update_preedit_text_cb (IBusPanelService *service,
                         IBusText         *text,
                         guint             cursor_pos,
                         gboolean          visible,
-                        gpointer          user_data)
+                        GfCandidatePopup *popup)
 {
+  const gchar *preedit_text;
+  IBusAttrList *attributes;
+  IBusAttribute *attribute;
+  guint i;
+
+  gtk_widget_set_visible (popup->pre_edit_text, visible);
+
+  preedit_text = ibus_text_get_text (text);
+  gtk_label_set_text (GTK_LABEL (popup->pre_edit_text), preedit_text);
+
+  attributes = ibus_text_get_attributes (text);
+
+  if (attributes == NULL)
+    return;
+
+  for (i = 0; (attribute = ibus_attr_list_get (attributes, i)) != NULL; i++)
+    {
+      guint start;
+      guint end;
+
+      if (ibus_attribute_get_type (attribute) != IBUS_ATTR_TYPE_BACKGROUND)
+        continue;
+
+      start = ibus_attribute_get_start_index (attribute);
+      end = ibus_attribute_get_end_index (attribute);
+
+      gtk_label_select_region (GTK_LABEL (popup->pre_edit_text), start, end);
+    }
 }
 
 static void
 show_preedit_text_cb (IBusPanelService *service,
-                      gpointer          user_data)
+                      GfCandidatePopup *popup)
 {
+  gtk_widget_show (popup->pre_edit_text);
 }
 
 static void
 hide_preedit_text_cb (IBusPanelService *service,
-                      gpointer          user_data)
+                      GfCandidatePopup *popup)
 {
+  gtk_widget_hide (popup->pre_edit_text);
 }
 
 static void
 update_auxiliary_text_cb (IBusPanelService *service,
                           IBusText         *text,
                           gboolean          visible,
-                          gpointer          user_data)
+                          GfCandidatePopup *popup)
 {
+  const gchar *auxiliary_text;
+
+  gtk_widget_set_visible (popup->aux_text, visible);
+
+  auxiliary_text = ibus_text_get_text (text);
+  gtk_label_set_text (GTK_LABEL (popup->aux_text), auxiliary_text);
 }
 
 static void
 show_auxiliary_text_cb (IBusPanelService *service,
-                        gpointer          user_data)
+                        GfCandidatePopup *popup)
 {
+  gtk_widget_show (popup->aux_text);
 }
 
 static void
 hide_auxiliary_text_cb (IBusPanelService *service,
-                        gpointer          user_data)
+                        GfCandidatePopup *popup)
 {
+  gtk_widget_hide (popup->aux_text);
 }
 
 static void
