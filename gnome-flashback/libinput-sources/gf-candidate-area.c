@@ -38,6 +38,7 @@ struct _GfCandidateArea
   GtkWidget *prev_button;
   GtkWidget *next_button;
 
+  GtkWidget *candidate_box;
   GSList    *candidate_boxes;
 
   gint       orientation;
@@ -130,12 +131,16 @@ gf_candidate_area_init (GfCandidateArea *area)
   GtkIconSize size;
   GtkWidget *image;
 
+  area->candidate_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_container_add (GTK_CONTAINER (area), area->candidate_box);
+  gtk_widget_show (area->candidate_box);
+
   for (i = 0; i < MAX_CANDIDATES_PER_PAGE; i++)
     {
       GtkWidget *box;
 
       box = gf_candidate_box_new (i);
-      gtk_container_add (GTK_CONTAINER (area), box);
+      gtk_container_add (GTK_CONTAINER (area->candidate_box), box);
       gtk_widget_show (box);
 
       area->candidate_boxes = g_slist_append (area->candidate_boxes, box);
@@ -178,6 +183,7 @@ gf_candidate_area_new (void)
 {
   return g_object_new (GF_TYPE_CANDIDATE_AREA,
                        "orientation", GTK_ORIENTATION_HORIZONTAL,
+                       "spacing", 6,
                        NULL);
 }
 
@@ -199,6 +205,9 @@ gf_candidate_area_set_orientation (GfCandidateArea *area,
       gtk_orientable_set_orientation (GTK_ORIENTABLE (area),
                                       GTK_ORIENTATION_HORIZONTAL);
 
+      gtk_orientable_set_orientation (GTK_ORIENTABLE (area->candidate_box),
+                                      GTK_ORIENTATION_HORIZONTAL);
+
       image = gtk_image_new_from_icon_name ("go-previous-symbolic", size);
       gtk_button_set_image (GTK_BUTTON (area->prev_button), image);
 
@@ -208,6 +217,9 @@ gf_candidate_area_set_orientation (GfCandidateArea *area,
   else
     {
       gtk_orientable_set_orientation (GTK_ORIENTABLE (area),
+                                      GTK_ORIENTATION_VERTICAL);
+
+      gtk_orientable_set_orientation (GTK_ORIENTABLE (area->candidate_box),
                                       GTK_ORIENTATION_VERTICAL);
 
       image = gtk_image_new_from_icon_name ("go-up-symbolic", size);
