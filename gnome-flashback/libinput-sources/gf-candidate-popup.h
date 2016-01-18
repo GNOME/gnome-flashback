@@ -18,14 +18,14 @@
 #ifndef GF_CANDIDATE_POPUP_H
 #define GF_CANDIDATE_POPUP_H
 
-#include <glib-object.h>
 #include <ibus-1.0/ibus.h>
+#include <libcommon/gf-popup-window.h>
 
 G_BEGIN_DECLS
 
 #define GF_TYPE_CANDIDATE_POPUP gf_candidate_popup_get_type ()
 G_DECLARE_FINAL_TYPE (GfCandidatePopup, gf_candidate_popup,
-                      GF, CANDIDATE_POPUP, GObject)
+                      GF, CANDIDATE_POPUP, GfPopupWindow)
 
 GfCandidatePopup *gf_candidate_popup_new               (void);
 
