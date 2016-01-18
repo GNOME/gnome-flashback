@@ -17,6 +17,8 @@
 
 #include "config.h"
 
+#include <math.h>
+
 #include "gf-candidate-area.h"
 #include "gf-candidate-popup.h"
 
@@ -29,9 +31,52 @@ struct _GfCandidatePopup
   GtkWidget        *pre_edit_text;
   GtkWidget        *aux_text;
   GtkWidget        *candidate_area;
+
+  GdkRectangle      cursor;
 };
 
 G_DEFINE_TYPE (GfCandidatePopup, gf_candidate_popup, GF_TYPE_POPUP_WINDOW)
+
+static void
+update_size_and_position (GfCandidatePopup *popup)
+{
+  GtkWidget *widget;
+  GtkWindow *window;
+  GtkRequisition size;
+  GdkRectangle *cursor;
+  GdkScreen *screen;
+  gint monitor;
+  GdkRectangle rect;
+  gint width;
+  gint height;
+  gint x;
+  gint y;
+
+  widget = GTK_WIDGET (popup);
+  window = GTK_WINDOW (popup);
+
+  gtk_widget_get_preferred_size (widget, NULL, &size);
+  gtk_window_resize (window, size.width, size.height);
+
+  cursor = &popup->cursor;
+
+  screen = gtk_window_get_screen (window);
+  monitor = gdk_screen_get_monitor_at_point (screen, cursor->x, cursor->y);
+
+  gdk_screen_get_monitor_geometry (screen, monitor, &rect);
+  gtk_window_get_size (window, &width, &height);
+
+  x = cursor->x;
+  if (x + width > rect.width)
+    x = x - ((x + width) - rect.width);
+
+  if (cursor->y + height + cursor->height > rect.height)
+    y = cursor->y - height;
+  else
+    y = cursor->y + cursor->height;
+
+  gtk_window_move (window, x, y);
+}
 
 static void
 set_cursor_location_cb (IBusPanelService *service,
@@ -39,8 +84,14 @@ set_cursor_location_cb (IBusPanelService *service,
                         gint              y,
                         gint              w,
                         gint              h,
-                        gpointer          user_data)
+                        GfCandidatePopup *popup)
 {
+  popup->cursor.x = x;
+  popup->cursor.y = y;
+  popup->cursor.width = w;
+  popup->cursor.height = h;
+
+  update_size_and_position (popup);
 }
 
 static void
@@ -78,6 +129,8 @@ update_preedit_text_cb (IBusPanelService *service,
 
       gtk_label_select_region (GTK_LABEL (popup->pre_edit_text), start, end);
     }
+
+  update_size_and_position (popup);
 }
 
 static void
@@ -106,6 +159,8 @@ update_auxiliary_text_cb (IBusPanelService *service,
 
   auxiliary_text = ibus_text_get_text (text);
   gtk_label_set_text (GTK_LABEL (popup->aux_text), auxiliary_text);
+
+  update_size_and_position (popup);
 }
 
 static void
@@ -126,20 +181,96 @@ static void
 update_lookup_table_cb (IBusPanelService *service,
                         IBusLookupTable  *lookup_table,
                         gboolean          visible,
-                        gpointer          user_data)
+                        GfCandidatePopup *popup)
 {
+  guint n_candidates;
+  guint cursor_position;
+  guint page_size;
+  guint n_pages;
+  guint page;
+  guint start_index;
+  guint end_index;
+  guint i;
+  GSList *indexes;
+  GSList *candidates;
+  GfCandidateArea *area;
+  gint orientation;
+  gboolean is_round;
+
+  gtk_widget_set_visible (GTK_WIDGET (popup), visible);
+
+  n_candidates = ibus_lookup_table_get_number_of_candidates (lookup_table);
+  cursor_position = ibus_lookup_table_get_cursor_pos (lookup_table);
+  page_size = ibus_lookup_table_get_page_size (lookup_table);
+
+  n_pages = (guint) ceil ((gdouble) n_candidates / page_size);
+
+  page = 0;
+  if (cursor_position != 0)
+    page = (guint) floor ((gdouble) cursor_position / page_size);
+
+  start_index = page * page_size;
+  end_index = MIN ((page + 1) * page_size, n_candidates);
+
+  i = 0;
+  indexes = NULL;
+  candidates = NULL;
+
+  while (TRUE)
+    {
+      IBusText *ibus_text;
+      const gchar *text;
+
+      ibus_text = ibus_lookup_table_get_label (lookup_table, i++);
+
+      if (ibus_text == NULL)
+        break;
+
+      text = ibus_text_get_text (ibus_text);
+
+      indexes = g_slist_append (indexes, g_strdup (text));
+    }
+
+  for (i = start_index; i < end_index; i++)
+    {
+      IBusText *ibus_text;
+      const gchar *text;
+
+      ibus_text = ibus_lookup_table_get_candidate (lookup_table, i);
+      text = ibus_text_get_text (ibus_text);
+
+      candidates = g_slist_append (candidates, g_strdup (text));
+    }
+
+  area = GF_CANDIDATE_AREA (popup->candidate_area);
+
+  gf_candidate_area_set_candidates (area, indexes, candidates,
+                                    cursor_position % page_size, visible);
+
+  g_slist_free_full (indexes, g_free);
+  g_slist_free_full (candidates, g_free);
+
+  orientation = ibus_lookup_table_get_orientation (lookup_table);
+  gf_candidate_area_set_orientation (area, orientation);
+
+  is_round = ibus_lookup_table_is_round (lookup_table);
+  gf_candidate_area_update_buttons (area, is_round, page, n_pages);
+
+  update_size_and_position (popup);
 }
 
 static void
 show_lookup_table_cb (IBusPanelService *service,
-                      gpointer          user_data)
+                      GfCandidatePopup *popup)
 {
+  gtk_widget_show (GTK_WIDGET (popup));
 }
 
 static void
 hide_lookup_table_cb (IBusPanelService *service,
-                      gpointer          user_data)
+                      GfCandidatePopup *popup)
 {
+  gtk_widget_hide (GTK_WIDGET (popup));
 }
 
 static void
@@ -217,9 +348,11 @@ gf_candidate_popup_init (GfCandidatePopup *popup)
 
   popup->pre_edit_text = gtk_label_new (NULL);
   gtk_container_add (GTK_CONTAINER (layout), popup->pre_edit_text);
+  gtk_label_set_xalign (GTK_LABEL (popup->pre_edit_text), 0.0);
 
   popup->aux_text = gtk_label_new (NULL);
   gtk_container_add (GTK_CONTAINER (layout), popup->aux_text);
+  gtk_label_set_xalign (GTK_LABEL (popup->aux_text), 0.0);
 
   popup->candidate_area = gf_candidate_area_new();
   gtk_container_add (GTK_CONTAINER (layout), popup->candidate_area);
