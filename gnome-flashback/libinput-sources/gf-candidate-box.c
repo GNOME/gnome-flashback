@@ -68,8 +68,10 @@ static void
 gf_candidate_box_class_init (GfCandidateBoxClass *box_class)
 {
   GObjectClass *object_class;
+  GtkWidgetClass *widget_class;
 
   object_class = G_OBJECT_CLASS (box_class);
+  widget_class = GTK_WIDGET_CLASS (box_class);
 
   object_class->set_property = gf_candidate_box_set_property;
 
@@ -79,6 +81,8 @@ gf_candidate_box_class_init (GfCandidateBoxClass *box_class)
                       G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class, LAST_PROP, properties);
+
+  gtk_widget_class_set_css_name (widget_class, "gf-candidate-box");
 }
 
 static void
