@@ -56,6 +56,7 @@ struct _FlashbackMonitorManagerPrivate
   int                    rr_event_base;
   int                    rr_error_base;
 
+  gboolean               has_randr13;
   gboolean               has_randr15;
 
   MetaDBusDisplayConfig *display_config;
@@ -1285,7 +1286,11 @@ read_current_config (FlashbackMonitorManager *manager)
   manager->screen_width = WidthOfScreen (screen);
   manager->screen_height = HeightOfScreen (screen);
 
-  resources = XRRGetScreenResourcesCurrent (priv->xdisplay, DefaultRootWindow (priv->xdisplay));
+  if (priv->has_randr13)
+    resources = XRRGetScreenResourcesCurrent (priv->xdisplay, DefaultRootWindow (priv->xdisplay));
+  else
+    resources = XRRGetScreenResources (priv->xdisplay, DefaultRootWindow (priv->xdisplay));
+
   if (!resources)
     return;
 
@@ -1579,9 +1584,13 @@ flashback_monitor_manager_init (FlashbackMonitorManager *manager)
                   RRScreenChangeNotifyMask | RRCrtcChangeNotifyMask |
                   RROutputPropertyNotifyMask);
 
+  priv->has_randr13 = FALSE;
   priv->has_randr15 = FALSE;
 
   XRRQueryVersion (priv->xdisplay, &major_version, &minor_version);
+
+  if (major_version > 1 || (major_version == 1 && minor_version >= 3))
+    priv->has_randr13 = TRUE;
 
 #ifdef HAVE_XRANDR15
   if (major_version > 1 || (major_version == 1 && minor_version >= 5))
