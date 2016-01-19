@@ -1,1 +1,12 @@
 @import url("resource:///org/gnome/gnome-flashback/HighContrast.css");
+
+gf-popup-window {
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 10px;
+}
+
+gf-popup-window.solid {
+  border: 1px solid #8d8d8d;
+  border-radius: 0px;
+}

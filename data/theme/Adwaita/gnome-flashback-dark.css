@@ -1,1 +1,12 @@
 @import url("resource:///org/gnome/gnome-flashback/Adwaita.css");
+
+gf-popup-window {
+  background-color: #393f3f;
+  border: 1px solid rgba(28, 31, 31, 0.9);
+  border-radius: 10px;
+}
+
+gf-popup-window.solid {
+  border: 1px solid #1f2222;
+  border-radius: 0px;
+}

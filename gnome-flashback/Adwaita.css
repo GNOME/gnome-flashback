@@ -1,9 +1,3 @@
-GfPopupWindow
-{
-  border-radius: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.23);
-}
-
 GfInputSourcePopup #input-source
 {
    font-size: 22px;
