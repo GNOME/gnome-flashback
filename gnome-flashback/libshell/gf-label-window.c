@@ -81,6 +81,8 @@ gf_label_window_init (GfLabelWindow *window)
 
   g_signal_connect (window, "fade-finished",
                     G_CALLBACK (fade_finished_cb), NULL);
+
+  gtk_widget_set_name (GTK_WIDGET (window), "gf-label-window");
 }
 
 GfLabelWindow *

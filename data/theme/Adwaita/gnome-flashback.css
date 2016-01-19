@@ -10,3 +10,7 @@ gf-popup-window.solid {
   border: 1px solid #a5a5a1;
   border-radius: 0px;
 }
+
+#gf-label-window {
+  font-size: 40px;
+}
