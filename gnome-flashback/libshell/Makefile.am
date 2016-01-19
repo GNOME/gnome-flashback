@@ -17,16 +17,16 @@ libshell_la_CFLAGS = \
 libshell_la_SOURCES = \
 	flashback-dbus-shell.c \
 	flashback-dbus-shell.h \
-	gf-label-window.c \
-	gf-label-window.h \
 	flashback-monitor-labeler.c \
 	flashback-monitor-labeler.h \
 	flashback-osd.c \
 	flashback-osd.h \
-	flashback-osd-window.c \
-	flashback-osd-window.h \
 	flashback-shell.c \
 	flashback-shell.h \
+	gf-label-window.c \
+	gf-label-window.h \
+	gf-osd-window.c \
+	gf-osd-window.h \
 	$(NULL)
 
 libshell_la_LDFLAGS = \

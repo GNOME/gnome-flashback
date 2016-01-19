@@ -18,11 +18,11 @@
 #include <config.h>
 #include <math.h>
 #include <gdk/gdk.h>
-#include "flashback-osd-window.h"
+#include "gf-osd-window.h"
 
 #define HIDE_TIMEOUT 1500
 
-struct _FlashbackOsdWindow
+struct _GfOsdWindow
 {
   GfPopupWindow  parent;
 
@@ -38,20 +38,20 @@ struct _FlashbackOsdWindow
   GtkWidget     *level;
 };
 
-G_DEFINE_TYPE (FlashbackOsdWindow, flashback_osd_window, GF_TYPE_POPUP_WINDOW)
+G_DEFINE_TYPE (GfOsdWindow, gf_osd_window, GF_TYPE_POPUP_WINDOW)
 
 static void
 fade_finished_cb (GfPopupWindow *window)
 {
-  flashback_osd_window_hide (FLASHBACK_OSD_WINDOW (window));
+  gf_osd_window_hide (GF_OSD_WINDOW (window));
 }
 
 static gboolean
 hide_timeout_cb (gpointer user_data)
 {
-  FlashbackOsdWindow *window;
+  GfOsdWindow *window;
 
-  window = FLASHBACK_OSD_WINDOW (user_data);
+  window = GF_OSD_WINDOW (user_data);
 
   gf_popup_window_fade_start (GF_POPUP_WINDOW (window));
 
@@ -61,7 +61,7 @@ hide_timeout_cb (gpointer user_data)
 }
 
 static void
-add_hide_timeout (FlashbackOsdWindow *window)
+add_hide_timeout (GfOsdWindow *window)
 {
   window->hide_timeout_id = g_timeout_add (HIDE_TIMEOUT,
                                            (GSourceFunc) hide_timeout_cb,
@@ -69,7 +69,7 @@ add_hide_timeout (FlashbackOsdWindow *window)
 }
 
 static void
-remove_hide_timeout (FlashbackOsdWindow *window)
+remove_hide_timeout (GfOsdWindow *window)
 {
   if (window->hide_timeout_id > 0)
     {
@@ -81,23 +81,23 @@ remove_hide_timeout (FlashbackOsdWindow *window)
 }
 
 static void
-flashback_osd_window_finalize (GObject *object)
+gf_osd_window_finalize (GObject *object)
 {
-  FlashbackOsdWindow *window;
+  GfOsdWindow *window;
 
-  window = FLASHBACK_OSD_WINDOW (object);
+  window = GF_OSD_WINDOW (object);
 
   remove_hide_timeout (window);
 
-  G_OBJECT_CLASS (flashback_osd_window_parent_class)->finalize (object);
+  G_OBJECT_CLASS (gf_osd_window_parent_class)->finalize (object);
 }
 
 static void
-flashback_osd_window_realize (GtkWidget *widget)
+gf_osd_window_realize (GtkWidget *widget)
 {
   cairo_region_t *region;
 
-  GTK_WIDGET_CLASS (flashback_osd_window_parent_class)->realize (widget);
+  GTK_WIDGET_CLASS (gf_osd_window_parent_class)->realize (widget);
 
   region = cairo_region_create ();
   gtk_widget_input_shape_combine_region (widget, region);
@@ -105,7 +105,7 @@ flashback_osd_window_realize (GtkWidget *widget)
 }
 
 static void
-flashback_osd_window_class_init (FlashbackOsdWindowClass *window_class)
+gf_osd_window_class_init (GfOsdWindowClass *window_class)
 {
   GObjectClass *object_class;
   GtkWidgetClass *widget_class;
@@ -113,13 +113,13 @@ flashback_osd_window_class_init (FlashbackOsdWindowClass *window_class)
   object_class = G_OBJECT_CLASS (window_class);
   widget_class = GTK_WIDGET_CLASS (window_class);
 
-  object_class->finalize = flashback_osd_window_finalize;
+  object_class->finalize = gf_osd_window_finalize;
 
-  widget_class->realize = flashback_osd_window_realize;
+  widget_class->realize = gf_osd_window_realize;
 }
 
 static void
-flashback_osd_window_init (FlashbackOsdWindow *window)
+gf_osd_window_init (GfOsdWindow *window)
 {
   GtkWidget *box;
 
@@ -145,17 +145,17 @@ flashback_osd_window_init (FlashbackOsdWindow *window)
                     G_CALLBACK (fade_finished_cb), NULL);
 }
 
-FlashbackOsdWindow *
-flashback_osd_window_new (gint monitor)
+GfOsdWindow *
+gf_osd_window_new (gint monitor)
 {
-  FlashbackOsdWindow *window;
+  GfOsdWindow *window;
   GdkScreen *screen;
   gint width;
   gint height;
   gint size;
 
   screen = gdk_screen_get_default ();
-  window = g_object_new (FLASHBACK_TYPE_OSD_WINDOW,
+  window = g_object_new (GF_TYPE_OSD_WINDOW,
                          "type", GTK_WINDOW_POPUP,
                          NULL);
 
@@ -173,8 +173,8 @@ flashback_osd_window_new (gint monitor)
 }
 
 void
-flashback_osd_window_set_icon (FlashbackOsdWindow *window,
-                               GIcon              *icon)
+gf_osd_window_set_icon (GfOsdWindow *window,
+                        GIcon       *icon)
 {
   if (icon == NULL)
     {
@@ -190,8 +190,8 @@ flashback_osd_window_set_icon (FlashbackOsdWindow *window,
 }
 
 void
-flashback_osd_window_set_label (FlashbackOsdWindow *window,
-                                const gchar        *label)
+gf_osd_window_set_label (GfOsdWindow *window,
+                         const gchar *label)
 {
   if (label == NULL)
     {
@@ -204,8 +204,8 @@ flashback_osd_window_set_label (FlashbackOsdWindow *window,
 }
 
 void
-flashback_osd_window_set_level (FlashbackOsdWindow *window,
-                                gint                level)
+gf_osd_window_set_level (GfOsdWindow *window,
+                         gint         level)
 {
   if (level == -1)
     {
@@ -219,7 +219,7 @@ flashback_osd_window_set_level (FlashbackOsdWindow *window,
 }
 
 void
-flashback_osd_window_show (FlashbackOsdWindow *window)
+gf_osd_window_show (GfOsdWindow *window)
 {
   gint width;
   gint height;
@@ -240,7 +240,7 @@ flashback_osd_window_show (FlashbackOsdWindow *window)
 }
 
 void
-flashback_osd_window_hide (FlashbackOsdWindow *window)
+gf_osd_window_hide (GfOsdWindow *window)
 {
   gtk_widget_hide (GTK_WIDGET (window));
   remove_hide_timeout (window);

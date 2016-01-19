@@ -17,14 +17,14 @@
 
 #include <config.h>
 #include "flashback-osd.h"
-#include "flashback-osd-window.h"
+#include "gf-osd-window.h"
 
 struct _FlashbackOsd
 {
-  GObject              parent;
+  GObject       parent;
 
-  FlashbackOsdWindow **windows;
-  gint                 n_monitors;
+  GfOsdWindow **windows;
+  gint          n_monitors;
 };
 
 G_DEFINE_TYPE (FlashbackOsd, flashback_osd, G_TYPE_OBJECT)
@@ -47,10 +47,10 @@ monitors_changed (GdkScreen *screen,
       g_free (osd->windows);
     }
 
-  osd->windows = g_new0 (FlashbackOsdWindow *, n_monitors);
+  osd->windows = g_new0 (GfOsdWindow *, n_monitors);
 
   for (i = 0; i < n_monitors; i++)
-    osd->windows[i] = flashback_osd_window_new (i);
+    osd->windows[i] = gf_osd_window_new (i);
 
   osd->n_monitors = n_monitors;
 }
@@ -134,14 +134,14 @@ flashback_osd_show (FlashbackOsd *osd,
         {
           if (i == monitor)
             {
-              flashback_osd_window_set_icon (osd->windows[i], icon);
-              flashback_osd_window_set_label (osd->windows[i], label);
-              flashback_osd_window_set_level (osd->windows[i], level);
-              flashback_osd_window_show (osd->windows[i]);
+              gf_osd_window_set_icon (osd->windows[i], icon);
+              gf_osd_window_set_label (osd->windows[i], label);
+              gf_osd_window_set_level (osd->windows[i], level);
+              gf_osd_window_show (osd->windows[i]);
             }
           else
             {
-              flashback_osd_window_hide (osd->windows[i]);
+              gf_osd_window_hide (osd->windows[i]);
             }
         }
     }
@@ -149,10 +149,10 @@ flashback_osd_show (FlashbackOsd *osd,
     {
       for (i = 0; i < osd->n_monitors; i++)
         {
-          flashback_osd_window_set_icon (osd->windows[i], icon);
-          flashback_osd_window_set_label (osd->windows[i], label);
-          flashback_osd_window_set_level (osd->windows[i], level);
-          flashback_osd_window_show (osd->windows[i]);
+          gf_osd_window_set_icon (osd->windows[i], icon);
+          gf_osd_window_set_label (osd->windows[i], label);
+          gf_osd_window_set_level (osd->windows[i], level);
+          gf_osd_window_show (osd->windows[i]);
         }
     }
 
