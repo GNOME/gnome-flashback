@@ -11,6 +11,9 @@ gf-popup-window.solid {
   border-radius: 0px;
 }
 
+#gf-input-source-popup {
+}
+
 #gf-label-window {
   font-size: 40px;
 }

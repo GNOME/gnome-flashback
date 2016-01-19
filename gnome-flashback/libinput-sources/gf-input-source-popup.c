@@ -465,6 +465,7 @@ gf_input_source_popup_init (GfInputSourcePopup *popup)
   gtk_window_set_position (window, GTK_WIN_POS_CENTER_ALWAYS);
 
   gtk_widget_add_events (widget, events);
+  gtk_widget_set_name (widget, "gf-input-source-popup");
 }
 
 GtkWidget *
