@@ -17,8 +17,8 @@ libshell_la_CFLAGS = \
 libshell_la_SOURCES = \
 	flashback-dbus-shell.c \
 	flashback-dbus-shell.h \
-	flashback-label-window.c \
-	flashback-label-window.h \
+	gf-label-window.c \
+	gf-label-window.h \
 	flashback-monitor-labeler.c \
 	flashback-monitor-labeler.h \
 	flashback-osd.c \

@@ -18,11 +18,11 @@
 #include <config.h>
 #include <math.h>
 #include <gdk/gdk.h>
-#include "flashback-label-window.h"
+#include "gf-label-window.h"
 
 #define HIDE_TIMEOUT 1500
 
-struct _FlashbackLabelWindow
+struct _GfLabelWindow
 {
   GfPopupWindow  parent;
 
@@ -33,8 +33,7 @@ struct _FlashbackLabelWindow
   GtkWidget     *label;
 };
 
-G_DEFINE_TYPE (FlashbackLabelWindow, flashback_label_window,
-               GF_TYPE_POPUP_WINDOW)
+G_DEFINE_TYPE (GfLabelWindow, gf_label_window, GF_TYPE_POPUP_WINDOW)
 
 static void
 fade_finished_cb (GfPopupWindow *window)
@@ -43,11 +42,11 @@ fade_finished_cb (GfPopupWindow *window)
 }
 
 static void
-flashback_label_window_realize (GtkWidget *widget)
+gf_label_window_realize (GtkWidget *widget)
 {
   cairo_region_t *region;
 
-  GTK_WIDGET_CLASS (flashback_label_window_parent_class)->realize (widget);
+  GTK_WIDGET_CLASS (gf_label_window_parent_class)->realize (widget);
 
   region = cairo_region_create ();
   gtk_widget_input_shape_combine_region (widget, region);
@@ -55,17 +54,17 @@ flashback_label_window_realize (GtkWidget *widget)
 }
 
 static void
-flashback_label_window_class_init (FlashbackLabelWindowClass *window_class)
+gf_label_window_class_init (GfLabelWindowClass *window_class)
 {
   GtkWidgetClass *widget_class;
 
   widget_class = GTK_WIDGET_CLASS (window_class);
 
-  widget_class->realize = flashback_label_window_realize;
+  widget_class->realize = gf_label_window_realize;
 }
 
 static void
-flashback_label_window_init (FlashbackLabelWindow *window)
+gf_label_window_init (GfLabelWindow *window)
 {
   GtkWidget *box;
 
@@ -84,18 +83,18 @@ flashback_label_window_init (FlashbackLabelWindow *window)
                     G_CALLBACK (fade_finished_cb), NULL);
 }
 
-FlashbackLabelWindow *
-flashback_label_window_new (gint         monitor,
-                            const gchar *label)
+GfLabelWindow *
+gf_label_window_new (gint         monitor,
+                     const gchar *label)
 {
-  FlashbackLabelWindow *window;
+  GfLabelWindow *window;
   GdkScreen *screen;
   gint width;
   gint height;
   gint size;
 
   screen = gdk_screen_get_default ();
-  window = g_object_new (FLASHBACK_TYPE_LABEL_WINDOW,
+  window = g_object_new (GF_TYPE_LABEL_WINDOW,
                          "type", GTK_WINDOW_POPUP,
                          NULL);
 
@@ -113,7 +112,7 @@ flashback_label_window_new (gint         monitor,
 }
 
 void
-flashback_label_window_show (FlashbackLabelWindow *window)
+gf_label_window_show (GfLabelWindow *window)
 {
   gint width;
   gint height;
@@ -143,7 +142,7 @@ flashback_label_window_show (FlashbackLabelWindow *window)
 }
 
 void
-flashback_label_window_hide (FlashbackLabelWindow *window)
+gf_label_window_hide (GfLabelWindow *window)
 {
   gf_popup_window_fade_start (GF_POPUP_WINDOW (window));
 }

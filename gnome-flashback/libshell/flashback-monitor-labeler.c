@@ -19,19 +19,19 @@
 #include <gio/gio.h>
 #include <libdisplay-config/flashback-monitor-manager.h>
 #include "flashback-monitor-labeler.h"
-#include "flashback-label-window.h"
+#include "gf-label-window.h"
 
 struct _FlashbackMonitorLabeler
 {
-  GObject                parent;
+  GObject         parent;
 
-  guint                  watch_id;
-  gchar                 *client;
+  guint           watch_id;
+  gchar          *client;
 
-  guint                  hide_id;
+  guint           hide_id;
 
-  FlashbackLabelWindow **windows;
-  gint                   n_windows;
+  GfLabelWindow **windows;
+  gint            n_windows;
 };
 
 typedef struct
@@ -50,7 +50,7 @@ real_hide (FlashbackMonitorLabeler *labeler)
   if (labeler->windows != NULL)
     {
       for (i = 0; i < labeler->n_windows; i++)
-        flashback_label_window_hide (labeler->windows[i]);
+        gf_label_window_hide (labeler->windows[i]);
       g_free (labeler->windows);
       labeler->windows = NULL;
     }
@@ -245,7 +245,7 @@ flashback_monitor_labeler_show (FlashbackMonitorLabeler *labeler,
   keys = g_hash_table_get_keys (monitors);
 
   labeler->n_windows = g_hash_table_size (monitors);
-  labeler->windows = g_new0 (FlashbackLabelWindow *, labeler->n_windows);
+  labeler->windows = g_new0 (GfLabelWindow *, labeler->n_windows);
   i = 0;
 
   for (key = keys; key; key = key->next)
@@ -265,11 +265,11 @@ flashback_monitor_labeler_show (FlashbackMonitorLabeler *labeler,
       g_slist_free (labels);
 
       real_label = g_string_free (string, FALSE);
-      labeler->windows[i] = flashback_label_window_new (GPOINTER_TO_INT (key->data),
-                                                          real_label);
+      labeler->windows[i] = gf_label_window_new (GPOINTER_TO_INT (key->data),
+                                                 real_label);
       g_free (real_label);
 
-      flashback_label_window_show (labeler->windows[i]);
+      gf_label_window_show (labeler->windows[i]);
 
       i++;
     }
