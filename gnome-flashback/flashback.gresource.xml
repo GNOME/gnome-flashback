@@ -7,8 +7,6 @@
     <file alias="HighContrast/gnome-flashback-dark.css">../data/theme/HighContrast/gnome-flashback-dark.css</file>
   </gresource>
   <gresource prefix="/org/gnome/gnome-flashback">
-    <file>Adwaita.css</file>
-    <file>HighContrast.css</file>
     <file alias="flashback-confirm-dialog.ui" compressed="true">libdisplay-config/flashback-confirm-dialog.ui</file>
     <file alias="gf-inhibit-dialog.ui" compressed="true">libend-session-dialog/gf-inhibit-dialog.ui</file>
     <file alias="flashback-polkit-dialog.ui" compressed="true">libpolkit/flashback-polkit-dialog.ui</file>

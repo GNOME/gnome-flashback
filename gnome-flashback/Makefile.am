@@ -82,9 +82,7 @@ BUILT_SOURCES = \
 	$(NULL)
 
 EXTRA_DIST = \
-	Adwaita.css \
 	flashback.gresource.xml \
-	HighContrast.css \
 	$(NULL)
 
 CLEANFILES = \
