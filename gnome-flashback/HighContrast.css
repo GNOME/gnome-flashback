@@ -1,9 +1,0 @@
-GfInputSourcePopup #input-source
-{
-   font-size: 22px;
-}
-
-GfInputSourcePopup #input-source:selected
-{
-  border-radius: 10px;
-}

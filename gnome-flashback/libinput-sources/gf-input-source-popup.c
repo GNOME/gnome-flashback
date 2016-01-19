@@ -166,8 +166,7 @@ setup_popup_window (GfInputSourcePopup *popup)
       g_object_set_data (G_OBJECT (label), "index", GINT_TO_POINTER (index));
       g_signal_connect (label, "draw", G_CALLBACK (draw_cb), popup);
 
-      gtk_widget_set_name (label, "input-source");
-      gtk_widget_set_size_request (label, 120, 120);
+      gtk_widget_set_name (label, "gf-input-source");
 
       gtk_box_pack_start (GTK_BOX (popup->sources_box), label, FALSE, FALSE, 0);
 

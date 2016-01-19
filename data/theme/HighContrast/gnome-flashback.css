@@ -2,6 +2,7 @@
 
 gf-popup-window {
   background-color: #ffffff;
+  color: #000000;
   border: 1px solid rgba(0, 0, 0, 0.23);
   border-radius: 10px;
 }
@@ -12,6 +13,18 @@ gf-popup-window.solid {
 }
 
 #gf-input-source-popup {
+}
+
+#gf-input-source-popup #gf-input-source {
+  min-width: 120px;
+  min-height: 120px;
+  font-size: 22px;
+}
+
+#gf-input-source-popup #gf-input-source:selected {
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 6px;
 }
 
 #gf-label-window {
