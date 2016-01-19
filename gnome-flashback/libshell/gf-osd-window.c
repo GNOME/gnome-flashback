@@ -143,6 +143,8 @@ gf_osd_window_init (GfOsdWindow *window)
 
   g_signal_connect (window, "fade-finished",
                     G_CALLBACK (fade_finished_cb), NULL);
+
+  gtk_widget_set_name (GTK_WIDGET (window), "gf-osd-window");
 }
 
 GfOsdWindow *
