@@ -141,6 +141,8 @@ gf_candidate_box_init (GfCandidateBox *box)
   box->candidate_label = gtk_label_new (NULL);
   gtk_container_add (GTK_CONTAINER (hbox), box->candidate_label);
   gtk_widget_show (box->candidate_label);
+
+  gtk_widget_set_valign (GTK_WIDGET (box), GTK_ALIGN_CENTER);
 }
 
 GtkWidget*

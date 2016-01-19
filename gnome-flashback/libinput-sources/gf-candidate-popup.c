@@ -342,7 +342,7 @@ gf_candidate_popup_init (GfCandidatePopup *popup)
   gtk_window_set_focus_on_map (window, TRUE);
   gtk_window_set_type_hint (window, GDK_WINDOW_TYPE_HINT_NORMAL);
 
-  layout = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  layout = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (popup), layout);
   gtk_widget_show (layout);
 
@@ -364,6 +364,9 @@ gf_candidate_popup_init (GfCandidatePopup *popup)
                     G_CALLBACK (next_page_cb), popup);
   g_signal_connect (popup->candidate_area, "candidate-clicked",
                     G_CALLBACK (candidate_clicked_cb), popup);
+
+  gtk_widget_set_name (GTK_WIDGET (popup), "gf-candidate-popup");
+  gtk_container_set_border_width (GTK_CONTAINER (popup), 10);
 }
 
 GfCandidatePopup *

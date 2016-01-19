@@ -10,6 +10,29 @@ gf-popup-window.solid {
   border-radius: 0px;
 }
 
+#gf-candidate-popup {
+  border-radius: 3px;
+}
+
+#gf-candidate-popup.solid {
+  border-radius: 0px;
+}
+
+#gf-candidate-popup gf-candidate-box label {
+  padding: 4px 6px;
+}
+
+#gf-candidate-popup gf-candidate-box label:last-child {
+  padding-left: 0px;
+}
+
+#gf-candidate-popup gf-candidate-box:selected,
+#gf-candidate-popup gf-candidate-box:hover {
+  background-color: #215d9c;
+  color: #ffffff;
+  border-radius: 3px;
+}
+
 #gf-input-source-popup {
 }
 
