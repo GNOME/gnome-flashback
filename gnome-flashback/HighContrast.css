@@ -11,6 +11,29 @@ GfPopupWindow.solid {
     border-radius: 0px;
 }
 
+GfCandidatePopup {
+    border-radius: 3px;
+}
+
+GfCandidatePopup.solid {
+    border-radius: 0;
+}
+
+GfCandidatePopup GfCandidateBox GtkLabel {
+    padding: 4px 6px;
+}
+
+GfCandidatePopup GfCandidateBox:last-child {
+    padding-left: 0;
+}
+
+GfCandidatePopup GfCandidateBox:selected,
+GfCandidatePopup GfCandidateBox:hover {
+    background-color: #4a90d9;
+    color: #ffffff;
+    border-radius: 3px;
+}
+
 GfInputSourcePopup #input-source
 {
   font-size: 22px;

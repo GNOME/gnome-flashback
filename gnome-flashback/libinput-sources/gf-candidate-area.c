@@ -131,7 +131,7 @@ gf_candidate_area_init (GfCandidateArea *area)
   GtkIconSize size;
   GtkWidget *image;
 
-  area->candidate_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  area->candidate_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
   gtk_container_add (GTK_CONTAINER (area), area->candidate_box);
   gtk_widget_show (area->candidate_box);
 
