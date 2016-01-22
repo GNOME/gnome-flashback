@@ -1,6 +1,7 @@
 GfPopupWindow
 {
   background-color: #e8e8e7;
+  color: #2e3436;
   border: 1px solid rgba(0, 0, 0, 0.23);
   border-radius: 10px;
 }
@@ -12,12 +13,14 @@ GfPopupWindow.solid {
 
 GfInputSourcePopup #input-source
 {
-   font-size: 22px;
+  font-size: 22px;
 }
 
 GfInputSourcePopup #input-source:selected
 {
-  border-radius: 10px;
+  background-color: #4a90d9;
+  color: #ffffff;
+  border-radius: 6px;
 }
 
 FlashbackLabelWindow
