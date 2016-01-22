@@ -21,7 +21,8 @@
 typedef struct _GfPopupWindowPrivate GfPopupWindowPrivate;
 struct _GfPopupWindowPrivate
 {
-  guint fade_id;
+  gboolean composited;
+  guint    fade_id;
 };
 
 enum
@@ -49,7 +50,7 @@ fade_out_cb (gpointer user_data)
   opacity = gtk_widget_get_opacity (widget);
 
   opacity -= 0.04;
-  if (opacity < 0.00)
+  if (!priv->composited || opacity < 0.00)
     {
       gtk_widget_set_opacity (widget, 1.0);
 
@@ -128,6 +129,27 @@ get_background_surface (GtkWidget *widget,
   return surface;
 }
 
+static void
+gf_popup_window_composited_changed (GtkWidget *widget)
+{
+  GfPopupWindow *window;
+  GfPopupWindowPrivate *priv;
+  GdkScreen *screen;
+  GtkStyleContext *context;
+
+  window = GF_POPUP_WINDOW (widget);
+  priv = gf_popup_window_get_instance_private (window);
+
+  screen = gtk_widget_get_screen (widget);
+  context = gtk_widget_get_style_context (widget);
+  priv->composited = gdk_screen_is_composited (screen);
+
+  if (priv->composited)
+    gtk_style_context_remove_class (context, "solid");
+  else
+    gtk_style_context_add_class (context, "solid");
+}
+
 static gboolean
 gf_popup_window_draw (GtkWidget *widget,
                       cairo_t   *cr)
@@ -158,11 +180,25 @@ gf_popup_window_draw (GtkWidget *widget,
 static void
 gf_popup_window_realize (GtkWidget *widget)
 {
+  GfPopupWindow *window;
+  GfPopupWindowPrivate *priv;
   GdkScreen *screen;
+  GtkStyleContext *context;
   GdkVisual *visual;
 
+  window = GF_POPUP_WINDOW (widget);
+  priv = gf_popup_window_get_instance_private (window);
+
   screen = gtk_widget_get_screen (widget);
+  context = gtk_widget_get_style_context (widget);
+
+  priv->composited = gdk_screen_is_composited (screen);
   visual = gdk_screen_get_rgba_visual (screen);
+
+  if (priv->composited)
+      gtk_style_context_remove_class (context, "solid");
+  else
+      gtk_style_context_add_class (context, "solid");
 
   if (visual == NULL)
     visual = gdk_screen_get_system_visual (screen);
@@ -183,6 +219,7 @@ gf_popup_window_class_init (GfPopupWindowClass *window_class)
 
   object_class->finalize = gf_popup_window_finalize;
 
+  widget_class->composited_changed = gf_popup_window_composited_changed;
   widget_class->draw = gf_popup_window_draw;
   widget_class->realize = gf_popup_window_realize;
 

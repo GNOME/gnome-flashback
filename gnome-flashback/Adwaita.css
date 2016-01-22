@@ -1,7 +1,13 @@
 GfPopupWindow
 {
-  border-radius: 20px;
+  background-color: #e8e8e7;
   border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 10px;
+}
+
+GfPopupWindow.solid {
+    border: 1px solid #a5a5a1;
+    border-radius: 0;
 }
 
 GfInputSourcePopup #input-source
