@@ -24,6 +24,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <X11/extensions/shape.h>
+#include <X11/Xatom.h>
 
 #include "gf-dbus-screenshot.h"
 #include "gf-flashspot.h"
@@ -322,6 +323,55 @@ find_wm_window (GdkDisplay *display,
     }
 }
 
+static gboolean
+get_gtk_frame_extents (GdkWindow *window,
+                       GtkBorder *extents)
+{
+  GdkDisplay *display;
+  Display *xdisplay;
+  Window xwindow;
+  Atom gtk_frame_extents;
+  Atom type;
+  gint format;
+  gulong n_items;
+  gulong bytes_after;
+  guchar *data;
+  gint result;
+  gulong *borders;
+
+  display = gdk_display_get_default ();
+  xdisplay = gdk_x11_display_get_xdisplay (display);
+  xwindow = gdk_x11_window_get_xid (window);
+  gtk_frame_extents = XInternAtom (xdisplay, "_GTK_FRAME_EXTENTS", False);
+
+  gdk_error_trap_push ();
+  result = XGetWindowProperty (xdisplay, xwindow, gtk_frame_extents,
+                               0, G_MAXLONG, False, XA_CARDINAL,
+                               &type, &format, &n_items, &bytes_after, &data);
+  gdk_error_trap_pop_ignored ();
+
+  if (data == NULL)
+    return FALSE;
+
+  if (result != Success || type != XA_CARDINAL || format != 32 || n_items != 4)
+    {
+      XFree (data);
+
+      return FALSE;
+    }
+
+  borders = (gulong *) data;
+
+  extents->left = borders[0];
+  extents->right = borders[1];
+  extents->top = borders[2];
+  extents->bottom = borders[3];
+
+  XFree (data);
+
+  return TRUE;
+}
+
 static void
 get_window_rect_coords (GdkWindow    *window,
                         gboolean      include_frame,
@@ -477,6 +527,7 @@ take_screenshot_real (GfScreenshot    *screenshot,
 {
   GdkDisplay *display;
   GdkWindow *window;
+  GtkBorder extents;
   GdkRectangle real;
   GdkRectangle s;
   Window wm;
@@ -490,6 +541,44 @@ take_screenshot_real (GfScreenshot    *screenshot,
 
   if (window == NULL)
     return FALSE;
+
+  if (type == SCREENSHOT_WINDOW && get_gtk_frame_extents (window, &extents))
+    {
+      gdk_window_get_frame_extents (window, &real);
+
+      if (include_frame)
+        {
+          real.x = 0;
+          real.y = 0;
+        }
+      else
+        {
+          real.x = extents.left;
+          real.y = extents.top;
+          real.width -= extents.left + extents.right;
+          real.height -= extents.top + extents.bottom;
+        }
+
+      pixbuf = gdk_pixbuf_get_from_window (window, real.x, real.y,
+                                           real.width, real.height);
+
+      gdk_window_get_frame_extents (window, &real);
+
+      *x = real.x;
+      *y = real.y;
+      *width = real.width;
+      *height = real.height;
+
+      if (!include_frame)
+        {
+          *x += extents.left;
+          *y += extents.top;
+          *width -= extents.left + extents.right;
+          *height -= extents.top + extents.bottom;
+        }
+
+      return save_screenshot (pixbuf, filename_in, filename_out);
+    }
 
   get_window_rect_coords (window, include_frame, &real, &s);
 
