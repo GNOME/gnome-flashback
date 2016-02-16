@@ -1,3 +1,13 @@
+Version 3.18.2
+==============
+- Fix crash in display-config with XRandR 1.2. (Alberts Muktupāvels)
+- Implement candidate popup in input-sources. (Sebastian Geiger)
+- Set XDG_CURRENT_DESKTOP if not set. (Alberts Muktupāvels)
+- Updated translations:
+  Kjartan Maraas (nb), Marek Černocký (cs), Mario Blättermann (de),
+  Pedro Albuquerque (pt), Piotr Drąg (pl), Rafael Fontenelle (pt_BR),
+  Stas Solovey (ru), Tom Tryfonidis (el).
+
 Version 3.18.1
 ==============
 - Improved input source switching. (Alberts Muktupāvels, Sebastian Geiger)
