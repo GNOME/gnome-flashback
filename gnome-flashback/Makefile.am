@@ -13,6 +13,7 @@ SUBDIRS = \
 	libpolkit \
 	libpower-applet \
 	libscreencast \
+	libscreensaver \
 	libscreenshot \
 	libshell \
 	libsound-applet \
@@ -62,6 +63,7 @@ gnome_flashback_LDADD = \
 	$(top_builddir)/gnome-flashback/libpolkit/libpolkit.la \
 	$(top_builddir)/gnome-flashback/libpower-applet/libpower-applet.la \
 	$(top_builddir)/gnome-flashback/libscreencast/libscreencast.la \
+	$(top_builddir)/gnome-flashback/libscreensaver/libscreensaver.la \
 	$(top_builddir)/gnome-flashback/libscreenshot/libscreenshot.la \
 	$(top_builddir)/gnome-flashback/libshell/libshell.la \
 	$(top_builddir)/gnome-flashback/libsound-applet/libsound-applet.la \

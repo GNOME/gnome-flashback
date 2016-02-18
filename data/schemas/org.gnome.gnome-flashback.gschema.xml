@@ -67,6 +67,12 @@
       <description>If set to true, then GNOME Flashback application will be used to record the screen.</description>
     </key>
 
+    <key name="screensaver" type="b">
+      <default>true</default>
+      <summary>Screensaver</summary>
+      <description>If set to true, then GNOME Flashback application will be used as Screensaver.</description>
+    </key>
+
     <key name="screenshot" type="b">
       <default>true</default>
       <summary>Screenshots</summary>

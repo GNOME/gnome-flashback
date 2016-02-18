@@ -32,6 +32,7 @@
 #include "libpolkit/flashback-polkit.h"
 #include "libpower-applet/gf-power-applet.h"
 #include "libscreencast/gf-screencast.h"
+#include "libscreensaver/gf-screensaver.h"
 #include "libscreenshot/gf-screenshot.h"
 #include "libshell/flashback-shell.h"
 #include "libsound-applet/gf-sound-applet.h"
@@ -63,6 +64,7 @@ struct _GfApplication
   GfNotifications        *notifications;
   GfPowerApplet          *power;
   GfScreencast           *screencast;
+  GfScreensaver          *screensaver;
   GfScreenshot           *screenshot;
   GfSoundApplet          *sound;
   GfWorkarounds          *workarounds;
@@ -159,6 +161,7 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (notifications, "notifications", gf_notifications_new)
   SETTING_CHANGED (power, "power-applet", gf_power_applet_new)
   SETTING_CHANGED (screencast, "screencast", gf_screencast_new)
+  SETTING_CHANGED (screensaver, "screensaver", gf_screensaver_new)
   SETTING_CHANGED (screenshot, "screenshot", gf_screenshot_new)
   SETTING_CHANGED (sound, "sound-applet", gf_sound_applet_new)
   SETTING_CHANGED (workarounds, "workarounds", gf_workarounds_new)
@@ -203,6 +206,7 @@ gf_application_dispose (GObject *object)
   g_clear_object (&application->power);
   g_clear_object (&application->screencast);
   g_clear_object (&application->screenshot);
+  g_clear_object (&application->screensaver);
   g_clear_object (&application->sound);
   g_clear_object (&application->workarounds);
 

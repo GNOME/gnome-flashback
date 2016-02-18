@@ -193,6 +193,10 @@ PKG_CHECK_MODULES([SCREENCAST], [
   gtk+-3.0 >= $GTK_REQUIRED
 ])
 
+PKG_CHECK_MODULES([SCREENSAVER], [
+  glib-2.0 >= $GLIB_REQUIRED
+])
+
 PKG_CHECK_MODULES([SCREENSHOT], [
   gtk+-3.0 >= $GTK_REQUIRED
   x11
@@ -286,6 +290,7 @@ AC_CONFIG_FILES([
   gnome-flashback/libpolkit/Makefile
   gnome-flashback/libpower-applet/Makefile
   gnome-flashback/libscreencast/Makefile
+  gnome-flashback/libscreensaver/Makefile
   gnome-flashback/libscreenshot/Makefile
   gnome-flashback/libshell/Makefile
   gnome-flashback/libsound-applet/Makefile
