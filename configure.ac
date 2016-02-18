@@ -61,6 +61,7 @@ dnl Check for required programs
 dnl **************************************************************************
 
 AC_PROG_CC
+AC_PATH_PROG([GDBUS_CODEGEN], [gdbus-codegen])
 AC_PATH_PROG([GLIB_COMPILE_RESOURCES], [glib-compile-resources])
 
 dnl **************************************************************************
@@ -200,6 +201,7 @@ PKG_CHECK_MODULES([SCREENCAST], [
 
 PKG_CHECK_MODULES([SCREENSAVER], [
   glib-2.0 >= $GLIB_REQUIRED
+  gtk+-3.0 >= $GTK_REQUIRED
 ])
 
 PKG_CHECK_MODULES([SCREENSHOT], [
