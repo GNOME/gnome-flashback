@@ -119,6 +119,11 @@ PKG_CHECK_MODULES([GNOME_FLASHBACK], [
   gtk+-3.0 >= $GTK_REQUIRED
 ])
 
+PKG_CHECK_MODULES([AUDIO_SELECTION], [
+  gtk+-3.0 >= $GTK_REQUIRED
+  glib-2.0 >= $GLIB_REQUIRED
+])
+
 PKG_CHECK_MODULES([AUTOMOUNT_MANAGER], [
   gtk+-3.0 >= $GTK_REQUIRED
   gsettings-desktop-schemas >= $GSETTINGS_DESKTOP_SCHEMAS_REQUIRED
@@ -278,6 +283,7 @@ AC_CONFIG_FILES([
   data/xsessions/Makefile
 
   gnome-flashback/Makefile
+  gnome-flashback/libaudio-selection/Makefile
   gnome-flashback/libautomount-manager/Makefile
   gnome-flashback/libbluetooth-applet/Makefile
   gnome-flashback/libcommon/Makefile

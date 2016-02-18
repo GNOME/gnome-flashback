@@ -1,6 +1,12 @@
 <schemalist gettext-domain="gnome-flashback">
   <schema id="org.gnome.gnome-flashback" path="/org/gnome/gnome-flashback/">
 
+    <key name="audio-selection" type="b">
+      <default>true</default>
+      <summary>Audio device selection</summary>
+      <description>If set to true, then GNOME Flashback application will be used to provide audo device selection dialog.</description>
+    </key>
+
     <key name="automount-manager" type="b">
       <default>true</default>
       <summary>Automount manager</summary>
