@@ -18,6 +18,10 @@ gnome-flashback/libdisplay-config/flashback-display-config.c
 gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c
 gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui
 gnome-flashback/libinput-sources/gf-input-sources.c
+gnome-flashback/libnotifications/nd-bubble.c
+gnome-flashback/libnotifications/nd-daemon.c
+gnome-flashback/libnotifications/nd-notification-box.c
+gnome-flashback/libnotifications/nd-queue.c
 gnome-flashback/libpolkit/flashback-authenticator.c
 gnome-flashback/libpolkit/flashback-listener.c
 gnome-flashback/libpolkit/flashback-polkit-dialog.c

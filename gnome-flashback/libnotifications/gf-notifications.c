@@ -17,23 +17,44 @@
 
 #include "config.h"
 
+#include "nd-daemon.h"
 #include "gf-notifications.h"
 
 struct _GfNotifications
 {
-  GObject parent;
+  GObject   parent;
+
+  NdDaemon *daemon;
 };
 
 G_DEFINE_TYPE (GfNotifications, gf_notifications, G_TYPE_OBJECT)
 
 static void
+gf_notifications_dispose (GObject *object)
+{
+  GfNotifications *notifications;
+
+  notifications = GF_NOTIFICATIONS (object);
+
+  g_clear_object (&notifications->daemon);
+
+  G_OBJECT_CLASS (gf_notifications_parent_class)->dispose (object);
+}
+
+static void
 gf_notifications_class_init (GfNotificationsClass *notifications_class)
 {
+  GObjectClass *object_class;
+
+  object_class = G_OBJECT_CLASS (notifications_class);
+
+  object_class->dispose = gf_notifications_dispose;
 }
 
 static void
 gf_notifications_init (GfNotifications *notifications)
 {
+  notifications->daemon = nd_daemon_new ();
 }
 
 GfNotifications *

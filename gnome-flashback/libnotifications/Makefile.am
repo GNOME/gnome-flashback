@@ -17,6 +17,18 @@ libnotifications_la_CFLAGS = \
 libnotifications_la_SOURCES = \
 	gf-notifications.c \
 	gf-notifications.h \
+	nd-bubble.c \
+	nd-bubble.h \
+	nd-daemon.c \
+	nd-daemon.h \
+	nd-notification.c \
+	nd-notification.h \
+	nd-notification-box.c \
+	nd-notification-box.h \
+	nd-queue.c \
+	nd-queue.h \
+	nd-stack.c \
+	nd-stack.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 
