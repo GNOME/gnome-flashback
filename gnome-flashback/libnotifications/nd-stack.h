@@ -19,7 +19,7 @@
 #define __ND_STACK_H
 
 #include <gtk/gtk.h>
-#include "nd-bubble.h"
+#include "gf-bubble.h"
 
 G_BEGIN_DECLS
 
@@ -61,10 +61,10 @@ NdStack *       nd_stack_new                   (GdkScreen      *screen,
 void            nd_stack_set_location          (NdStack        *stack,
                                                 NdStackLocation location);
 void            nd_stack_add_bubble            (NdStack        *stack,
-                                                NdBubble       *bubble,
+                                                GfBubble       *bubble,
                                                 gboolean        new_notification);
 void            nd_stack_remove_bubble         (NdStack        *stack,
-                                                NdBubble       *bubble);
+                                                GfBubble       *bubble);
 void            nd_stack_remove_all            (NdStack        *stack);
 GList *         nd_stack_get_bubbles           (NdStack        *stack);
 void            nd_stack_queue_update_position (NdStack        *stack);

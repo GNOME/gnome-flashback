@@ -310,7 +310,7 @@ add_padding_to_rect (GdkRectangle *rect)
 
 static void
 nd_stack_shift_notifications (NdStack     *stack,
-                              NdBubble    *bubble,
+                              GfBubble    *bubble,
                               GList      **nw_l,
                               gint         init_width,
                               gint         init_height,
@@ -353,7 +353,7 @@ nd_stack_shift_notifications (NdStack     *stack,
                 *nw_y = y;
 
         for (i = 0, l = stack->priv->bubbles; l != NULL; i++, l = l->next) {
-                NdBubble       *nw2 = ND_BUBBLE (l->data);
+                GfBubble       *nw2 = GF_BUBBLE (l->data);
                 GtkRequisition  req;
 
                 if (bubble == NULL || nw2 != bubble) {
@@ -379,7 +379,7 @@ nd_stack_shift_notifications (NdStack     *stack,
         /* move bubbles at the bottom of the stack first
            to avoid overlapping */
         for (i = n_wins - 1, l = g_list_last (stack->priv->bubbles); l != NULL; i--, l = l->prev) {
-                NdBubble *nw2 = ND_BUBBLE (l->data);
+                GfBubble *nw2 = GF_BUBBLE (l->data);
 
                 if (bubble == NULL || nw2 != bubble) {
                         gtk_window_move (GTK_WINDOW (nw2), positions[i].x, positions[i].y);
@@ -422,7 +422,7 @@ nd_stack_queue_update_position (NdStack *stack)
 
 void
 nd_stack_add_bubble (NdStack  *stack,
-                     NdBubble *bubble,
+                     GfBubble *bubble,
                      gboolean  new_notification)
 {
         GtkRequisition  req;
@@ -450,7 +450,7 @@ nd_stack_add_bubble (NdStack  *stack,
 
 void
 nd_stack_remove_bubble (NdStack  *stack,
-                        NdBubble *bubble)
+                        GfBubble *bubble)
 {
         GList *remove_l = NULL;
 

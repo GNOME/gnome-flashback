@@ -568,13 +568,13 @@ get_stack_with_pointer (NdQueue *queue)
 }
 
 static void
-on_bubble_destroyed (NdBubble *bubble,
+on_bubble_destroyed (GfBubble *bubble,
                      NdQueue  *queue)
 {
         NdNotification *notification;
 
         g_debug ("Bubble destroyed");
-        notification = nd_bubble_get_notification (bubble);
+        notification = gf_bubble_get_notification (bubble);
 
         nd_notification_set_is_queued (notification, FALSE);
 
@@ -591,7 +591,7 @@ maybe_show_notification (NdQueue *queue)
 {
         gpointer        id;
         NdNotification *notification;
-        NdBubble       *bubble;
+        GfBubble       *bubble;
         NdStack        *stack;
         GList          *list;
 
@@ -621,7 +621,7 @@ maybe_show_notification (NdQueue *queue)
         notification = g_hash_table_lookup (queue->priv->notifications, id);
         g_assert (notification != NULL);
 
-        bubble = nd_bubble_new_for_notification (notification);
+        bubble = gf_bubble_new_for_notification (notification);
         g_signal_connect (bubble, "destroy", G_CALLBACK (on_bubble_destroyed), queue);
 
         nd_stack_add_bubble (stack, bubble, TRUE);

@@ -5,6 +5,8 @@ noinst_LTLIBRARIES = \
 	$(NULL)
 
 libnotifications_la_CPPFLAGS = \
+	-I$(srcdir)/../../gnome-flashback \
+	-I$(top_builddir)/gnome-flashback \
 	-I$(top_builddir)/gnome-flashback/libnotifications \
 	$(NULL)
 
@@ -15,10 +17,10 @@ libnotifications_la_CFLAGS = \
 	$(NULL)
 
 libnotifications_la_SOURCES = \
+	gf-bubble.c \
+	gf-bubble.h \
 	gf-notifications.c \
 	gf-notifications.h \
-	nd-bubble.c \
-	nd-bubble.h \
 	nd-daemon.c \
 	nd-daemon.h \
 	nd-notification.c \
@@ -38,6 +40,7 @@ libnotifications_la_LDFLAGS = \
 	$(NULL)
 
 libnotifications_la_LIBADD = \
+	$(top_builddir)/gnome-flashback/libcommon/libcommon.la \
 	$(NOTIFICATIONS_LIBS) \
 	$(NULL)
 
