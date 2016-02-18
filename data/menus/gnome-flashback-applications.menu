@@ -282,4 +282,16 @@
      <Merge type="files" />
    </Layout>
 
+  <Include>
+    <Filename>org.gnome.Software.desktop</Filename>
+  </Include>
+
+  <!-- Separator between menus and GNOME Software -->
+  <Layout>
+    <Merge type="menus"/>
+    <Merge type="files"/>
+    <Separator/>
+    <Filename>org.gnome.Software.desktop</Filename>
+  </Layout>
+
 </Menu> <!-- End Applications -->
