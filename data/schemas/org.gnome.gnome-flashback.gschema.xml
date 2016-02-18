@@ -43,6 +43,12 @@
       <description>If set to true, then GNOME Flashback application will be used to manage keyboard layouts and input methods.</description>
     </key>
 
+    <key name="notifications" type="b">
+      <default>true</default>
+      <summary>Notification daemon</summary>
+      <description>If set to true, then GNOME Flashback application will be used to manage notifications.</description>
+    </key>
+
     <key name="polkit" type="b">
       <default>true</default>
       <summary>Authentication agent for polkit</summary>

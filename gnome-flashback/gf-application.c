@@ -28,6 +28,7 @@
 #include "libend-session-dialog/gf-end-session-dialog.h"
 #include "libidle-monitor/flashback-idle-monitor.h"
 #include "libinput-sources/gf-input-sources.h"
+#include "libnotifications/gf-notifications.h"
 #include "libpolkit/flashback-polkit.h"
 #include "libpower-applet/gf-power-applet.h"
 #include "libscreencast/gf-screencast.h"
@@ -59,6 +60,7 @@ struct _GfApplication
   GfDesktopBackground    *background;
   GfEndSessionDialog     *dialog;
   GfInputSources         *input_sources;
+  GfNotifications        *notifications;
   GfPowerApplet          *power;
   GfScreencast           *screencast;
   GfScreenshot           *screenshot;
@@ -154,6 +156,7 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (background, "desktop-background", gf_desktop_background_new)
   SETTING_CHANGED (dialog, "end-session-dialog", gf_end_session_dialog_new)
   SETTING_CHANGED (input_sources, "input-sources", gf_input_sources_new)
+  SETTING_CHANGED (notifications, "notifications", gf_notifications_new)
   SETTING_CHANGED (power, "power-applet", gf_power_applet_new)
   SETTING_CHANGED (screencast, "screencast", gf_screencast_new)
   SETTING_CHANGED (screenshot, "screenshot", gf_screenshot_new)
@@ -196,6 +199,7 @@ gf_application_dispose (GObject *object)
   g_clear_object (&application->background);
   g_clear_object (&application->dialog);
   g_clear_object (&application->input_sources);
+  g_clear_object (&application->notifications);
   g_clear_object (&application->power);
   g_clear_object (&application->screencast);
   g_clear_object (&application->screenshot);

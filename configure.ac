@@ -170,6 +170,13 @@ PKG_CHECK_MODULES([INPUT_SOURCES], [
   xkeyboard-config
 ])
 
+PKG_CHECK_MODULES([NOTIFICATIONS], [
+  gtk+-3.0 >= $GTK_REQUIRED
+  glib-2.0 >= $GLIB_REQUIRED
+  gio-2.0 >= $GLIB_REQUIRED
+  x11
+])
+
 PKG_CHECK_MODULES([POLKIT], [
   gtk+-3.0 >= $GTK_REQUIRED
   glib-2.0 >= $GLIB_REQUIRED
@@ -275,6 +282,7 @@ AC_CONFIG_FILES([
   gnome-flashback/libend-session-dialog/Makefile
   gnome-flashback/libidle-monitor/Makefile
   gnome-flashback/libinput-sources/Makefile
+  gnome-flashback/libnotifications/Makefile
   gnome-flashback/libpolkit/Makefile
   gnome-flashback/libpower-applet/Makefile
   gnome-flashback/libscreencast/Makefile

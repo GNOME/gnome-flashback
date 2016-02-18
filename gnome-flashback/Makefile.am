@@ -9,6 +9,7 @@ SUBDIRS = \
 	libend-session-dialog \
 	libidle-monitor \
 	libinput-sources \
+	libnotifications \
 	libpolkit \
 	libpower-applet \
 	libscreencast \
@@ -57,6 +58,7 @@ gnome_flashback_LDADD = \
 	$(top_builddir)/gnome-flashback/libend-session-dialog/libend-session-dialog.la \
 	$(top_builddir)/gnome-flashback/libidle-monitor/libidle-monitor.la \
 	$(top_builddir)/gnome-flashback/libinput-sources/libinput-sources.la \
+	$(top_builddir)/gnome-flashback/libnotifications/libnotifications.la \
 	$(top_builddir)/gnome-flashback/libpolkit/libpolkit.la \
 	$(top_builddir)/gnome-flashback/libpower-applet/libpower-applet.la \
 	$(top_builddir)/gnome-flashback/libscreencast/libscreencast.la \
