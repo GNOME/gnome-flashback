@@ -4,7 +4,7 @@
     <key name="audio-selection" type="b">
       <default>true</default>
       <summary>Audio device selection</summary>
-      <description>If set to true, then GNOME Flashback application will be used to provide audo device selection dialog.</description>
+      <description>If set to true, then GNOME Flashback application will be used to provide the audio device selection dialog.</description>
     </key>
 
     <key name="automount-manager" type="b">
@@ -76,7 +76,7 @@
     <key name="screensaver" type="b">
       <default>true</default>
       <summary>Screensaver</summary>
-      <description>If set to true, then GNOME Flashback application will be used as Screensaver.</description>
+      <description>If set to true, then GNOME Flashback application will be used as a screensaver.</description>
     </key>
 
     <key name="screenshot" type="b">
