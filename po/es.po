@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-22 21:12+0000\n"
-"PO-Revision-Date: 2016-02-23 11:05+0100\n"
+"POT-Creation-Date: 2016-02-24 21:14+0000\n"
+"PO-Revision-Date: 2016-02-25 08:45+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -31,43 +31,39 @@ msgid "GNOME Flashback Initialization"
 msgstr "Inicialización de GNOME Flashback"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
-#| msgid "GNOME Flashback"
 msgid "Network (GNOME Flashback)"
 msgstr "Red (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:4
 msgid "Manage your network connections"
-msgstr ""
+msgstr "Administre sus conexiones de red"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:5
 msgid "nm-device-wireless"
 msgstr ""
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:4
-#, fuzzy
 #| msgid "GNOME Flashback"
 msgid "Screensaver (GNOME Flashback)"
-msgstr "GNOME Flashback"
+msgstr "Salvapantallas (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:5
 msgid "Launch screensaver and locker program"
-msgstr ""
+msgstr "Lanzar el programa salvapantallas y de bloqueo"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:6
 msgid "preferences-desktop-screensaver"
 msgstr ""
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
-#, fuzzy
 #| msgid "_Sound Preferences"
 msgid "Preferences"
-msgstr "Preferencias de _sonido"
+msgstr "Preferencias"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:5
-#, fuzzy
 #| msgid "_Sound Preferences"
 msgid "Personal preferences"
-msgstr "Preferencias de _sonido"
+msgstr "Preferencias personales"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:6
 msgid "preferences-desktop"
@@ -75,11 +71,11 @@ msgstr ""
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
-msgstr ""
+msgstr "Administración"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
 msgid "Change system-wide settings (affects all users)"
-msgstr ""
+msgstr "Cambiar las configuraciones del sistema (afecta a todos los usuarios)"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:6
 msgid "preferences-system"
@@ -87,10 +83,9 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
 msgid "Audio device selection"
-msgstr ""
+msgstr "Selección de dispositivo de audio"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:7
-#, fuzzy
 #| msgid ""
 #| "If set to true, then GNOME Flashback application will be used to show the "
 #| "end session dialog."
@@ -99,7 +94,7 @@ msgid ""
 "audio device selection dialog."
 msgstr ""
 "Si es cierto, la aplicación GNOME Flashback se usará para mostrar el diálogo "
-"de cierre de la sesión."
+"de selección de dispositivo de audio."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
 msgid "Automount manager"
@@ -115,16 +110,17 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
 msgid "Bluetooth applet"
-msgstr ""
+msgstr "Applet de Bluetooth"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:19
-#, fuzzy
 #| msgid ""
 #| "If set to true, then GNOME Flashback application will be used as a shell."
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "Bluetooth applet."
-msgstr "Si es cierto, la aplicación GNOME Flashback se usará como una shell."
+msgstr ""
+"Si es cierto, la aplicación GNOME Flashback se usará para mostrar un applet "
+"Bluetooth."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
 msgid "Desktop background"
@@ -176,10 +172,9 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:48
 msgid "Keyboard layouts and input methods"
-msgstr ""
+msgstr "Disposiciones de teclado y métodos de entrada"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
-#, fuzzy
 #| msgid ""
 #| "If set to true, then GNOME Flashback application will be used to take "
 #| "screenshots."
@@ -187,15 +182,14 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
 msgstr ""
-"Si es cierto, la aplicación GNOME Flashback se usará para hacer capturas de "
-"pantalla."
+"Si es cierto, la aplicación GNOME Flashback se usará para gestionar las "
+"disposiciones de teclado y métodos de entrada"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
 msgid "Notification daemon"
-msgstr ""
+msgstr "Demonio de notificaciones"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
-#, fuzzy
 #| msgid ""
 #| "If set to true, then GNOME Flashback application will be used to take "
 #| "screenshots."
@@ -203,8 +197,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
 msgstr ""
-"Si es cierto, la aplicación GNOME Flashback se usará para hacer capturas de "
-"pantalla."
+"Si es cierto, la aplicación GNOME Flashback se usará para gestionar las "
+"notificaciones"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:60
 msgid "Authentication agent for polkit"
@@ -242,10 +236,9 @@ msgstr ""
 "Si es cierto, la aplicación GNOME Flashback se usará para grabar la panatlla."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
-#, fuzzy
 #| msgid "Screenshots"
 msgid "Screensaver"
-msgstr "Capturas de pantalla"
+msgstr "Salvapantallas"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
 #, fuzzy
