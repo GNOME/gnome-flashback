@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-25 21:12+0000\n"
-"PO-Revision-Date: 2016-02-26 08:57+0100\n"
+"POT-Creation-Date: 2016-02-29 21:12+0000\n"
+"PO-Revision-Date: 2016-03-02 08:51+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -164,7 +164,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:48
 msgid "Keyboard layouts and input methods"
-msgstr "Disposiciones de teclado y métodos de entrada"
+msgstr "Distribuciones de teclado y métodos de entrada"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
 msgid ""
@@ -172,7 +172,7 @@ msgid ""
 "keyboard layouts and input methods."
 msgstr ""
 "Si es cierto, la aplicación GNOME Flashback se usará para gestionar las "
-"disposiciones de teclado y métodos de entrada."
+"distribuciones de teclado y métodos de entrada."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
 msgid "Notification daemon"
@@ -196,13 +196,10 @@ msgid ""
 msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:66
-#| msgid "Sound applet"
 msgid "Power applet"
 msgstr "Miniaplicación de energía"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used as a shell."
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
@@ -226,8 +223,6 @@ msgid "Screensaver"
 msgstr "Salvapantallas"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used as a shell."
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
@@ -287,9 +282,6 @@ msgid "Workarounds"
 msgstr "Alternativas"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:109
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used to draw "
-#| "desktop background."
 msgid ""
 "If set to true, then GNOME Flashback application will use workarounds to fix "
 "bugs."
@@ -302,9 +294,6 @@ msgid "Fade the background on change"
 msgstr "Desvanecer el fondo al cambiar"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:122
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used to draw "
-#| "desktop background."
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -345,7 +334,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:153
 msgid "Fix wrong button layout"
-msgstr "Arreglar una disposición incorrecta de botones"
+msgstr "Arreglar una distribución incorrecta de botones"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:154
 msgid ""
@@ -526,7 +515,6 @@ msgid "Turn On"
 msgstr "Encender"
 
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
-#| msgid "_Revert Settings"
 msgid "Bluetooth Settings"
 msgstr "Configuración de Bluetooth"
 
@@ -542,8 +530,8 @@ msgstr "Bluetooth desactivado"
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d dispositivo conectado"
+msgstr[1] "%d dispositivos conectados"
 
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
 msgid "Not Connected"
@@ -667,13 +655,17 @@ msgid "Hybrid Sleep"
 msgstr "Suspensión híbrida"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
-#, fuzzy, c-format
+#, c-format
 #| msgid "The system will restart automatically in %d second."
 #| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
-msgstr[0] "El sistema se reiniciará automáticamente en %d segundo."
-msgstr[1] "El sistema se reiniciará automáticamente en %d segundos."
+msgstr[0] ""
+"El sistema entrará en modo de suspensión híbrida automáticamente en %d "
+"segundo."
+msgstr[1] ""
+"El sistema entrará en modo de suspensión híbrida automáticamente en %d "
+"segundos."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:29
 msgid "Some programs are still running:"
@@ -697,18 +689,18 @@ msgstr "Bloquear la pantalla"
 
 #: gnome-flashback/libinput-sources/gf-input-sources.c:358
 msgid "Show Keyboard Layout"
-msgstr ""
+msgstr "Mostrar la distribución del teclado"
 
 #: gnome-flashback/libinput-sources/gf-input-sources.c:421
 msgid "Keyboard"
-msgstr ""
+msgstr "Teclado"
 
 #: gnome-flashback/libnotifications/gf-bubble.c:588
 #: gnome-flashback/libnotifications/gf-bubble.c:592
 #: gnome-flashback/libnotifications/nd-notification-box.c:325
 #: gnome-flashback/libnotifications/nd-notification-box.c:327
 msgid "Closes the notification."
-msgstr ""
+msgstr "Cierra la notificación."
 
 #: gnome-flashback/libnotifications/gf-bubble.c:612
 #: gnome-flashback/libnotifications/gf-bubble.c:643
@@ -718,15 +710,15 @@ msgstr ""
 
 #: gnome-flashback/libnotifications/gf-bubble.c:662
 msgid "Notification"
-msgstr ""
+msgstr "Notificación"
 
 #: gnome-flashback/libnotifications/nd-daemon.c:100
 msgid "Invalid notification identifier"
-msgstr ""
+msgstr "Identificador de notificación no válido"
 
 #: gnome-flashback/libnotifications/nd-daemon.c:181
 msgid "Exceeded maximum number of notifications"
-msgstr ""
+msgstr "Se exedió el numero máximo de notificaciones"
 
 #: gnome-flashback/libnotifications/nd-notification-box.c:363
 msgid "Notification body text."
@@ -734,35 +726,40 @@ msgstr ""
 
 #: gnome-flashback/libnotifications/nd-queue.c:449
 msgid "Clear all notifications"
-msgstr ""
+msgstr "Limpiar todas las notificaciones"
 
 #: gnome-flashback/libnotifications/nd-queue.c:878
 msgid "Notifications"
-msgstr ""
+msgstr "Notificaciones"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:93
 #, c-format
 msgid "_Password for %s:"
-msgstr ""
+msgstr "_Contraseña para %s:"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:97
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
 msgid "_Password:"
-msgstr ""
+msgstr "_Contraseña:"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:252
 msgid "Your authentication attempt was unsuccessful. Please try again."
 msgstr ""
+"Su intento de autenticación no ha sido correcto. Por favor inténtelo de "
+"nuevo."
 
 #: gnome-flashback/libpolkit/flashback-listener.c:139
 msgid "Authentication dialog was dismissed by the user"
-msgstr ""
+msgstr "El usuario rechazó el diálogo de autenticación"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:202
 msgid ""
 "An application is attempting to perform an action that requires privileges. "
 "Authentication as one of the users below is required to perform this action."
 msgstr ""
+"Una aplicación esta intentando realizar una acción que requiere privilegios. "
+"Es necesario que se autentique como uno de los usuarios mostrados a "
+"continuación para realizar esta acción."
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
@@ -770,12 +767,17 @@ msgid ""
 "An application is attempting to perform an action that requires privileges. "
 "Authentication is required to perform this action."
 msgstr ""
+"Una aplicación esta intentando realizar una acción que requiere privilegios. "
+"Es necesario que se autentique para realizar esta acción."
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:217
 msgid ""
 "An application is attempting to perform an action that requires privileges. "
 "Authentication as the super user is required to perform this action."
 msgstr ""
+"Una aplicación esta intentando realizar una acción que requiere privilegios. "
+"Es necesario que se autentique como el superusuario para realizar esta "
+"acción."
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:383
 msgid "Select user..."
@@ -821,14 +823,13 @@ msgid "_Authenticate"
 msgstr "_Autenticar"
 
 #: gnome-flashback/libpower-applet/gf-power-applet.c:135
-#, fuzzy
 #| msgid "_Revert Settings"
 msgid "Power Settings"
-msgstr "_Revertir configuración"
+msgstr "Configuración de energía"
 
 #: gnome-flashback/libpower-applet/gf-power-applet.c:182
 msgid "Fully Charged"
-msgstr "Cargada Completamente"
+msgstr "Cargada completamente"
 
 #: gnome-flashback/libpower-applet/gf-power-applet.c:184
 msgid "Empty"
@@ -849,11 +850,11 @@ msgstr "%.0f:%02.0f Restante (%.0f%%)"
 #: gnome-flashback/libpower-applet/gf-power-applet.c:211
 #, c-format
 msgid "%.0f:%02.0f Until Full (%.0f%%)"
-msgstr ""
+msgstr "%.0f:%02.0f Para completar la carga (%.0f%%)"
 
 #: gnome-flashback/libpower-applet/gf-power-applet.c:226
 msgid "UPS"
-msgstr ""
+msgstr "Sistema de alimentación ininterrumpida"
 
 #: gnome-flashback/libpower-applet/gf-power-applet.c:228
 msgid "Battery"
