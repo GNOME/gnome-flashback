@@ -1,24 +1,24 @@
 # Hungarian translation of gnome-flashback
-# Copyright (C) 2014. Free Software Foundation, Inc.
+# Copyright (C) 2014-2016 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-flashback package.
 #
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2014, 2015.
-# Balázs Úr <urbalazs at gmail dot com>, 2014, 2015.
+# Balázs Úr <urbalazs at gmail dot com>, 2014, 2015, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-11 07:43+0000\n"
-"PO-Revision-Date: 2015-10-11 20:16+0200\n"
-"Last-Translator: Gabor Kelemen <kelemeng at ubuntu dot com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-fl"
+"ashback&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-03-05 09:11+0000\n"
+"PO-Revision-Date: 2016-03-05 13:04+0100\n"
+"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at gmail dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 2.0\n"
 
 #: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
@@ -29,7 +29,6 @@ msgid "GNOME Flashback Initialization"
 msgstr "GNOME Flashback előkészítés"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
-#| msgid "GNOME Flashback"
 msgid "Network (GNOME Flashback)"
 msgstr "Hálózat (GNOME Flashback)"
 
@@ -42,7 +41,6 @@ msgid "nm-device-wireless"
 msgstr "nm-device-wireless"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:4
-#| msgid "GNOME Flashback"
 msgid "Screensaver (GNOME Flashback)"
 msgstr "Képernyővédő (GNOME Flashback)"
 
@@ -55,12 +53,10 @@ msgid "preferences-desktop-screensaver"
 msgstr "preferences-desktop-screensaver"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
-#| msgid "_Sound Preferences"
 msgid "Preferences"
 msgstr "Beállítások"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:5
-#| msgid "_Sound Preferences"
 msgid "Personal preferences"
 msgstr "Személyes beállítások"
 
@@ -247,11 +243,11 @@ msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás kerülő "
 "megoldásokat fog használni a hibák kijavításához."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid "Fade the background on change"
 msgstr "A háttér elhalványítása változtatáskor"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:98
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -259,11 +255,31 @@ msgstr ""
 "Ha igazra van állítva, akkor elhalványítás hatás lesz használva az asztal "
 "hátterének változtatásához."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+msgid "The background color for the status icon."
+msgstr "Az állapotikon háttérszíne."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
+msgid ""
+"This contains the background color for the status icon that is shown in the "
+"system tray."
+msgstr "A rendszertálcán megjelenő állapotikon háttérszíne."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
+msgid "The foreground color for the status icon."
+msgstr "Az állapotikon előtérszíne."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
+msgid ""
+"This contains the foreground color for the status icon that is shown in the "
+"system tray."
+msgstr "A rendszertálcán megjelenő állapotikon előtérszíne."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:123
 msgid "Fix missing app menu button"
 msgstr "Hiányzó alkalmazásmenü gomb javítása"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:124
 msgid ""
 "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
 "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
@@ -274,11 +290,11 @@ msgstr ""
 "felülbírálásokat szeretné használni az xsettings bővítményben a „Gtk/"
 "ShellShowsAppMenu” tulajdonságnál."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:112
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:129
 msgid "Fix wrong button layout"
 msgstr "Rossz gombelrendezés javítása"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:130
 msgid ""
 "If set to non-empty string, then gnome-flashback will force Gtk/"
 "DecorationLayout to value set by this setting. Set to empty string if you "
@@ -497,7 +513,6 @@ msgid "_Keep Changes"
 msgstr "_Változtatások megtartása"
 
 #: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:116
-#| msgid "Power Settings"
 msgid "_Revert Settings"
 msgstr "_Beállítások visszavonása"
 
@@ -633,6 +648,14 @@ msgstr "Mégse"
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
 msgid "Lock Screen"
 msgstr "Képernyő zárolása"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:356
+msgid "Show Keyboard Layout"
+msgstr "Billentyűzetkiosztás megjelenítése"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:419
+msgid "Keyboard"
+msgstr "Billentyűzet"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:93
 #, c-format
