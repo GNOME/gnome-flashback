@@ -1,15 +1,15 @@
 # Czech translation for gnome-flashback.
 # Copyright (C) 2014 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
-# Marek Černocký <marek@manet.cz>, 2014, 2015.
+# Marek Černocký <marek@manet.cz>, 2014, 2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-29 09:07+0000\n"
-"PO-Revision-Date: 2015-10-29 15:30+0100\n"
+"POT-Creation-Date: 2016-03-16 21:14+0000\n"
+"PO-Revision-Date: 2016-03-16 22:27+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
@@ -76,10 +76,25 @@ msgid "preferences-system"
 msgstr "preferences-system"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
+msgid "Audio device selection"
+msgstr "Výběr zvukového zařízení"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:7
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to show the "
+#| "end session dialog."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide the "
+"audio device selection dialog."
+msgstr ""
+"Když je zapnuto, bude aplikace GNOME historické použita k zobrazení "
+"dialogového okna pro výběr zvukového zařízení."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
 msgid "Automount manager"
 msgstr "Správa automatického připojování"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:7
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:13
 msgid ""
 "If set to true, then GNOME Flashback application will be used to automount "
 "removable media."
@@ -87,11 +102,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k automatickému "
 "připojování výměnných médií."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
 msgid "Bluetooth applet"
 msgstr "Aplet Bluetooth"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:13
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:19
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "Bluetooth applet."
@@ -99,11 +114,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k zobrazení apletu "
 "Bluetooth."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
 msgid "Desktop background"
 msgstr "Pozadí pracovní plochy"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:19
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:25
 msgid ""
 "If set to true, then GNOME Flashback application will be used to draw the "
 "desktop background."
@@ -111,11 +126,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k vykreslování "
 "pozadí pracovní plochy."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
 msgid "Display configuration"
 msgstr "Nastavení displeje"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:25
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:31
 msgid ""
 "If set to true, then GNOME Flashback application will be used to provide the "
 "display configuration."
@@ -123,11 +138,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k poskytnutí "
 "nastavení displeje."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
 msgid "End session dialog"
 msgstr "Dialogové okno pro ukončení sezení"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:31
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:37
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
@@ -135,11 +150,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k zobrazení "
 "dialogového okna pro ukončení sezení."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:42
 msgid "Idle monitor"
 msgstr "Sledovat nežinnost"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:37
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:43
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
@@ -147,11 +162,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita ke sledování "
 "činnosti uživatele."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:42
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:48
 msgid "Keyboard layouts and input methods"
 msgstr "Rozložení klávesnice a vstupní metody"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:43
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -159,21 +174,35 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita ke správě rozložení "
 "klávesnice a vstupních metod."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:48
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
+msgid "Notification daemon"
+msgstr "Démon pro upozornění"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to take "
+#| "screenshots."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"notifications."
+msgstr ""
+"Když je zapnuto, bude aplikace GNOME historické použita ke správě upozornění."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:60
 msgid "Authentication agent for polkit"
 msgstr "Ověřovací agent pro polkit"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
 "Jedná se o toho samého ověřovacího agenta, které poskytuje PolicyKit-gnome."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:66
 msgid "Power applet"
 msgstr "Aplet napájení"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
@@ -181,11 +210,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k zobrazení apletu "
 "napájení."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:60
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
 msgid "Screencasts"
 msgstr "Záznamy obrazovky"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -193,11 +222,26 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k pořizování záznamů "
 "obrazovky."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:66
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
+#| msgid "Screenshots"
+msgid "Screensaver"
+msgstr "Šetřič obrazovky"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used as a shell."
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a "
+"screensaver."
+msgstr ""
+"Když je zapnuto, bude aplikace GNOME historické použita jako šetřič "
+"obrazovky."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
 msgid "Screenshots"
 msgstr "Snímky obrazovky"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -205,20 +249,20 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k pořizování snímků "
 "obrazovky."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid "Shell"
 msgstr "Shell"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
-msgstr "Když je zapnuto, bude aplikace GNOME historické použita k jako shell."
+msgstr "Když je zapnuto, bude aplikace GNOME historické použita jako shell."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
 msgid "Sound applet"
 msgstr "Aplet zvuku"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -228,11 +272,25 @@ msgstr ""
 "zvukového apletu. Jedná se o stejný zvukový aplet, který je použit v části "
 "řídícího centra GNOME."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:102
+msgid "Status Notifier Watcher"
+msgstr "Hlídač upozornění na stav"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used as a shell."
+msgid ""
+"If set to true, then GNOME Flashback application will be used as Status "
+"Notifier Watcher."
+msgstr ""
+"Když je zapnuto, bude aplikace GNOME historické použita jako hlídač "
+"upozornění na stav."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
 msgid "Workarounds"
 msgstr "Náhradní řešení"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:109
 msgid ""
 "If set to true, then GNOME Flashback application will use workarounds to fix "
 "bugs."
@@ -240,11 +298,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické používat náhradní řešení k "
 "opravám chyb."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:121
 msgid "Fade the background on change"
 msgstr "Prolínat při změně pozadí"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:98
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:122
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -252,11 +310,11 @@ msgstr ""
 "Když je zapnuto, bude při změně pozadí pracovní plochy použit efekt "
 "prolínání."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:131
 msgid "The background color for the status icon."
 msgstr "Barva pozadí pro stavové ikony."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:132
 msgid ""
 "This contains the background color for the status icon that is shown in the "
 "system tray."
@@ -264,11 +322,11 @@ msgstr ""
 "Obsahuje barvu pozadí pro stavovou ikonu, která se zobrazuje v systémové "
 "liště."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:137
 msgid "The foreground color for the status icon."
 msgstr "Barva popředí pro stavové ikony."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:138
 msgid ""
 "This contains the foreground color for the status icon that is shown in the "
 "system tray."
@@ -276,11 +334,11 @@ msgstr ""
 "Obsahuje barvu pozadí pro stavovou ikonu, která se zobrazuje v systémové "
 "liště."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:123
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:147
 msgid "Fix missing app menu button"
 msgstr "Opravovat chybějící tlačítko aplikační nabídky"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:124
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:148
 msgid ""
 "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
 "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
@@ -291,11 +349,11 @@ msgstr ""
 "přepisování v zásuvném modulu xsettings pro vlastnost „Gtk/"
 "ShellShowsAppMenu“."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:129
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:153
 msgid "Fix wrong button layout"
 msgstr "Opravovat nesprávné rozložení tlačítek"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:130
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:154
 msgid ""
 "If set to non-empty string, then gnome-flashback will force Gtk/"
 "DecorationLayout to value set by this setting. Set to empty string if you "
@@ -650,13 +708,50 @@ msgstr "Zrušit"
 msgid "Lock Screen"
 msgstr "Uzamknout obrazovku"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:355
+#: gnome-flashback/libinput-sources/gf-input-sources.c:358
 msgid "Show Keyboard Layout"
 msgstr "Zobrazit rozložení klávesnice"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:418
+#: gnome-flashback/libinput-sources/gf-input-sources.c:421
 msgid "Keyboard"
 msgstr "Klávesnice"
+
+#: gnome-flashback/libnotifications/gf-bubble.c:588
+#: gnome-flashback/libnotifications/gf-bubble.c:592
+#: gnome-flashback/libnotifications/nd-notification-box.c:325
+#: gnome-flashback/libnotifications/nd-notification-box.c:327
+msgid "Closes the notification."
+msgstr "Zavírá upozornění."
+
+#: gnome-flashback/libnotifications/gf-bubble.c:612
+#: gnome-flashback/libnotifications/gf-bubble.c:643
+#: gnome-flashback/libnotifications/nd-notification-box.c:343
+msgid "Notification summary text."
+msgstr "Souhrnný text upozornění."
+
+#: gnome-flashback/libnotifications/gf-bubble.c:662
+msgid "Notification"
+msgstr "Upozornění"
+
+#: gnome-flashback/libnotifications/nd-daemon.c:100
+msgid "Invalid notification identifier"
+msgstr "Neplatný identifikátor upozornění"
+
+#: gnome-flashback/libnotifications/nd-daemon.c:181
+msgid "Exceeded maximum number of notifications"
+msgstr "Byl překročen maximální počet upozornění."
+
+#: gnome-flashback/libnotifications/nd-notification-box.c:363
+msgid "Notification body text."
+msgstr "Text v těle upozornění."
+
+#: gnome-flashback/libnotifications/nd-queue.c:449
+msgid "Clear all notifications"
+msgstr "Smazat všechna upozornění"
+
+#: gnome-flashback/libnotifications/nd-queue.c:878
+msgid "Notifications"
+msgstr "Upozornění"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:93
 #, c-format
@@ -781,21 +876,46 @@ msgstr "Záložní zdroj"
 msgid "Battery"
 msgstr "Baterie"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:283
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:320
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:344
 msgid "Output"
 msgstr "Výstup"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:286
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:323
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:343
 msgid "Sound Output Volume"
 msgstr "Hlasitost zvukového výstupu"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:293
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:330
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:350
 msgid "Input"
 msgstr "Vstup"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:296
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:333
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:349
 msgid "Microphone Volume"
 msgstr "Hlasitost mikrofonu"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:161
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
+msgid "Muted"
+msgstr "Ztišeno"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:395
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "Selhalo spuštění předvoleb zvuku: %s"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:452
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:280
+msgid "_Mute"
+msgstr "_Ztišit"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:460
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:289
+msgid "_Sound Preferences"
+msgstr "_Předvolby zvuku"
 
 #: gnome-flashback/libsound-applet/gvc-channel-bar.c:537
 #: gnome-flashback/libsound-applet/gvc-channel-bar.c:546
@@ -810,13 +930,13 @@ msgstr "Nezesíleno"
 
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1828
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1866
 msgid "Disabled"
 msgstr "Zakázáno"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1835
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1873
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -826,7 +946,7 @@ msgstr[2] "%u výstupů"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1845
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -834,23 +954,6 @@ msgstr[0] "%u vstup"
 msgstr[1] "%u vstupy"
 msgstr[2] "%u vstupů"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2371
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Systémové zvuky"
-
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:293
-#, c-format
-msgid "Failed to start Sound Preferences: %s"
-msgstr "Selhalo spuštění předvoleb zvuku: %s"
-
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:318
-msgid "_Mute"
-msgstr "_Ztišit"
-
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:327
-msgid "_Sound Preferences"
-msgstr "_Předvolby zvuku"
-
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:457
-msgid "Muted"
-msgstr "Ztišeno"
