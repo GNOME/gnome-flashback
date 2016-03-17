@@ -4,7 +4,7 @@
 <moduleset>
   <repository type="git" name="git.gnome.org" default="yes" href="git://git.gnome.org/" />
   <repository type="tarball" name="launchpad-tar" href="https://launchpad.net/" />
-  <repository type="git" name="github.com" href="git://github.com/" />
+  <repository type="tarball" name="github-tar" href="https://github.com/" />
 
   <include href="https://git.gnome.org/browse/jhbuild/plain/modulesets/gnome-apps-3.18.modules" />
 
@@ -138,6 +138,15 @@
       <dep package="intltool" />
       <dep package="gtk+" />
       <dep package="libxklavier" />
+    </dependencies>
+  </autotools>
+
+  <autotools id="libpinyin">
+    <branch repo="github-tar" version="1.1.0" checkoutdir="libpinyin-${version}"
+            module="https://github.com/libpinyin/libpinyin/archive/${version}.tar.gz"
+            hash="sha256:6b7109c77f1182859ccb9455d780acd77f3288b027eb15d20ebe8cf68bf6b44e" />
+    <dependencies>
+      <dep package="glib" />
     </dependencies>
   </autotools>
 

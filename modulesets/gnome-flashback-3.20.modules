@@ -143,6 +143,13 @@
     </dependencies>
   </autotools>
 
+  <autotools id="libpinyin">
+    <branch repo="github.com" module="libpinyin/libpinyin" />
+    <dependencies>
+      <dep package="glib" />
+    </dependencies>
+  </autotools>
+
   <autotools id="libstatus-notifier">
     <branch repo="github.com" module="albertsmuktupavels/libstatus-notifier" />
     <dependencies>
