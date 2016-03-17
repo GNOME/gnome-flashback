@@ -6,7 +6,7 @@
   <repository type="tarball" name="launchpad-tar" href="https://launchpad.net/" />
   <repository type="git" name="github.com" href="git://github.com/" />
 
-  <include href="https://git.gnome.org/browse/gnome-modulesets/plain/gnome-world.modules?h=gnome-3-18" />
+  <include href="https://git.gnome.org/browse/jhbuild/plain/modulesets/gnome-apps-3.18.modules" />
 
   <cmake id="compiz" force-non-srcdir-builds="yes"
          cmakeargs="-DCOMPIZ_BUILD_TESTING=OFF -DBUILD_KDE4=Off -DCOMPIZ_WERROR=OFF -DUSE_GCONF=OFF -DUSE_GSETTINGS=ON -DCOMPIZ_DEFAULT_PLUGINS=core,composite,opengl,decor,resize,place,move">
@@ -107,10 +107,43 @@
     </suggests>
   </autotools>
 
+  <autotools id="gnome-screensaver">
+    <branch/>
+    <dependencies>
+      <dep package="intltool" />
+      <dep package="gtk+" />
+      <dep package="dbus-glib" />
+      <dep package="gnome-menus" />
+      <dep package="gnome-desktop" />
+      <dep package="libgnomekbd" />
+    </dependencies>
+    <suggests>
+      <dep package="libnotify" />
+    </suggests>
+  </autotools>
+
+  <autotools id="gucharmap">
+    <branch/>
+    <dependencies>
+      <dep package="intltool"/>
+      <dep package="glib"/>
+      <dep package="gtk+"/>
+      <dep package="yelp-tools"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libgnomekbd">
+    <branch/>
+    <dependencies>
+      <dep package="intltool" />
+      <dep package="gtk+" />
+      <dep package="libxklavier" />
+    </dependencies>
+  </autotools>
+
   <autotools id="metacity">
     <branch revision="gnome-3-18" />
     <dependencies>
-      <dep package="intltool" />
       <dep package="gdk-pixbuf" />
       <dep package="gtk+" />
       <dep package="gsettings-desktop-schemas" />
