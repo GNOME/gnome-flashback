@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2016-03-19 21:11+0000\n"
-"PO-Revision-Date: 2016-03-20 09:47+0100\n"
+"PO-Revision-Date: 2016-03-20 09:49+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -37,7 +37,7 @@ msgstr "Spravuje vaše sieťové pripojenia"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:5
 msgid "nm-device-wireless"
-msgstr ""
+msgstr "nm-device-wireless"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:4
 msgid "Screensaver (GNOME Flashback)"
@@ -49,7 +49,7 @@ msgstr "Spustí šetrič obrazovky a program na uzamykanie"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:6
 msgid "preferences-desktop-screensaver"
-msgstr ""
+msgstr "preferences-desktop-screensaver"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -61,7 +61,7 @@ msgstr "Osobné nastavenia"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:6
 msgid "preferences-desktop"
-msgstr ""
+msgstr "preferences-desktop"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
@@ -73,7 +73,7 @@ msgstr "Zmení systémové nastavenia (ovplyvní všetkých používateľov)"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:6
 msgid "preferences-system"
-msgstr ""
+msgstr "preferences-system"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
 msgid "Audio device selection"
@@ -281,13 +281,15 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
 msgid "Workarounds"
-msgstr ""
+msgstr "Náhradné riešenia"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:109
 msgid ""
 "If set to true, then GNOME Flashback application will use workarounds to fix "
 "bugs."
 msgstr ""
+"Ak je nastavené na true, aplikácia Klasické prostredie GNOME použije "
+"náhradné riešenia na opravenie chýb."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:121
 msgid "Fade the background on change"
