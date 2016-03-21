@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-18 07:41+0000\n"
-"PO-Revision-Date: 2015-10-18 13:03+0300\n"
-"Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
+"POT-Creation-Date: 2016-03-21 09:13+0000\n"
+"PO-Revision-Date: 2016-03-21 13:58+0200\n"
+"Last-Translator: Yannis Koutsoukos <giankoyt@gmail.com>\n"
 "Language-Team: team@lists.gnome.gr\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Project-Style: gnome\n"
 
 #: data/applications/gnome-flashback.desktop.in:4
@@ -46,7 +46,8 @@ msgstr "Προφύλαξη οθόνης (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:5
 msgid "Launch screensaver and locker program"
-msgstr "Έναρξη της προφύλαξης οθόνης και του προγράμματος κλειδώματος υπολογιστή"
+msgstr ""
+"Έναρξη της προφύλαξης οθόνης και του προγράμματος κλειδώματος υπολογιστή"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:6
 msgid "preferences-desktop-screensaver"
@@ -78,10 +79,25 @@ msgid "preferences-system"
 msgstr "preferences-system"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
+msgid "Audio device selection"
+msgstr "Επιλογή συσκευής ήχου"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:7
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to show the "
+#| "end session dialog."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide the "
+"audio device selection dialog."
+msgstr ""
+"Αν οριστεί σε αληθές, τότε η εφαρμογή GNOME Flashback θα χρησιμοποιηθεί ώστε "
+"να παρέχει το πλαίσιο διαλόγου επιλογής συσκευής ήχου."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
 msgid "Automount manager"
 msgstr "Διαχειριστής αυτόματης προσάρτησης"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:7
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:13
 msgid ""
 "If set to true, then GNOME Flashback application will be used to automount "
 "removable media."
@@ -89,23 +105,23 @@ msgstr ""
 "Αν οριστεί σε αληθές, τότε η εφαρμογή του GNOME Flashback θα χρησιμοποιηθεί "
 "για την αυτόματη προσάρτηση αφαιρούμενων μέσων."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
 msgid "Bluetooth applet"
 msgstr "Μικροεφαρμογή Bluetooth"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:13
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:19
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "Bluetooth applet."
 msgstr ""
-"Αν οριστεί σε αληθές, τότε η εφαρμογή GNOME Flashback θα χρησιμοποιηθεί για να "
-"εμφανίσει μια μικροεφαρμογή Bluetooth."
+"Αν οριστεί σε αληθές, τότε η εφαρμογή GNOME Flashback θα χρησιμοποιηθεί για "
+"να εμφανίσει μια μικροεφαρμογή Bluetooth."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
 msgid "Desktop background"
 msgstr "Παρασκήνιο επιφάνειας εργασίας"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:19
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:25
 msgid ""
 "If set to true, then GNOME Flashback application will be used to draw the "
 "desktop background."
@@ -113,11 +129,11 @@ msgstr ""
 "Αν οριστεί σε αληθές, τότε η εφαρμογή GNOME Flashback θα χρησιμοποιηθεί ώστε "
 "να σχεδιάσει το παρασκήνιο της επιφάνειας εργασίας."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
 msgid "Display configuration"
 msgstr "Διαμόρφωση οθόνης"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:25
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:31
 msgid ""
 "If set to true, then GNOME Flashback application will be used to provide the "
 "display configuration."
@@ -125,23 +141,23 @@ msgstr ""
 "Αν οριστεί σε αληθές, τότε η εφαρμογή GNOME Flashback θα χρησιμοποιηθεί ώστε "
 "να δώσει τη διαμόρφωση οθόνης."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
 msgid "End session dialog"
 msgstr "Τέλος συνεδρίας διαλόγου"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:31
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:37
 msgid ""
-"If set to true, then GNOME Flashback application will be used to show the end "
-"session dialog."
+"If set to true, then GNOME Flashback application will be used to show the "
+"end session dialog."
 msgstr ""
 "Αν οριστεί σε αληθές, τότε η εφαρμογή GNOME Flashback θα χρησιμοποιηθεί ώστε "
 "να εμφανίσει το τέλος της συνεδρίας διαλόγου."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:42
 msgid "Idle monitor"
 msgstr "Αδρανής οθόνη"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:37
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:43
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
@@ -149,11 +165,11 @@ msgstr ""
 "Αν οριστεί σε αληθές, τότε η εφαρμογή GNOME Flashback θα χρησιμοποιηθεί για "
 "παρακολούθηση της δραστηριότητας των χρηστών."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:42
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:48
 msgid "Keyboard layouts and input methods"
 msgstr "Διατάξεις πληκτρολογίου και μέθοδοι εισαγωγής"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:43
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -162,34 +178,49 @@ msgstr ""
 "για τη διαχείρηση των διατάξεων του πληκτρολογίου και των μεθόδων εισαγωγής "
 "του."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:48
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
+msgid "Notification daemon"
+msgstr "Υπηρεσία ειδοποίησης"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to take "
+#| "screenshots."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"notifications."
+msgstr ""
+"Αν οριστεί σε αληθές, τότε η εφαρμογή του GNOME Flashback θα χρησιμοποιηθεί "
+"για τη διαχείριση των ειδοποιήσεων."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:60
 msgid "Authentication agent for polkit"
 msgstr "Πράκτορας πιστοποίοησης για το polkit"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
 "Αυτός είναι ο ίδιος πράκτορας πιστοποίησης που παρέχεται από το PolicyKit-"
 "gnome."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:66
 msgid "Power applet"
 msgstr "Μικροεφαρμογή Ενέργεια"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
 msgid ""
-"If set to true, then GNOME Flashback application will be used to show a power "
-"applet."
+"If set to true, then GNOME Flashback application will be used to show a "
+"power applet."
 msgstr ""
-"Αν οριστεί σε αληθές, τότε η εφαρμογή GNOME Flashback θα χρησιμοποιηθεί για να "
-"εμφανίσει μια μικροεφαρμογή ενέργειας."
+"Αν οριστεί σε αληθές, τότε η εφαρμογή GNOME Flashback θα χρησιμοποιηθεί για "
+"να εμφανίσει μια μικροεφαρμογή ενέργειας."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:60
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
 msgid "Screencasts"
 msgstr "Βίντεο στιγμιοτύπων οθόνης"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -197,11 +228,26 @@ msgstr ""
 "Αν οριστεί σε αληθές, τότε η εφαρμογή GNOME Flashback θα χρησιμοποιηθεί για "
 "την εγγραφή της οθόνης."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:66
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
+#| msgid "Screenshots"
+msgid "Screensaver"
+msgstr "Προστασία οθόνης"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used as a shell."
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a "
+"screensaver."
+msgstr ""
+"Αν οριστεί σε αληθές, τότε η εφαρμογή GNOME Flashback θα χρησιμοποιηθεί ως "
+"προστασία οθόνης."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
 msgid "Screenshots"
 msgstr "Στιγμιότυπα"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -209,35 +255,50 @@ msgstr ""
 "Αν οριστεί σε αληθές, τότε η εφαρμογή του GNOME Flashback θα χρησιμοποιηθεί "
 "για τη λήψη στιγμιοτύπων."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid "Shell"
 msgstr "Κέλυφος"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
-msgid "If set to true, then GNOME Flashback application will be used as a shell."
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a shell."
 msgstr ""
 "Αν οριστεί σε αληθές, τότε η εφαρμογή GNOME Flashback θα χρησιμοποιηθεί ως "
 "κέλυφος."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
 msgid "Sound applet"
 msgstr "Μικροεφαρμογή ήχου"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid ""
-"If set to true, then GNOME Flashback application will be used to show a sound "
-"applet. This is the same sound applet that used to be a part of GNOME Control "
-"Center."
+"If set to true, then GNOME Flashback application will be used to show a "
+"sound applet. This is the same sound applet that used to be a part of GNOME "
+"Control Center."
 msgstr ""
 "Αν οριστεί σε αληθές, τότε η εφαρμογή GNOME Flashback θα χρησιμοποιηθεί ώστε "
-"να δείξει μια μικροεφαρμογή ήχου. Είναι η ίδια μικροεφαρμογή ήχου που υπάρχει "
-"στον πίνακα ελέγχου του GNOME."
+"να δείξει μια μικροεφαρμογή ήχου. Είναι η ίδια μικροεφαρμογή ήχου που "
+"υπάρχει στον πίνακα ελέγχου του GNOME."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:102
+msgid "Status Notifier Watcher"
+msgstr "Κατάσταση ειδοποιητή παρατηρητή"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used as a shell."
+msgid ""
+"If set to true, then GNOME Flashback application will be used as Status "
+"Notifier Watcher."
+msgstr ""
+"Αν οριστεί σε αληθές, τότε η εφαρμογή GNOME Flashback θα χρησιμοποιηθεί ως  "
+"ειδοποιητής παρατηρητή"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
 msgid "Workarounds"
 msgstr "Παρακάμψεις"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:109
 msgid ""
 "If set to true, then GNOME Flashback application will use workarounds to fix "
 "bugs."
@@ -245,70 +306,71 @@ msgstr ""
 "Αν οριστεί σε αληθές, τότε η εφαρμογή GNOME Flashback θα χρησιμοποιήσει "
 "παρακάμψεις για να διορθώσει σφάλματα."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:121
 msgid "Fade the background on change"
 msgstr "Ξεθώριασμα του παρασκηνίου στην αλλαγή"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:98
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:122
 msgid ""
-"If set to true, then fade effect will be used to change the desktop background."
+"If set to true, then fade effect will be used to change the desktop "
+"background."
 msgstr ""
 "Αν οριστεί σε αληθές, τότε θα χρησιμοποιηθεί το εφέ ξεθωριάσματος για αλλαγή "
 "του παρασκηνίου της επιφάνειας εργασίας."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:131
 msgid "The background color for the status icon."
 msgstr "Χρώμα παρασκηνίου για το εικονίδιο κατάστασης."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:132
 msgid ""
 "This contains the background color for the status icon that is shown in the "
 "system tray."
 msgstr ""
-"Περιέχει το χρώμα παρασκηνίου για το εικονίδιο κατάστασης το οποίο εμφανίζεται "
-"στην περιοχή συστήματος."
+"Περιέχει το χρώμα παρασκηνίου για το εικονίδιο κατάστασης το οποίο "
+"εμφανίζεται στην περιοχή συστήματος."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:137
 msgid "The foreground color for the status icon."
 msgstr "Χρώμα προσκηνίου για το εικονίδιο κατάστασης."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:138
 msgid ""
 "This contains the foreground color for the status icon that is shown in the "
 "system tray."
 msgstr ""
-"Περιέχει το χρώμα προσκηνίου για το εικονίδιο κατάστασης το οποίο εμφανίζεται "
-"στην περιοχή συστήματος."
+"Περιέχει το χρώμα προσκηνίου για το εικονίδιο κατάστασης το οποίο "
+"εμφανίζεται στην περιοχή συστήματος."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:123
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:147
 msgid "Fix missing app menu button"
 msgstr "Διόρθωση ελλείποντος κουμπιού μενού εφαρμογών"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:124
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:148
 msgid ""
 "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
-"FALSE. Disable if you want to use gnome-settings-daemon overrides in xsettings "
-"plugin for 'Gtk/ShellShowsAppMenu' property."
+"FALSE. Disable if you want to use gnome-settings-daemon overrides in "
+"xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
 msgstr ""
 "Αν οριστεί σε αληθές, τότε το Flashback Gnome θα εξαναγκάσει το Gtk/"
-"ShellShowsAppMenu σε FALSE. Απενεργοποιήστε το αν θέλετε να χρησιμοποιήσετε το "
-"gnome-settings-daemon ώστε να υπερισχύει του προσθέτου xsettings για την "
+"ShellShowsAppMenu σε FALSE. Απενεργοποιήστε το αν θέλετε να χρησιμοποιήσετε "
+"το gnome-settings-daemon ώστε να υπερισχύει του προσθέτου xsettings για την "
 "ιδιότητα 'Gtk/ShellShowsAppMenu'."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:129
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:153
 msgid "Fix wrong button layout"
 msgstr "Διόρθωση εσφαλμένης διάταξης κουμπιού"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:130
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:154
 msgid ""
 "If set to non-empty string, then gnome-flashback will force Gtk/"
-"DecorationLayout to value set by this setting. Set to empty string if you want "
-"to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
+"DecorationLayout to value set by this setting. Set to empty string if you "
+"want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
 "DecorationLayout' property."
 msgstr ""
-"Αν οριστεί σε μη κενή συμβολοσειρά, τότε το gnome-flashback θα εξαναγκάσει το "
-"Gtk/DecorationLayout σε τιμή που ορίζεται από αυτή τη ρύθμιση. Ορίστε το σε "
-"κενή συμβολοσειρά, αν θέλετε το gnome-settings-daemon να υπερισχύει του "
+"Αν οριστεί σε μη κενή συμβολοσειρά, τότε το gnome-flashback θα εξαναγκάσει "
+"το Gtk/DecorationLayout σε τιμή που ορίζεται από αυτή τη ρύθμιση. Ορίστε το "
+"σε κενή συμβολοσειρά, αν θέλετε το gnome-settings-daemon να υπερισχύει του "
 "προσθέτου xsettings για την ιδιότητα 'Gtk/DecorationLayout'."
 
 #: data/xsessions/gnome-flashback-compiz.desktop.in.in:3
@@ -443,11 +505,11 @@ msgstr "Επιλέξτε την εφαρμογή που θα εκκινηθεί.
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:747
 #, c-format
 msgid ""
-"Select how to open \"%s\" and whether to perform this action in the future for "
-"other media of type \"%s\"."
+"Select how to open \"%s\" and whether to perform this action in the future "
+"for other media of type \"%s\"."
 msgstr ""
-"Επιλέξτε πώς θα ανοίξετε το \"%s\" και αν θα εκτελέσετε αυτήν την ενέργεια στο "
-"μέλλον για άλλα μέσα του τύπου \"%s\"."
+"Επιλέξτε πώς θα ανοίξετε το \"%s\" και αν θα εκτελέσετε αυτήν την ενέργεια "
+"στο μέλλον για άλλα μέσα του τύπου \"%s\"."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:774
 msgid "_Always perform this action"
@@ -640,8 +702,8 @@ msgid ""
 "Waiting for these applications to finish. Interrupting them can lead to loss "
 "of data."
 msgstr ""
-"Αναμονή των εφαρμογών αυτών να τελειώσουν. Η διακοπή τους μπορεί να προκαλέσει "
-"απώλεια δεδομένων."
+"Αναμονή των εφαρμογών αυτών να τελειώσουν. Η διακοπή τους μπορεί να "
+"προκαλέσει απώλεια δεδομένων."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
 msgid "Cancel"
@@ -651,13 +713,50 @@ msgstr "Ακύρωση"
 msgid "Lock Screen"
 msgstr "Οθόνη κλειδώματος"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:356
+#: gnome-flashback/libinput-sources/gf-input-sources.c:358
 msgid "Show Keyboard Layout"
 msgstr "Εμφάνιση διάταξης πληκτρολογίου"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:419
+#: gnome-flashback/libinput-sources/gf-input-sources.c:421
 msgid "Keyboard"
 msgstr "Πληκτρολόγιο"
+
+#: gnome-flashback/libnotifications/gf-bubble.c:588
+#: gnome-flashback/libnotifications/gf-bubble.c:592
+#: gnome-flashback/libnotifications/nd-notification-box.c:325
+#: gnome-flashback/libnotifications/nd-notification-box.c:327
+msgid "Closes the notification."
+msgstr "Κλείνει την ειδοποίηση."
+
+#: gnome-flashback/libnotifications/gf-bubble.c:612
+#: gnome-flashback/libnotifications/gf-bubble.c:643
+#: gnome-flashback/libnotifications/nd-notification-box.c:343
+msgid "Notification summary text."
+msgstr " Περίληψη κειμένου ειδοποίησης."
+
+#: gnome-flashback/libnotifications/gf-bubble.c:662
+msgid "Notification"
+msgstr "Ειδοποίηση"
+
+#: gnome-flashback/libnotifications/nd-daemon.c:100
+msgid "Invalid notification identifier"
+msgstr "Μη έγκυρο αναγνωριστικό ειδοποίησης"
+
+#: gnome-flashback/libnotifications/nd-daemon.c:181
+msgid "Exceeded maximum number of notifications"
+msgstr "Υπέρβαση μέγιστου αριθμού κοινοποιήσεων"
+
+#: gnome-flashback/libnotifications/nd-notification-box.c:363
+msgid "Notification body text."
+msgstr "Σώμα κειμένου ειδοποίησης"
+
+#: gnome-flashback/libnotifications/nd-queue.c:449
+msgid "Clear all notifications"
+msgstr "Εκκαθάριση όλων των ειδοποιήσεων"
+
+#: gnome-flashback/libnotifications/nd-queue.c:878
+msgid "Notifications"
+msgstr "Ειδοποιήσεις"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:93
 #, c-format
@@ -785,21 +884,46 @@ msgstr "UPS"
 msgid "Battery"
 msgstr "Μπαταρία"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:283
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:320
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:344
 msgid "Output"
 msgstr "Έξοδος"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:286
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:323
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:343
 msgid "Sound Output Volume"
 msgstr "Ένταση ήχου εξόδου"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:293
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:330
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:350
 msgid "Input"
 msgstr "Είσοδος"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:296
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:333
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:349
 msgid "Microphone Volume"
 msgstr "Ένταση μικροφώνου"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:161
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
+msgid "Muted"
+msgstr "Σίγαση"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:395
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "Αποτυχία εκκίνησης του Προτιμήσεις ήχου: %s"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:452
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:280
+msgid "_Mute"
+msgstr "_Σίγαση"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:460
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:289
+msgid "_Sound Preferences"
+msgstr "_Προτιμήσεις ήχου"
 
 #: gnome-flashback/libsound-applet/gvc-channel-bar.c:537
 #: gnome-flashback/libsound-applet/gvc-channel-bar.c:546
@@ -814,13 +938,13 @@ msgstr "Χωρίς ενίσχυση"
 
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1828
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1866
 msgid "Disabled"
 msgstr "Απενεργοποιημένη"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1835
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1873
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -829,33 +953,16 @@ msgstr[1] "%u έξοδοι"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1845
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u είσοδος"
 msgstr[1] "%u είσοδοι"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2371
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Ήχοι συστήματος"
-
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:293
-#, c-format
-msgid "Failed to start Sound Preferences: %s"
-msgstr "Αποτυχία εκκίνησης του Προτιμήσεις ήχου: %s"
-
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:318
-msgid "_Mute"
-msgstr "_Σίγαση"
-
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:327
-msgid "_Sound Preferences"
-msgstr "_Προτιμήσεις ήχου"
-
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:457
-msgid "Muted"
-msgstr "Σίγαση"
 
 #~ msgid "Authentication Failure"
 #~ msgstr "Αποτυχία πιστοποίησης"
