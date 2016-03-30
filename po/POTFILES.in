@@ -10,6 +10,7 @@ data/schemas/org.gnome.gnome-flashback.gschema.xml
 data/xsessions/gnome-flashback-compiz.desktop.in.in
 data/xsessions/gnome-flashback-metacity.desktop.in.in
 gnome-flashback/gf-main.c
+gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c
 gnome-flashback/libautomount-manager/gsd-automount-manager.c
 gnome-flashback/libautomount-manager/gsd-autorun.c
 gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c

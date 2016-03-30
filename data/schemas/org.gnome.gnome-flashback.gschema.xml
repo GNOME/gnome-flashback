@@ -1,7 +1,7 @@
 <schemalist gettext-domain="gnome-flashback">
   <schema id="org.gnome.gnome-flashback" path="/org/gnome/gnome-flashback/">
 
-    <key name="audio-selection" type="b">
+    <key name="audio-device-selection" type="b">
       <default>true</default>
       <summary>Audio device selection</summary>
       <description>If set to true, then GNOME Flashback application will be used to provide the audio device selection dialog.</description>

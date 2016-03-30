@@ -15,18 +15,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GF_AUDIO_SELECTION_H
-#define GF_AUDIO_SELECTION_H
+#ifndef GF_AUDIO_DEVICE_SELECTION_DIALOG_H
+#define GF_AUDIO_DEVICE_SELECTION_DIALOG_H
 
-#include <glib-object.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-#define GF_TYPE_AUDIO_SELECTION gf_audio_selection_get_type ()
-G_DECLARE_FINAL_TYPE (GfAudioSelection, gf_audio_selection,
-                      GF, AUDIO_SELECTION, GObject)
+#define GF_TYPE_AUDIO_DEVICE_SELECTION_DIALOG gf_audio_device_selection_dialog_get_type ()
+G_DECLARE_FINAL_TYPE (GfAudioDeviceSelectionDialog, gf_audio_device_selection_dialog,
+                      GF, AUDIO_DEVICE_SELECTION_DIALOG, GtkWindow)
 
-GfAudioSelection *gf_audio_selection_new (void);
+GtkWidget   *gf_audio_device_selection_dialog_new        (const gchar                  *sender,
+                                                          const gchar *const           *devices);
+
+const gchar *gf_audio_device_selection_dialog_get_sender (GfAudioDeviceSelectionDialog *dialog);
 
 G_END_DECLS
 

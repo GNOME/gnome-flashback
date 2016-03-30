@@ -1,7 +1,7 @@
 NULL =
 
 SUBDIRS = \
-	libaudio-selection \
+	libaudio-device-selection \
 	libautomount-manager \
 	libbluetooth-applet \
 	libcommon \
@@ -53,7 +53,7 @@ gnome_flashback_LDFLAGS = \
 
 gnome_flashback_LDADD = \
 	$(GNOME_FLASHBACK_LIBS) \
-	$(top_builddir)/gnome-flashback/libaudio-selection/libaudio-selection.la \
+	$(top_builddir)/gnome-flashback/libaudio-device-selection/libaudio-device-selection.la \
 	$(top_builddir)/gnome-flashback/libautomount-manager/libautomount-manager.la \
 	$(top_builddir)/gnome-flashback/libbluetooth-applet/libbluetooth-applet.la \
 	$(top_builddir)/gnome-flashback/libdesktop-background/libdesktop-background.la \

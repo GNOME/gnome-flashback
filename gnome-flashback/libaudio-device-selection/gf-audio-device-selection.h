@@ -15,29 +15,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
+#ifndef GF_AUDIO_DEVICE_SELECTION_H
+#define GF_AUDIO_DEVICE_SELECTION_H
 
-#include "gf-audio-selection.h"
+#include <glib-object.h>
 
-struct _GfAudioSelection
-{
-  GObject parent;
-};
+G_BEGIN_DECLS
 
-G_DEFINE_TYPE (GfAudioSelection, gf_audio_selection, G_TYPE_OBJECT)
+#define GF_TYPE_AUDIO_DEVICE_SELECTION gf_audio_device_selection_get_type ()
+G_DECLARE_FINAL_TYPE (GfAudioDeviceSelection, gf_audio_device_selection,
+                      GF, AUDIO_DEVICE_SELECTION, GObject)
 
-static void
-gf_audio_selection_class_init (GfAudioSelectionClass *audio_selection_class)
-{
-}
+GfAudioDeviceSelection *gf_audio_device_selection_new (void);
 
-static void
-gf_audio_selection_init (GfAudioSelection *audio_selection)
-{
-}
+G_END_DECLS
 
-GfAudioSelection *
-gf_audio_selection_new (void)
-{
-  return g_object_new (GF_TYPE_AUDIO_SELECTION, NULL);
-}
+#endif

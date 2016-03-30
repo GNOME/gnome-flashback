@@ -21,7 +21,7 @@
 #include <gtk/gtk.h>
 
 #include "gf-application.h"
-#include "libaudio-selection/gf-audio-selection.h"
+#include "libaudio-device-selection/gf-audio-device-selection.h"
 #include "libautomount-manager/gsd-automount-manager.h"
 #include "libbluetooth-applet/gf-bluetooth-applet.h"
 #include "libdesktop-background/gf-desktop-background.h"
@@ -58,7 +58,7 @@ struct _GfApplication
   FlashbackIdleMonitor   *idle_monitor;
   FlashbackPolkit        *polkit;
   FlashbackShell         *shell;
-  GfAudioSelection       *audio_selection;
+  GfAudioDeviceSelection *audio_device_selection;
   GfBluetoothApplet      *bluetooth;
   GfDesktopBackground    *background;
   GfEndSessionDialog     *dialog;
@@ -156,7 +156,7 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (idle_monitor, "idle-monitor", flashback_idle_monitor_new)
   SETTING_CHANGED (polkit, "polkit", flashback_polkit_new)
   SETTING_CHANGED (shell, "shell", flashback_shell_new)
-  SETTING_CHANGED (audio_selection, "audio-selection", gf_audio_selection_new)
+  SETTING_CHANGED (audio_device_selection, "audio-device-selection", gf_audio_device_selection_new)
   SETTING_CHANGED (bluetooth, "bluetooth-applet", gf_bluetooth_applet_new)
   SETTING_CHANGED (background, "desktop-background", gf_desktop_background_new)
   SETTING_CHANGED (dialog, "end-session-dialog", gf_end_session_dialog_new)
@@ -201,7 +201,7 @@ gf_application_dispose (GObject *object)
   g_clear_object (&application->idle_monitor);
   g_clear_object (&application->polkit);
   g_clear_object (&application->shell);
-  g_clear_object (&application->audio_selection);
+  g_clear_object (&application->audio_device_selection);
   g_clear_object (&application->bluetooth);
   g_clear_object (&application->background);
   g_clear_object (&application->dialog);
