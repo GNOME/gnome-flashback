@@ -155,21 +155,6 @@ bus_acquired_handler (GDBusConnection *connection,
 }
 
 static void
-test (GfAudioDeviceSelection *ads)
-{
-  const gchar *devices[] = { "headphones", "headset", "microphone", NULL };
-  ads->dialog = gf_audio_device_selection_dialog_new (NULL, devices);
-
-  g_signal_connect (ads->dialog, "close", G_CALLBACK (close_cb), ads);
-  g_signal_connect (ads->dialog, "selected", G_CALLBACK (selected_cb), ads);
-
-  g_signal_connect (ads->dialog, "delete-event",
-                    G_CALLBACK (delete_event_cb), ads);
-
-  gtk_window_present (GTK_WINDOW (ads->dialog));
-}
-
-static void
 gf_audio_device_selection_dispose (GObject *object)
 {
   GfAudioDeviceSelection *ads;
@@ -223,8 +208,6 @@ gf_audio_device_selection_init (GfAudioDeviceSelection *ads)
                                      AUDIO_DEVICE_SELECTION_DBUS_NAME,
                                      flags, bus_acquired_handler,
                                      NULL, NULL, ads, NULL);
-
-  test (ads);
 }
 
 GfAudioDeviceSelection *
