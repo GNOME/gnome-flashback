@@ -2,4 +2,5 @@
 Type=Directory
 Name=Preferences
 Comment=Personal preferences
+# TRANSLATORS: Don't translate this text (this is icon name)
 Icon=preferences-desktop

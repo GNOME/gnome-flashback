@@ -2,6 +2,7 @@
 Type=Application
 Name=Screensaver (GNOME Flashback)
 Comment=Launch screensaver and locker program
+# TRANSLATORS: Don't translate this text (this is icon name)
 Icon=preferences-desktop-screensaver
 Exec=gnome-screensaver
 TryExec=gnome-screensaver
