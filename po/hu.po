@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-03-04 21:12+0000\n"
-"PO-Revision-Date: 2016-03-04 23:49+0100\n"
-"Last-Translator: Gabor Kelemen <kelemeng at ubuntu dot com>\n"
+"POT-Creation-Date: 2016-03-31 08:27+0000\n"
+"PO-Revision-Date: 2016-03-31 21:33+0200\n"
+"Last-Translator: Meskó Balázs <meskobalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 1.8.7\n"
 
 #: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
@@ -81,9 +81,6 @@ msgid "Audio device selection"
 msgstr "Automatikus eszközválasztás"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:7
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used to show the "
-#| "end session dialog."
 msgid ""
 "If set to true, then GNOME Flashback application will be used to provide the "
 "audio device selection dialog."
@@ -180,9 +177,6 @@ msgid "Notification daemon"
 msgstr "Értesítésdémon"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used to take "
-#| "screenshots."
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
@@ -225,13 +219,10 @@ msgstr ""
 "képernyővideók rögzítéséhez."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
-#| msgid "Screenshots"
 msgid "Screensaver"
 msgstr "Képernyővédő"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used as a shell."
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
@@ -281,8 +272,6 @@ msgid "Status Notifier Watcher"
 msgstr "Állapotértesítés-figyelő"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used as a shell."
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -392,6 +381,42 @@ msgstr "A GNOME Flashback munkamenet előkészítése"
 #: gnome-flashback/gf-main.c:52
 msgid "Replace a currently running application"
 msgstr "Egy jelenleg futó alkalmazás cseréje"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:109
+msgid "Headphones"
+msgstr "Fejhallgató"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:112
+msgid "Headset"
+msgstr "Mikrofonos fejhallgató"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:115
+msgid "Microphone"
+msgstr "Mikrofon"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
+#: gnome-flashback/libsound-applet/gf-sound-item.c:395
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "A Hangbeállítások indítása meghiúsult: %s"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:248
+msgid "What kind of device did you plug in?"
+msgstr "Milyen eszközt csatlakoztatott?"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
+msgid "Sound Settings"
+msgstr "Hangbeállítások"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
+msgid "Cancel"
+msgstr "Mégse"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:285
+msgid "Unknown Audio Device"
+msgstr "Ismeretlen hangeszköz"
 
 #: gnome-flashback/libautomount-manager/gsd-automount-manager.c:177
 #, c-format
@@ -700,10 +725,6 @@ msgstr ""
 "Várakozás az alkalmazások befejeződésére. A megszakításuk adatvesztést "
 "okozhat."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
-msgid "Cancel"
-msgstr "Mégse"
-
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
 msgid "Lock Screen"
 msgstr "Képernyő zárolása"
@@ -902,12 +923,6 @@ msgstr "Mikrofon hangereje"
 #: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
 msgid "Muted"
 msgstr "Némítva"
-
-#: gnome-flashback/libsound-applet/gf-sound-item.c:395
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
-#, c-format
-msgid "Failed to start Sound Preferences: %s"
-msgstr "A Hangbeállítások indítása meghiúsult: %s"
 
 #: gnome-flashback/libsound-applet/gf-sound-item.c:452
 #: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:280
