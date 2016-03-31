@@ -3,23 +3,22 @@
 # This file is distributed under the same license as the gnome-flashback package.
 # Enrico Nicoletto <liverig@gmail.com>, 2014.
 # Felipe Braga <fbobraga@gmail.com>, 2015.
-# Rafael Fontenelle <rffontenelle@gmail.com>, 2014, 2015, 2016.
-#
+# Rafael Fontenelle <rafaelff@gnome.org>, 2014, 2015, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-24 09:12+0000\n"
-"PO-Revision-Date: 2016-02-24 07:54-0300\n"
-"Last-Translator: Rafael Fontenelle <rffontenelle@gmail.com>\n"
+"POT-Creation-Date: 2016-03-31 08:27+0000\n"
+"PO-Revision-Date: 2016-03-31 14:46-0200\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Virtaal 0.7.1\n"
 "X-Project-Style: gnome\n"
 
 #: data/applications/gnome-flashback.desktop.in:4
@@ -384,6 +383,44 @@ msgstr "Inicializar uma sessão do GNOME Flashback"
 msgid "Replace a currently running application"
 msgstr "Substituir um aplicativo atualmente em execução"
 
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:109
+msgid "Headphones"
+msgstr "Fones de ouvido"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:112
+msgid "Headset"
+msgstr "Fone de ouvido com microfone"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:115
+#| msgid "Microphone Volume"
+msgid "Microphone"
+msgstr "Microfone"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
+#: gnome-flashback/libsound-applet/gf-sound-item.c:395
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "Falha ao iniciar as preferências de som: %s"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:248
+msgid "What kind of device did you plug in?"
+msgstr "Que tipo de dispositivo você conectou?"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
+#| msgid "Power Settings"
+msgid "Sound Settings"
+msgstr "Configurações de som"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:285
+msgid "Unknown Audio Device"
+msgstr "Dispositivo de áudio desconhecido"
+
 #: gnome-flashback/libautomount-manager/gsd-automount-manager.c:177
 #, c-format
 msgid "Unable to mount %s"
@@ -687,10 +724,6 @@ msgstr ""
 "Esperando esses aplicativos serem finalizados. Interrompê-los pode levar à "
 "perda de dados."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
-msgid "Cancel"
-msgstr "Cancelar"
-
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
 msgid "Lock Screen"
 msgstr "Bloquear tela"
@@ -887,12 +920,6 @@ msgstr "Volume do microfone"
 #: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
 msgid "Muted"
 msgstr "Mudo"
-
-#: gnome-flashback/libsound-applet/gf-sound-item.c:395
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
-#, c-format
-msgid "Failed to start Sound Preferences: %s"
-msgstr "Falha ao iniciar as preferências de som: %s"
 
 #: gnome-flashback/libsound-applet/gf-sound-item.c:452
 #: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:280
