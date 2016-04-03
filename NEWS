@@ -1,3 +1,21 @@
+Version 3.20.0
+==============
+- Fix crash in display-config with XRandR 1.2. (Alberts Muktupāvels)
+- Implement candidate popup in input-sources. (Sebastian Geiger)
+- Set XDG_CURRENT_DESKTOP if not set. (Alberts Muktupāvels)
+- Remove support for legacy-dirs. (Alberts Muktupāvels)
+- Add notifications, copy of notification-daemon. (Alberts Muktupāvels)
+- Show GNOME Software below all categories in the Applications menu. (Dmitry
+  Shachnev)
+- Add audio device selection dialog, based on gnome-shell. (Alberts Muktupāvels)
+- Updated translations:
+  Alejandro Quiroz (es), Balázs Meskó (hu), Dmitry Shachnev (ru),
+  Dušan Kazik (sk), Gábor Kelemen (hu), Gianvito Cavasoli (it),
+  Γιάννης Κουτσούκος (el), Jordi Mas (ca), Josef Andersson (sv),
+  Kjartan Maraas (nb), Mario Blättermann (de), Marek Černocký (cs),
+  Мирослав Николић (sr, sr@latin), Pedro Albuquerque (pt), Piotr Drąg (pl),
+  Rafael Fontenelle (pt_BR), Stas Solovey (ru), Tom Tryfonidis (el).
+
 Version 3.18.1
 ==============
 - Improved input source switching. (Alberts Muktupāvels, Sebastian Geiger)
