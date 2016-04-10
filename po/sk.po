@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-03-19 21:11+0000\n"
-"PO-Revision-Date: 2016-03-20 09:49+0100\n"
+"POT-Creation-Date: 2016-04-09 20:28+0000\n"
+"PO-Revision-Date: 2016-04-10 09:41+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
@@ -35,7 +35,8 @@ msgstr "Sieť (Klasické prostredie GNOME)"
 msgid "Manage your network connections"
 msgstr "Spravuje vaše sieťové pripojenia"
 
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:5
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
 msgid "nm-device-wireless"
 msgstr "nm-device-wireless"
 
@@ -47,7 +48,8 @@ msgstr "Šetrič obrazovky (Klasické prostredie GNOME)"
 msgid "Launch screensaver and locker program"
 msgstr "Spustí šetrič obrazovky a program na uzamykanie"
 
-#: data/autostart/gnome-flashback-screensaver.desktop.in:6
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/autostart/gnome-flashback-screensaver.desktop.in:7
 msgid "preferences-desktop-screensaver"
 msgstr "preferences-desktop-screensaver"
 
@@ -59,7 +61,8 @@ msgstr "Nastavenia"
 msgid "Personal preferences"
 msgstr "Osobné nastavenia"
 
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:6
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
 msgid "preferences-desktop"
 msgstr "preferences-desktop"
 
@@ -71,7 +74,8 @@ msgstr "Správa"
 msgid "Change system-wide settings (affects all users)"
 msgstr "Zmení systémové nastavenia (ovplyvní všetkých používateľov)"
 
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:6
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
 msgid "preferences-system"
 msgstr "preferences-system"
 
@@ -381,6 +385,42 @@ msgstr "Zaháji reláciu klasického prostredia GNOME"
 #: gnome-flashback/gf-main.c:52
 msgid "Replace a currently running application"
 msgstr "Nahradí aktuálne spustenú aplikáciu"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:109
+msgid "Headphones"
+msgstr "Slúchadlá"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:112
+msgid "Headset"
+msgstr "Náhlavná súprava"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:115
+msgid "Microphone"
+msgstr "Mikrofón"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
+#: gnome-flashback/libsound-applet/gf-sound-item.c:395
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "Zlyhalo spustenie nastavení zvuku: %s"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:248
+msgid "What kind of device did you plug in?"
+msgstr "Aký typ zariadenia ste pripojili?"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
+msgid "Sound Settings"
+msgstr "Nastavenia zvuku"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
+msgid "Cancel"
+msgstr "Zrušiť"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:285
+msgid "Unknown Audio Device"
+msgstr "Neznáme audio zariadenie"
 
 #: gnome-flashback/libautomount-manager/gsd-automount-manager.c:177
 #, c-format
@@ -692,10 +732,6 @@ msgstr ""
 "Čaká sa na dokončenie týchto aplikácií. Ich prerušenie môže spôsobiť stratu "
 "údajov."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
-msgid "Cancel"
-msgstr "Zrušiť"
-
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
 msgid "Lock Screen"
 msgstr "Uzamknutá obrazovka"
@@ -894,12 +930,6 @@ msgstr "Hlasitosť mikrofónu"
 #: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
 msgid "Muted"
 msgstr "Stlmené"
-
-#: gnome-flashback/libsound-applet/gf-sound-item.c:395
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
-#, c-format
-msgid "Failed to start Sound Preferences: %s"
-msgstr "Zlyhalo spustenie nastavení zvuku: %s"
 
 #: gnome-flashback/libsound-applet/gf-sound-item.c:452
 #: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:280
