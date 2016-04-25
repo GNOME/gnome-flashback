@@ -47,6 +47,7 @@ typedef struct
   gboolean        url_clicked_lock;
 
   guint           timeout_id;
+  gulong          changed_id;
 } GfBubblePrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (GfBubble, gf_bubble, GF_TYPE_POPUP_WINDOW)
@@ -413,6 +414,12 @@ gf_bubble_dispose (GObject *object)
       priv->timeout_id = 0;
     }
 
+  if (priv->changed_id != 0)
+    {
+      g_signal_handler_disconnect (priv->notification, priv->changed_id);
+      priv->changed_id = 0;
+    }
+
   G_OBJECT_CLASS (gf_bubble_parent_class)->dispose (object);
 }
 
@@ -665,9 +672,9 @@ gf_bubble_new_for_notification (NdNotification *notification)
   priv = gf_bubble_get_instance_private (bubble);
 
   priv->notification = g_object_ref (notification);
-
-  g_signal_connect (notification, "changed",
-                    G_CALLBACK (notification_changed_cb), bubble);
+  priv->changed_id = g_signal_connect (notification, "changed",
+                                       G_CALLBACK (notification_changed_cb),
+                                       bubble);
 
   update_bubble (bubble);
 
