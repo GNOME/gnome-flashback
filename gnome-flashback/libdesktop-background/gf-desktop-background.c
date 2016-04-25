@@ -326,6 +326,8 @@ gf_desktop_background_finalize (GObject *object)
   g_clear_object (&background->gnome_settings);
   g_clear_object (&background->background_settings);
 
+  gtk_widget_destroy (background->background);
+
   G_OBJECT_CLASS (gf_desktop_background_parent_class)->finalize (object);
 }
 
