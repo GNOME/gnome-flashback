@@ -420,21 +420,9 @@ gf_bubble_dispose (GObject *object)
       priv->changed_id = 0;
     }
 
-  G_OBJECT_CLASS (gf_bubble_parent_class)->dispose (object);
-}
-
-static void
-gf_bubble_finalize (GObject *object)
-{
-  GfBubble *bubble;
-  GfBubblePrivate *priv;
-
-  bubble = GF_BUBBLE (object);
-  priv = gf_bubble_get_instance_private (bubble);
-
   g_clear_object (&priv->notification);
 
-  G_OBJECT_CLASS (gf_bubble_parent_class)->finalize (object);
+  G_OBJECT_CLASS (gf_bubble_parent_class)->dispose (object);
 }
 
 static gboolean
@@ -514,7 +502,6 @@ gf_bubble_class_init (GfBubbleClass *bubble_class)
   widget_class = GTK_WIDGET_CLASS (bubble_class);
 
   object_class->dispose = gf_bubble_dispose;
-  object_class->finalize = gf_bubble_finalize;
 
   widget_class->button_release_event = gf_bubble_button_release_event;
   widget_class->get_preferred_width = gf_bubble_get_preferred_width;
