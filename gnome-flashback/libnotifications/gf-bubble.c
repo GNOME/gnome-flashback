@@ -654,6 +654,7 @@ gf_bubble_new_for_notification (NdNotification *notification)
   bubble = g_object_new (GF_TYPE_BUBBLE,
                          "resizable", FALSE,
                          "title", _("Notification"),
+                         "type", GTK_WINDOW_POPUP,
                          NULL);
 
   priv = gf_bubble_get_instance_private (bubble);
