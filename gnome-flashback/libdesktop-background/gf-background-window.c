@@ -316,16 +316,11 @@ set_no_input_and_no_focus (GdkWindow *window)
 }
 
 static void
-gf_background_window_screen_changed (GdkScreen *screen,
-                                     gpointer   user_data)
+set_size_request (GdkScreen *screen,
+                  GtkWidget *widget)
 {
-  GfBackgroundWindow *window;
-  GtkWidget *widget;
   gint width;
   gint height;
-
-  window = GF_BACKGROUND_WINDOW (user_data);
-  widget = GTK_WIDGET (window);
 
   width = gdk_screen_get_width (screen);
   height = gdk_screen_get_height (screen);
@@ -421,14 +416,7 @@ gf_background_window_init (GfBackgroundWindow *window)
   gtk_window = GTK_WINDOW (window);
   gtk_widget = GTK_WIDGET (window);
 
-  g_signal_connect_object (screen, "monitors-changed",
-                           G_CALLBACK (gf_background_window_screen_changed),
-                           window, G_CONNECT_AFTER);
-  g_signal_connect_object (screen, "size-changed",
-                           G_CALLBACK (gf_background_window_screen_changed),
-                           window, G_CONNECT_AFTER);
-
-  gf_background_window_screen_changed (screen, window);
+  set_size_request (screen, gtk_widget);
   gtk_window_set_keep_below (gtk_window, TRUE);
   gtk_widget_add_events (gtk_widget, GDK_STRUCTURE_MASK);
   gtk_widget_realize (gtk_widget);
