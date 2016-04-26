@@ -43,6 +43,10 @@ struct _GfDesktopBackground
   gint              height;
 
   guint             change_idle_id;
+
+  gulong            change_event_id;
+  gulong            monitors_changed_id;
+  gulong            size_changed_id;
 };
 
 G_DEFINE_TYPE (GfDesktopBackground, gf_desktop_background, G_TYPE_OBJECT)
@@ -265,44 +269,27 @@ desktop_background_transitioned (GnomeBG  *bg,
 }
 
 static gboolean
-desktop_background_change_event (GSettings *settings,
-                                 gpointer   keys,
-                                 gint       n_keys,
-                                 gpointer   user_data)
+change_event_cb (GSettings           *settings,
+                 gpointer             keys,
+                 gint                 n_keys,
+                 GfDesktopBackground *background)
 {
-  GfDesktopBackground *background;
-
-  background = GF_DESKTOP_BACKGROUND (user_data);
-
   gnome_bg_load_from_preferences (background->bg, background->gnome_settings);
 
   return TRUE;
 }
 
 static void
-size_allocate (GtkWidget     *widget,
-               GtkAllocation *allocation,
-               gpointer       user_data)
+monitors_changed_cb (GdkScreen           *screen,
+                     GfDesktopBackground *background)
 {
-  GfDesktopBackground *background;
+  queue_background_change (background);
+}
 
-  background = GF_DESKTOP_BACKGROUND (user_data);
-
-  if (background->width == allocation->width &&
-      background->height == allocation->height)
-    {
-      GdkWindow *window;
-      cairo_pattern_t *pattern;
-
-      window = gtk_widget_get_window (background->background);
-      pattern = cairo_pattern_create_for_surface (background->surface);
-
-      gdk_window_set_background_pattern (window, pattern);
-      cairo_pattern_destroy (pattern);
-
-      return;
-    }
-
+static void
+size_changed_cb (GdkScreen           *screen,
+                 GfDesktopBackground *background)
+{
   queue_background_change (background);
 }
 
@@ -310,21 +297,23 @@ static void
 gf_desktop_background_finalize (GObject *object)
 {
   GfDesktopBackground *background;
+  GdkScreen *screen;
 
   background = GF_DESKTOP_BACKGROUND (object);
+  screen = gdk_screen_get_default ();
 
-  g_signal_handlers_disconnect_by_func (background->gnome_settings,
-                                        desktop_background_change_event,
-                                        background);
+  g_signal_handler_disconnect (background->gnome_settings,
+                               background->change_event_id);
+
+  g_signal_handler_disconnect (screen, background->monitors_changed_id);
+  g_signal_handler_disconnect (screen, background->size_changed_id);
 
   g_clear_object (&background->bg);
   g_clear_object (&background->gnome_settings);
+  g_clear_object (&background->background_settings);
 
   free_surface (background);
   free_fade (background);
-
-  g_clear_object (&background->gnome_settings);
-  g_clear_object (&background->background_settings);
 
   gtk_widget_destroy (background->background);
 
@@ -344,21 +333,32 @@ gf_desktop_background_class_init (GfDesktopBackgroundClass *background_class)
 static void
 gf_desktop_background_init (GfDesktopBackground *background)
 {
+  GdkScreen *screen;
+
+  screen = gdk_screen_get_default ();
+
   background->bg = gnome_bg_new ();
   background->gnome_settings = g_settings_new (DESKTOP_BG);
   background->background_settings = g_settings_new (GNOME_FLASHBACK_BG);
+  background->background = gf_background_window_new ();
 
   g_signal_connect (background->bg, "changed",
                     G_CALLBACK (desktop_background_changed), background);
+
   g_signal_connect (background->bg, "transitioned",
                     G_CALLBACK (desktop_background_transitioned), background);
 
-  g_signal_connect (background->gnome_settings, "change-event",
-                    G_CALLBACK (desktop_background_change_event), background);
+  background->change_event_id =
+    g_signal_connect (background->gnome_settings, "change-event",
+                      G_CALLBACK (change_event_cb), background);
 
-  background->background = gf_background_window_new ();
-  g_signal_connect (background->background, "size-allocate",
-                    G_CALLBACK (size_allocate), background);
+  background->monitors_changed_id =
+    g_signal_connect (screen, "monitors-changed",
+                      G_CALLBACK (monitors_changed_cb), background);
+
+  background->size_changed_id =
+    g_signal_connect (screen, "size-changed",
+                      G_CALLBACK (size_changed_cb), background);
 
   gnome_bg_load_from_preferences (background->bg, background->gnome_settings);
 }
