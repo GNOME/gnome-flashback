@@ -514,9 +514,8 @@ nd_queue_finalize (GObject *object)
 
         destroy_screen (queue);
 
-        if (queue->priv->numerable_icon != NULL) {
-                g_object_unref (queue->priv->numerable_icon);
-        }
+        g_clear_object (&queue->priv->numerable_icon);
+        g_clear_object (&queue->priv->status_icon);
 
         G_OBJECT_CLASS (nd_queue_parent_class)->finalize (object);
 }
