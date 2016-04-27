@@ -509,6 +509,7 @@ nd_queue_finalize (GObject *object)
         }
 
         g_hash_table_destroy (queue->priv->notifications);
+        g_hash_table_destroy (queue->priv->bubbles);
         g_queue_free (queue->priv->queue);
 
         destroy_screen (queue);
