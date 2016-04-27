@@ -77,11 +77,15 @@ parse_arguments (int    *argc,
       g_warning ("Failed to parse command line arguments: %s", error->message);
       g_error_free (error);
 
+      g_option_context_free (context);
+
       return FALSE;
     }
 
   if (debug)
     g_setenv ("G_MESSAGES_DEBUG", "all", FALSE);
+
+  g_option_context_free (context);
 
   return TRUE;
 }
