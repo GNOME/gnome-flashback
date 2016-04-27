@@ -281,8 +281,9 @@ parse_settings (GfWorkarounds *workarounds,
           setting->value = value;
           setting->last_change_serial = last_change_serial;
 
-          g_hash_table_insert (settings, (gpointer) x_name, setting);
+          g_hash_table_insert (settings, g_strdup (x_name), setting);
 
+          g_free (x_name);
           x_name = NULL;
           value = NULL;
         }
@@ -429,27 +430,23 @@ static void
 apply_app_menu_workaround (GfWorkarounds *workarounds)
 {
   const gchar *key;
+  XSettingsSetting *old;
   XSettingsSetting *setting;
 
   key = "Gtk/ShellShowsAppMenu";
-  setting = g_hash_table_lookup (workarounds->xsettings, key);
+  old = g_hash_table_lookup (workarounds->xsettings, key);
 
-  if (setting != NULL)
-    {
-      g_hash_table_steal (workarounds->xsettings, key);
-      free_gvalue (setting->value);
-    }
-  else
-    {
-      setting = g_new0 (XSettingsSetting, 1);
-      setting->name = g_strdup (key);
-      setting->type = XSETTINGS_TYPE_INT;
-      setting->last_change_serial = 0;
-    }
-
+  setting = g_new0 (XSettingsSetting, 1);
+  setting->name = g_strdup (key);
+  setting->type = XSETTINGS_TYPE_INT;
   setting->value = g_new0 (GValue, 1);
+  setting->last_change_serial = 0;
+
   g_value_init (setting->value, G_TYPE_INT);
   g_value_set_int (setting->value, 0);
+
+  if (old != NULL)
+    setting->last_change_serial = old->last_change_serial;
 
   g_hash_table_insert (workarounds->xsettings, g_strdup (key), setting);
 }
@@ -458,27 +455,23 @@ static void
 apply_button_layout_workaround (GfWorkarounds *workarounds)
 {
   const gchar *key;
+  XSettingsSetting *old;
   XSettingsSetting *setting;
 
   key = "Gtk/DecorationLayout";
-  setting = g_hash_table_lookup (workarounds->xsettings, key);
+  old = g_hash_table_lookup (workarounds->xsettings, key);
 
-  if (setting != NULL)
-    {
-      g_hash_table_steal (workarounds->xsettings, key);
-      free_gvalue (setting->value);
-    }
-  else
-    {
-      setting = g_new0 (XSettingsSetting, 1);
-      setting->name = g_strdup (key);
-      setting->type = XSETTINGS_TYPE_STRING;
-      setting->last_change_serial = 0;
-    }
-
+  setting = g_new0 (XSettingsSetting, 1);
+  setting->name = g_strdup (key);
+  setting->type = XSETTINGS_TYPE_STRING;
   setting->value = g_new0 (GValue, 1);
+  setting->last_change_serial = 0;
+
   g_value_init (setting->value, G_TYPE_STRING);
   g_value_set_string (setting->value, workarounds->fix_button_layout);
+
+  if (old != NULL)
+    setting->last_change_serial = old->last_change_serial;
 
   g_hash_table_insert (workarounds->xsettings, g_strdup (key), setting);
 }
