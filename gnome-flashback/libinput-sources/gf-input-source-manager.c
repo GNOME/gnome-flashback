@@ -201,7 +201,7 @@ switch_input_changed_cb (GSettings *settings,
         break;
     }
 
-  g_free (keybindings);
+  g_strfreev (keybindings);
 
   manager->switch_source_action = action;
 }
@@ -236,7 +236,7 @@ switch_input_backward_changed_cb (GSettings *settings,
         break;
     }
 
-  g_free (keybindings);
+  g_strfreev (keybindings);
 
   manager->switch_source_backward_action = action;
 }
