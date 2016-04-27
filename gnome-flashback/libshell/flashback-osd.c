@@ -66,6 +66,15 @@ flashabck_osd_finalize (GObject *object)
 
   g_signal_handlers_disconnect_by_func (screen, monitors_changed, osd);
 
+  if (osd->windows != NULL)
+    {
+      gint i;
+
+      for (i = 0; i < osd->n_monitors; i++)
+        gtk_widget_destroy (GTK_WIDGET (osd->windows[i]));
+      g_free (osd->windows);
+    }
+
   G_OBJECT_CLASS (flashback_osd_parent_class)->finalize (object);
 }
 
