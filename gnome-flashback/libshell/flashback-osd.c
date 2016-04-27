@@ -25,6 +25,8 @@ struct _FlashbackOsd
 
   GfOsdWindow **windows;
   gint          n_monitors;
+
+  gulong        monitors_changed_id;
 };
 
 G_DEFINE_TYPE (FlashbackOsd, flashback_osd, G_TYPE_OBJECT)
@@ -64,7 +66,7 @@ flashabck_osd_finalize (GObject *object)
   screen = gdk_screen_get_default ();
   osd = FLASHBACK_OSD (object);
 
-  g_signal_handlers_disconnect_by_func (screen, monitors_changed, osd);
+  g_signal_handler_disconnect (screen, osd->monitors_changed_id);
 
   if (osd->windows != NULL)
     {
@@ -95,8 +97,9 @@ flashback_osd_init (FlashbackOsd *osd)
 
   screen = gdk_screen_get_default ();
 
-  g_signal_connect (screen, "monitors-changed",
-                    G_CALLBACK (monitors_changed), osd);
+  osd->monitors_changed_id =
+    g_signal_connect (screen, "monitors-changed",
+                      G_CALLBACK (monitors_changed), osd);
 
   monitors_changed (screen, osd);
 }
