@@ -779,6 +779,7 @@ gvc_stream_status_icon_finalize (GObject *object)
         g_return_if_fail (stream_status_icon->priv != NULL);
 
         g_strfreev (stream_status_icon->priv->icon_names);
+        g_free (stream_status_icon->priv->display_name);
 
         G_OBJECT_CLASS (gvc_stream_status_icon_parent_class)->finalize (object);
 }
