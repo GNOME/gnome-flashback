@@ -354,6 +354,7 @@ update_bubble (GfBubble *bubble)
   /* Icon */
 
   pixbuf = nd_notification_load_image (priv->notification, IMAGE_SIZE);
+  have_icon = FALSE;
 
   if (pixbuf != NULL)
     {
