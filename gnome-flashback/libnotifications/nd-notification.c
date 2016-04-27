@@ -182,17 +182,15 @@ nd_notification_update (NdNotification     *notification,
 
         g_variant_iter_init (&iter, hints);
         while ((item = g_variant_iter_next_value (&iter))) {
-                const char *key;
-                GVariant   *value;
+                gchar *key;
+                GVariant *value;
 
-                g_variant_get (item,
-                               "{sv}",
-                               &key,
-                               &value);
+                g_variant_get (item, "{sv}", &key, &value);
+                g_hash_table_insert (notification->hints, g_strdup (key),
+                                     g_variant_ref (value));
 
-                g_hash_table_insert (notification->hints,
-                                     g_strdup (key),
-                                     value); /* steals value */
+                g_variant_unref (value);
+                g_free (key);
         }
 
         notification->timeout = timeout;
