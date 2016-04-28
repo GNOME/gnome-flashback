@@ -108,7 +108,7 @@ real_ungrab (FlashbackShell *shell,
   return gf_keybindings_ungrab (shell->keybindings, action);
 }
 
-static void
+static gboolean
 ungrab_accelerator (gpointer key,
                     gpointer value,
                     gpointer user_data)
@@ -124,8 +124,10 @@ ungrab_accelerator (gpointer key,
   if (g_str_equal (sender, data->sender))
     {
       if (real_ungrab (data->shell, action))
-        g_hash_table_remove (data->shell->grabbed_accelerators, key);
+        return TRUE;
     }
+
+  return FALSE;
 }
 
 static void
@@ -144,7 +146,8 @@ name_vanished_handler (GDBusConnection *connection,
   data->sender = name;
   data->shell = shell;
 
-  g_hash_table_foreach (shell->grabbed_accelerators, (GHFunc) ungrab_accelerator, data);
+  g_hash_table_foreach_remove (shell->grabbed_accelerators,
+                               ungrab_accelerator, data);
   g_free (data);
 
   g_bus_unwatch_name (id);
