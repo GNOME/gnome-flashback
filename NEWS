@@ -1,3 +1,12 @@
+Version 3.20.1
+==============
+- desktop-background: use desktop window only when needed. (Alberts Muktupāvels)
+- display-config: handle invalid previous configurations. (Rui Matos)
+- notifications: fix two regressions. (Alberts Muktupāvels)
+- Fix multiple memory leaks. (Alberts Muktupāvels)
+- Updated translations:
+  Dušan Kazik (sk), Mario Blättermann (de).
+
 Version 3.20.0
 ==============
 - Fix crash in display-config with XRandR 1.2. (Alberts Muktupāvels)
