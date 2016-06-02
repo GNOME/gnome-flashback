@@ -4,22 +4,23 @@
 # Daniel Raab <3dani33@gmail.com>, 2014.
 # Benjamin Steinwender <b@stbe.at>, 2014.
 # Mario Blättermann <mario.blaettermann@gmail.com>, 2016.
+# Wolfgang Stöggl <c72578@yahoo.de>, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-04-05 20:28+0000\n"
-"PO-Revision-Date: 2016-04-06 10:16+0200\n"
-"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
+"POT-Creation-Date: 2016-05-30 10:51+0000\n"
+"PO-Revision-Date: 2016-06-01 14:46+0200\n"
+"Last-Translator: Wolfgang Stoeggl <c72578@yahoo.de>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 1.8.8\n"
 
 #: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
@@ -270,23 +271,20 @@ msgid ""
 "Control Center."
 msgstr ""
 "Falls dieser Schlüssel wahr ist, dann wird GNOME Flashback benutzt, um ein "
-"Audioeinstellungs-Applet anzuzeigen. Das sind die selben Audioeinstellungen, "
+"Audioeinstellungs-Applet anzuzeigen. Das sind dieselben Audioeinstellungen, "
 "die früher Teil des GNOME-Kontrollzentrums waren."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:102
 msgid "Status Notifier Watcher"
-msgstr ""
+msgstr "Statusbenachrichtigungsüberwachung"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
-#, fuzzy
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used as a shell."
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
 msgstr ""
 "Falls dieser Schlüssel wahr ist, dann wird GNOME Flashback als "
-"Benutzerschnittstelle benutzt."
+"Statusbenachrichtigungsüberwachung benutzt."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
 msgid "Workarounds"
@@ -382,7 +380,7 @@ msgstr "GNOME Flashback (Metacity)"
 
 #: data/xsessions/gnome-flashback-metacity.desktop.in.in:4
 msgid "This session logs you into GNOME Flashback with Metacity"
-msgstr "Diese Sitzung meldet sie in GNOME Flashback mit Metacity an"
+msgstr "Diese Sitzung meldet Sie in GNOME Flashback mit Metacity an"
 
 #: gnome-flashback/gf-main.c:40
 msgid "Enable debugging code"
@@ -413,7 +411,7 @@ msgstr "Mikrofon"
 #: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
-msgstr "Klanginstellungen konnte nicht geöffnet werden: %s"
+msgstr "Klangeinstellungen konnten nicht geöffnet werden: %s"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:248
 msgid "What kind of device did you plug in?"
@@ -758,20 +756,20 @@ msgstr "Tastaturbelegung anzeigen"
 msgid "Keyboard"
 msgstr "Tastatur"
 
-#: gnome-flashback/libnotifications/gf-bubble.c:588
-#: gnome-flashback/libnotifications/gf-bubble.c:592
+#: gnome-flashback/libnotifications/gf-bubble.c:596
+#: gnome-flashback/libnotifications/gf-bubble.c:600
 #: gnome-flashback/libnotifications/nd-notification-box.c:325
 #: gnome-flashback/libnotifications/nd-notification-box.c:327
 msgid "Closes the notification."
 msgstr "Schließt die Benachrichtigung."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:612
-#: gnome-flashback/libnotifications/gf-bubble.c:643
+#: gnome-flashback/libnotifications/gf-bubble.c:620
+#: gnome-flashback/libnotifications/gf-bubble.c:651
 #: gnome-flashback/libnotifications/nd-notification-box.c:343
 msgid "Notification summary text."
 msgstr "Zusammenfassungstext der Benachrichtigung."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:662
+#: gnome-flashback/libnotifications/gf-bubble.c:670
 msgid "Notification"
 msgstr "Benachrichtigung"
 
