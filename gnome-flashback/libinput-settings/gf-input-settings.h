@@ -22,11 +22,16 @@
 
 G_BEGIN_DECLS
 
+typedef struct _FlashbackDisplayConfig FlashbackDisplayConfig;
+
 #define GF_TYPE_INPUT_SETTINGS gf_input_settings_get_type ()
 G_DECLARE_FINAL_TYPE (GfInputSettings, gf_input_settings,
                       GF, INPUT_SETTINGS, GObject)
 
-GfInputSettings *gf_input_settings_new (void);
+GfInputSettings *gf_input_settings_new                (void);
+
+void             gf_input_settings_set_display_config (GfInputSettings        *settings,
+                                                       FlashbackDisplayConfig *config);
 
 G_END_DECLS
 

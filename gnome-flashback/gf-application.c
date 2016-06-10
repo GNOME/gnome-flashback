@@ -178,6 +178,10 @@ settings_changed (GSettings   *settings,
 
 #undef SETTING_CHANGED
 
+  if (application->input_settings)
+    gf_input_settings_set_display_config (application->input_settings,
+                                          application->config);
+
   if (application->shell)
     flashback_shell_set_display_config (application->shell, application->config);
 }

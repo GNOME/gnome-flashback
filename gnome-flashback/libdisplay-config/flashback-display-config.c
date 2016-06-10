@@ -1005,6 +1005,12 @@ flashback_display_config_new (void)
                        NULL);
 }
 
+/**
+ * flashback_display_config_get_monitor_manager:
+ * @config: a #FlashbackMonitorManager
+ *
+ * Returns: (transfer none):
+ */
 FlashbackMonitorManager *
 flashback_display_config_get_monitor_manager (FlashbackDisplayConfig *config)
 {
