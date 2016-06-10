@@ -28,6 +28,7 @@
 #include "libdisplay-config/flashback-display-config.h"
 #include "libend-session-dialog/gf-end-session-dialog.h"
 #include "libidle-monitor/flashback-idle-monitor.h"
+#include "libinput-settings/gf-input-settings.h"
 #include "libinput-sources/gf-input-sources.h"
 #include "libnotifications/gf-notifications.h"
 #include "libpolkit/flashback-polkit.h"
@@ -62,6 +63,7 @@ struct _GfApplication
   GfBluetoothApplet      *bluetooth;
   GfDesktopBackground    *background;
   GfEndSessionDialog     *dialog;
+  GfInputSettings        *input_settings;
   GfInputSources         *input_sources;
   GfNotifications        *notifications;
   GfPowerApplet          *power;
@@ -160,6 +162,7 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (bluetooth, "bluetooth-applet", gf_bluetooth_applet_new)
   SETTING_CHANGED (background, "desktop-background", gf_desktop_background_new)
   SETTING_CHANGED (dialog, "end-session-dialog", gf_end_session_dialog_new)
+  SETTING_CHANGED (input_settings, "input-settings", gf_input_settings_new)
   SETTING_CHANGED (input_sources, "input-sources", gf_input_sources_new)
   SETTING_CHANGED (notifications, "notifications", gf_notifications_new)
   SETTING_CHANGED (power, "power-applet", gf_power_applet_new)

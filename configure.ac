@@ -110,7 +110,7 @@ GTK_REQUIRED=3.19.5
 LIBGNOME_DESKTOP_REQUIRED=3.12.0
 CANBERRA_REQUIRED=0.13
 GLIB_REQUIRED=2.44.0
-GSETTINGS_DESKTOP_SCHEMAS_REQUIRED=3.12.0
+GSETTINGS_DESKTOP_SCHEMAS_REQUIRED=3.19.3
 POLKIT_AGENT_REQUIRED=0.97
 POLKIT_GOBJECT_REQUIRED=0.97
 IBUS_REQUIRED=1.5.2
@@ -165,6 +165,11 @@ PKG_CHECK_MODULES([IDLE_MONITOR], [
   gtk+-3.0 >= $GTK_REQUIRED
   x11
   xext
+])
+
+PKG_CHECK_MODULES([INPUT_SETTINGS], [
+  gtk+-3.0 >= $GTK_REQUIRED
+  gsettings-desktop-schemas >= $GSETTINGS_DESKTOP_SCHEMAS_REQUIRED
 ])
 
 PKG_CHECK_MODULES([INPUT_SOURCES], [
@@ -293,6 +298,7 @@ AC_CONFIG_FILES([
   gnome-flashback/libdisplay-config/Makefile
   gnome-flashback/libend-session-dialog/Makefile
   gnome-flashback/libidle-monitor/Makefile
+  gnome-flashback/libinput-settings/Makefile
   gnome-flashback/libinput-sources/Makefile
   gnome-flashback/libnotifications/Makefile
   gnome-flashback/libpolkit/Makefile
