@@ -160,7 +160,7 @@ get_devices (GfInputSettings *settings,
 
       device = GDK_DEVICE (l->data);
 
-      if (gdk_device_get_source (device) != source &&
+      if (gdk_device_get_source (device) != source ||
           gdk_device_get_device_type (device) == GDK_DEVICE_TYPE_MASTER)
         continue;
 
@@ -952,7 +952,7 @@ check_add_mappable_device (GfInputSettings *settings,
                          G_CALLBACK (mapped_device_changed_cb),
                          info, (GClosureNotify) g_free, 0);
 
-  g_hash_table_insert (settings->mappable_devices, device, settings);
+  g_hash_table_insert (settings->mappable_devices, device, gsettings);
   update_device_display (settings, gsettings, device);
 }
 
