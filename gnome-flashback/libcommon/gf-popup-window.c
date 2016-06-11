@@ -54,9 +54,8 @@ fade_out_cb (gpointer user_data)
     {
       gtk_widget_set_opacity (widget, 1.0);
 
-      g_signal_emit (window, signals[SIGNAL_FADE_FINISHED], 0);
-
       priv->fade_id = 0;
+      g_signal_emit (window, signals[SIGNAL_FADE_FINISHED], 0);
 
       return G_SOURCE_REMOVE;
     }
