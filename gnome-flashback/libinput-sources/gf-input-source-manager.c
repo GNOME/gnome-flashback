@@ -705,14 +705,11 @@ update_mru_sources_list (GfInputSourceManager *manager)
   GList *l1;
   GList *l2;
 
-  if (manager->mru_sources != NULL)
-    {
-      g_list_free (manager->mru_sources);
-      manager->mru_sources = NULL;
-    }
-
   if (!manager->disable_ibus && manager->mru_sources_backup != NULL)
     {
+      if (manager->mru_sources != NULL)
+        g_list_free (manager->mru_sources);
+
       manager->mru_sources = manager->mru_sources_backup;
       manager->mru_sources_backup = NULL;
     }
@@ -727,7 +724,6 @@ update_mru_sources_list (GfInputSourceManager *manager)
         {
           GfInputSource *source1;
           GfInputSource *source2;
-          GList *source;
 
           source1 = (GfInputSource *) l1->data;
           source2 = (GfInputSource *) l2->data;
@@ -735,16 +731,16 @@ update_mru_sources_list (GfInputSourceManager *manager)
           if (!compare_sources (source1, source2))
             continue;
 
-          source = g_list_remove_link (sources, l2);
-          mru_sources = g_list_concat (mru_sources, source);
-
+          sources = g_list_remove_link (sources, l2);
+          mru_sources = g_list_concat (mru_sources, l2);
           break;
         }
     }
 
   mru_sources = g_list_concat (mru_sources, sources);
 
-  g_list_free (manager->mru_sources);
+  if (manager->mru_sources != NULL)
+    g_list_free (manager->mru_sources);
   manager->mru_sources = mru_sources;
 
   if (manager->mru_sources != NULL)
