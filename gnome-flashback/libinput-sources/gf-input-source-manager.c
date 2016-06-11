@@ -558,6 +558,42 @@ engine_set_cb (GfIBusManager *manager,
 }
 
 static void
+save_mru_list (GfInputSourceManager *manager)
+{
+  GVariantBuilder builder;
+  GList *l;
+  GVariant *variant;
+
+  /* If IBus is not ready we don't have a full picture of all the available
+   * sources, so don't update the setting.
+   */
+  if (!manager->ibus_ready)
+    return;
+
+  /*If IBus is temporarily disabled, don't update the setting. */
+  if (manager->disable_ibus)
+    return;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a(ss)"));
+
+  for (l = manager->mru_sources; l != NULL; l = g_list_next (l))
+    {
+      GfInputSource *source;
+      const gchar *type;
+      const gchar *id;
+
+      source = GF_INPUT_SOURCE (l->data);
+      type = gf_input_source_get_source_type (source);
+      id = gf_input_source_get_id (source);
+
+      g_variant_builder_add (&builder, "(ss)", type, id);
+    }
+
+  variant = g_variant_builder_end (&builder);
+  gf_input_source_settings_set_mru_sources (manager->settings, variant);
+}
+
+static void
 activate_cb (GfInputSource        *source,
              gboolean              interactive,
              GfInputSourceManager *manager)
@@ -593,6 +629,9 @@ activate_cb (GfInputSource        *source,
 
   gf_ibus_manager_set_engine (manager->ibus_manager, engine);
   current_input_source_changed (manager, source);
+
+  if (interactive)
+    save_mru_list (manager);
 }
 
 static gchar **
@@ -697,6 +736,52 @@ sources_by_name_free (gpointer key,
 }
 
 static void
+init_mru_sources (GfInputSourceManager *manager,
+                  GList                *sources)
+{
+  GVariant *mru_sources;
+  GList *list;
+  gsize size;
+  gsize i;
+
+  mru_sources = gf_input_source_settings_get_mru_sources (manager->settings);
+
+  list = NULL;
+  size = g_variant_n_children (mru_sources);
+
+  for (i = 0; i < size; i++)
+    {
+      const gchar *mru_type;
+      const gchar *mru_id;
+      guint j;
+
+      g_variant_get_child (mru_sources, i, "(&s&s)", &mru_type, &mru_id);
+
+      for (j = 0; j < g_list_length (sources); j++)
+        {
+          GfInputSource *source;
+          const gchar *type;
+          const gchar *id;
+
+          source = g_list_nth_data (sources, j);
+          type = gf_input_source_get_source_type (source);
+          id = gf_input_source_get_id (source);
+
+          if (g_strcmp0 (mru_type, type) == 0 && g_strcmp0 (mru_id, id) == 0)
+            {
+              list = g_list_append (list, source);
+              break;
+            }
+        }
+    }
+
+  g_variant_unref (mru_sources);
+
+  g_assert (manager->mru_sources == NULL);
+  manager->mru_sources = list;
+}
+
+static void
 update_mru_sources_list (GfInputSourceManager *manager)
 {
   GList *sources;
@@ -715,6 +800,10 @@ update_mru_sources_list (GfInputSourceManager *manager)
 
   sources = g_hash_table_get_values (manager->input_sources);
   sources = g_list_sort (sources, compare_sources_by_index);
+
+  /* Initialize from settings when we have no MRU sources list */
+  if (manager->mru_sources == NULL)
+    init_mru_sources (manager, sources);
 
   mru_sources = NULL;
   for (l1 = manager->mru_sources; l1 != NULL; l1 = g_list_next (l1))
