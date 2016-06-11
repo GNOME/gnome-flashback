@@ -296,7 +296,7 @@ modifiers_accelerator_activated_cb (GfKeybindings *keybindings,
   source = (GfInputSource *) g_hash_table_lookup (manager->input_sources,
                                                   GUINT_TO_POINTER (next_index));
 
-  gf_input_source_activate (source);
+  gf_input_source_activate (source, TRUE);
   g_list_free (keys);
 
   return TRUE;
@@ -558,15 +558,14 @@ engine_set_cb (GfIBusManager *manager,
 }
 
 static void
-activate_cb (GfInputSource *source,
-             gpointer       user_data)
+activate_cb (GfInputSource        *source,
+             gboolean              interactive,
+             GfInputSourceManager *manager)
 {
-  GfInputSourceManager *manager;
   const gchar *xkb_id;
   const gchar *type;
   const gchar *engine;
 
-  manager = GF_INPUT_SOURCE_MANAGER (user_data);
   xkb_id = gf_input_source_get_xkb_id (source);
 
   gf_keyboard_manager_grab (manager->keyboard_manager, GDK_CURRENT_TIME);
@@ -749,7 +748,7 @@ update_mru_sources_list (GfInputSourceManager *manager)
 
       source = (GfInputSource *) g_list_nth_data (manager->mru_sources, 0);
 
-      gf_input_source_activate (source);
+      gf_input_source_activate (source, FALSE);
     }
 }
 

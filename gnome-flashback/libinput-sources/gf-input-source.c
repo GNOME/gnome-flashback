@@ -229,7 +229,8 @@ gf_input_source_class_init (GfInputSourceClass *source_class)
 
   signals[SIGNAL_ACTIVATE] =
     g_signal_new ("activate", G_OBJECT_CLASS_TYPE (source_class),
-                  G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+                  G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 1,
+                  G_TYPE_BOOLEAN);
 
   signals[SIGNAL_CHANGED] =
     g_signal_new ("changed", G_OBJECT_CLASS_TYPE (source_class),
@@ -346,9 +347,10 @@ gf_input_source_get_xkb_id (GfInputSource *source)
 }
 
 void
-gf_input_source_activate (GfInputSource *source)
+gf_input_source_activate (GfInputSource *source,
+                          gboolean       interactive)
 {
-  g_signal_emit (source, signals[SIGNAL_ACTIVATE], 0);
+  g_signal_emit (source, signals[SIGNAL_ACTIVATE], 0, interactive);
 }
 
 IBusPropList *

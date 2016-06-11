@@ -207,7 +207,7 @@ activate_selected_input_source (GfInputSourcePopup *popup)
   ungrab (popup);
 
   gf_popup_window_fade_start (popup_window);
-  gf_input_source_activate (source);
+  gf_input_source_activate (source, TRUE);
 }
 
 static void

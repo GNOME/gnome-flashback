@@ -49,7 +49,8 @@ guint          gf_input_source_get_index        (GfInputSource *source);
 
 const gchar   *gf_input_source_get_xkb_id       (GfInputSource *source);
 
-void           gf_input_source_activate         (GfInputSource *source);
+void           gf_input_source_activate         (GfInputSource *source,
+                                                 gboolean       interactive);
 
 IBusPropList  *gf_input_source_get_properties   (GfInputSource *source);
 

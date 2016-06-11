@@ -238,6 +238,13 @@ spawn_kayboard_display (const gchar *description)
 }
 
 static void
+activate_cb (GtkMenuItem   *menuitem,
+             GfInputSource *source)
+{
+  gf_input_source_activate (source, TRUE);
+}
+
+static void
 show_layout_cb (GtkMenuItem *menuitem,
                 gpointer     user_data)
 {
@@ -341,10 +348,7 @@ status_icon_activate_cb (GtkStatusIcon *status_icon,
         gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), TRUE);
       gtk_check_menu_item_set_draw_as_radio (GTK_CHECK_MENU_ITEM (item), TRUE);
 
-      g_signal_connect_swapped (item, "activate",
-                                G_CALLBACK (gf_input_source_activate),
-                                source);
-
+      g_signal_connect (item, "activate", G_CALLBACK (activate_cb), source);
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
     }
 
