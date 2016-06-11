@@ -85,6 +85,15 @@ enum
 
 static GParamSpec *object_properties[N_PROPERTIES] = { NULL, };
 
+enum
+{
+  MONITORS_CHANGED,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
 static gboolean
 calculate_viewport_matrix (FlashbackMonitorManager *manager,
                            MetaOutput              *output,
@@ -1609,6 +1618,9 @@ flashback_monitor_manager_class_init (FlashbackMonitorManagerClass *manager_clas
 
   g_object_class_install_properties (object_class, N_PROPERTIES,
                                      object_properties);
+
+  g_signal_new ("monitors-changed", FLASHBACK_TYPE_MONITOR_MANAGER,
+                G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 }
 
 static void
@@ -2258,6 +2270,7 @@ flashback_monitor_manager_rebuild_derived (FlashbackMonitorManager *manager)
     }
 
   g_signal_emit_by_name (manager->priv->display_config, "monitors-changed");
+  g_signal_emit (manager, signals[MONITORS_CHANGED], 0);
 
   g_free (old_monitor_infos);
 }
