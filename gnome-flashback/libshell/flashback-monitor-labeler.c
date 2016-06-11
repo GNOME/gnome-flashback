@@ -284,7 +284,7 @@ flashback_monitor_labeler_hide (FlashbackMonitorLabeler *labeler,
 {
   CallbackData *data;
 
-  data = (CallbackData *) g_new0 (CallbackData *, 1);
+  data = g_new0 (CallbackData, 1);
   data->labeler = g_object_ref (labeler);
   data->sender = g_strdup (sender);
 
