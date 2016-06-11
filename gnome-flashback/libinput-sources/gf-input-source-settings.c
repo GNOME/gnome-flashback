@@ -24,6 +24,7 @@
 #define DESKTOP_INPUT_SOURCES_SCHEMA "org.gnome.desktop.input-sources"
 
 #define KEY_SOURCES "sources"
+#define KEY_MRU_SOURCES "mru-sources"
 #define KEY_XKB_OPTIONS "xkb-options"
 #define KEY_PER_WINDOW "per-window"
 
@@ -160,6 +161,19 @@ GVariant *
 gf_input_source_settings_get_sources (GfInputSourceSettings *settings)
 {
   return g_settings_get_value (settings->settings, KEY_SOURCES);
+}
+
+GVariant *
+gf_input_source_settings_get_mru_sources (GfInputSourceSettings *settings)
+{
+  return g_settings_get_value (settings->settings, KEY_MRU_SOURCES);
+}
+
+void
+gf_input_source_settings_set_mru_sources (GfInputSourceSettings *settings,
+                                          GVariant              *mru_sources)
+{
+  g_settings_set_value (settings->settings, KEY_MRU_SOURCES, mru_sources);
 }
 
 /**

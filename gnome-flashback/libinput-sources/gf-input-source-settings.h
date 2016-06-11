@@ -29,7 +29,14 @@ G_DECLARE_FINAL_TYPE (GfInputSourceSettings, gf_input_source_settings,
 GfInputSourceSettings  *gf_input_source_settings_new             (void);
 
 GVariant               *gf_input_source_settings_get_sources     (GfInputSourceSettings *settings);
+
+void                    gf_input_source_settings_set_mru_sources (GfInputSourceSettings *settings,
+                                                                  GVariant              *mru_sources);
+
+GVariant               *gf_input_source_settings_get_mru_sources (GfInputSourceSettings *settings);
+
 gchar                 **gf_input_source_settings_get_xkb_options (GfInputSourceSettings *settings);
+
 gboolean                gf_input_source_settings_get_per_window  (GfInputSourceSettings *settings);
 
 G_END_DECLS
