@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-04-09 20:28+0000\n"
-"PO-Revision-Date: 2016-04-10 09:41+0200\n"
+"POT-Creation-Date: 2016-06-11 17:13+0000\n"
+"PO-Revision-Date: 2016-06-26 20:13+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -164,10 +164,14 @@ msgstr ""
 "sledovanie aktivity."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:48
+msgid "Input settings"
+msgstr "Nastavenia vstupu"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:53
 msgid "Keyboard layouts and input methods"
 msgstr "Rozloženia klávesnice a metódy vstupu"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -175,11 +179,11 @@ msgstr ""
 "Ak je nastavené na true, bude použitá aplikácia Klasické prostredie GNOME na "
 "správu rozložení klávesnice a metód vstupu."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:59
 msgid "Notification daemon"
 msgstr "Démon pre oznámenia"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:60
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
@@ -187,22 +191,22 @@ msgstr ""
 "Ak je nastavené na true, bude použitá aplikácia Klasické prostredie GNOME na "
 "správu oznámení."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:60
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:65
 msgid "Authentication agent for polkit"
 msgstr "Agent overenia totožnosti pre polkit"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:66
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
 "Toto je rovnaký agent overenia totožnosti, ako bol poskytnutý nástrojom "
 "PolicyKit-gnome."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:66
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:71
 msgid "Power applet"
 msgstr "Aplet napájania"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
@@ -210,11 +214,11 @@ msgstr ""
 "Ak je nastavené na true, bude použitá aplikácia Klasické prostredie GNOME na "
 "zobrazenie apletu napájania."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:77
 msgid "Screencasts"
 msgstr "Záznamy obrazovky"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -222,11 +226,11 @@ msgstr ""
 "Ak je nastavené na true, bude použitá aplikácia Klasické prostredie GNOME na "
 "zaznamenanie obrazovky."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:83
 msgid "Screensaver"
 msgstr "Šetrič obrazovky"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
@@ -234,11 +238,11 @@ msgstr ""
 "Ak je nastavené na true, bude použitá aplikácia Klasické prostredie GNOME "
 "ako šetrič obrazovky."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:89
 msgid "Screenshots"
 msgstr "Snímky obrazoviek"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -246,22 +250,22 @@ msgstr ""
 "Ak je nastavené na true, bude použitá aplikácia Klasické prostredie GNOME na "
 "zachytenie snímok obrazoviek."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:95
 msgid "Shell"
 msgstr "Shell prostredia GNOME"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr ""
 "Ak je nastavené na true, bude použitá aplikácia Klasické prostredie GNOME "
 "ako shell pracovného prostredia GNOME."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:101
 msgid "Sound applet"
 msgstr "Aplet zvuku"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:102
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -271,11 +275,11 @@ msgstr ""
 "zobrazenie apletu zvuku. Toto je rovnaký aplet zvuku, ktorý je súčasťou "
 "centra nastavení prostredia GNOME."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:102
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
 msgid "Status Notifier Watcher"
 msgstr "Sledovač stavu oznámení"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -283,11 +287,11 @@ msgstr ""
 "Ak je nastavené na true, bude použitá aplikácia Klasické prostredie GNOME "
 "ako Sledovač stavu oznámení."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
 msgid "Workarounds"
 msgstr "Náhradné riešenia"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:109
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
 msgid ""
 "If set to true, then GNOME Flashback application will use workarounds to fix "
 "bugs."
@@ -295,11 +299,11 @@ msgstr ""
 "Ak je nastavené na true, aplikácia Klasické prostredie GNOME použije "
 "náhradné riešenia na opravenie chýb."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:121
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:126
 msgid "Fade the background on change"
 msgstr "Plynulý prechod pri zmene pozadia"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:122
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:127
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -307,11 +311,11 @@ msgstr ""
 "Ak je nastavené na true, bude použitý efekt plynulého prechodu pri zmene "
 "pozadia pracovnej plochy."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:131
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:136
 msgid "The background color for the status icon."
 msgstr "Farba pozadia ikony stavu."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:132
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:137
 msgid ""
 "This contains the background color for the status icon that is shown in the "
 "system tray."
@@ -319,11 +323,11 @@ msgstr ""
 "Tu je obsiahnutá farba pozadia pre ikonu stavu, ktorá je zobrazená v "
 "systémovej lište."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:137
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:142
 msgid "The foreground color for the status icon."
 msgstr "Farba popredia ikony stavu."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:138
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:143
 msgid ""
 "This contains the foreground color for the status icon that is shown in the "
 "system tray."
@@ -331,22 +335,22 @@ msgstr ""
 "Tu je obsiahnutá farba popredia pre ikonu stavu, ktorá je zobrazená v "
 "systémovej lište."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:147
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:152
 msgid "Fix missing app menu button"
 msgstr "Opraviť chýbajúce tlačidlo ponuky aplikácií"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:148
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:153
 msgid ""
 "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
 "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
 "xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
 msgstr ""
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:153
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:158
 msgid "Fix wrong button layout"
 msgstr "Opraviť nesprávne rozloženie tlačidiel"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:154
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:159
 msgid ""
 "If set to non-empty string, then gnome-flashback will force Gtk/"
 "DecorationLayout to value set by this setting. Set to empty string if you "
@@ -736,28 +740,28 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Uzamknutá obrazovka"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:358
+#: gnome-flashback/libinput-sources/gf-input-sources.c:362
 msgid "Show Keyboard Layout"
 msgstr "Zobraziť rozloženie klávesnice"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:421
+#: gnome-flashback/libinput-sources/gf-input-sources.c:425
 msgid "Keyboard"
 msgstr "Klávesnica"
 
-#: gnome-flashback/libnotifications/gf-bubble.c:588
-#: gnome-flashback/libnotifications/gf-bubble.c:592
+#: gnome-flashback/libnotifications/gf-bubble.c:596
+#: gnome-flashback/libnotifications/gf-bubble.c:600
 #: gnome-flashback/libnotifications/nd-notification-box.c:325
 #: gnome-flashback/libnotifications/nd-notification-box.c:327
 msgid "Closes the notification."
 msgstr "Zavrie oznámenie."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:612
-#: gnome-flashback/libnotifications/gf-bubble.c:643
+#: gnome-flashback/libnotifications/gf-bubble.c:620
+#: gnome-flashback/libnotifications/gf-bubble.c:651
 #: gnome-flashback/libnotifications/nd-notification-box.c:343
 msgid "Notification summary text."
 msgstr "Test zhrnutia oznámenia."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:662
+#: gnome-flashback/libnotifications/gf-bubble.c:670
 msgid "Notification"
 msgstr "Oznámenie"
 
