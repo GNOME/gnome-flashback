@@ -1620,8 +1620,9 @@ flashback_monitor_manager_class_init (FlashbackMonitorManagerClass *manager_clas
   g_object_class_install_properties (object_class, N_PROPERTIES,
                                      object_properties);
 
-  g_signal_new ("monitors-changed", FLASHBACK_TYPE_MONITOR_MANAGER,
-                G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+  signals[MONITORS_CHANGED] =
+    g_signal_new ("monitors-changed", FLASHBACK_TYPE_MONITOR_MANAGER,
+                  G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 }
 
 static void
