@@ -349,32 +349,102 @@ set_edge_scroll (GfInputSettings *settings,
                  gboolean         edge_scroll_enabled)
 {
   guchar *available;
+  guchar *defaults;
   guchar values[3] = { 0 }; /* 2fg, edge, button. The last value is unused */
 
   available = get_property (settings, device,
                             "libinput Scroll Methods Available",
                             XA_INTEGER, 8, 3);
 
-  if (!available)
-    return;
+  defaults = get_property (settings, device,
+                           "libinput Scroll Method Enabled",
+                           XA_INTEGER, 8, 3);
+
+  if (!available || !defaults)
+    {
+      if (available)
+        XFree (available);
+
+      if (defaults)
+        XFree (defaults);
+
+      return;
+    }
+
+  memcpy (values, defaults, 3);
+
+  /* Don't set edge scrolling if two-finger scrolling is enabled and available */
+  if (available[1] && !(available[0] && values[0]))
+    {
+      values[1] = !!edge_scroll_enabled;
+
+      change_property (settings, device, "libinput Scroll Method Enabled",
+                       XA_INTEGER, 8, &values, 3);
+    }
+
+  if (available)
+    XFree (available);
+
+  if (defaults)
+    XFree (defaults);
+}
+
+static void
+set_two_finger_scroll (GfInputSettings *settings,
+                       GdkDevice       *device,
+                       gboolean         two_finger_scroll_enabled)
+{
+  guchar *available;
+  gboolean changed;
+  guchar *defaults;
+  guchar values[3] = { 0 }; /* 2fg, edge, button. The last value is unused */
+
+  available = get_property (settings, device,
+                            "libinput Scroll Methods Available",
+                            XA_INTEGER, 8, 3);
+
+  defaults = get_property (settings, device,
+                           "libinput Scroll Method Enabled",
+                           XA_INTEGER, 8, 3);
+
+  if (!available || !defaults)
+    {
+      if (available)
+        XFree (available);
+
+      if (defaults)
+        XFree (defaults);
+
+      return;
+    }
+
+  memcpy (values, defaults, 3);
+  changed = FALSE;
 
   if (available[0])
     {
-      values[0] = 1;
-    }
-  else if (available[1] && edge_scroll_enabled)
-    {
-      values[1] = 1;
-    }
-  else
-    {
-      /* Disabled */
+      values[0] = !!two_finger_scroll_enabled;
+      changed = TRUE;
     }
 
-  change_property (settings, device, "libinput Scroll Method Enabled",
-                   XA_INTEGER, 8, &values, 3);
+  /* Disable edge scrolling when two-finger scrolling is enabled */
+  if (values[0] && values[1])
+    {
+      values[1] = 0;
+      changed = TRUE;
+    }
 
-  XFree (available);
+  if (changed)
+    {
+      change_property (settings, device, "libinput Scroll Method Enabled",
+                       XA_INTEGER, 8, &values, 3);
+    }
+
+  if (available)
+    XFree (available);
+
+  if (defaults)
+    XFree (defaults);
 }
 
 static void
@@ -656,6 +726,30 @@ update_touchpad_edge_scroll (GfInputSettings *settings,
 }
 
 static void
+update_touchpad_two_finger_scroll (GfInputSettings *settings,
+                                   GdkDevice       *device)
+{
+  gboolean two_finger_scroll_enabled;
+
+  if (device && gdk_device_get_source (device) != GDK_SOURCE_TOUCHPAD)
+    return;
+
+  two_finger_scroll_enabled = g_settings_get_boolean (settings->touchpad,
+                                                      "two-finger-scrolling-enabled");
+
+  if (device)
+    {
+      device_set_bool_setting (settings, device,
+                               set_two_finger_scroll, two_finger_scroll_enabled);
+    }
+  else
+    {
+      set_bool_setting (settings, GDK_SOURCE_TOUCHPAD,
+                        set_two_finger_scroll, two_finger_scroll_enabled);
+    }
+}
+
+static void
 update_touchpad_click_method (GfInputSettings *settings,
                               GdkDevice       *device)
 {
@@ -768,6 +862,8 @@ settings_changed_cb (GSettings       *gsettings,
         update_touchpad_send_events (settings, NULL);
       else if (strcmp (key, "edge-scrolling-enabled") == 0)
         update_touchpad_edge_scroll (settings, NULL);
+      else if (strcmp (key, "two-finger-scrolling-enabled") == 0)
+        update_touchpad_two_finger_scroll (settings, NULL);
       else if (strcmp (key, "click-method") == 0)
         update_touchpad_click_method (settings, NULL);
     }
@@ -972,6 +1068,7 @@ apply_device_settings (GfInputSettings *settings,
   update_touchpad_tap_enabled (settings, device);
   update_touchpad_send_events (settings, device);
   update_touchpad_edge_scroll (settings, device);
+  update_touchpad_two_finger_scroll (settings, device);
   update_touchpad_click_method (settings, device);
 
   update_trackball_scroll_button (settings, device);
