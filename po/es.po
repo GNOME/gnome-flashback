@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-06-11 17:07+0000\n"
-"PO-Revision-Date: 2016-06-29 13:38+0200\n"
+"POT-Creation-Date: 2016-06-29 11:42+0000\n"
+"PO-Revision-Date: 2016-07-01 09:31+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -274,8 +274,6 @@ msgid "Status Notifier Watcher"
 msgstr "Vigilante del estado de las notificaciones"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used as a shell."
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -333,7 +331,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:147
 msgid "Fix missing app menu button"
-msgstr ""
+msgstr "Fijar botón de menú de aplicación ausente"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:148
 msgid ""
@@ -357,6 +355,10 @@ msgid ""
 "want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
 "DecorationLayout' property."
 msgstr ""
+"Si se establece a una cadena no vacía, gnome-flashback forzará el valor de "
+"Gtk/DecorationLayout a este. Establézcalo a una cadena vacía si quiere usar "
+"gnome-settings-daemon en la propiedad 'Gtk/DecorationLayout' del complemento "
+"de xsettings."
 
 #: data/xsessions/gnome-flashback-compiz.desktop.in.in:3
 msgid "GNOME Flashback (Compiz)"
@@ -395,7 +397,6 @@ msgid "Headset"
 msgstr "Auriculares con micrófono"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:115
-#| msgid "Microphone Volume"
 msgid "Microphone"
 msgstr "Micrófono"
 
@@ -411,7 +412,6 @@ msgid "What kind of device did you plug in?"
 msgstr "¿Qué tipo de dispositivo ha conectado?"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
-#| msgid "Power Settings"
 msgid "Sound Settings"
 msgstr "Configuración de sonido"
 
