@@ -4,6 +4,7 @@
 <moduleset>
   <repository type="git" name="git.gnome.org" default="yes" href="git://git.gnome.org/" />
   <repository type="tarball" name="launchpad-tar" href="https://launchpad.net/" />
+  <repository type="tarball" name="github-tar" href="https://github.com/" />
   <repository type="git" name="github.com" href="git://github.com/" />
 
   <include href="https://git.gnome.org/browse/jhbuild/plain/modulesets/gnome-apps-3.22.modules" />
@@ -142,7 +143,9 @@
   </autotools>
 
   <autotools id="libpinyin">
-    <branch repo="github.com" module="libpinyin/libpinyin" />
+    <branch repo="github-tar" version="1.3.0" checkoutdir="libpinyin-${version}"
+            module="https://github.com/libpinyin/libpinyin/archive/${version}.tar.gz"
+            hash="sha256:71a5749ff96a1ae5a71bea8d5c1394b16f9252c4e3ad5225cc66ad2a76ab6d7d" />
     <dependencies>
       <dep package="glib" />
     </dependencies>
