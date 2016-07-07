@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-flashback gnome-3-20\n"
+"Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-07-01 07:35+0000\n"
-"PO-Revision-Date: 2016-07-03 16:45+0700\n"
+"POT-Creation-Date: 2016-07-03 09:46+0000\n"
+"PO-Revision-Date: 2016-07-08 01:26+0700\n"
 "Last-Translator: Andika Triwidada <atriwidada@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -41,13 +41,12 @@ msgid "nm-device-wireless"
 msgstr "nm-device-wireless"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:4
-#, fuzzy
 msgid "Screensaver (GNOME Flashback)"
-msgstr "Inisialisasi GNOME Flashback"
+msgstr "Screensaver (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:5
 msgid "Launch screensaver and locker program"
-msgstr ""
+msgstr "Luncurkan program pengunci dan screensaver"
 
 #. TRANSLATORS: Don't translate this text (this is icon name)
 #: data/autostart/gnome-flashback-screensaver.desktop.in:7
@@ -165,10 +164,14 @@ msgstr ""
 "aktivitas pengguna."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:48
+msgid "Input settings"
+msgstr "Pengaturan masukan"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:53
 msgid "Keyboard layouts and input methods"
 msgstr "Tata letak papan tik dan metoda masukan"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -176,11 +179,11 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk mengelola tata "
 "letak papan tik dan metoda masukan."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:59
 msgid "Notification daemon"
 msgstr "Daemon notifikasi"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:60
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
@@ -188,21 +191,21 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk mengelola "
 "notifikasi."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:60
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:65
 msgid "Authentication agent for polkit"
 msgstr "Agen otentikasi bagi polkit"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:66
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
 "Ini adalah agen otentikasi yang sama yang disediakan oleh PolicyKit-gnome."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:66
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:71
 msgid "Power applet"
 msgstr "Aplet daya"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
@@ -210,33 +213,33 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menampilkan "
 "sebuah aplet daya."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:77
 msgid "Screencasts"
-msgstr ""
+msgstr "Screencast"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
 msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk merekam layar."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:83
 msgid "Screensaver"
-msgstr ""
+msgstr "Screensaver"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
-#, fuzzy
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
-msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai sebagai "
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai sebagai screensaver."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:89
 msgid "Screenshots"
 msgstr "Cuplikan Layar"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -244,20 +247,20 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk mengambil "
 "cuplikan layar."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:95
 msgid "Shell"
 msgstr "Shell"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai sebagai shell."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:101
 msgid "Sound applet"
 msgstr "Aplet suara"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:102
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -267,11 +270,11 @@ msgstr ""
 "aplet suara. Ini aplet suara yang sama dengan yang biasanya menjadi bagian "
 "dari Pusat Kendali GNOME."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:102
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
 msgid "Status Notifier Watcher"
 msgstr "Pengamat Pemberitahu Status"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -279,22 +282,23 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai sebagai Pengamat "
 "Pemberitahu Status."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
 msgid "Workarounds"
-msgstr ""
+msgstr "Workaround"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:109
-#, fuzzy
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
 msgid ""
 "If set to true, then GNOME Flashback application will use workarounds to fix "
 "bugs."
-msgstr "Bila diisi true, aplikasi GNOME Flashback akan "
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan memakai akal-akalan untuk "
+"memperbaiki kutu."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:121
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:126
 msgid "Fade the background on change"
 msgstr "Pudarkan latar belakang pada perubahan"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:122
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:127
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -302,50 +306,57 @@ msgstr ""
 "Bila diisi true, efek pudar akan dipakai untuk menggambar latar belakang "
 "desktop."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:131
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:136
 msgid "The background color for the status icon."
 msgstr "Warna latar bagi ikon status."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:132
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:137
 msgid ""
 "This contains the background color for the status icon that is shown in the "
 "system tray."
 msgstr ""
 "Ini memuat warna latar bagi ikon status yang ditampilkan di baki sistem."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:137
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:142
 msgid "The foreground color for the status icon."
 msgstr "Warna depan bagi ikon status."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:138
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:143
 msgid ""
 "This contains the foreground color for the status icon that is shown in the "
 "system tray."
 msgstr ""
 "Ini memuat warna depan bagi ikon status yang ditampilkan di baki sistem."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:147
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:152
 msgid "Fix missing app menu button"
 msgstr "Perbaiki tombol menu app yang hilang"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:148
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:153
 msgid ""
 "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
 "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
 "xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
 msgstr ""
+"Bila diisi true, maka gnome-flashback akan memaksa Gtk/ShellShowsAppMenu "
+"menjadi FALSE. Nonaktifkan bila Anda ingin memakai penimpaan gnome-settings-"
+"daemon dalam pengaya xsettings untuk properti 'Gtk/ShellShowsAppMenu'."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:153
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:158
 msgid "Fix wrong button layout"
 msgstr "Perbaiki tata letak tombol yang salah"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:154
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:159
 msgid ""
 "If set to non-empty string, then gnome-flashback will force Gtk/"
 "DecorationLayout to value set by this setting. Set to empty string if you "
 "want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
 "DecorationLayout' property."
 msgstr ""
+"Bila diisi dengan string bukan kosong, maka gnome-flashback akan memaksa Gtk/"
+"DecorationLayout ke nilai yang diatur oleh ini. Isi dengan string kosong "
+"bila Anda ingin memakai penimpaan gnome-settings-daemon dalam pengaya "
+"xsettings bagi properti 'Gtk/DecorationLayout'."
 
 #: data/xsessions/gnome-flashback-compiz.desktop.in.in:3
 msgid "GNOME Flashback (Compiz)"
@@ -712,11 +723,11 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Kunci Layar"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:358
+#: gnome-flashback/libinput-sources/gf-input-sources.c:362
 msgid "Show Keyboard Layout"
 msgstr "Tampilkan Tata Letak Papan Tik"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:421
+#: gnome-flashback/libinput-sources/gf-input-sources.c:425
 msgid "Keyboard"
 msgstr "Papan tik"
 
