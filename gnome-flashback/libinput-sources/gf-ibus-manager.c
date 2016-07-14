@@ -393,6 +393,7 @@ gf_ibus_manager_dispose (GObject *object)
       manager->candidate_popup = NULL;
     }
 
+  g_clear_object (&manager->ibus);
   g_clear_object (&manager->subprocess);
 
   if (manager->engines != NULL)
