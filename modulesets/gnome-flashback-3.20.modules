@@ -49,7 +49,7 @@
   </cmake>
 
   <autotools id="gnome-applets" autogenargs="--enable-mini-commander">
-    <branch />
+    <branch revision="gnome-3-20" />
     <dependencies>
       <dep package="intltool" />
       <dep package="gnome-panel" />
