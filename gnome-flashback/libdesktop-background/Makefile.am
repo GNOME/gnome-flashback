@@ -13,8 +13,6 @@ libdesktop_background_la_CFLAGS = \
 	$(NULL)
 
 libdesktop_background_la_SOURCES = \
-	gf-background-window.c \
-	gf-background-window.h \
 	gf-desktop-background.c \
 	gf-desktop-background.h \
 	$(NULL)
