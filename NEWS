@@ -1,3 +1,10 @@
+Version 3.20.2
+==============
+- desktop-background: stop using desktop window. (Alberts Muktupāvels; #754963)
+- input-sources: few small bug fixes. (Alberts Muktupāvels)
+- Updated translations:
+  Andika Triwidada (id), Daniel Mustieles (es), Wolfgang Stöggl (de).
+
 Version 3.20.1
 ==============
 - desktop-background: use desktop window only when needed. (Alberts Muktupāvels)
