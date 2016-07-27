@@ -71,6 +71,15 @@ struct _GfInputSettings
 
 G_DEFINE_TYPE (GfInputSettings, gf_input_settings, G_TYPE_OBJECT)
 
+enum
+{
+  SCROLL_METHOD_FIELD_2FG,
+  SCROLL_METHOD_FIELD_EDGE,
+  SCROLL_METHOD_FIELD_BUTTON,
+
+  SCROLL_METHOD_NUM_FIELDS
+};
+
 static void *
 get_property (GfInputSettings *settings,
               GdkDevice       *device,
@@ -350,15 +359,15 @@ set_edge_scroll (GfInputSettings *settings,
 {
   guchar *available;
   guchar *defaults;
-  guchar values[3] = { 0 }; /* 2fg, edge, button. The last value is unused */
+  guchar values[SCROLL_METHOD_NUM_FIELDS] = { 0 }; /* 2fg, edge, button. The last value is unused */
 
   available = get_property (settings, device,
                             "libinput Scroll Methods Available",
-                            XA_INTEGER, 8, 3);
+                            XA_INTEGER, 8, SCROLL_METHOD_NUM_FIELDS);
 
   defaults = get_property (settings, device,
                            "libinput Scroll Method Enabled",
-                           XA_INTEGER, 8, 3);
+                           XA_INTEGER, 8, SCROLL_METHOD_NUM_FIELDS);
 
   if (!available || !defaults)
     {
@@ -371,15 +380,16 @@ set_edge_scroll (GfInputSettings *settings,
       return;
     }
 
-  memcpy (values, defaults, 3);
+  memcpy (values, defaults, SCROLL_METHOD_NUM_FIELDS);
 
   /* Don't set edge scrolling if two-finger scrolling is enabled and available */
-  if (available[1] && !(available[0] && values[0]))
+  if (available[SCROLL_METHOD_FIELD_EDGE] &&
+      !(available[SCROLL_METHOD_FIELD_2FG] && values[SCROLL_METHOD_FIELD_2FG]))
     {
       values[1] = !!edge_scroll_enabled;
 
       change_property (settings, device, "libinput Scroll Method Enabled",
-                       XA_INTEGER, 8, &values, 3);
+                       XA_INTEGER, 8, &values, SCROLL_METHOD_NUM_FIELDS);
     }
 
   if (available)
@@ -397,15 +407,15 @@ set_two_finger_scroll (GfInputSettings *settings,
   guchar *available;
   gboolean changed;
   guchar *defaults;
-  guchar values[3] = { 0 }; /* 2fg, edge, button. The last value is unused */
+  guchar values[SCROLL_METHOD_NUM_FIELDS] = { 0 }; /* 2fg, edge, button. The last value is unused */
 
   available = get_property (settings, device,
                             "libinput Scroll Methods Available",
-                            XA_INTEGER, 8, 3);
+                            XA_INTEGER, 8, SCROLL_METHOD_NUM_FIELDS);
 
   defaults = get_property (settings, device,
                            "libinput Scroll Method Enabled",
-                           XA_INTEGER, 8, 3);
+                           XA_INTEGER, 8, SCROLL_METHOD_NUM_FIELDS);
 
   if (!available || !defaults)
     {
@@ -418,26 +428,26 @@ set_two_finger_scroll (GfInputSettings *settings,
       return;
     }
 
-  memcpy (values, defaults, 3);
+  memcpy (values, defaults, SCROLL_METHOD_NUM_FIELDS);
   changed = FALSE;
 
-  if (available[0])
+  if (available[SCROLL_METHOD_FIELD_2FG])
     {
-      values[0] = !!two_finger_scroll_enabled;
+      values[SCROLL_METHOD_FIELD_2FG] = !!two_finger_scroll_enabled;
       changed = TRUE;
     }
 
   /* Disable edge scrolling when two-finger scrolling is enabled */
-  if (values[0] && values[1])
+  if (values[SCROLL_METHOD_FIELD_2FG] && values[SCROLL_METHOD_FIELD_EDGE])
     {
-      values[1] = 0;
+      values[SCROLL_METHOD_FIELD_EDGE] = 0;
       changed = TRUE;
     }
 
   if (changed)
     {
       change_property (settings, device, "libinput Scroll Method Enabled",
-                       XA_INTEGER, 8, &values, 3);
+                       XA_INTEGER, 8, &values, SCROLL_METHOD_NUM_FIELDS);
     }
 
   if (available)
