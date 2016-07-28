@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Red Hat, Inc.
+ * Copyright (C) 2014 Red Hat, Inc.
  * Copyright (C) 2016 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
