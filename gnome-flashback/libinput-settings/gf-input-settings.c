@@ -292,6 +292,63 @@ set_invert_scroll (GfInputSettings *settings,
 }
 
 static void
+set_accel_profile (GfInputSettings             *settings,
+                   GdkDevice                   *device,
+                   GDesktopPointerAccelProfile  profile)
+{
+  guchar *available;
+  guchar *defaults;
+  guchar values[2] = { 0 }; /* adaptive, flat */
+
+  available = get_property (settings, device,
+                            "libinput Accel Profiles Available",
+                            XA_INTEGER, 8, 2);
+
+  defaults = get_property (settings, device,
+                           "libinput Accel Profile Enabled Default",
+                           XA_INTEGER, 8, 2);
+
+  if (!available || !defaults)
+    {
+      if (available)
+        XFree (available);
+
+      if (defaults)
+        XFree (defaults);
+
+      return;
+    }
+
+  memcpy (values, defaults, 2);
+
+  switch (profile)
+    {
+      case G_DESKTOP_POINTER_ACCEL_PROFILE_FLAT:
+        values[0] = 0;
+        values[1] = 1;
+        break;
+      case G_DESKTOP_POINTER_ACCEL_PROFILE_ADAPTIVE:
+        values[0] = 1;
+        values[1] = 0;
+        break;
+      case G_DESKTOP_POINTER_ACCEL_PROFILE_DEFAULT:
+        break;
+      default:
+        g_warn_if_reached ();
+        break;
+    }
+
+  change_property (settings, device, "libinput Accel Profile Enabled",
+                   XA_INTEGER, 8, &values, 2);
+
+  if (available)
+    XFree (available);
+
+  if (defaults)
+    XFree (defaults);
+}
+
+static void
 set_tap_enabled (GfInputSettings *settings,
                  GdkDevice       *device,
                  gboolean         enabled)
@@ -636,6 +693,27 @@ update_mouse_natural_scroll (GfInputSettings *settings,
 }
 
 static void
+update_mouse_accel_profile (GfInputSettings *settings,
+                            GdkDevice       *device)
+{
+  GDesktopPointerAccelProfile profile;
+
+  if (device && gdk_device_get_source (device) != GDK_SOURCE_MOUSE)
+    return;
+
+  profile = g_settings_get_enum (settings->mouse, "accel-profile");
+
+  if (device)
+    {
+      device_set_uint_setting (settings, device, set_accel_profile, profile);
+    }
+  else
+    {
+      set_uint_setting (settings, GDK_SOURCE_MOUSE, set_accel_profile, profile);
+    }
+}
+
+static void
 update_touchpad_speed (GfInputSettings *settings,
                        GdkDevice       *device)
 {
@@ -834,6 +912,40 @@ update_trackball_scroll_button (GfInputSettings *settings,
 }
 
 static void
+update_trackball_accel_profile (GfInputSettings *settings,
+                                GdkDevice       *device)
+{
+  GDesktopPointerAccelProfile profile;
+
+  if (device && !device_is_trackball (device))
+    return;
+
+  profile = g_settings_get_enum (settings->trackball, "accel-profile");
+
+  if (device)
+    {
+      device_set_uint_setting (settings, device, set_accel_profile, profile);
+    }
+  else
+    {
+      const GList *devices;
+      const GList *l;
+
+      devices = gdk_seat_get_slaves (settings->seat, GDK_SEAT_CAPABILITY_ALL);
+
+      for (l = devices; l; l = l->next)
+        {
+          device = GDK_DEVICE (l->data);
+
+          if (!device_is_trackball (device))
+            continue;
+
+          device_set_uint_setting (settings, device, set_accel_profile, profile);
+        }
+    }
+}
+
+static void
 update_keyboard_repeat (GfInputSettings *settings)
 {
   gboolean repeat;
@@ -868,6 +980,8 @@ settings_changed_cb (GSettings       *gsettings,
         update_mouse_speed (settings, NULL);
       else if (strcmp (key, "natural-scroll") == 0)
         update_mouse_natural_scroll (settings, NULL);
+      else if (strcmp (key, "accel-profile") == 0)
+        update_mouse_accel_profile (settings, NULL);
     }
   else if (gsettings == settings->touchpad)
     {
@@ -892,6 +1006,8 @@ settings_changed_cb (GSettings       *gsettings,
     {
       if (strcmp (key, "scroll-wheel-emulation-button") == 0)
         update_trackball_scroll_button (settings, NULL);
+      else if (strcmp (key, "accel-profile") == 0)
+        update_trackball_accel_profile (settings, NULL);
     }
   else if (gsettings == settings->keyboard)
     {
@@ -1080,6 +1196,7 @@ apply_device_settings (GfInputSettings *settings,
   update_mouse_left_handed (settings, device);
   update_mouse_speed (settings, device);
   update_mouse_natural_scroll (settings, device);
+  update_mouse_accel_profile (settings, device);
 
   update_touchpad_left_handed (settings, device);
   update_touchpad_speed (settings, device);
@@ -1091,6 +1208,7 @@ apply_device_settings (GfInputSettings *settings,
   update_touchpad_click_method (settings, device);
 
   update_trackball_scroll_button (settings, device);
+  update_trackball_accel_profile (settings, device);
 }
 
 static void
