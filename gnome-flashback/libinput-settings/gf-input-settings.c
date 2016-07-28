@@ -257,18 +257,6 @@ set_uint_setting (GfInputSettings *settings,
   g_list_free (devices);
 }
 
-static GSettings *
-get_settings_for_source (GfInputSettings *settings,
-                         GdkInputSource   source)
-{
-  if (source == GDK_SOURCE_MOUSE)
-    return settings->mouse;
-  else if (source == GDK_SOURCE_TOUCHPAD)
-    return settings->touchpad;
-
-  return NULL;
-}
-
 static void
 set_speed (GfInputSettings *settings,
            GdkDevice       *device,
@@ -596,70 +584,86 @@ update_mouse_left_handed (GfInputSettings *settings,
 }
 
 static void
-update_device_speed (GfInputSettings *settings,
-                     GdkDevice       *device)
+update_mouse_speed (GfInputSettings *settings,
+                    GdkDevice       *device)
 {
-  GSettings *gsettings;
-  const gchar *key;
   gdouble value;
 
-  key = "speed";
+  if (device && gdk_device_get_source (device) != GDK_SOURCE_MOUSE)
+    return;
+
+  value = g_settings_get_double (settings->mouse, "speed");
 
   if (device)
     {
-      gsettings = get_settings_for_source (settings,
-                                           gdk_device_get_source (device));
-
-      if (!gsettings)
-        return;
-
-      value = g_settings_get_double (gsettings, key);
       device_set_double_setting (settings, device, set_speed, value);
     }
   else
     {
-      gsettings = get_settings_for_source (settings, GDK_SOURCE_MOUSE);
-      value = g_settings_get_double (gsettings, key);
       set_double_setting (settings, GDK_SOURCE_MOUSE, set_speed, value);
+    }
+}
 
-      gsettings = get_settings_for_source (settings, GDK_SOURCE_TOUCHPAD);
-      value = g_settings_get_double (gsettings, key);
+static void
+update_mouse_natural_scroll (GfInputSettings *settings,
+                             GdkDevice       *device)
+{
+  gboolean value;
+
+  if (device && gdk_device_get_source (device) != GDK_SOURCE_MOUSE)
+    return;
+
+  value = g_settings_get_boolean (settings->mouse, "natural-scroll");
+
+  if (device)
+    {
+      device_set_bool_setting (settings, device, set_invert_scroll, value);
+    }
+  else
+    {
+      set_bool_setting (settings, GDK_SOURCE_MOUSE,
+                        set_invert_scroll, value);
+    }
+}
+
+static void
+update_touchpad_speed (GfInputSettings *settings,
+                       GdkDevice       *device)
+{
+  gdouble value;
+
+  if (device && gdk_device_get_source (device) != GDK_SOURCE_TOUCHPAD)
+    return;
+
+  value = g_settings_get_double (settings->touchpad, "speed");
+
+  if (device)
+    {
+      device_set_double_setting (settings, device, set_speed, value);
+    }
+  else
+    {
       set_double_setting (settings, GDK_SOURCE_TOUCHPAD, set_speed, value);
     }
 }
 
 static void
-update_device_natural_scroll (GfInputSettings *settings,
-                              GdkDevice       *device)
+update_touchpad_natural_scroll (GfInputSettings *settings,
+                                GdkDevice       *device)
 {
-  GSettings *gsettings;
-  const gchar *key;
   gboolean value;
 
-  key = "natural-scroll";
+  if (device && gdk_device_get_source (device) != GDK_SOURCE_TOUCHPAD)
+    return;
+
+  value = g_settings_get_boolean (settings->touchpad, "natural-scroll");
 
   if (device)
     {
-      gsettings = get_settings_for_source (settings,
-                                           gdk_device_get_source (device));
-
-      if (!gsettings)
-        return;
-
-      value = g_settings_get_boolean (gsettings, key);
       device_set_bool_setting (settings, device, set_invert_scroll, value);
     }
   else
     {
-      gsettings = get_settings_for_source (settings, GDK_SOURCE_MOUSE);
-      value = g_settings_get_boolean (gsettings, key);
-
-      set_bool_setting (settings, GDK_SOURCE_MOUSE,
-                        set_invert_scroll, value);
-
-      gsettings = get_settings_for_source (settings, GDK_SOURCE_TOUCHPAD);
-      value = g_settings_get_boolean (gsettings, key);
-
       set_bool_setting (settings, GDK_SOURCE_TOUCHPAD,
                         set_invert_scroll, value);
     }
@@ -854,18 +858,18 @@ settings_changed_cb (GSettings       *gsettings,
       if (strcmp (key, "left-handed") == 0)
         update_mouse_left_handed (settings, NULL);
       else if (strcmp (key, "speed") == 0)
-        update_device_speed (settings, NULL);
+        update_mouse_speed (settings, NULL);
       else if (strcmp (key, "natural-scroll") == 0)
-        update_device_natural_scroll (settings, NULL);
+        update_mouse_natural_scroll (settings, NULL);
     }
   else if (gsettings == settings->touchpad)
     {
       if (strcmp (key, "left-handed") == 0)
         update_touchpad_left_handed (settings, NULL);
       else if (strcmp (key, "speed") == 0)
-        update_device_speed (settings, NULL);
+        update_touchpad_speed (settings, NULL);
       else if (strcmp (key, "natural-scroll") == 0)
-        update_device_natural_scroll (settings, NULL);
+        update_touchpad_natural_scroll (settings, NULL);
       else if (strcmp (key, "tap-to-click") == 0)
         update_touchpad_tap_enabled (settings, NULL);
       else if (strcmp (key, "send-events") == 0)
@@ -1067,14 +1071,12 @@ apply_device_settings (GfInputSettings *settings,
                        GdkDevice       *device)
 {
   update_mouse_left_handed (settings, device);
-  update_device_speed (settings, device);
-  update_device_natural_scroll (settings, device);
+  update_mouse_speed (settings, device);
+  update_mouse_natural_scroll (settings, device);
 
   update_touchpad_left_handed (settings, device);
-#if 0
-  update_device_speed (settings, device);
-  update_device_natural_scroll (settings, device);
-#endif
+  update_touchpad_speed (settings, device);
+  update_touchpad_natural_scroll (settings, device);
   update_touchpad_tap_enabled (settings, device);
   update_touchpad_send_events (settings, device);
   update_touchpad_edge_scroll (settings, device);
