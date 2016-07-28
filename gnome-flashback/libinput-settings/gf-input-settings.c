@@ -497,6 +497,15 @@ set_click_method (GfInputSettings             *settings,
   XFree (available);
 }
 
+static void
+set_scroll_button (GfInputSettings *settings,
+                   GdkDevice       *device,
+                   guint            button)
+{
+  change_property (settings, device, "libinput Button Scrolling Button",
+                   XA_INTEGER, 32, &button, 1);
+}
+
 static gboolean
 device_is_trackball (GdkDevice *device)
 {
@@ -803,8 +812,7 @@ update_trackball_scroll_button (GfInputSettings *settings,
 
   if (device)
     {
-      change_property (settings, device, "libinput Button Scrolling Button",
-                       XA_INTEGER, 32, &button, 1);
+      device_set_uint_setting (settings, device, set_scroll_button, button);
     }
   else
     {
@@ -820,8 +828,7 @@ update_trackball_scroll_button (GfInputSettings *settings,
           if (!device_is_trackball (device))
             continue;
 
-          change_property (settings, device, "libinput Button Scrolling Button",
-                           XA_INTEGER, 32, &button, 1);
+          device_set_uint_setting (settings, device, set_scroll_button, button);
         }
     }
 }
