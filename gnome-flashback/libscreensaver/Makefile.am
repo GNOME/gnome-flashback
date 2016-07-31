@@ -29,19 +29,19 @@ libscreensaver_la_LIBADD = \
 	$(SCREENSAVER_LIBS) \
 	$(NULL)
 
-gf-dbus-screensaver-gen.h:
-gf-dbus-screensaver-gen.c: org.gnome.ScreenSaver.xml
+gf-screensaver-gen.h:
+gf-screensaver-gen.c: org.gnome.ScreenSaver.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) \
 		--interface-prefix org.gnome.ScreenSaver. \
-		--generate-c-code gf-dbus-screensaver-gen \
+		--generate-c-code gf-screensaver-gen \
 		--c-namespace Gf \
 		--annotate "org.gnome.ScreenSaver" \
-		           "org.gtk.GDBus.C.Name" DBusScreensaverGen \
+		           "org.gtk.GDBus.C.Name" ScreensaverGen \
 		$(srcdir)/org.gnome.ScreenSaver.xml
 
 BUILT_SOURCES = \
-	gf-dbus-screensaver-gen.c \
-	gf-dbus-screensaver-gen.h \
+	gf-screensaver-gen.c \
+	gf-screensaver-gen.h \
 	$(NULL)
 
 EXTRA_DIST = \
