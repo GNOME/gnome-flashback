@@ -20,6 +20,8 @@ libscreensaver_la_SOURCES = \
 	gf-listener.h \
 	gf-screensaver.c \
 	gf-screensaver.h \
+	gf-settings.c \
+	gf-settings.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 
