@@ -5,6 +5,7 @@ noinst_LTLIBRARIES = \
 	$(NULL)
 
 libscreensaver_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"gf-screensaver\" \
 	-I$(top_builddir)/gnome-flashback/libscreensaver \
 	$(NULL)
 
@@ -15,6 +16,8 @@ libscreensaver_la_CFLAGS = \
 	$(NULL)
 
 libscreensaver_la_SOURCES = \
+	gf-listener.c \
+	gf-listener.h \
 	gf-screensaver.c \
 	gf-screensaver.h \
 	$(BUILT_SOURCES) \
