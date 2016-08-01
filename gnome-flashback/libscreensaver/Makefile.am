@@ -22,6 +22,8 @@ libscreensaver_la_SOURCES = \
 	gf-screensaver.h \
 	gf-settings.c \
 	gf-settings.h \
+	gf-watcher.c \
+	gf-watcher.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 
@@ -64,6 +66,16 @@ gf-screensaver-gen.c: org.gnome.ScreenSaver.xml
 		           "org.gtk.GDBus.C.Name" ScreensaverGen \
 		$(srcdir)/org.gnome.ScreenSaver.xml
 
+gf-sm-presence-gen.h:
+gf-sm-presence-gen.c: org.gnome.SessionManager.Presence.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) \
+		--interface-prefix org.gnome.SessionManager.Presence. \
+		--generate-c-code gf-sm-presence-gen \
+		--c-namespace Gf \
+		--annotate "org.gnome.SessionManager.Presence" \
+		           "org.gtk.GDBus.C.Name" SmPresenceGen \
+		$(srcdir)/org.gnome.SessionManager.Presence.xml
+
 BUILT_SOURCES = \
 	gf-login-manager-gen.c \
 	gf-login-manager-gen.h \
@@ -71,12 +83,15 @@ BUILT_SOURCES = \
 	gf-login-session-gen.h \
 	gf-screensaver-gen.c \
 	gf-screensaver-gen.h \
+	gf-sm-presence-gen.c \
+	gf-sm-presence-gen.h \
 	$(NULL)
 
 EXTRA_DIST = \
 	org.freedesktop.login1.Manager.xml \
 	org.freedesktop.login1.Session.xml \
 	org.gnome.ScreenSaver.xml \
+	org.gnome.SessionManager.Presence.xml \
 	$(NULL)
 
 CLEANFILES = \
