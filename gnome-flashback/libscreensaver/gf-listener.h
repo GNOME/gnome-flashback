@@ -35,10 +35,12 @@ GfListener *gf_listener_new         (void);
 void        gf_listener_set_enabled (GfListener *listener,
                                      gboolean    enabled);
 
-gboolean    gf_listener_get_active  (GfListener *listener);
+gboolean    gf_listener_get_enabled (GfListener *listener);
 
 gboolean    gf_listener_set_active  (GfListener *listener,
                                      gboolean    active);
+
+gboolean    gf_listener_get_active  (GfListener *listener);
 
 gboolean    gf_listener_set_idle    (GfListener *listener,
                                      gboolean    idle);

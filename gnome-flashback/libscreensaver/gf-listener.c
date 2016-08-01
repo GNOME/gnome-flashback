@@ -476,7 +476,7 @@ gf_listener_set_enabled (GfListener *listener,
 }
 
 gboolean
-gf_listener_get_active (GfListener *listener)
+gf_listener_get_enabled (GfListener *listener)
 {
   return listener->enabled;
 }
@@ -543,6 +543,12 @@ gf_listener_set_active (GfListener *listener,
   gf_screensaver_gen_emit_active_changed (listener->screensaver, active);
 
   return TRUE;
+}
+
+gboolean
+gf_listener_get_active (GfListener *listener)
+{
+  return listener->enabled;
 }
 
 gboolean
