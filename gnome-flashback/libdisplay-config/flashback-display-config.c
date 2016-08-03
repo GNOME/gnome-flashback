@@ -67,7 +67,7 @@ power_save_mode_changed (MetaDBusDisplayConfig *skeleton,
   /* If DPMS is unsupported, force the property back. */
   if (manager->power_save_mode == META_POWER_SAVE_UNSUPPORTED)
     {
-      meta_dbus_display_config_set_power_save_mode (META_DBUS_DISPLAY_CONFIG (manager), META_POWER_SAVE_UNSUPPORTED);
+      meta_dbus_display_config_set_power_save_mode (skeleton, META_POWER_SAVE_UNSUPPORTED);
       return;
     }
 
