@@ -1203,8 +1203,8 @@ apply_device_settings (GfInputSettings *settings,
   update_touchpad_natural_scroll (settings, device);
   update_touchpad_tap_enabled (settings, device);
   update_touchpad_send_events (settings, device);
-  update_touchpad_edge_scroll (settings, device);
   update_touchpad_two_finger_scroll (settings, device);
+  update_touchpad_edge_scroll (settings, device);
   update_touchpad_click_method (settings, device);
 
   update_trackball_scroll_button (settings, device);
