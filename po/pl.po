@@ -1,27 +1,23 @@
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# Aviary.pl
-# Jeśli masz jakiekolwiek uwagi odnoszące się do tłumaczenia lub chcesz
-# pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas:
-# gnomepl@aviary.pl
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Polish translation for gnome-flashback.
+# Copyright © 2007-2016 the gnome-flashback authors.
+# This file is distributed under the same license as the gnome-flashback package.
 # Piotr Drąg <piotrdrag@gmail.com>, 2007-2016.
-# Aviary.pl <gnomepl@aviary.pl>, 2010-2016.
+# Aviary.pl <community-poland@mozilla.org>, 2010-2016.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-11 11:14+0000\n"
-"PO-Revision-Date: 2016-06-11 17:39+0200\n"
+"POT-Creation-Date: 2016-07-28 20:40+0000\n"
+"PO-Revision-Date: 2016-08-28 17:35+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
-"Language-Team: Polish <gnomepl@aviary.pl>\n"
+"Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Poedit-Language: Polish\n"
-"X-Poedit-Country: Poland\n"
 
 #: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
@@ -50,7 +46,7 @@ msgstr "Wygaszacz ekranu (Tradycyjne środowisko GNOME)"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:5
 msgid "Launch screensaver and locker program"
-msgstr "Uruchamia wygaszacz ekranu i program blokujący"
+msgstr "Uruchamia wygaszacz ekranu i program blokujący"
 
 #. TRANSLATORS: Don't translate this text (this is icon name)
 #: data/autostart/gnome-flashback-screensaver.desktop.in:7
@@ -174,7 +170,7 @@ msgstr "Ustawienia wejść"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:53
 msgid "Keyboard layouts and input methods"
-msgstr "Układy klawiatury i metody wprowadzania"
+msgstr "Układy klawiatury i metody wprowadzania"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
 msgid ""
@@ -182,7 +178,7 @@ msgid ""
 "keyboard layouts and input methods."
 msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
-"GNOME będzie używany do zarządzania układami klawiatury i metodami "
+"GNOME będzie używany do zarządzania układami klawiatury i metodami "
 "wprowadzania."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:59
@@ -325,7 +321,7 @@ msgstr "Kolor tła dla ikony stanu."
 msgid ""
 "This contains the background color for the status icon that is shown in the "
 "system tray."
-msgstr "Kolor tła dla ikony stanu wyświetlanej w obszarze powiadamiania."
+msgstr "Kolor tła dla ikony stanu wyświetlanej w obszarze powiadamiania."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:142
 msgid "The foreground color for the status icon."
@@ -335,7 +331,7 @@ msgstr "Kolor ikony stanu."
 msgid ""
 "This contains the foreground color for the status icon that is shown in the "
 "system tray."
-msgstr "Kolor ikony stanu wyświetlanej w obszarze powiadamiania."
+msgstr "Kolor ikony stanu wyświetlanej w obszarze powiadamiania."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:152
 msgid "Fix missing app menu button"
@@ -406,7 +402,7 @@ msgstr "Słuchawki"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:112
 msgid "Headset"
-msgstr "Słuchawki z mikrofonem"
+msgstr "Słuchawki z mikrofonem"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:115
 msgid "Microphone"
@@ -525,7 +521,7 @@ msgid ""
 "You have just inserted a medium with software intended to be automatically "
 "started."
 msgstr ""
-"Włożono nośnik z oprogramowaniem przeznaczonym do automatycznego "
+"Włożono nośnik z oprogramowaniem przeznaczonym do automatycznego "
 "uruchamiania."
 
 #. fallback to generic greeting
@@ -543,8 +539,8 @@ msgid ""
 "Select how to open \"%s\" and whether to perform this action in the future "
 "for other media of type \"%s\"."
 msgstr ""
-"Wybór sposobu otwierania nośników typu „%s” i czy wykonywać to działanie w "
-"przyszłości dla innych nośników typu „%s”."
+"Wybór sposobu otwierania nośników typu „%s” i czy wykonywać to działanie "
+"w przyszłości dla innych nośników typu „%s”."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:774
 msgid "_Always perform this action"
@@ -648,8 +644,8 @@ msgstr "Wyloguj"
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
-"Kliknięcie przycisku Wyloguj zakończy działanie tych programów i wyloguje z "
-"systemu."
+"Kliknięcie przycisku Wyloguj zakończy działanie tych programów i wyloguje "
+"z systemu."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:469
 #, c-format
@@ -667,8 +663,8 @@ msgstr "Wyłącz komputer"
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
-"Kliknięcie przycisku Wyłącz komputer zakończy działanie tych programów i "
-"wyłączy komputer."
+"Kliknięcie przycisku Wyłącz komputer zakończy działanie tych programów "
+"i wyłączy komputer."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:481
 #, c-format
@@ -686,8 +682,8 @@ msgstr "Uruchom ponownie"
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
-"Kliknięcie przycisku Uruchom ponownie zakończy działanie tych programów i "
-"ponownie uruchomi komputer."
+"Kliknięcie przycisku Uruchom ponownie zakończy działanie tych programów "
+"i ponownie uruchomi komputer."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:493
 #, c-format
@@ -752,11 +748,11 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Zablokuj ekran"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:358
+#: gnome-flashback/libinput-sources/gf-input-sources.c:362
 msgid "Show Keyboard Layout"
 msgstr "Wyświetl układ klawiatury"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:421
+#: gnome-flashback/libinput-sources/gf-input-sources.c:425
 msgid "Keyboard"
 msgstr "Klawiatura"
 
@@ -821,7 +817,7 @@ msgid ""
 "Authentication as one of the users below is required to perform this action."
 msgstr ""
 "Program próbuje wykonać działanie wymagające uprawnień. Należy uwierzytelnić "
-"jako jeden z poniższych użytkowników, aby je wykonać."
+"jako jeden z poniższych użytkowników, aby je wykonać."
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
