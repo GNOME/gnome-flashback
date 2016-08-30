@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 - 2015 Alberts Muktupāvels
+ * Copyright (C) 2014-2016 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@
 #include "libworkarounds/gf-workarounds.h"
 
 #ifdef WITH_LIBSTATUS_NOTIFIER
-#include "libwatcher/gf-watcher.h"
+#include <libstatus-notifier/sn.h>
 #endif
 
 struct _GfApplication
@@ -74,7 +74,7 @@ struct _GfApplication
   GfWorkarounds          *workarounds;
 
 #ifdef WITH_LIBSTATUS_NOTIFIER
-  GfWatcher              *watcher;
+  SnWatcher              *watcher;
 #endif
 };
 
@@ -172,11 +172,22 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (sound, "sound-applet", gf_sound_applet_new)
   SETTING_CHANGED (workarounds, "workarounds", gf_workarounds_new)
 
-#ifdef WITH_LIBSTATUS_NOTIFIER
-  SETTING_CHANGED (watcher, "watcher", gf_watcher_new)
-#endif
-
 #undef SETTING_CHANGED
+
+#ifdef WITH_LIBSTATUS_NOTIFIER
+  if (key == NULL || g_strcmp0 (key, "watcher") == 0)
+    {
+      if (g_settings_get_boolean (settings, "watcher"))
+        {
+          if (application->watcher == NULL)
+            application->watcher = sn_watcher_new (SN_WATCHER_FLAGS_NONE);
+        }
+      else
+        {
+          g_clear_object (&application->watcher);
+        }
+    }
+#endif
 
   if (application->input_settings)
     gf_input_settings_set_display_config (application->input_settings,

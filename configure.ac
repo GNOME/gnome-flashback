@@ -88,7 +88,7 @@ dnl **************************************************************************
 
 AC_ARG_WITH([libstatus-notifier],
             [AS_HELP_STRING([--with-libstatus-notifier],
-                           [Build with libstatus-notifier (experimental)])],
+                            [Build with libstatus-notifier (experimental)])],
             [with_libstatus_notifier="$withval"],
             [with_libstatus_notifier=no])
 
@@ -118,6 +118,7 @@ UPOWER_GLIB_REQUIRED=0.99.0
 
 PKG_CHECK_MODULES([GNOME_FLASHBACK], [
   gtk+-3.0 >= $GTK_REQUIRED
+  $LIBSTATUS_NOTIFIER_PKG
 ])
 
 PKG_CHECK_MODULES([AUDIO_DEVICE_SELECTION], [
@@ -237,14 +238,6 @@ PKG_CHECK_MODULES([SOUND_APPLET], [
   $LIBSTATUS_NOTIFIER_PKG
 ])
 
-AS_IF([test "x$with_libstatus_notifier" = "xyes"], [
-  PKG_CHECK_MODULES([WATCHER], [
-    glib-2.0 >= $GLIB_REQUIRED
-    gtk+-3.0 >= $GTK_REQUIRED
-    $LIBSTATUS_NOTIFIER_PKG
-  ])
-])
-
 PKG_CHECK_MODULES([WORKAROUNDS], [
   glib-2.0 >= $GLIB_REQUIRED
   gtk+-3.0 >= $GTK_REQUIRED
@@ -312,7 +305,6 @@ AC_CONFIG_FILES([
   gnome-flashback/libshell/Makefile
   gnome-flashback/libsound-applet/Makefile
   gnome-flashback/libsound-applet/gvc/Makefile
-  gnome-flashback/libwatcher/Makefile
   gnome-flashback/libworkarounds/Makefile
 
   po/Makefile.in
