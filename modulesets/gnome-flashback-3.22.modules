@@ -132,15 +132,6 @@
     </dependencies>
   </autotools>
 
-  <autotools id="libgnomekbd">
-    <branch/>
-    <dependencies>
-      <dep package="intltool" />
-      <dep package="gtk+" />
-      <dep package="libxklavier" />
-    </dependencies>
-  </autotools>
-
   <autotools id="libstatus-notifier">
     <branch repo="github.com" module="albertsmuktupavels/libstatus-notifier" />
     <dependencies>
