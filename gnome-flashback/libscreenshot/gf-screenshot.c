@@ -598,6 +598,8 @@ take_screenshot_real (GfScreenshot    *screenshot,
     }
   else
     {
+      wm_window = NULL;
+
       frame_offset.left = 0;
       frame_offset.top = 0;
       frame_offset.right = 0;
