@@ -715,7 +715,7 @@ take_screenshot_real (GfScreenshot    *screenshot,
 
   /* If we have a selected area, there were by definition no cursor in the
    * screenshot. */
-  if (include_cursor && type == SCREENSHOT_AREA)
+  if (include_cursor && type != SCREENSHOT_AREA)
     {
       GdkCursor *cursor;
       GdkPixbuf *cursor_pixbuf;
