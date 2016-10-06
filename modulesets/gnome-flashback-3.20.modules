@@ -82,7 +82,6 @@
       <dep package="intltool" />
       <dep package="gnome-desktop" />
       <dep package="gtk+" />
-      <dep package="libstatus-notifier" />
       <dep package="m4-common" />
     </dependencies>
   </autotools>
@@ -99,7 +98,6 @@
       <dep package="librsvg" />
       <dep package="libgweather" />
       <dep package="libcanberra" />
-      <dep package="libstatus-notifier" />
       <dep package="m4-common" />
       <dep package="yelp-tools" />
     </dependencies>
@@ -148,16 +146,6 @@
             hash="sha256:71a5749ff96a1ae5a71bea8d5c1394b16f9252c4e3ad5225cc66ad2a76ab6d7d" />
     <dependencies>
       <dep package="glib" />
-    </dependencies>
-  </autotools>
-
-  <autotools id="libstatus-notifier">
-    <branch repo="github.com" module="albertsmuktupavels/libstatus-notifier" />
-    <dependencies>
-      <dep package="glib" />
-      <dep package="gtk-doc" />
-      <dep package="gtk+" />
-      <dep package="m4-common" />
     </dependencies>
   </autotools>
 
