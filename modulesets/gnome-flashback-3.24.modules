@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<!DOCTYPE moduleset SYSTEM "moduleset.dtd">
+<?xml-stylesheet type="text/xsl" href="moduleset.xsl"?>
+<moduleset>
+  <repository type="git" name="git.gnome.org" default="yes" href="git://git.gnome.org/" />
+  <repository type="tarball" name="launchpad-tar" href="https://launchpad.net/" />
+  <repository type="git" name="github.com" href="git://github.com/" />
+
+  <include href="https://git.gnome.org/browse/jhbuild/plain/modulesets/gnome-apps-3.24.modules" />
+
+  <cmake id="compiz" force-non-srcdir-builds="yes"
+         cmakeargs="-DCOMPIZ_BUILD_TESTING=OFF -DBUILD_KDE4=Off -DCOMPIZ_WERROR=OFF -DCOMPIZ_DEFAULT_PLUGINS=core,composite,opengl,decor,resize,place,move">
+    <branch repo="launchpad-tar" module="compiz/0.9.13/${version}/+download/compiz-${version}.tar.bz2"
+            hash="sha256:f08eb54d578be559e3e723f3fe4291a56f5c96b2fdfb9c9e74ebb6596a1ca702"
+            version="0.9.13.0" size="4434785" />
+    <dependencies>
+      <dep package="boost" />
+      <dep package="cairo" />
+      <dep package="dbus-glib" />
+      <dep package="glib" />
+      <dep package="glibmm" />
+      <dep package="gtk+" />
+      <dep package="gnome-control-center" />
+      <dep package="gsettings-desktop-schemas" />
+      <dep package="intltool" />
+      <dep package="libnotify" />
+      <dep package="libjpeg" />
+      <dep package="libpng" />
+      <dep package="librsvg" />
+      <dep package="libwnck" />
+      <dep package="libxml2" />
+      <dep package="libX11" />
+      <dep package="libXcomposite" />
+      <dep package="libXcursor" />
+      <dep package="libXdamage" />
+      <dep package="libXext" />
+      <dep package="libXfixes" />
+      <dep package="libXi" />
+      <dep package="libXinerama" />
+      <dep package="libXrandr" />
+      <dep package="metacity" />
+      <dep package="pango" />
+      <dep package="pkg-config" />
+      <dep package="protobuf" />
+      <dep package="sm" />
+      <dep package="startup-notification" />
+    </dependencies>
+  </cmake>
+
+  <autotools id="gnome-applets" autogenargs="--enable-mini-commander">
+    <branch />
+    <dependencies>
+      <dep package="intltool" />
+      <dep package="gnome-panel" />
+      <dep package="libgtop" />
+      <dep package="libgnomekbd" />
+      <dep package="gucharmap" />
+      <dep package="libgweather" />
+      <dep package="gdk-pixbuf" />
+      <dep package="gtk+" />
+      <dep package="glib" />
+      <dep package="libxklavier" />
+      <dep package="libwnck" />
+      <dep package="libnotify" />
+      <dep package="m4-common" />
+      <dep package="dbus" />
+      <dep package="dbus-glib" />
+      <dep package="pygobject" />
+      <dep package="adwaita-icon-theme" />
+      <dep package="libxml2" />
+      <dep package="polkit-gobject" />
+    </dependencies>
+    <after>
+      <dep package="gnome-control-center" />
+    </after>
+  </autotools>
+
+  <autotools id="gnome-flashback" autogenargs="--with-libstatus-notifier=yes">
+    <branch />
+    <dependencies>
+      <dep package="intltool" />
+      <dep package="gnome-desktop" />
+      <dep package="gtk+" />
+      <dep package="libstatus-notifier" />
+      <dep package="m4-common" />
+    </dependencies>
+  </autotools>
+
+  <autotools id="gnome-panel" autogenargs="--with-libstatus-notifier=yes">
+    <branch />
+    <dependencies>
+      <dep package="intltool" />
+      <dep package="gnome-desktop" />
+      <dep package="libwnck" />
+      <dep package="evolution-data-server" />
+      <dep package="gnome-menus" />
+      <dep package="dbus-glib" />
+      <dep package="librsvg" />
+      <dep package="libgweather" />
+      <dep package="libcanberra" />
+      <dep package="libstatus-notifier" />
+      <dep package="m4-common" />
+      <dep package="yelp-tools" />
+    </dependencies>
+    <suggests>
+      <dep package="polkit-gobject" />
+    </suggests>
+  </autotools>
+
+  <autotools id="gnome-screensaver">
+    <branch/>
+    <dependencies>
+      <dep package="intltool" />
+      <dep package="gtk+" />
+      <dep package="dbus-glib" />
+      <dep package="gnome-menus" />
+      <dep package="gnome-desktop" />
+      <dep package="libgnomekbd" />
+    </dependencies>
+    <suggests>
+      <dep package="libnotify" />
+    </suggests>
+  </autotools>
+
+  <autotools id="gucharmap">
+    <branch/>
+    <dependencies>
+      <dep package="intltool"/>
+      <dep package="glib"/>
+      <dep package="gtk+"/>
+      <dep package="yelp-tools"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libstatus-notifier">
+    <branch repo="github.com" module="albertsmuktupavels/libstatus-notifier" />
+    <dependencies>
+      <dep package="glib" />
+      <dep package="gtk-doc" />
+      <dep package="gtk+" />
+      <dep package="m4-common" />
+    </dependencies>
+  </autotools>
+
+  <autotools id="metacity">
+    <branch />
+    <dependencies>
+      <dep package="gdk-pixbuf" />
+      <dep package="gtk+" />
+      <dep package="gsettings-desktop-schemas" />
+      <dep package="libcanberra" />
+      <dep package="m4-common" />
+      <dep package="zenity" />
+    </dependencies>
+  </autotools>
+
+  <metamodule id="meta-gnome-flashback-common">
+    <dependencies>
+      <dep package="gnome-applets" />
+      <dep package="gnome-flashback" />
+      <dep package="gnome-panel" />
+      <dep package="gnome-screensaver" />
+    </dependencies>
+  </metamodule>
+
+  <metamodule id="meta-gnome-flashback-compiz">
+    <dependencies>
+      <dep package="meta-gnome-flashback-common" />
+      <dep package="compiz" />
+    </dependencies>
+  </metamodule>
+
+  <metamodule id="meta-gnome-flashback-metacity">
+    <dependencies>
+      <dep package="meta-gnome-flashback-common" />
+      <dep package="metacity" />
+    </dependencies>
+  </metamodule>
+
+  <metamodule id="meta-gnome-flashback">
+    <dependencies>
+      <dep package="meta-gnome-flashback-compiz" />
+      <dep package="meta-gnome-flashback-metacity" />
+    </dependencies>
+  </metamodule>
+</moduleset>
