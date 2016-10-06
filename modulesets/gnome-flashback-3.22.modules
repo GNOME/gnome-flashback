@@ -75,18 +75,17 @@
     </after>
   </autotools>
 
-  <autotools id="gnome-flashback" autogenargs="--with-libstatus-notifier=yes">
+  <autotools id="gnome-flashback">
     <branch />
     <dependencies>
       <dep package="intltool" />
       <dep package="gnome-desktop" />
       <dep package="gtk+" />
-      <dep package="libstatus-notifier" />
       <dep package="m4-common" />
     </dependencies>
   </autotools>
 
-  <autotools id="gnome-panel" autogenargs="--with-libstatus-notifier=yes">
+  <autotools id="gnome-panel">
     <branch />
     <dependencies>
       <dep package="intltool" />
@@ -98,7 +97,6 @@
       <dep package="librsvg" />
       <dep package="libgweather" />
       <dep package="libcanberra" />
-      <dep package="libstatus-notifier" />
       <dep package="m4-common" />
       <dep package="yelp-tools" />
     </dependencies>
@@ -129,16 +127,6 @@
       <dep package="glib"/>
       <dep package="gtk+"/>
       <dep package="yelp-tools"/>
-    </dependencies>
-  </autotools>
-
-  <autotools id="libstatus-notifier">
-    <branch repo="github.com" module="albertsmuktupavels/libstatus-notifier" />
-    <dependencies>
-      <dep package="glib" />
-      <dep package="gtk-doc" />
-      <dep package="gtk+" />
-      <dep package="m4-common" />
     </dependencies>
   </autotools>
 
