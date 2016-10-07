@@ -19,7 +19,7 @@
       <dep package="dbus-glib" />
       <dep package="glib" />
       <dep package="glibmm" />
-      <dep package="gtk+" />
+      <dep package="gtk+-3" />
       <dep package="gnome-control-center" />
       <dep package="gsettings-desktop-schemas" />
       <dep package="intltool" />
@@ -57,7 +57,7 @@
       <dep package="gucharmap" />
       <dep package="libgweather" />
       <dep package="gdk-pixbuf" />
-      <dep package="gtk+" />
+      <dep package="gtk+-3" />
       <dep package="glib" />
       <dep package="libxklavier" />
       <dep package="libwnck" />
@@ -80,7 +80,7 @@
     <dependencies>
       <dep package="intltool" />
       <dep package="gnome-desktop" />
-      <dep package="gtk+" />
+      <dep package="gtk+-3" />
       <dep package="libstatus-notifier" />
       <dep package="m4-common" />
     </dependencies>
@@ -111,7 +111,7 @@
     <branch/>
     <dependencies>
       <dep package="intltool" />
-      <dep package="gtk+" />
+      <dep package="gtk+-3" />
       <dep package="dbus-glib" />
       <dep package="gnome-menus" />
       <dep package="gnome-desktop" />
@@ -127,7 +127,7 @@
     <dependencies>
       <dep package="intltool"/>
       <dep package="glib"/>
-      <dep package="gtk+"/>
+      <dep package="gtk+-3"/>
       <dep package="yelp-tools"/>
     </dependencies>
   </autotools>
@@ -137,7 +137,7 @@
     <dependencies>
       <dep package="glib" />
       <dep package="gtk-doc" />
-      <dep package="gtk+" />
+      <dep package="gtk+-3" />
       <dep package="m4-common" />
     </dependencies>
   </autotools>
@@ -146,7 +146,7 @@
     <branch />
     <dependencies>
       <dep package="gdk-pixbuf" />
-      <dep package="gtk+" />
+      <dep package="gtk+-3" />
       <dep package="gsettings-desktop-schemas" />
       <dep package="libcanberra" />
       <dep package="m4-common" />
