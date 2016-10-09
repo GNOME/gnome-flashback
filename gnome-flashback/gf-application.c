@@ -38,44 +38,38 @@
 #include "libscreenshot/gf-screenshot.h"
 #include "libshell/flashback-shell.h"
 #include "libsound-applet/gf-sound-applet.h"
+#include "libstatus-notifier-watcher/gf-status-notifier-watcher.h"
 #include "libworkarounds/gf-workarounds.h"
-
-#ifdef WITH_LIBSTATUS_NOTIFIER
-#include <libstatus-notifier/sn.h>
-#endif
 
 struct _GfApplication
 {
-  GObject                 parent;
+  GObject                  parent;
 
-  gint                    bus_name;
+  gint                     bus_name;
 
-  GSettings              *settings;
+  GSettings               *settings;
 
-  GtkStyleProvider       *provider;
+  GtkStyleProvider        *provider;
 
-  GsdAutomountManager    *automount;
-  FlashbackDisplayConfig *config;
-  FlashbackIdleMonitor   *idle_monitor;
-  FlashbackPolkit        *polkit;
-  FlashbackShell         *shell;
-  GfAudioDeviceSelection *audio_device_selection;
-  GfBluetoothApplet      *bluetooth;
-  GfDesktopBackground    *background;
-  GfEndSessionDialog     *dialog;
-  GfInputSettings        *input_settings;
-  GfInputSources         *input_sources;
-  GfNotifications        *notifications;
-  GfPowerApplet          *power;
-  GfScreencast           *screencast;
-  GfScreensaver          *screensaver;
-  GfScreenshot           *screenshot;
-  GfSoundApplet          *sound;
-  GfWorkarounds          *workarounds;
-
-#ifdef WITH_LIBSTATUS_NOTIFIER
-  SnWatcher              *watcher;
-#endif
+  GsdAutomountManager     *automount;
+  FlashbackDisplayConfig  *config;
+  FlashbackIdleMonitor    *idle_monitor;
+  FlashbackPolkit         *polkit;
+  FlashbackShell          *shell;
+  GfAudioDeviceSelection  *audio_device_selection;
+  GfBluetoothApplet       *bluetooth;
+  GfDesktopBackground     *background;
+  GfEndSessionDialog      *dialog;
+  GfInputSettings         *input_settings;
+  GfInputSources          *input_sources;
+  GfNotifications         *notifications;
+  GfPowerApplet           *power;
+  GfScreencast            *screencast;
+  GfScreensaver           *screensaver;
+  GfScreenshot            *screenshot;
+  GfSoundApplet           *sound;
+  GfStatusNotifierWatcher *status_notifier_watcher;
+  GfWorkarounds           *workarounds;
 };
 
 G_DEFINE_TYPE (GfApplication, gf_application, G_TYPE_OBJECT)
@@ -170,24 +164,10 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (screensaver, "screensaver", gf_screensaver_new)
   SETTING_CHANGED (screenshot, "screenshot", gf_screenshot_new)
   SETTING_CHANGED (sound, "sound-applet", gf_sound_applet_new)
+  SETTING_CHANGED (status_notifier_watcher, "status-notifier-watcher", gf_status_notifier_watcher_new)
   SETTING_CHANGED (workarounds, "workarounds", gf_workarounds_new)
 
 #undef SETTING_CHANGED
-
-#ifdef WITH_LIBSTATUS_NOTIFIER
-  if (key == NULL || g_strcmp0 (key, "watcher") == 0)
-    {
-      if (g_settings_get_boolean (settings, "watcher"))
-        {
-          if (application->watcher == NULL)
-            application->watcher = sn_watcher_new (SN_WATCHER_FLAGS_NONE);
-        }
-      else
-        {
-          g_clear_object (&application->watcher);
-        }
-    }
-#endif
 
   if (application->input_settings)
     gf_input_settings_set_display_config (application->input_settings,
@@ -230,11 +210,8 @@ gf_application_dispose (GObject *object)
   g_clear_object (&application->screenshot);
   g_clear_object (&application->screensaver);
   g_clear_object (&application->sound);
+  g_clear_object (&application->status_notifier_watcher);
   g_clear_object (&application->workarounds);
-
-#ifdef WITH_LIBSTATUS_NOTIFIER
-  g_clear_object (&application->watcher);
-#endif
 
   G_OBJECT_CLASS (gf_application_parent_class)->dispose (object);
 }
