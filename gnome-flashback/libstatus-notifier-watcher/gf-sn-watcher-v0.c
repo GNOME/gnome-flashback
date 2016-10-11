@@ -116,8 +116,6 @@ name_vanished_cb (GDBusConnection *connection,
 
       if (v0->hosts == NULL)
         {
-          g_assert (gf_sn_watcher_v0_gen_get_is_host_registered (gen) == FALSE);
-
           gf_sn_watcher_v0_gen_set_is_host_registered (gen, FALSE);
           gf_sn_watcher_v0_gen_emit_host_registered (gen);
         }
@@ -234,8 +232,6 @@ gf_sn_watcher_v0_handle_register_host (GfSnWatcherV0Gen      *object,
 
   if (!gf_sn_watcher_v0_gen_get_is_host_registered (object))
     {
-      g_assert (v0->hosts != NULL);
-
       gf_sn_watcher_v0_gen_set_is_host_registered (object, TRUE);
       gf_sn_watcher_v0_gen_emit_host_registered (object);
     }
