@@ -243,14 +243,20 @@ make_region_with_monitors (GdkScreen *screen)
   gint num_monitors;
   gint i;
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   num_monitors = gdk_screen_get_n_monitors (screen);
+  G_GNUC_END_IGNORE_DEPRECATIONS
+
   region = cairo_region_create ();
 
   for (i = 0; i < num_monitors; i++)
     {
       GdkRectangle rect;
 
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       gdk_screen_get_monitor_geometry (screen, i, &rect);
+      G_GNUC_END_IGNORE_DEPRECATIONS
+
       cairo_region_union_rectangle (region, &rect);
     }
 
@@ -271,8 +277,11 @@ mask_monitors (GdkPixbuf *pixbuf,
 
   rect.x = 0;
   rect.y = 0;
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   rect.width = gdk_screen_get_width (screen);
   rect.height = gdk_screen_get_height (screen);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   invisible_region = cairo_region_create_rectangle (&rect);
   cairo_region_subtract (invisible_region, region_with_monitors);
@@ -418,6 +427,8 @@ get_window_rect_coords (GdkWindow    *window,
       y = 0;
     }
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
   screen_width = gdk_screen_width ();
   if (x + width > screen_width)
     width = screen_width - x;
@@ -425,6 +436,8 @@ get_window_rect_coords (GdkWindow    *window,
   screen_height = gdk_screen_height ();
   if (y + height > screen_height)
     height = screen_height - y;
+
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   if (screenshot_out != NULL)
     {
@@ -458,10 +471,15 @@ static GdkWindow *
 find_active_window (void)
 {
   GdkScreen *screen;
+  GdkWindow *window;
 
   screen = gdk_screen_get_default ();
 
-  return gdk_screen_get_active_window (screen);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  window = gdk_screen_get_active_window (screen);
+  G_GNUC_END_IGNORE_DEPRECATIONS
+
+  return window;
 }
 
 static GdkWindow *
@@ -673,11 +691,15 @@ take_screenshot_real (GfScreenshot    *screenshot,
                   rec_height += real.y;
                 }
 
+              G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
               if (s.x + rec_x + rec_width > gdk_screen_width ())
                 rec_width = gdk_screen_width () - s.x - rec_x;
 
               if (s.y + rec_y + rec_height > gdk_screen_height ())
                 rec_height = gdk_screen_height () - s.y - rec_y;
+
+              G_GNUC_END_IGNORE_DEPRECATIONS
 
               for (y2 = rec_y; y2 < rec_y + rec_height; y2++)
                 {
@@ -951,8 +973,11 @@ check_area (gint x,
   gint screen_height;
 
   screen = gdk_screen_get_default ();
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   screen_width = gdk_screen_get_width (screen);
   screen_height = gdk_screen_get_height (screen);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   return x >= 0 && y >= 0 && width > 0 && height > 0 &&
          x + width <= screen_width && y + height <= screen_height;
@@ -973,8 +998,11 @@ handle_screenshot (GfDBusScreenshot      *dbus_screenshot,
 
   screenshot = GF_SCREENSHOT (user_data);
   screen = gdk_screen_get_default ();
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   width = gdk_screen_get_width (screen);
   height = gdk_screen_get_height (screen);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   take_screenshot (screenshot, invocation, SCREENSHOT_SCREEN,
                    FALSE, include_cursor, 0, 0, width, height,
