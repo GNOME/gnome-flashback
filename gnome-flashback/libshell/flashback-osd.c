@@ -40,7 +40,10 @@ monitors_changed (GdkScreen *screen,
   gint i;
 
   osd = FLASHBACK_OSD (user_data);
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   n_monitors = gdk_screen_get_n_monitors (screen);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   if (osd->windows != NULL)
     {

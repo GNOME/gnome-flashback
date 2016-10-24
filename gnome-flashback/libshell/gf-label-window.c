@@ -100,7 +100,9 @@ gf_label_window_new (gint         monitor,
                          "type", GTK_WINDOW_POPUP,
                          NULL);
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gdk_screen_get_monitor_workarea (screen, monitor, &window->monitor);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   width = window->monitor.width;
   height = window->monitor.height;
