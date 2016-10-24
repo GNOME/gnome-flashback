@@ -111,8 +111,11 @@ get_work_area (NdStack      *stack,
         /* Defaults in case of error */
         rect->x = 0;
         rect->y = 0;
+
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         rect->width = gdk_screen_get_width (stack->priv->screen);
         rect->height = gdk_screen_get_height (stack->priv->screen);
+        G_GNUC_END_IGNORE_DEPRECATIONS
 
         if (workarea == None)
                 return FALSE;
@@ -284,7 +287,10 @@ nd_stack_new (GdkScreen *screen,
         NdStack *stack;
 
         g_assert (screen != NULL && GDK_IS_SCREEN (screen));
+
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         g_assert (monitor < (guint)gdk_screen_get_n_monitors (screen));
+        G_GNUC_END_IGNORE_DEPRECATIONS
 
         stack = g_object_new (ND_TYPE_STACK, NULL);
         stack->priv->screen = screen;
@@ -328,9 +334,13 @@ nd_stack_shift_notifications (NdStack     *stack,
         int             n_wins;
 
         get_work_area (stack, &workarea);
+
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         gdk_screen_get_monitor_geometry (stack->priv->screen,
                                          stack->priv->monitor,
                                          &monitor);
+        G_GNUC_END_IGNORE_DEPRECATIONS
+
         gdk_rectangle_intersect (&monitor, &workarea, &workarea);
 
         add_padding_to_rect (&workarea);

@@ -99,7 +99,9 @@ on_screen_monitors_changed (GdkScreen *screen,
 
         nscreen = queue->priv->screen;
 
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         n_monitors = gdk_screen_get_n_monitors (screen);
+        G_GNUC_END_IGNORE_DEPRECATIONS
 
         if (n_monitors > nscreen->n_stacks) {
                 /* grow */
@@ -155,7 +157,9 @@ create_stacks_for_screen (NdQueue   *queue,
 
         nscreen = queue->priv->screen;
 
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         nscreen->n_stacks = gdk_screen_get_n_monitors (screen);
+        G_GNUC_END_IGNORE_DEPRECATIONS
 
         nscreen->stacks = g_renew (NdStack *,
                                    nscreen->stacks,
@@ -556,7 +560,10 @@ get_stack_with_pointer (NdQueue *queue)
         pointer = gdk_seat_get_pointer (seat);
 
         gdk_device_get_position (pointer, &screen, &x, &y);
+
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         monitor_num = gdk_screen_get_monitor_at_point (screen, x, y);
+        G_GNUC_END_IGNORE_DEPRECATIONS
 
         if (monitor_num >= queue->priv->screen->n_stacks) {
                 /* screw it - dump it on the last one we'll get
@@ -706,8 +713,11 @@ update_dock (NdQueue *queue)
                 gtk_status_icon_get_geometry (status_icon, &screen, &area, NULL);
                 G_GNUC_END_IGNORE_DEPRECATIONS
 
+                G_GNUC_BEGIN_IGNORE_DEPRECATIONS
                 monitor_num = gdk_screen_get_monitor_at_point (screen, area.x, area.y);
                 gdk_screen_get_monitor_geometry (screen, monitor_num, &area);
+                G_GNUC_END_IGNORE_DEPRECATIONS
+
                 height = MIN (height, (area.height / 2));
                 gtk_widget_set_size_request (queue->priv->dock_scrolled_window,
                                              WIDTH,
@@ -753,8 +763,10 @@ popup_dock (NdQueue *queue,
         /* position roughly */
         gtk_window_set_screen (GTK_WINDOW (queue->priv->dock), screen);
 
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         monitor_num = gdk_screen_get_monitor_at_point (screen, area.x, area.y);
         gdk_screen_get_monitor_geometry (screen, monitor_num, &monitor);
+        G_GNUC_END_IGNORE_DEPRECATIONS
 
         gtk_container_foreach (GTK_CONTAINER (queue->priv->dock),
                                (GtkCallback) gtk_widget_show_all, NULL);
