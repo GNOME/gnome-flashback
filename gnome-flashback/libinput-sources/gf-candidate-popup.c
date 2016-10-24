@@ -61,9 +61,15 @@ update_size_and_position (GfCandidatePopup *popup)
   cursor = &popup->cursor;
 
   screen = gtk_window_get_screen (window);
-  monitor = gdk_screen_get_monitor_at_point (screen, cursor->x, cursor->y);
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  monitor = gdk_screen_get_monitor_at_point (screen, cursor->x, cursor->y);
+  G_GNUC_END_IGNORE_DEPRECATIONS
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gdk_screen_get_monitor_geometry (screen, monitor, &rect);
+  G_GNUC_END_IGNORE_DEPRECATIONS
+
   gtk_window_get_size (window, &width, &height);
 
   x = cursor->x;
