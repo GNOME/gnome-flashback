@@ -56,8 +56,11 @@ draw_background (GfDesktopBackground *background,
 
   screen = gdk_screen_get_default ();
   root = gdk_screen_get_root_window (screen);
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   width = gdk_screen_get_width (screen);
   height = gdk_screen_get_height (screen);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   surface = gnome_bg_create_surface (background->bg, root, width, height, TRUE);
 
