@@ -659,7 +659,11 @@ x11_init (GfWorkarounds *workarounds)
   display = gdk_display_get_default ();
   xdisplay = gdk_x11_display_get_xdisplay (display);
   screen = gdk_display_get_default_screen (display);
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   number = gdk_screen_get_number (screen);
+  G_GNUC_END_IGNORE_DEPRECATIONS
+
   atom = g_strdup_printf ("_XSETTINGS_S%d", number);
 
   workarounds->xdisplay = xdisplay;
