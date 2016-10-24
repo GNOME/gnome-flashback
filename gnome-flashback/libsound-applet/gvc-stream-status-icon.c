@@ -150,8 +150,10 @@ popup_dock (GvcStreamStatusIcon *icon,
         gvc_channel_bar_set_orientation (GVC_CHANNEL_BAR (icon->priv->bar),
                                          1 - orientation);
 
+        G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         monitor_num = gdk_screen_get_monitor_at_point (screen, area.x, area.y);
         gdk_screen_get_monitor_geometry (screen, monitor_num, &monitor);
+        G_GNUC_END_IGNORE_DEPRECATIONS
 
         gtk_container_foreach (GTK_CONTAINER (icon->priv->dock),
                                (GtkCallback) gtk_widget_show_all, NULL);
