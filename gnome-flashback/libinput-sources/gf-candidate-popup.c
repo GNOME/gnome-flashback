@@ -44,8 +44,8 @@ update_size_and_position (GfCandidatePopup *popup)
   GtkWindow *window;
   GtkRequisition size;
   GdkRectangle *cursor;
-  GdkScreen *screen;
-  gint monitor;
+  GdkDisplay *display;
+  GdkMonitor *monitor;
   GdkRectangle rect;
   gint width;
   gint height;
@@ -60,10 +60,10 @@ update_size_and_position (GfCandidatePopup *popup)
 
   cursor = &popup->cursor;
 
-  screen = gtk_window_get_screen (window);
-  monitor = gdk_screen_get_monitor_at_point (screen, cursor->x, cursor->y);
+  display = gdk_display_get_default ();
+  monitor = gdk_display_get_monitor_at_point (display, cursor->x, cursor->y);
 
-  gdk_screen_get_monitor_geometry (screen, monitor, &rect);
+  gdk_monitor_get_geometry (monitor, &rect);
   gtk_window_get_size (window, &width, &height);
 
   x = cursor->x;
