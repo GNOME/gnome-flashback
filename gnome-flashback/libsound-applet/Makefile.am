@@ -19,18 +19,13 @@ libsound_applet_la_CFLAGS = \
 libsound_applet_la_SOURCES = \
 	gf-sound-applet.c \
 	gf-sound-applet.h \
+	gf-sound-item.c \
+	gf-sound-item.h \
 	gvc-channel-bar.c \
 	gvc-channel-bar.h \
 	gvc-stream-status-icon.c \
 	gvc-stream-status-icon.h \
 	$(NULL)
-
-if WITH_LIBSTATUS_NOTIFIER
-libsound_applet_la_SOURCES += \
-	gf-sound-item.c \
-	gf-sound-item.h \
-	$(NULL)
-endif
 
 libsound_applet_la_LDFLAGS = \
 	$(WARN_LDFLAGS) \
@@ -38,7 +33,8 @@ libsound_applet_la_LDFLAGS = \
 	$(NULL)
 
 libsound_applet_la_LIBADD = \
-	gvc/libgvc.la \
+	$(top_builddir)/libstatus-notifier/libstatus-notifier.la \
+	$(top_builddir)/gnome-flashback/libsound-applet/gvc/libgvc.la \
 	$(SOUND_APPLET_LIBS) \
 	$(LIBM) \
 	$(NULL)

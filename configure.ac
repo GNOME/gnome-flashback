@@ -63,6 +63,7 @@ dnl **************************************************************************
 AC_PROG_CC
 AC_PATH_PROG([GDBUS_CODEGEN], [gdbus-codegen])
 AC_PATH_PROG([GLIB_COMPILE_RESOURCES], [glib-compile-resources])
+AC_PATH_PROG([GLIB_MKENUMS], [glib-mkenums])
 
 dnl **************************************************************************
 dnl Internationalization
@@ -83,29 +84,10 @@ dnl **************************************************************************
 GLIB_GSETTINGS
 
 dnl **************************************************************************
-dnl Build with libstatus-notifier (experimental)
-dnl **************************************************************************
-
-AC_ARG_WITH([libstatus-notifier],
-            [AS_HELP_STRING([--with-libstatus-notifier],
-                            [Build with libstatus-notifier (experimental)])],
-            [with_libstatus_notifier="$withval"],
-            [with_libstatus_notifier=no])
-
-LIBSTATUS_NOTIFIER_PKG=""
-AS_IF([test "x$with_libstatus_notifier" = "xyes"], [
-  LIBSTATUS_NOTIFIER_PKG="libstatus-notifier-3.0"
-  AC_DEFINE([WITH_LIBSTATUS_NOTIFIER], [1],
-            [Define to 1 if libstatus-notifier is available])
-])
-
-AM_CONDITIONAL([WITH_LIBSTATUS_NOTIFIER],
-               [test "x$with_libstatus_notifier" = "xyes"])
-
-dnl **************************************************************************
 dnl Check for required packages
 dnl **************************************************************************
 
+GDK_PIXBUF_REQUIRED=2.32.2
 GTK_REQUIRED=3.19.5
 LIBGNOME_DESKTOP_REQUIRED=3.12.0
 CANBERRA_REQUIRED=0.13
@@ -115,6 +97,14 @@ POLKIT_AGENT_REQUIRED=0.97
 POLKIT_GOBJECT_REQUIRED=0.97
 IBUS_REQUIRED=1.5.2
 UPOWER_GLIB_REQUIRED=0.99.0
+
+PKG_CHECK_MODULES([LIBSTATUS_NOTIFIER], [
+  gdk-pixbuf-2.0 >= $GDK_PIXBUF_REQUIRED
+  gio-2.0 >= $GLIB_REQUIRED
+  gio-unix-2.0 >= $GLIB_REQUIRED
+  glib-2.0 >= $GLIB_REQUIRED
+  gtk+-3.0 >= $GTK_REQUIRED
+])
 
 PKG_CHECK_MODULES([GNOME_FLASHBACK], [
   gtk+-3.0 >= $GTK_REQUIRED
@@ -312,6 +302,8 @@ AC_CONFIG_FILES([
   gnome-flashback/libstatus-notifier-watcher/Makefile
   gnome-flashback/libworkarounds/Makefile
 
+  libstatus-notifier/Makefile
+
   po/Makefile.in
 ])
 
@@ -335,6 +327,4 @@ echo "  exec_prefix .................: ${exec_prefix}"
 echo "  libdir ......................: ${libdir}"
 echo "  sysconfdir ..................: ${sysconfdir}"
 echo "  libexecdir ..................: ${libexecdir}"
-echo ""
-echo "  with libstatus-notifier .....: ${with_libstatus_notifier}"
 echo ""
