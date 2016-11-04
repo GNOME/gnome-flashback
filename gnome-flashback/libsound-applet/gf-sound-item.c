@@ -615,7 +615,7 @@ gf_sound_item_new (SnItemCategory   category,
                    const gchar    **icon_names)
 {
   return g_object_new (GF_TYPE_SOUND_ITEM,
-                       "version", 1,
+                       "version", 0,
                        "category", category,
                        "id", id,
                        "title", title,
