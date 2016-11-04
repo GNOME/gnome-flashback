@@ -4,7 +4,6 @@
 <moduleset>
   <repository type="git" name="git.gnome.org" default="yes" href="git://git.gnome.org/" />
   <repository type="tarball" name="launchpad-tar" href="https://launchpad.net/" />
-  <repository type="git" name="github.com" href="git://github.com/" />
 
   <include href="https://git.gnome.org/browse/jhbuild/plain/modulesets/gnome-apps-3.24.modules" />
 
@@ -75,13 +74,12 @@
     </after>
   </autotools>
 
-  <autotools id="gnome-flashback" autogenargs="--with-libstatus-notifier=yes">
+  <autotools id="gnome-flashback">
     <branch />
     <dependencies>
       <dep package="intltool" />
       <dep package="gnome-desktop" />
       <dep package="gtk+-3" />
-      <dep package="libstatus-notifier" />
       <dep package="m4-common" />
     </dependencies>
   </autotools>
@@ -128,16 +126,6 @@
       <dep package="glib"/>
       <dep package="gtk+-3"/>
       <dep package="yelp-tools"/>
-    </dependencies>
-  </autotools>
-
-  <autotools id="libstatus-notifier">
-    <branch repo="github.com" module="albertsmuktupavels/libstatus-notifier" />
-    <dependencies>
-      <dep package="glib" />
-      <dep package="gtk-doc" />
-      <dep package="gtk+-3" />
-      <dep package="m4-common" />
     </dependencies>
   </autotools>
 
