@@ -149,7 +149,7 @@ gf_desktop_background_dispose (GObject *object)
 
   if (background->change_event_id != 0)
     {
-      g_signal_handler_disconnect (screen, background->change_event_id);
+      g_signal_handler_disconnect (background->settings, background->change_event_id);
       background->change_event_id = 0;
     }
 
