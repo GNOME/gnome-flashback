@@ -16,7 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if 0
 #include "config.h"
 
 #include <glib/gi18n.h>
@@ -687,4 +686,3 @@ gf_sound_item_set_mixer_stream (GfSoundItem    *item,
 
   update_icon (item);
 }
-#endif

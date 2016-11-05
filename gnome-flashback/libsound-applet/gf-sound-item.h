@@ -19,9 +19,9 @@
 #define GF_SOUND_ITEM_H
 
 #include <glib-object.h>
-#include <libstatus-notifier/sn.h>
 
 #include "gvc-mixer-stream.h"
+#include "libstatus-notifier/sn-item.h"
 
 G_BEGIN_DECLS
 
