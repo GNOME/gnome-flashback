@@ -18,6 +18,7 @@
 
 #include "config.h"
 
+#include <gdk/gdkx.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <math.h>
@@ -441,6 +442,8 @@ gf_sound_item_context_menu (SnItem *item,
   GtkWidget *menu;
   gboolean is_muted;
   GtkWidget *menu_item;
+  GdkScreen *screen;
+  GdkWindow *root;
   guint32 event_time;
   MenuPosition position;
 
@@ -467,7 +470,9 @@ gf_sound_item_context_menu (SnItem *item,
   position.x = x;
   position.y = y;
 
-  event_time = gtk_get_current_event_time ();
+  screen = gdk_screen_get_default ();
+  root = gdk_screen_get_root_window (screen);
+  event_time = gdk_x11_get_server_time (root);
 
   gtk_menu_popup (GTK_MENU (menu), NULL, NULL,
                   context_menu_position, &position,
