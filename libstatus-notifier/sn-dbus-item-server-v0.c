@@ -92,23 +92,23 @@ static gboolean
 handle_scroll (SnItemV0Gen           *item_v0_gen,
                GDBusMethodInvocation *invocation,
                gint                   delta,
-               SnItemOrientation      orientation,
+               const gchar           *orientation,
                SnDBusItemServerV0    *server_v0)
 {
-  switch (orientation)
-    {
-      case SN_ITEM_ORIENTATION_VERTICAL:
-      case SN_ITEM_ORIENTATION_HORIZONTAL:
-        break;
+  SnItemOrientation scroll_orientation;
 
-      default:
-        orientation = SN_ITEM_ORIENTATION_HORIZONTAL;
-        break;
-    }
+  scroll_orientation = SN_ITEM_ORIENTATION_HORIZONTAL;
+
+  if (g_strcmp0 (orientation, "Vertical") == 0)
+    scroll_orientation = SN_ITEM_ORIENTATION_VERTICAL;
+  else if (g_strcmp0 (orientation, "Horizontal") == 0)
+    scroll_orientation = SN_ITEM_ORIENTATION_HORIZONTAL;
+  else
+    g_warning ("Unknown scroll orientation: %s", orientation);
 
   sn_item_v0_gen_complete_scroll (item_v0_gen, invocation);
   sn_dbus_item_server_emit_scroll (SN_DBUS_ITEM_SERVER (server_v0),
-                                   delta, orientation);
+                                   delta, scroll_orientation);
 
   return TRUE;
 }
