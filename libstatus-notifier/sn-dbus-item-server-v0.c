@@ -154,15 +154,15 @@ static void
 register_with_watcher (SnDBusItemServerV0 *server)
 {
   SnDBusItem *impl;
-  const gchar *bus_name;
+  const gchar *object_path;
 
   if (!server->watcher || !server->is_item_ready || server->registered)
     return;
 
   impl = SN_DBUS_ITEM (server);
-  bus_name = sn_dbus_item_get_bus_name (impl);
+  object_path = sn_dbus_item_get_object_path (impl);
 
-  sn_watcher_v0_gen_call_register_item (server->watcher, bus_name, NULL,
+  sn_watcher_v0_gen_call_register_item (server->watcher, object_path, NULL,
                                         register_item_cb, server);
 }
 
@@ -758,7 +758,7 @@ bus_acquired_cb (GDBusConnection *connection,
   server = SN_DBUS_ITEM_SERVER_V0 (user_data);
 
   skeleton = G_DBUS_INTERFACE_SKELETON (server->dbus_item);
-  object_path = g_strdup_printf ("%s", SN_ITEM_V0_OBJECT_PATH);
+  object_path = g_strdup_printf ("%s/%d", SN_ITEM_V0_OBJECT_PATH, server->id);
   error = NULL;
 
   g_signal_connect (server->dbus_item, "handle-context-menu",
