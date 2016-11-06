@@ -23,8 +23,6 @@ libsound_applet_la_SOURCES = \
 	gf-sound-item.h \
 	gvc-channel-bar.c \
 	gvc-channel-bar.h \
-	gvc-stream-status-icon.c \
-	gvc-stream-status-icon.h \
 	$(NULL)
 
 libsound_applet_la_LDFLAGS = \
