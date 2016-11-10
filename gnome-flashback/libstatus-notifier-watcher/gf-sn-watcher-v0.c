@@ -122,10 +122,15 @@ name_vanished_cb (GDBusConnection *connection,
     }
   else if (watch->type == GF_WATCH_TYPE_ITEM)
     {
+      gchar *tmp;
+
       v0->items = g_slist_remove (v0->items, watch);
 
       update_registered_items (v0);
-      gf_sn_watcher_v0_gen_emit_item_unregistered (gen, watch->service);
+
+      tmp = g_strdup_printf ("%s%s", watch->bus_name, watch->object_path);
+      gf_sn_watcher_v0_gen_emit_item_unregistered (gen, tmp);
+      g_free (tmp);
     }
   else
     {
@@ -250,6 +255,7 @@ gf_sn_watcher_v0_handle_register_item (GfSnWatcherV0Gen      *object,
   const gchar *bus_name;
   const gchar *object_path;
   GfWatch *watch;
+  gchar *tmp;
 
   v0 = GF_SN_WATCHER_V0 (object);
 
@@ -290,7 +296,10 @@ gf_sn_watcher_v0_handle_register_item (GfSnWatcherV0Gen      *object,
   v0->items = g_slist_prepend (v0->items, watch);
 
   update_registered_items (v0);
-  gf_sn_watcher_v0_gen_emit_item_registered (object, service);
+
+  tmp = g_strdup_printf ("%s%s", bus_name, object_path);
+  gf_sn_watcher_v0_gen_emit_item_registered (object, tmp);
+  g_free (tmp);
 
   gf_sn_watcher_v0_gen_complete_register_item (object, invocation);
 
