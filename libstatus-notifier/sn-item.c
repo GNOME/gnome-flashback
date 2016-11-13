@@ -82,43 +82,143 @@ static guint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (SnItem, sn_item, G_TYPE_OBJECT)
 
+static cairo_surface_t *
+surface_from_variant (GVariant *variant,
+                      gint      width,
+                      gint      height)
+{
+  cairo_format_t format;
+  gint stride;
+  guint32 *data;
+
+  format = CAIRO_FORMAT_ARGB32;
+  stride = cairo_format_stride_for_width (format, width);
+  data = (guint32 *) g_variant_get_data (variant);
+
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+  {
+    gint i;
+
+    for (i = 0; i < width * height; i++)
+      data[i] = GUINT32_FROM_BE (data[i]);
+  }
+#endif
+
+  return cairo_image_surface_create_for_data ((guchar *) data, format,
+                                              width, height, stride);
+}
+
+static cairo_surface_t *
+icon_surface_new (GVariant *variant,
+                  gint      width,
+                  gint      height)
+{
+  cairo_surface_t *surface;
+  cairo_surface_t *tmp;
+  cairo_t *cr;
+
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
+  if (cairo_surface_status (surface) != CAIRO_STATUS_SUCCESS)
+    return NULL;
+
+  tmp = surface_from_variant (variant, width, height);
+  if (cairo_surface_status (tmp) != CAIRO_STATUS_SUCCESS)
+    {
+      cairo_surface_destroy (surface);
+      return NULL;
+    }
+
+  cr = cairo_create (surface);
+  if (cairo_status (cr) != CAIRO_STATUS_SUCCESS)
+    {
+      cairo_surface_destroy (surface);
+      cairo_surface_destroy (tmp);
+      return NULL;
+    }
+
+  cairo_set_source_surface (cr, tmp, 0, 0);
+  cairo_paint (cr);
+
+  cairo_surface_destroy (tmp);
+  cairo_destroy (cr);
+
+  return surface;
+}
+
 static GdkPixbuf **
 gvariant_to_gdk_pixbufs (GVariant *variant)
 {
+  GPtrArray *array;
   GVariantIter iter;
-  gsize n_pixbufs;
-  GdkPixbuf **pixbufs;
-  guint i;
   gint width;
   gint height;
   GVariant *value;
 
-  n_pixbufs = g_variant_iter_init (&iter, variant);
-  if (n_pixbufs == 0)
+  if (variant == NULL || g_variant_iter_init (&iter, variant) == 0)
     return NULL;
 
-  pixbufs = g_new0 (GdkPixbuf *, n_pixbufs + 1);
-  i = 0;
-
+  array = g_ptr_array_new ();
   while (g_variant_iter_next (&iter, "(ii@ay)", &width, &height, &value))
     {
-      GBytes *bytes;
-      gint rowstride;
+      cairo_surface_t *surface;
 
-      bytes = g_variant_get_data_as_bytes (value);
-      rowstride = g_bytes_get_size (bytes) / height;
-
-      pixbufs[i++] = gdk_pixbuf_new_from_bytes (bytes, GDK_COLORSPACE_RGB,
-                                                TRUE, 8, width, height,
-                                                rowstride);
-
-      g_bytes_unref (bytes);
+      surface = icon_surface_new (value, width, height);
       g_variant_unref (value);
+
+      if (surface != NULL)
+        {
+          GdkPixbuf *pixbuf;
+
+          pixbuf = gdk_pixbuf_get_from_surface (surface, 0, 0, width, height);
+          cairo_surface_destroy (surface);
+
+          if (pixbuf)
+            g_ptr_array_add (array, pixbuf);
+        }
     }
 
-  pixbufs[i] = NULL;
+  g_ptr_array_add (array, NULL);
 
-  return pixbufs;
+  return (GdkPixbuf **) g_ptr_array_free (array, FALSE);
+}
+
+static GVariant *
+get_variant_from_pixbuf (GdkPixbuf *pixbuf)
+{
+  gint width;
+  gint height;
+  cairo_surface_t *surface;
+  cairo_t *cr;
+  gint stride;
+  guint32 *data;
+
+  width = gdk_pixbuf_get_width (pixbuf);
+  height = gdk_pixbuf_get_height (pixbuf);
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
+  cr = cairo_create (surface);
+
+  gdk_cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
+  cairo_paint (cr);
+
+  cairo_surface_flush (surface);
+  cairo_destroy (cr);
+
+  stride = cairo_image_surface_get_stride (surface);
+  data = (guint32 *) cairo_image_surface_get_data (surface);
+
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+  {
+    gint i;
+
+    for (i = 0; i < width * height; i++)
+      data[i] = GUINT32_TO_BE (data[i]);
+  }
+#endif
+
+  return g_variant_new_from_data (G_VARIANT_TYPE ("ay"), data, stride * height,
+                                  TRUE, (GDestroyNotify) cairo_surface_destroy,
+                                  surface);
+
 }
 
 static GVariantBuilder *
@@ -136,15 +236,11 @@ gdk_pixbufs_to_gvariant_builder (GdkPixbuf **pixbufs)
     {
       gint width;
       gint height;
-      GBytes *bytes;
       GVariant *variant;
 
       width = gdk_pixbuf_get_width (pixbufs[i]);
       height = gdk_pixbuf_get_height (pixbufs[i]);
-      bytes = gdk_pixbuf_read_pixel_bytes (pixbufs[i]);
-
-      variant = g_variant_new_from_bytes (G_VARIANT_TYPE ("ay"), bytes, TRUE);
-      g_bytes_unref (bytes);
+      variant = get_variant_from_pixbuf (pixbufs[i]);
 
       g_variant_builder_open (builder, G_VARIANT_TYPE ("(iiay)"));
       g_variant_builder_add (builder, "i", width);
