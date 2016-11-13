@@ -171,18 +171,25 @@ proxy_ready_cb (GObject      *source_object,
                 GAsyncResult *res,
                 gpointer      user_data)
 {
-  SnDBusItemServerV0 *server;
   GError *error;
+  SnWatcherV0Gen *watcher;
+  SnDBusItemServerV0 *server;
+
+  error = NULL;
+  watcher = sn_watcher_v0_gen_proxy_new_finish (res, &error);
+
+  if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+    {
+      g_error_free (error);
+      return;
+    }
 
   server = SN_DBUS_ITEM_SERVER_V0 (user_data);
-  error = NULL;
-
-  server->watcher = sn_watcher_v0_gen_proxy_new_finish (res, &error);
+  server->watcher = watcher;
 
   if (error)
     {
-      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
-        sn_dbus_item_emit_error (SN_DBUS_ITEM (server), error);
+      sn_dbus_item_emit_error (SN_DBUS_ITEM (server), error);
       g_error_free (error);
 
       return;
