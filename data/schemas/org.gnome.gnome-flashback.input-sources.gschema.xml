@@ -1,15 +1,21 @@
 <schemalist gettext-domain="gnome-flashback">
   <schema id="org.gnome.gnome-flashback.input-sources" path="/org/gnome/gnome-flashback/input-sources/">
-    <key name="status-icon-bg-color" type="s">
-        <default>'#FFFFFF'</default>
-        <summary>The background color for the status icon.</summary>
-        <description>This contains the background color for the status icon that is shown in the system tray.</description>
+  </schema>
+
+  <schema id="org.gnome.gnome-flashback.input-sources.status-icon" path="/org/gnome/gnome-flashback/input-sources/status-icon/">
+    <key name="bg-color" type="s">
+      <default>'#FFFFFF'</default>
+      <summary>The background color for the status icon.</summary>
     </key>
 
-    <key name="status-icon-fg-color" type="s">
-        <default>'#000000'</default>
-        <summary>The foreground color for the status icon.</summary>
-        <description>This contains the foreground color for the status icon that is shown in the system tray.</description>
+    <key name="fg-color" type="s">
+      <default>'#000000'</default>
+      <summary>The foreground color for the status icon.</summary>
+    </key>
+
+    <key name="font-family" type="s">
+      <default>'Cantarell'</default>
+      <summary>Font family</summary>
     </key>
   </schema>
 </schemalist>

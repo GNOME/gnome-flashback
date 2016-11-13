@@ -30,8 +30,7 @@
 #include "gf-input-source-manager.h"
 #include "gf-input-source.h"
 
-#define INPUT_SOURCES_SCHEMA "org.gnome.gnome-flashback.input-sources"
-#define GNOME_DESKTOP_SCHEMA "org.gnome.desktop.interface"
+#define STATUS_ICON_SCHEMA "org.gnome.gnome-flashback.input-sources.status-icon"
 
 struct _GfInputSources
 {
@@ -40,8 +39,7 @@ struct _GfInputSources
   GfIBusManager        *ibus_manager;
   GfInputSourceManager *input_source_manager;
 
-  GSettings            *input_sources_settings;
-  GSettings            *gnome_desktop_settings;
+  GSettings            *status_icon_settings;
 
   GfInputSource        *current_source;
   GtkStatusIcon        *status_icon;
@@ -82,8 +80,7 @@ draw_background (GfInputSources *sources,
              radius, 180 * degrees, 270 * degrees);
   cairo_close_path (cr);
 
-  color = g_settings_get_string (sources->input_sources_settings,
-                                 "status-icon-bg-color");
+  color = g_settings_get_string (sources->status_icon_settings, "bg-color");
 
   gdk_rgba_parse (&rgba, color);
   g_free (color);
@@ -111,9 +108,7 @@ draw_text (GfInputSources *sources,
   gchar *color;
   GdkRGBA rgba;
 
-  font_name = g_settings_get_string (sources->gnome_desktop_settings,
-                                     "font-name");
-
+  font_name = g_settings_get_string (sources->status_icon_settings, "font-family");
   font_desc = pango_font_description_from_string (font_name);
   g_free (font_name);
 
@@ -140,9 +135,7 @@ draw_text (GfInputSources *sources,
   y = center - text_height * factor / 2.0;
   cairo_move_to (cr, x, y);
 
-  color = g_settings_get_string (sources->input_sources_settings,
-                                 "status-icon-fg-color");
-
+  color = g_settings_get_string (sources->status_icon_settings, "fg-color");
   gdk_rgba_parse (&rgba, color);
   g_free (color);
 
@@ -431,60 +424,24 @@ update_status_icon (GfInputSources *sources)
 
 static void
 sources_changed_cb (GfInputSourceManager *manager,
-                    gpointer              user_data)
+                    GfInputSources       *sources)
 {
-  GfInputSources *sources;
-
-  sources = GF_INPUT_SOURCES (user_data);
-
   update_status_icon (sources);
 }
 
 static void
 current_source_changed_cb (GfInputSourceManager *manager,
                            GfInputSource        *old_source,
-                           gpointer              user_data)
+                           GfInputSources       *sources)
 {
-  GfInputSources *sources;
-
-  sources = GF_INPUT_SOURCES (user_data);
-
   update_status_icon (sources);
 }
 
 static void
-status_icon_bg_color_changed_cb (GSettings *settings,
-                                 gchar     *key,
-                                 gpointer   user_data)
+status_icon_settings_changed_cb (GSettings      *settings,
+                                 const gchar    *key,
+                                 GfInputSources *sources)
 {
-  GfInputSources *sources;
-
-  sources = GF_INPUT_SOURCES (user_data);
-
-  update_status_icon (sources);
-}
-
-static void
-status_icon_fg_color_changed_cb (GSettings *settings,
-                                 gchar     *key,
-                                 gpointer   user_data)
-{
-  GfInputSources *sources;
-
-  sources = GF_INPUT_SOURCES (user_data);
-
-  update_status_icon (sources);
-}
-
-static void
-font_name_changed_cb (GSettings *settings,
-                      gchar     *key,
-                      gpointer   user_data)
-{
-  GfInputSources *sources;
-
-  sources = GF_INPUT_SOURCES (user_data);
-
   update_status_icon (sources);
 }
 
@@ -498,8 +455,7 @@ gf_input_sources_dispose (GObject *object)
   g_clear_object (&sources->ibus_manager);
   g_clear_object (&sources->input_source_manager);
 
-  g_clear_object (&sources->input_sources_settings);
-  g_clear_object (&sources->gnome_desktop_settings);
+  g_clear_object (&sources->status_icon_settings);
 
   g_clear_object (&sources->current_source);
   g_clear_object (&sources->status_icon);
@@ -523,8 +479,7 @@ gf_input_sources_init (GfInputSources *sources)
   sources->ibus_manager = gf_ibus_manager_new ();
   sources->input_source_manager = gf_input_source_manager_new (sources->ibus_manager);
 
-  sources->input_sources_settings = g_settings_new (INPUT_SOURCES_SCHEMA);
-  sources->gnome_desktop_settings = g_settings_new (GNOME_DESKTOP_SCHEMA);
+  sources->status_icon_settings = g_settings_new (STATUS_ICON_SCHEMA);
 
   g_signal_connect (sources->input_source_manager, "sources-changed",
                     G_CALLBACK (sources_changed_cb), sources);
@@ -532,24 +487,11 @@ gf_input_sources_init (GfInputSources *sources)
   g_signal_connect (sources->input_source_manager, "current-source-changed",
                     G_CALLBACK (current_source_changed_cb), sources);
 
-  {
-    g_signal_connect (sources->input_sources_settings,
-                      "changed::status-icon-bg-color",
-                      G_CALLBACK (status_icon_bg_color_changed_cb),
-                      sources);
-
-    g_signal_connect (sources->input_sources_settings,
-                      "changed::status-icon-fg-color",
-                      G_CALLBACK (status_icon_fg_color_changed_cb),
-                      sources);
-
-    g_signal_connect (sources->gnome_desktop_settings, "changed::font-name",
-                      G_CALLBACK (font_name_changed_cb), sources);
-
-    update_status_icon (sources);
-  }
+  g_signal_connect (sources->status_icon_settings, "changed",
+                    G_CALLBACK (status_icon_settings_changed_cb), sources);
 
   gf_input_source_manager_reload (sources->input_source_manager);
+  update_status_icon (sources);
 }
 
 GfInputSources *
