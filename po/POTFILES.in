@@ -7,6 +7,9 @@ data/autostart/gnome-flashback-screensaver.desktop.in
 data/directories/X-GNOME-Flashback-Settings.directory.desktop.in
 data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in
 data/schemas/org.gnome.gnome-flashback.gschema.xml
+data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml
+data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml
+data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml
 data/xsessions/gnome-flashback-compiz.desktop.in.in
 data/xsessions/gnome-flashback-metacity.desktop.in.in
 gnome-flashback/gf-main.c
