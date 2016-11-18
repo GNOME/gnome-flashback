@@ -295,6 +295,9 @@ add_inhibitor (GfInhibitDialog *dialog,
   name = NULL;
   pixbuf = NULL;
 
+  if (app_id == NULL)
+    return;
+
   if (!IS_STRING_EMPTY (app_id))
     {
       if (!g_str_has_suffix (app_id, ".desktop"))
