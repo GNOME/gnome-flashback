@@ -4,6 +4,11 @@ noinst_LTLIBRARIES = \
 	libinput-sources.la \
 	$(NULL)
 
+libinput_sources_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"input-sources\" \
+	-DG_LOG_USE_STRUCTURED=1 \
+	$(NULL)
+
 libinput_sources_la_CFLAGS = \
 	$(INPUT_SOURCES_CFLAGS) \
 	$(WARN_CFLAGS) \

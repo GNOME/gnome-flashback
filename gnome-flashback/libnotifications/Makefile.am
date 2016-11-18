@@ -5,6 +5,8 @@ noinst_LTLIBRARIES = \
 	$(NULL)
 
 libnotifications_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"notifications\" \
+	-DG_LOG_USE_STRUCTURED=1 \
 	-I$(srcdir)/../../gnome-flashback \
 	-I$(top_builddir)/gnome-flashback \
 	-I$(top_builddir)/gnome-flashback/libnotifications \

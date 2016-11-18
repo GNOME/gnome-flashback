@@ -4,6 +4,11 @@ noinst_LTLIBRARIES = \
 	libautomount-manager.la \
 	$(NULL)
 
+libautomount_manager_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"automount-manager\" \
+	-DG_LOG_USE_STRUCTURED=1 \
+	$(NULL)
+
 libautomount_manager_la_CFLAGS = \
 	$(AUTOMOUNT_MANAGER_CFLAGS) \
 	$(WARN_CFLAGS) \

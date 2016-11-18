@@ -8,6 +8,11 @@ noinst_LTLIBRARIES = \
 	libsound-applet.la \
 	$(NULL)
 
+libsound_applet_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"sound-applet\" \
+	-DG_LOG_USE_STRUCTURED=1 \
+	$(NULL)
+
 libsound_applet_la_CFLAGS = \
 	$(SOUND_APPLET_CFLAGS) \
 	$(WARN_CFLAGS) \

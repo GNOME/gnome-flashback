@@ -4,6 +4,11 @@ noinst_LTLIBRARIES = \
 	libshell.la \
 	$(NULL)
 
+libshell_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"shell\" \
+	-DG_LOG_USE_STRUCTURED=1 \
+	$(NULL)
+
 libshell_la_CFLAGS = \
 	$(SHELL_CFLAGS) \
 	$(WARN_CFLAGS) \

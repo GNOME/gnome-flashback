@@ -4,6 +4,11 @@ noinst_LTLIBRARIES = \
 	libscreenshot.la \
 	$(NULL)
 
+libscreenshot_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"screenshot\" \
+	-DG_LOG_USE_STRUCTURED=1 \
+	$(NULL)
+
 libscreenshot_la_CFLAGS = \
 	$(SCREENSHOT_CFLAGS) \
 	$(WARN_CFLAGS) \

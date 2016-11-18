@@ -4,6 +4,11 @@ noinst_LTLIBRARIES = \
 	libdesktop-background.la \
 	$(NULL)
 
+libdesktop_background_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"desktop-background\" \
+	-DG_LOG_USE_STRUCTURED=1 \
+	$(NULL)
+
 libdesktop_background_la_CFLAGS = \
 	$(DESKTOP_BACKGROUND_CFLAGS) \
 	$(WARN_CFLAGS) \

@@ -5,6 +5,8 @@ noinst_LTLIBRARIES = \
 	$(NULL)
 
 libinput_settings_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"input-settings\" \
+	-DG_LOG_USE_STRUCTURED=1 \
 	-I$(top_builddir)/gnome-flashback/libinput-settings \
 	-I$(top_srcdir)/gnome-flashback \
 	$(NULL)

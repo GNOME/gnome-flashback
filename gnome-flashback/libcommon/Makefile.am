@@ -4,6 +4,11 @@ noinst_LTLIBRARIES = \
 	libcommon.la \
 	$(NULL)
 
+libcommon_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"common\" \
+	-DG_LOG_USE_STRUCTURED=1 \
+	$(NULL)
+
 libcommon_la_CFLAGS = \
 	$(COMMON_CFLAGS) \
 	$(WARN_CFLAGS) \

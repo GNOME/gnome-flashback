@@ -4,6 +4,11 @@ noinst_LTLIBRARIES = \
 	libscreencast.la \
 	$(NULL)
 
+libscreencast_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"screencast\" \
+	-DG_LOG_USE_STRUCTURED=1 \
+	$(NULL)
+
 libscreencast_la_CFLAGS = \
 	$(SCREENCAST_CFLAGS) \
 	$(WARN_CFLAGS) \

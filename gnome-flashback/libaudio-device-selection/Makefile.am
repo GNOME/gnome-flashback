@@ -5,6 +5,8 @@ noinst_LTLIBRARIES = \
 	$(NULL)
 
 libaudio_device_selection_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"audio-device-selection\" \
+	-DG_LOG_USE_STRUCTURED=1 \
 	-I$(top_builddir)/gnome-flashback/libaudio-device-selection \
 	$(NULL)
 

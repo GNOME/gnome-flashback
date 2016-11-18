@@ -4,6 +4,11 @@ noinst_LTLIBRARIES = \
 	libbluetooth-applet.la \
 	$(NULL)
 
+libbluetooth_applet_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"bluetooth-applet\" \
+	-DG_LOG_USE_STRUCTURED=1 \
+	$(NULL)
+
 libbluetooth_applet_la_CFLAGS = \
 	$(BLUETOOTH_APPLET_CFLAGS) \
 	$(WARN_CFLAGS) \

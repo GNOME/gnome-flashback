@@ -5,7 +5,7 @@ noinst_LTLIBRARIES = \
 	$(NULL)
 
 libstatus_notifier_watcher_la_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"gf-status-notifier-watcher\" \
+	-DG_LOG_DOMAIN=\"status-notifier-watcher\" \
 	-DG_LOG_USE_STRUCTURED=1 \
 	-I$(top_builddir)/gnome-flashback/libstatus-notifier-watcher \
 	$(NULL)

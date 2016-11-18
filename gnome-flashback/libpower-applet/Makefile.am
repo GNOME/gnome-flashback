@@ -4,6 +4,11 @@ noinst_LTLIBRARIES = \
 	libpower-applet.la \
 	$(NULL)
 
+libpower_applet_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"power-applet\" \
+	-DG_LOG_USE_STRUCTURED=1 \
+	$(NULL)
+
 libpower_applet_la_CFLAGS = \
 	$(POWER_APPLET_CFLAGS) \
 	$(WARN_CFLAGS) \

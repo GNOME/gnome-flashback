@@ -5,6 +5,8 @@ noinst_LTLIBRARIES = \
 	$(NULL)
 
 libworkarounds_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"workarounds\" \
+	-DG_LOG_USE_STRUCTURED=1 \
 	-I$(top_builddir)/gnome-flashback/libworkarounds \
 	$(NULL)
 

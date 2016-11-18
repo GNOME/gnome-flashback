@@ -4,6 +4,11 @@ noinst_LTLIBRARIES = \
 	libpolkit.la \
 	$(NULL)
 
+libpolkit_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"polkit\" \
+	-DG_LOG_USE_STRUCTURED=1 \
+	$(NULL)
+
 libpolkit_la_CFLAGS = \
 	$(POLKIT_CFLAGS) \
 	$(WARN_CFLAGS) \

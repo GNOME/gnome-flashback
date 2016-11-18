@@ -4,6 +4,11 @@ noinst_LTLIBRARIES = \
 	libidle-monitor.la \
 	$(NULL)
 
+libidle_monitor_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"idle-monitor\" \
+	-DG_LOG_USE_STRUCTURED=1 \
+	$(NULL)
+
 libidle_monitor_la_CFLAGS = \
 	$(IDLE_MONITOR_CFLAGS) \
 	$(WARN_CFLAGS) \

@@ -27,6 +27,11 @@ bin_PROGRAMS = \
 	gnome-flashback \
 	$(NULL)
 
+gnome_flashback_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"gnome-flashback\" \
+	-DG_LOG_USE_STRUCTURED=1 \
+	$(NULL)
+
 gnome_flashback_CFLAGS = \
 	$(GNOME_FLASHBACK_CFLAGS) \
 	$(WARN_CFLAGS) \

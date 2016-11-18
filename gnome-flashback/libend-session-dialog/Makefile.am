@@ -4,6 +4,11 @@ noinst_LTLIBRARIES = \
 	libend-session-dialog.la \
 	$(NULL)
 
+libend_session_dialog_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"end-session-dialog\" \
+	-DG_LOG_USE_STRUCTURED=1 \
+	$(NULL)
+
 libend_session_dialog_la_CFLAGS = \
 	$(END_SESSION_DIALOG_CFLAGS) \
 	$(WARN_CFLAGS) \
