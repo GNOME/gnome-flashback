@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2015 Sebastian Geiger
+ * Copyright (C) 2016 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +18,10 @@
 
 #include "config.h"
 
+#include <cairo.h>
+#include <gdk/gdk.h>
+#include <locale.h>
+#include <pango/pango.h>
 #include <string.h>
 
 #include "gf-ibus-manager.h"
@@ -67,6 +72,160 @@ enum
 static GParamSpec *properties[LAST_PROP] = { NULL };
 
 G_DEFINE_TYPE (GfInputSource, gf_input_source, G_TYPE_OBJECT)
+
+static PangoLayout *
+get_pango_layout (const gchar *text,
+                  const gchar *font_family,
+                  gint         font_size)
+{
+  GdkScreen *screen;
+  PangoContext *context;
+  PangoFontDescription *font_desc;
+  PangoLayout *layout;
+
+  screen = gdk_screen_get_default ();
+  context = gdk_pango_context_get_for_screen (screen);
+  font_desc = pango_font_description_new ();
+
+  pango_font_description_set_family (font_desc, font_family);
+  pango_font_description_set_size (font_desc, font_size * PANGO_SCALE);
+  pango_font_description_set_weight (font_desc, PANGO_WEIGHT_NORMAL);
+  pango_font_description_set_stretch (font_desc, PANGO_STRETCH_NORMAL);
+  pango_font_description_set_style (font_desc, PANGO_STYLE_NORMAL);
+  pango_font_description_set_variant (font_desc, PANGO_VARIANT_NORMAL);
+
+  layout = pango_layout_new (context);
+  g_object_unref (context);
+
+  pango_layout_set_text (layout, text, -1);
+  pango_layout_set_font_description (layout, font_desc);
+  pango_font_description_free (font_desc);
+
+  return layout;
+}
+
+static cairo_path_t *
+get_cairo_path (const gchar    *text,
+                const gchar    *font_family,
+                gint            font_size,
+                cairo_matrix_t *matrix)
+{
+  PangoLayout *layout;
+  cairo_surface_t *surface;
+  cairo_t *cr;
+  gint width;
+  gint height;
+  gdouble scale;
+  cairo_path_t *path;
+
+  layout = get_pango_layout (text, font_family, font_size);
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 16, 16);
+  cr = cairo_create (surface);
+
+  pango_layout_get_pixel_size (layout, &width, &height);
+
+  scale = MIN (1.0, 14.0 / width);
+  cairo_move_to (cr, (16 - width * scale) / 2.0, (16 - height * scale) / 2.0);
+  cairo_scale (cr, scale, scale);
+
+  pango_cairo_layout_path (cr, layout);
+  path = cairo_copy_path (cr);
+  cairo_get_matrix (cr, matrix);
+
+  cairo_destroy (cr);
+  cairo_surface_destroy (surface);
+  g_object_unref (layout);
+
+  return path;
+}
+
+static GString *
+cairo_path_to_string (cairo_path_t   *path,
+                      cairo_matrix_t *matrix)
+{
+  gchar *locale;
+  GString *string;
+  gint i;
+
+  locale = g_strdup (setlocale (LC_NUMERIC, NULL));
+  setlocale (LC_NUMERIC, "C");
+
+  string = g_string_new (NULL);
+  for (i = 0; i < path->num_data; i += path->data[i].header.length)
+    {
+      cairo_path_data_t *data;
+      gdouble x1, y1;
+      gdouble x2, y2;
+      gdouble x3, y3;
+
+      data = &path->data[i];
+
+      switch (data->header.type)
+        {
+          case CAIRO_PATH_MOVE_TO:
+            x1 = data[1].point.x;
+            y1 = data[1].point.y;
+
+            cairo_matrix_transform_point (matrix, &x1, &y1);
+
+            g_string_append_printf (string, "M %f,%f ", x1, y1);
+            break;
+
+          case CAIRO_PATH_LINE_TO:
+            x1 = data[1].point.x;
+            y1 = data[1].point.y;
+
+            cairo_matrix_transform_point (matrix, &x1, &y1);
+
+            g_string_append_printf (string, "L %f,%f ", x1, y1);
+            break;
+
+          case CAIRO_PATH_CURVE_TO:
+            x1 = data[1].point.x;
+            y1 = data[1].point.y;
+            x2 = data[2].point.x;
+            y2 = data[2].point.y;
+            x3 = data[3].point.x;
+            y3 = data[3].point.y;
+
+            cairo_matrix_transform_point (matrix, &x1, &y1);
+            cairo_matrix_transform_point (matrix, &x2, &y2);
+            cairo_matrix_transform_point (matrix, &x3, &y3);
+
+            g_string_append_printf (string, "C %f,%f %f,%f %f,%f ",
+                                    x1, y1, x2, y2, x3, y3);
+            break;
+
+          case CAIRO_PATH_CLOSE_PATH:
+            g_string_append (string, "Z ");
+            break;
+
+          default:
+            break;
+        }
+    }
+
+  setlocale (LC_NUMERIC, locale);
+  g_free (locale);
+
+  return string;
+}
+
+static gchar *
+generate_path_description (const gchar *text,
+                           const gchar *font_family,
+                           gint         font_size)
+{
+  cairo_path_t *path;
+  cairo_matrix_t matrix;
+  GString *string;
+
+  path = get_cairo_path (text, font_family, font_size, &matrix);
+  string = cairo_path_to_string (path, &matrix);
+  cairo_path_destroy (path);
+
+  return g_string_free (string, FALSE);
+}
 
 static gchar *
 get_xkb_id (GfInputSource *source)
@@ -367,4 +526,49 @@ gf_input_source_set_properties (GfInputSource *source,
 
   if (prop_list != NULL)
     source->prop_list = g_object_ref (prop_list);
+}
+
+GString *
+gf_input_source_generate_svg (GfInputSource *source,
+                              const gchar   *font_family,
+                              gint           font_size,
+                              const gchar   *bg_color,
+                              const gchar   *fg_color,
+                              gboolean       symbolic)
+{
+  const gchar *short_name;
+  gchar *path_d;
+  GString *svg;
+
+  short_name = gf_input_source_get_short_name (source);
+  path_d = generate_path_description (short_name, font_family, font_size);
+  svg = g_string_new ("<?xml version='1.0' encoding='utf-8' standalone='no'?>");
+
+  g_string_append (svg,
+                   "<svg xmlns='http://www.w3.org/2000/svg' "
+                   "width='16' height='16' viewBox='0 0 16 16'>");
+
+  if (symbolic)
+    {
+      g_string_append (svg, "<defs><mask id='m'>");
+      g_string_append (svg, "<rect width='16' height='16' style='fill:#ffffff'/>");
+      g_string_append_printf (svg, "<path d='%s' style='fill:#000000'/>", path_d);
+      g_string_append (svg, "</mask></defs>");
+    }
+
+  g_string_append_printf (svg,
+                          "<rect x='0' y='0' width='16' height='16' "
+                          "rx='2.0' ry='2.0' mask='%s' style='fill:%s;'/>",
+                          symbolic ? "url(#m)" : "none",
+                          symbolic ? "#bebebe" : bg_color);
+
+  if (!symbolic)
+    {
+      g_string_append_printf (svg, "<path d='%s' style='fill:%s'/>",
+                              path_d, fg_color);
+    }
+
+  g_free (path_d);
+
+  return g_string_append (svg, "</svg>");
 }

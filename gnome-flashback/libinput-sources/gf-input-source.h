@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2015 Sebastian Geiger
+ * Copyright (C) 2016 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +23,8 @@
 #include <ibus-1.0/ibus.h>
 
 #include "gf-ibus-manager.h"
+
+G_BEGIN_DECLS
 
 #define GF_TYPE_INPUT_SOURCE gf_input_source_get_type ()
 G_DECLARE_FINAL_TYPE (GfInputSource, gf_input_source,
@@ -56,5 +59,14 @@ IBusPropList  *gf_input_source_get_properties   (GfInputSource *source);
 
 void           gf_input_source_set_properties   (GfInputSource *source,
                                                  IBusPropList  *prop_list);
+
+GString       *gf_input_source_generate_svg     (GfInputSource *source,
+                                                 const gchar   *font_family,
+                                                 gint           font_size,
+                                                 const gchar   *bg_color,
+                                                 const gchar   *fg_color,
+                                                 gboolean       symbolic);
+
+G_END_DECLS
 
 #endif

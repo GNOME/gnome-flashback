@@ -17,5 +17,10 @@
       <default>'Cantarell'</default>
       <summary>Font family</summary>
     </key>
+
+    <key name="symbolic" type="b">
+      <default>false</default>
+      <summary>Symbolic</summary>
+    </key>
   </schema>
 </schemalist>
