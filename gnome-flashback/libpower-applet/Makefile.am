@@ -28,6 +28,7 @@ libpower_applet_la_LDFLAGS = \
 	$(NULL)
 
 libpower_applet_la_LIBADD = \
+	$(top_builddir)/libstatus-notifier/libstatus-notifier.la \
 	$(POWER_APPLET_LIBS) \
 	$(NULL)
 
