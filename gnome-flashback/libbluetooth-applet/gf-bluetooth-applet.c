@@ -18,11 +18,13 @@
 #include "config.h"
 
 #include <bluetooth-client.h>
+#include <gdk/gdkx.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 #include "gf-bluetooth-applet.h"
 #include "gf-sd-rfkill.h"
+#include "libstatus-notifier/sn-item.h"
 
 #define GSM_DBUS_NAME "org.gnome.SettingsDaemon.Rfkill"
 #define GSM_DBUS_PATH "/org/gnome/SettingsDaemon/Rfkill"
@@ -33,7 +35,7 @@ struct _GfBluetoothApplet
 
   gint             bus_name_id;
 
-  GtkStatusIcon   *status_icon;
+  SnItem          *status_item;
   GfSdRfkill      *rfkill;
   BluetoothClient *client;
   GtkTreeModel    *model;
@@ -136,19 +138,17 @@ settings_cb (GtkMenuItem *item,
 }
 
 static void
-popup_menu_cb (GtkStatusIcon *status_icon,
-               guint          button,
-               guint          activate_time,
-               gpointer       user_data)
+context_menu_cb (SnItem            *object,
+                 gint               x,
+                 gint               y,
+                 GfBluetoothApplet *applet)
 {
-  GfBluetoothApplet *applet;
   GtkWidget *menu;
   gboolean airplane_mode;
   GtkWidget *item;
+  GdkScreen *screen;
+  GdkWindow *root;
 
-  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-
-  applet = GF_BLUETOOTH_APPLET (user_data);
   menu = gtk_menu_new ();
 
   airplane_mode = FALSE;
@@ -176,12 +176,12 @@ popup_menu_cb (GtkStatusIcon *status_icon,
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
   g_signal_connect (item, "activate", G_CALLBACK (settings_cb), NULL);
 
-  gtk_widget_show_all (menu);
-  gtk_menu_popup (GTK_MENU (menu), NULL, NULL,
-                  gtk_status_icon_position_menu, status_icon,
-                  button, activate_time);
+  screen = gdk_screen_get_default ();
+  root = gdk_screen_get_root_window (screen);
 
-  G_GNUC_END_IGNORE_DEPRECATIONS
+  gtk_widget_show_all (menu);
+  gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
+                  0, gdk_x11_get_server_time (root));
 }
 
 static GtkTreeIter *
@@ -257,8 +257,7 @@ gf_bluetooth_applet_sync (GfBluetoothApplet *applet)
 
   if (devices == -1)
     {
-      g_clear_object (&applet->status_icon);
-
+      g_clear_object (&applet->status_item);
       return;
     }
 
@@ -288,22 +287,23 @@ gf_bluetooth_applet_sync (GfBluetoothApplet *applet)
       tooltip_text = g_strdup (_("Not Connected"));
     }
 
-  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-
-  if (applet->status_icon == NULL)
+  if (applet->status_item == NULL)
     {
-      applet->status_icon = gtk_status_icon_new ();
+      applet->status_item = g_object_new (SN_TYPE_ITEM,
+                                          "version", 0,
+                                          "category", SN_ITEM_CATEGORY_SYSTEM_SERVICES,
+                                          "id", "gf-bluetooth-applet",
+                                           NULL);
 
-      g_signal_connect (applet->status_icon, "popup-menu",
-                        G_CALLBACK (popup_menu_cb), applet);
+      g_signal_connect (applet->status_item, "context-menu",
+                        G_CALLBACK (context_menu_cb), applet);
+
+      sn_item_register (applet->status_item);
     }
 
-  gtk_status_icon_set_title (applet->status_icon, title);
-  gtk_status_icon_set_from_icon_name (applet->status_icon, icon_name);
-  gtk_status_icon_set_tooltip_text (applet->status_icon, tooltip_text);
-  gtk_status_icon_set_visible (applet->status_icon, TRUE);
-
-  G_GNUC_END_IGNORE_DEPRECATIONS
+  sn_item_set_title (applet->status_item, title);
+  sn_item_set_icon_name (applet->status_item, icon_name);
+  sn_item_set_tooltip (applet->status_item, NULL, NULL, NULL, tooltip_text);
 
   g_free (tooltip_text);
 }
@@ -424,7 +424,7 @@ gf_bluetooth_applet_dispose (GObject *object)
       applet->bus_name_id = 0;
     }
 
-  g_clear_object (&applet->status_icon);
+  g_clear_object (&applet->status_item);
   g_clear_object (&applet->rfkill);
   g_clear_object (&applet->client);
   g_clear_object (&applet->model);
