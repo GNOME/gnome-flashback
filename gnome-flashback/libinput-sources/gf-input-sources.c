@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Alberts Muktupāvels
+ * Copyright (C) 2015-2016 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +20,8 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <libgnome-desktop/gnome-xkb-info.h>
-#include <pango/pangocairo.h>
-
-#define _XOPEN_SOURCE
-#include <math.h>
+#include <locale.h>
+#include <utime.h>
 
 #include "gf-ibus-manager.h"
 #include "gf-input-sources.h"
@@ -41,141 +39,329 @@ struct _GfInputSources
 
   GSettings            *status_icon_settings;
 
+  gchar                *icon_theme_path;
+
   GfInputSource        *current_source;
   GtkStatusIcon        *status_icon;
 };
 
 G_DEFINE_TYPE (GfInputSources, gf_input_sources, G_TYPE_OBJECT)
 
-static void
-draw_background (GfInputSources *sources,
-                 cairo_t        *cr,
-                 gint            size)
+static GString *
+cairo_path_to_string (cairo_path_t   *path,
+                      cairo_matrix_t *matrix)
 {
-  gdouble x;
-  gdouble y;
-  gdouble width;
-  gdouble height;
-  gdouble radius;
-  gdouble degrees;
-  gchar *color;
-  GdkRGBA rgba;
+  gchar *locale;
+  GString *string;
+  gint i;
 
-  x = size * 0.04;
-  y = size * 0.04;
-  width = size - x * 2;
-  height = size - y * 2;
+  locale = g_strdup (setlocale (LC_NUMERIC, NULL));
+  setlocale (LC_NUMERIC, "C");
 
-  radius = height / 10;
-  degrees = M_PI / 180.0;
+  string = g_string_new (NULL);
+  for (i = 0; i < path->num_data; i += path->data[i].header.length)
+    {
+      cairo_path_data_t *data;
+      gdouble x1, y1;
+      gdouble x2, y2;
+      gdouble x3, y3;
 
-  cairo_new_sub_path (cr);
-  cairo_arc (cr, x + width - radius, y + radius,
-             radius, -90 * degrees, 0 * degrees);
-  cairo_arc (cr, x + width - radius, y + height - radius,
-             radius, 0 * degrees, 90 * degrees);
-  cairo_arc (cr, x + radius, y + height - radius,
-             radius, 90 * degrees, 180 * degrees);
-  cairo_arc (cr, x + radius, y + radius,
-             radius, 180 * degrees, 270 * degrees);
-  cairo_close_path (cr);
+      data = &path->data[i];
 
-  color = g_settings_get_string (sources->status_icon_settings, "bg-color");
+      switch (data->header.type)
+        {
+          case CAIRO_PATH_MOVE_TO:
+            x1 = data[1].point.x;
+            y1 = data[1].point.y;
 
-  gdk_rgba_parse (&rgba, color);
-  g_free (color);
+            cairo_matrix_transform_point (matrix, &x1, &y1);
 
-  gdk_cairo_set_source_rgba (cr, &rgba);
-  cairo_fill_preserve (cr);
+            g_string_append_printf (string, "M %f,%f ", x1, y1);
+            break;
+
+          case CAIRO_PATH_LINE_TO:
+            x1 = data[1].point.x;
+            y1 = data[1].point.y;
+
+            cairo_matrix_transform_point (matrix, &x1, &y1);
+
+            g_string_append_printf (string, "L %f,%f ", x1, y1);
+            break;
+
+          case CAIRO_PATH_CURVE_TO:
+            x1 = data[1].point.x;
+            y1 = data[1].point.y;
+            x2 = data[2].point.x;
+            y2 = data[2].point.y;
+            x3 = data[3].point.x;
+            y3 = data[3].point.y;
+
+            cairo_matrix_transform_point (matrix, &x1, &y1);
+            cairo_matrix_transform_point (matrix, &x2, &y2);
+            cairo_matrix_transform_point (matrix, &x3, &y3);
+
+            g_string_append_printf (string, "C %f,%f %f,%f %f,%f ",
+                                    x1, y1, x2, y2, x3, y3);
+            break;
+
+          case CAIRO_PATH_CLOSE_PATH:
+            g_string_append (string, "Z ");
+            break;
+
+          default:
+            break;
+        }
+    }
+
+  setlocale (LC_NUMERIC, locale);
+  g_free (locale);
+
+  return string;
 }
 
-static void
-draw_text (GfInputSources *sources,
-           cairo_t        *cr,
-           gint            size)
+static PangoLayout *
+get_pango_layout (const gchar *text,
+                  const gchar *font_family,
+                  gint         font_weight,
+                  gint         font_size)
 {
-  gchar *font_name;
+  GdkScreen *screen;
+  PangoContext *context;
   PangoFontDescription *font_desc;
-  gdouble font_size;
   PangoLayout *layout;
-  const gchar *short_name;
-  gint text_width;
-  gint text_height;
-  gdouble factor;
-  gdouble center;
-  gdouble x;
-  gdouble y;
-  gchar *color;
-  GdkRGBA rgba;
 
-  font_name = g_settings_get_string (sources->status_icon_settings, "font-family");
-  font_desc = pango_font_description_from_string (font_name);
-  g_free (font_name);
+  screen = gdk_screen_get_default ();
+  context = gdk_pango_context_get_for_screen (screen);
+  font_desc = pango_font_description_new ();
 
-  pango_font_description_set_weight (font_desc, PANGO_WEIGHT_MEDIUM);
+  pango_font_description_set_family (font_desc, font_family);
+  pango_font_description_set_absolute_size (font_desc, font_size * PANGO_SCALE);
+  pango_font_description_set_weight (font_desc, font_weight);
+  pango_font_description_set_stretch (font_desc, PANGO_STRETCH_NORMAL);
+  pango_font_description_set_style (font_desc, PANGO_STYLE_NORMAL);
+  pango_font_description_set_variant (font_desc, PANGO_VARIANT_NORMAL);
 
-  font_size = PANGO_SCALE * size * 0.5;
-  pango_font_description_set_absolute_size (font_desc, font_size);
+  layout = pango_layout_new (context);
+  g_object_unref (context);
 
-  layout = pango_cairo_create_layout (cr);
-
+  pango_layout_set_text (layout, text, -1);
   pango_layout_set_font_description (layout, font_desc);
   pango_font_description_free (font_desc);
 
-  short_name = gf_input_source_get_short_name (sources->current_source);
-  pango_layout_set_text (layout, short_name, -1);
+  return layout;
+}
 
-  pango_layout_get_pixel_size (layout, &text_width, &text_height);
+static cairo_path_t *
+get_cairo_path (const gchar    *text,
+                const gchar    *font_family,
+                gint            font_weight,
+                gint            font_size,
+                cairo_matrix_t *matrix)
+{
+  PangoLayout *layout;
+  cairo_surface_t *surface;
+  cairo_t *cr;
+  gint width;
+  gint height;
+  gdouble scale;
+  cairo_path_t *path;
 
-  factor = MIN ((size - (size * 0.1) * 2) / text_width, 1.0);
-  cairo_scale (cr, factor, factor);
+  layout = get_pango_layout (text, font_family, font_weight, font_size);
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 16, 16);
+  cr = cairo_create (surface);
 
-  center = size / 2.0;
-  x = center - text_width * factor / 2.0;
-  y = center - text_height * factor / 2.0;
-  cairo_move_to (cr, x, y);
+  pango_layout_get_pixel_size (layout, &width, &height);
 
-  color = g_settings_get_string (sources->status_icon_settings, "fg-color");
-  gdk_rgba_parse (&rgba, color);
-  g_free (color);
+  scale = MIN (1.0, MIN (14.0 / width, 14.0 / height));
+  cairo_scale (cr, scale, scale);
 
-  gdk_cairo_set_source_rgba (cr, &rgba);
+  cairo_move_to (cr, (16 - width * scale) / 2.0, (16 - height * scale) / 2.0);
 
-  pango_cairo_show_layout (cr, layout);
+  pango_cairo_layout_path (cr, layout);
+  path = cairo_copy_path (cr);
+  cairo_get_matrix (cr, matrix);
+
+  cairo_destroy (cr);
+  cairo_surface_destroy (surface);
   g_object_unref (layout);
+
+  return path;
+}
+
+static gchar *
+generate_path_description (const gchar *text,
+                           const gchar *font_family,
+                           gint         font_weight,
+                           gint         font_size)
+{
+  cairo_path_t *path;
+  cairo_matrix_t matrix;
+  GString *string;
+
+  path = get_cairo_path (text, font_family, font_weight, font_size, &matrix);
+  string = cairo_path_to_string (path, &matrix);
+  cairo_path_destroy (path);
+
+  return g_string_free (string, FALSE);
+}
+
+static GString *
+generate_svg (const gchar *text,
+              const gchar *font_family,
+              gint         font_weight,
+              gint         font_size,
+              const gchar *bg_color,
+              const gchar *fg_color,
+              gboolean     symbolic)
+{
+  gchar *path_d;
+  GString *svg;
+
+  path_d = generate_path_description (text, font_family, font_weight, font_size);
+  svg = g_string_new ("<?xml version='1.0' encoding='utf-8' standalone='no'?>");
+
+  g_string_append (svg,
+                   "<svg xmlns='http://www.w3.org/2000/svg' "
+                   "width='16' height='16' viewBox='0 0 16 16'>");
+
+  if (symbolic)
+    {
+      g_string_append (svg, "<defs><mask id='m'>");
+      g_string_append (svg,
+                       "<rect width='16' height='16' "
+                       "style='fill:#ffffff!important'/>");
+
+      g_string_append_printf (svg,
+                              "<path d='%s' style='fill:#000000!important'/>",
+                              path_d);
+
+      g_string_append (svg, "</mask></defs>");
+    }
+
+  g_string_append_printf (svg,
+                          "<rect x='0' y='0' width='16' height='16' "
+                          "rx='2.0' ry='2.0' mask='%s' style='fill:%s;'/>",
+                          symbolic ? "url(#m)" : "none",
+                          symbolic ? "#bebebe" : bg_color);
+
+  if (!symbolic)
+    {
+      g_string_append_printf (svg, "<path d='%s' style='fill:%s'/>",
+                              path_d, fg_color);
+    }
+
+  g_free (path_d);
+
+  return g_string_append (svg, "</svg>");
 }
 
 static void
-update_status_icon_pixbuf (GfInputSources *sources)
+ensure_file_exists (const gchar *icon_theme_path,
+                    const gchar *icon_name,
+                    const gchar *text,
+                    const gchar *font_family,
+                    gint         font_weight,
+                    gint         font_size,
+                    const gchar *bg_color,
+                    const gchar *fg_color,
+                    gboolean     symbolic)
 {
-  gint size;
-  cairo_surface_t *surface;
-  cairo_t *cr;
-  GdkPixbuf *pixbuf;
+  gchar *filename;
+  gchar *path;
 
-  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-  size = gtk_status_icon_get_size (sources->status_icon);
-  G_GNUC_END_IGNORE_DEPRECATIONS
+  filename = g_strdup_printf ("%s.svg", icon_name);
+  path = g_build_filename (icon_theme_path, "hicolor", "scalable",
+                           "status", filename, NULL);
 
-  if (size <= 0)
-    return;
+  if (!g_file_test (path, G_FILE_TEST_EXISTS))
+    {
+      GFile *file;
+      GFile *parent;
+      GString *svg;
 
-  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, size, size);
-  cr = cairo_create (surface);
+      file = g_file_new_for_path (path);
+      parent = g_file_get_parent (file);
+      svg = generate_svg (text, font_family, font_weight, font_size,
+                          bg_color, fg_color, symbolic);
 
-  draw_background (sources, cr, size);
-  draw_text (sources, cr, size);
+      g_file_make_directory_with_parents (parent, NULL, NULL);
+      g_file_replace_contents (file, svg->str, svg->len, NULL, FALSE,
+                               G_FILE_CREATE_NONE, NULL, NULL, NULL);
 
-  cairo_destroy (cr);
+      utime (icon_theme_path, NULL);
+      gtk_icon_theme_rescan_if_needed (gtk_icon_theme_get_default ());
 
-  pixbuf = gdk_pixbuf_get_from_surface (surface, 0, 0, size, size);
-  cairo_surface_destroy (surface);
+      g_string_free (svg, TRUE);
+      g_object_unref (parent);
+      g_object_unref (file);
+    }
 
-  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-  gtk_status_icon_set_from_pixbuf (sources->status_icon, pixbuf);
-  G_GNUC_END_IGNORE_DEPRECATIONS
+  g_free (filename);
+  g_free (path);
+}
 
-  g_object_unref (pixbuf);
+static gchar *
+generate_icon_name (const gchar *text,
+                    const gchar *font_family,
+                    gint         font_weight,
+                    gint         font_size,
+                    const gchar *bg_color,
+                    const gchar *fg_color,
+                    gboolean     symbolic)
+{
+  gchar *str;
+  gchar *hash;
+  GString *icon_name;
+
+  str = g_strdup_printf ("%s-%s-%d-%d-%s-%s", text,
+                         font_family, font_weight, font_size,
+                         bg_color, fg_color);
+
+  hash = g_compute_checksum_for_string (G_CHECKSUM_MD5, str, -1);
+  g_free (str);
+
+  icon_name = g_string_new (hash);
+  g_free (hash);
+
+  if (symbolic)
+    g_string_append (icon_name, "-symbolic");
+
+  return g_string_free (icon_name, FALSE);
+}
+
+static gchar *
+get_icon_name (GfInputSources *sources)
+{
+  const gchar *text;
+  gint font_size;
+  gchar *font_family;
+  gint font_weight;
+  gchar *bg_color;
+  gchar *fg_color;
+  gboolean symbolic;
+  gchar *icon_name;
+
+  text = gf_input_source_get_short_name (sources->current_source);
+  font_size = 8;
+
+  font_family = g_settings_get_string (sources->status_icon_settings, "font-family");
+  font_weight = g_settings_get_int (sources->status_icon_settings, "font-weight");
+  bg_color = g_settings_get_string (sources->status_icon_settings, "bg-color");
+  fg_color = g_settings_get_string (sources->status_icon_settings, "fg-color");
+  symbolic = g_settings_get_boolean (sources->status_icon_settings, "symbolic");
+
+  icon_name = generate_icon_name (text, font_family, font_weight, font_size,
+                                  bg_color, fg_color, symbolic);
+
+  ensure_file_exists (sources->icon_theme_path, icon_name, text,
+                      font_family, font_weight, font_size,
+                      bg_color, fg_color, symbolic);
+
+  g_free (font_family);
+  g_free (bg_color);
+  g_free (fg_color);
+
+  return icon_name;
 }
 
 static void
@@ -374,6 +560,7 @@ update_status_icon (GfInputSources *sources)
   GList *input_sources;
   IBusPropList *prop_list;
   const gchar *display_name;
+  gchar *icon_name;
 
   manager = sources->input_source_manager;
 
@@ -414,12 +601,15 @@ update_status_icon (GfInputSources *sources)
     }
 
   display_name = gf_input_source_get_display_name (source);
+  icon_name = get_icon_name (sources);
+
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gtk_status_icon_set_title (sources->status_icon, _("Keyboard"));
   gtk_status_icon_set_tooltip_text (sources->status_icon, display_name);
+  gtk_status_icon_set_from_icon_name (sources->status_icon, icon_name);
   G_GNUC_END_IGNORE_DEPRECATIONS
 
-  update_status_icon_pixbuf (sources);
+  g_free (icon_name);
 }
 
 static void
@@ -464,6 +654,18 @@ gf_input_sources_dispose (GObject *object)
 }
 
 static void
+gf_input_sources_finalize (GObject *object)
+{
+  GfInputSources *sources;
+
+  sources = GF_INPUT_SOURCES (object);
+
+  g_clear_pointer (&sources->icon_theme_path, g_free);
+
+  G_OBJECT_CLASS (gf_input_sources_parent_class)->finalize (object);
+}
+
+static void
 gf_input_sources_class_init (GfInputSourcesClass *sources_class)
 {
   GObjectClass *object_class;
@@ -471,15 +673,26 @@ gf_input_sources_class_init (GfInputSourcesClass *sources_class)
   object_class = G_OBJECT_CLASS (sources_class);
 
   object_class->dispose = gf_input_sources_dispose;
+  object_class->finalize = gf_input_sources_finalize;
 }
 
 static void
 gf_input_sources_init (GfInputSources *sources)
 {
+  const gchar *cache_dir;
+
   sources->ibus_manager = gf_ibus_manager_new ();
   sources->input_source_manager = gf_input_source_manager_new (sources->ibus_manager);
 
   sources->status_icon_settings = g_settings_new (STATUS_ICON_SCHEMA);
+
+  cache_dir = g_get_user_cache_dir ();
+  sources->icon_theme_path = g_build_filename (cache_dir, "gnome-flashback",
+                                               "input-sources", "icons",
+                                               NULL);
+
+  gtk_icon_theme_append_search_path (gtk_icon_theme_get_default (),
+                                     sources->icon_theme_path);
 
   g_signal_connect (sources->input_source_manager, "sources-changed",
                     G_CALLBACK (sources_changed_cb), sources);
@@ -491,7 +704,6 @@ gf_input_sources_init (GfInputSources *sources)
                     G_CALLBACK (status_icon_settings_changed_cb), sources);
 
   gf_input_source_manager_reload (sources->input_source_manager);
-  update_status_icon (sources);
 }
 
 GfInputSources *
