@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-11-18 15:43+0000\n"
-"PO-Revision-Date: 2016-11-18 18:21+0100\n"
+"POT-Creation-Date: 2016-11-23 12:04+0000\n"
+"PO-Revision-Date: 2016-11-27 17:30+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -315,16 +315,24 @@ msgstr ""
 "zmieniania tła pulpitu."
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
-msgid "The background color for the status icon."
-msgstr "Kolor tła dla ikony stanu."
+msgid "The background color"
+msgstr "Kolor tła"
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:13
-msgid "The foreground color for the status icon."
-msgstr "Kolor ikony stanu."
+msgid "The foreground color"
+msgstr "Kolor tekstu"
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:18
-msgid "Font family"
+msgid "The font family"
 msgstr "Rodzina czcionki"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:24
+msgid "The font weight"
+msgstr "Waga czcionki"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
+msgid "Symbolic"
+msgstr "Symboliczne"
 
 #: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:5
 msgid "Fix missing app menu button"
@@ -740,11 +748,11 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Zablokuj ekran"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:355
+#: gnome-flashback/libinput-sources/gf-input-sources.c:544
 msgid "Show Keyboard Layout"
 msgstr "Wyświetl układ klawiatury"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:418
+#: gnome-flashback/libinput-sources/gf-input-sources.c:598
 msgid "Keyboard"
 msgstr "Klawiatura"
 
