@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-11-13 22:46+0000\n"
-"PO-Revision-Date: 2016-11-15 11:38+0100\n"
+"POT-Creation-Date: 2016-11-23 12:04+0000\n"
+"PO-Revision-Date: 2016-12-09 12:40+0100\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -315,16 +315,24 @@ msgstr ""
 "den Schreibtischhintergrund zu wechseln."
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
-msgid "The background color for the status icon."
-msgstr "Die Hintergrundfarbe für das Statussymbol"
+msgid "The background color"
+msgstr "Die Hintergrundfarbe"
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:13
-msgid "The foreground color for the status icon."
-msgstr "Die Vordergrundfarbe des Statussymbols."
+msgid "The foreground color"
+msgstr "Die Vordergrundfarbe"
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:18
-msgid "Font family"
-msgstr "Schriftfamilie"
+msgid "The font family"
+msgstr "Die Schriftfamilie"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:24
+msgid "The font weight"
+msgstr "Die Schriftstärke"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
+msgid "Symbolic"
+msgstr "Symbolisch"
 
 #: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:5
 msgid "Fix missing app menu button"
@@ -609,7 +617,7 @@ msgid "Built-in display"
 msgstr "Eingebauter Bildschirm"
 
 #: gnome-flashback/libdisplay-config/flashback-display-config.c:218
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:383
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -625,66 +633,66 @@ msgstr "Unbekannter Bildschirm"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:464
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:689
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
 msgid "Log Out"
 msgstr "Abmelden"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:470
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Drücken Sie auf Abmelden, um diese Anwendungen zu schließen und sich aus dem "
 "System abzumelden."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:469
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:472
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s wird in %d Sekunde automatisch abgemeldet."
 msgstr[1] "%s wird in %d Sekunden automatisch abgemeldet."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:476
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:693
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:696
 msgid "Power Off"
 msgstr "Ausschalten"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:482
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 "Drücken Sie auf Ausschalten, um diese Anwendungen zu schließen und sich aus "
 "dem System abzumelden."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:481
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:484
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Das System wird in %d Sekunde automatisch abgeschaltet."
 msgstr[1] "Das System wird in %d Sekunden automatisch abgeschaltet."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:488
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:697
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:700
 msgid "Restart"
 msgstr "Neustarten"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:494
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Drücken Sie Neustarten, um diese Anwendungen zu schließen und das System "
 "neuzustarten"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:493
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:496
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Das System wird in %d Sekunde automatisch neu gestartet."
 msgstr[1] "Das System wird in %d Sekunden automatisch neu gestartet."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:500
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:701
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:503
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:704
 msgid "Hibernate"
 msgstr "Ruhezustand"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:501
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:504
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
@@ -693,12 +701,12 @@ msgstr[0] ""
 msgstr[1] ""
 "Das System wird in %d Sekunden automatisch in den Ruhezustand versetzt."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:508
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:705
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:511
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:708
 msgid "Suspend"
 msgstr "Bereitschaft"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:509
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:512
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
@@ -708,12 +716,12 @@ msgstr[1] ""
 "Das System wird in %d Sekunden automatisch in den Bereitschaftsmodus "
 "versetzt."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:516
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:709
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:712
 msgid "Hybrid Sleep"
 msgstr "Hybrid-Ruhezustand"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:520
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
@@ -739,11 +747,11 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Sperrbildschirm"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:355
+#: gnome-flashback/libinput-sources/gf-input-sources.c:544
 msgid "Show Keyboard Layout"
 msgstr "Tastaturbelegung anzeigen"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:418
+#: gnome-flashback/libinput-sources/gf-input-sources.c:598
 msgid "Keyboard"
 msgstr "Tastatur"
 
