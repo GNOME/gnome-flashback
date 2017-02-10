@@ -1,0 +1,921 @@
+# Chinese (China) translation for gnome-flashback.
+# Copyright (C) 2016 gnome-flashback's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-flashback package.
+# Mingye Wang <arthur2e5@aosc.xyz>, 2016.
+# Dingzhong Chen <wsxy162@gmail.com>, 2016.
+# Aron Xu <happyaron.xu@gmail.com>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-flashback master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"flashback&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-11-23 13:20+0000\n"
+"PO-Revision-Date: 2017-02-10 17:30+0800\n"
+"Last-Translator: Aron Xu <aronxu@gnome.org>\n"
+"Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Gtranslator 2.91.7\n"
+
+#: data/applications/gnome-flashback.desktop.in:4
+msgid "GNOME Flashback"
+msgstr "GNOME Flashback "
+
+#: data/applications/gnome-flashback-init.desktop.in:4
+msgid "GNOME Flashback Initialization"
+msgstr "GNOME Flashback 初始化"
+
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:3
+msgid "Network (GNOME Flashback)"
+msgstr "网络(GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:4
+msgid "Manage your network connections"
+msgstr "管理您的网络连接"
+
+# 这是 msgid bug?
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
+msgid "nm-device-wireless"
+msgstr "nm-device-wireless"
+
+#: data/autostart/gnome-flashback-screensaver.desktop.in:4
+msgid "Screensaver (GNOME Flashback)"
+msgstr "屏保(GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-screensaver.desktop.in:5
+msgid "Launch screensaver and locker program"
+msgstr "启动屏幕保护和锁屏程序"
+
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/autostart/gnome-flashback-screensaver.desktop.in:7
+msgid "preferences-desktop-screensaver"
+msgstr "preferences-desktop-screensaver"
+
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
+msgid "Preferences"
+msgstr "首选项"
+
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:5
+msgid "Personal preferences"
+msgstr "个人首选项"
+
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
+msgid "preferences-desktop"
+msgstr "preferences-desktop"
+
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
+msgid "Administration"
+msgstr "管理"
+
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
+msgid "Change system-wide settings (affects all users)"
+msgstr "改变系统设置(影响所有用户)"
+
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
+msgid "preferences-system"
+msgstr "preferences-system"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
+msgid "Audio device selection"
+msgstr "音频设备选择"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide the "
+"audio device selection dialog."
+msgstr "若为真，GNOME Flashback 应用程序将负责显示“音频设备选择”对话框。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
+msgid "Automount manager"
+msgstr "自动挂载管理器"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
+msgid ""
+"If set to true, then GNOME Flashback application will be used to automount "
+"removable media."
+msgstr "若为真，GNOME Flashback 应用程序将负责自动挂载可移动介质。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
+msgid "Bluetooth applet"
+msgstr "蓝牙小程序"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"Bluetooth applet."
+msgstr "若为真，GNOME Flashback 应用程序将负责显示“蓝牙”小程序。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
+msgid "Desktop background"
+msgstr "桌面背景"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
+msgid ""
+"If set to true, then GNOME Flashback application will be used to draw the "
+"desktop background."
+msgstr "若为真，GNOME Flashback 应用程序将负责绘制桌面背景。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
+msgid "Display configuration"
+msgstr "显示配置"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide the "
+"display configuration."
+msgstr "若为真，GNOME Flashback 应用程序将负责提供显示配置。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
+msgid "End session dialog"
+msgstr "终止会话对话框"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show the "
+"end session dialog."
+msgstr "若为真，GNOME Flashback 应用程序将负责显示“终止会话”对话框。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
+msgid "Idle monitor"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:42
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr "若为真，GNOME Flashback 应用程序将负责监视用户活动。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:47
+msgid "Input settings"
+msgstr "输入设置"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
+msgid "Keyboard layouts and input methods"
+msgstr "键盘布局和输入法"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:53
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"keyboard layouts and input methods."
+msgstr "若为真，GNOME Flashback 应用程序将负责管理键盘布局和输入法。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
+msgid "Notification daemon"
+msgstr "通知守护程序"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:59
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"notifications."
+msgstr "若为真，GNOME Flashback 应用程序将负责管理通知。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
+msgid "Authentication agent for polkit"
+msgstr "polkit 的验证代理"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:65
+msgid ""
+"This is the same authentication agent that was provided by PolicyKit-gnome."
+msgstr "这和 PolicyKit-gnome 所提供的验证代理相同。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
+msgid "Power applet"
+msgstr "电源小程序"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:71
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"power applet."
+msgstr "若为真，GNOME Flashback 应用程序将负责显示“电源”小程序。"
+
+# 原译 屏幕广播
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
+msgid "Screencasts"
+msgstr "屏幕录制"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:77
+msgid ""
+"If set to true, then GNOME Flashback application will be used to record the "
+"screen."
+msgstr "若为真，GNOME Flashback 应用程序将负责录屏。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
+msgid "Screensaver"
+msgstr "屏幕保护"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:83
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a "
+"screensaver."
+msgstr "若为真，GNOME Flashback 应用程序将作为屏幕保护程序运行。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
+msgid "Screenshots"
+msgstr "截屏"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:89
+msgid ""
+"If set to true, then GNOME Flashback application will be used to take "
+"screenshots."
+msgstr "若为真，GNOME Flashback 应用程序将负责截屏。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
+msgid "Shell"
+msgstr "Shell"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:95
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a shell."
+msgstr "若为真，GNOME Flashback 应用程序将作为 shell 运行。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
+msgid "Sound applet"
+msgstr "声音小程序"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:101
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"sound applet. This is the same sound applet that used to be a part of GNOME "
+"Control Center."
+msgstr ""
+"若为真，GNOME Flashback 应用程序将负责显示“声音”小程序。这就是曾经为 GNOME 控制中心"
+"一部分的那个小程序。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
+msgid "Status Notifier Watcher"
+msgstr "状态通知观察程序"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+msgid ""
+"If set to true, then GNOME Flashback application will be used as Status "
+"Notifier Watcher."
+msgstr "若为真，GNOME Flashback 应用程序将作为状态通知观察程序运行。"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:112
+msgid "Workarounds"
+msgstr "解决方法"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
+msgid ""
+"If set to true, then GNOME Flashback application will use workarounds to fix "
+"bugs."
+msgstr "若为真，GNOME Flashback 应用程序将使用“解决方法”来修复错误。"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
+msgid "Fade the background on change"
+msgstr "淡出背景变化"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:6
+msgid ""
+"If set to true, then fade effect will be used to change the desktop "
+"background."
+msgstr "如果设为 true，Nautilus 更改桌面背景时将使用渐变效果。"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
+msgid "The background color"
+msgstr "背景颜色。"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:13
+msgid "The foreground color"
+msgstr "前景颜色。"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:18
+msgid "The font family"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:24
+msgid "The font weight"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
+msgid "Symbolic"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:5
+msgid "Fix missing app menu button"
+msgstr "修补缺失的应用菜单按钮"
+
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:6
+msgid ""
+"If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
+"FALSE. Disable if you want to use gnome-settings-daemon overrides in "
+"xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
+msgstr ""
+"若为真，gnome-flashback 将强制 Gtk/ShellShowsAppMenu 值为 FALSE。禁用此项，如"
+"果您想要为了“Gtk/ShellShowsAppMenu”属性在 xsetting 插件中使用 gnome-settings-"
+"daemon 替代。"
+
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:11
+msgid "Fix wrong button layout"
+msgstr "修补错误的按钮布局"
+
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:12
+msgid ""
+"If set to non-empty string, then gnome-flashback will force Gtk/"
+"DecorationLayout to value set by this setting. Set to empty string if you "
+"want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
+"DecorationLayout' property."
+msgstr ""
+"若设为非空字符串，gnome-flashback 将强制 Gtk/DecorationLayout 的值设为该处设"
+"置。设为空白字符串，如果您想要为了“Gtk/DecorationLayout”属性在 xsettings 插件"
+"里使用 gnome-settings-daemon 替代。"
+
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:3
+msgid "GNOME Flashback (Compiz)"
+msgstr "GNOME Flashback (Compiz)"
+
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:4
+msgid "This session logs you into GNOME Flashback with Compiz"
+msgstr "此会话将用 Compiz 登录您到 GNOME Flashback "
+
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:3
+msgid "GNOME Flashback (Metacity)"
+msgstr "GNOME Flashback (Metacity)"
+
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:4
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr "此会话将用 Metacity 登录您到 GNOME Flashback "
+
+#: gnome-flashback/gf-main.c:40
+msgid "Enable debugging code"
+msgstr "启用调试代码"
+
+#: gnome-flashback/gf-main.c:46
+msgid "Initialize GNOME Flashback session"
+msgstr "初始化 GNOME Flashback 会话"
+
+#: gnome-flashback/gf-main.c:52
+msgid "Replace a currently running application"
+msgstr "替换当前正在运行的应用程序"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:109
+msgid "Headphones"
+msgstr "耳机"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:112
+msgid "Headset"
+msgstr "耳麦"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:115
+msgid "Microphone"
+msgstr "麦克风"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
+#: gnome-flashback/libsound-applet/gf-sound-item.c:396
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "启动声音首选项失败：%s"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:248
+msgid "What kind of device did you plug in?"
+msgstr "您插入了哪种设备？"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
+msgid "Sound Settings"
+msgstr "声音设置"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
+msgid "Cancel"
+msgstr "取消"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:285
+msgid "Unknown Audio Device"
+msgstr "未知的音频设备"
+
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:177
+#, c-format
+msgid "Unable to mount %s"
+msgstr "无法挂载 %s"
+
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:290
+#, c-format
+msgid "Unable to open a folder for %s"
+msgstr "无法为 %s 打开文件夹"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:339
+msgid "Ask what to do"
+msgstr "询问做什么"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:345
+msgid "Do Nothing"
+msgstr "什么也不做"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:351
+msgid "Open Folder"
+msgstr "打开文件夹"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:496
+#, c-format
+msgid "Unable to eject %p"
+msgstr "无法弹出 %p"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
+#, c-format
+msgid "Unable to unmount %p"
+msgstr "无法卸载 %p"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:707
+msgid "You have just inserted an Audio CD."
+msgstr "您刚刚插入了一张音频 CD"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
+msgid "You have just inserted an Audio DVD."
+msgstr "您刚刚插入了一张音频 DVD"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
+msgid "You have just inserted a Video DVD."
+msgstr "您刚刚插入了一张视频 DVD"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
+msgid "You have just inserted a Video CD."
+msgstr "您刚刚插入了一张视频 CD (VCD)"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
+msgid "You have just inserted a Super Video CD."
+msgstr "您刚刚插入了一张超级视频 CD (SVCD)"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
+msgid "You have just inserted a blank CD."
+msgstr "您刚刚插入了一张空白 CD"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
+msgid "You have just inserted a blank DVD."
+msgstr "您刚刚插入了一张空白 DVD"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
+msgid "You have just inserted a blank Blu-Ray disc."
+msgstr "您刚刚插入了一张空白蓝光盘"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
+msgid "You have just inserted a blank HD DVD."
+msgstr "您刚刚插入了一张空白高清 DVD"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
+msgid "You have just inserted a Photo CD."
+msgstr "您刚刚插入了一张照片 CD"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
+msgid "You have just inserted a Picture CD."
+msgstr "您刚刚插入了一张图片 CD"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
+msgid "You have just inserted a medium with digital photos."
+msgstr "您刚刚插入了一个数码照片的介质"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
+msgid "You have just inserted a digital audio player."
+msgstr "您刚刚插入了一个数字音频播放器"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
+msgid ""
+"You have just inserted a medium with software intended to be automatically "
+"started."
+msgstr "您刚刚插入了一个想要自动启动的软件的介质"
+
+#. fallback to generic greeting
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:736
+msgid "You have just inserted a medium."
+msgstr "您刚刚插入了一个介质"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
+msgid "Choose what application to launch."
+msgstr "选择要启动的应用程序"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:747
+#, c-format
+msgid ""
+"Select how to open \"%s\" and whether to perform this action in the future "
+"for other media of type \"%s\"."
+msgstr "选择怎样打开“%s”以及是否为其他类型为“%s”的介质在将来执行此操作。"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:774
+msgid "_Always perform this action"
+msgstr "总是执行这一操作(_A)"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:783
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
+msgid "_Cancel"
+msgstr "取消(_C)"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:784
+msgid "_OK"
+msgstr "确定(_O)"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:790
+msgid "_Eject"
+msgstr "弹出(_E)"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:795
+msgid "_Unmount"
+msgstr "卸载(_U)"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
+msgid "Turn Off"
+msgstr "关闭"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:164
+msgid "Send Files"
+msgstr "发送文件"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
+msgid "Turn On"
+msgstr "打开"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
+msgid "Bluetooth Settings"
+msgstr "蓝牙设置"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:270
+msgid "Bluetooth active"
+msgstr "蓝牙开启"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:275
+msgid "Bluetooth disabled"
+msgstr "蓝牙关闭"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:281
+#, c-format
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "%d 个已连接设备"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:287
+msgid "Not Connected"
+msgstr "未连接"
+
+#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:8
+msgid "Confirm"
+msgstr "确认"
+
+#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:53
+msgid "Do you want to keep these display settings?"
+msgstr "您要保留这些显示设置吗？"
+
+#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:96
+msgid "_Keep Changes"
+msgstr "保留变更(_K)"
+
+#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:116
+msgid "_Revert Settings"
+msgstr "回退设置(_R)"
+
+#: gnome-flashback/libdisplay-config/flashback-display-config.c:195
+msgid "Built-in display"
+msgstr "内建显示器"
+
+#: gnome-flashback/libdisplay-config/flashback-display-config.c:218
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
+msgid "Unknown"
+msgstr "未知"
+
+#: gnome-flashback/libdisplay-config/flashback-display-config.c:220
+msgid "Unknown Display"
+msgstr "未知显示器"
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: gnome-flashback/libdisplay-config/flashback-display-config.c:228
+#, c-format
+msgid "%s %s"
+msgstr "%s %s"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
+msgid "Log Out"
+msgstr "注销"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:470
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr "点击注销以退出应用程序并登出系统。"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:472
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s 将在 %d 秒后自动注销。"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:696
+msgid "Power Off"
+msgstr "关闭电源"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:482
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "点击关闭电源以退出应用程序并关闭系统的电源。"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:484
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "系统将在 %d 秒后自动关闭电源。"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:700
+msgid "Restart"
+msgstr "重新启动"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:494
+msgid "Click Restart to quit these applications and restart the system."
+msgstr "点击重启以退出应用程序并重新启动系统。"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:496
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "系统将在 %d 秒后自动重启。"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:503
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:704
+msgid "Hibernate"
+msgstr "休眠"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:504
+#, c-format
+msgid "The system will hibernate automatically in %d second."
+msgid_plural "The system will hibernate automatically in %d seconds."
+msgstr[0] "系统将在 %d 秒后自动休眠。"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:511
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:708
+msgid "Suspend"
+msgstr "睡眠"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:512
+#, c-format
+msgid "The system will suspend automatically in %d second."
+msgid_plural "The system will suspend automatically in %d seconds."
+msgstr[0] "系统将在 %d 秒后自动睡眠。"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:712
+msgid "Hybrid Sleep"
+msgstr "混合式睡眠"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:520
+#, c-format
+msgid "The system will hybrid sleep automatically in %d second."
+msgid_plural "The system will hybrid sleep automatically in %d seconds."
+msgstr[0] "系统将在 %d 秒后自动混合式睡眠。"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:29
+msgid "Some programs are still running:"
+msgstr "某些程序还在运行："
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:78
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr "正在等待这些应用程序完成。中端它们可能导致数据丢失。"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
+msgid "Lock Screen"
+msgstr "锁屏"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:544
+msgid "Show Keyboard Layout"
+msgstr "显示键盘布局"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:598
+msgid "Keyboard"
+msgstr "键盘"
+
+#: gnome-flashback/libnotifications/gf-bubble.c:596
+#: gnome-flashback/libnotifications/gf-bubble.c:600
+#: gnome-flashback/libnotifications/nd-notification-box.c:325
+#: gnome-flashback/libnotifications/nd-notification-box.c:327
+msgid "Closes the notification."
+msgstr "关闭此通知"
+
+#: gnome-flashback/libnotifications/gf-bubble.c:620
+#: gnome-flashback/libnotifications/gf-bubble.c:651
+#: gnome-flashback/libnotifications/nd-notification-box.c:343
+msgid "Notification summary text."
+msgstr "通知概要文本。"
+
+#: gnome-flashback/libnotifications/gf-bubble.c:670
+msgid "Notification"
+msgstr "通知"
+
+#: gnome-flashback/libnotifications/nd-daemon.c:100
+msgid "Invalid notification identifier"
+msgstr "无效的通知标识符"
+
+#: gnome-flashback/libnotifications/nd-daemon.c:181
+msgid "Exceeded maximum number of notifications"
+msgstr "超过了最大通知数目"
+
+#: gnome-flashback/libnotifications/nd-notification-box.c:363
+msgid "Notification body text."
+msgstr "通知正文文本。"
+
+#: gnome-flashback/libnotifications/nd-queue.c:449
+msgid "Clear all notifications"
+msgstr "清除全部通知"
+
+#: gnome-flashback/libnotifications/nd-queue.c:878
+msgid "Notifications"
+msgstr "通知"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:93
+#, c-format
+msgid "_Password for %s:"
+msgstr "用于 %s 的密码(_P)："
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:97
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
+msgid "_Password:"
+msgstr "密码(_P)："
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:252
+msgid "Your authentication attempt was unsuccessful. Please try again."
+msgstr "认证失败，请重试。"
+
+#: gnome-flashback/libpolkit/flashback-listener.c:139
+msgid "Authentication dialog was dismissed by the user"
+msgstr "认证对话框被用户关闭"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:202
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as one of the users below is required to perform this action."
+msgstr ""
+"一个应用程序正在尝试执行需要权限的操作。 执行此操作需要认证为以下用户之"
+"一。"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication is required to perform this action."
+msgstr "一个应用程序正在尝试执行需要权限的操作。 执行此操作需要认证。"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:217
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as the super user is required to perform this action."
+msgstr ""
+"一个应用程序正在尝试执行需要权限的操作。 执行此操作需要认证为超级用户。"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:383
+msgid "Select user..."
+msgstr "选择用户..."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:422
+#, c-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:593
+msgid "Action:"
+msgstr "动作："
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:596
+#, c-format
+msgid "Click to edit %s"
+msgstr "点击编辑 %s"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:604
+msgid "Vendor:"
+msgstr "供应商："
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:607
+#, c-format
+msgid "Click to open %s"
+msgstr "单击以打开 %s"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:8
+msgid "Authenticate"
+msgstr "认证"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:53
+msgid "<big><b>Title</b></big>"
+msgstr "<big><b>标题</b></big>"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:192
+msgid "<small><b>_Details</b></small>"
+msgstr "<small><b>详细信息(_D)</b></small>"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:228
+msgid "_Authenticate"
+msgstr "认证(_A)"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:146
+msgid "Fully Charged"
+msgstr "已充满电"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:148
+msgid "Empty"
+msgstr "电池已空"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:154
+#: gnome-flashback/libpower-applet/gf-power-applet.c:159
+msgid "Estimating..."
+msgstr "正在估计..."
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: gnome-flashback/libpower-applet/gf-power-applet.c:168
+#, c-format
+msgid "%.0f:%02.0f Remaining (%.0f%%)"
+msgstr "剩余 %.0f:%02.0f (%.0f%%)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: gnome-flashback/libpower-applet/gf-power-applet.c:175
+#, c-format
+msgid "%.0f:%02.0f Until Full (%.0f%%)"
+msgstr "还有 %.0f:%02.0f 充满 (%.0f%%)"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:190
+msgid "UPS"
+msgstr "UPS"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:192
+msgid "Battery"
+msgstr "电池"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:221
+msgid "Power Settings"
+msgstr "电源设置"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:289
+msgid "Sound Output Volume"
+msgstr "声音输出音量"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:290
+msgid "Output"
+msgstr "输出"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:295
+msgid "Microphone Volume"
+msgstr "麦克风音量"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:296
+msgid "Input"
+msgstr "输入"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:162
+msgid "Muted"
+msgstr "静音"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:455
+msgid "_Mute"
+msgstr "静音(_M)"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:463
+msgid "_Sound Preferences"
+msgstr "声音首选项(_S)"
+
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:537
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:546
+msgctxt "volume"
+msgid "100%"
+msgstr "100%"
+
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:541
+msgctxt "volume"
+msgid "Unamplified"
+msgstr "未放大"
+
+#. translators:
+#. * The device has been disabled
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1866
+msgid "Disabled"
+msgstr "已禁用"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1873
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u 输出"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u 输入"
+
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2738
+msgid "System Sounds"
+msgstr "系统声音"
+
+#~ msgid ""
+#~ "This contains the background color for the status icon that is shown in "
+#~ "the system tray."
+#~ msgstr "此处控制显示在系统托盘里状态图标的背景颜色。"
+
+#~ msgid ""
+#~ "This contains the foreground color for the status icon that is shown in "
+#~ "the system tray."
+#~ msgstr "此处控制显示在系统托盘里状态图标的前景颜色。"
