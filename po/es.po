@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Alejandro Quiroz <alejandro.quiroz.f@gmail.com>, 2016.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2014, 2015, 2016.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2014, 2015, 2016, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-21 15:37+0000\n"
-"PO-Revision-Date: 2016-07-01 09:31+0200\n"
+"POT-Creation-Date: 2017-01-18 21:58+0000\n"
+"PO-Revision-Date: 2017-02-06 18:33+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
+"Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -167,10 +167,9 @@ msgstr ""
 "actividad del usuario."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:48
-#, fuzzy
 #| msgid "Sound Settings"
 msgid "Input settings"
-msgstr "Configuración de sonido"
+msgstr "Configuración de entrada"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:53
 msgid "Keyboard layouts and input methods"
@@ -408,7 +407,7 @@ msgstr "Micrófono"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
 #: gnome-flashback/libsound-applet/gf-sound-item.c:395
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:257
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
 msgstr "Falló al iniciar las preferencias de sonido: %s"
@@ -616,7 +615,7 @@ msgid "Built-in display"
 msgstr "Pantalla integrada"
 
 #: gnome-flashback/libdisplay-config/flashback-display-config.c:218
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:383
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -632,87 +631,87 @@ msgstr "Pantalla desconocida"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:464
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:689
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
 msgid "Log Out"
 msgstr "Cerrar la sesión"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:470
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Pulse Cerrar la sesión para salir de estas aplicaciones y cerrar la sesión "
 "en el sistema."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:469
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:472
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "Se cerrará automáticamente la sesión de %s en %d segundo."
 msgstr[1] "Se cerrará automáticamente la sesión de %s en %d segundos."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:476
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:693
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:696
 msgid "Power Off"
 msgstr "Apagar"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:482
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "Pulse Apagar para cerrar de estas aplicaciones y reiniciar el sistema."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:481
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:484
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "El sistema se apagará automáticamente en %d segundo."
 msgstr[1] "El sistema se apagará automáticamente en %d segundos."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:488
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:697
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:700
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:494
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Pulse Reiniciar para salir de estas aplicaciones y reiniciar el sistema."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:493
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:496
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "El sistema se reiniciará automáticamente en %d segundo."
 msgstr[1] "El sistema se reiniciará automáticamente en %d segundos."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:500
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:701
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:503
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:704
 msgid "Hibernate"
 msgstr "Hibernar"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:501
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:504
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
 msgstr[0] "El sistema hibernará automáticamente en %d segundo."
 msgstr[1] "El sistema hibernará automáticamente en %d segundos."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:508
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:705
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:511
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:708
 msgid "Suspend"
 msgstr "Suspender"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:509
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:512
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
 msgstr[0] "El sistema se suspenderá automáticamente en %d segundo."
 msgstr[1] "El sistema se suspenderá automáticamente en %d segundos."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:516
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:709
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:712
 msgid "Hybrid Sleep"
 msgstr "Suspensión híbrida"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:520
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
@@ -776,11 +775,11 @@ msgstr "Se exedió el numero máximo de notificaciones"
 msgid "Notification body text."
 msgstr "Texto del cuerpo de la notificación."
 
-#: gnome-flashback/libnotifications/nd-queue.c:449
+#: gnome-flashback/libnotifications/nd-queue.c:453
 msgid "Clear all notifications"
 msgstr "Limpiar todas las notificaciones"
 
-#: gnome-flashback/libnotifications/nd-queue.c:878
+#: gnome-flashback/libnotifications/nd-queue.c:890
 msgid "Notifications"
 msgstr "Notificaciones"
 
@@ -932,17 +931,17 @@ msgid "Microphone Volume"
 msgstr "Volumen del micrófono"
 
 #: gnome-flashback/libsound-applet/gf-sound-item.c:161
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:421
 msgid "Muted"
 msgstr "Silenciado"
 
 #: gnome-flashback/libsound-applet/gf-sound-item.c:452
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:280
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:282
 msgid "_Mute"
 msgstr "_Silenciar"
 
 #: gnome-flashback/libsound-applet/gf-sound-item.c:460
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:289
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:291
 msgid "_Sound Preferences"
 msgstr "Preferencias de _sonido"
 
