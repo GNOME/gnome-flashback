@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-07-03 09:46+0000\n"
-"PO-Revision-Date: 2016-07-08 01:26+0700\n"
+"POT-Creation-Date: 2017-01-18 21:58+0000\n"
+"PO-Revision-Date: 2017-02-17 22:50+0700\n"
 "Last-Translator: Andika Triwidada <atriwidada@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
@@ -79,11 +79,11 @@ msgstr "Ubah pengaturan seluruh sistem (memengaruhi semua pengguna)"
 msgid "preferences-system"
 msgstr "preferences-system"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
 msgid "Audio device selection"
 msgstr "Pemilihan perangkat audio"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:7
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
 msgid ""
 "If set to true, then GNOME Flashback application will be used to provide the "
 "audio device selection dialog."
@@ -91,11 +91,11 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menyediakan "
 "dialog pemilihan perangkat audio."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
 msgid "Automount manager"
 msgstr "Manajer pengait otomatis"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:13
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
 msgid ""
 "If set to true, then GNOME Flashback application will be used to automount "
 "removable media."
@@ -103,11 +103,11 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk mengait "
 "otomatis media lepas pasang."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
 msgid "Bluetooth applet"
 msgstr "Aplet Bluetooth"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:19
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "Bluetooth applet."
@@ -115,11 +115,11 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menampilkan "
 "suatu aplet Bluetooth."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
 msgid "Desktop background"
 msgstr "Latar belakang desktop"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:25
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
 msgid ""
 "If set to true, then GNOME Flashback application will be used to draw the "
 "desktop background."
@@ -127,11 +127,11 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menggambar "
 "latar belakang desktop."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
 msgid "Display configuration"
 msgstr "Konfigurasi tampilan"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:31
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
 msgid ""
 "If set to true, then GNOME Flashback application will be used to provide the "
 "display configuration."
@@ -139,11 +139,11 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menyediakan "
 "konfigurasi tampilan."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
 msgid "End session dialog"
 msgstr "Dialog akhir sesi"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:37
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
@@ -151,11 +151,11 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menampilkan "
 "dialog akhir sesi."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:42
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
 msgid "Idle monitor"
 msgstr "Pemantauan menganggur"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:43
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:42
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
@@ -163,15 +163,15 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk pemantauan "
 "aktivitas pengguna."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:48
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:47
 msgid "Input settings"
 msgstr "Pengaturan masukan"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:53
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
 msgid "Keyboard layouts and input methods"
 msgstr "Tata letak papan tik dan metoda masukan"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:53
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -179,11 +179,11 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk mengelola tata "
 "letak papan tik dan metoda masukan."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:59
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
 msgid "Notification daemon"
 msgstr "Daemon notifikasi"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:60
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:59
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
@@ -191,21 +191,21 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk mengelola "
 "notifikasi."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:65
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
 msgid "Authentication agent for polkit"
 msgstr "Agen otentikasi bagi polkit"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:66
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:65
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
 "Ini adalah agen otentikasi yang sama yang disediakan oleh PolicyKit-gnome."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:71
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
 msgid "Power applet"
 msgstr "Aplet daya"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:71
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
@@ -213,33 +213,33 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menampilkan "
 "sebuah aplet daya."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:77
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
 msgid "Screencasts"
 msgstr "Screencast"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:77
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
 msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk merekam layar."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:83
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
 msgid "Screensaver"
 msgstr "Screensaver"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:83
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
 msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai sebagai screensaver."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:89
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
 msgid "Screenshots"
 msgstr "Cuplikan Layar"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:89
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -247,20 +247,20 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk mengambil "
 "cuplikan layar."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:95
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
 msgid "Shell"
 msgstr "Shell"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:95
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai sebagai shell."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:101
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
 msgid "Sound applet"
 msgstr "Aplet suara"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:102
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:101
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -270,11 +270,11 @@ msgstr ""
 "aplet suara. Ini aplet suara yang sama dengan yang biasanya menjadi bagian "
 "dari Pusat Kendali GNOME."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
 msgid "Status Notifier Watcher"
 msgstr "Pengamat Pemberitahu Status"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -282,11 +282,11 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai sebagai Pengamat "
 "Pemberitahu Status."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:112
 msgid "Workarounds"
 msgstr "Workaround"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
 msgid ""
 "If set to true, then GNOME Flashback application will use workarounds to fix "
 "bugs."
@@ -294,11 +294,11 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan memakai akal-akalan untuk "
 "memperbaiki kutu."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:126
+#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
 msgid "Fade the background on change"
 msgstr "Pudarkan latar belakang pada perubahan"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:127
+#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:6
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -306,33 +306,31 @@ msgstr ""
 "Bila diisi true, efek pudar akan dipakai untuk menggambar latar belakang "
 "desktop."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:136
-msgid "The background color for the status icon."
-msgstr "Warna latar bagi ikon status."
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
+msgid "The background color"
+msgstr "Warna latar"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:137
-msgid ""
-"This contains the background color for the status icon that is shown in the "
-"system tray."
-msgstr ""
-"Ini memuat warna latar bagi ikon status yang ditampilkan di baki sistem."
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:13
+msgid "The foreground color"
+msgstr "Warna depan"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:142
-msgid "The foreground color for the status icon."
-msgstr "Warna depan bagi ikon status."
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:18
+msgid "The font family"
+msgstr "Keluarga fonta"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:143
-msgid ""
-"This contains the foreground color for the status icon that is shown in the "
-"system tray."
-msgstr ""
-"Ini memuat warna depan bagi ikon status yang ditampilkan di baki sistem."
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:24
+msgid "The font weight"
+msgstr "Bobot fonta"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:152
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
+msgid "Symbolic"
+msgstr "Simbolis"
+
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:5
 msgid "Fix missing app menu button"
 msgstr "Perbaiki tombol menu app yang hilang"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:153
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:6
 msgid ""
 "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
 "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
@@ -342,11 +340,11 @@ msgstr ""
 "menjadi FALSE. Nonaktifkan bila Anda ingin memakai penimpaan gnome-settings-"
 "daemon dalam pengaya xsettings untuk properti 'Gtk/ShellShowsAppMenu'."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:158
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:11
 msgid "Fix wrong button layout"
 msgstr "Perbaiki tata letak tombol yang salah"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:159
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:12
 msgid ""
 "If set to non-empty string, then gnome-flashback will force Gtk/"
 "DecorationLayout to value set by this setting. Set to empty string if you "
@@ -399,8 +397,7 @@ msgid "Microphone"
 msgstr "Mikrofon"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
-#: gnome-flashback/libsound-applet/gf-sound-item.c:395
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
+#: gnome-flashback/libsound-applet/gf-sound-item.c:396
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
 msgstr "Gagal memulai Preferensi Suara: %s"
@@ -569,21 +566,21 @@ msgstr "Nyalakan"
 msgid "Bluetooth Settings"
 msgstr "Pengaturan Bluetooth"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:271
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:270
 msgid "Bluetooth active"
 msgstr "Bluetooth aktif"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:276
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:275
 msgid "Bluetooth disabled"
 msgstr "Bluetooth dinonaktifkan"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:282
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:281
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d Perangkat Tersambung"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:287
 msgid "Not Connected"
 msgstr "Tidak Terhubung"
 
@@ -608,7 +605,7 @@ msgid "Built-in display"
 msgstr "Tampilan bawaan"
 
 #: gnome-flashback/libdisplay-config/flashback-display-config.c:218
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:383
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
 msgid "Unknown"
 msgstr "Tak diketahui"
 
@@ -624,84 +621,84 @@ msgstr "Tampilan Tak Dikenal"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:464
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:689
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
 msgid "Log Out"
 msgstr "Log Keluar"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:470
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Klik Log Keluar untuk keluar dari aplikasi-aplikasi ini dan log keluar dari "
 "sistem."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:469
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:472
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s akan otomatis dilog-keluarkan dalam %d detik"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:476
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:693
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:696
 msgid "Power Off"
 msgstr "Matikan"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:482
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 "Klik Matikan untuk keluar dari aplikasi-aplikasi ini dan mematikan sistem"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:481
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:484
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Sistem akan otomatis dimatikan dalam %d detik."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:488
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:697
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:700
 msgid "Restart"
 msgstr "Start Ulang"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:494
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Klik Start Ulang untuk keluar dari aplikasi-aplikasi ini dan memulai ulang "
 "sistem"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:493
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:496
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Sistem akan otomatis dimulai ulang dalam %d detik."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:500
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:701
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:503
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:704
 msgid "Hibernate"
 msgstr "Hibernasi"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:501
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:504
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
 msgstr[0] "Sistem akan otomatis dihibernasi dalam %d detik."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:508
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:705
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:511
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:708
 msgid "Suspend"
 msgstr "Suspensi"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:509
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:512
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
 msgstr[0] "Sistem akan otomatis disuspensi dalam %d detik."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:516
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:709
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:712
 msgid "Hybrid Sleep"
 msgstr "Tidur Hibrida"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:520
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
@@ -723,11 +720,11 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Kunci Layar"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:362
+#: gnome-flashback/libinput-sources/gf-input-sources.c:544
 msgid "Show Keyboard Layout"
 msgstr "Tampilkan Tata Letak Papan Tik"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:425
+#: gnome-flashback/libinput-sources/gf-input-sources.c:598
 msgid "Keyboard"
 msgstr "Papan tik"
 
@@ -854,75 +851,68 @@ msgstr "<small><b>_Rincian</b></small>"
 msgid "_Authenticate"
 msgstr "Otentik_asikan"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:135
-msgid "Power Settings"
-msgstr "Pengaturan Daya"
-
-#: gnome-flashback/libpower-applet/gf-power-applet.c:182
+#: gnome-flashback/libpower-applet/gf-power-applet.c:146
 msgid "Fully Charged"
 msgstr "Terisi Penuh"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:184
+#: gnome-flashback/libpower-applet/gf-power-applet.c:148
 msgid "Empty"
 msgstr "Kosong"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:190
-#: gnome-flashback/libpower-applet/gf-power-applet.c:195
+#: gnome-flashback/libpower-applet/gf-power-applet.c:154
+#: gnome-flashback/libpower-applet/gf-power-applet.c:159
 msgid "Estimating..."
 msgstr "Memperkirakan…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:204
+#: gnome-flashback/libpower-applet/gf-power-applet.c:168
 #, c-format
 msgid "%.0f:%02.0f Remaining (%.0f%%)"
 msgstr "%.0f:%02.0f Tersisa (%.0f%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:211
+#: gnome-flashback/libpower-applet/gf-power-applet.c:175
 #, c-format
 msgid "%.0f:%02.0f Until Full (%.0f%%)"
 msgstr "%.0f:%02.0f Sampai Penuh (%.0f%%)"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:226
+#: gnome-flashback/libpower-applet/gf-power-applet.c:190
 msgid "UPS"
 msgstr "UPS"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:228
+#: gnome-flashback/libpower-applet/gf-power-applet.c:192
 msgid "Battery"
 msgstr "Baterai"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:320
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:344
-msgid "Output"
-msgstr "Keluaran"
+#: gnome-flashback/libpower-applet/gf-power-applet.c:221
+msgid "Power Settings"
+msgstr "Pengaturan Daya"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:323
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:343
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:289
 msgid "Sound Output Volume"
 msgstr "Volume Keluaran Suara"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:330
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:350
-msgid "Input"
-msgstr "Masukan"
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:290
+msgid "Output"
+msgstr "Keluaran"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:333
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:349
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:295
 msgid "Microphone Volume"
 msgstr "Volume Mikrofon"
 
-#: gnome-flashback/libsound-applet/gf-sound-item.c:161
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:296
+msgid "Input"
+msgstr "Masukan"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:162
 msgid "Muted"
 msgstr "Senyap"
 
-#: gnome-flashback/libsound-applet/gf-sound-item.c:452
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:280
+#: gnome-flashback/libsound-applet/gf-sound-item.c:455
 msgid "_Mute"
 msgstr "_Bisu"
 
-#: gnome-flashback/libsound-applet/gf-sound-item.c:460
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:289
+#: gnome-flashback/libsound-applet/gf-sound-item.c:463
 msgid "_Sound Preferences"
 msgstr "Preferensi _Suara"
 
