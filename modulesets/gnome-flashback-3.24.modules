@@ -77,10 +77,13 @@
   <autotools id="gnome-flashback">
     <branch />
     <dependencies>
+      <dep package="ibus" />
       <dep package="intltool" />
+      <dep package="gnome-bluetooth" />
       <dep package="gnome-desktop" />
       <dep package="gtk+-3" />
       <dep package="m4-common" />
+      <dep package="polkit-agent" />
     </dependencies>
   </autotools>
 
