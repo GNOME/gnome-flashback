@@ -7,13 +7,14 @@ noinst_LTLIBRARIES = \
 libbluetooth_applet_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"bluetooth-applet\" \
 	-DG_LOG_USE_STRUCTURED=1 \
+	-I$(top_builddir)/gnome-flashback/libbluetooth-applet \
+	-I$(top_srcdir) \
 	$(NULL)
 
 libbluetooth_applet_la_CFLAGS = \
 	$(BLUETOOTH_APPLET_CFLAGS) \
 	$(WARN_CFLAGS) \
 	$(AM_CFLAGS) \
-	-I$(top_builddir)/gnome-flashback/libbluetooth-applet \
 	$(NULL)
 
 libbluetooth_applet_la_SOURCES = \

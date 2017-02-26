@@ -7,13 +7,14 @@ noinst_LTLIBRARIES = \
 libpower_applet_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"power-applet\" \
 	-DG_LOG_USE_STRUCTURED=1 \
+	-I$(top_builddir)/gnome-flashback/libpower-applet \
+	-I$(top_srcdir) \
 	$(NULL)
 
 libpower_applet_la_CFLAGS = \
 	$(POWER_APPLET_CFLAGS) \
 	$(WARN_CFLAGS) \
 	$(AM_CFLAGS) \
-	-I$(top_builddir)/gnome-flashback/libpower-applet \
 	$(NULL)
 
 libpower_applet_la_SOURCES = \

@@ -7,16 +7,16 @@ noinst_LTLIBRARIES = \
 libshell_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"shell\" \
 	-DG_LOG_USE_STRUCTURED=1 \
+	-I$(top_builddir)/gnome-flashback/libcommon \
+	-I$(top_builddir)/gnome-flashback/libdisplay-config \
+	-I$(top_builddir)/gnome-flashback/libshell \
+	-I$(top_srcdir)/gnome-flashback \
 	$(NULL)
 
 libshell_la_CFLAGS = \
 	$(SHELL_CFLAGS) \
 	$(WARN_CFLAGS) \
 	$(AM_CFLAGS) \
-	-I$(srcdir)/../../gnome-flashback \
-	-I$(top_builddir)/gnome-flashback \
-	-I$(top_builddir)/gnome-flashback/libcommon \
-	-I$(top_builddir)/gnome-flashback/libshell \
 	$(NULL)
 
 libshell_la_SOURCES = \

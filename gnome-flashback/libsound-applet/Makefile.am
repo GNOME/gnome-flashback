@@ -11,14 +11,15 @@ noinst_LTLIBRARIES = \
 libsound_applet_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"sound-applet\" \
 	-DG_LOG_USE_STRUCTURED=1 \
+	-I$(top_builddir)/gnome-flashback/libsound-applet \
+	-I$(top_srcdir) \
+	-I$(srcdir)/gvc \
 	$(NULL)
 
 libsound_applet_la_CFLAGS = \
 	$(SOUND_APPLET_CFLAGS) \
 	$(WARN_CFLAGS) \
 	$(AM_CFLAGS) \
-	-I$(top_builddir)/gnome-flashback/libsound-applet \
-	-I$(srcdir)/gvc \
 	$(NULL)
 
 libsound_applet_la_SOURCES = \

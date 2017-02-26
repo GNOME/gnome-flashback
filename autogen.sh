@@ -11,6 +11,9 @@ if [ ! -f $srcdir/configure.ac ]; then
   exit 1
 fi
 
+olddir=$(pwd)
+cd "$srcdir"
+
 if [ ! -f $srcdir/gnome-flashback/libsound-applet/gvc/Makefile.am ]; then
 	set -x
 	git submodule init
@@ -33,6 +36,8 @@ set -x
 aclocal --install || exit 1
 autoreconf --verbose --force --install -Wno-portability || exit 1
 { set +x; } 2>/dev/null
+
+cd "$olddir"
 
 if [ -z "$NOCONFIGURE" ]; then
   set -x

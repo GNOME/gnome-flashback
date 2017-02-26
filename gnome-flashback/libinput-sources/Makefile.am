@@ -7,16 +7,16 @@ noinst_LTLIBRARIES = \
 libinput_sources_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"input-sources\" \
 	-DG_LOG_USE_STRUCTURED=1 \
+	-DGNOME_DESKTOP_USE_UNSTABLE_API \
+	-I$(top_builddir)/gnome-flashback/libinput-sources \
+	-I$(top_srcdir) \
+	-I$(top_srcdir)/gnome-flashback \
 	$(NULL)
 
 libinput_sources_la_CFLAGS = \
 	$(INPUT_SOURCES_CFLAGS) \
 	$(WARN_CFLAGS) \
 	$(AM_CFLAGS) \
-	-I$(srcdir)/../../gnome-flashback \
-	-I$(top_builddir)/gnome-flashback \
-	-I$(top_builddir)/gnome-flashback/libinput-sources \
-	-DGNOME_DESKTOP_USE_UNSTABLE_API \
 	$(NULL)
 
 libinput_sources_la_SOURCES = \

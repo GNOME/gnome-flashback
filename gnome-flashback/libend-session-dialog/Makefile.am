@@ -40,7 +40,7 @@ dbus-end-session-dialog.c: org.gnome.SessionManager.EndSessionDialog.xml Makefil
 		--interface-prefix=org.gnome.SessionManager \
 		--generate-c-code dbus-end-session-dialog \
 		--c-namespace DBus \
-		org.gnome.SessionManager.EndSessionDialog.xml
+		$(srcdir)/org.gnome.SessionManager.EndSessionDialog.xml
 
 BUILT_SOURCES = \
 	dbus-end-session-dialog.h \
