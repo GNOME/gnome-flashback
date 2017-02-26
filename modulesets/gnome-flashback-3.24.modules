@@ -110,12 +110,13 @@
   <autotools id="gnome-screensaver">
     <branch/>
     <dependencies>
+      <dep package="dbus-glib" />
       <dep package="intltool" />
       <dep package="gtk+-3" />
-      <dep package="dbus-glib" />
       <dep package="gnome-menus" />
       <dep package="gnome-desktop" />
       <dep package="libgnomekbd" />
+      <dep package="pam" />
     </dependencies>
     <suggests>
       <dep package="libnotify" />
