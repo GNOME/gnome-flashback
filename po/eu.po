@@ -2,13 +2,14 @@
 # Copyright (C) 2017 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
 #
+# Alexander Gabilondo <alexgabi@openmailbox.org>, 2017.
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback gnome-3-22\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-14 19:32+0000\n"
+"POT-Creation-Date: 2017-02-23 22:19+0000\n"
 "PO-Revision-Date: 2017-02-23 23:12+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
@@ -88,8 +89,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to provide the "
 "audio device selection dialog."
 msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aurkezteko "
-"audio gailuen aukeraketaren elkarrizketa."
+"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aurkezteko audio "
+"gailuen aukeraketaren elkarrizketa."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
 msgid "Automount manager"
@@ -112,8 +113,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "Bluetooth applet."
 msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko "
-"Bluetooth appleta."
+"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko Bluetooth "
+"appleta."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
 msgid "Desktop background"
@@ -148,8 +149,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
 msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aurkezteko "
-"saioa bukatzeko elkarrizketa."
+"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aurkezteko saioa "
+"bukatzeko elkarrizketa."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:42
 msgid "Idle monitor"
@@ -209,8 +210,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
 msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko "
-"energia appleta."
+"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko energia "
+"appleta."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:77
 msgid "Screencasts"
@@ -221,8 +222,7 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
 msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da grabatzeko "
-"pantaila."
+"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da grabatzeko pantaila."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:83
 msgid "Screensaver"
@@ -233,8 +233,7 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
 msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da "
-"pantaila-babesteko."
+"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da pantaila-babesteko."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:89
 msgid "Screenshots"
@@ -245,8 +244,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
 msgstr ""
-"True (egia) gisa ezartzean, GNOME Flashback aplikazioa erabiliko da "
-"pantaila-argazkiak egiteko."
+"True (egia) gisa ezartzean, GNOME Flashback aplikazioa erabiliko da pantaila-"
+"argazkiak egiteko."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:95
 msgid "Shell"
@@ -267,8 +266,8 @@ msgid ""
 "sound applet. This is the same sound applet that used to be a part of GNOME "
 "Control Center."
 msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko "
-"soinu appleta. GNOME Kontrol Zentruak erabiltzen duen soinu applet berbera da."
+"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko soinu "
+"appleta. GNOME Kontrol Zentruak erabiltzen duen soinu applet berbera da."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
 msgid "Status Notifier Watcher"
@@ -279,8 +278,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
 msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da "
-"jakinarazpenen begirale moduan."
+"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da jakinarazpenen "
+"begirale moduan."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
 msgid "Workarounds"
@@ -291,8 +290,7 @@ msgid ""
 "If set to true, then GNOME Flashback application will use workarounds to fix "
 "bugs."
 msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da akatsak "
-"konpontzeko."
+"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da akatsak konpontzeko."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:126
 msgid "Fade the background on change"
@@ -304,8 +302,7 @@ msgid ""
 "background."
 msgstr ""
 "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aldatzeko "
-"mahaigainaren "
-"atzeko planoa."
+"mahaigainaren atzeko planoa."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:136
 msgid "The background color for the status icon."
@@ -340,8 +337,7 @@ msgid ""
 "xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
 msgstr ""
 "Gaitzen baduzu GNOME Flashback aplikazioak ezarriko du Gtk/ShellShowsAppMenu "
-"ezgaitua egoerara."
-"Ezgaitu ezazu nahi baduzu erabili gnome-settings-daemon "
+"ezgaitua egoerara.Ezgaitu ezazu nahi baduzu erabili gnome-settings-daemon "
 "'Gtk/ShellShowsAppMenu' propietateen xsettings plugina ezgaitzen duena."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:158
@@ -527,8 +523,8 @@ msgid ""
 "Select how to open \"%s\" and whether to perform this action in the future "
 "for other media of type \"%s\"."
 msgstr ""
-"Hautatu nola ireki \"%s\" eta etorkizunean ekintza hau exekutatzea "
-"%s\" motako beste gailuekin"
+"Hautatu nola ireki \"%s\" eta etorkizunean ekintza hau exekutatzea %s\" "
+"motako beste gailuekin"
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:774
 msgid "_Always perform this action"
@@ -969,5 +965,3 @@ msgstr[1] "%u sarrera"
 #: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Sistemaren soinuak"
-
-
