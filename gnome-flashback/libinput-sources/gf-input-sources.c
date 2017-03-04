@@ -388,7 +388,7 @@ watch_child (GPid     pid,
 }
 
 static void
-spawn_kayboard_display (const gchar *description)
+spawn_keyboard_display (const gchar *description)
 {
   gchar **argv;
   GSpawnFlags flags;
@@ -478,7 +478,7 @@ show_layout_cb (GtkMenuItem *menuitem,
 
   g_clear_object (&info);
 
-  spawn_kayboard_display (description);
+  spawn_keyboard_display (description);
   g_free (description);
 }
 
