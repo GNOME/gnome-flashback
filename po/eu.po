@@ -6,7 +6,7 @@
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2017.
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-flashback gnome-3-22\n"
+"Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2017-02-23 22:19+0000\n"
@@ -599,7 +599,6 @@ msgid "_Revert Settings"
 msgstr "_Leheneratu ezarpenak"
 
 #: gnome-flashback/libdisplay-config/flashback-display-config.c:195
-#, fuzzy
 msgid "Built-in display"
 msgstr "Barneko pantaila"
 
