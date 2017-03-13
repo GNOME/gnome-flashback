@@ -482,6 +482,27 @@ show_layout_cb (GtkMenuItem *menuitem,
   g_free (description);
 }
 
+typedef struct
+{
+  gint x;
+  gint y;
+} MenuPosition;
+
+static void
+context_menu_position (GtkMenu  *menu,
+                       gint     *x,
+                       gint     *y,
+                       gboolean *push_in,
+                       gpointer  user_data)
+{
+  MenuPosition *position;
+
+  position = (MenuPosition *) user_data;
+
+  *x = position->x;
+  *y = position->y;
+}
+
 static void
 context_menu_cb (SnItem         *object,
                  gint            x,
@@ -494,6 +515,7 @@ context_menu_cb (SnItem         *object,
   GList *is;
   GtkWidget *item;
   GtkWidget *separator;
+  MenuPosition position;
   GdkScreen *screen;
   GdkWindow *root;
 
@@ -545,11 +567,15 @@ context_menu_cb (SnItem         *object,
   g_signal_connect (item, "activate", G_CALLBACK (show_layout_cb), sources);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 
+  position.x = x;
+  position.y = y;
+
   screen = gdk_screen_get_default ();
   root = gdk_screen_get_root_window (screen);
 
   gtk_widget_show_all (menu);
-  gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
+  gtk_menu_popup (GTK_MENU (menu), NULL, NULL,
+                  context_menu_position, &position,
                   0, gdk_x11_get_server_time (root));
 }
 
