@@ -366,28 +366,33 @@ static gchar *
 make_engine_short_name (IBusEngineDesc *engine_desc)
 {
   const gchar *symbol;
-  const gchar *language_code;
-  gchar **codes;
+  const gchar *language;
 
   symbol = ibus_engine_desc_get_symbol (engine_desc);
 
   if (symbol != NULL && symbol[0] != '\0')
     return g_strdup (symbol);
 
-  language_code = ibus_engine_desc_get_language (engine_desc);
-  codes = g_strsplit (language_code, "_", 2);
+  language = ibus_engine_desc_get_language (engine_desc);
 
-  if (strlen (codes[0]) == 2 || strlen (codes[0]) == 3)
+  if (language != NULL && language[0] != '\0')
     {
-      gchar *short_name;
+      gchar **codes;
 
-      short_name = g_ascii_strdown (codes[0], -1);
+      codes = g_strsplit (language, "_", 2);
+
+      if (strlen (codes[0]) == 2 || strlen (codes[0]) == 3)
+        {
+          gchar *short_name;
+
+          short_name = g_ascii_strdown (codes[0], -1);
+          g_strfreev (codes);
+
+          return short_name;
+        }
+
       g_strfreev (codes);
-
-      return short_name;
     }
-
-  g_strfreev (codes);
 
   return get_symbol_from_char_code (0x2328);
 }
