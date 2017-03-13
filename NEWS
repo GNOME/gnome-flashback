@@ -1,3 +1,12 @@
+Version 3.22.1
+==============
+- Ignore invalid inhibitors in end session dialog (Alberts Muktupāvels; #771759)
+- Fix typo in function name (Dmitry Shachnev)
+- Fix crashes in input sources (Alberts Muktupāvels)
+- Updated translations:
+  Aron Xu (zh_CN), Daniel Mustieles (es), Gianvito Cavasoli (it),
+  Inaki Larranaga Murgoitio (eu).
+
 Version 3.22.0
 ==============
 - Add input settings, based on mutter. (Alberts Muktupāvels)
