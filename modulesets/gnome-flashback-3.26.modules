@@ -123,7 +123,7 @@
     </suggests>
   </autotools>
 
-  <autotools id="gucharmap">
+  <autotools id="gucharmap" autogenargs="--with-unicode-data=download">
     <branch/>
     <dependencies>
       <dep package="intltool"/>
