@@ -47,7 +47,7 @@
   </cmake>
 
   <autotools id="gnome-applets" autogenargs="--enable-mini-commander">
-    <branch />
+    <branch revision="gnome-3-24" />
     <dependencies>
       <dep package="intltool" />
       <dep package="gnome-panel" />
@@ -75,7 +75,7 @@
   </autotools>
 
   <autotools id="gnome-flashback">
-    <branch />
+    <branch revision="gnome-3-24" />
     <dependencies>
       <dep package="ibus" />
       <dep package="intltool" />
@@ -88,7 +88,7 @@
   </autotools>
 
   <autotools id="gnome-panel">
-    <branch />
+    <branch revision="gnome-3-24" />
     <dependencies>
       <dep package="intltool" />
       <dep package="gnome-desktop" />
@@ -134,7 +134,7 @@
   </autotools>
 
   <autotools id="metacity">
-    <branch />
+    <branch revision="gnome-3-24" />
     <dependencies>
       <dep package="gdk-pixbuf" />
       <dep package="gtk+-3" />
