@@ -826,8 +826,8 @@ take_screenshot_real (GfScreenshot    *screenshot,
           sscanf (gdk_pixbuf_get_option (cursor_pixbuf, "y_hot"), "%d", &yhot);
 
           /* in rect we have the cursor window coordinates */
-          rect.x = cx + real.x;
-          rect.y = cy + real.y;
+          rect.x = cx - xhot + real.x;
+          rect.y = cy - yhot + real.y;
           rect.width = gdk_pixbuf_get_width (cursor_pixbuf);
           rect.height = gdk_pixbuf_get_height (cursor_pixbuf);
 
