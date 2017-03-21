@@ -24,6 +24,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <X11/extensions/shape.h>
+#include <X11/extensions/Xfixes.h>
 #include <X11/Xatom.h>
 
 #include "gf-dbus-screenshot.h"
@@ -65,6 +66,71 @@ typedef enum
 } ScreenshotType;
 
 G_DEFINE_TYPE (GfScreenshot, gf_screenshot, G_TYPE_OBJECT)
+
+static GdkPixbuf *
+pixels_to_pixbuf (gulong *pixels,
+                  gint    width,
+                  gint    height)
+{
+  guchar *data;
+  gint i, j;
+
+  data = g_new0 (guchar, width * height * 4);
+
+  for (i = j = 0; i < width * height; i++, j += 4)
+    {
+      guint32 argb;
+
+      argb = (guint32) pixels[i];
+      argb = (argb << 8) | (argb >> 24);
+
+      data[j] = argb >> 24;
+      data[j + 1] = (argb >> 16) & 0xff;
+      data[j + 2] = (argb >> 8) & 0xff;
+      data[j + 3] = argb & 0xff;
+    }
+
+  return gdk_pixbuf_new_from_data (data, GDK_COLORSPACE_RGB, TRUE, 8,
+                                   width, height, width * 4,
+                                   g_free, NULL);
+}
+
+static GdkPixbuf *
+get_cursor_pixbuf (GdkDisplay *display)
+{
+  Display *xdisplay;
+  gint event_base;
+  gint error_base;
+  XFixesCursorImage *image;
+  GdkPixbuf *pixbuf;
+
+  xdisplay = gdk_x11_display_get_xdisplay (display);
+
+  if (!XFixesQueryExtension (xdisplay, &event_base, &error_base))
+    return NULL;
+
+  image = XFixesGetCursorImage (xdisplay);
+
+  if (!image)
+    return NULL;
+
+  pixbuf = pixels_to_pixbuf (image->pixels, image->width, image->height);
+
+  if (pixbuf)
+    {
+      gchar hot[6];
+
+      g_ascii_dtostr (hot, 6, (gdouble) image->xhot);
+      gdk_pixbuf_set_option (pixbuf, "x_hot", hot);
+
+      g_ascii_dtostr (hot, 6, (gdouble) image->yhot);
+      gdk_pixbuf_set_option (pixbuf, "y_hot", hot);
+    }
+
+  XFree (image);
+
+  return pixbuf;
+}
 
 static gchar *
 get_unique_path (const gchar *path,
@@ -717,11 +783,19 @@ take_screenshot_real (GfScreenshot    *screenshot,
    * screenshot. */
   if (include_cursor && type != SCREENSHOT_AREA)
     {
-      GdkCursor *cursor;
       GdkPixbuf *cursor_pixbuf;
 
-      cursor = gdk_cursor_new_for_display (display, GDK_LEFT_PTR);
-      cursor_pixbuf = gdk_cursor_get_image (cursor);
+      cursor_pixbuf = get_cursor_pixbuf (display);
+
+      if (cursor_pixbuf == NULL)
+        {
+          GdkCursor *cursor;
+
+          cursor = gdk_cursor_new_for_display (display, GDK_LEFT_PTR);
+          cursor_pixbuf = gdk_cursor_get_image (cursor);
+
+          g_clear_object (&cursor);
+        }
 
       if (cursor_pixbuf != NULL)
         {
@@ -770,7 +844,6 @@ take_screenshot_real (GfScreenshot    *screenshot,
         }
 
       g_clear_object (&cursor_pixbuf);
-      g_clear_object (&cursor);
     }
 
   if (type == SCREENSHOT_WINDOW)

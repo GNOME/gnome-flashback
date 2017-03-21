@@ -206,6 +206,7 @@ PKG_CHECK_MODULES([SCREENSHOT], [
   gtk+-3.0 >= $GTK_REQUIRED
   x11
   xext
+  xfixes
 ])
 
 PKG_CHECK_MODULES([SHELL], [
