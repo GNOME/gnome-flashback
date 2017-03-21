@@ -67,6 +67,13 @@ typedef enum
 
 G_DEFINE_TYPE (GfScreenshot, gf_screenshot, G_TYPE_OBJECT)
 
+static void
+free_pixels (guchar   *pixels,
+             gpointer  data)
+{
+  g_free (pixels);
+}
+
 static GdkPixbuf *
 pixels_to_pixbuf (gulong *pixels,
                   gint    width,
@@ -92,7 +99,7 @@ pixels_to_pixbuf (gulong *pixels,
 
   return gdk_pixbuf_new_from_data (data, GDK_COLORSPACE_RGB, TRUE, 8,
                                    width, height, width * 4,
-                                   g_free, NULL);
+                                   free_pixels, NULL);
 }
 
 static GdkPixbuf *
