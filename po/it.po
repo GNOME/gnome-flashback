@@ -4,15 +4,15 @@
 #
 #
 # NOTA: confrontare le stringhe con quelle di gnome-shell per uniformarle
-# Gianvito Cavasoli <gianvito@gmx.it>, 2014, 2015, 2016.
+# Gianvito Cavasoli <gianvito@gmx.it>, 2014, 2015, 2016, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback 3.18\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-10-06 16:01+0000\n"
-"PO-Revision-Date: 2016-10-07 10:57+0200\n"
+"POT-Creation-Date: 2017-02-28 10:50+0000\n"
+"PO-Revision-Date: 2017-03-22 13:06+0100\n"
 "Last-Translator: Gianvito Cavasoli <gianvito@gmx.it>\n"
 "Language-Team: Italiano <gnome-it-list@gnome.org>\n"
 "Language: it\n"
@@ -82,11 +82,11 @@ msgstr "Modifica le impostazioni globalmente (interessa tutti gli utenti)"
 msgid "preferences-system"
 msgstr "preferences-system"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
 msgid "Audio device selection"
 msgstr "Selezione dispositivo audio"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:7
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
 msgid ""
 "If set to true, then GNOME Flashback application will be used to provide the "
 "audio device selection dialog."
@@ -94,11 +94,11 @@ msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback sarà usata per fornire "
 "il dialogo della selezione del dispositivo audio."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
 msgid "Automount manager"
 msgstr "Gestore montaggio automatico"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:13
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
 msgid ""
 "If set to true, then GNOME Flashback application will be used to automount "
 "removable media."
@@ -106,11 +106,11 @@ msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback sarà usata per montare "
 "automaticamente i dispositivi rimovibili."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
 msgid "Bluetooth applet"
 msgstr "Applet Bluetooth"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:19
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "Bluetooth applet."
@@ -118,11 +118,11 @@ msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback sarà usata per mostrare "
 "l'applet del Bluetooth."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
 msgid "Desktop background"
 msgstr "Sfondo della scrivania"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:25
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
 msgid ""
 "If set to true, then GNOME Flashback application will be used to draw the "
 "desktop background."
@@ -130,11 +130,11 @@ msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback sarà usata per "
 "disegnare lo sfondo della scrivania."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
 msgid "Display configuration"
 msgstr "Configurazione monitor"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:31
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
 msgid ""
 "If set to true, then GNOME Flashback application will be used to provide the "
 "display configuration."
@@ -142,11 +142,11 @@ msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback sarà usata per fornire "
 "la configurazione del monitor."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
 msgid "End session dialog"
 msgstr "Dialogo termina sessione"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:37
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
@@ -154,11 +154,11 @@ msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback sarà usata per mostrare "
 "il dialogo del termina sessione."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:42
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
 msgid "Idle monitor"
 msgstr "Monitor attività"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:43
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:42
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
@@ -166,16 +166,15 @@ msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback sarà usata per il "
 "monitoraggio delle attività degli utenti."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:48
-#| msgid "Bluetooth Settings"
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:47
 msgid "Input settings"
 msgstr "Impostazioni di input"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:53
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
 msgid "Keyboard layouts and input methods"
 msgstr "Disposizioni della tastiera e metodi di input"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:53
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -183,11 +182,11 @@ msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback sarà usata per gestire "
 "le disposizioni della tastiera e i metodi di input."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:59
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
 msgid "Notification daemon"
 msgstr "Demone di notifica"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:60
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:59
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
@@ -195,22 +194,22 @@ msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback sarà usata per gestire "
 "le notifiche."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:65
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
 msgid "Authentication agent for polkit"
 msgstr "Agente di autenticazione per polkit"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:66
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:65
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
 "Questo è lo stesso agente di autenticazione che era fornito da PolicyKit-"
 "gnome."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:71
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
 msgid "Power applet"
 msgstr "Applet alimentazione"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:71
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
@@ -218,11 +217,11 @@ msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback sarà usata per mostrare "
 "un'applet per l'alimentazione."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:77
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
 msgid "Screencasts"
 msgstr "Registrare la scrivania"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:77
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -230,11 +229,11 @@ msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback sarà usata per "
 "registrare la scrivania."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:83
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
 msgid "Screensaver"
 msgstr "Salvaschermo"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:83
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
@@ -242,11 +241,11 @@ msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback sarà usata come un "
 "salvaschermo."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:89
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
 msgid "Screenshots"
 msgstr "Schermate"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:89
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -254,22 +253,22 @@ msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback sarà usata per "
 "catturare una schermata."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:95
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
 msgid "Shell"
 msgstr "Shell"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:95
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback sarà usata come una "
 "shell."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:101
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
 msgid "Sound applet"
 msgstr "Applet suono"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:102
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:101
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -279,11 +278,11 @@ msgstr ""
 "l'applet del suono. Questa è la stessa applet del suono facente parte di "
 "GNOME Control Center."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
 msgid "Status Notifier Watcher"
 msgstr "Notificatore controllo dello stato"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -291,11 +290,11 @@ msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback sarà usata come "
 "Notificatore controllo dello stato."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:112
 msgid "Workarounds"
 msgstr "Soluzioni di ripiego"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
 msgid ""
 "If set to true, then GNOME Flashback application will use workarounds to fix "
 "bugs."
@@ -303,11 +302,11 @@ msgstr ""
 "Se impostata su vero, l'applicazione GNOME Flashback userà soluzioni di "
 "ripiego per correggere dei bug."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:126
+#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
 msgid "Fade the background on change"
 msgstr "Sfondo in dissolvenza quando cambia"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:127
+#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:6
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -315,35 +314,33 @@ msgstr ""
 "Se impostata su vero, l'effetto di dissolvenza sarà usato per cambiare lo "
 "sfondo alla scrivania."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:136
-msgid "The background color for the status icon."
-msgstr "Il colore dello sfondo per l'icona dello stato."
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
+#| msgid "The background color for the status icon."
+msgid "The background color"
+msgstr "Il colore dello sfondo"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:137
-msgid ""
-"This contains the background color for the status icon that is shown in the "
-"system tray."
-msgstr ""
-"Contiene il colore dello sfondo per l'icona dello stato che viene "
-"visualizzata nell'area di notifica."
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:13
+#| msgid "The foreground color for the status icon."
+msgid "The foreground color"
+msgstr "Il colore in primo piano"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:142
-msgid "The foreground color for the status icon."
-msgstr "Il colore in primo piano per l'icona dello stato."
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:18
+msgid "The font family"
+msgstr "La famiglia del carattere"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:143
-msgid ""
-"This contains the foreground color for the status icon that is shown in the "
-"system tray."
-msgstr ""
-"Contiene il colore in primo piano per l'icona dello stato che viene "
-"visualizzata nell'area di notifica."
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:24
+msgid "The font weight"
+msgstr "La consistenza del carattere"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:152
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
+msgid "Symbolic"
+msgstr "Simbolico"
+
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:5
 msgid "Fix missing app menu button"
 msgstr "Risolvere pulsante menù applicazione mancante"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:153
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:6
 msgid ""
 "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
 "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
@@ -353,11 +350,11 @@ msgstr ""
 "FALSE. Disabilitare se si desidera dare precedenza a gnome-settings-daemon "
 "nel plugin xsettings per la proprietà \"Gtk/ShellShowsAppMenu\"."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:158
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:11
 msgid "Fix wrong button layout"
 msgstr "Risolvere disposizione sbagliata del pulsante"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:159
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:12
 msgid ""
 "If set to non-empty string, then gnome-flashback will force Gtk/"
 "DecorationLayout to value set by this setting. Set to empty string if you "
@@ -406,13 +403,11 @@ msgid "Headset"
 msgstr "Cuffie con microfono"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:115
-#| msgid "Microphone Volume"
 msgid "Microphone"
 msgstr "Microfono"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
-#: gnome-flashback/libsound-applet/gf-sound-item.c:395
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
+#: gnome-flashback/libsound-applet/gf-sound-item.c:396
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
 msgstr "Avvio delle Preferenze del suono non riuscito: %s"
@@ -422,7 +417,6 @@ msgid "What kind of device did you plug in?"
 msgstr "Quale tipo di dispositivo si è collegato?"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
-#| msgid "Power Settings"
 msgid "Sound Settings"
 msgstr "Impostazioni audio"
 
@@ -582,22 +576,22 @@ msgstr "Attiva"
 msgid "Bluetooth Settings"
 msgstr "Impostazioni Bluetooth"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:271
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:270
 msgid "Bluetooth active"
 msgstr "Bluetooth attivo"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:276
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:275
 msgid "Bluetooth disabled"
 msgstr "Bluetooth disabilitato"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:282
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:281
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d dispositivo connesso"
 msgstr[1] "%d dispositivi connessi"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:287
 msgid "Not Connected"
 msgstr "Non connesso"
 
@@ -622,7 +616,7 @@ msgid "Built-in display"
 msgstr "Monitor integrato"
 
 #: gnome-flashback/libdisplay-config/flashback-display-config.c:218
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:383
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
 msgid "Unknown"
 msgstr "Sconosciuto"
 
@@ -639,88 +633,88 @@ msgid "%s %s"
 msgstr "%s %s"
 
 # Presa da gnome-shell. Confrontare tutte le altre prima di tradurre.
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:464
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:689
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
 msgid "Log Out"
 msgstr "Termina sessione"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:470
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Fare clic su Termina sessione per chiudere queste applicazioni e scollegarsi "
 "dalla sessione."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:469
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:472
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "La sessione di %s verrà terminata automaticamente tra %d secondo."
 msgstr[1] "La sessione di %s verrà terminata automaticamente tra %d secondi."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:476
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:693
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:696
 msgid "Power Off"
 msgstr "Spegni"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:482
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 "Fare clic su Spegni per chiudere queste applicazioni e spegnere il sistema."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:481
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:484
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Il sistema verrà spento automaticamente tra %d secondo."
 msgstr[1] "Il sistema verrà spento automaticamente tra %d secondi."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:488
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:697
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:700
 msgid "Restart"
 msgstr "Riavvia"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:494
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Fare clic su Riavvia per chiudere queste applicazioni e riavviare il sistema."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:493
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:496
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Il sistema verrà riavviato automaticamente tra %d secondo."
 msgstr[1] "Il sistema verrà riavviato automaticamente tra %d secondi."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:500
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:701
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:503
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:704
 msgid "Hibernate"
 msgstr "Iberna"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:501
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:504
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
 msgstr[0] "Il sistema verrà ibernato automaticamente tra %d secondo."
 msgstr[1] "Il sistema verrà ibernato automaticamente tra %d secondi."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:508
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:705
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:511
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:708
 msgid "Suspend"
 msgstr "Sospendi"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:509
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:512
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
 msgstr[0] "Il sistema verrà sospeso automaticamente tra %d secondo."
 msgstr[1] "Il sistema verrà sospeso automaticamente tra %d secondi."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:516
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:709
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:712
 msgid "Hybrid Sleep"
 msgstr "Sospensione ibrida"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:520
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
@@ -745,11 +739,11 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Blocca schermo"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:362
+#: gnome-flashback/libinput-sources/gf-input-sources.c:544
 msgid "Show Keyboard Layout"
 msgstr "Mostra mappatura tastiera"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:425
+#: gnome-flashback/libinput-sources/gf-input-sources.c:598
 msgid "Keyboard"
 msgstr "Tastiera"
 
@@ -877,75 +871,68 @@ msgstr "<small><b>_Dettagli</b></small>"
 msgid "_Authenticate"
 msgstr "_Autentica"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:135
-msgid "Power Settings"
-msgstr "Impostazioni alimentazione"
-
-#: gnome-flashback/libpower-applet/gf-power-applet.c:182
+#: gnome-flashback/libpower-applet/gf-power-applet.c:146
 msgid "Fully Charged"
 msgstr "Carica"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:184
+#: gnome-flashback/libpower-applet/gf-power-applet.c:148
 msgid "Empty"
 msgstr "Scarica"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:190
-#: gnome-flashback/libpower-applet/gf-power-applet.c:195
+#: gnome-flashback/libpower-applet/gf-power-applet.c:154
+#: gnome-flashback/libpower-applet/gf-power-applet.c:159
 msgid "Estimating..."
 msgstr "Valutazione..."
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:204
+#: gnome-flashback/libpower-applet/gf-power-applet.c:168
 #, c-format
 msgid "%.0f:%02.0f Remaining (%.0f%%)"
 msgstr "%.0f:%02.0f ancora (%.0f%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:211
+#: gnome-flashback/libpower-applet/gf-power-applet.c:175
 #, c-format
 msgid "%.0f:%02.0f Until Full (%.0f%%)"
 msgstr "%.0f:%02.0f fino alla carica (%.0f%%)"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:226
+#: gnome-flashback/libpower-applet/gf-power-applet.c:190
 msgid "UPS"
 msgstr "Gruppo di continuità"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:228
+#: gnome-flashback/libpower-applet/gf-power-applet.c:192
 msgid "Battery"
 msgstr "Batteria"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:320
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:344
-msgid "Output"
-msgstr "Uscita"
+#: gnome-flashback/libpower-applet/gf-power-applet.c:221
+msgid "Power Settings"
+msgstr "Impostazioni alimentazione"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:323
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:343
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:289
 msgid "Sound Output Volume"
 msgstr "Volume suono d'uscita"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:330
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:350
-msgid "Input"
-msgstr "Ingresso"
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:290
+msgid "Output"
+msgstr "Uscita"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:333
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:349
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:295
 msgid "Microphone Volume"
 msgstr "Volume microfono"
 
-#: gnome-flashback/libsound-applet/gf-sound-item.c:161
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:296
+msgid "Input"
+msgstr "Ingresso"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:162
 msgid "Muted"
 msgstr "Muto"
 
-#: gnome-flashback/libsound-applet/gf-sound-item.c:452
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:280
+#: gnome-flashback/libsound-applet/gf-sound-item.c:455
 msgid "_Mute"
 msgstr "_Muto"
 
-#: gnome-flashback/libsound-applet/gf-sound-item.c:460
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:289
+#: gnome-flashback/libsound-applet/gf-sound-item.c:463
 msgid "_Sound Preferences"
 msgstr "Preferenze del _suono"
 
