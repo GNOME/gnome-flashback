@@ -808,7 +808,8 @@ take_screenshot_real (GfScreenshot    *screenshot,
         {
           GdkSeat *seat;
           GdkDevice *device;
-          GdkRectangle rect;
+          GdkRectangle pixbuf_rect;
+          GdkRectangle cursor_rect;
           gint cx;
           gint cy;
           gint xhot;
@@ -825,14 +826,19 @@ take_screenshot_real (GfScreenshot    *screenshot,
           sscanf (gdk_pixbuf_get_option (cursor_pixbuf, "x_hot"), "%d", &xhot);
           sscanf (gdk_pixbuf_get_option (cursor_pixbuf, "y_hot"), "%d", &yhot);
 
+          pixbuf_rect.x = 0;
+          pixbuf_rect.y = 0;
+          pixbuf_rect.width = gdk_pixbuf_get_width (pixbuf);
+          pixbuf_rect.height = gdk_pixbuf_get_height (pixbuf);
+
           /* in rect we have the cursor window coordinates */
-          rect.x = cx - xhot + real.x;
-          rect.y = cy - yhot + real.y;
-          rect.width = gdk_pixbuf_get_width (cursor_pixbuf);
-          rect.height = gdk_pixbuf_get_height (cursor_pixbuf);
+          cursor_rect.x = cx - xhot - frame_offset.left;
+          cursor_rect.y = cy - yhot - frame_offset.top;
+          cursor_rect.width = gdk_pixbuf_get_width (cursor_pixbuf);
+          cursor_rect.height = gdk_pixbuf_get_height (cursor_pixbuf);
 
           /* see if the pointer is inside the window */
-          if (gdk_rectangle_intersect (&real, &rect, &rect))
+          if (gdk_rectangle_intersect (&pixbuf_rect, &cursor_rect, &cursor_rect))
             {
               gint cursor_x;
               gint cursor_y;
@@ -841,8 +847,8 @@ take_screenshot_real (GfScreenshot    *screenshot,
               cursor_y = cy - yhot - frame_offset.top;
 
               gdk_pixbuf_composite (cursor_pixbuf, pixbuf,
-                                    cursor_x, cursor_y,
-                                    rect.width, rect.height,
+                                    cursor_rect.x, cursor_rect.y,
+                                    cursor_rect.width, cursor_rect.height,
                                     cursor_x, cursor_y,
                                     1.0, 1.0,
                                     GDK_INTERP_BILINEAR,
