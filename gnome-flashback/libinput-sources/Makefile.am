@@ -48,7 +48,6 @@ libinput_sources_la_LDFLAGS = \
 	$(NULL)
 
 libinput_sources_la_LIBADD = \
-	$(top_builddir)/libstatus-notifier/libstatus-notifier.la \
 	$(top_builddir)/gnome-flashback/libcommon/libcommon.la \
 	$(INPUT_SOURCES_LIBS) \
 	$(LIBM) \
