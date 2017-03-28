@@ -18,7 +18,6 @@
 #include "config.h"
 
 #include <glib/gi18n.h>
-#include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <libgnome-desktop/gnome-xkb-info.h>
 #include <locale.h>
@@ -28,7 +27,6 @@
 #include "gf-input-sources.h"
 #include "gf-input-source-manager.h"
 #include "gf-input-source.h"
-#include "libstatus-notifier/sn-item.h"
 
 #define STATUS_ICON_SCHEMA "org.gnome.gnome-flashback.input-sources.status-icon"
 
@@ -44,7 +42,7 @@ struct _GfInputSources
   gchar                *icon_theme_path;
 
   GfInputSource        *current_source;
-  SnItem               *status_item;
+  GtkStatusIcon        *status_icon;
 };
 
 G_DEFINE_TYPE (GfInputSources, gf_input_sources, G_TYPE_OBJECT)
@@ -482,42 +480,19 @@ show_layout_cb (GtkMenuItem *menuitem,
   g_free (description);
 }
 
-typedef struct
-{
-  gint x;
-  gint y;
-} MenuPosition;
-
 static void
-context_menu_position (GtkMenu  *menu,
-                       gint     *x,
-                       gint     *y,
-                       gboolean *push_in,
-                       gpointer  user_data)
+status_icon_activate_cb (GtkStatusIcon *status_icon,
+                         gpointer       user_data)
 {
-  MenuPosition *position;
-
-  position = (MenuPosition *) user_data;
-
-  *x = position->x;
-  *y = position->y;
-}
-
-static void
-context_menu_cb (SnItem         *object,
-                 gint            x,
-                 gint            y,
-                 GfInputSources *sources)
-{
+  GfInputSources *sources;
   GtkWidget *menu;
   GfInputSourceManager *manager;
   GList *input_sources;
   GList *is;
   GtkWidget *item;
   GtkWidget *separator;
-  MenuPosition position;
-  GdkScreen *screen;
-  GdkWindow *root;
+
+  sources = GF_INPUT_SOURCES (user_data);
 
   menu = gtk_menu_new ();
 
@@ -567,16 +542,14 @@ context_menu_cb (SnItem         *object,
   g_signal_connect (item, "activate", G_CALLBACK (show_layout_cb), sources);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 
-  position.x = x;
-  position.y = y;
-
-  screen = gdk_screen_get_default ();
-  root = gdk_screen_get_root_window (screen);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
   gtk_widget_show_all (menu);
   gtk_menu_popup (GTK_MENU (menu), NULL, NULL,
-                  context_menu_position, &position,
-                  0, gdk_x11_get_server_time (root));
+                  gtk_status_icon_position_menu, status_icon,
+                  0, gtk_get_current_event_time ());
+
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
@@ -596,7 +569,7 @@ update_status_icon (GfInputSources *sources)
 
   if (source == NULL)
     {
-      g_clear_object (&sources->status_item);
+      g_clear_object (&sources->status_icon);
       return;
     }
 
@@ -615,29 +588,27 @@ update_status_icon (GfInputSources *sources)
 
   sources->current_source = g_object_ref (source);
 
-  if (sources->status_item == NULL)
+  if (sources->status_icon == NULL)
     {
-      sources->status_item = g_object_new (SN_TYPE_ITEM,
-                                           "version", 0,
-                                           "category", SN_ITEM_CATEGORY_SYSTEM_SERVICES,
-                                           "id", "gf-input-sources",
-                                           "title", _("Keyboard"),
-                                           NULL);
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+      sources->status_icon = gtk_status_icon_new ();
+      G_GNUC_END_IGNORE_DEPRECATIONS
 
-      sn_item_set_icon_theme_path (sources->status_item,
-                                   sources->icon_theme_path);
-
-      g_signal_connect (sources->status_item, "context-menu",
-                        G_CALLBACK (context_menu_cb), sources);
-
-      sn_item_register (sources->status_item);
+      g_signal_connect_swapped (sources->status_icon, "size-changed",
+                                G_CALLBACK (update_status_icon), sources);
+      g_signal_connect (sources->status_icon, "activate",
+                        G_CALLBACK (status_icon_activate_cb), sources);
     }
 
   display_name = gf_input_source_get_display_name (source);
-  sn_item_set_tooltip (sources->status_item, NULL, NULL, NULL, display_name);
-
   icon_name = get_icon_name (sources);
-  sn_item_set_icon_name (sources->status_item, icon_name);
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  gtk_status_icon_set_title (sources->status_icon, _("Keyboard"));
+  gtk_status_icon_set_tooltip_text (sources->status_icon, display_name);
+  gtk_status_icon_set_from_icon_name (sources->status_icon, icon_name);
+  G_GNUC_END_IGNORE_DEPRECATIONS
+
   g_free (icon_name);
 }
 
@@ -677,7 +648,7 @@ gf_input_sources_dispose (GObject *object)
   g_clear_object (&sources->status_icon_settings);
 
   g_clear_object (&sources->current_source);
-  g_clear_object (&sources->status_item);
+  g_clear_object (&sources->status_icon);
 
   G_OBJECT_CLASS (gf_input_sources_parent_class)->dispose (object);
 }
