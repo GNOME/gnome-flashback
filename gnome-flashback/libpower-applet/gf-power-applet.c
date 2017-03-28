@@ -17,7 +17,6 @@
 
 #include "config.h"
 
-#include <gdk/gdkx.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <libupower-glib/upower.h>
@@ -25,7 +24,6 @@
 
 #include "gf-power-applet.h"
 #include "gf-upower-device.h"
-#include "libstatus-notifier/sn-item.h"
 
 #define UPOWER_DBUS_NAME "org.freedesktop.UPower"
 #define UPOWER_DEVICE_DBUS_PATH "/org/freedesktop/UPower/devices/DisplayDevice"
@@ -36,7 +34,7 @@ struct _GfPowerApplet
 
   gint            bus_name_id;
 
-  SnItem         *status_item;
+  GtkStatusIcon  *status_icon;
   GfUPowerDevice *device;
 };
 
@@ -106,6 +104,44 @@ settings_cb (GtkMenuItem *item,
     }
 
   g_clear_object (&app_info);
+}
+
+static void
+popup_menu_cb (GtkStatusIcon *status_icon,
+               guint          button,
+               guint          activate_time,
+               gpointer       user_data)
+{
+  const gchar *title;
+  gchar *tooltip_text;
+  gchar *label;
+  GtkWidget *menu;
+  GtkWidget *item;
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
+  title = gtk_status_icon_get_title (status_icon);
+  tooltip_text = gtk_status_icon_get_tooltip_text (status_icon);
+  label = g_strdup_printf ("%s: %s", title, tooltip_text);
+  g_free (tooltip_text);
+
+  menu = gtk_menu_new ();
+
+  item = gtk_menu_item_new_with_label (label);
+  g_free (label);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+  g_signal_connect (item, "activate", G_CALLBACK (statistics_cb), NULL);
+
+  item = gtk_menu_item_new_with_label (_("Power Settings"));
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+  g_signal_connect (item, "activate", G_CALLBACK (settings_cb), NULL);
+
+  gtk_widget_show_all (menu);
+  gtk_menu_popup (GTK_MENU (menu), NULL, NULL,
+                  gtk_status_icon_position_menu, status_icon,
+                  button, activate_time);
+
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static gchar *
@@ -193,81 +229,38 @@ get_title (GfPowerApplet *applet)
 }
 
 static void
-context_menu_cb (SnItem        *object,
-                 gint           x,
-                 gint           y,
-                 GfPowerApplet *applet)
-{
-  const gchar *title;
-  gchar *tooltip_text;
-  gchar *label;
-  GtkWidget *menu;
-  GtkWidget *item;
-  GdkScreen *screen;
-  GdkWindow *root;
-
-  title = get_title (applet);
-  tooltip_text = get_tooltip_text (applet);
-  label = g_strdup_printf ("%s: %s", title, tooltip_text);
-  g_free (tooltip_text);
-
-  menu = gtk_menu_new ();
-
-  item = gtk_menu_item_new_with_label (label);
-  g_free (label);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-  g_signal_connect (item, "activate", G_CALLBACK (statistics_cb), NULL);
-
-  item = gtk_menu_item_new_with_label (_("Power Settings"));
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-  g_signal_connect (item, "activate", G_CALLBACK (settings_cb), NULL);
-
-  screen = gdk_screen_get_default ();
-  root = gdk_screen_get_root_window (screen);
-
-  gtk_widget_show_all (menu);
-  gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
-                  0, gdk_x11_get_server_time (root));
-}
-
-static void
 gf_power_applet_sync (GfPowerApplet *applet)
 {
   gchar *icon_name;
   gchar *tooltip_text;
   const gchar *title;
   gboolean is_present;
-  gboolean visible;
 
-  if (applet->status_item == NULL)
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
+  if (applet->status_icon == NULL)
     {
-      applet->status_item = g_object_new (SN_TYPE_ITEM,
-                                          "version", 0,
-                                          "category", SN_ITEM_CATEGORY_SYSTEM_SERVICES,
-                                          "id", "gf-power-applet",
-                                           NULL);
+      applet->status_icon = gtk_status_icon_new ();
 
-      g_signal_connect (applet->status_item, "context-menu",
-                        G_CALLBACK (context_menu_cb), applet);
-
-      sn_item_register (applet->status_item);
+      g_signal_connect (applet->status_icon, "popup-menu",
+                        G_CALLBACK (popup_menu_cb), applet);
     }
 
   icon_name = get_icon_name (applet);
-  sn_item_set_icon_name (applet->status_item, icon_name);
+  gtk_status_icon_set_from_icon_name (applet->status_icon, icon_name);
   g_free (icon_name);
 
   tooltip_text = get_tooltip_text (applet);
-  sn_item_set_tooltip (applet->status_item, NULL, NULL, NULL, tooltip_text);
+  gtk_status_icon_set_tooltip_text (applet->status_icon, tooltip_text);
   g_free (tooltip_text);
 
   title = get_title (applet);
-  sn_item_set_title (applet->status_item, title);
+  gtk_status_icon_set_title (applet->status_icon, title);
 
   is_present = gf_upower_device_get_is_present (applet->device);
-  visible = is_present ? SN_ITEM_STATUS_ACTIVE : SN_ITEM_STATUS_PASSIVE;
+  gtk_status_icon_set_visible (applet->status_icon, is_present);
 
-  sn_item_set_status (applet->status_item, visible);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
@@ -334,7 +327,7 @@ name_vanished_handler (GDBusConnection *connection,
 
   applet = GF_POWER_APPLET (user_data);
 
-  g_clear_object (&applet->status_item);
+  g_clear_object (&applet->status_icon);
   g_clear_object (&applet->device);
 }
 
@@ -351,7 +344,7 @@ gf_power_applet_dispose (GObject *object)
       applet->bus_name_id = 0;
     }
 
-  g_clear_object (&applet->status_item);
+  g_clear_object (&applet->status_icon);
   g_clear_object (&applet->device);
 
   G_OBJECT_CLASS (gf_power_applet_parent_class)->dispose (object);
