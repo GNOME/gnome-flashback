@@ -1,3 +1,15 @@
+Version 3.24.0
+==============
+- Ignore invalid inhibitors in end-session-dialog. (Alberts Muktupāvels; #771759)
+- Fix few crashes in input-sources. (Alberts Muktupāvels)
+- Fix cursor image and position in screenshots. (Alberts Muktupāvels; #780361)
+- Updated translations:
+  Andika Triwidada (id), Aron Xu (zh_CN), Ask Hjorth Larsen (da),
+  Balázs Meskó (hu), Daniel Mustieles (es), Enrico Nicoletto (pt_BR),
+  Gianvito Cavasoli (it), Inaki Larranaga Murgoitio (eu), Josef Andersson (sv),
+  Marek Černocký (cs), Mario Blättermann (de), Мирослав Николић (sr, sr@latin),
+  Piotr Drąg (pl).
+
 Version 3.22.0
 ==============
 - Add input settings, based on mutter. (Alberts Muktupāvels)
