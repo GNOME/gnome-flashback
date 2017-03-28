@@ -32,6 +32,7 @@
 
 #include "gf-sound-applet.h"
 #include "gvc-mixer-control.h"
+#include "gvc-stream-status-icon.h"
 #include "gf-sound-item.h"
 
 static const gchar *output_icons[] =
@@ -54,12 +55,14 @@ static const gchar *input_icons[] =
 
 struct _GfSoundApplet
 {
-  GObject          parent;
+  GObject              parent;
 
-  GvcMixerControl *control;
+  GvcStreamStatusIcon *input_status_icon;
+  GvcStreamStatusIcon *output_status_icon;
+  GvcMixerControl     *control;
 
-  GfSoundItem     *output_item;
-  GfSoundItem     *input_item;
+  GfSoundItem         *output_item;
+  GfSoundItem         *input_item;
 };
 
 G_DEFINE_TYPE (GfSoundApplet, gf_sound_applet, G_TYPE_OBJECT)
@@ -77,6 +80,10 @@ maybe_show_status_icons (GfSoundApplet *applet)
 
   if (stream == NULL)
     show = FALSE;
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  gtk_status_icon_set_visible (GTK_STATUS_ICON (applet->output_status_icon), show);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   if (show)
     sn_item_register (SN_ITEM (applet->output_item));
@@ -112,6 +119,10 @@ maybe_show_status_icons (GfSoundApplet *applet)
         }
     }
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  gtk_status_icon_set_visible (GTK_STATUS_ICON (applet->input_status_icon), show);
+  G_GNUC_END_IGNORE_DEPRECATIONS
+
   if (show)
     sn_item_register (SN_ITEM (applet->input_item));
   else
@@ -129,6 +140,7 @@ update_default_sink (GfSoundApplet *applet)
 
   if (stream != NULL)
     {
+      gvc_stream_status_icon_set_mixer_stream (applet->output_status_icon, stream);
       gf_sound_item_set_mixer_stream (applet->output_item, stream);
       maybe_show_status_icons (applet);
     }
@@ -147,6 +159,7 @@ update_default_source (GfSoundApplet *applet)
 
   if (stream != NULL)
     {
+      gvc_stream_status_icon_set_mixer_stream (applet->input_status_icon, stream);
       gf_sound_item_set_mixer_stream (applet->input_item, stream);
       maybe_show_status_icons (applet);
     }
@@ -258,6 +271,8 @@ gf_sound_applet_dispose (GObject *object)
 
   applet = GF_SOUND_APPLET (object);
 
+  g_clear_object (&applet->output_status_icon);
+  g_clear_object (&applet->input_status_icon);
   g_clear_object (&applet->control);
 
   g_clear_object (&applet->output_item);
@@ -280,7 +295,28 @@ gf_sound_applet_class_init (GfSoundAppletClass *applet_class)
 static void
 gf_sound_applet_init (GfSoundApplet *applet)
 {
+  GvcStreamStatusIcon *icon;
   SnItemCategory category;
+
+  /* Output icon */
+  icon = gvc_stream_status_icon_new (NULL, output_icons);
+  gvc_stream_status_icon_set_display_name (icon, _("Output"));
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  gtk_status_icon_set_title (GTK_STATUS_ICON (icon), _("Sound Output Volume"));
+  G_GNUC_END_IGNORE_DEPRECATIONS
+
+  applet->output_status_icon = icon;
+
+  /* Input icon */
+  icon = gvc_stream_status_icon_new (NULL, input_icons);
+  gvc_stream_status_icon_set_display_name (icon, _("Input"));
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  gtk_status_icon_set_title (GTK_STATUS_ICON (icon), _("Microphone Volume"));
+  G_GNUC_END_IGNORE_DEPRECATIONS
+
+  applet->input_status_icon = icon;
 
   category = SN_ITEM_CATEGORY_HARDWARE;
 

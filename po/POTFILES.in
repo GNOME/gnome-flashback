@@ -35,3 +35,4 @@ gnome-flashback/libsound-applet/gf-sound-applet.c
 gnome-flashback/libsound-applet/gf-sound-item.c
 gnome-flashback/libsound-applet/gvc-channel-bar.c
 gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c
+gnome-flashback/libsound-applet/gvc-stream-status-icon.c
