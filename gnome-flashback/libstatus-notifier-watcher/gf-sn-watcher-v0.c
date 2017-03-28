@@ -225,10 +225,14 @@ gf_sn_watcher_v0_handle_register_host (GfSnWatcherV0Gen      *object,
 
   if (watch != NULL)
     {
+#if 0
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
                                              "Status Notifier Host with bus name '%s' and object path '%s' is already registered",
                                              bus_name, object_path);
+#endif
+
+      gf_sn_watcher_v0_gen_complete_register_host (object, invocation);
 
       return TRUE;
     }
@@ -285,10 +289,14 @@ gf_sn_watcher_v0_handle_register_item (GfSnWatcherV0Gen      *object,
 
   if (watch != NULL)
     {
+#if 0
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
                                              "Status Notifier Item with bus name '%s' and object path '%s' is already registered",
                                              bus_name, object_path);
+#endif
+
+      gf_sn_watcher_v0_gen_complete_register_item (object, invocation);
 
       return TRUE;
     }
