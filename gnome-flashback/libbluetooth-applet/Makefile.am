@@ -29,7 +29,6 @@ libbluetooth_applet_la_LDFLAGS = \
 	$(NULL)
 
 libbluetooth_applet_la_LIBADD = \
-	$(top_builddir)/libstatus-notifier/libstatus-notifier.la \
 	$(BLUETOOTH_APPLET_LIBS) \
 	$(NULL)
 
