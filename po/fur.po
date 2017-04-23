@@ -1,0 +1,962 @@
+# Friulian translation for gnome-flashback.
+# Copyright (C) 2017 gnome-flashback's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-flashback package.
+# Fabio Tomat <f.t.public@gmail.com>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-flashback master\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"flashback&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-04-11 08:04+0000\n"
+"PO-Revision-Date: 2017-04-23 22:17+0200\n"
+"Language-Team: Friulian <fur@li.org>\n"
+"Language: fur\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
+"X-Generator: Poedit 1.8.12\n"
+
+#: data/applications/gnome-flashback.desktop.in:4
+msgid "GNOME Flashback"
+msgstr "GNOME Flashback"
+
+#: data/applications/gnome-flashback-init.desktop.in:4
+msgid "GNOME Flashback Initialization"
+msgstr "Inizializazion di GNOME Flashback"
+
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:3
+msgid "Network (GNOME Flashback)"
+msgstr "Rêt (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:4
+msgid "Manage your network connections"
+msgstr "Gjestìs lis conessions di rêt"
+
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
+msgid "nm-device-wireless"
+msgstr "nm-device-wireless"
+
+#: data/autostart/gnome-flashback-screensaver.desktop.in:4
+msgid "Screensaver (GNOME Flashback)"
+msgstr "Salveschermi (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-screensaver.desktop.in:5
+msgid "Launch screensaver and locker program"
+msgstr "Invie il program di bloc e il salveschermi"
+
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/autostart/gnome-flashback-screensaver.desktop.in:7
+msgid "preferences-desktop-screensaver"
+msgstr "preferences-desktop-screensaver"
+
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
+msgid "Preferences"
+msgstr "Preferencis"
+
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:5
+msgid "Personal preferences"
+msgstr "Preferencis personâls"
+
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
+msgid "preferences-desktop"
+msgstr "preferences-desktop"
+
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
+msgid "Administration"
+msgstr "Aministrazion"
+
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
+msgid "Change system-wide settings (affects all users)"
+msgstr "Cambie lis impostazions di dut il sisteme (al interesse ducj i utents)"
+
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
+msgid "preferences-system"
+msgstr "preferences-system"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
+msgid "Audio device selection"
+msgstr "Selezion dispositîf audio"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide the "
+"audio device selection dialog."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade par "
+"furnî il dialic di selezion dal dispositîf audio."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
+msgid "Automount manager"
+msgstr "Gjestôr montaç-automatic"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
+msgid ""
+"If set to true, then GNOME Flashback application will be used to automount "
+"removable media."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade par "
+"montâ in automatic i supuarts estraibii."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
+msgid "Bluetooth applet"
+msgstr "Applet Bluetooth"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"Bluetooth applet."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade par "
+"mostrâ une applet Bluetooth."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
+msgid "Desktop background"
+msgstr "Fondâl scritori"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
+msgid ""
+"If set to true, then GNOME Flashback application will be used to draw the "
+"desktop background."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade par "
+"disegnâ il fondâl dal scritori."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
+msgid "Display configuration"
+msgstr "Configurazion visôr"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide the "
+"display configuration."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade par "
+"furnî la configurazion dal visôr."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
+msgid "End session dialog"
+msgstr "Dialic di fin session"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show the "
+"end session dialog."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade par "
+"mostrâ il dialic di fin session."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
+#, fuzzy
+msgid "Idle monitor"
+msgstr "Monitor inativitât"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:42
+#, fuzzy
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade pal "
+"monitorament de ativitât dal utent."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:47
+msgid "Input settings"
+msgstr "Impostazions input"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
+msgid "Keyboard layouts and input methods"
+msgstr "Disposizion tastiere e metodis di input"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:53
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"keyboard layouts and input methods."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade par "
+"gjestî lis disposizions de tastiere e i metodis di input."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
+msgid "Notification daemon"
+msgstr "Demoni di notifiche"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:59
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"notifications."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade par "
+"gjestî lis notifichis."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
+msgid "Authentication agent for polkit"
+msgstr "Agjent di autenticazion par polkit"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:65
+msgid ""
+"This is the same authentication agent that was provided by PolicyKit-gnome."
+msgstr ""
+"Chest al è il stès agjent di autenticazion che al jere furnît di PolicyKit-"
+"gnome."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
+msgid "Power applet"
+msgstr "Applet alimentazion"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:71
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"power applet."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade par "
+"mostrâ une applet alimentazion."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
+msgid "Screencasts"
+msgstr "Screencasts"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:77
+msgid ""
+"If set to true, then GNOME Flashback application will be used to record the "
+"screen."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade par "
+"regjistrâ il schermi."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
+msgid "Screensaver"
+msgstr "Salveschermi"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:83
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a "
+"screensaver."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade come "
+"un salveschermi."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
+msgid "Screenshots"
+msgstr "Schermadis"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:89
+msgid ""
+"If set to true, then GNOME Flashback application will be used to take "
+"screenshots."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade par fâ "
+"caturis di schermi."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
+msgid "Shell"
+msgstr "Shell"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:95
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a shell."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade come "
+"une shell."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
+msgid "Sound applet"
+msgstr "Applet sun"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:101
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"sound applet. This is the same sound applet that used to be a part of GNOME "
+"Control Center."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade par "
+"mostra une applet sun. Cheste e je la stesse applet sun che e jere part dal "
+"Centri di Control di GNOME."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
+msgid "Status Notifier Watcher"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+msgid ""
+"If set to true, then GNOME Flashback application will be used as Status "
+"Notifier Watcher."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:112
+msgid "Workarounds"
+msgstr "Soluzions alternativis"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
+msgid ""
+"If set to true, then GNOME Flashback application will use workarounds to fix "
+"bugs."
+msgstr ""
+"Se metût a vêr, alore la aplicazion GNOME Flashback e doprarà soluzions "
+"alternativis par justâ erôrs."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
+msgid "Fade the background on change"
+msgstr "Sfante il sfont cuant che al cambie"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:6
+msgid ""
+"If set to true, then fade effect will be used to change the desktop "
+"background."
+msgstr ""
+"Se metût a vêr, alore un efiet a disfantâ al vignarà doprât par cambiâ il "
+"fondâl dal scritori."
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
+msgid "The background color"
+msgstr "Il colôr di sfont"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:13
+msgid "The foreground color"
+msgstr "Il colôr dal prin plan"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:18
+msgid "The font family"
+msgstr "La famee dal caratar"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:24
+msgid "The font weight"
+msgstr "Il pês dal caratar"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
+msgid "Symbolic"
+msgstr "Simbolic"
+
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:5
+msgid "Fix missing app menu button"
+msgstr "Comede boton dal menù aplicazion mancjant"
+
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:6
+msgid ""
+"If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
+"FALSE. Disable if you want to use gnome-settings-daemon overrides in "
+"xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:11
+msgid "Fix wrong button layout"
+msgstr "Comede disposizion botons sbaliade"
+
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:12
+msgid ""
+"If set to non-empty string, then gnome-flashback will force Gtk/"
+"DecorationLayout to value set by this setting. Set to empty string if you "
+"want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
+"DecorationLayout' property."
+msgstr ""
+
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:3
+msgid "GNOME Flashback (Compiz)"
+msgstr "GNOME Flashback (Compiz)"
+
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:4
+msgid "This session logs you into GNOME Flashback with Compiz"
+msgstr "Cheste session ti fâs jentrâ in GNOME Flashback cun Compiz"
+
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:3
+msgid "GNOME Flashback (Metacity)"
+msgstr "GNOME Flashback (Metacity)"
+
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:4
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr "Cheste session ti fâs jentrâ in GNOME Flashback cun Metacity"
+
+#: gnome-flashback/gf-main.c:40
+msgid "Enable debugging code"
+msgstr "Abilite il codiç di debug"
+
+#: gnome-flashback/gf-main.c:46
+msgid "Initialize GNOME Flashback session"
+msgstr "Inizialize la session GNOME Flashback"
+
+#: gnome-flashback/gf-main.c:52
+msgid "Replace a currently running application"
+msgstr "Sostituìs une aplicazion atualmentri in esecuzion"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:109
+msgid "Headphones"
+msgstr "Cufis"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:112
+msgid "Headset"
+msgstr "Cufis cun microfon"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:115
+msgid "Microphone"
+msgstr "Microfon"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
+#: gnome-flashback/libsound-applet/gf-sound-item.c:396
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "No si è rivâts a inviâ Preferencis sun: %s"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:248
+msgid "What kind of device did you plug in?"
+msgstr "Ce gjenar di dispositîf âstu tacât?"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
+msgid "Sound Settings"
+msgstr "Impostazions suns"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
+msgid "Cancel"
+msgstr "Anule"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:285
+msgid "Unknown Audio Device"
+msgstr "Dispositîf audio no cognossût"
+
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:177
+#, c-format
+msgid "Unable to mount %s"
+msgstr "Impussibil montâ %s"
+
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:290
+#, c-format
+msgid "Unable to open a folder for %s"
+msgstr "Impussibil vierzi une cartele par %s"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:339
+msgid "Ask what to do"
+msgstr "Domande ce fâ"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:345
+msgid "Do Nothing"
+msgstr "No stâ fâ nie"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:351
+msgid "Open Folder"
+msgstr "Vierç cartele"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:496
+#, c-format
+msgid "Unable to eject %p"
+msgstr "Impussibil parâ fûr %p"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
+#, c-format
+msgid "Unable to unmount %p"
+msgstr "Impussibil dismontâ %p"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:707
+msgid "You have just inserted an Audio CD."
+msgstr "Al è apene stât inserît un CD audio."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
+msgid "You have just inserted an Audio DVD."
+msgstr "Al è apene stât inserît un DVD audio."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
+msgid "You have just inserted a Video DVD."
+msgstr "Al è apene stât inserît un DVD video."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
+msgid "You have just inserted a Video CD."
+msgstr "Al è apene stât inserît un CD video."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
+msgid "You have just inserted a Super Video CD."
+msgstr "Al è apene stât inserît un Super Video CD."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
+msgid "You have just inserted a blank CD."
+msgstr "Al è apene stât inserît un CD vueit."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
+msgid "You have just inserted a blank DVD."
+msgstr "Al è apene stât inserît un DVD vueit."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
+msgid "You have just inserted a blank Blu-Ray disc."
+msgstr "Al è apene stât inserît un disc Blu-Ray vueit."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
+msgid "You have just inserted a blank HD DVD."
+msgstr "Al è apene stât inserît un HD-DVD vueit."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
+msgid "You have just inserted a Photo CD."
+msgstr "Al è apene stât inserît un Foto CD."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
+msgid "You have just inserted a Picture CD."
+msgstr "Al è apene stât inserît un Picture CD."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
+msgid "You have just inserted a medium with digital photos."
+msgstr "Al è apene stât inserît un supuart cun fotos digjitâls."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
+msgid "You have just inserted a digital audio player."
+msgstr "Al è apene stât inserît un riprodutôr audio digjitâl."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
+msgid ""
+"You have just inserted a medium with software intended to be automatically "
+"started."
+msgstr ""
+"Al è apene stât inserît un supuart cun software studiât par inviâsi in "
+"automatic."
+
+#. fallback to generic greeting
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:736
+msgid "You have just inserted a medium."
+msgstr "Al è apene stât inserît un supuart."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
+msgid "Choose what application to launch."
+msgstr "Sielç ce aplicazion inviâ."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:747
+#, c-format
+msgid ""
+"Select how to open \"%s\" and whether to perform this action in the future "
+"for other media of type \"%s\"."
+msgstr ""
+"Selezione ce mût vierzi “%s” e indiche se fâ cheste azion in futûr par "
+"altris supuarts dal gjenar “%s”."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:774
+msgid "_Always perform this action"
+msgstr "_Fâs simpri cheste azion"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:783
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
+msgid "_Cancel"
+msgstr "_Anule"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:784
+msgid "_OK"
+msgstr "_Va ben"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:790
+msgid "_Eject"
+msgstr "Par_e fûr"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:795
+msgid "_Unmount"
+msgstr "_Dismonte"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
+msgid "Turn Off"
+msgstr "Distude"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:164
+msgid "Send Files"
+msgstr "Invie file"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
+msgid "Turn On"
+msgstr "Impie"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
+msgid "Bluetooth Settings"
+msgstr "Impostazions Bluetooth"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:270
+msgid "Bluetooth active"
+msgstr "Bluetooth atîf"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:275
+msgid "Bluetooth disabled"
+msgstr "Bluetooth disabilitât"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:281
+#, c-format
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "%d dispositîf tacât"
+msgstr[1] "%d dispositîfs tacâts"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:287
+msgid "Not Connected"
+msgstr "No tacât"
+
+#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:8
+msgid "Confirm"
+msgstr "Conferme"
+
+#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:53
+msgid "Do you want to keep these display settings?"
+msgstr "Vûstu tignî chestis impostazions di visôr?"
+
+#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:96
+msgid "_Keep Changes"
+msgstr "_Ten lis modifichis"
+
+#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:116
+msgid "_Revert Settings"
+msgstr "_Ripristine impostazions"
+
+#: gnome-flashback/libdisplay-config/flashback-display-config.c:195
+msgid "Built-in display"
+msgstr "Display integrât"
+
+#: gnome-flashback/libdisplay-config/flashback-display-config.c:218
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
+msgid "Unknown"
+msgstr "No cognossût"
+
+#: gnome-flashback/libdisplay-config/flashback-display-config.c:220
+msgid "Unknown Display"
+msgstr "Display no cognossût"
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: gnome-flashback/libdisplay-config/flashback-display-config.c:228
+#, c-format
+msgid "%s %s"
+msgstr "%s %s"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
+msgid "Log Out"
+msgstr "Termine session"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:470
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Fâs clic su Termine session par jessî di chestis aplicazions e terminâ la "
+"session dal sisteme."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:472
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s al terminarà la session in automatic in %d secont."
+msgstr[1] "%s al terminarà la session in automatic in %d seconts."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:696
+msgid "Power Off"
+msgstr "Distude"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:482
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
+"Fâs clic su Distude par jessî di chestis aplicazions e distudâ il sisteme."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:484
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Il sisteme si distudarà in automatic in %d secont."
+msgstr[1] "Il sisteme si distudarà in automatic in %d seconts."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:700
+msgid "Restart"
+msgstr "Torne invie"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:494
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Fâs clic su Torne invie par jessî di chestis aplicazions e tornâ a inviâ il "
+"sisteme."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:496
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Il sisteme al tornarà a inviâsi in automatic in %d secont."
+msgstr[1] "Il sisteme al tornarà a inviâsi in automatic in %d seconts."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:503
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:704
+msgid "Hibernate"
+msgstr "Iberne"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:504
+#, c-format
+msgid "The system will hibernate automatically in %d second."
+msgid_plural "The system will hibernate automatically in %d seconds."
+msgstr[0] "Il sisteme si ibernarà in automatic in %d secont."
+msgstr[1] "Il sisteme si ibernarà in automatic in %d seconts."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:511
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:708
+msgid "Suspend"
+msgstr "Sospint"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:512
+#, c-format
+msgid "The system will suspend automatically in %d second."
+msgid_plural "The system will suspend automatically in %d seconds."
+msgstr[0] "Il sisteme si sospindarà in automatic in %d secont."
+msgstr[1] "Il sisteme si sospindarà in automatic in %d seconts."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:712
+msgid "Hybrid Sleep"
+msgstr "Polse ibride"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:520
+#, c-format
+msgid "The system will hybrid sleep automatically in %d second."
+msgid_plural "The system will hybrid sleep automatically in %d seconds."
+msgstr[0] "Il sisteme al larà in automatic te polse ibride in %d secont."
+msgstr[1] "Il sisteme al larà in automatic te polse ibride in %d seconts."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:29
+msgid "Some programs are still running:"
+msgstr "Cualchi program al sta ancjemò zirant:"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:78
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr ""
+"Si spiete che chestis aplicazions a finedin. Se si lis interomp si podarès "
+"vê pierditis di dâts."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
+msgid "Lock Screen"
+msgstr "Bloche schermi"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:566
+msgid "Show Keyboard Layout"
+msgstr "Mostre la disposizion de tastiere"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:624
+msgid "Keyboard"
+msgstr "Tastiere"
+
+#: gnome-flashback/libnotifications/gf-bubble.c:596
+#: gnome-flashback/libnotifications/gf-bubble.c:600
+#: gnome-flashback/libnotifications/nd-notification-box.c:325
+#: gnome-flashback/libnotifications/nd-notification-box.c:327
+msgid "Closes the notification."
+msgstr "Siere la notifiche."
+
+#: gnome-flashback/libnotifications/gf-bubble.c:620
+#: gnome-flashback/libnotifications/gf-bubble.c:651
+#: gnome-flashback/libnotifications/nd-notification-box.c:343
+msgid "Notification summary text."
+msgstr "Test di sintesi de notifiche."
+
+#: gnome-flashback/libnotifications/gf-bubble.c:670
+msgid "Notification"
+msgstr "Notifiche"
+
+#: gnome-flashback/libnotifications/nd-daemon.c:100
+msgid "Invalid notification identifier"
+msgstr "Identificatôr di notifiche no valit"
+
+#: gnome-flashback/libnotifications/nd-daemon.c:181
+msgid "Exceeded maximum number of notifications"
+msgstr "Superât il massim numar di notifichis"
+
+#: gnome-flashback/libnotifications/nd-notification-box.c:363
+msgid "Notification body text."
+msgstr "Test dal cuarp de notifiche."
+
+#: gnome-flashback/libnotifications/nd-queue.c:449
+msgid "Clear all notifications"
+msgstr "Nete dutis lis notifichis"
+
+#: gnome-flashback/libnotifications/nd-queue.c:878
+msgid "Notifications"
+msgstr "Notifichis"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:93
+#, c-format
+msgid "_Password for %s:"
+msgstr "_Password par %s:"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:97
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
+msgid "_Password:"
+msgstr "_Password:"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:252
+msgid "Your authentication attempt was unsuccessful. Please try again."
+msgstr "Il to tentatîf di autenticazion nol à vût sucès. Torne prove."
+
+#: gnome-flashback/libpolkit/flashback-listener.c:139
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Dialic di autenticazion anulât dal utent"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:202
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as one of the users below is required to perform this action."
+msgstr ""
+"Une aplicazion e sta cirint di fâ une azion che e à dibisugne di privileçs. "
+"La autenticazion come un dai utents chi sot e je necessarie par fâ cheste "
+"azion."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication is required to perform this action."
+msgstr ""
+"Une aplicazion e sta cirint di fâ une azion che e à dibisugne di privileçs. "
+"La autenticazion e je necessarie par fâ cheste azion."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:217
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as the super user is required to perform this action."
+msgstr ""
+"Une aplicazion e sta cirint di fâ une azion che e à dibisugne di privileçs. "
+"La autenticazion come super-utent e je necessarie par fâ cheste azion."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:383
+msgid "Select user..."
+msgstr "Selezione utent..."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:422
+#, c-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:593
+msgid "Action:"
+msgstr "Azion:"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:596
+#, c-format
+msgid "Click to edit %s"
+msgstr "Fâs clic par modificâ %s"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:604
+msgid "Vendor:"
+msgstr "Produtôr:"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:607
+#, c-format
+msgid "Click to open %s"
+msgstr "Fâs clic par vierzi %s"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:8
+msgid "Authenticate"
+msgstr "Autentiche"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:53
+msgid "<big><b>Title</b></big>"
+msgstr "<big><b>Titul</b></big>"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:192
+msgid "<small><b>_Details</b></small>"
+msgstr "<small><b>_Detais</b></small>"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:228
+msgid "_Authenticate"
+msgstr "_Autentiche"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:146
+msgid "Fully Charged"
+msgstr "Plene"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:148
+msgid "Empty"
+msgstr "Vueide"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:154
+#: gnome-flashback/libpower-applet/gf-power-applet.c:159
+msgid "Estimating..."
+msgstr "In stime..."
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: gnome-flashback/libpower-applet/gf-power-applet.c:168
+#, c-format
+msgid "%.0f:%02.0f Remaining (%.0f%%)"
+msgstr "%.0f:%02.0f A restin (%.0f%%)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: gnome-flashback/libpower-applet/gf-power-applet.c:175
+#, c-format
+msgid "%.0f:%02.0f Until Full (%.0f%%)"
+msgstr "%.0f:%02.0f Par jessi plene (%.0f%%)"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:190
+msgid "UPS"
+msgstr "UPS"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:192
+msgid "Battery"
+msgstr "Batarie"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:221
+msgid "Power Settings"
+msgstr "Impostazions di alimentazion"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:289
+msgid "Sound Output Volume"
+msgstr "Volum di jessude sonore"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:290
+msgid "Output"
+msgstr "Jessude"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:295
+msgid "Microphone Volume"
+msgstr "Volum microfon"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:296
+msgid "Input"
+msgstr "Input"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:162
+msgid "Muted"
+msgstr "Cidinât"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:455
+msgid "_Mute"
+msgstr "_Cidine"
+
+#: gnome-flashback/libsound-applet/gf-sound-item.c:463
+msgid "_Sound Preferences"
+msgstr "Preferencis _sun"
+
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:537
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:546
+msgctxt "volume"
+msgid "100%"
+msgstr "100%"
+
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:541
+msgctxt "volume"
+msgid "Unamplified"
+msgstr "No amplificât"
+
+#. translators:
+#. * The device has been disabled
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1866
+msgid "Disabled"
+msgstr "Disabilitât"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1873
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u Jessude"
+msgstr[1] "%u Jessudis"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u Jentrade"
+msgstr[1] "%u Jentradis"
+
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2738
+msgid "System Sounds"
+msgstr "Suns di sisteme"
