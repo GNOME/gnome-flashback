@@ -1165,11 +1165,15 @@ handle_select_area (GfDBusScreenshot      *dbus_screenshot,
   gint y;
   gint width;
   gint height;
+  gboolean selected;
 
   select_area = gf_select_area_new ();
   x = y = width = height = 0;
 
-  if (gf_select_area_select (select_area, &x, &y, &width, &height))
+  selected = gf_select_area_select (select_area, &x, &y, &width, &height);
+  g_object_unref (select_area);
+
+  if (selected)
     {
       unscale_area (&x, &y, &width, &height);
       gf_dbus_screenshot_complete_select_area (dbus_screenshot, invocation,
@@ -1181,8 +1185,6 @@ handle_select_area (GfDBusScreenshot      *dbus_screenshot,
                                              G_IO_ERROR_CANCELLED,
                                              "Operation was cancelled");
     }
-
-  g_object_unref (select_area);
 
   return TRUE;
 }
