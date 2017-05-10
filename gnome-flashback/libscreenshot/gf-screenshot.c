@@ -1173,9 +1173,17 @@ handle_select_area (GfDBusScreenshot      *dbus_screenshot,
   selected = gf_select_area_select (select_area, &x, &y, &width, &height);
   g_object_unref (select_area);
 
+  gdk_flush ();
+
   if (selected)
     {
       unscale_area (&x, &y, &width, &height);
+
+      /* wait 200ms to allow compositor finish redrawing selected area
+       * without selection overlay.
+       */
+      g_usleep (G_USEC_PER_SEC / 5);
+
       gf_dbus_screenshot_complete_select_area (dbus_screenshot, invocation,
                                                x, y, width, height);
     }
