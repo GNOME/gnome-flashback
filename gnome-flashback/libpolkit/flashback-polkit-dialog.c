@@ -350,7 +350,10 @@ get_user_icon (char *username)
       pixbuf = gdk_pixbuf_new_from_file_at_size (icon_filename, 16, 16, &error);
       if (pixbuf == NULL)
         {
-          g_warning ("Couldn't open user icon: %s", error->message);
+          if (!g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_NOENT))
+            g_warning ("Couldn't open user icon: %s", error->message);
+          else
+            g_debug ("Couldn't open user icon: %s", error->message);
           g_error_free (error);
         }
     }
