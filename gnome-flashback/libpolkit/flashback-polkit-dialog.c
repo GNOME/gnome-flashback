@@ -898,6 +898,20 @@ flashback_polkit_dialog_close (FlashbackPolkitDialog *dialog,
   gtk_window_close (GTK_WINDOW (dialog));
 }
 
+static gboolean
+delete_event_cb (FlashbackPolkitDialog *dialog,
+                 GdkEvent              *event,
+                 gpointer               user_data)
+{
+  if (!dialog->is_running)
+    return FALSE;
+
+  dialog->response = GTK_RESPONSE_DELETE_EVENT;
+  gtk_main_quit ();
+
+  return TRUE;
+}
+
 static void
 flashback_polkit_dialog_init (FlashbackPolkitDialog *dialog)
 {
@@ -913,6 +927,10 @@ flashback_polkit_dialog_init (FlashbackPolkitDialog *dialog)
 
   g_signal_connect (dialog, "close",
                     G_CALLBACK (flashback_polkit_dialog_close),
+                    NULL);
+
+  g_signal_connect (dialog, "delete-event",
+                    G_CALLBACK (delete_event_cb),
                     NULL);
 }
 
