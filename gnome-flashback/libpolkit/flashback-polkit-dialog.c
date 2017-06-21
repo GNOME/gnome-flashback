@@ -497,11 +497,15 @@ setup_users_combobox (FlashbackPolkitDialog *dialog)
 
   if (g_strv_length (dialog->users) > 1)
     {
+      gboolean sensitive;
+
       setup_users_store (dialog);
 
-      gtk_widget_set_sensitive (dialog->prompt_label, FALSE);
-      gtk_widget_set_sensitive (dialog->password_entry, FALSE);
-      gtk_widget_set_sensitive (dialog->auth_button, FALSE);
+      sensitive = dialog->selected_user != NULL ? TRUE : FALSE;
+
+      gtk_widget_set_sensitive (dialog->prompt_label, sensitive);
+      gtk_widget_set_sensitive (dialog->password_entry, sensitive);
+      gtk_widget_set_sensitive (dialog->auth_button, sensitive);
     }
   else
     {
