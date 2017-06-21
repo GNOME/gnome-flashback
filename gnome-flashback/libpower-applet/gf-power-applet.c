@@ -153,7 +153,7 @@ get_tooltip_text (GfPowerApplet *applet)
   else
     return g_strdup (_("Estimating..."));
 
-  time = round (seconds / 60);
+  time = round (seconds / 60.0);
 
   if (time == 0)
     return g_strdup (_("Estimating..."));
