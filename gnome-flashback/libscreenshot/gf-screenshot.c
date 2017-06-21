@@ -895,7 +895,7 @@ flashspot_data_new (GfScreenshot *screenshot,
 {
   FlashspotData *data;
 
-  data = (FlashspotData *) g_new0 (FlashspotData *, 1);
+  data = g_new0 (FlashspotData, 1);
 
   data->screenshot = g_object_ref (screenshot);
   data->sender = g_strdup (sender);
