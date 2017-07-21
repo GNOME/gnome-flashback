@@ -1358,6 +1358,8 @@ gf_input_settings_set_display_config (GfInputSettings        *settings,
     return;
 
   settings->monitor_manager = g_object_ref (monitor_manager);
-  g_signal_connect (settings->monitor_manager, "monitors-changed",
-                    G_CALLBACK (monitors_changed_cb), settings);
+
+  settings->monitors_changed_id =
+    g_signal_connect (settings->monitor_manager, "monitors-changed",
+                      G_CALLBACK (monitors_changed_cb), settings);
 }
