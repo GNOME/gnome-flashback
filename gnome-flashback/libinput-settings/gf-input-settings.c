@@ -1043,6 +1043,9 @@ find_output (GfInputSettings *settings,
   if (!*edid[0] && !*edid[1] && !*edid[2])
     return NULL;
 
+  if (!settings->monitor_manager)
+    return NULL;
+
   outputs = flashback_monitor_manager_get_outputs (settings->monitor_manager,
                                                    &n_outputs);
 
@@ -1367,4 +1370,6 @@ gf_input_settings_set_display_config (GfInputSettings        *settings,
   settings->monitors_changed_id =
     g_signal_connect (settings->monitor_manager, "monitors-changed",
                       G_CALLBACK (monitors_changed_cb), settings);
+
+  monitors_changed_cb (monitor_manager, settings);
 }
