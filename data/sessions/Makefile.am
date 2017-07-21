@@ -17,7 +17,6 @@ required_components_gsd = \
 	org.gnome.SettingsDaemon.Keyboard \
 	org.gnome.SettingsDaemon.MediaKeys \
 	org.gnome.SettingsDaemon.Mouse \
-	org.gnome.SettingsDaemon.Orientation \
 	org.gnome.SettingsDaemon.Power \
 	org.gnome.SettingsDaemon.PrintNotifications \
 	org.gnome.SettingsDaemon.Rfkill \
@@ -26,7 +25,6 @@ required_components_gsd = \
 	org.gnome.SettingsDaemon.Smartcard \
 	org.gnome.SettingsDaemon.Sound \
 	org.gnome.SettingsDaemon.Wacom \
-	org.gnome.SettingsDaemon.XRANDR \
 	org.gnome.SettingsDaemon.XSettings \
 	$(NULL)
 
