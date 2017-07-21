@@ -1,0 +1,3 @@
+[GNOME Session]
+Name=GNOME Flashback (@NAME@)
+RequiredComponents=@REQUIRED_COMPONENTS@;
