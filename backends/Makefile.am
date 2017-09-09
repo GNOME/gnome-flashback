@@ -44,10 +44,21 @@ libbackends_la_LIBADD = \
 	$(LIBM) \
 	$(NULL)
 
+gf-dbus-display-config.h:
+gf-dbus-display-config.c: org.gnome.Mutter.DisplayConfig.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) \
+		--c-namespace GfDBus \
+		--generate-c-code gf-dbus-display-config \
+		--interface-prefix org.gnome.Mutter \
+		$(srcdir)/org.gnome.Mutter.DisplayConfig.xml
+
 BUILT_SOURCES = \
+	gf-dbus-display-config.c \
+	gf-dbus-display-config.h \
 	$(NULL)
 
 EXTRA_DIST = \
+	org.gnome.Mutter.DisplayConfig.xml \
 	$(NULL)
 
 CLEANFILES = \
