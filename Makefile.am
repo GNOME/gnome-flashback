@@ -2,7 +2,6 @@ NULL =
 
 SUBDIRS = \
 	data \
-	libstatus-notifier \
 	gnome-flashback \
 	po \
 	$(NULL)

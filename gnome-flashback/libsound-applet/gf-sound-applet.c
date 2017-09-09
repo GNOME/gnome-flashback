@@ -33,7 +33,6 @@
 #include "gf-sound-applet.h"
 #include "gvc-mixer-control.h"
 #include "gvc-stream-status-icon.h"
-#include "gf-sound-item.h"
 
 static const gchar *output_icons[] =
 {

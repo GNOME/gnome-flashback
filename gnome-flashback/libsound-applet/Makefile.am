@@ -25,8 +25,6 @@ libsound_applet_la_CFLAGS = \
 libsound_applet_la_SOURCES = \
 	gf-sound-applet.c \
 	gf-sound-applet.h \
-	gf-sound-item.c \
-	gf-sound-item.h \
 	gvc-channel-bar.c \
 	gvc-channel-bar.h \
 	gvc-stream-status-icon.c \
@@ -39,7 +37,6 @@ libsound_applet_la_LDFLAGS = \
 	$(NULL)
 
 libsound_applet_la_LIBADD = \
-	$(top_builddir)/libstatus-notifier/libstatus-notifier.la \
 	$(top_builddir)/gnome-flashback/libsound-applet/gvc/libgvc.la \
 	$(SOUND_APPLET_LIBS) \
 	$(LIBM) \

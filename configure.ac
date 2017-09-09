@@ -98,14 +98,6 @@ POLKIT_GOBJECT_REQUIRED=0.97
 IBUS_REQUIRED=1.5.2
 UPOWER_GLIB_REQUIRED=0.99.0
 
-PKG_CHECK_MODULES([LIBSTATUS_NOTIFIER], [
-  gdk-pixbuf-2.0 >= $GDK_PIXBUF_REQUIRED
-  gio-2.0 >= $GLIB_REQUIRED
-  gio-unix-2.0 >= $GLIB_REQUIRED
-  glib-2.0 >= $GLIB_REQUIRED
-  gtk+-3.0 >= $GTK_REQUIRED
-])
-
 PKG_CHECK_MODULES([GNOME_FLASHBACK], [
   gtk+-3.0 >= $GTK_REQUIRED
 ])
@@ -225,7 +217,6 @@ PKG_CHECK_MODULES([SOUND_APPLET], [
   gtk+-3.0 >= $GTK_REQUIRED
   libcanberra-gtk3 >= $CANBERRA_REQUIRED
   glib-2.0 >= $GLIB_REQUIRED
-  $LIBSTATUS_NOTIFIER_PKG
 ])
 
 PKG_CHECK_MODULES([STATUS_NOTIFIER_WATCHER], [
@@ -302,8 +293,6 @@ AC_CONFIG_FILES([
   gnome-flashback/libsound-applet/gvc/Makefile
   gnome-flashback/libstatus-notifier-watcher/Makefile
   gnome-flashback/libworkarounds/Makefile
-
-  libstatus-notifier/Makefile
 
   po/Makefile.in
 ])
