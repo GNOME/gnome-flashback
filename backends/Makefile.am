@@ -31,6 +31,8 @@ libbackends_la_SOURCES = \
 	gf-backend.h \
 	gf-edid-parse.c \
 	gf-edid-private.h \
+	gf-monitor-spec-private.h \
+	gf-monitor-spec.c \
 	gf-orientation-manager-private.h \
 	gf-orientation-manager.c \
 	gf-settings-private.h \
