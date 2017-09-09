@@ -29,6 +29,8 @@ libbackends_la_SOURCES = \
 	gf-backend-x11.c \
 	gf-backend.c \
 	gf-backend.h \
+	gf-edid-parse.c \
+	gf-edid-private.h \
 	gf-orientation-manager-private.h \
 	gf-orientation-manager.c \
 	gf-settings-private.h \
