@@ -26,6 +26,7 @@
 #ifndef GF_BACKEND_X11_PRIVATE_H
 #define GF_BACKEND_X11_PRIVATE_H
 
+#include <X11/Xlib.h>
 #include "gf-backend-private.h"
 
 G_BEGIN_DECLS
@@ -37,7 +38,12 @@ G_DECLARE_DERIVABLE_TYPE (GfBackendX11, gf_backend_x11,
 struct _GfBackendX11Class
 {
   GfBackendClass parent_class;
+
+  gboolean (* handle_host_xevent) (GfBackendX11 *x11,
+                                   XEvent       *event);
 };
+
+Display *gf_backend_x11_get_xdisplay (GfBackendX11 *x11);
 
 G_END_DECLS
 

@@ -29,9 +29,21 @@ struct _GfBackendX11Cm
 
 G_DEFINE_TYPE (GfBackendX11Cm, gf_backend_x11_cm, GF_TYPE_BACKEND_X11)
 
+static gboolean
+gf_backend_x11_cm_handle_host_xevent (GfBackendX11 *x11,
+                                      XEvent       *event)
+{
+  return FALSE;
+}
+
 static void
 gf_backend_x11_cm_class_init (GfBackendX11CmClass *x11_cm_class)
 {
+  GfBackendX11Class *backend_x11_class;
+
+  backend_x11_class = GF_BACKEND_X11_CLASS (x11_cm_class);
+
+  backend_x11_class->handle_host_xevent = gf_backend_x11_cm_handle_host_xevent;
 }
 
 static void

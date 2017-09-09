@@ -33,6 +33,8 @@ G_BEGIN_DECLS
 struct _GfBackendClass
 {
   GObjectClass parent_class;
+
+  void (* post_init) (GfBackend *backend);
 };
 
 G_END_DECLS

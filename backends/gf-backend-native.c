@@ -34,8 +34,19 @@ struct _GfBackendNative
 G_DEFINE_TYPE (GfBackendNative, gf_backend_native, GF_TYPE_BACKEND)
 
 static void
+gf_backend_native_post_init (GfBackend *backend)
+{
+  GF_BACKEND_CLASS (gf_backend_native_parent_class)->post_init (backend);
+}
+
+static void
 gf_backend_native_class_init (GfBackendNativeClass *native_class)
 {
+  GfBackendClass *backend_class;
+
+  backend_class = GF_BACKEND_CLASS (native_class);
+
+  backend_class->post_init = gf_backend_native_post_init;
 }
 
 static void

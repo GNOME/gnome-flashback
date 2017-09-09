@@ -86,6 +86,11 @@ gf_backend_dispose (GObject *object)
 }
 
 static void
+gf_backend_real_post_init (GfBackend *backend)
+{
+}
+
+static void
 gf_backend_class_init (GfBackendClass *backend_class)
 {
   GObjectClass *object_class;
@@ -93,6 +98,8 @@ gf_backend_class_init (GfBackendClass *backend_class)
   object_class = G_OBJECT_CLASS (backend_class);
 
   object_class->dispose = gf_backend_dispose;
+
+  backend_class->post_init = gf_backend_real_post_init;
 }
 
 static void
@@ -138,6 +145,8 @@ gf_backend_new (GfBackendType type)
 
       return NULL;
     }
+
+  GF_BACKEND_GET_CLASS (backend)->post_init (backend);
 
   return backend;
 }

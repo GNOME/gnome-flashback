@@ -29,9 +29,21 @@ struct _GfBackendX11Nested
 
 G_DEFINE_TYPE (GfBackendX11Nested, gf_backend_x11_nested, GF_TYPE_BACKEND_X11)
 
+static gboolean
+gf_backend_x11_nested_handle_host_xevent (GfBackendX11 *x11,
+                                          XEvent       *event)
+{
+  return FALSE;
+}
+
 static void
 gf_backend_x11_nested_class_init (GfBackendX11NestedClass *x11_nested_class)
 {
+  GfBackendX11Class *backend_x11_class;
+
+  backend_x11_class = GF_BACKEND_X11_CLASS (x11_nested_class);
+
+  backend_x11_class->handle_host_xevent = gf_backend_x11_nested_handle_host_xevent;
 }
 
 static void
