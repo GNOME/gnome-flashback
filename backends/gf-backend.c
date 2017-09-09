@@ -30,11 +30,18 @@
 #include "gf-backend-native-private.h"
 #include "gf-backend-x11-cm-private.h"
 #include "gf-backend-x11-nested-private.h"
+#include "gf-settings-private.h"
+
+typedef struct
+{
+  GfSettings *settings;
+} GfBackendPrivate;
 
 static void
 initable_iface_init (GInitableIface *initable_iface);
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GfBackend, gf_backend, G_TYPE_OBJECT,
+                                  G_ADD_PRIVATE (GfBackend)
                                   G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
                                                          initable_iface_init))
 
@@ -43,6 +50,14 @@ gf_backend_initable_init (GInitable     *initable,
                           GCancellable  *cancellable,
                           GError       **error)
 {
+  GfBackend *backend;
+  GfBackendPrivate *priv;
+
+  backend = GF_BACKEND (initable);
+  priv = gf_backend_get_instance_private (backend);
+
+  priv->settings = gf_settings_new (backend);
+
   return TRUE;
 }
 
@@ -53,8 +68,27 @@ initable_iface_init (GInitableIface *initable_iface)
 }
 
 static void
+gf_backend_dispose (GObject *object)
+{
+  GfBackend *backend;
+  GfBackendPrivate *priv;
+
+  backend = GF_BACKEND (object);
+  priv = gf_backend_get_instance_private (backend);
+
+  g_clear_object (&priv->settings);
+
+  G_OBJECT_CLASS (gf_backend_parent_class)->dispose (object);
+}
+
+static void
 gf_backend_class_init (GfBackendClass *backend_class)
 {
+  GObjectClass *object_class;
+
+  object_class = G_OBJECT_CLASS (backend_class);
+
+  object_class->dispose = gf_backend_dispose;
 }
 
 static void

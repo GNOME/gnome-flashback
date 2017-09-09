@@ -29,6 +29,8 @@ libbackends_la_SOURCES = \
 	gf-backend-x11.c \
 	gf-backend.c \
 	gf-backend.h \
+	gf-settings-private.h \
+	gf-settings.c \
 	$(BUILT_SOURCES) \
 	$(NULL)
 
