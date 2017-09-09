@@ -30,11 +30,13 @@
 #include "gf-backend-native-private.h"
 #include "gf-backend-x11-cm-private.h"
 #include "gf-backend-x11-nested-private.h"
+#include "gf-orientation-manager-private.h"
 #include "gf-settings-private.h"
 
 typedef struct
 {
-  GfSettings *settings;
+  GfSettings           *settings;
+  GfOrientationManager *orientation_manager;
 } GfBackendPrivate;
 
 static void
@@ -57,6 +59,7 @@ gf_backend_initable_init (GInitable     *initable,
   priv = gf_backend_get_instance_private (backend);
 
   priv->settings = gf_settings_new (backend);
+  priv->orientation_manager = gf_orientation_manager_new ();
 
   return TRUE;
 }
@@ -76,6 +79,7 @@ gf_backend_dispose (GObject *object)
   backend = GF_BACKEND (object);
   priv = gf_backend_get_instance_private (backend);
 
+  g_clear_object (&priv->orientation_manager);
   g_clear_object (&priv->settings);
 
   G_OBJECT_CLASS (gf_backend_parent_class)->dispose (object);
