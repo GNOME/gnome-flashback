@@ -70,20 +70,9 @@ struct _FlashbackMonitorManagerPrivate
 
   gboolean               has_randr13;
   gboolean               has_randr15;
-
-  MetaDBusDisplayConfig *display_config;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (FlashbackMonitorManager, flashback_monitor_manager, G_TYPE_OBJECT)
-
-enum
-{
-  PROP_0,
-  PROP_DISPLAY_CONFIG,
-  N_PROPERTIES
-};
-
-static GParamSpec *object_properties[N_PROPERTIES] = { NULL, };
 
 enum
 {
@@ -1534,50 +1523,6 @@ flashback_monitor_manager_constructed (GObject *object)
 }
 
 static void
-flashback_monitor_manager_set_property (GObject      *object,
-                                        guint         property_id,
-                                        const GValue *value,
-                                        GParamSpec   *pspec)
-{
-  FlashbackMonitorManager *manager;
-
-  manager = FLASHBACK_MONITOR_MANAGER (object);
-
-  switch (property_id)
-    {
-      case PROP_DISPLAY_CONFIG:
-        if (manager->priv->display_config)
-          g_object_unref (manager->priv->display_config);
-        manager->priv->display_config = g_value_get_object (value);
-        break;
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
-}
-
-static void
-flashback_monitor_manager_get_property (GObject    *object,
-                                        guint       property_id,
-                                        GValue     *value,
-                                        GParamSpec *pspec)
-{
-  FlashbackMonitorManager *manager;
-
-  manager = FLASHBACK_MONITOR_MANAGER (object);
-
-  switch (property_id)
-    {
-      case PROP_DISPLAY_CONFIG:
-        g_value_set_object (value, manager->priv->display_config);
-        break;
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
-}
-
-static void
 flashback_monitor_manager_finalize (GObject *object)
 {
   FlashbackMonitorManager *manager;
@@ -1606,19 +1551,7 @@ flashback_monitor_manager_class_init (FlashbackMonitorManagerClass *manager_clas
   object_class = G_OBJECT_CLASS (manager_class);
 
   object_class->constructed = flashback_monitor_manager_constructed;
-  object_class->set_property = flashback_monitor_manager_set_property;
-  object_class->get_property = flashback_monitor_manager_get_property;
   object_class->finalize = flashback_monitor_manager_finalize;
-
-  object_properties[PROP_DISPLAY_CONFIG] =
-    g_param_spec_object ("display-config",
-                         "display-config",
-                         "display-config",
-                         META_DBUS_TYPE_DISPLAY_CONFIG,
-                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
-
-  g_object_class_install_properties (object_class, N_PROPERTIES,
-                                     object_properties);
 
   signals[MONITORS_CHANGED] =
     g_signal_new ("monitors-changed", FLASHBACK_TYPE_MONITOR_MANAGER,
@@ -1665,10 +1598,9 @@ flashback_monitor_manager_init (FlashbackMonitorManager *manager)
 }
 
 FlashbackMonitorManager *
-flashback_monitor_manager_new (MetaDBusDisplayConfig *display_config)
+flashback_monitor_manager_new (void)
 {
   return g_object_new (FLASHBACK_TYPE_MONITOR_MANAGER,
-                       "display-config", display_config,
                        NULL);
 }
 
@@ -2271,7 +2203,6 @@ flashback_monitor_manager_rebuild_derived (FlashbackMonitorManager *manager)
         remove_monitor (manager, old_monitor_infos[i].monitor_winsys_xid);
     }
 
-  g_signal_emit_by_name (manager->priv->display_config, "monitors-changed");
   g_signal_emit (manager, signals[MONITORS_CHANGED], 0);
 
   g_free (old_monitor_infos);

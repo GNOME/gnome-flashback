@@ -29,7 +29,6 @@
 #include <gdk/gdk.h>
 #include <libgnome-desktop/gnome-pnp-ids.h>
 #include "meta-display-config-shared.h"
-#include "meta-dbus-display-config.h"
 
 G_BEGIN_DECLS
 
@@ -289,7 +288,7 @@ struct _FlashbackMonitorManager
   FlashbackMonitorManagerPrivate *priv;
 };
 
-FlashbackMonitorManager *flashback_monitor_manager_new                     (MetaDBusDisplayConfig    *display_config);
+FlashbackMonitorManager *flashback_monitor_manager_new                     (void);
 
 void                     flashback_monitor_manager_apply_configuration     (FlashbackMonitorManager  *manager,
                                                                             MetaCRTCInfo            **crtcs,
