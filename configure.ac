@@ -98,6 +98,12 @@ POLKIT_GOBJECT_REQUIRED=0.97
 IBUS_REQUIRED=1.5.2
 UPOWER_GLIB_REQUIRED=0.99.0
 
+PKG_CHECK_MODULES([BACKENDS], [
+  gio-2.0 >= $GLIB_REQUIRED
+  gio-unix-2.0 >= $GLIB_REQUIRED
+  glib-2.0 >= $GLIB_REQUIRED
+])
+
 PKG_CHECK_MODULES([GNOME_FLASHBACK], [
   gtk+-3.0 >= $GTK_REQUIRED
 ])
@@ -258,6 +264,8 @@ dnl **************************************************************************
 
 AC_CONFIG_FILES([
   Makefile
+
+  backends/Makefile
 
   data/Makefile
   data/applications/Makefile

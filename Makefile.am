@@ -2,6 +2,7 @@ NULL =
 
 SUBDIRS = \
 	data \
+	backends \
 	gnome-flashback \
 	po \
 	$(NULL)

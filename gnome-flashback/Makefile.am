@@ -30,14 +30,16 @@ bin_PROGRAMS = \
 gnome_flashback_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"gnome-flashback\" \
 	-DG_LOG_USE_STRUCTURED=1 \
+	-DLOCALE_DIR=\""$(localedir)"\" \
+	-I$(top_builddir)/gnome-flashback \
+	-I$(top_srcdir) \
+	$(AM_CPPFLAGS) \
 	$(NULL)
 
 gnome_flashback_CFLAGS = \
 	$(GNOME_FLASHBACK_CFLAGS) \
 	$(WARN_CFLAGS) \
 	$(AM_CFLAGS) \
-	-I$(top_builddir)/gnome-flashback \
-	-DLOCALE_DIR=\""$(localedir)"\" \
 	$(NULL)
 
 gnome_flashback_SOURCES = \
@@ -56,6 +58,7 @@ gnome_flashback_LDFLAGS = \
 
 gnome_flashback_LDADD = \
 	$(GNOME_FLASHBACK_LIBS) \
+	$(top_builddir)/backends/libbackends.la \
 	$(top_builddir)/gnome-flashback/libaudio-device-selection/libaudio-device-selection.la \
 	$(top_builddir)/gnome-flashback/libautomount-manager/libautomount-manager.la \
 	$(top_builddir)/gnome-flashback/libbluetooth-applet/libbluetooth-applet.la \

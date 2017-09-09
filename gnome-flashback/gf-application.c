@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2016 Alberts Muktupāvels
+ * Copyright (C) 2014-2017 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #include <gtk/gtk.h>
 
 #include "gf-application.h"
+#include "backends/gf-backend.h"
 #include "libaudio-device-selection/gf-audio-device-selection.h"
 #include "libautomount-manager/gsd-automount-manager.h"
 #include "libbluetooth-applet/gf-bluetooth-applet.h"
@@ -44,6 +45,8 @@
 struct _GfApplication
 {
   GObject                  parent;
+
+  GfBackend               *backend;
 
   gint                     bus_name;
 
@@ -213,6 +216,8 @@ gf_application_dispose (GObject *object)
   g_clear_object (&application->status_notifier_watcher);
   g_clear_object (&application->workarounds);
 
+  g_clear_object (&application->backend);
+
   G_OBJECT_CLASS (gf_application_parent_class)->dispose (object);
 }
 
@@ -220,6 +225,8 @@ static void
 gf_application_init (GfApplication *application)
 {
   GtkSettings *settings;
+
+  application->backend = gf_backend_new (GF_BACKEND_TYPE_X11_CM);
 
   application->settings = g_settings_new ("org.gnome.gnome-flashback");
   settings = gtk_settings_get_default ();
