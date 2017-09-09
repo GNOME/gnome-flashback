@@ -21,6 +21,7 @@
 
 #include "config.h"
 #include "gf-backend-x11-nested-private.h"
+#include "gf-monitor-manager-dummy-private.h"
 
 struct _GfBackendX11Nested
 {
@@ -28,6 +29,14 @@ struct _GfBackendX11Nested
 };
 
 G_DEFINE_TYPE (GfBackendX11Nested, gf_backend_x11_nested, GF_TYPE_BACKEND_X11)
+
+static GfMonitorManager *
+gf_backend_x11_nested_create_monitor_manager (GfBackend *backend)
+{
+  return g_object_new (GF_TYPE_MONITOR_MANAGER_DUMMY,
+                       "backend", backend,
+                       NULL);
+}
 
 static gboolean
 gf_backend_x11_nested_handle_host_xevent (GfBackendX11 *x11,
@@ -39,9 +48,13 @@ gf_backend_x11_nested_handle_host_xevent (GfBackendX11 *x11,
 static void
 gf_backend_x11_nested_class_init (GfBackendX11NestedClass *x11_nested_class)
 {
+  GfBackendClass *backend_class;
   GfBackendX11Class *backend_x11_class;
 
+  backend_class = GF_BACKEND_CLASS (x11_nested_class);
   backend_x11_class = GF_BACKEND_X11_CLASS (x11_nested_class);
+
+  backend_class->create_monitor_manager = gf_backend_x11_nested_create_monitor_manager;
 
   backend_x11_class->handle_host_xevent = gf_backend_x11_nested_handle_host_xevent;
 }

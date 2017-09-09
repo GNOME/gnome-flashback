@@ -31,6 +31,15 @@ libbackends_la_SOURCES = \
 	gf-backend.h \
 	gf-edid-parse.c \
 	gf-edid-private.h \
+	gf-monitor-manager-dummy-private.h \
+	gf-monitor-manager-dummy.c \
+	gf-monitor-manager-kms-private.h \
+	gf-monitor-manager-kms.c \
+	gf-monitor-manager-private.h \
+	gf-monitor-manager-xrandr-private.h \
+	gf-monitor-manager-xrandr.c \
+	gf-monitor-manager.c \
+	gf-monitor-manager.h \
 	gf-monitor-spec-private.h \
 	gf-monitor-spec.c \
 	gf-orientation-manager-private.h \

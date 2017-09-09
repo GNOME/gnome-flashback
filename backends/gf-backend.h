@@ -26,7 +26,7 @@
 #ifndef GF_BACKEND_H
 #define GF_BACKEND_H
 
-#include <glib-object.h>
+#include "gf-monitor-manager.h"
 
 G_BEGIN_DECLS
 
@@ -40,7 +40,9 @@ typedef enum
   GF_BACKEND_TYPE_NATIVE
 } GfBackendType;
 
-GfBackend *gf_backend_new (GfBackendType type);
+GfBackend        *gf_backend_new                 (GfBackendType  type);
+
+GfMonitorManager *gf_backend_get_monitor_manager (GfBackend     *backend);
 
 G_END_DECLS
 

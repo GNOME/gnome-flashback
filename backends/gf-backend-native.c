@@ -25,6 +25,7 @@
 
 #include "config.h"
 #include "gf-backend-native-private.h"
+#include "gf-monitor-manager-kms-private.h"
 
 struct _GfBackendNative
 {
@@ -39,6 +40,14 @@ gf_backend_native_post_init (GfBackend *backend)
   GF_BACKEND_CLASS (gf_backend_native_parent_class)->post_init (backend);
 }
 
+static GfMonitorManager *
+gf_backend_native_create_monitor_manager (GfBackend *backend)
+{
+  return g_object_new (GF_TYPE_MONITOR_MANAGER_KMS,
+                       "backend", backend,
+                       NULL);
+}
+
 static void
 gf_backend_native_class_init (GfBackendNativeClass *native_class)
 {
@@ -47,6 +56,7 @@ gf_backend_native_class_init (GfBackendNativeClass *native_class)
   backend_class = GF_BACKEND_CLASS (native_class);
 
   backend_class->post_init = gf_backend_native_post_init;
+  backend_class->create_monitor_manager = gf_backend_native_create_monitor_manager;
 }
 
 static void

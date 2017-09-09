@@ -1,5 +1,8 @@
 /*
- * Copyright (C) 2014 Red Hat
+ * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2003 Rob Adams
+ * Copyright (C) 2004-2006 Elijah Newren
+ * Copyright (C) 2013 Red Hat Inc.
  * Copyright (C) 2017 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,30 +18,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
- * Authors:
- *     Alberts Muktupāvels <alberts.muktupavels@gmail.com>
- *     Jasper St. Pierre <jstpierre@mecheye.net>
- *
  * Adapted from mutter:
- * - src/backends/meta-backend-private.h
+ * - src/backends/x11/meta-monitor-manager-xrandr.h
  */
 
-#ifndef GF_BACKEND_PRIVATE_H
-#define GF_BACKEND_PRIVATE_H
+#ifndef GF_MONITOR_MANAGER_XRANDR_PRIVATE_H
+#define GF_MONITOR_MANAGER_XRANDR_PRIVATE_H
 
-#include "gf-backend.h"
+#include <X11/Xlib.h>
 #include "gf-monitor-manager-private.h"
 
 G_BEGIN_DECLS
 
-struct _GfBackendClass
-{
-  GObjectClass parent_class;
+#define GF_TYPE_MONITOR_MANAGER_XRANDR (gf_monitor_manager_xrandr_get_type ())
+G_DECLARE_FINAL_TYPE (GfMonitorManagerXrandr, gf_monitor_manager_xrandr,
+                      GF, MONITOR_MANAGER_XRANDR, GfMonitorManager)
 
-  void               (* post_init)              (GfBackend *backend);
-
-  GfMonitorManager * (* create_monitor_manager) (GfBackend *backend);
-};
+gboolean gf_monitor_manager_xrandr_handle_xevent (GfMonitorManagerXrandr *xrandr,
+                                                  XEvent                 *event);
 
 G_END_DECLS
 

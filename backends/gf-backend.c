@@ -30,6 +30,7 @@
 #include "gf-backend-native-private.h"
 #include "gf-backend-x11-cm-private.h"
 #include "gf-backend-x11-nested-private.h"
+#include "gf-monitor-manager-dummy-private.h"
 #include "gf-orientation-manager-private.h"
 #include "gf-settings-private.h"
 
@@ -37,6 +38,8 @@ typedef struct
 {
   GfSettings           *settings;
   GfOrientationManager *orientation_manager;
+
+  GfMonitorManager     *monitor_manager;
 } GfBackendPrivate;
 
 static void
@@ -46,6 +49,19 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GfBackend, gf_backend, G_TYPE_OBJECT,
                                   G_ADD_PRIVATE (GfBackend)
                                   G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
                                                          initable_iface_init))
+
+static GfMonitorManager *
+create_monitor_manager (GfBackend *backend)
+{
+  if (g_getenv ("DUMMY_MONITORS"))
+    {
+      return g_object_new (GF_TYPE_MONITOR_MANAGER_DUMMY,
+                           "backend", backend,
+                           NULL);
+    }
+
+  return GF_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend);
+}
 
 static gboolean
 gf_backend_initable_init (GInitable     *initable,
@@ -79,6 +95,7 @@ gf_backend_dispose (GObject *object)
   backend = GF_BACKEND (object);
   priv = gf_backend_get_instance_private (backend);
 
+  g_clear_object (&priv->monitor_manager);
   g_clear_object (&priv->orientation_manager);
   g_clear_object (&priv->settings);
 
@@ -88,6 +105,11 @@ gf_backend_dispose (GObject *object)
 static void
 gf_backend_real_post_init (GfBackend *backend)
 {
+  GfBackendPrivate *priv;
+
+  priv = gf_backend_get_instance_private (backend);
+
+  priv->monitor_manager = create_monitor_manager (backend);
 }
 
 static void
@@ -149,4 +171,14 @@ gf_backend_new (GfBackendType type)
   GF_BACKEND_GET_CLASS (backend)->post_init (backend);
 
   return backend;
+}
+
+GfMonitorManager *
+gf_backend_get_monitor_manager (GfBackend *backend)
+{
+  GfBackendPrivate *priv;
+
+  priv = gf_backend_get_instance_private (backend);
+
+  return priv->monitor_manager;
 }

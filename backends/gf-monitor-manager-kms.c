@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Red Hat
+ * Copyright (C) 2013 Red Hat Inc.
  * Copyright (C) 2017 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,29 +17,28 @@
  *
  * Authors:
  *     Alberts Muktupāvels <alberts.muktupavels@gmail.com>
- *     Jasper St. Pierre <jstpierre@mecheye.net>
+ *     Giovanni Campagna <gcampagn@redhat.com>
  *
  * Adapted from mutter:
- * - src/backends/meta-backend-private.h
+ * - src/backends/native/meta-monitor-manager-kms.c
  */
 
-#ifndef GF_BACKEND_PRIVATE_H
-#define GF_BACKEND_PRIVATE_H
+#include "config.h"
+#include "gf-monitor-manager-kms-private.h"
 
-#include "gf-backend.h"
-#include "gf-monitor-manager-private.h"
-
-G_BEGIN_DECLS
-
-struct _GfBackendClass
+struct _GfMonitorManagerKms
 {
-  GObjectClass parent_class;
-
-  void               (* post_init)              (GfBackend *backend);
-
-  GfMonitorManager * (* create_monitor_manager) (GfBackend *backend);
+  GfMonitorManager parent;
 };
 
-G_END_DECLS
+G_DEFINE_TYPE (GfMonitorManagerKms, gf_monitor_manager_kms, GF_TYPE_MONITOR_MANAGER)
 
-#endif
+static void
+gf_monitor_manager_kms_class_init (GfMonitorManagerKmsClass *kms_class)
+{
+}
+
+static void
+gf_monitor_manager_kms_init (GfMonitorManagerKms *kms)
+{
+}

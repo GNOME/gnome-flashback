@@ -21,6 +21,7 @@
 
 #include "config.h"
 #include "gf-backend-x11-cm-private.h"
+#include "gf-monitor-manager-xrandr-private.h"
 
 struct _GfBackendX11Cm
 {
@@ -29,19 +30,39 @@ struct _GfBackendX11Cm
 
 G_DEFINE_TYPE (GfBackendX11Cm, gf_backend_x11_cm, GF_TYPE_BACKEND_X11)
 
+static GfMonitorManager *
+gf_backend_x11_cm_create_monitor_manager (GfBackend *backend)
+{
+  return g_object_new (GF_TYPE_MONITOR_MANAGER_XRANDR,
+                       "backend", backend,
+                       NULL);
+}
+
 static gboolean
 gf_backend_x11_cm_handle_host_xevent (GfBackendX11 *x11,
                                       XEvent       *event)
 {
-  return FALSE;
+  GfBackend *backend;
+  GfMonitorManager *monitor_manager;
+  GfMonitorManagerXrandr *xrandr;
+
+  backend = GF_BACKEND (x11);
+  monitor_manager = gf_backend_get_monitor_manager (backend);
+  xrandr = GF_MONITOR_MANAGER_XRANDR (monitor_manager);
+
+  return gf_monitor_manager_xrandr_handle_xevent (xrandr, event);
 }
 
 static void
 gf_backend_x11_cm_class_init (GfBackendX11CmClass *x11_cm_class)
 {
+  GfBackendClass *backend_class;
   GfBackendX11Class *backend_x11_class;
 
+  backend_class = GF_BACKEND_CLASS (x11_cm_class);
   backend_x11_class = GF_BACKEND_X11_CLASS (x11_cm_class);
+
+  backend_class->create_monitor_manager = gf_backend_x11_cm_create_monitor_manager;
 
   backend_x11_class->handle_host_xevent = gf_backend_x11_cm_handle_host_xevent;
 }
