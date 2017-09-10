@@ -29,14 +29,17 @@ libbackends_la_SOURCES = \
 	gf-backend-x11.c \
 	gf-backend.c \
 	gf-backend.h \
+	gf-crtc-private.h \
 	gf-display-config-shared.h \
 	gf-edid-parse.c \
 	gf-edid-private.h \
 	gf-monitor-manager-dummy-private.h \
 	gf-monitor-manager-dummy.c \
+	gf-monitor-manager-enums-private.h \
 	gf-monitor-manager-kms-private.h \
 	gf-monitor-manager-kms.c \
 	gf-monitor-manager-private.h \
+	gf-monitor-manager-types-private.h \
 	gf-monitor-manager-xrandr-private.h \
 	gf-monitor-manager-xrandr.c \
 	gf-monitor-manager.c \
