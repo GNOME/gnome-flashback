@@ -48,6 +48,8 @@ libbackends_la_SOURCES = \
 	gf-monitor-spec.c \
 	gf-orientation-manager-private.h \
 	gf-orientation-manager.c \
+	gf-output-private.h \
+	gf-output.c \
 	gf-rectangle.h \
 	gf-settings-private.h \
 	gf-settings.c \

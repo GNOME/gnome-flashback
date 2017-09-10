@@ -41,6 +41,28 @@ typedef enum
   GF_MONITOR_TRANSFORM_FLIPPED_270,
 } GfMonitorTransform;
 
+/* This matches the values in drm_mode.h */
+typedef enum
+{
+  GF_CONNECTOR_TYPE_Unknown = 0,
+  GF_CONNECTOR_TYPE_VGA = 1,
+  GF_CONNECTOR_TYPE_DVII = 2,
+  GF_CONNECTOR_TYPE_DVID = 3,
+  GF_CONNECTOR_TYPE_DVIA = 4,
+  GF_CONNECTOR_TYPE_Composite = 5,
+  GF_CONNECTOR_TYPE_SVIDEO = 6,
+  GF_CONNECTOR_TYPE_LVDS = 7,
+  GF_CONNECTOR_TYPE_Component = 8,
+  GF_CONNECTOR_TYPE_9PinDIN = 9,
+  GF_CONNECTOR_TYPE_DisplayPort = 10,
+  GF_CONNECTOR_TYPE_HDMIA = 11,
+  GF_CONNECTOR_TYPE_HDMIB = 12,
+  GF_CONNECTOR_TYPE_TV = 13,
+  GF_CONNECTOR_TYPE_eDP = 14,
+  GF_CONNECTOR_TYPE_VIRTUAL = 15,
+  GF_CONNECTOR_TYPE_DSI = 16
+} GfConnectorType;
+
 /* Same as KMS mode flags and X11 randr flags */
 typedef enum
 {

@@ -32,6 +32,7 @@ G_BEGIN_DECLS
 typedef struct _GfLogicalMonitor GfLogicalMonitor;
 
 typedef struct _GfCrtc GfCrtc;
+typedef struct _GfOutput GfOutput;
 typedef struct _GfCrtcMode GfCrtcMode;
 
 G_END_DECLS
