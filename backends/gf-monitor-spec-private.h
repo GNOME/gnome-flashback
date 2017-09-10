@@ -22,17 +22,17 @@
 #ifndef GF_MONITOR_SPEC_PRIVATE_H
 #define GF_MONITOR_SPEC_PRIVATE_H
 
-#include <glib.h>
+#include "gf-monitor-manager-types-private.h"
 
 G_BEGIN_DECLS
 
-typedef struct
+struct _GfMonitorSpec
 {
   gchar *connector;
   gchar *vendor;
   gchar *product;
   gchar *serial;
-} GfMonitorSpec;
+};
 
 GfMonitorSpec *gf_monitor_spec_clone   (GfMonitorSpec *spec);
 

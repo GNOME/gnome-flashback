@@ -52,7 +52,9 @@ struct _GfMonitorManagerClass
   GfDBusDisplayConfigSkeletonClass parent_class;
 };
 
-GType gf_monitor_manager_get_type (void);
+GType      gf_monitor_manager_get_type    (void);
+
+GfBackend *gf_monitor_manager_get_backend (GfMonitorManager *manager);
 
 G_END_DECLS
 

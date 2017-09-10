@@ -28,6 +28,7 @@
 
 #include "gf-backend.h"
 #include "gf-monitor-manager-private.h"
+#include "gf-settings-private.h"
 
 G_BEGIN_DECLS
 
@@ -39,6 +40,8 @@ struct _GfBackendClass
 
   GfMonitorManager * (* create_monitor_manager) (GfBackend *backend);
 };
+
+GfSettings *gf_backend_get_settings (GfBackend *backend);
 
 G_END_DECLS
 

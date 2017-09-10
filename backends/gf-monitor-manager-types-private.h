@@ -29,7 +29,11 @@
 
 G_BEGIN_DECLS
 
+typedef struct _GfMonitor GfMonitor;
+typedef struct _GfMonitorSpec GfMonitorSpec;
 typedef struct _GfLogicalMonitor GfLogicalMonitor;
+
+typedef struct _GfMonitorMode GfMonitorMode;
 
 typedef struct _GfCrtc GfCrtc;
 typedef struct _GfOutput GfOutput;

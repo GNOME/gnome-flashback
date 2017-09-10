@@ -151,3 +151,13 @@ static void
 gf_monitor_manager_init (GfMonitorManager *manager)
 {
 }
+
+GfBackend *
+gf_monitor_manager_get_backend (GfMonitorManager *manager)
+{
+  GfMonitorManagerPrivate *priv;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
+
+  return priv->backend;
+}

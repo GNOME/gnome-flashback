@@ -182,3 +182,13 @@ gf_backend_get_monitor_manager (GfBackend *backend)
 
   return priv->monitor_manager;
 }
+
+GfSettings *
+gf_backend_get_settings (GfBackend *backend)
+{
+  GfBackendPrivate *priv;
+
+  priv = gf_backend_get_instance_private (backend);
+
+  return priv->settings;
+}

@@ -23,7 +23,7 @@
 #ifndef GF_SETTINGS_PRIVATE_H
 #define GF_SETTINGS_PRIVATE_H
 
-#include <glib-object.h>
+#include "gf-backend.h"
 
 G_BEGIN_DECLS
 
