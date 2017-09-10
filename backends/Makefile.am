@@ -29,6 +29,7 @@ libbackends_la_SOURCES = \
 	gf-backend-x11.c \
 	gf-backend.c \
 	gf-backend.h \
+	gf-display-config-shared.h \
 	gf-edid-parse.c \
 	gf-edid-private.h \
 	gf-monitor-manager-dummy-private.h \
