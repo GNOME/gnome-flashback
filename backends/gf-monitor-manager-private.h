@@ -25,6 +25,9 @@
 #ifndef GF_MONITOR_MANAGER_PRIVATE_H
 #define GF_MONITOR_MANAGER_PRIVATE_H
 
+#include <libgnome-desktop/gnome-pnp-ids.h>
+#include <libupower-glib/upower.h>
+
 #include "gf-backend-private.h"
 #include "gf-dbus-display-config.h"
 #include "gf-display-config-shared.h"
@@ -45,7 +48,40 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC (GfMonitorManager, g_object_unref)
 
 struct _GfMonitorManager
 {
-  GfDBusDisplayConfigSkeleton parent;
+  GfDBusDisplayConfigSkeleton  parent;
+
+  guint                        serial;
+
+  GfPowerSave                  power_save_mode;
+
+  GfLogicalMonitorLayoutMode   layout_mode;
+
+  gint                         screen_width;
+  gint                         screen_height;
+
+  /* Outputs refer to physical screens,
+   * CRTCs refer to stuff that can drive outputs
+   * (like encoders, but less tied to the HW),
+   * while logical_monitors refer to logical ones.
+   */
+  GfOutput                    *outputs;
+  guint                        n_outputs;
+
+  GfCrtcMode                  *modes;
+  guint                        n_modes;
+
+  GfCrtc                      *crtcs;
+  guint                        n_crtcs;
+
+  GList                       *monitors;
+
+  GList                       *logical_monitors;
+  GfLogicalMonitor            *primary_logical_monitor;
+
+  GfMonitorConfigManager      *config_manager;
+
+  GnomePnpIds                 *pnp_ids;
+  UpClient                    *up_client;
 };
 
 typedef struct

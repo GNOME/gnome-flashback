@@ -102,6 +102,8 @@ PKG_CHECK_MODULES([BACKENDS], [
   gio-2.0 >= $GLIB_REQUIRED
   gio-unix-2.0 >= $GLIB_REQUIRED
   glib-2.0 >= $GLIB_REQUIRED
+  gnome-desktop-3.0 >= $LIBGNOME_DESKTOP_REQUIRED
+  upower-glib >= $UPOWER_GLIB_REQUIRED
   x11
 ])
 

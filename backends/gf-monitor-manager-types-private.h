@@ -29,6 +29,7 @@
 
 G_BEGIN_DECLS
 
+typedef struct _GfMonitorConfigManager GfMonitorConfigManager;
 typedef struct _GfMonitorsConfig GfMonitorsConfig;
 
 typedef struct _GfMonitor GfMonitor;
