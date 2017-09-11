@@ -159,6 +159,9 @@ GType      gf_monitor_manager_get_type              (void);
 
 GfBackend *gf_monitor_manager_get_backend           (GfMonitorManager *manager);
 
+GfMonitor *gf_monitor_manager_get_monitor_from_spec (GfMonitorManager *manager,
+                                                     GfMonitorSpec    *monitor_spec);
+
 void       gf_monitor_manager_tiled_monitor_added   (GfMonitorManager *manager,
                                                      GfMonitor        *monitor);
 

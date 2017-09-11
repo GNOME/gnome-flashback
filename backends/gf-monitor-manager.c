@@ -27,6 +27,8 @@
 
 #include "config.h"
 #include "gf-monitor-manager-private.h"
+#include "gf-monitor-spec-private.h"
+#include "gf-monitor-private.h"
 
 typedef struct
 {
@@ -326,6 +328,23 @@ gf_monitor_manager_get_backend (GfMonitorManager *manager)
   priv = gf_monitor_manager_get_instance_private (manager);
 
   return priv->backend;
+}
+
+GfMonitor *
+gf_monitor_manager_get_monitor_from_spec (GfMonitorManager *manager,
+                                          GfMonitorSpec    *monitor_spec)
+{
+  GList *l;
+
+  for (l = manager->monitors; l; l = l->next)
+    {
+      GfMonitor *monitor = l->data;
+
+      if (gf_monitor_spec_equals (gf_monitor_get_spec (monitor), monitor_spec))
+        return monitor;
+    }
+
+  return NULL;
 }
 
 void
