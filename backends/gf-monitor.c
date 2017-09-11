@@ -852,6 +852,15 @@ gf_monitor_calculate_supported_scales (GfMonitor                 *monitor,
         }
     }
 
+  if (supported_scales->len == 0)
+    {
+      gfloat fallback_scale;
+
+      fallback_scale = 1.0;
+
+      g_array_append_val (supported_scales, fallback_scale);
+    }
+
   *n_supported_scales = supported_scales->len;
   return (gfloat *) g_array_free (supported_scales, FALSE);
 }
