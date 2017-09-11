@@ -31,6 +31,8 @@
 typedef struct
 {
   GfBackend *backend;
+
+  guint      bus_name_id;
 } GfMonitorManagerPrivate;
 
 enum
@@ -59,9 +61,147 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GfMonitorManager, gf_monitor_manager, GF_DBUS_
                                   G_ADD_PRIVATE (GfMonitorManager)
                                   G_IMPLEMENT_INTERFACE (GF_DBUS_TYPE_DISPLAY_CONFIG, gf_monitor_manager_display_config_init))
 
+static gboolean
+gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
+                                         GDBusMethodInvocation *invocation)
+{
+  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                         G_DBUS_ERROR_FAILED,
+                                         "Not implemented");
+
+  return TRUE;
+}
+
+static gboolean
+gf_monitor_manager_handle_change_backlight (GfDBusDisplayConfig   *skeleton,
+                                            GDBusMethodInvocation *invocation,
+                                            guint                  serial,
+                                            guint                  output_index,
+                                            gint                   value)
+{
+  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                         G_DBUS_ERROR_FAILED,
+                                         "Not implemented");
+
+  return TRUE;
+}
+
+static gboolean
+gf_monitor_manager_handle_get_crtc_gamma (GfDBusDisplayConfig   *skeleton,
+                                          GDBusMethodInvocation *invocation,
+                                          guint                  serial,
+                                          guint                  crtc_id)
+{
+  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                         G_DBUS_ERROR_FAILED,
+                                         "Not implemented");
+
+  return TRUE;
+}
+
+static gboolean
+gf_monitor_manager_handle_set_crtc_gamma (GfDBusDisplayConfig   *skeleton,
+                                          GDBusMethodInvocation *invocation,
+                                          guint                  serial,
+                                          guint                  crtc_id,
+                                          GVariant              *red_v,
+                                          GVariant              *green_v,
+                                          GVariant              *blue_v)
+{
+  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                         G_DBUS_ERROR_FAILED,
+                                         "Not implemented");
+
+  return TRUE;
+}
+
+static gboolean
+gf_monitor_manager_handle_get_current_state (GfDBusDisplayConfig   *skeleton,
+                                             GDBusMethodInvocation *invocation)
+{
+  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                         G_DBUS_ERROR_FAILED,
+                                         "Not implemented");
+
+  return TRUE;
+}
+
+static gboolean
+gf_monitor_manager_handle_apply_monitors_config (GfDBusDisplayConfig   *skeleton,
+                                                 GDBusMethodInvocation *invocation,
+                                                 guint                  serial,
+                                                 guint                  method,
+                                                 GVariant              *logical_monitor_configs_variant,
+                                                 GVariant              *properties_variant)
+{
+  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                         G_DBUS_ERROR_FAILED,
+                                         "Not implemented");
+
+  return TRUE;
+}
+
 static void
 gf_monitor_manager_display_config_init (GfDBusDisplayConfigIface *iface)
 {
+  iface->handle_get_resources = gf_monitor_manager_handle_get_resources;
+  iface->handle_change_backlight = gf_monitor_manager_handle_change_backlight;
+  iface->handle_get_crtc_gamma = gf_monitor_manager_handle_get_crtc_gamma;
+  iface->handle_set_crtc_gamma = gf_monitor_manager_handle_set_crtc_gamma;
+  iface->handle_get_current_state = gf_monitor_manager_handle_get_current_state;
+  iface->handle_apply_monitors_config = gf_monitor_manager_handle_apply_monitors_config;
+}
+
+static void
+bus_acquired_cb (GDBusConnection *connection,
+                 const gchar     *name,
+                 gpointer         user_data)
+{
+  GfMonitorManager *manager;
+  GDBusInterfaceSkeleton *skeleton;
+
+  manager = GF_MONITOR_MANAGER (user_data);
+  skeleton = G_DBUS_INTERFACE_SKELETON (manager);
+
+  g_dbus_interface_skeleton_export (skeleton, connection,
+                                    "/org/gnome/Mutter/DisplayConfig",
+                                    NULL);
+}
+
+static void
+name_acquired_cb (GDBusConnection *connection,
+                  const gchar     *name,
+                  gpointer         user_data)
+{
+}
+
+static void
+name_lost_cb (GDBusConnection *connection,
+              const gchar     *name,
+              gpointer         user_data)
+{
+}
+
+static void
+gf_monitor_manager_constructed (GObject *object)
+{
+  GfMonitorManager *manager;
+  GfMonitorManagerPrivate *priv;
+
+  manager = GF_MONITOR_MANAGER (object);
+  priv = gf_monitor_manager_get_instance_private (manager);
+
+  G_OBJECT_CLASS (gf_monitor_manager_parent_class)->constructed (object);
+
+  priv->bus_name_id = g_bus_own_name (G_BUS_TYPE_SESSION,
+                                      "org.gnome.Mutter.DisplayConfig",
+                                      G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
+                                      G_BUS_NAME_OWNER_FLAGS_REPLACE,
+                                      bus_acquired_cb,
+                                      name_acquired_cb,
+                                      name_lost_cb,
+                                      g_object_ref (manager),
+                                      g_object_unref);
 }
 
 static void
@@ -72,6 +212,12 @@ gf_monitor_manager_dispose (GObject *object)
 
   manager = GF_MONITOR_MANAGER (object);
   priv = gf_monitor_manager_get_instance_private (manager);
+
+  if (priv->bus_name_id != 0)
+    {
+      g_bus_unown_name (priv->bus_name_id);
+      priv->bus_name_id = 0;
+    }
 
   priv->backend = NULL;
 
@@ -158,6 +304,7 @@ gf_monitor_manager_class_init (GfMonitorManagerClass *manager_class)
 
   object_class = G_OBJECT_CLASS (manager_class);
 
+  object_class->constructed = gf_monitor_manager_constructed;
   object_class->dispose = gf_monitor_manager_dispose;
   object_class->get_property = gf_monitor_manager_get_property;
   object_class->set_property = gf_monitor_manager_set_property;
