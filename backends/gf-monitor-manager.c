@@ -44,6 +44,15 @@ enum
 
 static GParamSpec *manager_properties[LAST_PROP] = { NULL };
 
+enum
+{
+  CONFIRM_DISPLAY_CHANGE,
+
+  LAST_SIGNAL
+};
+
+static guint manager_signals[LAST_SIGNAL] = { 0 };
+
 static void gf_monitor_manager_display_config_init (GfDBusDisplayConfigIface *iface);
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GfMonitorManager, gf_monitor_manager, GF_DBUS_TYPE_DISPLAY_CONFIG_SKELETON,
@@ -134,6 +143,15 @@ gf_monitor_manager_install_properties (GObjectClass *object_class)
 }
 
 static void
+gf_monitor_manager_install_signals (GObjectClass *object_class)
+{
+  manager_signals[CONFIRM_DISPLAY_CHANGE] =
+    g_signal_new ("confirm-display-change",
+                  G_TYPE_FROM_CLASS (object_class), G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+}
+
+static void
 gf_monitor_manager_class_init (GfMonitorManagerClass *manager_class)
 {
   GObjectClass *object_class;
@@ -145,6 +163,7 @@ gf_monitor_manager_class_init (GfMonitorManagerClass *manager_class)
   object_class->set_property = gf_monitor_manager_set_property;
 
   gf_monitor_manager_install_properties (object_class);
+  gf_monitor_manager_install_signals (object_class);
 }
 
 static void
