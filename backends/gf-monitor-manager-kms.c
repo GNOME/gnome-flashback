@@ -34,8 +34,125 @@ struct _GfMonitorManagerKms
 G_DEFINE_TYPE (GfMonitorManagerKms, gf_monitor_manager_kms, GF_TYPE_MONITOR_MANAGER)
 
 static void
+gf_monitor_manager_kms_read_current (GfMonitorManager *manager)
+{
+}
+
+static GBytes *
+gf_monitor_manager_kms_read_edid (GfMonitorManager *manager,
+                                  GfOutput         *output)
+{
+  return NULL;
+}
+
+static void
+gf_monitor_manager_kms_ensure_initial_config (GfMonitorManager *manager)
+{
+}
+
+static gboolean
+gf_monitor_manager_kms_apply_monitors_config (GfMonitorManager        *manager,
+                                              GfMonitorsConfig        *config,
+                                              GfMonitorsConfigMethod   method,
+                                              GError                 **error)
+{
+  g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Not implemented");
+  return FALSE;
+}
+
+static void
+gf_monitor_manager_kms_set_power_save_mode (GfMonitorManager *manager,
+                                            GfPowerSave       mode)
+{
+}
+
+static void
+gf_monitor_manager_kms_get_crtc_gamma (GfMonitorManager  *manager,
+                                       GfCrtc            *crtc,
+                                       gsize             *size,
+                                       gushort          **red,
+                                       gushort          **green,
+                                       gushort          **blue)
+{
+}
+
+static void
+gf_monitor_manager_kms_set_crtc_gamma (GfMonitorManager *manager,
+                                       GfCrtc           *crtc,
+                                       gsize             size,
+                                       gushort          *red,
+                                       gushort          *green,
+                                       gushort          *blue)
+{
+}
+
+static gboolean
+gf_monitor_manager_kms_is_transform_handled (GfMonitorManager   *manager,
+                                             GfCrtc             *crtc,
+                                             GfMonitorTransform  transform)
+{
+  return FALSE;
+}
+
+static gfloat
+gf_monitor_manager_kms_calculate_monitor_mode_scale (GfMonitorManager *manager,
+                                                     GfMonitor        *monitor,
+                                                     GfMonitorMode    *monitor_mode)
+{
+  return 1.0;
+}
+
+static gfloat *
+gf_monitor_manager_kms_calculate_supported_scales (GfMonitorManager           *manager,
+                                                   GfLogicalMonitorLayoutMode  layout_mode,
+                                                   GfMonitor                  *monitor,
+                                                   GfMonitorMode              *monitor_mode,
+                                                   gint                       *n_supported_scales)
+{
+  *n_supported_scales = 0;
+  return NULL;
+}
+
+static GfMonitorManagerCapability
+gf_monitor_manager_kms_get_capabilities (GfMonitorManager *manager)
+{
+  return GF_MONITOR_MANAGER_CAPABILITY_NONE;
+}
+
+static gboolean
+gf_monitor_manager_kms_get_max_screen_size (GfMonitorManager *manager,
+                                            gint             *max_width,
+                                            gint             *max_height)
+{
+  return FALSE;
+}
+
+static GfLogicalMonitorLayoutMode
+gf_monitor_manager_kms_get_default_layout_mode (GfMonitorManager *manager)
+{
+  return GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL;
+}
+
+static void
 gf_monitor_manager_kms_class_init (GfMonitorManagerKmsClass *kms_class)
 {
+  GfMonitorManagerClass *manager_class;
+
+  manager_class = GF_MONITOR_MANAGER_CLASS (kms_class);
+
+  manager_class->read_current = gf_monitor_manager_kms_read_current;
+  manager_class->read_edid = gf_monitor_manager_kms_read_edid;
+  manager_class->ensure_initial_config = gf_monitor_manager_kms_ensure_initial_config;
+  manager_class->apply_monitors_config = gf_monitor_manager_kms_apply_monitors_config;
+  manager_class->set_power_save_mode = gf_monitor_manager_kms_set_power_save_mode;
+  manager_class->get_crtc_gamma = gf_monitor_manager_kms_get_crtc_gamma;
+  manager_class->set_crtc_gamma = gf_monitor_manager_kms_set_crtc_gamma;
+  manager_class->is_transform_handled = gf_monitor_manager_kms_is_transform_handled;
+  manager_class->calculate_monitor_mode_scale = gf_monitor_manager_kms_calculate_monitor_mode_scale;
+  manager_class->calculate_supported_scales = gf_monitor_manager_kms_calculate_supported_scales;
+  manager_class->get_capabilities = gf_monitor_manager_kms_get_capabilities;
+  manager_class->get_max_screen_size = gf_monitor_manager_kms_get_max_screen_size;
+  manager_class->get_default_layout_mode = gf_monitor_manager_kms_get_default_layout_mode;
 }
 
 static void

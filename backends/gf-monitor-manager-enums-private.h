@@ -31,6 +31,29 @@ G_BEGIN_DECLS
 
 typedef enum
 {
+  GF_MONITOR_MANAGER_CAPABILITY_NONE = 0,
+  GF_MONITOR_MANAGER_CAPABILITY_MIRRORING = (1 << 0),
+  GF_MONITOR_MANAGER_CAPABILITY_LAYOUT_MODE = (1 << 1),
+  GF_MONITOR_MANAGER_CAPABILITY_GLOBAL_SCALE_REQUIRED = (1 << 2)
+} GfMonitorManagerCapability;
+
+/* Equivalent to the 'method' enum in org.gnome.Mutter.DisplayConfig */
+typedef enum
+{
+  GF_MONITORS_CONFIG_METHOD_VERIFY = 0,
+  GF_MONITORS_CONFIG_METHOD_TEMPORARY = 1,
+  GF_MONITORS_CONFIG_METHOD_PERSISTENT = 2
+} GfMonitorsConfigMethod;
+
+/* Equivalent to the 'layout-mode' enum in org.gnome.Mutter.DisplayConfig */
+typedef enum
+{
+  GF_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL = 1,
+  GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL = 2
+} GfLogicalMonitorLayoutMode;
+
+typedef enum
+{
   GF_MONITOR_TRANSFORM_NORMAL,
   GF_MONITOR_TRANSFORM_90,
   GF_MONITOR_TRANSFORM_180,

@@ -27,11 +27,12 @@
 
 #include "gf-backend-private.h"
 #include "gf-dbus-display-config.h"
+#include "gf-display-config-shared.h"
+#include "gf-monitor-manager-enums-private.h"
+#include "gf-monitor-manager-types-private.h"
 #include "gf-monitor-manager.h"
 
 G_BEGIN_DECLS
-
-typedef struct _GfMonitorManagerClass GfMonitorManagerClass;
 
 #define GF_TYPE_MONITOR_MANAGER         (gf_monitor_manager_get_type ())
 #define GF_MONITOR_MANAGER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), GF_TYPE_MONITOR_MANAGER, GfMonitorManager))
@@ -47,10 +48,76 @@ struct _GfMonitorManager
   GfDBusDisplayConfigSkeleton parent;
 };
 
-struct _GfMonitorManagerClass
+typedef struct
 {
   GfDBusDisplayConfigSkeletonClass parent_class;
-};
+
+  void                         (* read_current)                 (GfMonitorManager            *manager);
+
+  gchar                      * (* get_edid_file)                (GfMonitorManager            *manager,
+                                                                 GfOutput                    *output);
+
+  GBytes                     * (* read_edid)                    (GfMonitorManager            *manager,
+                                                                 GfOutput                    *output);
+
+  gboolean                     (* is_lid_closed)                (GfMonitorManager            *manager);
+
+  void                         (* ensure_initial_config)        (GfMonitorManager            *manager);
+
+  gboolean                     (* apply_monitors_config)        (GfMonitorManager            *manager,
+                                                                 GfMonitorsConfig            *config,
+                                                                 GfMonitorsConfigMethod       method,
+                                                                 GError                     **error);
+
+  void                         (* set_power_save_mode)          (GfMonitorManager            *manager,
+                                                                 GfPowerSave                  mode);
+
+  void                         (* change_backlight)             (GfMonitorManager            *manager,
+                                                                 GfOutput                    *output,
+                                                                 gint                         value);
+
+  void                         (* get_crtc_gamma)               (GfMonitorManager            *manager,
+                                                                 GfCrtc                      *crtc,
+                                                                 gsize                       *size,
+                                                                 gushort                    **red,
+                                                                 gushort                    **green,
+                                                                 gushort                    **blue);
+
+  void                         (* set_crtc_gamma)               (GfMonitorManager            *manager,
+                                                                 GfCrtc                      *crtc,
+                                                                 gsize                        size,
+                                                                 gushort                     *red,
+                                                                 gushort                     *green,
+                                                                 gushort                     *blue);
+
+  void                         (* tiled_monitor_added)          (GfMonitorManager            *manager,
+                                                                 GfMonitor                   *monitor);
+
+  void                         (* tiled_monitor_removed)        (GfMonitorManager            *manager,
+                                                                 GfMonitor                   *monitor);
+
+  gboolean                     (* is_transform_handled)         (GfMonitorManager            *manager,
+                                                                 GfCrtc                      *crtc,
+                                                                 GfMonitorTransform           transform);
+
+  gfloat                       (* calculate_monitor_mode_scale) (GfMonitorManager            *manager,
+                                                                 GfMonitor                   *monitor,
+                                                                 GfMonitorMode               *monitor_mode);
+
+  gfloat                     * (* calculate_supported_scales)   (GfMonitorManager            *manager,
+                                                                 GfLogicalMonitorLayoutMode   layout_mode,
+                                                                 GfMonitor                   *monitor,
+                                                                 GfMonitorMode               *monitor_mode,
+                                                                 gint                         *n_supported_scales);
+
+  GfMonitorManagerCapability   (* get_capabilities)             (GfMonitorManager            *manager);
+
+  gboolean                     (* get_max_screen_size)          (GfMonitorManager            *manager,
+                                                                 gint                        *max_width,
+                                                                 gint                        *max_height);
+
+  GfLogicalMonitorLayoutMode   (* get_default_layout_mode)      (GfMonitorManager            *manager);
+} GfMonitorManagerClass;
 
 GType      gf_monitor_manager_get_type    (void);
 
