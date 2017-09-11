@@ -161,3 +161,27 @@ gf_monitor_manager_get_backend (GfMonitorManager *manager)
 
   return priv->backend;
 }
+
+void
+gf_monitor_manager_tiled_monitor_added (GfMonitorManager *manager,
+                                        GfMonitor        *monitor)
+{
+  GfMonitorManagerClass *manager_class;
+
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
+
+  if (manager_class->tiled_monitor_added)
+    manager_class->tiled_monitor_added (manager, monitor);
+}
+
+void
+gf_monitor_manager_tiled_monitor_removed (GfMonitorManager *manager,
+                                          GfMonitor        *monitor)
+{
+  GfMonitorManagerClass *manager_class;
+
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
+
+  if (manager_class->tiled_monitor_removed)
+    manager_class->tiled_monitor_removed (manager, monitor);
+}

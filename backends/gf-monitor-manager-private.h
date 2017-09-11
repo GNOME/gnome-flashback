@@ -155,9 +155,15 @@ typedef struct
   GfLogicalMonitorLayoutMode   (* get_default_layout_mode)      (GfMonitorManager            *manager);
 } GfMonitorManagerClass;
 
-GType      gf_monitor_manager_get_type    (void);
+GType      gf_monitor_manager_get_type              (void);
 
-GfBackend *gf_monitor_manager_get_backend (GfMonitorManager *manager);
+GfBackend *gf_monitor_manager_get_backend           (GfMonitorManager *manager);
+
+void       gf_monitor_manager_tiled_monitor_added   (GfMonitorManager *manager,
+                                                     GfMonitor        *monitor);
+
+void       gf_monitor_manager_tiled_monitor_removed (GfMonitorManager *manager,
+                                                     GfMonitor        *monitor);
 
 G_END_DECLS
 

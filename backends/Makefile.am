@@ -49,6 +49,8 @@ libbackends_la_SOURCES = \
 	gf-monitor-private.h \
 	gf-monitor-spec-private.h \
 	gf-monitor-spec.c \
+	gf-monitor-tiled-private.h \
+	gf-monitor-tiled.c \
 	gf-monitor.c \
 	gf-orientation-manager-private.h \
 	gf-orientation-manager.c \
