@@ -36,6 +36,7 @@
 #define MAXIMUM_SCALE_FACTOR 4.0f
 #define MINIMUM_LOGICAL_WIDTH 800
 #define MINIMUM_LOGICAL_HEIGHT 600
+#define MAXIMUM_REFRESH_RATE_DIFF 0.001
 
 /* The minimum screen height at which we turn on a window-scale of 2;
  * below this there just isn't enough vertical real estate for GNOME
@@ -91,9 +92,13 @@ static gboolean
 gf_monitor_mode_spec_equals (GfMonitorModeSpec *spec,
                              GfMonitorModeSpec *other_spec)
 {
+  gfloat refresh_rate_diff;
+
+  refresh_rate_diff = ABS (spec->refresh_rate - other_spec->refresh_rate);
+
   return (spec->width == other_spec->width &&
           spec->height == other_spec->height &&
-          spec->refresh_rate == other_spec->refresh_rate &&
+          refresh_rate_diff < MAXIMUM_REFRESH_RATE_DIFF &&
           spec->flags == other_spec->flags);
 }
 
