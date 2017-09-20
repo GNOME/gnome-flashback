@@ -39,6 +39,7 @@ libbackends_la_SOURCES = \
 	gf-logical-monitor-private.h \
 	gf-logical-monitor.c \
 	gf-monitor-config-manager-private.h \
+	gf-monitor-config-manager.c \
 	gf-monitor-config-migration-private.h \
 	gf-monitor-config-migration.c \
 	gf-monitor-config-private.h \

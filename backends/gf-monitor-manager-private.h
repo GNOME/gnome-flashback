@@ -155,22 +155,38 @@ typedef struct
   GfLogicalMonitorLayoutMode   (* get_default_layout_mode)      (GfMonitorManager            *manager);
 } GfMonitorManagerClass;
 
-GType                       gf_monitor_manager_get_type                (void);
+GType                       gf_monitor_manager_get_type                     (void);
 
-GfBackend                  *gf_monitor_manager_get_backend             (GfMonitorManager *manager);
+GfBackend                  *gf_monitor_manager_get_backend                  (GfMonitorManager   *manager);
 
-GfMonitor                  *gf_monitor_manager_get_monitor_from_spec   (GfMonitorManager *manager,
-                                                                        GfMonitorSpec    *monitor_spec);
+GfMonitor                  *gf_monitor_manager_get_primary_monitor          (GfMonitorManager   *manager);
 
-void                        gf_monitor_manager_tiled_monitor_added     (GfMonitorManager *manager,
-                                                                        GfMonitor        *monitor);
+GfMonitor                  *gf_monitor_manager_get_laptop_panel             (GfMonitorManager   *manager);
 
-void                        gf_monitor_manager_tiled_monitor_removed   (GfMonitorManager *manager,
-                                                                        GfMonitor        *monitor);
+GfMonitor                  *gf_monitor_manager_get_monitor_from_spec        (GfMonitorManager   *manager,
+                                                                             GfMonitorSpec      *monitor_spec);
 
-GfMonitorManagerCapability  gf_monitor_manager_get_capabilities        (GfMonitorManager *manager);
+GList                      *gf_monitor_manager_get_monitors                 (GfMonitorManager   *manager);
 
-GfLogicalMonitorLayoutMode  gf_monitor_manager_get_default_layout_mode (GfMonitorManager *manager);
+void                        gf_monitor_manager_tiled_monitor_added          (GfMonitorManager   *manager,
+                                                                             GfMonitor          *monitor);
+
+void                        gf_monitor_manager_tiled_monitor_removed        (GfMonitorManager   *manager,
+                                                                             GfMonitor          *monitor);
+
+gboolean                    gf_monitor_manager_is_transform_handled         (GfMonitorManager   *manager,
+                                                                             GfCrtc             *crtc,
+                                                                             GfMonitorTransform  transform);
+
+gboolean                    gf_monitor_manager_is_lid_closed                (GfMonitorManager   *manager);
+
+gfloat                      gf_monitor_manager_calculate_monitor_mode_scale (GfMonitorManager   *manager,
+                                                                             GfMonitor          *monitor,
+                                                                             GfMonitorMode      *monitor_mode);
+
+GfMonitorManagerCapability  gf_monitor_manager_get_capabilities             (GfMonitorManager   *manager);
+
+GfLogicalMonitorLayoutMode  gf_monitor_manager_get_default_layout_mode      (GfMonitorManager   *manager);
 
 static inline gboolean
 gf_monitor_transform_is_rotated (GfMonitorTransform transform)

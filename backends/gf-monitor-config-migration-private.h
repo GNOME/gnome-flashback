@@ -33,6 +33,10 @@ gboolean gf_migrate_old_monitors_config      (GfMonitorConfigStore  *config_stor
 gboolean gf_migrate_old_user_monitors_config (GfMonitorConfigStore  *config_store,
                                               GError               **error);
 
+gboolean gf_finish_monitors_config_migration (GfMonitorManager      *monitor_manager,
+                                              GfMonitorsConfig      *config,
+                                              GError               **error);
+
 G_END_DECLS
 
 #endif

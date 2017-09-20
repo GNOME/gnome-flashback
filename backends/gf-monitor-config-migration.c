@@ -58,3 +58,12 @@ gf_migrate_old_user_monitors_config (GfMonitorConfigStore  *config_store,
   g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Not implemented");
   return FALSE;
 }
+
+gboolean
+gf_finish_monitors_config_migration (GfMonitorManager  *monitor_manager,
+                                     GfMonitorsConfig  *config,
+                                     GError           **error)
+{
+  g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Not implemented");
+  return FALSE;
+}

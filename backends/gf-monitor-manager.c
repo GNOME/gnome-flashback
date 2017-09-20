@@ -37,6 +37,8 @@ typedef struct
   guint      bus_name_id;
 } GfMonitorManagerPrivate;
 
+typedef gboolean (* MonitorMatchFunc) (GfMonitor *monitor);
+
 enum
 {
   PROP_0,
@@ -62,6 +64,25 @@ static void gf_monitor_manager_display_config_init (GfDBusDisplayConfigIface *if
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GfMonitorManager, gf_monitor_manager, GF_DBUS_TYPE_DISPLAY_CONFIG_SKELETON,
                                   G_ADD_PRIVATE (GfMonitorManager)
                                   G_IMPLEMENT_INTERFACE (GF_DBUS_TYPE_DISPLAY_CONFIG, gf_monitor_manager_display_config_init))
+
+static GfMonitor *
+find_monitor (GfMonitorManager *monitor_manager,
+              MonitorMatchFunc  match_func)
+{
+  GList *monitors;
+  GList *l;
+
+  monitors = gf_monitor_manager_get_monitors (monitor_manager);
+  for (l = monitors; l; l = l->next)
+    {
+      GfMonitor *monitor = l->data;
+
+      if (match_func (monitor))
+        return monitor;
+    }
+
+  return NULL;
+}
 
 static gboolean
 gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
@@ -331,6 +352,18 @@ gf_monitor_manager_get_backend (GfMonitorManager *manager)
 }
 
 GfMonitor *
+gf_monitor_manager_get_primary_monitor (GfMonitorManager *manager)
+{
+  return find_monitor (manager, gf_monitor_is_primary);
+}
+
+GfMonitor *
+gf_monitor_manager_get_laptop_panel (GfMonitorManager *manager)
+{
+  return find_monitor (manager, gf_monitor_is_laptop_panel);
+}
+
+GfMonitor *
 gf_monitor_manager_get_monitor_from_spec (GfMonitorManager *manager,
                                           GfMonitorSpec    *monitor_spec)
 {
@@ -345,6 +378,12 @@ gf_monitor_manager_get_monitor_from_spec (GfMonitorManager *manager,
     }
 
   return NULL;
+}
+
+GList *
+gf_monitor_manager_get_monitors (GfMonitorManager *manager)
+{
+  return manager->monitors;
 }
 
 void
@@ -371,6 +410,36 @@ gf_monitor_manager_tiled_monitor_removed (GfMonitorManager *manager,
     manager_class->tiled_monitor_removed (manager, monitor);
 }
 
+gboolean
+gf_monitor_manager_is_transform_handled (GfMonitorManager   *manager,
+                                         GfCrtc             *crtc,
+                                         GfMonitorTransform  transform)
+{
+  GfMonitorManagerClass *manager_class;
+
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
+
+  return manager_class->is_transform_handled (manager, crtc, transform);
+}
+
+gboolean
+gf_monitor_manager_is_lid_closed (GfMonitorManager *manager)
+{
+  return GF_MONITOR_MANAGER_GET_CLASS (manager)->is_lid_closed (manager);
+}
+
+gfloat
+gf_monitor_manager_calculate_monitor_mode_scale (GfMonitorManager *manager,
+                                                 GfMonitor        *monitor,
+                                                 GfMonitorMode    *monitor_mode)
+{
+  GfMonitorManagerClass *manager_class;
+
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
+
+  return manager_class->calculate_monitor_mode_scale (manager, monitor, monitor_mode);
+}
+
 GfMonitorManagerCapability
 gf_monitor_manager_get_capabilities (GfMonitorManager *manager)
 {
@@ -389,4 +458,25 @@ gf_monitor_manager_get_default_layout_mode (GfMonitorManager *manager)
   manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
 
   return manager_class->get_default_layout_mode (manager);
+}
+
+gboolean
+gf_monitor_manager_get_is_builtin_display_on (GfMonitorManager *manager)
+{
+  GfMonitor *laptop_panel;
+
+  g_return_val_if_fail (GF_IS_MONITOR_MANAGER (manager), FALSE);
+
+  laptop_panel = gf_monitor_manager_get_laptop_panel (manager);
+  if (!laptop_panel)
+    return FALSE;
+
+  return gf_monitor_is_active (laptop_panel);
+}
+
+gboolean
+gf_monitor_manager_can_switch_config (GfMonitorManager *manager)
+{
+  return (!gf_monitor_manager_is_lid_closed (manager) &&
+          g_list_length (manager->monitors) > 1);
 }

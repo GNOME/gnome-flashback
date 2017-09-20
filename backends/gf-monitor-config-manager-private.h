@@ -22,10 +22,54 @@
 #ifndef GF_MONITOR_CONFIG_MANAGER_PRIVATE_H
 #define GF_MONITOR_CONFIG_MANAGER_PRIVATE_H
 
+#include "gf-logical-monitor-config-private.h"
+#include "gf-monitor-config-private.h"
 #include "gf-monitor-manager-private.h"
-#include "gf-monitor-private.h"
 
 G_BEGIN_DECLS
+
+#define GF_TYPE_MONITOR_CONFIG_MANAGER (gf_monitor_config_manager_get_type ())
+G_DECLARE_FINAL_TYPE (GfMonitorConfigManager, gf_monitor_config_manager,
+                      GF, MONITOR_CONFIG_MANAGER, GObject)
+
+GfMonitorConfigManager *gf_monitor_config_manager_new                       (GfMonitorManager            *monitor_manager);
+
+GfMonitorConfigStore   *gf_monitor_config_manager_get_store                 (GfMonitorConfigManager      *config_manager);
+
+gboolean                gf_monitor_config_manager_assign                    (GfMonitorManager            *manager,
+                                                                             GfMonitorsConfig            *config,
+                                                                             GPtrArray                  **crtc_infos,
+                                                                             GPtrArray                  **output_infos,
+                                                                             GError                     **error);
+
+GfMonitorsConfig       *gf_monitor_config_manager_get_stored                (GfMonitorConfigManager      *config_manager);
+
+GfMonitorsConfig       *gf_monitor_config_manager_create_linear             (GfMonitorConfigManager      *config_manager);
+
+GfMonitorsConfig       *gf_monitor_config_manager_create_fallback           (GfMonitorConfigManager      *config_manager);
+
+GfMonitorsConfig       *gf_monitor_config_manager_create_suggested          (GfMonitorConfigManager      *config_manager);
+
+GfMonitorsConfig       *gf_monitor_config_manager_create_for_orientation    (GfMonitorConfigManager      *config_manager,
+                                                                             GfMonitorTransform           transform);
+
+GfMonitorsConfig       *gf_monitor_config_manager_create_for_rotate_monitor (GfMonitorConfigManager      *config_manager);
+
+GfMonitorsConfig       *gf_monitor_config_manager_create_for_switch_config  (GfMonitorConfigManager      *config_manager,
+                                                                             GfMonitorSwitchConfigType    config_type);
+
+void                    gf_monitor_config_manager_set_current               (GfMonitorConfigManager      *config_manager,
+                                                                             GfMonitorsConfig            *config);
+
+GfMonitorsConfig       *gf_monitor_config_manager_get_current               (GfMonitorConfigManager      *config_manager);
+
+GfMonitorsConfig       *gf_monitor_config_manager_pop_previous              (GfMonitorConfigManager      *config_manager);
+
+GfMonitorsConfig       *gf_monitor_config_manager_get_previous              (GfMonitorConfigManager      *config_manager);
+
+void                    gf_monitor_config_manager_clear_history             (GfMonitorConfigManager      *config_manager);
+
+void                    gf_monitor_config_manager_save_current              (GfMonitorConfigManager      *config_manager);
 
 G_END_DECLS
 

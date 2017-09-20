@@ -26,7 +26,20 @@
 
 G_BEGIN_DECLS
 
+typedef enum
+{
+  GF_MONITOR_SWITCH_CONFIG_ALL_MIRROR,
+  GF_MONITOR_SWITCH_CONFIG_ALL_LINEAR,
+  GF_MONITOR_SWITCH_CONFIG_EXTERNAL,
+  GF_MONITOR_SWITCH_CONFIG_BUILTIN,
+  GF_MONITOR_SWITCH_CONFIG_UNKNOWN,
+} GfMonitorSwitchConfigType;
+
 typedef struct _GfMonitorManager GfMonitorManager;
+
+gboolean gf_monitor_manager_get_is_builtin_display_on (GfMonitorManager *manager);
+
+gboolean gf_monitor_manager_can_switch_config         (GfMonitorManager *manager);
 
 G_END_DECLS
 
