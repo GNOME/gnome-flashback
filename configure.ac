@@ -105,7 +105,9 @@ PKG_CHECK_MODULES([BACKENDS], [
   glib-2.0 >= $GLIB_REQUIRED
   gnome-desktop-3.0 >= $LIBGNOME_DESKTOP_REQUIRED
   upower-glib >= $UPOWER_GLIB_REQUIRED
+  xcb-randr
   xrandr >= $XRANDR_REQUIRED
+  x11-xcb
   x11
 ])
 

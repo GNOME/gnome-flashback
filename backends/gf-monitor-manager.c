@@ -26,13 +26,25 @@
  */
 
 #include "config.h"
+
+#include <string.h>
+
+#include "gf-crtc-private.h"
+#include "gf-logical-monitor-private.h"
+#include "gf-monitor-config-manager-private.h"
 #include "gf-monitor-manager-private.h"
-#include "gf-monitor-spec-private.h"
+#include "gf-monitor-normal-private.h"
 #include "gf-monitor-private.h"
+#include "gf-monitor-spec-private.h"
+#include "gf-monitor-tiled-private.h"
+#include "gf-monitors-config-private.h"
+#include "gf-output-private.h"
 
 typedef struct
 {
   GfBackend *backend;
+
+  gboolean   in_init;
 
   guint      bus_name_id;
 } GfMonitorManagerPrivate;
@@ -65,6 +77,25 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GfMonitorManager, gf_monitor_manager, GF_DBUS_
                                   G_ADD_PRIVATE (GfMonitorManager)
                                   G_IMPLEMENT_INTERFACE (GF_DBUS_TYPE_DISPLAY_CONFIG, gf_monitor_manager_display_config_init))
 
+static void
+gf_monitor_manager_update_monitor_modes_derived (GfMonitorManager *manager)
+{
+  GList *l;
+
+  for (l = manager->monitors; l; l = l->next)
+    {
+      GfMonitor *monitor = l->data;
+
+      gf_monitor_derive_current_mode (monitor);
+    }
+}
+
+static void
+gf_monitor_manager_notify_monitors_changed (GfMonitorManager *manager)
+{
+  g_signal_emit_by_name (manager, "monitors-changed");
+}
+
 static GfMonitor *
 find_monitor (GfMonitorManager *monitor_manager,
               MonitorMatchFunc  match_func)
@@ -82,6 +113,373 @@ find_monitor (GfMonitorManager *monitor_manager,
     }
 
   return NULL;
+}
+
+static gboolean
+gf_monitor_manager_is_config_applicable (GfMonitorManager  *manager,
+                                         GfMonitorsConfig  *config,
+                                         GError           **error)
+{
+  GList *l;
+
+  for (l = config->logical_monitor_configs; l; l = l->next)
+    {
+      GfLogicalMonitorConfig *logical_monitor_config = l->data;
+      gfloat scale = logical_monitor_config->scale;
+      GList *k;
+
+      for (k = logical_monitor_config->monitor_configs; k; k = k->next)
+        {
+          GfMonitorConfig *monitor_config = k->data;
+          GfMonitorSpec *monitor_spec = monitor_config->monitor_spec;
+          GfMonitorModeSpec *mode_spec = monitor_config->mode_spec;
+          GfMonitor *monitor;
+          GfMonitorMode *monitor_mode;
+
+          monitor = gf_monitor_manager_get_monitor_from_spec (manager, monitor_spec);
+          if (!monitor)
+            {
+              g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Specified monitor not found");
+
+              return FALSE;
+            }
+
+          monitor_mode = gf_monitor_get_mode_from_spec (monitor, mode_spec);
+          if (!monitor_mode)
+            {
+              g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Specified monitor mode not available");
+
+              return FALSE;
+            }
+
+          if (!gf_monitor_manager_is_scale_supported (manager, config->layout_mode,
+                                                      monitor, monitor_mode, scale))
+            {
+              g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Scale not supported by backend");
+
+              return FALSE;
+            }
+
+        }
+    }
+
+  return TRUE;
+}
+
+static gboolean
+gf_monitor_manager_is_config_complete (GfMonitorManager *manager,
+                                       GfMonitorsConfig *config)
+{
+  GList *l;
+  guint configured_monitor_count = 0;
+  guint expected_monitor_count = 0;
+
+  for (l = config->logical_monitor_configs; l; l = l->next)
+    {
+      GfLogicalMonitorConfig *logical_monitor_config = l->data;
+      GList *k;
+
+      for (k = logical_monitor_config->monitor_configs; k; k = k->next)
+        configured_monitor_count++;
+    }
+
+  for (l = manager->monitors; l; l = l->next)
+    {
+      GfMonitor *monitor = l->data;
+
+      if (gf_monitor_is_laptop_panel (monitor))
+        {
+          if (!gf_monitor_manager_is_lid_closed (manager))
+            expected_monitor_count++;
+        }
+      else
+        {
+          expected_monitor_count++;
+        }
+    }
+
+  if (configured_monitor_count != expected_monitor_count)
+    return FALSE;
+
+  return gf_monitor_manager_is_config_applicable (manager, config, NULL);
+}
+
+static gboolean
+should_use_stored_config (GfMonitorManager *manager)
+{
+  GfMonitorManagerPrivate *priv;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
+
+  return (priv->in_init || !gf_monitor_manager_has_hotplug_mode_update (manager));
+}
+
+static gfloat
+derive_configured_global_scale (GfMonitorManager *manager,
+                                GfMonitorsConfig *config)
+{
+  GfLogicalMonitorConfig *logical_monitor_config;
+
+  logical_monitor_config = config->logical_monitor_configs->data;
+
+  return logical_monitor_config->scale;
+}
+
+static gfloat
+calculate_monitor_scale (GfMonitorManager *manager,
+                         GfMonitor        *monitor)
+{
+  GfMonitorMode *monitor_mode;
+
+  monitor_mode = gf_monitor_get_current_mode (monitor);
+  return gf_monitor_manager_calculate_monitor_mode_scale (manager, monitor,
+                                                          monitor_mode);
+}
+
+static gfloat
+derive_calculated_global_scale (GfMonitorManager *manager)
+{
+  GfMonitor *primary_monitor;
+
+  primary_monitor = gf_monitor_manager_get_primary_monitor (manager);
+  if (!primary_monitor)
+    return 1.0;
+
+  return calculate_monitor_scale (manager, primary_monitor);
+}
+
+static GfLogicalMonitor *
+logical_monitor_from_layout (GfMonitorManager *manager,
+                             GList            *logical_monitors,
+                             GfRectangle      *layout)
+{
+  GList *l;
+
+  for (l = logical_monitors; l; l = l->next)
+    {
+      GfLogicalMonitor *logical_monitor = l->data;
+
+      if (gf_rectangle_equal (layout, &logical_monitor->rect))
+        return logical_monitor;
+    }
+
+  return NULL;
+}
+
+static gfloat
+derive_scale_from_config (GfMonitorManager *manager,
+                          GfMonitorsConfig *config,
+                          GfRectangle      *layout)
+{
+  GList *l;
+
+  for (l = config->logical_monitor_configs; l; l = l->next)
+    {
+      GfLogicalMonitorConfig *logical_monitor_config = l->data;
+
+      if (gf_rectangle_equal (layout, &logical_monitor_config->layout))
+        return logical_monitor_config->scale;
+    }
+
+  g_warning ("Missing logical monitor, using scale 1");
+  return 1.0;
+}
+
+static void
+gf_monitor_manager_set_primary_logical_monitor (GfMonitorManager *manager,
+                                                GfLogicalMonitor *logical_monitor)
+{
+  manager->primary_logical_monitor = logical_monitor;
+  if (logical_monitor)
+    gf_logical_monitor_make_primary (logical_monitor);
+}
+
+static void
+gf_monitor_manager_rebuild_logical_monitors_derived (GfMonitorManager *manager,
+                                                     GfMonitorsConfig *config)
+{
+  GList *logical_monitors = NULL;
+  GList *l;
+  gint monitor_number;
+  GfLogicalMonitor *primary_logical_monitor = NULL;
+  gboolean use_global_scale;
+  gfloat global_scale = 0.0;
+  GfMonitorManagerCapability capabilities;
+
+  monitor_number = 0;
+
+  capabilities = gf_monitor_manager_get_capabilities (manager);
+  use_global_scale = !!(capabilities & GF_MONITOR_MANAGER_CAPABILITY_GLOBAL_SCALE_REQUIRED);
+
+  if (use_global_scale)
+    {
+      if (config)
+        global_scale = derive_configured_global_scale (manager, config);
+      else
+        global_scale = derive_calculated_global_scale (manager);
+    }
+
+  for (l = manager->monitors; l; l = l->next)
+    {
+      GfMonitor *monitor = l->data;
+      GfLogicalMonitor *logical_monitor;
+      GfRectangle layout;
+
+      if (!gf_monitor_is_active (monitor))
+        continue;
+
+      gf_monitor_derive_layout (monitor, &layout);
+      logical_monitor = logical_monitor_from_layout (manager, logical_monitors,
+                                                     &layout);
+      if (logical_monitor)
+        {
+          gf_logical_monitor_add_monitor (logical_monitor, monitor);
+        }
+      else
+        {
+          gfloat scale;
+
+          if (use_global_scale)
+            scale = global_scale;
+          else if (config)
+            scale = derive_scale_from_config (manager, config, &layout);
+          else
+            scale = calculate_monitor_scale (manager, monitor);
+
+          g_assert (scale > 0);
+
+          logical_monitor = gf_logical_monitor_new_derived (manager, monitor,
+                                                            &layout, scale,
+                                                            monitor_number);
+
+          logical_monitors = g_list_append (logical_monitors, logical_monitor);
+          monitor_number++;
+        }
+
+      if (gf_monitor_is_primary (monitor))
+        primary_logical_monitor = logical_monitor;
+    }
+
+  manager->logical_monitors = logical_monitors;
+
+  /*
+   * If no monitor was marked as primary, fall back on marking the first
+   * logical monitor the primary one.
+   */
+  if (!primary_logical_monitor && manager->logical_monitors)
+    primary_logical_monitor = g_list_first (manager->logical_monitors)->data;
+
+  gf_monitor_manager_set_primary_logical_monitor (manager, primary_logical_monitor);
+}
+
+static gboolean
+gf_monitor_manager_apply_monitors_config (GfMonitorManager        *manager,
+                                          GfMonitorsConfig        *config,
+                                          GfMonitorsConfigMethod   method,
+                                          GError                 **error)
+{
+  GfMonitorManagerClass *manager_class;
+
+  g_assert (!config || !(config->flags & GF_MONITORS_CONFIG_FLAG_MIGRATED));
+
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
+
+  if (!manager_class->apply_monitors_config (manager, config, method, error))
+    return FALSE;
+
+  switch (method)
+    {
+      case GF_MONITORS_CONFIG_METHOD_TEMPORARY:
+      case GF_MONITORS_CONFIG_METHOD_PERSISTENT:
+        gf_monitor_config_manager_set_current (manager->config_manager, config);
+        break;
+
+      case GF_MONITORS_CONFIG_METHOD_VERIFY:
+      default:
+        break;
+    }
+
+  return TRUE;
+}
+
+static gboolean
+is_main_tiled_monitor_output (GfOutput *output)
+{
+  return output->tile_info.loc_h_tile == 0 && output->tile_info.loc_v_tile == 0;
+}
+
+static void
+rebuild_monitors (GfMonitorManager *manager)
+{
+  guint i;
+
+  if (manager->monitors)
+    {
+      g_list_free_full (manager->monitors, g_object_unref);
+      manager->monitors = NULL;
+    }
+
+  for (i = 0; i < manager->n_outputs; i++)
+    {
+      GfOutput *output = &manager->outputs[i];
+
+      if (output->tile_info.group_id)
+        {
+          if (is_main_tiled_monitor_output (output))
+            {
+              GfMonitorTiled *monitor_tiled;
+
+              monitor_tiled = gf_monitor_tiled_new (manager, output);
+              manager->monitors = g_list_append (manager->monitors, monitor_tiled);
+            }
+        }
+      else
+        {
+          GfMonitorNormal *monitor_normal;
+
+          monitor_normal = gf_monitor_normal_new (manager, output);
+          manager->monitors = g_list_append (manager->monitors, monitor_normal);
+        }
+    }
+}
+
+static void
+free_output_array (GfOutput *old_outputs,
+                   gint      n_old_outputs)
+{
+  gint i;
+
+  for (i = 0; i < n_old_outputs; i++)
+    gf_monitor_manager_clear_output (&old_outputs[i]);
+
+  g_free (old_outputs);
+}
+
+static void
+free_mode_array (GfCrtcMode *old_modes,
+                 gint        n_old_modes)
+{
+  gint i;
+
+  for (i = 0; i < n_old_modes; i++)
+    gf_monitor_manager_clear_mode (&old_modes[i]);
+
+  g_free (old_modes);
+}
+
+static void
+free_crtc_array (GfCrtc *old_crtcs,
+                 gint    n_old_crtcs)
+{
+  gint i;
+
+  for (i = 0; i < n_old_crtcs; i++)
+    gf_monitor_manager_clear_crtc (&old_crtcs[i]);
+
+  g_free (old_crtcs);
 }
 
 static gboolean
@@ -225,6 +623,8 @@ gf_monitor_manager_constructed (GObject *object)
                                       name_lost_cb,
                                       g_object_ref (manager),
                                       g_object_unref);
+
+  priv->in_init = FALSE;
 }
 
 static void
@@ -339,6 +739,11 @@ gf_monitor_manager_class_init (GfMonitorManagerClass *manager_class)
 static void
 gf_monitor_manager_init (GfMonitorManager *manager)
 {
+  GfMonitorManagerPrivate *priv;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
+
+  priv->in_init = TRUE;
 }
 
 GfBackend *
@@ -349,6 +754,28 @@ gf_monitor_manager_get_backend (GfMonitorManager *manager)
   priv = gf_monitor_manager_get_instance_private (manager);
 
   return priv->backend;
+}
+
+void
+gf_monitor_manager_rebuild_derived (GfMonitorManager *manager,
+                                    GfMonitorsConfig *config)
+{
+  GfMonitorManagerPrivate *priv;
+  GList *old_logical_monitors;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
+
+  gf_monitor_manager_update_monitor_modes_derived (manager);
+
+  if (priv->in_init)
+    return;
+
+  old_logical_monitors = manager->logical_monitors;
+
+  gf_monitor_manager_update_logical_state_derived (manager, config);
+  gf_monitor_manager_notify_monitors_changed (manager);
+
+  g_list_free_full (old_logical_monitors, g_object_unref);
 }
 
 GfMonitor *
@@ -384,6 +811,59 @@ GList *
 gf_monitor_manager_get_monitors (GfMonitorManager *manager)
 {
   return manager->monitors;
+}
+
+gboolean
+gf_monitor_manager_has_hotplug_mode_update (GfMonitorManager *manager)
+{
+  guint i;
+
+  for (i = 0; i < manager->n_outputs; i++)
+    {
+      GfOutput *output = &manager->outputs[i];
+
+      if (output->hotplug_mode_update)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+void
+gf_monitor_manager_read_current_state (GfMonitorManager *manager)
+{
+  GfOutput *old_outputs;
+  GfCrtc *old_crtcs;
+  GfCrtcMode *old_modes;
+  guint n_old_outputs;
+  guint n_old_crtcs;
+  guint n_old_modes;
+
+  /* Some implementations of read_current use the existing information
+   * we have available, so don't free the old configuration until after
+   * read_current finishes.
+   */
+  old_outputs = manager->outputs;
+  n_old_outputs = manager->n_outputs;
+  old_crtcs = manager->crtcs;
+  n_old_crtcs = manager->n_crtcs;
+  old_modes = manager->modes;
+  n_old_modes = manager->n_modes;
+
+  manager->serial++;
+  GF_MONITOR_MANAGER_GET_CLASS (manager)->read_current (manager);
+
+  rebuild_monitors (manager);
+
+  free_output_array (old_outputs, n_old_outputs);
+  free_mode_array (old_modes, n_old_modes);
+  free_crtc_array (old_crtcs, n_old_crtcs);
+}
+
+void
+gf_monitor_manager_on_hotplug (GfMonitorManager *manager)
+{
+  gf_monitor_manager_ensure_configured (manager);
 }
 
 void
@@ -422,6 +902,145 @@ gf_monitor_manager_is_transform_handled (GfMonitorManager   *manager,
   return manager_class->is_transform_handled (manager, crtc, transform);
 }
 
+GfMonitorsConfig *
+gf_monitor_manager_ensure_configured (GfMonitorManager *manager)
+{
+  gboolean use_stored_config;
+  GfMonitorsConfigMethod method;
+  GfMonitorsConfigMethod fallback_method;
+  GfMonitorsConfig *config;
+  GError *error;
+
+  use_stored_config = should_use_stored_config (manager);
+  if (use_stored_config)
+    method = GF_MONITORS_CONFIG_METHOD_PERSISTENT;
+  else
+    method = GF_MONITORS_CONFIG_METHOD_TEMPORARY;
+
+  fallback_method = GF_MONITORS_CONFIG_METHOD_TEMPORARY;
+  config = NULL;
+  error = NULL;
+
+  if (use_stored_config)
+    {
+      config = gf_monitor_config_manager_get_stored (manager->config_manager);
+
+      if (config)
+        {
+          if (!gf_monitor_manager_apply_monitors_config (manager, config,
+                                                         method, &error))
+            {
+              config = NULL;
+              g_warning ("Failed to use stored monitor configuration: %s",
+                         error->message);
+              g_clear_error (&error);
+            }
+          else
+            {
+              g_object_ref (config);
+              goto done;
+            }
+        }
+    }
+
+  config = gf_monitor_config_manager_create_suggested (manager->config_manager);
+  if (config)
+    {
+      if (!gf_monitor_manager_apply_monitors_config (manager, config,
+                                                     method, &error))
+        {
+          g_clear_object (&config);
+          g_warning ("Failed to use suggested monitor configuration: %s",
+                     error->message);
+          g_clear_error (&error);
+        }
+      else
+        {
+          goto done;
+        }
+    }
+
+  config = gf_monitor_config_manager_get_previous (manager->config_manager);
+  if (config)
+    {
+      config = g_object_ref (config);
+
+      if (gf_monitor_manager_is_config_complete (manager, config))
+        {
+          if (!gf_monitor_manager_apply_monitors_config (manager, config,
+                                                         method, &error))
+            {
+              g_warning ("Failed to use suggested monitor configuration: %s",
+                         error->message);
+              g_clear_error (&error);
+            }
+          else
+            {
+              goto done;
+            }
+        }
+
+      g_clear_object (&config);
+    }
+
+  config = gf_monitor_config_manager_create_linear (manager->config_manager);
+  if (config)
+    {
+      if (!gf_monitor_manager_apply_monitors_config (manager, config,
+                                                     method, &error))
+        {
+          g_clear_object (&config);
+          g_warning ("Failed to use linear monitor configuration: %s",
+                     error->message);
+          g_clear_error (&error);
+        }
+      else
+        {
+          goto done;
+        }
+    }
+
+  config = gf_monitor_config_manager_create_fallback (manager->config_manager);
+  if (config)
+    {
+      if (!gf_monitor_manager_apply_monitors_config (manager, config,
+                                                     fallback_method,
+                                                     &error))
+        {
+          g_clear_object (&config);
+          g_warning ("Failed to use fallback monitor configuration: %s",
+                 error->message);
+          g_clear_error (&error);
+        }
+      else
+        {
+          goto done;
+        }
+    }
+
+done:
+  if (!config)
+    {
+      gf_monitor_manager_apply_monitors_config (manager, NULL,
+                                                fallback_method,
+                                                &error);
+      return NULL;
+    }
+
+  g_object_unref (config);
+
+  return config;
+}
+
+void
+gf_monitor_manager_update_logical_state_derived (GfMonitorManager *manager,
+                                                 GfMonitorsConfig *config)
+{
+  manager->layout_mode = GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL;
+
+  gf_monitor_manager_rebuild_logical_monitors_derived (manager, config);
+}
+
 gboolean
 gf_monitor_manager_is_lid_closed (GfMonitorManager *manager)
 {
@@ -438,6 +1057,50 @@ gf_monitor_manager_calculate_monitor_mode_scale (GfMonitorManager *manager,
   manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
 
   return manager_class->calculate_monitor_mode_scale (manager, monitor, monitor_mode);
+}
+
+gfloat *
+gf_monitor_manager_calculate_supported_scales (GfMonitorManager           *manager,
+                                               GfLogicalMonitorLayoutMode  layout_mode,
+                                               GfMonitor                  *monitor,
+                                               GfMonitorMode              *monitor_mode,
+                                               gint                       *n_supported_scales)
+{
+  GfMonitorManagerClass *manager_class;
+
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
+
+  return manager_class->calculate_supported_scales (manager, layout_mode,
+                                                    monitor, monitor_mode,
+                                                    n_supported_scales);
+}
+
+gboolean
+gf_monitor_manager_is_scale_supported (GfMonitorManager           *manager,
+                                       GfLogicalMonitorLayoutMode  layout_mode,
+                                       GfMonitor                  *monitor,
+                                       GfMonitorMode              *monitor_mode,
+                                       gfloat                      scale)
+{
+  gfloat *supported_scales;
+  gint n_supported_scales;
+  gint i;
+
+  supported_scales = gf_monitor_manager_calculate_supported_scales (manager, layout_mode,
+                                                                    monitor, monitor_mode,
+                                                                    &n_supported_scales);
+
+  for (i = 0; i < n_supported_scales; i++)
+    {
+      if (supported_scales[i] == scale)
+        {
+          g_free (supported_scales);
+          return TRUE;
+        }
+    }
+
+  g_free (supported_scales);
+  return FALSE;
 }
 
 GfMonitorManagerCapability
@@ -458,6 +1121,49 @@ gf_monitor_manager_get_default_layout_mode (GfMonitorManager *manager)
   manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
 
   return manager_class->get_default_layout_mode (manager);
+}
+
+GfMonitorConfigManager *
+gf_monitor_manager_get_config_manager (GfMonitorManager *manager)
+{
+  return manager->config_manager;
+}
+
+void
+gf_monitor_manager_clear_output (GfOutput *output)
+{
+  g_free (output->name);
+  g_free (output->vendor);
+  g_free (output->product);
+  g_free (output->serial);
+  g_free (output->modes);
+  g_free (output->possible_crtcs);
+  g_free (output->possible_clones);
+
+  if (output->driver_notify)
+    output->driver_notify (output);
+
+  memset (output, 0, sizeof (*output));
+}
+
+void
+gf_monitor_manager_clear_mode (GfCrtcMode *mode)
+{
+  g_free (mode->name);
+
+  if (mode->driver_notify)
+    mode->driver_notify (mode);
+
+  memset (mode, 0, sizeof (*mode));
+}
+
+void
+gf_monitor_manager_clear_crtc (GfCrtc *crtc)
+{
+  if (crtc->driver_notify)
+    crtc->driver_notify (crtc);
+
+  memset (crtc, 0, sizeof (*crtc));
 }
 
 gboolean
