@@ -380,3 +380,13 @@ gf_monitor_manager_get_capabilities (GfMonitorManager *manager)
 
   return manager_class->get_capabilities (manager);
 }
+
+GfLogicalMonitorLayoutMode
+gf_monitor_manager_get_default_layout_mode (GfMonitorManager *manager)
+{
+  GfMonitorManagerClass *manager_class;
+
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
+
+  return manager_class->get_default_layout_mode (manager);
+}

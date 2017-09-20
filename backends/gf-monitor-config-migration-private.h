@@ -1,8 +1,5 @@
 /*
- * Copyright (C) 2001 Havoc Pennington
- * Copyright (C) 2003 Rob Adams
- * Copyright (C) 2004-2006 Elijah Newren
- * Copyright (C) 2013 Red Hat Inc.
+ * Copyright (C) 2017 Red Hat
  * Copyright (C) 2017 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,29 +16,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * Adapted from mutter:
- * - src/backends/meta-monitor-manager-private.h
+ * - src/backends/meta-monitor-config-migration.h
  */
 
-#ifndef GF_MONITOR_MANAGER_TYPES_PRIVATE_H
-#define GF_MONITOR_MANAGER_TYPES_PRIVATE_H
+#ifndef GF_MONITOR_CONFIG_MIGRATION_PRIVATE_H
+#define GF_MONITOR_CONFIG_MIGRATION_PRIVATE_H
 
-#include <glib.h>
+#include "gf-monitors-config-private.h"
 
 G_BEGIN_DECLS
 
-typedef struct _GfMonitorConfigManager GfMonitorConfigManager;
-typedef struct _GfMonitorConfigStore GfMonitorConfigStore;
-typedef struct _GfMonitorsConfig GfMonitorsConfig;
+gboolean gf_migrate_old_monitors_config      (GfMonitorConfigStore  *config_store,
+                                              GFile                 *in_file,
+                                              GError               **error);
 
-typedef struct _GfMonitor GfMonitor;
-typedef struct _GfMonitorSpec GfMonitorSpec;
-typedef struct _GfLogicalMonitor GfLogicalMonitor;
-
-typedef struct _GfMonitorMode GfMonitorMode;
-
-typedef struct _GfCrtc GfCrtc;
-typedef struct _GfOutput GfOutput;
-typedef struct _GfCrtcMode GfCrtcMode;
+gboolean gf_migrate_old_user_monitors_config (GfMonitorConfigStore  *config_store,
+                                              GError               **error);
 
 G_END_DECLS
 
