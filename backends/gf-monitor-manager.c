@@ -788,9 +788,65 @@ gf_monitor_manager_handle_get_crtc_gamma (GfDBusDisplayConfig   *skeleton,
                                           guint                  serial,
                                           guint                  crtc_id)
 {
-  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
-                                         G_DBUS_ERROR_FAILED,
-                                         "Not implemented");
+  GfMonitorManager *manager;
+  GfMonitorManagerClass *manager_class;
+  GfCrtc *crtc;
+  gsize size;
+  gushort *red;
+  gushort *green;
+  gushort *blue;
+  GBytes *red_bytes;
+  GBytes *green_bytes;
+  GBytes *blue_bytes;
+  GVariant *red_v;
+  GVariant *green_v;
+  GVariant *blue_v;
+
+  manager = GF_MONITOR_MANAGER (skeleton);
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (skeleton);
+
+  if (serial != manager->serial)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "The requested configuration is based on stale information");
+      return TRUE;
+    }
+
+  if (crtc_id >= manager->n_crtcs)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Invalid crtc id");
+      return TRUE;
+    }
+
+  crtc = &manager->crtcs[crtc_id];
+
+  if (manager_class->get_crtc_gamma)
+    {
+      manager_class->get_crtc_gamma (manager, crtc, &size, &red, &green, &blue);
+    }
+  else
+    {
+      size = 0;
+      red = green = blue = NULL;
+    }
+
+  red_bytes = g_bytes_new_take (red, size * sizeof (gushort));
+  green_bytes = g_bytes_new_take (green, size * sizeof (gushort));
+  blue_bytes = g_bytes_new_take (blue, size * sizeof (gushort));
+
+  red_v = g_variant_new_from_bytes (G_VARIANT_TYPE ("aq"), red_bytes, TRUE);
+  green_v = g_variant_new_from_bytes (G_VARIANT_TYPE ("aq"), green_bytes, TRUE);
+  blue_v = g_variant_new_from_bytes (G_VARIANT_TYPE ("aq"), blue_bytes, TRUE);
+
+  gf_dbus_display_config_complete_get_crtc_gamma (skeleton, invocation,
+                                                  red_v, green_v, blue_v);
+
+  g_bytes_unref (red_bytes);
+  g_bytes_unref (green_bytes);
+  g_bytes_unref (blue_bytes);
 
   return TRUE;
 }
