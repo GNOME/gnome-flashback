@@ -775,9 +775,52 @@ gf_monitor_manager_handle_change_backlight (GfDBusDisplayConfig   *skeleton,
                                             guint                  output_index,
                                             gint                   value)
 {
-  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
-                                         G_DBUS_ERROR_FAILED,
-                                         "Not implemented");
+  GfMonitorManager *manager;
+  GfMonitorManagerClass *manager_class;
+  GfOutput *output;
+
+  manager = GF_MONITOR_MANAGER (skeleton);
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (skeleton);
+
+  if (serial != manager->serial)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "The requested configuration is based on stale information");
+      return TRUE;
+    }
+
+  if (output_index >= manager->n_outputs)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Invalid output id");
+      return TRUE;
+    }
+
+  output = &manager->outputs[output_index];
+
+  if (value < 0 || value > 100)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Invalid backlight value");
+      return TRUE;
+    }
+
+  if (output->backlight == -1 ||
+      (output->backlight_min == 0 && output->backlight_max == 0))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Output does not support changing backlight");
+      return TRUE;
+    }
+
+  manager_class->change_backlight (manager, output, value);
+
+  gf_dbus_display_config_complete_change_backlight (skeleton, invocation,
+                                                    output->backlight);
 
   return TRUE;
 }
