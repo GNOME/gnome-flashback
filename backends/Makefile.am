@@ -33,6 +33,8 @@ libbackends_la_SOURCES = \
 	gf-display-config-shared.h \
 	gf-edid-parse.c \
 	gf-edid-private.h \
+	gf-logical-monitor-config-private.h \
+	gf-logical-monitor-config.c \
 	gf-logical-monitor-private.h \
 	gf-logical-monitor.c \
 	gf-monitor-config-manager-private.h \

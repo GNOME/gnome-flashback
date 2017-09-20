@@ -22,6 +22,7 @@
 #ifndef GF_LOGICAL_MONITOR_PRIVATE_H
 #define GF_LOGICAL_MONITOR_PRIVATE_H
 
+#include "gf-logical-monitor-config-private.h"
 #include "gf-monitor-config-manager-private.h"
 #include "gf-monitor-manager-private.h"
 #include "gf-monitor-private.h"

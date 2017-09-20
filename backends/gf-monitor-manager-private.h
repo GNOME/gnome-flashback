@@ -168,6 +168,12 @@ void       gf_monitor_manager_tiled_monitor_added   (GfMonitorManager *manager,
 void       gf_monitor_manager_tiled_monitor_removed (GfMonitorManager *manager,
                                                      GfMonitor        *monitor);
 
+static inline gboolean
+gf_monitor_transform_is_rotated (GfMonitorTransform transform)
+{
+  return (transform % 2);
+}
+
 G_END_DECLS
 
 #endif
