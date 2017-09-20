@@ -494,6 +494,34 @@ make_display_name (GfMonitorManager *manager,
   return vendor_name;
 }
 
+static const gchar *
+get_connector_type_name (GfConnectorType connector_type)
+{
+  switch (connector_type)
+    {
+      case GF_CONNECTOR_TYPE_Unknown: return "Unknown";
+      case GF_CONNECTOR_TYPE_VGA: return "VGA";
+      case GF_CONNECTOR_TYPE_DVII: return "DVII";
+      case GF_CONNECTOR_TYPE_DVID: return "DVID";
+      case GF_CONNECTOR_TYPE_DVIA: return "DVIA";
+      case GF_CONNECTOR_TYPE_Composite: return "Composite";
+      case GF_CONNECTOR_TYPE_SVIDEO: return "SVIDEO";
+      case GF_CONNECTOR_TYPE_LVDS: return "LVDS";
+      case GF_CONNECTOR_TYPE_Component: return "Component";
+      case GF_CONNECTOR_TYPE_9PinDIN: return "9PinDIN";
+      case GF_CONNECTOR_TYPE_DisplayPort: return "DisplayPort";
+      case GF_CONNECTOR_TYPE_HDMIA: return "HDMIA";
+      case GF_CONNECTOR_TYPE_HDMIB: return "HDMIB";
+      case GF_CONNECTOR_TYPE_TV: return "TV";
+      case GF_CONNECTOR_TYPE_eDP: return "eDP";
+      case GF_CONNECTOR_TYPE_VIRTUAL: return "VIRTUAL";
+      case GF_CONNECTOR_TYPE_DSI: return "DSI";
+      default: g_assert_not_reached ();
+    }
+
+  return NULL;
+}
+
 static gboolean
 is_main_tiled_monitor_output (GfOutput *output)
 {
@@ -575,9 +603,167 @@ static gboolean
 gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
                                          GDBusMethodInvocation *invocation)
 {
-  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
-                                         G_DBUS_ERROR_FAILED,
-                                         "Not implemented");
+  GfMonitorManager *manager;
+  GfMonitorManagerClass *manager_class;
+  GVariantBuilder crtc_builder;
+  GVariantBuilder output_builder;
+  GVariantBuilder mode_builder;
+  guint i, j;
+  gint max_screen_width;
+  gint max_screen_height;
+
+  manager = GF_MONITOR_MANAGER (skeleton);
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (skeleton);
+
+  g_variant_builder_init (&crtc_builder, G_VARIANT_TYPE ("a(uxiiiiiuaua{sv})"));
+  g_variant_builder_init (&output_builder, G_VARIANT_TYPE ("a(uxiausauaua{sv})"));
+  g_variant_builder_init (&mode_builder, G_VARIANT_TYPE ("a(uxuudu)"));
+
+  for (i = 0; i < manager->n_crtcs; i++)
+    {
+      GfCrtc *crtc = &manager->crtcs[i];
+      GVariantBuilder transforms;
+
+      g_variant_builder_init (&transforms, G_VARIANT_TYPE ("au"));
+      for (j = 0; j <= GF_MONITOR_TRANSFORM_FLIPPED_270; j++)
+        if (crtc->all_transforms & (1 << j))
+          g_variant_builder_add (&transforms, "u", j);
+
+      g_variant_builder_add (&crtc_builder, "(uxiiiiiuaua{sv})",
+                             i, /* ID */
+                             (gint64) crtc->crtc_id,
+                             (gint) crtc->rect.x,
+                             (gint) crtc->rect.y,
+                             (gint) crtc->rect.width,
+                             (gint) crtc->rect.height,
+                             (gint) (crtc->current_mode ? crtc->current_mode - manager->modes : -1),
+                             (guint32) crtc->transform,
+                             &transforms,
+                             NULL /* properties */);
+    }
+
+  for (i = 0; i < manager->n_outputs; i++)
+    {
+      GfOutput *output = &manager->outputs[i];
+      GVariantBuilder crtcs, modes, clones, properties;
+      GBytes *edid;
+      gchar *edid_file;
+
+      g_variant_builder_init (&crtcs, G_VARIANT_TYPE ("au"));
+      for (j = 0; j < output->n_possible_crtcs; j++)
+        g_variant_builder_add (&crtcs, "u",
+                               (guint) (output->possible_crtcs[j] - manager->crtcs));
+
+      g_variant_builder_init (&modes, G_VARIANT_TYPE ("au"));
+      for (j = 0; j < output->n_modes; j++)
+        g_variant_builder_add (&modes, "u",
+                               (guint) (output->modes[j] - manager->modes));
+
+      g_variant_builder_init (&clones, G_VARIANT_TYPE ("au"));
+      for (j = 0; j < output->n_possible_clones; j++)
+        g_variant_builder_add (&clones, "u",
+                               (guint) (output->possible_clones[j] - manager->outputs));
+
+      g_variant_builder_init (&properties, G_VARIANT_TYPE ("a{sv}"));
+      g_variant_builder_add (&properties, "{sv}", "vendor",
+                             g_variant_new_string (output->vendor));
+      g_variant_builder_add (&properties, "{sv}", "product",
+                             g_variant_new_string (output->product));
+      g_variant_builder_add (&properties, "{sv}", "serial",
+                             g_variant_new_string (output->serial));
+      g_variant_builder_add (&properties, "{sv}", "width-mm",
+                             g_variant_new_int32 (output->width_mm));
+      g_variant_builder_add (&properties, "{sv}", "height-mm",
+                             g_variant_new_int32 (output->height_mm));
+      g_variant_builder_add (&properties, "{sv}", "display-name",
+                             g_variant_new_take_string (make_display_name (manager, output)));
+      g_variant_builder_add (&properties, "{sv}", "backlight",
+                             g_variant_new_int32 (output->backlight));
+      g_variant_builder_add (&properties, "{sv}", "min-backlight-step",
+                             g_variant_new_int32 ((output->backlight_max - output->backlight_min) ?
+                                                  100 / (output->backlight_max - output->backlight_min) : -1));
+      g_variant_builder_add (&properties, "{sv}", "primary",
+                             g_variant_new_boolean (output->is_primary));
+      g_variant_builder_add (&properties, "{sv}", "presentation",
+                             g_variant_new_boolean (output->is_presentation));
+      g_variant_builder_add (&properties, "{sv}", "connector-type",
+                             g_variant_new_string (get_connector_type_name (output->connector_type)));
+      g_variant_builder_add (&properties, "{sv}", "underscanning",
+                             g_variant_new_boolean (output->is_underscanning));
+      g_variant_builder_add (&properties, "{sv}", "supports-underscanning",
+                             g_variant_new_boolean (output->supports_underscanning));
+
+      edid_file = manager_class->get_edid_file (manager, output);
+      if (edid_file)
+        {
+          g_variant_builder_add (&properties, "{sv}", "edid-file",
+                                 g_variant_new_take_string (edid_file));
+        }
+      else
+        {
+          edid = manager_class->read_edid (manager, output);
+
+          if (edid)
+            {
+              g_variant_builder_add (&properties, "{sv}", "edid",
+                                     g_variant_new_from_bytes (G_VARIANT_TYPE ("ay"),
+                                                               edid, TRUE));
+              g_bytes_unref (edid);
+            }
+        }
+
+      if (output->tile_info.group_id)
+        {
+          g_variant_builder_add (&properties, "{sv}", "tile",
+                                 g_variant_new ("(uuuuuuuu)",
+                                                output->tile_info.group_id,
+                                                output->tile_info.flags,
+                                                output->tile_info.max_h_tiles,
+                                                output->tile_info.max_v_tiles,
+                                                output->tile_info.loc_h_tile,
+                                                output->tile_info.loc_v_tile,
+                                                output->tile_info.tile_w,
+                                                output->tile_info.tile_h));
+        }
+
+      g_variant_builder_add (&output_builder, "(uxiausauaua{sv})",
+                             i, /* ID */
+                             (gint64) output->winsys_id,
+                             (gint) (output->crtc ? output->crtc - manager->crtcs : -1),
+                             &crtcs,
+                             output->name,
+                             &modes,
+                             &clones,
+                             &properties);
+    }
+
+  for (i = 0; i < manager->n_modes; i++)
+    {
+      GfCrtcMode *mode = &manager->modes[i];
+
+      g_variant_builder_add (&mode_builder, "(uxuudu)",
+                             i, /* ID */
+                             (gint64) mode->mode_id,
+                             (guint32) mode->width,
+                             (guint32) mode->height,
+                             (gdouble) mode->refresh_rate,
+                             (guint32) mode->flags);
+    }
+
+  if (!gf_monitor_manager_get_max_screen_size (manager,
+                                               &max_screen_width,
+                                               &max_screen_height))
+    {
+      /* No max screen size, just send something large */
+      max_screen_width = 65535;
+      max_screen_height = 65535;
+    }
+
+  gf_dbus_display_config_complete_get_resources (skeleton, invocation, manager->serial,
+                                                 g_variant_builder_end (&crtc_builder),
+                                                 g_variant_builder_end (&output_builder),
+                                                 g_variant_builder_end (&mode_builder),
+                                                 max_screen_width, max_screen_height);
 
   return TRUE;
 }
