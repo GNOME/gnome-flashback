@@ -370,3 +370,13 @@ gf_monitor_manager_tiled_monitor_removed (GfMonitorManager *manager,
   if (manager_class->tiled_monitor_removed)
     manager_class->tiled_monitor_removed (manager, monitor);
 }
+
+GfMonitorManagerCapability
+gf_monitor_manager_get_capabilities (GfMonitorManager *manager)
+{
+  GfMonitorManagerClass *manager_class;
+
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
+
+  return manager_class->get_capabilities (manager);
+}

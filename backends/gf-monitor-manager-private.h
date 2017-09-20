@@ -155,18 +155,20 @@ typedef struct
   GfLogicalMonitorLayoutMode   (* get_default_layout_mode)      (GfMonitorManager            *manager);
 } GfMonitorManagerClass;
 
-GType      gf_monitor_manager_get_type              (void);
+GType                       gf_monitor_manager_get_type              (void);
 
-GfBackend *gf_monitor_manager_get_backend           (GfMonitorManager *manager);
+GfBackend                  *gf_monitor_manager_get_backend           (GfMonitorManager *manager);
 
-GfMonitor *gf_monitor_manager_get_monitor_from_spec (GfMonitorManager *manager,
-                                                     GfMonitorSpec    *monitor_spec);
+GfMonitor                  *gf_monitor_manager_get_monitor_from_spec (GfMonitorManager *manager,
+                                                                      GfMonitorSpec    *monitor_spec);
 
-void       gf_monitor_manager_tiled_monitor_added   (GfMonitorManager *manager,
-                                                     GfMonitor        *monitor);
+void                        gf_monitor_manager_tiled_monitor_added   (GfMonitorManager *manager,
+                                                                      GfMonitor        *monitor);
 
-void       gf_monitor_manager_tiled_monitor_removed (GfMonitorManager *manager,
-                                                     GfMonitor        *monitor);
+void                        gf_monitor_manager_tiled_monitor_removed (GfMonitorManager *manager,
+                                                                      GfMonitor        *monitor);
+
+GfMonitorManagerCapability  gf_monitor_manager_get_capabilities      (GfMonitorManager *manager);
 
 static inline gboolean
 gf_monitor_transform_is_rotated (GfMonitorTransform transform)
