@@ -828,7 +828,7 @@ gf_monitor_calculate_supported_scales (GfMonitor                 *monitor,
   GArray *supported_scales;
 
   scale_steps = 1.0 / (gfloat) SCALE_FACTORS_PER_INTEGER;
-  supported_scales = g_array_new (FALSE, FALSE, sizeof (float));
+  supported_scales = g_array_new (FALSE, FALSE, sizeof (gfloat));
 
   gf_monitor_mode_get_resolution (monitor_mode, &width, &height);
 
