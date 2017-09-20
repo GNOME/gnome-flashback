@@ -24,6 +24,7 @@
 #include "gf-logical-monitor-private.h"
 #include "gf-monitor-config-private.h"
 #include "gf-output-private.h"
+#include "gf-rectangle-private.h"
 
 typedef struct
 {
@@ -211,4 +212,42 @@ GList *
 gf_logical_monitor_get_monitors (GfLogicalMonitor *logical_monitor)
 {
   return logical_monitor->monitors;
+}
+
+gboolean
+gf_logical_monitor_has_neighbor (GfLogicalMonitor *monitor,
+                                 GfLogicalMonitor *neighbor,
+                                 GfDirection       direction)
+{
+  switch (direction)
+    {
+      case GF_DIRECTION_RIGHT:
+        if (neighbor->rect.x == (monitor->rect.x + monitor->rect.width) &&
+            gf_rectangle_vert_overlap (&neighbor->rect, &monitor->rect))
+          return TRUE;
+        break;
+
+      case GF_DIRECTION_LEFT:
+        if (monitor->rect.x == (neighbor->rect.x + neighbor->rect.width) &&
+            gf_rectangle_vert_overlap (&neighbor->rect, &monitor->rect))
+          return TRUE;
+        break;
+
+      case GF_DIRECTION_UP:
+        if (monitor->rect.y == (neighbor->rect.y + neighbor->rect.height) &&
+            gf_rectangle_horiz_overlap (&neighbor->rect, &monitor->rect))
+          return TRUE;
+        break;
+
+      case GF_DIRECTION_DOWN:
+        if (neighbor->rect.y == (monitor->rect.y + monitor->rect.height) &&
+            gf_rectangle_horiz_overlap (&neighbor->rect, &monitor->rect))
+          return TRUE;
+        break;
+
+      default:
+        break;
+    }
+
+  return FALSE;
 }

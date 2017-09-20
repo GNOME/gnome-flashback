@@ -36,6 +36,22 @@ gf_rectangle_overlap (const GfRectangle *rect1,
 }
 
 gboolean
+gf_rectangle_vert_overlap (const GfRectangle *rect1,
+                           const GfRectangle *rect2)
+{
+  return (rect1->y < rect2->y + rect2->height &&
+          rect2->y < rect1->y + rect1->height);
+}
+
+gboolean
+gf_rectangle_horiz_overlap (const GfRectangle *rect1,
+                            const GfRectangle *rect2)
+{
+  return (rect1->x < rect2->x + rect2->width &&
+          rect2->x < rect1->x + rect1->width);
+}
+
+gboolean
 gf_rectangle_overlaps_with_region (const GList       *spanning_rects,
                                    const GfRectangle *rect)
 {

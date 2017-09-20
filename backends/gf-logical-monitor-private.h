@@ -22,6 +22,7 @@
 #ifndef GF_LOGICAL_MONITOR_PRIVATE_H
 #define GF_LOGICAL_MONITOR_PRIVATE_H
 
+#include "gf-direction.h"
 #include "gf-logical-monitor-config-private.h"
 #include "gf-monitor-config-manager-private.h"
 #include "gf-monitor-manager-private.h"
@@ -82,6 +83,10 @@ GfMonitorTransform  gf_logical_monitor_get_transform (GfLogicalMonitor       *lo
 GfRectangle         gf_logical_monitor_get_layout    (GfLogicalMonitor       *logical_monitor);
 
 GList              *gf_logical_monitor_get_monitors  (GfLogicalMonitor       *logical_monitor);
+
+gboolean            gf_logical_monitor_has_neighbor  (GfLogicalMonitor       *monitor,
+                                                      GfLogicalMonitor       *neighbor,
+                                                      GfDirection             direction);
 
 G_END_DECLS
 

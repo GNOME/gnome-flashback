@@ -1,5 +1,4 @@
 /*
- * Copyright (C) 2005, 2006 Elijah Newren
  * Copyright (C) 2017 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,31 +13,22 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- * Adapted from mutter:
- * - src/meta/boxes.h
  */
 
-#ifndef GF_RECTANGLE_H
-#define GF_RECTANGLE_H
+#ifndef GF_DIRECTION_H
+#define GF_DIRECTION_H
 
 #include <glib.h>
 
 G_BEGIN_DECLS
 
-typedef struct
+typedef enum
 {
-  gint x;
-  gint y;
-  gint width;
-  gint height;
-} GfRectangle;
-
-gboolean gf_rectangle_vert_overlap  (const GfRectangle *rect1,
-                                     const GfRectangle *rect2);
-
-gboolean gf_rectangle_horiz_overlap (const GfRectangle *rect1,
-                                     const GfRectangle *rect2);
+  GF_DIRECTION_UP,
+  GF_DIRECTION_DOWN,
+  GF_DIRECTION_LEFT,
+  GF_DIRECTION_RIGHT
+} GfDirection;
 
 G_END_DECLS
 
