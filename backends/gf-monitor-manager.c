@@ -860,9 +860,55 @@ gf_monitor_manager_handle_set_crtc_gamma (GfDBusDisplayConfig   *skeleton,
                                           GVariant              *green_v,
                                           GVariant              *blue_v)
 {
-  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
-                                         G_DBUS_ERROR_FAILED,
-                                         "Not implemented");
+  GfMonitorManager *manager;
+  GfMonitorManagerClass *manager_class;
+  GfCrtc *crtc;
+  GBytes *red_bytes;
+  GBytes *green_bytes;
+  GBytes *blue_bytes;
+  gsize size, dummy;
+  gushort *red;
+  gushort *green;
+  gushort *blue;
+
+  manager = GF_MONITOR_MANAGER (skeleton);
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (skeleton);
+
+  if (serial != manager->serial)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "The requested configuration is based on stale information");
+      return TRUE;
+    }
+
+  if (crtc_id >= manager->n_crtcs)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Invalid crtc id");
+      return TRUE;
+    }
+
+  crtc = &manager->crtcs[crtc_id];
+
+  red_bytes = g_variant_get_data_as_bytes (red_v);
+  green_bytes = g_variant_get_data_as_bytes (green_v);
+  blue_bytes = g_variant_get_data_as_bytes (blue_v);
+
+  size = g_bytes_get_size (red_bytes) / sizeof (gushort);
+  red = (gushort*) g_bytes_get_data (red_bytes, &dummy);
+  green = (gushort*) g_bytes_get_data (green_bytes, &dummy);
+  blue = (gushort*) g_bytes_get_data (blue_bytes, &dummy);
+
+  if (manager_class->set_crtc_gamma)
+    manager_class->set_crtc_gamma (manager, crtc, size, red, green, blue);
+
+  gf_dbus_display_config_complete_set_crtc_gamma (skeleton, invocation);
+
+  g_bytes_unref (red_bytes);
+  g_bytes_unref (green_bytes);
+  g_bytes_unref (blue_bytes);
 
   return TRUE;
 }
