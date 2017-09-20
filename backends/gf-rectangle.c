@@ -36,6 +36,16 @@ gf_rectangle_overlap (const GfRectangle *rect1,
 }
 
 gboolean
+gf_rectangle_equal (const GfRectangle *src1,
+                    const GfRectangle *src2)
+{
+  return ((src1->x == src2->x) &&
+          (src1->y == src2->y) &&
+          (src1->width == src2->width) &&
+          (src1->height == src2->height));
+}
+
+gboolean
 gf_rectangle_vert_overlap (const GfRectangle *rect1,
                            const GfRectangle *rect2)
 {

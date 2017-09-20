@@ -34,6 +34,9 @@ typedef struct
   gint height;
 } GfRectangle;
 
+gboolean gf_rectangle_equal         (const GfRectangle *src1,
+                                     const GfRectangle *src2);
+
 gboolean gf_rectangle_vert_overlap  (const GfRectangle *rect1,
                                      const GfRectangle *rect2);
 
