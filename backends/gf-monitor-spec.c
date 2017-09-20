@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <gio/gio.h>
 #include <string.h>
 
 #include "gf-monitor-spec-private.h"
@@ -79,4 +80,24 @@ gf_monitor_spec_free (GfMonitorSpec *spec)
   g_free (spec->product);
   g_free (spec->serial);
   g_free (spec);
+}
+
+gboolean
+gf_verify_monitor_spec (GfMonitorSpec  *spec,
+                        GError        **error)
+{
+  if (spec->connector &&
+      spec->vendor &&
+      spec->product &&
+      spec->serial)
+    {
+      return TRUE;
+    }
+  else
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Monitor spec incomplete");
+
+      return FALSE;
+    }
 }

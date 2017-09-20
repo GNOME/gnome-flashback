@@ -34,15 +34,18 @@ struct _GfMonitorSpec
   gchar *serial;
 };
 
-GfMonitorSpec *gf_monitor_spec_clone   (GfMonitorSpec *spec);
+GfMonitorSpec *gf_monitor_spec_clone   (GfMonitorSpec  *spec);
 
-gboolean       gf_monitor_spec_equals  (GfMonitorSpec *spec,
-                                        GfMonitorSpec *other_spec);
+gboolean       gf_monitor_spec_equals  (GfMonitorSpec  *spec,
+                                        GfMonitorSpec  *other_spec);
 
-gint           gf_monitor_spec_compare (GfMonitorSpec *spec_a,
-                                        GfMonitorSpec *spec_b);
+gint           gf_monitor_spec_compare (GfMonitorSpec  *spec_a,
+                                        GfMonitorSpec  *spec_b);
 
-void           gf_monitor_spec_free    (GfMonitorSpec *spec);
+void           gf_monitor_spec_free    (GfMonitorSpec  *spec);
+
+gboolean       gf_verify_monitor_spec  (GfMonitorSpec  *spec,
+                                        GError        **error);
 
 G_END_DECLS
 
