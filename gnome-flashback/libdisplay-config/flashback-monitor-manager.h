@@ -32,8 +32,6 @@
 
 G_BEGIN_DECLS
 
-typedef struct _FlashbackMonitorConfig FlashbackMonitorConfig;
-
 typedef struct _MetaCRTC        MetaCRTC;
 typedef struct _MetaOutput      MetaOutput;
 typedef struct _MetaMonitorMode MetaMonitorMode;
@@ -280,9 +278,6 @@ struct _FlashbackMonitorManager
   unsigned int                    n_monitor_infos;
   int                             primary_monitor_index;
 
-  int                             persistent_timeout_id;
-  FlashbackMonitorConfig         *monitor_config;
-
   GnomePnpIds                    *pnp_ids;
 
   FlashbackMonitorManagerPrivate *priv;
@@ -295,9 +290,6 @@ void                     flashback_monitor_manager_apply_configuration     (Flas
                                                                             unsigned int              n_crtcs,
                                                                             MetaOutputInfo          **outputs,
                                                                             unsigned int              n_outputs);
-
-void                     flashback_monitor_manager_confirm_configuration   (FlashbackMonitorManager  *manager,
-                                                                            gboolean                  ok);
 
 void                     flashback_monitor_manager_change_backlight        (FlashbackMonitorManager  *manager,
                                                                             MetaOutput               *output,
@@ -325,10 +317,6 @@ void                     flashback_monitor_manager_set_power_save_mode     (Flas
 void                     meta_output_parse_edid                            (MetaOutput               *output,
                                                                             GBytes                   *edid);
 
-void                     meta_crtc_info_free                               (MetaCRTCInfo             *info);
-void                     meta_output_info_free                             (MetaOutputInfo           *info);
-
-gboolean                 flashback_monitor_manager_has_hotplug_mode_update (FlashbackMonitorManager  *manager);
 void                     flashback_monitor_manager_read_current_config     (FlashbackMonitorManager  *manager);
 void                     flashback_monitor_manager_on_hotplug              (FlashbackMonitorManager  *manager);
 

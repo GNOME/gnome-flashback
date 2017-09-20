@@ -37,7 +37,6 @@
 #include <X11/Xlib-xcb.h>
 #include <xcb/randr.h>
 #include "edid.h"
-#include "flashback-monitor-config.h"
 #include "flashback-monitor-manager.h"
 
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
@@ -1501,12 +1500,7 @@ flashback_monitor_manager_constructed (GObject *object)
 
   manager->in_init = TRUE;
 
-  manager->monitor_config = flashback_monitor_config_new (manager);
-
   flashback_monitor_manager_read_current_config (manager);
-
-  if (!flashback_monitor_config_apply_stored (manager->monitor_config))
-    flashback_monitor_config_make_default (manager->monitor_config);
 
   /* Under XRandR, we don't rebuild our data structures until we see
      the RRScreenNotify event, but at least at startup we want to have
@@ -1879,25 +1873,6 @@ flashback_monitor_manager_apply_configuration (FlashbackMonitorManager  *manager
 }
 
 void
-flashback_monitor_manager_confirm_configuration (FlashbackMonitorManager *manager,
-                                                 gboolean                 ok)
-{
-  if (!manager->persistent_timeout_id)
-    {
-      /* too late */
-      return;
-    }
-
-  g_source_remove (manager->persistent_timeout_id);
-  manager->persistent_timeout_id = 0;
-
-  if (ok)
-    flashback_monitor_config_make_persistent (manager->monitor_config);
-  else
-    flashback_monitor_config_restore_previous (manager->monitor_config);
-}
-
-void
 flashback_monitor_manager_change_backlight (FlashbackMonitorManager *manager,
 					                                  MetaOutput              *output,
 					                                  gint                     value)
@@ -2075,21 +2050,6 @@ meta_output_parse_edid (MetaOutput *meta_output,
 void
 flashback_monitor_manager_on_hotplug (FlashbackMonitorManager *manager)
 {
-  gboolean applied_config = FALSE;
-
-  /* If the monitor has hotplug_mode_update (which is used by VMs), don't bother
-   * applying our stored configuration, because it's likely the user just resizing
-   * the window.
-   */
-  if (!flashback_monitor_manager_has_hotplug_mode_update (manager))
-    {
-      if (flashback_monitor_config_apply_stored (manager->monitor_config))
-        applied_config = TRUE;
-    }
-
-  /* If we haven't applied any configuration, apply the default configuration. */
-  if (!applied_config)
-    flashback_monitor_config_make_default (manager->monitor_config);
 }
 
 gboolean

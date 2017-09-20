@@ -24,8 +24,6 @@ libdisplay_config_la_SOURCES = \
 	flashback-confirm-dialog.h \
 	flashback-display-config.c \
 	flashback-display-config.h \
-	flashback-monitor-config.c \
-	flashback-monitor-config.h \
 	flashback-monitor-manager.c \
 	flashback-monitor-manager.h \
 	$(NULL)

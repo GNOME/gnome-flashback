@@ -31,7 +31,6 @@
 #include <math.h>
 #include "flashback-confirm-dialog.h"
 #include "flashback-display-config.h"
-#include "flashback-monitor-config.h"
 #include "flashback-monitor-manager.h"
 
 struct _FlashbackDisplayConfig
