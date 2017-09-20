@@ -80,6 +80,35 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GfMonitorManager, gf_monitor_manager, GF_DBUS_
                                   G_IMPLEMENT_INTERFACE (GF_DBUS_TYPE_DISPLAY_CONFIG, gf_monitor_manager_display_config_init))
 
 static void
+power_save_mode_changed (GfMonitorManager *manager,
+                         GParamSpec       *pspec,
+                         gpointer          user_data)
+{
+  GfMonitorManagerClass *manager_class;
+  GfDBusDisplayConfig *display_config;
+  gint mode;
+
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
+  display_config = GF_DBUS_DISPLAY_CONFIG (manager);
+  mode = gf_dbus_display_config_get_power_save_mode (display_config);
+
+  if (mode == GF_POWER_SAVE_UNSUPPORTED)
+    return;
+
+  /* If DPMS is unsupported, force the property back. */
+  if (manager->power_save_mode == GF_POWER_SAVE_UNSUPPORTED)
+    {
+      gf_dbus_display_config_set_power_save_mode (display_config, GF_POWER_SAVE_UNSUPPORTED);
+      return;
+    }
+
+  if (manager_class->set_power_save_mode)
+    manager_class->set_power_save_mode (manager, mode);
+
+  manager->power_save_mode = mode;
+}
+
+static void
 gf_monitor_manager_update_monitor_modes_derived (GfMonitorManager *manager)
 {
   GList *l;
@@ -405,6 +434,375 @@ gf_monitor_manager_apply_monitors_config (GfMonitorManager        *manager,
     }
 
   return TRUE;
+}
+
+static void
+orientation_changed (GfOrientationManager *orientation_manager,
+                     GfMonitorManager     *manager)
+{
+  GfMonitorTransform transform;
+  GError *error = NULL;
+  GfMonitorsConfig *config;
+
+  switch (gf_orientation_manager_get_orientation (orientation_manager))
+    {
+      case GF_ORIENTATION_NORMAL:
+        transform = GF_MONITOR_TRANSFORM_NORMAL;
+        break;
+      case GF_ORIENTATION_BOTTOM_UP:
+        transform = GF_MONITOR_TRANSFORM_180;
+        break;
+      case GF_ORIENTATION_LEFT_UP:
+        transform = GF_MONITOR_TRANSFORM_90;
+        break;
+      case GF_ORIENTATION_RIGHT_UP:
+        transform = GF_MONITOR_TRANSFORM_270;
+        break;
+
+      case GF_ORIENTATION_UNDEFINED:
+      default:
+        return;
+    }
+
+  config = gf_monitor_config_manager_create_for_orientation (manager->config_manager,
+                                                             transform);
+
+  if (!config)
+    return;
+
+  if (!gf_monitor_manager_apply_monitors_config (manager, config,
+                                                 GF_MONITORS_CONFIG_METHOD_TEMPORARY,
+                                                 &error))
+    {
+      g_warning ("Failed to use orientation monitor configuration: %s",
+                 error->message);
+      g_error_free (error);
+    }
+
+  g_object_unref (config);
+}
+
+static void
+cancel_persistent_confirmation (GfMonitorManager *manager)
+{
+}
+
+static void
+request_persistent_confirmation (GfMonitorManager *manager)
+{
+}
+
+static gboolean
+find_monitor_mode_scale (GfMonitorManager            *manager,
+                         GfLogicalMonitorLayoutMode   layout_mode,
+                         GfMonitorConfig             *monitor_config,
+                         gfloat                       scale,
+                         gfloat                      *out_scale,
+                         GError                     **error)
+{
+  GfMonitorSpec *monitor_spec;
+  GfMonitor *monitor;
+  GfMonitorModeSpec *monitor_mode_spec;
+  GfMonitorMode *monitor_mode;
+  gfloat *supported_scales;
+  gint n_supported_scales;
+  gint i;
+
+  monitor_spec = monitor_config->monitor_spec;
+  monitor = gf_monitor_manager_get_monitor_from_spec (manager, monitor_spec);
+
+  if (!monitor)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Monitor not found");
+
+      return FALSE;
+    }
+
+  monitor_mode_spec = monitor_config->mode_spec;
+  monitor_mode = gf_monitor_get_mode_from_spec (monitor, monitor_mode_spec);
+
+  if (!monitor_mode)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Monitor mode not found");
+
+      return FALSE;
+    }
+
+  supported_scales = gf_monitor_manager_calculate_supported_scales (manager, layout_mode,
+                                                                    monitor, monitor_mode,
+                                                                    &n_supported_scales);
+
+  for (i = 0; i < n_supported_scales; i++)
+    {
+      gfloat supported_scale = supported_scales[i];
+
+      if (fabsf (supported_scale - scale) < FLT_EPSILON)
+        {
+          *out_scale = supported_scale;
+          g_free (supported_scales);
+          return TRUE;
+        }
+    }
+
+  g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+               "Scale %g not valid for resolution %dx%d",
+               scale,
+               monitor_mode_spec->width,
+               monitor_mode_spec->height);
+
+  g_free (supported_scales);
+  return FALSE;
+}
+
+static gboolean
+derive_logical_monitor_size (GfMonitorConfig             *monitor_config,
+                             gint                        *out_width,
+                             gint                        *out_height,
+                             gfloat                       scale,
+                             GfMonitorTransform           transform,
+                             GfLogicalMonitorLayoutMode   layout_mode,
+                             GError                     **error)
+{
+  gint width, height;
+
+  if (gf_monitor_transform_is_rotated (transform))
+    {
+      width = monitor_config->mode_spec->height;
+      height = monitor_config->mode_spec->width;
+    }
+  else
+    {
+      width = monitor_config->mode_spec->width;
+      height = monitor_config->mode_spec->height;
+    }
+
+  switch (layout_mode)
+    {
+      case GF_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
+        width = roundf (width / scale);
+        height = roundf (height / scale);
+        break;
+
+      case GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
+      default:
+        break;
+    }
+
+  *out_width = width;
+  *out_height = height;
+
+  return TRUE;
+}
+
+static GfMonitor *
+find_monitor_from_connector (GfMonitorManager *manager,
+                             gchar            *connector)
+{
+  GList *monitors;
+  GList *l;
+
+  if (!connector)
+    return NULL;
+
+  monitors = gf_monitor_manager_get_monitors (manager);
+  for (l = monitors; l; l = l->next)
+    {
+      GfMonitor *monitor = l->data;
+      GfMonitorSpec *monitor_spec = gf_monitor_get_spec (monitor);
+
+      if (g_str_equal (connector, monitor_spec->connector))
+        return monitor;
+    }
+
+  return NULL;
+}
+
+static GfMonitorConfig *
+create_monitor_config_from_variant (GfMonitorManager  *manager,
+                                    GVariant          *monitor_config_variant,
+                                    GError           **error)
+{
+  gchar *connector;
+  gchar *mode_id;
+  GVariant *properties_variant;
+  GfMonitor *monitor;
+  GfMonitorMode *monitor_mode;
+  gboolean enable_underscanning;
+  GfMonitorSpec *monitor_spec;
+  GfMonitorModeSpec *monitor_mode_spec;
+  GfMonitorConfig *monitor_config;
+
+  connector = NULL;
+  mode_id = NULL;
+  properties_variant = NULL;
+
+  g_variant_get (monitor_config_variant, "(ss@a{sv})",
+                 &connector, &mode_id, &properties_variant);
+
+  monitor = find_monitor_from_connector (manager, connector);
+  if (!monitor)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Invalid connector '%s' specified", connector);
+
+      g_variant_unref (properties_variant);
+      g_free (connector);
+      g_free (mode_id);
+
+      return NULL;
+    }
+
+  monitor_mode = gf_monitor_get_mode_from_id (monitor, mode_id);
+  if (!monitor_mode)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Invalid mode '%s' specified", mode_id);
+
+      g_variant_unref (properties_variant);
+      g_free (connector);
+      g_free (mode_id);
+
+      return NULL;
+    }
+
+  enable_underscanning = FALSE;
+  g_variant_lookup (properties_variant, "underscanning", "b", &enable_underscanning);
+
+  g_variant_unref (properties_variant);
+  g_free (connector);
+  g_free (mode_id);
+
+  monitor_spec = gf_monitor_spec_clone (gf_monitor_get_spec (monitor));
+
+  monitor_mode_spec = g_new0 (GfMonitorModeSpec, 1);
+  *monitor_mode_spec = *gf_monitor_mode_get_spec (monitor_mode);
+
+  monitor_config = g_new0 (GfMonitorConfig, 1);
+  *monitor_config = (GfMonitorConfig) {
+    .monitor_spec = monitor_spec,
+    .mode_spec = monitor_mode_spec,
+    .enable_underscanning = enable_underscanning
+  };
+
+  return monitor_config;
+}
+
+#define MONITOR_CONFIG_FORMAT "(ssa{sv})"
+#define MONITOR_CONFIGS_FORMAT "a" MONITOR_CONFIG_FORMAT
+#define LOGICAL_MONITOR_CONFIG_FORMAT "(iidub" MONITOR_CONFIGS_FORMAT ")"
+
+static GfLogicalMonitorConfig *
+create_logical_monitor_config_from_variant (GfMonitorManager            *manager,
+                                            GVariant                    *logical_monitor_config_variant,
+                                            GfLogicalMonitorLayoutMode   layout_mode,
+                                            GError                      **error)
+{
+  GfLogicalMonitorConfig *logical_monitor_config;
+  gint x, y, width, height;
+  gdouble scale_d;
+  gfloat scale;
+  GfMonitorTransform transform;
+  gboolean is_primary;
+  GVariantIter *monitor_configs_iter;
+  GList *monitor_configs = NULL;
+  GfMonitorConfig *monitor_config;
+
+  g_variant_get (logical_monitor_config_variant, LOGICAL_MONITOR_CONFIG_FORMAT,
+                 &x, &y, &scale_d, &transform, &is_primary, &monitor_configs_iter);
+
+  scale = (gfloat) scale_d;
+
+  while (TRUE)
+    {
+      GVariant *monitor_config_variant;
+
+      monitor_config_variant = g_variant_iter_next_value (monitor_configs_iter);
+
+      if (!monitor_config_variant)
+        break;
+
+      monitor_config = create_monitor_config_from_variant (manager,
+                                                           monitor_config_variant,
+                                                           error);
+
+      if (!monitor_config)
+        goto err;
+
+      if (!gf_verify_monitor_config (monitor_config, error))
+        {
+          gf_monitor_config_free (monitor_config);
+          goto err;
+        }
+
+      monitor_configs = g_list_append (monitor_configs, monitor_config);
+    }
+  g_variant_iter_free (monitor_configs_iter);
+
+  if (!monitor_configs)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Empty logical monitor");
+      goto err;
+    }
+
+  monitor_config = monitor_configs->data;
+  if (!find_monitor_mode_scale (manager, layout_mode, monitor_config,
+                                scale, &scale, error))
+    goto err;
+
+  if (!derive_logical_monitor_size (monitor_config, &width, &height,
+                                    scale, transform, layout_mode, error))
+    goto err;
+
+  logical_monitor_config = g_new0 (GfLogicalMonitorConfig, 1);
+  *logical_monitor_config = (GfLogicalMonitorConfig) {
+    .layout = {
+      .x = x,
+      .y = y,
+      .width = width,
+      .height = height
+    },
+    .transform = transform,
+    .scale = scale,
+    .is_primary = is_primary,
+    .monitor_configs = monitor_configs
+  };
+
+  if (!gf_verify_logical_monitor_config (logical_monitor_config, layout_mode,
+                                         manager, error))
+    {
+      gf_logical_monitor_config_free (logical_monitor_config);
+      return NULL;
+    }
+
+  return logical_monitor_config;
+
+err:
+  g_list_free_full (monitor_configs, (GDestroyNotify) gf_monitor_config_free);
+  return NULL;
+}
+
+#undef MONITOR_MODE_SPEC_FORMAT
+#undef MONITOR_CONFIG_FORMAT
+#undef MONITOR_CONFIGS_FORMAT
+#undef LOGICAL_MONITOR_CONFIG_FORMAT
+
+static gboolean
+is_valid_layout_mode (GfLogicalMonitorLayoutMode layout_mode)
+{
+  switch (layout_mode)
+    {
+      case GF_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
+      case GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
+        return TRUE;
+
+      default:
+        break;
+    }
+
+  return FALSE;
 }
 
 static const gdouble known_diagonals[] =
@@ -1198,9 +1596,141 @@ gf_monitor_manager_handle_apply_monitors_config (GfDBusDisplayConfig   *skeleton
                                                  GVariant              *logical_monitor_configs_variant,
                                                  GVariant              *properties_variant)
 {
-  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
-                                         G_DBUS_ERROR_FAILED,
-                                         "Not implemented");
+  GfMonitorManager *manager;
+  GfMonitorManagerCapability capabilities;
+  GVariant *layout_mode_variant;
+  GfLogicalMonitorLayoutMode layout_mode;
+  GVariantIter configs_iter;
+  GList *logical_monitor_configs;
+  GError *error;
+  GfMonitorsConfig *config;
+
+  manager = GF_MONITOR_MANAGER (skeleton);
+
+  if (serial != manager->serial)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "The requested configuration is based on stale information");
+      return TRUE;
+    }
+
+  capabilities = gf_monitor_manager_get_capabilities (manager);
+  layout_mode_variant = NULL;
+  logical_monitor_configs = NULL;
+  error = NULL;
+
+  if (properties_variant)
+    {
+      layout_mode_variant = g_variant_lookup_value (properties_variant,
+                                                    "layout-mode",
+                                                    G_VARIANT_TYPE ("u"));
+    }
+
+  if (layout_mode_variant &&
+      capabilities & GF_MONITOR_MANAGER_CAPABILITY_LAYOUT_MODE)
+    {
+      g_variant_get (layout_mode_variant, "u", &layout_mode);
+    }
+  else if (!layout_mode_variant)
+    {
+      layout_mode = gf_monitor_manager_get_default_layout_mode (manager);
+    }
+  else
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Can't set layout mode");
+      return TRUE;
+    }
+
+  if (!is_valid_layout_mode (layout_mode))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Invalid layout mode specified");
+      return TRUE;
+    }
+
+  g_variant_iter_init (&configs_iter, logical_monitor_configs_variant);
+
+  while (TRUE)
+    {
+      GVariant *config_variant;
+      GfLogicalMonitorConfig *logical_monitor_config;
+
+      config_variant = g_variant_iter_next_value (&configs_iter);
+      if (!config_variant)
+        break;
+
+      logical_monitor_config = create_logical_monitor_config_from_variant (manager,
+                                                                           config_variant,
+                                                                           layout_mode,
+                                                                           &error);
+
+      if (!logical_monitor_config)
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                                 G_DBUS_ERROR_INVALID_ARGS,
+                                                 "%s", error->message);
+
+          g_error_free (error);
+          g_list_free_full (logical_monitor_configs,
+                            (GDestroyNotify) gf_logical_monitor_config_free);
+
+          return TRUE;
+        }
+
+      logical_monitor_configs = g_list_append (logical_monitor_configs,
+                                               logical_monitor_config);
+    }
+
+  config = gf_monitors_config_new (logical_monitor_configs, layout_mode,
+                                   GF_MONITORS_CONFIG_FLAG_NONE);
+
+  if (!gf_verify_monitors_config (config, manager, &error))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "%s", error->message);
+
+      g_error_free (error);
+      g_object_unref (config);
+
+      return TRUE;
+    }
+
+  if (!gf_monitor_manager_is_config_applicable (manager, config, &error))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "%s", error->message);
+
+      g_error_free (error);
+      g_object_unref (config);
+
+      return TRUE;
+    }
+
+  if (method != GF_MONITORS_CONFIG_METHOD_VERIFY)
+    cancel_persistent_confirmation (manager);
+
+  if (!gf_monitor_manager_apply_monitors_config (manager, config, method, &error))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "%s", error->message);
+
+      g_error_free (error);
+      g_object_unref (config);
+
+      return TRUE;
+    }
+
+  if (method == GF_MONITORS_CONFIG_METHOD_PERSISTENT)
+    request_persistent_confirmation (manager);
+
+  gf_dbus_display_config_complete_apply_monitors_config (skeleton, invocation);
 
   return TRUE;
 }
@@ -1285,6 +1815,7 @@ gf_monitor_manager_constructed (GObject *object)
   GfMonitorManager *manager;
   GfMonitorManagerClass *manager_class;
   GfMonitorManagerPrivate *priv;
+  GfOrientationManager *orientation_manager;
 
   manager = GF_MONITOR_MANAGER (object);
   manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
@@ -1299,6 +1830,13 @@ gf_monitor_manager_constructed (GObject *object)
       g_signal_connect_object (manager->up_client, "notify::lid-is-closed",
                                G_CALLBACK (lid_is_closed_changed), manager, 0);
     }
+
+  g_signal_connect_object (manager, "notify::power-save-mode",
+                           G_CALLBACK (power_save_mode_changed), manager, 0);
+
+  orientation_manager = gf_backend_get_orientation_manager (priv->backend);
+  g_signal_connect_object (orientation_manager, "orientation-changed",
+                           G_CALLBACK (orientation_changed), manager, 0);
 
   manager->config_manager = gf_monitor_config_manager_new (manager);
 
@@ -1339,6 +1877,22 @@ gf_monitor_manager_dispose (GObject *object)
   priv->backend = NULL;
 
   G_OBJECT_CLASS (gf_monitor_manager_parent_class)->dispose (object);
+}
+
+static void
+gf_monitor_manager_finalize (GObject *object)
+{
+  GfMonitorManager *manager;
+
+  manager = GF_MONITOR_MANAGER (object);
+
+  free_output_array (manager->outputs, manager->n_outputs);
+  free_mode_array (manager->modes, manager->n_modes);
+  free_crtc_array (manager->crtcs, manager->n_crtcs);
+
+  g_list_free_full (manager->logical_monitors, g_object_unref);
+
+  G_OBJECT_CLASS (gf_monitor_manager_parent_class)->finalize (object);
 }
 
 static void
@@ -1423,6 +1977,7 @@ gf_monitor_manager_class_init (GfMonitorManagerClass *manager_class)
 
   object_class->constructed = gf_monitor_manager_constructed;
   object_class->dispose = gf_monitor_manager_dispose;
+  object_class->finalize = gf_monitor_manager_finalize;
   object_class->get_property = gf_monitor_manager_get_property;
   object_class->set_property = gf_monitor_manager_set_property;
 
