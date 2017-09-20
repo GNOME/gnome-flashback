@@ -1,5 +1,6 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
+backends/gf-monitor-manager.c
 data/applications/gnome-flashback.desktop.in
 data/applications/gnome-flashback-init.desktop.in
 data/autostart/gnome-flashback-nm-applet.desktop.in

@@ -27,6 +27,8 @@
 
 #include "config.h"
 
+#include <glib/gi18n-lib.h>
+#include <math.h>
 #include <string.h>
 
 #include "gf-crtc-private.h"
@@ -405,6 +407,93 @@ gf_monitor_manager_apply_monitors_config (GfMonitorManager        *manager,
   return TRUE;
 }
 
+static const gdouble known_diagonals[] =
+  {
+    12.1,
+    13.3,
+    15.6
+  };
+
+static gchar *
+diagonal_to_str (gdouble d)
+{
+  guint i;
+
+  for (i = 0; i < G_N_ELEMENTS (known_diagonals); i++)
+    {
+      gdouble delta;
+
+      delta = fabs(known_diagonals[i] - d);
+
+      if (delta < 0.1)
+        return g_strdup_printf ("%0.1lf\"", known_diagonals[i]);
+    }
+
+  return g_strdup_printf ("%d\"", (int) (d + 0.5));
+}
+
+static gchar *
+make_display_name (GfMonitorManager *manager,
+                   GfOutput         *output)
+{
+  gchar *inches;
+  gchar *vendor_name;
+
+  if (gf_output_is_laptop (output))
+    return g_strdup (_("Built-in display"));
+
+  inches = NULL;
+  vendor_name = NULL;
+
+  if (output->width_mm > 0 && output->height_mm > 0)
+    {
+      gint width_mm;
+      gint height_mm;
+      gdouble d;
+
+      width_mm = output->width_mm;
+      height_mm = output->height_mm;
+      d = sqrt (width_mm * width_mm + height_mm * height_mm);
+
+      inches = diagonal_to_str (d / 25.4);
+    }
+
+  if (g_strcmp0 (output->vendor, "unknown") != 0)
+    {
+      if (!manager->pnp_ids)
+        manager->pnp_ids = gnome_pnp_ids_new ();
+
+      vendor_name = gnome_pnp_ids_get_pnp_id (manager->pnp_ids, output->vendor);
+
+      if (!vendor_name)
+        vendor_name = g_strdup (output->vendor);
+    }
+  else
+    {
+      if (inches != NULL)
+        vendor_name = g_strdup (_("Unknown"));
+      else
+        vendor_name = g_strdup (_("Unknown Display"));
+    }
+
+  if (inches != NULL)
+    {
+      gchar *display_name;
+
+      /* TRANSLATORS: this is a monitor vendor name, followed by a
+       * size in inches, like 'Dell 15"'
+       */
+      display_name = g_strdup_printf (_("%s %s"), vendor_name, inches);
+
+      g_free (vendor_name);
+      g_free (inches);
+
+      return display_name;
+    }
+
+  return vendor_name;
+}
+
 static gboolean
 is_main_tiled_monitor_output (GfOutput *output)
 {
@@ -536,16 +625,239 @@ gf_monitor_manager_handle_set_crtc_gamma (GfDBusDisplayConfig   *skeleton,
   return TRUE;
 }
 
+#define MODE_FORMAT "(siiddada{sv})"
+#define MODES_FORMAT "a" MODE_FORMAT
+#define MONITOR_SPEC_FORMAT "(ssss)"
+#define MONITOR_FORMAT "(" MONITOR_SPEC_FORMAT MODES_FORMAT "a{sv})"
+#define MONITORS_FORMAT "a" MONITOR_FORMAT
+
+#define LOGICAL_MONITOR_MONITORS_FORMAT "a" MONITOR_SPEC_FORMAT
+#define LOGICAL_MONITOR_FORMAT "(iidub" LOGICAL_MONITOR_MONITORS_FORMAT "a{sv})"
+#define LOGICAL_MONITORS_FORMAT "a" LOGICAL_MONITOR_FORMAT
+
 static gboolean
 gf_monitor_manager_handle_get_current_state (GfDBusDisplayConfig   *skeleton,
                                              GDBusMethodInvocation *invocation)
 {
-  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
-                                         G_DBUS_ERROR_FAILED,
-                                         "Not implemented");
+  GfMonitorManager *manager;
+  GVariantBuilder monitors_builder;
+  GVariantBuilder logical_monitors_builder;
+  GVariantBuilder properties_builder;
+  GList *l;
+  GfMonitorManagerCapability capabilities;
+  gint max_screen_width;
+  gint max_screen_height;
+
+  manager = GF_MONITOR_MANAGER (skeleton);
+
+  g_variant_builder_init (&monitors_builder, G_VARIANT_TYPE (MONITORS_FORMAT));
+  g_variant_builder_init (&logical_monitors_builder, G_VARIANT_TYPE (LOGICAL_MONITORS_FORMAT));
+  g_variant_builder_init (&properties_builder, G_VARIANT_TYPE ("a{sv}"));
+
+  for (l = manager->monitors; l; l = l->next)
+    {
+      GfMonitor *monitor = l->data;
+      GfMonitorSpec *monitor_spec = gf_monitor_get_spec (monitor);
+      GfMonitorMode *current_mode;
+      GfMonitorMode *preferred_mode;
+      GVariantBuilder modes_builder;
+      GVariantBuilder monitor_properties_builder;
+      GList *k;
+      gboolean is_builtin;
+      GfOutput *main_output;
+      gchar *display_name;
+      gint i;
+
+      current_mode = gf_monitor_get_current_mode (monitor);
+      preferred_mode = gf_monitor_get_preferred_mode (monitor);
+
+      g_variant_builder_init (&modes_builder, G_VARIANT_TYPE (MODES_FORMAT));
+      for (k = gf_monitor_get_modes (monitor); k; k = k->next)
+        {
+          GfMonitorMode *monitor_mode = k->data;
+          GVariantBuilder supported_scales_builder;
+          const gchar *mode_id;
+          gint mode_width, mode_height;
+          gfloat refresh_rate;
+          gfloat preferred_scale;
+          gfloat *supported_scales;
+          gint n_supported_scales;
+          GVariantBuilder mode_properties_builder;
+          GfCrtcModeFlag mode_flags;
+
+          mode_id = gf_monitor_mode_get_id (monitor_mode);
+          gf_monitor_mode_get_resolution (monitor_mode,
+                                          &mode_width, &mode_height);
+          refresh_rate = gf_monitor_mode_get_refresh_rate (monitor_mode);
+
+          preferred_scale =
+            gf_monitor_manager_calculate_monitor_mode_scale (manager,
+                                                             monitor,
+                                                             monitor_mode);
+
+          g_variant_builder_init (&supported_scales_builder,
+                                  G_VARIANT_TYPE ("ad"));
+          supported_scales =
+            gf_monitor_manager_calculate_supported_scales (manager,
+                                                           manager->layout_mode,
+                                                           monitor,
+                                                           monitor_mode,
+                                                           &n_supported_scales);
+          for (i = 0; i < n_supported_scales; i++)
+            g_variant_builder_add (&supported_scales_builder, "d",
+                                   (gdouble) supported_scales[i]);
+          g_free (supported_scales);
+
+          mode_flags = gf_monitor_mode_get_flags (monitor_mode);
+
+          g_variant_builder_init (&mode_properties_builder,
+                                  G_VARIANT_TYPE ("a{sv}"));
+          if (monitor_mode == current_mode)
+            g_variant_builder_add (&mode_properties_builder, "{sv}",
+                                   "is-current",
+                                   g_variant_new_boolean (TRUE));
+          if (monitor_mode == preferred_mode)
+            g_variant_builder_add (&mode_properties_builder, "{sv}",
+                                   "is-preferred",
+                                   g_variant_new_boolean (TRUE));
+          if (mode_flags & GF_CRTC_MODE_FLAG_INTERLACE)
+            g_variant_builder_add (&mode_properties_builder, "{sv}",
+                                   "is-interlaced",
+                                   g_variant_new_boolean (TRUE));
+
+          g_variant_builder_add (&modes_builder, MODE_FORMAT,
+                                 mode_id,
+                                 mode_width,
+                                 mode_height,
+                                 refresh_rate,
+                                 (gdouble) preferred_scale,
+                                 &supported_scales_builder,
+                                 &mode_properties_builder);
+        }
+
+      g_variant_builder_init (&monitor_properties_builder,
+                              G_VARIANT_TYPE ("a{sv}"));
+      if (gf_monitor_supports_underscanning (monitor))
+        {
+          gboolean is_underscanning = gf_monitor_is_underscanning (monitor);
+
+          g_variant_builder_add (&monitor_properties_builder, "{sv}",
+                                 "is-underscanning",
+                                 g_variant_new_boolean (is_underscanning));
+        }
+
+      is_builtin = gf_monitor_is_laptop_panel (monitor);
+      g_variant_builder_add (&monitor_properties_builder, "{sv}",
+                             "is-builtin",
+                             g_variant_new_boolean (is_builtin));
+
+      main_output = gf_monitor_get_main_output (monitor);
+      display_name = make_display_name (manager, main_output);
+      g_variant_builder_add (&monitor_properties_builder, "{sv}",
+                             "display-name",
+                             g_variant_new_take_string (display_name));
+
+      g_variant_builder_add (&monitors_builder, MONITOR_FORMAT,
+                             monitor_spec->connector,
+                             monitor_spec->vendor,
+                             monitor_spec->product,
+                             monitor_spec->serial,
+                             &modes_builder,
+                             &monitor_properties_builder);
+    }
+
+  for (l = manager->logical_monitors; l; l = l->next)
+    {
+      GfLogicalMonitor *logical_monitor = l->data;
+      GVariantBuilder logical_monitor_monitors_builder;
+      GList *k;
+
+      g_variant_builder_init (&logical_monitor_monitors_builder,
+                              G_VARIANT_TYPE (LOGICAL_MONITOR_MONITORS_FORMAT));
+
+      for (k = logical_monitor->monitors; k; k = k->next)
+        {
+          GfMonitor *monitor = k->data;
+          GfMonitorSpec *monitor_spec = gf_monitor_get_spec (monitor);
+
+          g_variant_builder_add (&logical_monitor_monitors_builder,
+                                 MONITOR_SPEC_FORMAT,
+                                 monitor_spec->connector,
+                                 monitor_spec->vendor,
+                                 monitor_spec->product,
+                                 monitor_spec->serial);
+        }
+
+      g_variant_builder_add (&logical_monitors_builder,
+                             LOGICAL_MONITOR_FORMAT,
+                             logical_monitor->rect.x,
+                             logical_monitor->rect.y,
+                             (gdouble) logical_monitor->scale,
+                             logical_monitor->transform,
+                             logical_monitor->is_primary,
+                             &logical_monitor_monitors_builder,
+                             NULL);
+    }
+
+  capabilities = gf_monitor_manager_get_capabilities (manager);
+  if ((capabilities & GF_MONITOR_MANAGER_CAPABILITY_MIRRORING) == 0)
+    {
+      g_variant_builder_add (&properties_builder, "{sv}",
+                             "supports-mirroring",
+                             g_variant_new_boolean (FALSE));
+    }
+
+  g_variant_builder_add (&properties_builder, "{sv}",
+                         "layout-mode",
+                         g_variant_new_uint32 (manager->layout_mode));
+  if (capabilities & GF_MONITOR_MANAGER_CAPABILITY_LAYOUT_MODE)
+    {
+      g_variant_builder_add (&properties_builder, "{sv}",
+                             "supports-changing-layout-mode",
+                             g_variant_new_boolean (TRUE));
+    }
+
+  if (capabilities & GF_MONITOR_MANAGER_CAPABILITY_GLOBAL_SCALE_REQUIRED)
+    {
+      g_variant_builder_add (&properties_builder, "{sv}",
+                             "global-scale-required",
+                             g_variant_new_boolean (TRUE));
+    }
+
+  if (gf_monitor_manager_get_max_screen_size (manager,
+                                              &max_screen_width,
+                                              &max_screen_height))
+    {
+      GVariantBuilder max_screen_size_builder;
+
+      g_variant_builder_init (&max_screen_size_builder,
+                              G_VARIANT_TYPE ("(ii)"));
+      g_variant_builder_add (&max_screen_size_builder, "i",
+                             max_screen_width);
+      g_variant_builder_add (&max_screen_size_builder, "i",
+                             max_screen_height);
+
+      g_variant_builder_add (&properties_builder, "{sv}",
+                             "max-screen-size",
+                             g_variant_builder_end (&max_screen_size_builder));
+    }
+
+  gf_dbus_display_config_complete_get_current_state (skeleton, invocation, manager->serial,
+                                                     g_variant_builder_end (&monitors_builder),
+                                                     g_variant_builder_end (&logical_monitors_builder),
+                                                     g_variant_builder_end (&properties_builder));
 
   return TRUE;
 }
+
+#undef MODE_FORMAT
+#undef MODES_FORMAT
+#undef MONITOR_SPEC_FORMAT
+#undef MONITOR_FORMAT
+#undef MONITORS_FORMAT
+#undef LOGICAL_MONITOR_MONITORS_FORMAT
+#undef LOGICAL_MONITOR_FORMAT
+#undef LOGICAL_MONITORS_FORMAT
 
 static gboolean
 gf_monitor_manager_handle_apply_monitors_config (GfDBusDisplayConfig   *skeleton,
@@ -603,16 +915,64 @@ name_lost_cb (GDBusConnection *connection,
 {
 }
 
+static GBytes *
+gf_monitor_manager_real_read_edid (GfMonitorManager *manager,
+                                   GfOutput         *output)
+{
+  return NULL;
+}
+
+static gchar *
+gf_monitor_manager_real_get_edid_file (GfMonitorManager *manager,
+                                       GfOutput         *output)
+{
+  return NULL;
+}
+
+static gboolean
+gf_monitor_manager_real_is_lid_closed (GfMonitorManager *manager)
+{
+  if (!manager->up_client)
+    return FALSE;
+
+  return up_client_get_lid_is_closed (manager->up_client);
+}
+
+static void
+lid_is_closed_changed (UpClient   *client,
+                       GParamSpec *pspec,
+                       gpointer    user_data)
+{
+  GfMonitorManager *manager = user_data;
+
+  gf_monitor_manager_ensure_configured (manager);
+}
+
 static void
 gf_monitor_manager_constructed (GObject *object)
 {
   GfMonitorManager *manager;
+  GfMonitorManagerClass *manager_class;
   GfMonitorManagerPrivate *priv;
 
   manager = GF_MONITOR_MANAGER (object);
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
   priv = gf_monitor_manager_get_instance_private (manager);
 
   G_OBJECT_CLASS (gf_monitor_manager_parent_class)->constructed (object);
+
+  if (manager_class->is_lid_closed == gf_monitor_manager_real_is_lid_closed)
+    {
+      manager->up_client = up_client_new ();
+
+      g_signal_connect_object (manager->up_client, "notify::lid-is-closed",
+                               G_CALLBACK (lid_is_closed_changed), manager, 0);
+    }
+
+  manager->config_manager = gf_monitor_config_manager_new (manager);
+
+  gf_monitor_manager_read_current_state (manager);
+  manager_class->ensure_initial_config (manager);
 
   priv->bus_name_id = g_bus_own_name (G_BUS_TYPE_SESSION,
                                       "org.gnome.Mutter.DisplayConfig",
@@ -641,6 +1001,9 @@ gf_monitor_manager_dispose (GObject *object)
       g_bus_unown_name (priv->bus_name_id);
       priv->bus_name_id = 0;
     }
+
+  g_clear_object (&manager->config_manager);
+  g_clear_object (&manager->up_client);
 
   priv->backend = NULL;
 
@@ -731,6 +1094,10 @@ gf_monitor_manager_class_init (GfMonitorManagerClass *manager_class)
   object_class->dispose = gf_monitor_manager_dispose;
   object_class->get_property = gf_monitor_manager_get_property;
   object_class->set_property = gf_monitor_manager_set_property;
+
+  manager_class->get_edid_file = gf_monitor_manager_real_get_edid_file;
+  manager_class->read_edid = gf_monitor_manager_real_read_edid;
+  manager_class->is_lid_closed = gf_monitor_manager_real_is_lid_closed;
 
   gf_monitor_manager_install_properties (object_class);
   gf_monitor_manager_install_signals (object_class);
@@ -1111,6 +1478,18 @@ gf_monitor_manager_get_capabilities (GfMonitorManager *manager)
   manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
 
   return manager_class->get_capabilities (manager);
+}
+
+gboolean
+gf_monitor_manager_get_max_screen_size (GfMonitorManager *manager,
+                                        gint             *max_width,
+                                        gint             *max_height)
+{
+  GfMonitorManagerClass *manager_class;
+
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
+
+  return manager_class->get_max_screen_size (manager, max_width, max_height);
 }
 
 GfLogicalMonitorLayoutMode

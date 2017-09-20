@@ -210,6 +210,10 @@ gboolean                    gf_monitor_manager_is_scale_supported           (GfM
 
 GfMonitorManagerCapability  gf_monitor_manager_get_capabilities             (GfMonitorManager            *manager);
 
+gboolean                    gf_monitor_manager_get_max_screen_size          (GfMonitorManager            *manager,
+                                                                             gint                        *max_width,
+                                                                             gint                        *max_height);
+
 GfLogicalMonitorLayoutMode  gf_monitor_manager_get_default_layout_mode      (GfMonitorManager            *manager);
 
 GfMonitorConfigManager     *gf_monitor_manager_get_config_manager           (GfMonitorManager            *manager);
