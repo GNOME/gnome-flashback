@@ -36,6 +36,8 @@ libbackends_la_SOURCES = \
 	gf-logical-monitor-private.h \
 	gf-logical-monitor.c \
 	gf-monitor-config-manager-private.h \
+	gf-monitor-config-private.h \
+	gf-monitor-config.c \
 	gf-monitor-manager-dummy-private.h \
 	gf-monitor-manager-dummy.c \
 	gf-monitor-manager-enums-private.h \

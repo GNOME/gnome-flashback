@@ -19,23 +19,28 @@
  * - src/backends/meta-monitor-config-manager.h
  */
 
-#ifndef GF_MONITOR_CONFIG_MANAGER_PRIVATE_H
-#define GF_MONITOR_CONFIG_MANAGER_PRIVATE_H
+#ifndef GF_MONITOR_CONFIG_PRIVATE_H
+#define GF_MONITOR_CONFIG_PRIVATE_H
 
-#include "gf-monitor-manager-private.h"
 #include "gf-monitor-private.h"
 
 G_BEGIN_DECLS
 
 typedef struct
 {
-  GfRectangle         layout;
-  GList              *monitor_configs;
-  GfMonitorTransform  transform;
-  gfloat              scale;
-  gboolean            is_primary;
-  gboolean            is_presentation;
-} GfLogicalMonitorConfig;
+  GfMonitorSpec     *monitor_spec;
+  GfMonitorModeSpec *mode_spec;
+  gboolean           enable_underscanning;
+} GfMonitorConfig;
+
+GfMonitorConfig *gf_monitor_config_new    (GfMonitor        *monitor,
+                                           GfMonitorMode    *mode);
+
+void             gf_monitor_config_free   (GfMonitorConfig  *config);
+
+
+gboolean         gf_verify_monitor_config (GfMonitorConfig  *config,
+                                           GError          **error);
 
 G_END_DECLS
 

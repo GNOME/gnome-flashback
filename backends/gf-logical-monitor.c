@@ -22,6 +22,7 @@
 #include "config.h"
 #include "gf-crtc-private.h"
 #include "gf-logical-monitor-private.h"
+#include "gf-monitor-config-private.h"
 #include "gf-output-private.h"
 
 typedef struct
