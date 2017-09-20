@@ -213,6 +213,9 @@ gboolean           gf_monitor_mode_foreach_output        (GfMonitor             
                                                           gpointer                    user_data,
                                                           GError                    **error);
 
+gboolean           gf_verify_monitor_mode_spec           (GfMonitorModeSpec          *mode_spec,
+                                                          GError                    **error);
+
 G_END_DECLS
 
 #endif

@@ -953,3 +953,22 @@ gf_monitor_mode_foreach_output (GfMonitor          *monitor,
 
   return TRUE;
 }
+
+gboolean
+gf_verify_monitor_mode_spec (GfMonitorModeSpec  *mode_spec,
+                             GError            **error)
+{
+  if (mode_spec->width > 0 &&
+      mode_spec->height > 0 &&
+      mode_spec->refresh_rate > 0.0f)
+    {
+      return TRUE;
+    }
+  else
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Monitor mode invalid");
+
+      return FALSE;
+    }
+}
