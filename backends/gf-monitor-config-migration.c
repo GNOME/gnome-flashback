@@ -1258,6 +1258,14 @@ gf_finish_monitors_config_migration (GfMonitorManager  *monitor_manager,
       monitor = gf_monitor_manager_get_monitor_from_spec (monitor_manager, monitor_spec);
       monitor_mode_spec = monitor_config->mode_spec;
       monitor_mode = gf_monitor_get_mode_from_spec (monitor, monitor_mode_spec);
+
+      if (!monitor_mode)
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       "Mode not available on monitor");
+          return FALSE;
+        }
+
       scale = gf_monitor_calculate_mode_scale (monitor, monitor_mode);
 
       logical_monitor_config->scale = scale;
