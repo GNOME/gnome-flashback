@@ -11,15 +11,15 @@ data/schemas/org.gnome.gnome-flashback.gschema.xml
 data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml
 data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml
 data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml
+data/ui/gf-confirm-display-change-dialog.ui
 data/xsessions/gnome-flashback-compiz.desktop.in.in
 data/xsessions/gnome-flashback-metacity.desktop.in.in
+gnome-flashback/gf-confirm-display-change-dialog.c
 gnome-flashback/gf-main.c
 gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c
 gnome-flashback/libautomount-manager/gsd-automount-manager.c
 gnome-flashback/libautomount-manager/gsd-autorun.c
 gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c
-gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui
-gnome-flashback/libdisplay-config/flashback-display-config.c
 gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c
 gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui
 gnome-flashback/libinput-sources/gf-input-sources.c

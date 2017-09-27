@@ -284,6 +284,7 @@ AC_CONFIG_FILES([
   data/theme/Makefile
   data/theme/Adwaita/Makefile
   data/theme/HighContrast/Makefile
+  data/ui/Makefile
   data/xsessions/Makefile
 
   gnome-flashback/Makefile

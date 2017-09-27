@@ -45,6 +45,8 @@ gnome_flashback_CFLAGS = \
 gnome_flashback_SOURCES = \
 	gf-application.c \
 	gf-application.h \
+	gf-confirm-display-change-dialog.c \
+	gf-confirm-display-change-dialog.h \
 	gf-main.c \
 	gf-session.c \
 	gf-session.h \

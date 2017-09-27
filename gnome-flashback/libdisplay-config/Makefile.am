@@ -20,8 +20,6 @@ libdisplay_config_la_SOURCES = \
 	edid-parse.c \
 	edid.h \
 	meta-display-config-shared.h \
-	flashback-confirm-dialog.c \
-	flashback-confirm-dialog.h \
 	flashback-display-config.c \
 	flashback-display-config.h \
 	flashback-monitor-manager.c \
@@ -35,10 +33,6 @@ libdisplay_config_la_LDFLAGS = \
 
 libdisplay_config_la_LIBADD = \
 	$(DISPLAY_CONFIG_LIBS) \
-	$(NULL)
-
-EXTRA_DIST = \
-	flashback-confirm-dialog.ui \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk
