@@ -2549,6 +2549,28 @@ gf_monitor_manager_get_monitor_for_output (GfMonitorManager *manager,
   return -1;
 }
 
+gint
+gf_monitor_manager_get_monitor_for_connector (GfMonitorManager *manager,
+                                              const gchar      *connector)
+{
+  GList *l;
+
+  for (l = manager->monitors; l; l = l->next)
+    {
+      GfMonitor *monitor = l->data;
+
+      if (gf_monitor_is_active (monitor) &&
+          g_str_equal (connector, gf_monitor_get_connector (monitor)))
+        {
+          GfOutput *main_output = gf_monitor_get_main_output (monitor);
+
+          return main_output->crtc->logical_monitor->number;
+        }
+    }
+
+  return -1;
+}
+
 gboolean
 gf_monitor_manager_get_is_builtin_display_on (GfMonitorManager *manager)
 {
