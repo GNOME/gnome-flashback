@@ -8,9 +8,9 @@ libshell_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"shell\" \
 	-DG_LOG_USE_STRUCTURED=1 \
 	-I$(top_builddir)/gnome-flashback/libcommon \
-	-I$(top_builddir)/gnome-flashback/libdisplay-config \
 	-I$(top_builddir)/gnome-flashback/libshell \
 	-I$(top_srcdir)/gnome-flashback \
+	-I$(top_srcdir) \
 	$(NULL)
 
 libshell_la_CFLAGS = \

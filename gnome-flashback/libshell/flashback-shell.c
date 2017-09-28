@@ -46,8 +46,8 @@ struct _FlashbackShell
   GHashTable              *grabbers;
 
   /* monitor labeler */
+  GfMonitorManager        *monitor_manager;
   FlashbackMonitorLabeler *labeler;
-  FlashbackMonitorManager *manager;
 
   /* osd */
   FlashbackOsd            *osd;
@@ -232,12 +232,34 @@ handle_show_monitor_labels (FlashbackDBusShell    *dbus_shell,
   shell = FLASHBACK_SHELL (user_data);
   sender = g_dbus_method_invocation_get_sender (invocation);
 
-  g_assert (shell->manager != NULL);
+  g_assert (shell->monitor_manager != NULL);
 
-  flashback_monitor_labeler_show (shell->labeler, shell->manager,
+  flashback_monitor_labeler_show (shell->labeler, shell->monitor_manager,
                                   sender, params);
 
   flashback_dbus_shell_complete_show_monitor_labels (dbus_shell, invocation);
+
+  return TRUE;
+}
+
+static gboolean
+handle_show_monitor_labels2 (FlashbackDBusShell    *dbus_shell,
+                             GDBusMethodInvocation *invocation,
+                             GVariant              *params,
+                             gpointer               user_data)
+{
+  FlashbackShell *shell;
+  const gchar *sender;
+
+  shell = FLASHBACK_SHELL (user_data);
+  sender = g_dbus_method_invocation_get_sender (invocation);
+
+  g_assert (shell->monitor_manager != NULL);
+
+  flashback_monitor_labeler_show2 (shell->labeler, shell->monitor_manager,
+                                   sender, params);
+
+  flashback_dbus_shell_complete_show_monitor_labels2 (dbus_shell, invocation);
 
   return TRUE;
 }
@@ -390,6 +412,8 @@ name_appeared_handler (GDBusConnection *connection,
                     G_CALLBACK (handle_show_osd), shell);
   g_signal_connect (skeleton, "handle-show-monitor-labels",
                     G_CALLBACK (handle_show_monitor_labels), shell);
+  g_signal_connect (skeleton, "handle-show-monitor-labels2",
+                    G_CALLBACK (handle_show_monitor_labels2), shell);
   g_signal_connect (skeleton, "handle-hide-monitor-labels",
                     G_CALLBACK (handle_hide_monitor_labels), shell);
   g_signal_connect (skeleton, "handle-focus-app",
@@ -491,8 +515,8 @@ flashback_shell_new (void)
 }
 
 void
-flashback_shell_set_display_config (FlashbackShell         *shell,
-                                    FlashbackDisplayConfig *config)
+flashback_shell_set_monitor_manager (FlashbackShell   *shell,
+                                     GfMonitorManager *monitor_manager)
 {
-  shell->manager = flashback_display_config_get_monitor_manager (config);
+  shell->monitor_manager = monitor_manager;
 }

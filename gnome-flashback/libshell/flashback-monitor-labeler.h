@@ -18,24 +18,28 @@
 #ifndef FLASHBACK_MONITOR_LABELER_H
 #define FLASHBACK_MONITOR_LABELER_H
 
-#include <glib-object.h>
+#include "flashback-shell.h"
 
 G_BEGIN_DECLS
-
-typedef struct _FlashbackMonitorManager FlashbackMonitorManager;
 
 #define FLASHBACK_TYPE_MONITOR_LABELER flashback_monitor_labeler_get_type ()
 G_DECLARE_FINAL_TYPE (FlashbackMonitorLabeler, flashback_monitor_labeler,
                       FLASHBACK, MONITOR_LABELER, GObject)
 
-FlashbackMonitorLabeler *flashback_monitor_labeler_new  (void);
+FlashbackMonitorLabeler *flashback_monitor_labeler_new   (void);
 
-void                     flashback_monitor_labeler_show (FlashbackMonitorLabeler *labeler,
-                                                         FlashbackMonitorManager *manager,
-                                                         const gchar             *sender,
-                                                         GVariant                *params);
-void                     flashback_monitor_labeler_hide (FlashbackMonitorLabeler *labeler,
-                                                         const gchar             *sender);
+void                     flashback_monitor_labeler_show  (FlashbackMonitorLabeler *labeler,
+                                                          GfMonitorManager        *monitor_manager,
+                                                          const gchar             *sender,
+                                                          GVariant                *params);
+
+void                     flashback_monitor_labeler_show2 (FlashbackMonitorLabeler *labeler,
+                                                          GfMonitorManager        *monitor_manager,
+                                                          const gchar             *sender,
+                                                          GVariant                *params);
+
+void                     flashback_monitor_labeler_hide  (FlashbackMonitorLabeler *labeler,
+                                                          const gchar             *sender);
 
 G_END_DECLS
 

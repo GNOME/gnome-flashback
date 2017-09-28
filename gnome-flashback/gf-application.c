@@ -136,8 +136,10 @@ settings_changed (GSettings   *settings,
                   gpointer     user_data)
 {
   GfApplication *application;
+  GfMonitorManager *monitor_manager;
 
   application = GF_APPLICATION (user_data);
+  monitor_manager = gf_backend_get_monitor_manager (application->backend);
 
 #define SETTING_CHANGED(variable_name, setting_name, function_name) \
   if (key == NULL || g_strcmp0 (key, setting_name) == 0)            \
@@ -180,7 +182,7 @@ settings_changed (GSettings   *settings,
                                           application->config);
 
   if (application->shell)
-    flashback_shell_set_display_config (application->shell, application->config);
+    flashback_shell_set_monitor_manager (application->shell, monitor_manager);
 }
 
 static void
