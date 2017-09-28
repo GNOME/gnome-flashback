@@ -88,7 +88,7 @@ dnl Check for required packages
 dnl **************************************************************************
 
 GDK_PIXBUF_REQUIRED=2.32.2
-GTK_REQUIRED=3.19.5
+GTK_REQUIRED=3.22.0
 LIBGNOME_DESKTOP_REQUIRED=3.12.0
 CANBERRA_REQUIRED=0.13
 GLIB_REQUIRED=2.44.0

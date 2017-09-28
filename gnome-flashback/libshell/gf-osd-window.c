@@ -151,17 +151,19 @@ GfOsdWindow *
 gf_osd_window_new (gint monitor)
 {
   GfOsdWindow *window;
-  GdkScreen *screen;
+  GdkDisplay *display;
+  GdkMonitor *gdk_monitor;
   gint width;
   gint height;
   gint size;
 
-  screen = gdk_screen_get_default ();
+  display = gdk_display_get_default ();
   window = g_object_new (GF_TYPE_OSD_WINDOW,
                          "type", GTK_WINDOW_POPUP,
                          NULL);
 
-  gdk_screen_get_monitor_workarea (screen, monitor, &window->monitor);
+  gdk_monitor = gdk_display_get_monitor (display, monitor);
+  gdk_monitor_get_workarea (gdk_monitor, &window->monitor);
 
   width = window->monitor.width;
   height = window->monitor.height;
