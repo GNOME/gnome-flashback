@@ -42,7 +42,7 @@
 #include "gf-monitors-config-private.h"
 #include "gf-output-private.h"
 
-#define DEFAULT_DISPLAY_CONFIGURATION_TIMEOUT 10
+#define DEFAULT_DISPLAY_CONFIGURATION_TIMEOUT 20
 
 typedef struct
 {
