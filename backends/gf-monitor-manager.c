@@ -42,6 +42,8 @@
 #include "gf-monitors-config-private.h"
 #include "gf-output-private.h"
 
+#define DEFAULT_DISPLAY_CONFIGURATION_TIMEOUT 10
+
 typedef struct
 {
   GfBackend *backend;
@@ -49,6 +51,8 @@ typedef struct
   gboolean   in_init;
 
   guint      bus_name_id;
+
+  guint      persistent_timeout_id;
 } GfMonitorManagerPrivate;
 
 typedef gboolean (* MonitorMatchFunc) (GfMonitor *monitor);
@@ -485,13 +489,92 @@ orientation_changed (GfOrientationManager *orientation_manager,
 }
 
 static void
+restore_previous_config (GfMonitorManager *manager)
+{
+  GfMonitorsConfig *previous_config;
+
+  previous_config = gf_monitor_config_manager_pop_previous (manager->config_manager);
+
+  if (previous_config)
+    {
+      GfMonitorsConfigMethod method;
+      GError *error;
+
+      method = GF_MONITORS_CONFIG_METHOD_TEMPORARY;
+      error = NULL;
+
+      if (gf_monitor_manager_apply_monitors_config (manager, previous_config,
+                                                    method, &error))
+        {
+          g_object_unref (previous_config);
+          return;
+        }
+      else
+        {
+          g_object_unref (previous_config);
+          g_warning ("Failed to restore previous configuration: %s", error->message);
+          g_error_free (error);
+        }
+    }
+
+  gf_monitor_manager_ensure_configured (manager);
+}
+
+static gboolean
+save_config_timeout (gpointer user_data)
+{
+  GfMonitorManager *manager = user_data;
+  GfMonitorManagerPrivate *priv;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
+
+  restore_previous_config (manager);
+  priv->persistent_timeout_id = 0;
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
 cancel_persistent_confirmation (GfMonitorManager *manager)
 {
+  GfMonitorManagerPrivate *priv;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
+
+  if (priv->persistent_timeout_id != 0)
+    {
+      g_source_remove (priv->persistent_timeout_id);
+      priv->persistent_timeout_id = 0;
+    }
+}
+
+static void
+confirm_configuration (GfMonitorManager *manager,
+                       gboolean          confirmed)
+{
+  if (confirmed)
+    gf_monitor_config_manager_save_current (manager->config_manager);
+  else
+    restore_previous_config (manager);
 }
 
 static void
 request_persistent_confirmation (GfMonitorManager *manager)
 {
+  GfMonitorManagerPrivate *priv;
+  gint timeout;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
+  timeout = gf_monitor_manager_get_display_configuration_timeout ();
+
+  priv->persistent_timeout_id = g_timeout_add_seconds (timeout,
+                                                       save_config_timeout,
+                                                       manager);
+
+  g_source_set_name_by_id (priv->persistent_timeout_id,
+                           "[gnome-flashback] save_config_timeout");
+
+  g_signal_emit (manager, manager_signals[CONFIRM_DISPLAY_CHANGE], 0);
 }
 
 static gboolean
@@ -2491,4 +2574,28 @@ gf_monitor_manager_switch_config (GfMonitorManager          *manager,
     }
 
   g_object_unref (config);
+}
+
+gint
+gf_monitor_manager_get_display_configuration_timeout (void)
+{
+  return DEFAULT_DISPLAY_CONFIGURATION_TIMEOUT;
+}
+
+void
+gf_monitor_manager_confirm_configuration (GfMonitorManager *manager,
+                                          gboolean          ok)
+{
+  GfMonitorManagerPrivate *priv;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
+
+  if (!priv->persistent_timeout_id)
+    {
+      /* too late */
+      return;
+    }
+
+  cancel_persistent_confirmation (manager);
+  confirm_configuration (manager, ok);
 }

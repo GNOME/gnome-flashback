@@ -21,6 +21,7 @@
 #include <gtk/gtk.h>
 
 #include "gf-application.h"
+#include "gf-confirm-display-change-dialog.h"
 #include "backends/gf-backend.h"
 #include "libaudio-device-selection/gf-audio-device-selection.h"
 #include "libautomount-manager/gsd-automount-manager.h"
@@ -73,6 +74,8 @@ struct _GfApplication
   GfSoundApplet           *sound;
   GfStatusNotifierWatcher *status_notifier_watcher;
   GfWorkarounds           *workarounds;
+
+  GtkWidget               *display_change_dialog;
 };
 
 G_DEFINE_TYPE (GfApplication, gf_application, G_TYPE_OBJECT)
@@ -216,17 +219,54 @@ gf_application_dispose (GObject *object)
   g_clear_object (&application->status_notifier_watcher);
   g_clear_object (&application->workarounds);
 
+  g_clear_pointer (&application->display_change_dialog, gtk_widget_destroy);
+
   g_clear_object (&application->backend);
 
   G_OBJECT_CLASS (gf_application_parent_class)->dispose (object);
 }
 
 static void
+keep_changes_cb (GfConfirmDisplayChangeDialog *dialog,
+                 gboolean                      keep_changes,
+                 GfApplication                *application)
+{
+  GfMonitorManager *monitor_manager;
+
+  monitor_manager = gf_backend_get_monitor_manager (application->backend);
+
+  gf_monitor_manager_confirm_configuration (monitor_manager, keep_changes);
+  g_clear_pointer (&application->display_change_dialog, gtk_widget_destroy);
+}
+
+static void
+confirm_display_change_cb (GfMonitorManager *monitor_manager,
+                           GfApplication    *application)
+{
+  gint timeout;
+
+  timeout = gf_monitor_manager_get_display_configuration_timeout ();
+
+  g_clear_pointer (&application->display_change_dialog, gtk_widget_destroy);
+  application->display_change_dialog = gf_confirm_display_change_dialog_new (timeout);
+
+  g_signal_connect (application->display_change_dialog, "keep-changes",
+                    G_CALLBACK (keep_changes_cb), application);
+
+  gtk_window_present (GTK_WINDOW (application->display_change_dialog));
+}
+
+static void
 gf_application_init (GfApplication *application)
 {
   GtkSettings *settings;
+  GfMonitorManager *monitor_manager;
 
   application->backend = gf_backend_new (GF_BACKEND_TYPE_X11_CM);
+
+  monitor_manager = gf_backend_get_monitor_manager (application->backend);
+  g_signal_connect (monitor_manager, "confirm-display-change",
+                    G_CALLBACK (confirm_display_change_cb), application);
 
   application->settings = g_settings_new ("org.gnome.gnome-flashback");
   settings = gtk_settings_get_default ();

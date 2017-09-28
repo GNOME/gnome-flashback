@@ -37,14 +37,19 @@ typedef enum
 
 typedef struct _GfMonitorManager GfMonitorManager;
 
-gboolean                  gf_monitor_manager_get_is_builtin_display_on (GfMonitorManager          *manager);
+gboolean                  gf_monitor_manager_get_is_builtin_display_on         (GfMonitorManager          *manager);
 
-GfMonitorSwitchConfigType gf_monitor_manager_get_switch_config         (GfMonitorManager          *manager);
+GfMonitorSwitchConfigType gf_monitor_manager_get_switch_config                 (GfMonitorManager          *manager);
 
-gboolean                  gf_monitor_manager_can_switch_config         (GfMonitorManager          *manager);
+gboolean                  gf_monitor_manager_can_switch_config                 (GfMonitorManager          *manager);
 
-void                      gf_monitor_manager_switch_config             (GfMonitorManager          *manager,
-                                                                        GfMonitorSwitchConfigType  config_type);
+void                      gf_monitor_manager_switch_config                     (GfMonitorManager          *manager,
+                                                                                GfMonitorSwitchConfigType  config_type);
+
+gint                      gf_monitor_manager_get_display_configuration_timeout (void);
+
+void                      gf_monitor_manager_confirm_configuration             (GfMonitorManager          *manager,
+                                                                                gboolean                   ok);
 
 G_END_DECLS
 
