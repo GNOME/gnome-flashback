@@ -150,6 +150,8 @@ typedef struct
   ParserState             state;
   GfMonitorConfigStore   *config_store;
 
+  ParserState             monitor_spec_parent_state;
+
   gboolean                current_was_migrated;
   GList                  *current_logical_monitor_configs;
   GfMonitorSpec          *current_monitor_spec;
@@ -358,6 +360,7 @@ handle_start_element (GMarkupParseContext  *context,
             {
               parser->current_monitor_spec = g_new0 (GfMonitorSpec, 1);
 
+              parser->monitor_spec_parent_state = STATE_MONITOR;
               parser->state = STATE_MONITOR_SPEC;
             }
           else if (g_str_equal (element_name, "mode"))
@@ -526,6 +529,48 @@ derive_logical_monitor_layout (GfLogicalMonitorConfig      *logical_monitor_conf
 }
 
 static void
+finish_monitor_spec (ConfigParser *parser)
+{
+  switch (parser->monitor_spec_parent_state)
+    {
+      case STATE_MONITOR:
+        {
+          parser->current_monitor_config->monitor_spec = parser->current_monitor_spec;
+          parser->current_monitor_spec = NULL;
+          return;
+        }
+
+      case STATE_INITIAL:
+      case STATE_MONITORS:
+      case STATE_CONFIGURATION:
+      case STATE_MIGRATED:
+      case STATE_LOGICAL_MONITOR:
+      case STATE_LOGICAL_MONITOR_X:
+      case STATE_LOGICAL_MONITOR_Y:
+      case STATE_LOGICAL_MONITOR_PRIMARY:
+      case STATE_LOGICAL_MONITOR_PRESENTATION:
+      case STATE_LOGICAL_MONITOR_SCALE:
+      case STATE_TRANSFORM:
+      case STATE_TRANSFORM_ROTATION:
+      case STATE_TRANSFORM_FLIPPED:
+      case STATE_MONITOR_SPEC:
+      case STATE_MONITOR_SPEC_CONNECTOR:
+      case STATE_MONITOR_SPEC_VENDOR:
+      case STATE_MONITOR_SPEC_PRODUCT:
+      case STATE_MONITOR_SPEC_SERIAL:
+      case STATE_MONITOR_MODE:
+      case STATE_MONITOR_MODE_WIDTH:
+      case STATE_MONITOR_MODE_HEIGHT:
+      case STATE_MONITOR_MODE_RATE:
+      case STATE_MONITOR_MODE_FLAG:
+      case STATE_MONITOR_UNDERSCANNING:
+      default:
+        g_assert_not_reached ();
+        break;
+    }
+}
+
+static void
 handle_end_element (GMarkupParseContext  *context,
                     const gchar          *element_name,
                     gpointer              user_data,
@@ -586,10 +631,9 @@ handle_end_element (GMarkupParseContext  *context,
           if (!gf_verify_monitor_spec (parser->current_monitor_spec, error))
             return;
 
-          parser->current_monitor_config->monitor_spec = parser->current_monitor_spec;
-          parser->current_monitor_spec = NULL;
+          finish_monitor_spec (parser);
 
-          parser->state = STATE_MONITOR;
+          parser->state = parser->monitor_spec_parent_state;
           return;
         }
 
@@ -1125,6 +1169,27 @@ append_transform (GString            *buffer,
 }
 
 static void
+append_monitor_spec (GString       *buffer,
+                     GfMonitorSpec *monitor_spec,
+                     const gchar   *indentation)
+{
+  g_string_append_printf (buffer, "%s<monitorspec>\n", indentation);
+  g_string_append_printf (buffer, "%s  <connector>%s</connector>\n",
+                          indentation,
+                          monitor_spec->connector);
+  g_string_append_printf (buffer, "%s  <vendor>%s</vendor>\n",
+                          indentation,
+                          monitor_spec->vendor);
+  g_string_append_printf (buffer, "%s  <product>%s</product>\n",
+                          indentation,
+                          monitor_spec->product);
+  g_string_append_printf (buffer, "%s  <serial>%s</serial>\n",
+                          indentation,
+                          monitor_spec->serial);
+  g_string_append_printf (buffer, "%s</monitorspec>\n", indentation);
+}
+
+static void
 append_monitors (GString *buffer,
                  GList   *monitor_configs)
 {
@@ -1134,22 +1199,15 @@ append_monitors (GString *buffer,
     {
       GfMonitorConfig *monitor_config;
       GfMonitorModeSpec *mode_spec;
-      GfMonitorSpec *spec;
       gchar rate_str[G_ASCII_DTOSTR_BUF_SIZE];
 
       monitor_config = l->data;
       mode_spec = monitor_config->mode_spec;
-      spec = monitor_config->monitor_spec;
 
       g_ascii_dtostr (rate_str, sizeof (rate_str), mode_spec->refresh_rate);
 
       g_string_append (buffer, "      <monitor>\n");
-      g_string_append (buffer, "        <monitorspec>\n");
-      g_string_append_printf (buffer, "          <connector>%s</connector>\n", spec->connector);
-      g_string_append_printf (buffer, "          <vendor>%s</vendor>\n", spec->vendor);
-      g_string_append_printf (buffer, "          <product>%s</product>\n", spec->product);
-      g_string_append_printf (buffer, "          <serial>%s</serial>\n", spec->serial);
-      g_string_append (buffer, "        </monitorspec>\n");
+      append_monitor_spec (buffer, monitor_config->monitor_spec, "        ");
       g_string_append (buffer, "        <mode>\n");
       g_string_append_printf (buffer, "          <width>%d</width>\n", mode_spec->width);
       g_string_append_printf (buffer, "          <height>%d</height>\n", mode_spec->height);
