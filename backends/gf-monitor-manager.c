@@ -128,7 +128,13 @@ gf_monitor_manager_update_monitor_modes_derived (GfMonitorManager *manager)
 static void
 gf_monitor_manager_notify_monitors_changed (GfMonitorManager *manager)
 {
+  GfMonitorManagerPrivate *priv;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
+
   manager->current_switch_config = GF_MONITOR_SWITCH_CONFIG_UNKNOWN;
+
+  gf_backend_monitors_changed (priv->backend);
 
   g_signal_emit_by_name (manager, "monitors-changed");
 }

@@ -202,3 +202,8 @@ gf_backend_get_settings (GfBackend *backend)
 
   return priv->settings;
 }
+
+void
+gf_backend_monitors_changed (GfBackend *backend)
+{
+}
