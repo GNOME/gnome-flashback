@@ -44,6 +44,8 @@ struct _GfMonitorsConfig
   GfMonitorsConfigKey        *key;
   GList                      *logical_monitor_configs;
 
+  GList                      *disabled_monitor_specs;
+
   GfMonitorsConfigFlag        flags;
 
   GfLogicalMonitorLayoutMode  layout_mode;
@@ -53,7 +55,13 @@ struct _GfMonitorsConfig
 G_DECLARE_FINAL_TYPE (GfMonitorsConfig, gf_monitors_config,
                       GF, MONITORS_CONFIG, GObject)
 
-GfMonitorsConfig *gf_monitors_config_new       (GList                       *logical_monitor_configs,
+GfMonitorsConfig *gf_monitors_config_new_full  (GList                       *logical_monitor_configs,
+                                                GList                       *disabled_monitor_specs,
+                                                GfLogicalMonitorLayoutMode   layout_mode,
+                                                GfMonitorsConfigFlag         flags);
+
+GfMonitorsConfig *gf_monitors_config_new       (GfMonitorManager            *monitor_manager,
+                                                GList                       *logical_monitor_configs,
                                                 GfLogicalMonitorLayoutMode   layout_mode,
                                                 GfMonitorsConfigFlag         flags);
 

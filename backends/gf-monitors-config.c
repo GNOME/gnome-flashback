@@ -55,8 +55,17 @@ has_adjecent_neighbour (GfMonitorsConfig       *config,
   return FALSE;
 }
 
+static gboolean
+gf_monitors_config_is_monitor_enabled (GfMonitorsConfig *config,
+                                       GfMonitorSpec    *monitor_spec)
+{
+  return gf_logical_monitor_configs_have_monitor (config->logical_monitor_configs,
+                                                  monitor_spec);
+}
+
 static GfMonitorsConfigKey *
-gf_monitors_config_key_new (GList *logical_monitor_configs)
+gf_monitors_config_key_new (GList *logical_monitor_configs,
+                            GList *disabled_monitor_specs)
 {
   GfMonitorsConfigKey *config_key;
   GList *monitor_specs;
@@ -78,6 +87,14 @@ gf_monitors_config_key_new (GList *logical_monitor_configs)
         }
     }
 
+  for (l = disabled_monitor_specs; l; l = l->next)
+    {
+      GfMonitorSpec *monitor_spec = l->data;
+
+      monitor_spec = gf_monitor_spec_clone (monitor_spec);
+      monitor_specs = g_list_prepend (monitor_specs, monitor_spec);
+    }
+
   monitor_specs = g_list_sort (monitor_specs, (GCompareFunc) gf_monitor_spec_compare);
 
   config_key = g_new0 (GfMonitorsConfigKey, 1);
@@ -96,6 +113,8 @@ gf_monitors_config_finalize (GObject *object)
   gf_monitors_config_key_free (config->key);
   g_list_free_full (config->logical_monitor_configs,
                     (GDestroyNotify) gf_logical_monitor_config_free);
+  g_list_free_full (config->disabled_monitor_specs,
+                    (GDestroyNotify) gf_monitor_spec_free);
 
   G_OBJECT_CLASS (gf_monitors_config_parent_class)->finalize (object);
 }
@@ -116,19 +135,53 @@ gf_monitors_config_init (GfMonitorsConfig *config)
 }
 
 GfMonitorsConfig *
-gf_monitors_config_new (GList                      *logical_monitor_configs,
-                        GfLogicalMonitorLayoutMode  layout_mode,
-                        GfMonitorsConfigFlag        flags)
+gf_monitors_config_new_full (GList                      *logical_monitor_configs,
+                             GList                      *disabled_monitor_specs,
+                             GfLogicalMonitorLayoutMode  layout_mode,
+                             GfMonitorsConfigFlag        flags)
 {
   GfMonitorsConfig *config;
 
   config = g_object_new (GF_TYPE_MONITORS_CONFIG, NULL);
   config->logical_monitor_configs = logical_monitor_configs;
-  config->key = gf_monitors_config_key_new (logical_monitor_configs);
+  config->disabled_monitor_specs = disabled_monitor_specs;
+  config->key = gf_monitors_config_key_new (logical_monitor_configs,
+                                            disabled_monitor_specs);
   config->layout_mode = layout_mode;
   config->flags = flags;
 
   return config;
+}
+
+GfMonitorsConfig *
+gf_monitors_config_new (GfMonitorManager           *monitor_manager,
+                        GList                      *logical_monitor_configs,
+                        GfLogicalMonitorLayoutMode  layout_mode,
+                        GfMonitorsConfigFlag        flags)
+{
+  GList *disabled_monitor_specs = NULL;
+  GList *monitors;
+  GList *l;
+
+  monitors = gf_monitor_manager_get_monitors (monitor_manager);
+  for (l = monitors; l; l = l->next)
+    {
+      GfMonitor *monitor = l->data;
+      GfMonitorSpec *monitor_spec;
+
+      monitor_spec = gf_monitor_get_spec (monitor);
+      if (gf_logical_monitor_configs_have_monitor (logical_monitor_configs,
+                                                   monitor_spec))
+        continue;
+
+      disabled_monitor_specs =
+        g_list_prepend (disabled_monitor_specs,
+                        gf_monitor_spec_clone (monitor_spec));
+    }
+
+  return gf_monitors_config_new_full (logical_monitor_configs,
+                                      disabled_monitor_specs,
+                                      layout_mode, flags);
 }
 
 guint
@@ -273,6 +326,18 @@ gf_verify_monitors_config (GfMonitorsConfig  *config,
     }
 
   g_list_free (region);
+
+  for (l = config->disabled_monitor_specs; l; l = l->next)
+    {
+      GfMonitorSpec *monitor_spec = l->data;
+
+      if (gf_monitors_config_is_monitor_enabled (config, monitor_spec))
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       "Assigned monitor explicitly disabled");
+          return FALSE;
+        }
+    }
 
   if (min_x != 0 || min_y != 0)
     {

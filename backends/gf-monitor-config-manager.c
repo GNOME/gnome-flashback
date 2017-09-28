@@ -204,6 +204,7 @@ create_for_switch_config_all_mirror (GfMonitorConfigManager *config_manager)
   GfMonitorManager *monitor_manager = config_manager->monitor_manager;
   GfLogicalMonitorLayoutMode layout_mode;
   GfLogicalMonitorConfig *logical_monitor_config = NULL;
+  GList *logical_monitor_configs;
   GList *monitor_configs = NULL;
   gint common_mode_w = 0, common_mode_h = 0;
   float best_scale = 1.0;
@@ -300,8 +301,10 @@ create_for_switch_config_all_mirror (GfMonitorConfigManager *config_manager)
     .monitor_configs = monitor_configs
   };
 
+  logical_monitor_configs = g_list_append (NULL, logical_monitor_config);
   layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
-  return gf_monitors_config_new (g_list_append (NULL, logical_monitor_config),
+
+  return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
                                  layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
 }
 
@@ -339,8 +342,8 @@ create_for_switch_config_external (GfMonitorConfigManager *config_manager)
       x += logical_monitor_config->layout.width;
     }
 
-  return gf_monitors_config_new (logical_monitor_configs, layout_mode,
-                                 GF_MONITORS_CONFIG_FLAG_NONE);
+  return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
+                                 layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
 }
 
 static GfMonitorsConfig *
@@ -365,8 +368,8 @@ create_for_switch_config_builtin (GfMonitorConfigManager *config_manager)
   primary_logical_monitor_config->is_primary = TRUE;
   logical_monitor_configs = g_list_append (NULL, primary_logical_monitor_config);
 
-  return gf_monitors_config_new (logical_monitor_configs, layout_mode,
-                                 GF_MONITORS_CONFIG_FLAG_NONE);
+  return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
+                                 layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
 }
 
 static GfMonitorsConfig *
@@ -374,8 +377,11 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
                                      gboolean                rotate,
                                      GfMonitorTransform      transform)
 {
+  GfMonitorManager *monitor_manager = config_manager->monitor_manager;
   GfLogicalMonitorConfig *logical_monitor_config;
   GfLogicalMonitorConfig *current_logical_monitor_config;
+  GList *logical_monitor_configs;
+  GfLogicalMonitorLayoutMode layout_mode;
   GfMonitorConfig *monitor_config;
   GfMonitorConfig *current_monitor_config;
 
@@ -421,9 +427,11 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
       logical_monitor_config->layout.height = temp;
     }
 
-  return gf_monitors_config_new (g_list_append (NULL, logical_monitor_config),
-                                 config_manager->current_config->layout_mode,
-                                 GF_MONITORS_CONFIG_FLAG_NONE);
+  logical_monitor_configs = g_list_append (NULL, logical_monitor_config);
+  layout_mode = config_manager->current_config->layout_mode;
+
+  return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
+                                 layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
 }
 
 static gboolean
@@ -846,8 +854,8 @@ gf_monitor_config_manager_create_linear (GfMonitorConfigManager *config_manager)
       x += logical_monitor_config->layout.width;
     }
 
-  return gf_monitors_config_new (logical_monitor_configs, layout_mode,
-                                 GF_MONITORS_CONFIG_FLAG_NONE);
+  return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
+                                 layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
 }
 
 GfMonitorsConfig *
@@ -873,8 +881,8 @@ gf_monitor_config_manager_create_fallback (GfMonitorConfigManager *config_manage
   primary_logical_monitor_config->is_primary = TRUE;
   logical_monitor_configs = g_list_append (NULL, primary_logical_monitor_config);
 
-  return gf_monitors_config_new (logical_monitor_configs, layout_mode,
-                                 GF_MONITORS_CONFIG_FLAG_NONE);
+  return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
+                                 layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
 }
 
 GfMonitorsConfig *
@@ -945,8 +953,8 @@ gf_monitor_config_manager_create_suggested (GfMonitorConfigManager *config_manag
   if (!logical_monitor_configs)
     return NULL;
 
-  return gf_monitors_config_new (logical_monitor_configs, layout_mode,
-                                 GF_MONITORS_CONFIG_FLAG_NONE);
+  return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
+                                 layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
 }
 
 GfMonitorsConfig *

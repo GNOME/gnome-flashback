@@ -1824,8 +1824,8 @@ gf_monitor_manager_handle_apply_monitors_config (GfDBusDisplayConfig   *skeleton
                                                logical_monitor_config);
     }
 
-  config = gf_monitors_config_new (logical_monitor_configs, layout_mode,
-                                   GF_MONITORS_CONFIG_FLAG_NONE);
+  config = gf_monitors_config_new (manager, logical_monitor_configs,
+                                   layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
 
   if (!gf_verify_monitors_config (config, manager, &error))
     {

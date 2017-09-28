@@ -37,12 +37,15 @@ typedef struct
   gboolean            is_presentation;
 } GfLogicalMonitorConfig;
 
-void     gf_logical_monitor_config_free   (GfLogicalMonitorConfig      *config);
+void     gf_logical_monitor_config_free          (GfLogicalMonitorConfig      *config);
 
-gboolean gf_verify_logical_monitor_config (GfLogicalMonitorConfig      *config,
-                                           GfLogicalMonitorLayoutMode   layout_mode,
-                                           GfMonitorManager            *monitor_manager,
-                                           GError                     **error);
+gboolean gf_logical_monitor_configs_have_monitor (GList                       *logical_monitor_configs,
+                                                  GfMonitorSpec               *monitor_spec);
+
+gboolean gf_verify_logical_monitor_config        (GfLogicalMonitorConfig      *config,
+                                                  GfLogicalMonitorLayoutMode   layout_mode,
+                                                  GfMonitorManager            *monitor_manager,
+                                                  GError                     **error);
 
 G_END_DECLS
 

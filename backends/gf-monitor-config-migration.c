@@ -1086,6 +1086,35 @@ generate_config_name (GfLegacyMonitorsConfig *config)
   return key_name;
 }
 
+static GList *
+find_disabled_monitor_specs (GfLegacyMonitorsConfig *legacy_config)
+{
+  GList *disabled_monitors = NULL;
+  guint i;
+
+  for (i = 0; i < legacy_config->n_outputs; i++)
+    {
+      GfOutputKey *output_key = &legacy_config->keys[i];
+      GfOutputConfig *output_config = &legacy_config->outputs[i];
+      GfMonitorSpec *monitor_spec;
+
+      if (output_config->enabled)
+        continue;
+
+      monitor_spec = g_new0 (GfMonitorSpec, 1);
+      *monitor_spec = (GfMonitorSpec) {
+        .connector = output_key->connector,
+        .vendor = output_key->vendor,
+        .product = output_key->product,
+        .serial = output_key->serial
+      };
+
+      disabled_monitors = g_list_prepend (disabled_monitors, monitor_spec);
+    }
+
+  return disabled_monitors;
+}
+
 static void
 migrate_config (gpointer key,
                 gpointer value,
@@ -1096,6 +1125,7 @@ migrate_config (gpointer key,
   GfMonitorManager *monitor_manager;
   GList *logical_monitor_configs;
   GError *error;
+  GList *disabled_monitor_specs;
   GfLogicalMonitorLayoutMode layout_mode;
   GfMonitorsConfig *config;
 
@@ -1120,9 +1150,13 @@ migrate_config (gpointer key,
       return;
     }
 
+  disabled_monitor_specs = find_disabled_monitor_specs (legacy_config);
   layout_mode = GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL;
-  config = gf_monitors_config_new (logical_monitor_configs, layout_mode,
-                                   GF_MONITORS_CONFIG_FLAG_MIGRATED);
+
+  config = gf_monitors_config_new_full (logical_monitor_configs,
+                                        disabled_monitor_specs,
+                                        layout_mode,
+                                        GF_MONITORS_CONFIG_FLAG_MIGRATED);
 
   if (!gf_verify_monitors_config (config, monitor_manager, &error))
     {

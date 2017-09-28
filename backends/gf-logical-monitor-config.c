@@ -25,6 +25,7 @@
 
 #include "gf-logical-monitor-config-private.h"
 #include "gf-monitor-config-private.h"
+#include "gf-monitor-spec-private.h"
 
 void
 gf_logical_monitor_config_free (GfLogicalMonitorConfig *config)
@@ -35,6 +36,29 @@ gf_logical_monitor_config_free (GfLogicalMonitorConfig *config)
 
   g_list_free_full (monitor_configs, (GDestroyNotify) gf_monitor_config_free);
   g_free (config);
+}
+
+gboolean
+gf_logical_monitor_configs_have_monitor (GList         *logical_monitor_configs,
+                                         GfMonitorSpec *monitor_spec)
+{
+  GList *l;
+
+  for (l = logical_monitor_configs; l; l = l->next)
+    {
+      GfLogicalMonitorConfig *logical_monitor_config = l->data;
+      GList *k;
+
+      for (k = logical_monitor_config->monitor_configs; k; k = k->next)
+        {
+          GfMonitorConfig *monitor_config = k->data;
+
+          if (gf_monitor_spec_equals (monitor_spec, monitor_config->monitor_spec))
+            return TRUE;
+        }
+    }
+
+  return FALSE;
 }
 
 gboolean
