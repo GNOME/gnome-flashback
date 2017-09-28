@@ -43,6 +43,9 @@ gboolean gf_rectangle_vert_overlap  (const GfRectangle *rect1,
 gboolean gf_rectangle_horiz_overlap (const GfRectangle *rect1,
                                      const GfRectangle *rect2);
 
+gboolean gf_rectangle_contains_rect (const GfRectangle *outer_rect,
+                                     const GfRectangle *inner_rect);
+
 G_END_DECLS
 
 #endif

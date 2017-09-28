@@ -2524,6 +2524,31 @@ gf_monitor_manager_clear_crtc (GfCrtc *crtc)
   memset (crtc, 0, sizeof (*crtc));
 }
 
+gint
+gf_monitor_manager_get_monitor_for_output (GfMonitorManager *manager,
+                                           guint             id)
+{
+  GfOutput *output;
+  GList *l;
+
+  g_return_val_if_fail (GF_IS_MONITOR_MANAGER (manager), -1);
+  g_return_val_if_fail (id < manager->n_outputs, -1);
+
+  output = &manager->outputs[id];
+  if (!output || !output->crtc)
+    return -1;
+
+  for (l = manager->logical_monitors; l; l = l->next)
+    {
+      GfLogicalMonitor *logical_monitor = l->data;
+
+      if (gf_rectangle_contains_rect (&logical_monitor->rect, &output->crtc->rect))
+        return logical_monitor->number;
+    }
+
+  return -1;
+}
+
 gboolean
 gf_monitor_manager_get_is_builtin_display_on (GfMonitorManager *manager)
 {

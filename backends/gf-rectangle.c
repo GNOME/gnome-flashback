@@ -62,6 +62,16 @@ gf_rectangle_horiz_overlap (const GfRectangle *rect1,
 }
 
 gboolean
+gf_rectangle_contains_rect (const GfRectangle *outer_rect,
+                            const GfRectangle *inner_rect)
+{
+  return inner_rect->x >= outer_rect->x &&
+         inner_rect->y >= outer_rect->y &&
+         inner_rect->x + inner_rect->width <= outer_rect->x + outer_rect->width &&
+         inner_rect->y + inner_rect->height <= outer_rect->y + outer_rect->height;
+}
+
+gboolean
 gf_rectangle_overlaps_with_region (const GList       *spanning_rects,
                                    const GfRectangle *rect)
 {

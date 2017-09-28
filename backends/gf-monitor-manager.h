@@ -37,6 +37,9 @@ typedef enum
 
 typedef struct _GfMonitorManager GfMonitorManager;
 
+gint                      gf_monitor_manager_get_monitor_for_output            (GfMonitorManager          *manager,
+                                                                                guint                      id);
+
 gboolean                  gf_monitor_manager_get_is_builtin_display_on         (GfMonitorManager          *manager);
 
 GfMonitorSwitchConfigType gf_monitor_manager_get_switch_config                 (GfMonitorManager          *manager);
