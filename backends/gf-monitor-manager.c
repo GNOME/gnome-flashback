@@ -124,6 +124,8 @@ gf_monitor_manager_update_monitor_modes_derived (GfMonitorManager *manager)
 static void
 gf_monitor_manager_notify_monitors_changed (GfMonitorManager *manager)
 {
+  manager->current_switch_config = GF_MONITOR_SWITCH_CONFIG_UNKNOWN;
+
   g_signal_emit_by_name (manager, "monitors-changed");
 }
 
@@ -1838,6 +1840,8 @@ gf_monitor_manager_constructed (GObject *object)
   g_signal_connect_object (orientation_manager, "orientation-changed",
                            G_CALLBACK (orientation_changed), manager, 0);
 
+  manager->current_switch_config = GF_MONITOR_SWITCH_CONFIG_UNKNOWN;
+
   manager->config_manager = gf_monitor_config_manager_new (manager);
 
   gf_monitor_manager_read_current_state (manager);
@@ -2445,9 +2449,46 @@ gf_monitor_manager_get_is_builtin_display_on (GfMonitorManager *manager)
   return gf_monitor_is_active (laptop_panel);
 }
 
+GfMonitorSwitchConfigType
+gf_monitor_manager_get_switch_config (GfMonitorManager *manager)
+{
+  return manager->current_switch_config;
+}
+
 gboolean
 gf_monitor_manager_can_switch_config (GfMonitorManager *manager)
 {
   return (!gf_monitor_manager_is_lid_closed (manager) &&
           g_list_length (manager->monitors) > 1);
+}
+
+void
+gf_monitor_manager_switch_config (GfMonitorManager          *manager,
+                                  GfMonitorSwitchConfigType  config_type)
+{
+  GfMonitorsConfig *config;
+  GError *error;
+
+  g_return_if_fail (config_type != GF_MONITOR_SWITCH_CONFIG_UNKNOWN);
+
+  config = gf_monitor_config_manager_create_for_switch_config (manager->config_manager,
+                                                               config_type);
+
+  if (!config)
+    return;
+
+  error = NULL;
+  if (!gf_monitor_manager_apply_monitors_config (manager, config,
+                                                 GF_MONITORS_CONFIG_METHOD_TEMPORARY,
+                                                 &error))
+    {
+      g_warning ("Failed to use switch monitor configuration: %s", error->message);
+      g_error_free (error);
+    }
+  else
+    {
+      manager->current_switch_config = config_type;
+    }
+
+  g_object_unref (config);
 }

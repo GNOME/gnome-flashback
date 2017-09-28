@@ -82,6 +82,8 @@ struct _GfMonitorManager
 
   GnomePnpIds                 *pnp_ids;
   UpClient                    *up_client;
+
+  GfMonitorSwitchConfigType    current_switch_config;
 };
 
 typedef struct
