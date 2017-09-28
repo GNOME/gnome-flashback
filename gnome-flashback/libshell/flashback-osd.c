@@ -36,11 +36,14 @@ monitors_changed (GdkScreen *screen,
                   gpointer   user_data)
 {
   FlashbackOsd *osd;
+  GdkDisplay *display;
   gint n_monitors;
   gint i;
 
   osd = FLASHBACK_OSD (user_data);
-  n_monitors = gdk_screen_get_n_monitors (screen);
+
+  display = gdk_display_get_default ();
+  n_monitors = gdk_display_get_n_monitors (display);
 
   if (osd->windows != NULL)
     {
