@@ -22,13 +22,14 @@
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 #include <gsettings-desktop-schemas/gdesktop-enums.h>
-#include <libdisplay-config/flashback-display-config.h>
-#include <libdisplay-config/flashback-monitor-manager.h>
 #include <string.h>
 #include <X11/extensions/XInput2.h>
 #include <X11/Xatom.h>
 #include <X11/XKBlib.h>
 
+#include "backends/gf-logical-monitor-private.h"
+#include "backends/gf-monitor-manager-private.h"
+#include "backends/gf-monitor-private.h"
 #include "gf-input-settings.h"
 
 typedef void (* ConfigBoolFunc)   (GfInputSettings *settings,
@@ -52,21 +53,21 @@ typedef struct
 
 struct _GfInputSettings
 {
-  GObject                  parent;
+  GObject           parent;
 
-  Display                 *xdisplay;
+  Display          *xdisplay;
 
-  GdkSeat                 *seat;
+  GdkSeat          *seat;
 
-  FlashbackMonitorManager *monitor_manager;
-  gulong                   monitors_changed_id;
+  GfMonitorManager *monitor_manager;
+  gulong            monitors_changed_id;
 
-  GSettings               *mouse;
-  GSettings               *touchpad;
-  GSettings               *trackball;
-  GSettings               *keyboard;
+  GSettings        *mouse;
+  GSettings        *touchpad;
+  GSettings        *trackball;
+  GSettings        *keyboard;
 
-  GHashTable              *mappable_devices;
+  GHashTable       *mappable_devices;
 };
 
 G_DEFINE_TYPE (GfInputSettings, gf_input_settings, G_TYPE_OBJECT)
@@ -1013,16 +1014,45 @@ settings_changed_cb (GSettings       *gsettings,
     }
 }
 
-static MetaOutput *
-find_output (GfInputSettings *settings,
-             GSettings       *gsettings,
-             GdkDevice       *device)
+static gboolean
+logical_monitor_has_monitor (GfMonitorManager *monitor_manager,
+                             GfLogicalMonitor *logical_monitor,
+                             const gchar      *vendor,
+                             const gchar      *product,
+                             const gchar      *serial)
+{
+  GList *monitors;
+  GList *l;
+
+  monitors = gf_logical_monitor_get_monitors (logical_monitor);
+
+  for (l = monitors; l; l = l->next)
+    {
+      GfMonitor *monitor = l->data;
+
+      if (g_strcmp0 (gf_monitor_get_vendor (monitor), vendor) == 0 &&
+          g_strcmp0 (gf_monitor_get_product (monitor), product) == 0 &&
+          g_strcmp0 (gf_monitor_get_serial (monitor), serial) == 0)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+static GfLogicalMonitor *
+find_logical_monitor (GfInputSettings *settings,
+                      GSettings       *gsettings,
+                      GdkDevice       *device)
 {
   gchar **edid;
   guint n_values;
-  MetaOutput *outputs;
-  guint n_outputs;
-  guint i;
+  GfMonitorManager *monitor_manager;
+  GList *logical_monitors;
+  GfLogicalMonitor *ret;
+  GList *l;
+
+ if (!settings->monitor_manager)
+    return NULL;
 
   edid = g_settings_get_strv (gsettings, "display");
   n_values = g_strv_length (edid);
@@ -1032,27 +1062,34 @@ find_output (GfInputSettings *settings,
       g_warning ("EDID configuration for device '%s' is incorrect, "
                  "must have 3 values", gdk_device_get_name (device));
 
+      g_strfreev (edid);
       return NULL;
     }
 
   if (!*edid[0] && !*edid[1] && !*edid[2])
-    return NULL;
-
-  if (!settings->monitor_manager)
-    return NULL;
-
-  outputs = flashback_monitor_manager_get_outputs (settings->monitor_manager,
-                                                   &n_outputs);
-
-  for (i = 0; i < n_outputs; i++)
     {
-      if (g_strcmp0 (outputs[i].vendor, edid[0]) == 0 &&
-          g_strcmp0 (outputs[i].product, edid[1]) == 0 &&
-          g_strcmp0 (outputs[i].serial, edid[2]) == 0)
-        return &outputs[i];
+      g_strfreev (edid);
+      return NULL;
     }
 
-  return NULL;
+  monitor_manager = settings->monitor_manager;
+  logical_monitors = gf_monitor_manager_get_logical_monitors (monitor_manager);
+  ret = NULL;
+
+  for (l = logical_monitors; l; l = l->next)
+    {
+      GfLogicalMonitor *logical_monitor = l->data;
+
+      if (logical_monitor_has_monitor (monitor_manager, logical_monitor,
+                                       edid[0], edid[1], edid[2]))
+        {
+          ret = logical_monitor;
+          break;
+        }
+    }
+
+  g_strfreev (edid);
+  return ret;
 }
 
 static void
@@ -1060,16 +1097,30 @@ update_device_display (GfInputSettings *settings,
                        GSettings       *gsettings,
                        GdkDevice       *device)
 {
-  MetaOutput *output;
+  GdkInputSource source;
+  GfLogicalMonitor *logical_monitor;
   gfloat matrix[6] = { 1, 0, 0, 0, 1, 0 };
   gfloat full_matrix[9];
 
-  output = find_output (settings, gsettings, device);
+  source = gdk_device_get_source (device);
 
-  if (output)
+  if (/*get_device_type (device) != CLUTTER_TABLET_DEVICE && */
+      source != GDK_SOURCE_PEN &&
+      source != GDK_SOURCE_ERASER &&
+      source != GDK_SOURCE_TOUCHSCREEN)
+    return;
+
+  /* If mapping is relative, the device can move on all displays */
+  if (source == GDK_SOURCE_TOUCHSCREEN /* ||
+      get_mapping_mode (device) == CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE*/)
+    logical_monitor = find_logical_monitor (settings, gsettings, device);
+  else
+    logical_monitor = NULL;
+
+  if (logical_monitor)
     {
-      flashback_monitor_manager_get_monitor_matrix (settings->monitor_manager,
-                                                    output, matrix);
+      gf_monitor_manager_get_monitor_matrix (settings->monitor_manager,
+                                             logical_monitor, matrix);
     }
 
   full_matrix[0] = matrix[0];
@@ -1088,8 +1139,8 @@ update_device_display (GfInputSettings *settings,
 }
 
 static void
-monitors_changed_cb (FlashbackMonitorManager *monitor_manager,
-                     GfInputSettings         *settings)
+monitors_changed_cb (GfMonitorManager *monitor_manager,
+                     GfInputSettings  *settings)
 {
   GHashTableIter iter;
   gpointer key;
@@ -1251,22 +1302,6 @@ check_mappable_devices (GfInputSettings *settings)
 }
 
 static void
-clear_monitor_manager (GfInputSettings *settings)
-{
-  gulong changed_id;
-
-  changed_id = settings->monitors_changed_id;
-
-  if (changed_id > 0 && settings->monitor_manager)
-    {
-      g_signal_handler_disconnect (settings->monitor_manager, changed_id);
-      settings->monitors_changed_id = 0;
-    }
-
-  g_clear_object (&settings->monitor_manager);
-}
-
-static void
 gf_input_settings_constructed (GObject *object)
 {
   GfInputSettings *settings;
@@ -1285,7 +1320,11 @@ gf_input_settings_dispose (GObject *object)
 
   settings = GF_INPUT_SETTINGS (object);
 
-  clear_monitor_manager (settings);
+  if (settings->monitors_changed_id != 0 && settings->monitor_manager)
+    {
+      g_signal_handler_disconnect (settings->monitor_manager, settings->monitors_changed_id);
+      settings->monitors_changed_id = 0;
+    }
 
   g_clear_object (&settings->mouse);
   g_clear_object (&settings->touchpad);
@@ -1349,18 +1388,16 @@ gf_input_settings_new (void)
 }
 
 void
-gf_input_settings_set_display_config (GfInputSettings        *settings,
-                                      FlashbackDisplayConfig *config)
+gf_input_settings_set_monitor_manager (GfInputSettings  *settings,
+                                       GfMonitorManager *monitor_manager)
 {
-  FlashbackMonitorManager *monitor_manager;
+  if (settings->monitors_changed_id != 0 && settings->monitor_manager)
+    {
+      g_signal_handler_disconnect (settings->monitor_manager, settings->monitors_changed_id);
+      settings->monitors_changed_id = 0;
+    }
 
-  monitor_manager = flashback_display_config_get_monitor_manager (config);
-
-  clear_monitor_manager (settings);
-  if (monitor_manager == NULL)
-    return;
-
-  settings->monitor_manager = g_object_ref (monitor_manager);
+  settings->monitor_manager = monitor_manager;
 
   settings->monitors_changed_id =
     g_signal_connect (settings->monitor_manager, "monitors-changed",

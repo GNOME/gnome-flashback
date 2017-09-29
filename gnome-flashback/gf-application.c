@@ -178,8 +178,8 @@ settings_changed (GSettings   *settings,
 #undef SETTING_CHANGED
 
   if (application->input_settings)
-    gf_input_settings_set_display_config (application->input_settings,
-                                          application->config);
+    gf_input_settings_set_monitor_manager (application->input_settings,
+                                           monitor_manager);
 
   if (application->shell)
     flashback_shell_set_monitor_manager (application->shell, monitor_manager);
