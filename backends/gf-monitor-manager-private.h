@@ -164,6 +164,8 @@ GfBackend                  *gf_monitor_manager_get_backend                  (GfM
 void                        gf_monitor_manager_rebuild_derived              (GfMonitorManager            *manager,
                                                                              GfMonitorsConfig            *config);
 
+GList                      *gf_monitor_manager_get_logical_monitors         (GfMonitorManager            *manager);
+
 GfMonitor                  *gf_monitor_manager_get_primary_monitor          (GfMonitorManager            *manager);
 
 GfMonitor                  *gf_monitor_manager_get_laptop_panel             (GfMonitorManager            *manager);

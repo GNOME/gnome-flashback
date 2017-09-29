@@ -2172,6 +2172,12 @@ gf_monitor_manager_rebuild_derived (GfMonitorManager *manager,
   g_list_free_full (old_logical_monitors, g_object_unref);
 }
 
+GList *
+gf_monitor_manager_get_logical_monitors (GfMonitorManager *manager)
+{
+  return manager->logical_monitors;
+}
+
 GfMonitor *
 gf_monitor_manager_get_primary_monitor (GfMonitorManager *manager)
 {
