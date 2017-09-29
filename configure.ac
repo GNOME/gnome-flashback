@@ -140,18 +140,6 @@ PKG_CHECK_MODULES([DESKTOP_BACKGROUND], [
   gnome-desktop-3.0 >= $LIBGNOME_DESKTOP_REQUIRED
 ])
 
-PKG_CHECK_MODULES([DISPLAY_CONFIG], [
-  gtk+-3.0 >= $GTK_REQUIRED
-  glib-2.0 >= $GLIB_REQUIRED
-  gnome-desktop-3.0 >= $LIBGNOME_DESKTOP_REQUIRED
-  upower-glib >= $UPOWER_GLIB_REQUIRED
-  x11
-  xext
-  xrandr
-  x11-xcb
-  xcb-randr
-])
-
 PKG_CHECK_MODULES([END_SESSION_DIALOG], [
   gtk+-3.0 >= $GTK_REQUIRED
 ])
@@ -293,7 +281,6 @@ AC_CONFIG_FILES([
   gnome-flashback/libbluetooth-applet/Makefile
   gnome-flashback/libcommon/Makefile
   gnome-flashback/libdesktop-background/Makefile
-  gnome-flashback/libdisplay-config/Makefile
   gnome-flashback/libend-session-dialog/Makefile
   gnome-flashback/libidle-monitor/Makefile
   gnome-flashback/libinput-settings/Makefile

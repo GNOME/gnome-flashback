@@ -27,7 +27,6 @@
 #include "libautomount-manager/gsd-automount-manager.h"
 #include "libbluetooth-applet/gf-bluetooth-applet.h"
 #include "libdesktop-background/gf-desktop-background.h"
-#include "libdisplay-config/flashback-display-config.h"
 #include "libend-session-dialog/gf-end-session-dialog.h"
 #include "libidle-monitor/flashback-idle-monitor.h"
 #include "libinput-settings/gf-input-settings.h"
@@ -56,7 +55,6 @@ struct _GfApplication
   GtkStyleProvider        *provider;
 
   GsdAutomountManager     *automount;
-  FlashbackDisplayConfig  *config;
   FlashbackIdleMonitor    *idle_monitor;
   FlashbackPolkit         *polkit;
   FlashbackShell          *shell;
@@ -156,7 +154,6 @@ settings_changed (GSettings   *settings,
     }
 
   SETTING_CHANGED (automount, "automount-manager", gsd_automount_manager_new)
-  SETTING_CHANGED (config, "display-config", flashback_display_config_new)
   SETTING_CHANGED (idle_monitor, "idle-monitor", flashback_idle_monitor_new)
   SETTING_CHANGED (polkit, "polkit", flashback_polkit_new)
   SETTING_CHANGED (shell, "shell", flashback_shell_new)
@@ -203,7 +200,6 @@ gf_application_dispose (GObject *object)
   g_clear_object (&application->provider);
 
   g_clear_object (&application->automount);
-  g_clear_object (&application->config);
   g_clear_object (&application->idle_monitor);
   g_clear_object (&application->polkit);
   g_clear_object (&application->shell);

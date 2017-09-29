@@ -17,7 +17,6 @@
 
 #include <config.h>
 #include <gio/gio.h>
-#include <libdisplay-config/flashback-monitor-manager.h>
 #include "flashback-monitor-labeler.h"
 #include "gf-label-window.h"
 
