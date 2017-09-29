@@ -2159,6 +2159,14 @@ gf_monitor_manager_get_monitors (GfMonitorManager *manager)
   return manager->monitors;
 }
 
+GfOutput *
+gf_monitor_manager_get_outputs (GfMonitorManager *manager,
+                                guint            *n_outputs)
+{
+  *n_outputs = manager->n_outputs;
+  return manager->outputs;
+}
+
 gboolean
 gf_monitor_manager_has_hotplug_mode_update (GfMonitorManager *manager)
 {

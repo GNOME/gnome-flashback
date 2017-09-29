@@ -173,6 +173,9 @@ GfMonitor                  *gf_monitor_manager_get_monitor_from_spec        (GfM
 
 GList                      *gf_monitor_manager_get_monitors                 (GfMonitorManager            *manager);
 
+GfOutput                   *gf_monitor_manager_get_outputs                  (GfMonitorManager            *manager,
+                                                                             guint                       *n_outputs);
+
 gboolean                    gf_monitor_manager_has_hotplug_mode_update      (GfMonitorManager            *manager);
 void                        gf_monitor_manager_read_current_state           (GfMonitorManager            *manager);
 void                        gf_monitor_manager_on_hotplug                   (GfMonitorManager            *manager);
