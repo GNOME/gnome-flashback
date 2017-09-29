@@ -83,6 +83,54 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GfMonitorManager, gf_monitor_manager, GF_DBUS_
                                   G_ADD_PRIVATE (GfMonitorManager)
                                   G_IMPLEMENT_INTERFACE (GF_DBUS_TYPE_DISPLAY_CONFIG, gf_monitor_manager_display_config_init))
 
+/* Array index matches GfMonitorTransform */
+static gfloat transform_matrices[][6] =
+  {
+    {  1,  0,  0,  0,  1,  0 }, /* normal */
+    {  0, -1,  1,  1,  0,  0 }, /* 90° */
+    { -1,  0,  1,  0, -1,  1 }, /* 180° */
+    {  0,  1,  0, -1,  0,  1 }, /* 270° */
+    { -1,  0,  1,  0,  1,  0 }, /* normal flipped */
+    {  0,  1,  0,  1,  0,  0 }, /* 90° flipped */
+    {  1,  0,  0,  0, -1,  1 }, /* 180° flipped */
+    {  0, -1,  1, -1,  0,  1 }, /* 270° flipped */
+  };
+
+static inline void
+multiply_matrix (gfloat a[6],
+                 gfloat b[6],
+                 gfloat res[6])
+{
+  res[0] = a[0] * b[0] + a[1] * b[3];
+  res[1] = a[0] * b[1] + a[1] * b[4];
+  res[2] = a[0] * b[2] + a[1] * b[5] + a[2];
+  res[3] = a[3] * b[0] + a[4] * b[3];
+  res[4] = a[3] * b[1] + a[4] * b[4];
+  res[5] = a[3] * b[2] + a[4] * b[5] + a[5];
+}
+
+static gboolean
+calculate_viewport_matrix (GfMonitorManager *manager,
+                           GfLogicalMonitor *logical_monitor,
+                           gfloat            viewport[6])
+{
+  gfloat x, y, width, height;
+
+  x = (gfloat) logical_monitor->rect.x / manager->screen_width;
+  y = (gfloat) logical_monitor->rect.y / manager->screen_height;
+  width  = (gfloat) logical_monitor->rect.width / manager->screen_width;
+  height = (gfloat) logical_monitor->rect.height / manager->screen_height;
+
+  viewport[0] = width;
+  viewport[1] = 0.0f;
+  viewport[2] = x;
+  viewport[3] = 0.0f;
+  viewport[4] = height;
+  viewport[5] = y;
+
+  return TRUE;
+}
+
 static void
 power_save_mode_changed (GfMonitorManager *manager,
                          GParamSpec       *pspec,
@@ -2218,6 +2266,23 @@ void
 gf_monitor_manager_on_hotplug (GfMonitorManager *manager)
 {
   gf_monitor_manager_ensure_configured (manager);
+}
+
+gboolean
+gf_monitor_manager_get_monitor_matrix (GfMonitorManager *manager,
+                                       GfLogicalMonitor *logical_monitor,
+                                       gfloat            matrix[6])
+{
+  GfMonitorTransform transform;
+  gfloat viewport[9];
+
+  if (!calculate_viewport_matrix (manager, logical_monitor, viewport))
+    return FALSE;
+
+  transform = logical_monitor->transform;
+  multiply_matrix (viewport, transform_matrices[transform], matrix);
+
+  return TRUE;
 }
 
 void

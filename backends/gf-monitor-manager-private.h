@@ -180,6 +180,10 @@ gboolean                    gf_monitor_manager_has_hotplug_mode_update      (GfM
 void                        gf_monitor_manager_read_current_state           (GfMonitorManager            *manager);
 void                        gf_monitor_manager_on_hotplug                   (GfMonitorManager            *manager);
 
+gboolean                    gf_monitor_manager_get_monitor_matrix           (GfMonitorManager            *manager,
+                                                                             GfLogicalMonitor            *logical_monitor,
+                                                                             gfloat                       matrix[6]);
+
 void                        gf_monitor_manager_tiled_monitor_added          (GfMonitorManager            *manager,
                                                                              GfMonitor                   *monitor);
 
