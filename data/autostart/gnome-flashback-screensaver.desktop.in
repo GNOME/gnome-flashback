@@ -10,6 +10,3 @@ OnlyShowIn=GNOME-Flashback;
 NoDisplay=true
 X-GNOME-Autostart-Phase=Application
 X-GNOME-Autostart-Notify=true
-X-GNOME-Bugzilla-Bugzilla=GNOME
-X-GNOME-Bugzilla-Product=gnome-screensaver
-X-GNOME-Bugzilla-Component=general
