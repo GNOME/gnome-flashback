@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Alberts Muktupāvels
+ * Copyright (C) 2015-2017 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -103,7 +103,9 @@ pixels_to_pixbuf (gulong *pixels,
 }
 
 static GdkPixbuf *
-get_cursor_pixbuf (GdkDisplay *display)
+get_cursor_pixbuf (GdkDisplay *display,
+                   gint       *xhot,
+                   gint       *yhot)
 {
   Display *xdisplay;
   gint event_base;
@@ -123,20 +125,126 @@ get_cursor_pixbuf (GdkDisplay *display)
 
   pixbuf = pixels_to_pixbuf (image->pixels, image->width, image->height);
 
-  if (pixbuf)
-    {
-      gchar hot[6];
-
-      g_ascii_dtostr (hot, 6, (gdouble) image->xhot);
-      gdk_pixbuf_set_option (pixbuf, "x_hot", hot);
-
-      g_ascii_dtostr (hot, 6, (gdouble) image->yhot);
-      gdk_pixbuf_set_option (pixbuf, "y_hot", hot);
-    }
+  *xhot = image->xhot;
+  *yhot = image->yhot;
 
   XFree (image);
 
   return pixbuf;
+}
+
+static gint
+get_window_scaling_factor (void)
+{
+  GValue gvalue = G_VALUE_INIT;
+  GdkScreen *screen;
+
+  g_value_init (&gvalue, G_TYPE_INT);
+
+  screen = gdk_screen_get_default ();
+  if (gdk_screen_get_setting (screen, "gdk-window-scaling-factor", &gvalue))
+    return g_value_get_int (&gvalue);
+
+  return 1;
+}
+
+static void
+screenshot_add_cursor (GdkPixbuf      *pixbuf,
+                       ScreenshotType  type,
+                       gboolean        include_cursor,
+                       GdkWindow      *window,
+                       gint            frame_offset_x,
+                       gint            frame_offset_y)
+{
+  GdkDisplay *display;
+  GdkPixbuf *cursor_pixbuf;
+  gint scale;
+  gint xhot;
+  gint yhot;
+
+  /* If we have a selected area, there were by definition no cursor
+   * in the screenshot.
+   */
+  if (!include_cursor || type == SCREENSHOT_AREA)
+    return;
+
+  display = gdk_display_get_default ();
+  cursor_pixbuf = get_cursor_pixbuf (display, &xhot, &yhot);
+  scale = get_window_scaling_factor ();
+
+  if (cursor_pixbuf == NULL)
+    {
+      GdkCursor *cursor;
+      cairo_surface_t *surface;
+      gdouble x_hot;
+      gdouble y_hot;
+      gint width;
+      gint height;
+
+      cursor = gdk_cursor_new_for_display (display, GDK_LEFT_PTR);
+
+      if (cursor == NULL)
+        return;
+
+      surface = gdk_cursor_get_surface (cursor, &x_hot, &y_hot);
+      g_object_unref (cursor);
+
+      if (surface == NULL)
+        return;
+
+      width = cairo_image_surface_get_width (surface);
+      height = cairo_image_surface_get_height (surface);
+
+      cursor_pixbuf = gdk_pixbuf_get_from_surface (surface, 0, 0, width, height);
+      cairo_surface_destroy (surface);
+
+      xhot = x_hot * scale;
+      yhot = y_hot * scale;
+    }
+
+  if (cursor_pixbuf != NULL)
+    {
+      GdkSeat *seat;
+      GdkDevice *device;
+      gdouble cx;
+      gdouble cy;
+      GdkRectangle pixbuf_rect;
+      GdkRectangle cursor_rect;
+
+      seat = gdk_display_get_default_seat (display);
+      device = gdk_seat_get_pointer (seat);
+
+      gdk_window_get_device_position_double (window, device, &cx, &cy, NULL);
+
+      pixbuf_rect.x = pixbuf_rect.y = 0;
+      pixbuf_rect.width = gdk_pixbuf_get_width (pixbuf);
+      pixbuf_rect.height = gdk_pixbuf_get_height (pixbuf);
+
+      cursor_rect.x = cx * scale - xhot - frame_offset_x;
+      cursor_rect.y = cy * scale - yhot - frame_offset_y;
+      cursor_rect.width = gdk_pixbuf_get_width (cursor_pixbuf);
+      cursor_rect.height = gdk_pixbuf_get_height (cursor_pixbuf);
+
+      /* see if the pointer is inside the window */
+      if (gdk_rectangle_intersect (&pixbuf_rect, &cursor_rect, &cursor_rect))
+        {
+          gint cursor_x;
+          gint cursor_y;
+
+          cursor_x = cx * scale - xhot - frame_offset_x;
+          cursor_y = cy * scale - yhot - frame_offset_y;
+
+          gdk_pixbuf_composite (cursor_pixbuf, pixbuf,
+                                cursor_rect.x, cursor_rect.y,
+                                cursor_rect.width, cursor_rect.height,
+                                cursor_x, cursor_y,
+                                1.0, 1.0,
+                                GDK_INTERP_BILINEAR,
+                                255);
+        }
+
+      g_object_unref (cursor_pixbuf);
+    }
 }
 
 static gchar *
@@ -600,6 +708,7 @@ take_screenshot_real (GfScreenshot    *screenshot,
 {
   GdkDisplay *display;
   GdkWindow *window;
+  gint scale;
   GtkBorder extents;
   GdkRectangle real;
   GdkRectangle s;
@@ -614,6 +723,8 @@ take_screenshot_real (GfScreenshot    *screenshot,
 
   if (window == NULL)
     return FALSE;
+
+  scale = get_window_scaling_factor ();
 
   if (type == SCREENSHOT_WINDOW && get_gtk_frame_extents (window, &extents))
     {
@@ -634,6 +745,9 @@ take_screenshot_real (GfScreenshot    *screenshot,
 
       pixbuf = gdk_pixbuf_get_from_window (window, real.x, real.y,
                                            real.width, real.height);
+
+      screenshot_add_cursor (pixbuf, type, include_cursor, window,
+                             real.x * scale, real.y *scale);
 
       gdk_window_get_frame_extents (window, &real);
 
@@ -786,78 +900,10 @@ take_screenshot_real (GfScreenshot    *screenshot,
         }
     }
 
-  /* If we have a selected area, there were by definition no cursor in the
-   * screenshot. */
-  if (include_cursor && type != SCREENSHOT_AREA)
-    {
-      GdkPixbuf *cursor_pixbuf;
-
-      cursor_pixbuf = get_cursor_pixbuf (display);
-
-      if (cursor_pixbuf == NULL)
-        {
-          GdkCursor *cursor;
-
-          cursor = gdk_cursor_new_for_display (display, GDK_LEFT_PTR);
-          cursor_pixbuf = gdk_cursor_get_image (cursor);
-
-          g_clear_object (&cursor);
-        }
-
-      if (cursor_pixbuf != NULL)
-        {
-          GdkSeat *seat;
-          GdkDevice *device;
-          GdkRectangle pixbuf_rect;
-          GdkRectangle cursor_rect;
-          gint cx;
-          gint cy;
-          gint xhot;
-          gint yhot;
-
-          seat = gdk_display_get_default_seat (display);
-          device = gdk_seat_get_pointer (seat);
-
-          if (wm_window != NULL)
-            gdk_window_get_device_position (wm_window, device, &cx, &cy, NULL);
-          else
-            gdk_window_get_device_position (window, device, &cx, &cy, NULL);
-
-          sscanf (gdk_pixbuf_get_option (cursor_pixbuf, "x_hot"), "%d", &xhot);
-          sscanf (gdk_pixbuf_get_option (cursor_pixbuf, "y_hot"), "%d", &yhot);
-
-          pixbuf_rect.x = 0;
-          pixbuf_rect.y = 0;
-          pixbuf_rect.width = gdk_pixbuf_get_width (pixbuf);
-          pixbuf_rect.height = gdk_pixbuf_get_height (pixbuf);
-
-          /* in rect we have the cursor window coordinates */
-          cursor_rect.x = cx - xhot - frame_offset.left;
-          cursor_rect.y = cy - yhot - frame_offset.top;
-          cursor_rect.width = gdk_pixbuf_get_width (cursor_pixbuf);
-          cursor_rect.height = gdk_pixbuf_get_height (cursor_pixbuf);
-
-          /* see if the pointer is inside the window */
-          if (gdk_rectangle_intersect (&pixbuf_rect, &cursor_rect, &cursor_rect))
-            {
-              gint cursor_x;
-              gint cursor_y;
-
-              cursor_x = cx - xhot - frame_offset.left;
-              cursor_y = cy - yhot - frame_offset.top;
-
-              gdk_pixbuf_composite (cursor_pixbuf, pixbuf,
-                                    cursor_rect.x, cursor_rect.y,
-                                    cursor_rect.width, cursor_rect.height,
-                                    cursor_x, cursor_y,
-                                    1.0, 1.0,
-                                    GDK_INTERP_BILINEAR,
-                                    255);
-            }
-        }
-
-      g_clear_object (&cursor_pixbuf);
-    }
+  screenshot_add_cursor (pixbuf, type, include_cursor,
+                         wm_window != NULL ? wm_window : window,
+                         frame_offset.left * scale,
+                         frame_offset.top * scale);
 
   if (type == SCREENSHOT_WINDOW)
     {
