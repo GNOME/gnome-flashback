@@ -452,25 +452,35 @@ make_region_with_monitors (void)
 }
 
 static void
+get_screen_size (gint *width,
+                 gint *height,
+                 gint  scale)
+{
+  GdkScreen *screen;
+  GdkWindow *window;
+
+  screen = gdk_screen_get_default ();
+  window = gdk_screen_get_root_window (screen);
+
+  *width = gdk_window_get_width (window) / scale;
+  *height = gdk_window_get_height (window) / scale;
+}
+
+static void
 mask_monitors (GdkPixbuf *pixbuf,
                GdkWindow *root_window)
 {
-  GdkScreen *screen;
-  cairo_region_t *region_with_monitors;
-  cairo_region_t *invisible_region;
   cairo_rectangle_int_t rect;
+  cairo_region_t *invisible_region;
+  cairo_region_t *region_with_monitors;
 
-  screen = gdk_window_get_screen (root_window);
-  region_with_monitors = make_region_with_monitors ();
-
-  rect.x = 0;
-  rect.y = 0;
-  rect.width = gdk_screen_get_width (screen);
-  rect.height = gdk_screen_get_height (screen);
+  rect.x = rect.y = 0;
+  get_screen_size (&rect.width, &rect.height, 1);
 
   invisible_region = cairo_region_create_rectangle (&rect);
-  cairo_region_subtract (invisible_region, region_with_monitors);
+  region_with_monitors = make_region_with_monitors ();
 
+  cairo_region_subtract (invisible_region, region_with_monitors);
   blank_region_in_pixbuf (pixbuf, invisible_region);
 
   cairo_region_destroy (region_with_monitors);
@@ -532,6 +542,7 @@ get_gtk_frame_extents (GdkWindow *window,
   guchar *data;
   gint result;
   gulong *borders;
+  gint scale;
 
   display = gdk_display_get_default ();
   xdisplay = gdk_x11_display_get_xdisplay (display);
@@ -555,11 +566,12 @@ get_gtk_frame_extents (GdkWindow *window,
     }
 
   borders = (gulong *) data;
+  scale = get_window_scaling_factor ();
 
-  extents->left = borders[0];
-  extents->right = borders[1];
-  extents->top = borders[2];
-  extents->bottom = borders[3];
+  extents->left = borders[0] / scale;
+  extents->right = borders[1] / scale;
+  extents->top = borders[2] / scale;
+  extents->bottom = borders[3] / scale;
 
   XFree (data);
 
@@ -577,6 +589,7 @@ get_window_rect_coords (GdkWindow    *window,
   gint y;
   gint width;
   gint height;
+  gint scale;
   gint screen_width;
   gint screen_height;
 
@@ -612,11 +625,12 @@ get_window_rect_coords (GdkWindow    *window,
       y = 0;
     }
 
-  screen_width = gdk_screen_width ();
+  scale = get_window_scaling_factor ();
+  get_screen_size (&screen_width, &screen_height, scale);
+
   if (x + width > screen_width)
     width = screen_width - x;
 
-  screen_height = gdk_screen_height ();
   if (y + height > screen_height)
     height = screen_height - y;
 
@@ -838,7 +852,9 @@ take_screenshot_real (GfScreenshot    *screenshot,
 
           has_alpha = gdk_pixbuf_get_has_alpha (pixbuf);
 
-          tmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, s.width, s.height);
+          tmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
+                                s.width * scale, s.height * scale);
+
           gdk_pixbuf_fill (tmp, 0);
 
           for (i = 0; i < rectangle_count; i++)
@@ -847,37 +863,45 @@ take_screenshot_real (GfScreenshot    *screenshot,
               gint rec_y;
               gint rec_width;
               gint rec_height;
+              gint screen_width;
+              gint screen_height;
               gint y2;
 
               /* If we're using invisible borders, the ShapeBounding might not
                * have the same size as the frame extents, as it would include
                * the areas for the invisible borders themselves.
                * In that case, trim every rectangle we get by the offset between
-               * the WM window size and the frame extents. */
+               * the WM window size and the frame extents.
+               */
               rec_x = rectangles[i].x;
               rec_y = rectangles[i].y;
-              rec_width = rectangles[i].width - (frame_offset.left + frame_offset.right);
-              rec_height = rectangles[i].height - (frame_offset.top + frame_offset.bottom);
+              rec_width = rectangles[i].width;
+              rec_height = rectangles[i].height;
+
+              rec_width -= frame_offset.left * scale + frame_offset.right * scale;
+              rec_height -= frame_offset.top * scale + frame_offset.bottom * scale;
 
               if (real.x < 0)
                 {
-                  rec_x += real.x;
+                  rec_x += real.x * scale;
                   rec_x = MAX(rec_x, 0);
-                  rec_width += real.x;
+                  rec_width += real.x * scale;
                 }
 
               if (real.y < 0)
                 {
-                  rec_y += real.y;
+                  rec_y += real.y * scale;
                   rec_y = MAX(rec_y, 0);
-                  rec_height += real.y;
+                  rec_height += real.y * scale;
                 }
 
-              if (s.x + rec_x + rec_width > gdk_screen_width ())
-                rec_width = gdk_screen_width () - s.x - rec_x;
+              get_screen_size (&screen_width, &screen_height, 1);
 
-              if (s.y + rec_y + rec_height > gdk_screen_height ())
-                rec_height = gdk_screen_height () - s.y - rec_y;
+              if (s.x * scale + rec_x + rec_width > screen_width)
+                rec_width = screen_width - s.x * scale - rec_x;
+
+              if (s.y * scale + rec_y + rec_height > screen_height)
+                rec_height = screen_height - s.y * scale - rec_y;
 
               for (y2 = rec_y; y2 < rec_y + rec_height; y2++)
                 {
@@ -1069,35 +1093,18 @@ take_screenshot (GfScreenshot          *screenshot,
   g_free (filename_out);
 }
 
-static void
-scale_area (gint *x,
-            gint *y,
-            gint *width,
-            gint *height)
-{
-}
-
-static void
-unscale_area (gint *x,
-              gint *y,
-              gint *width,
-              gint *height)
-{
-}
-
 static gboolean
 check_area (gint x,
             gint y,
             gint width,
             gint height)
 {
-  GdkScreen *screen;
+  gint scale;
   gint screen_width;
   gint screen_height;
 
-  screen = gdk_screen_get_default ();
-  screen_width = gdk_screen_get_width (screen);
-  screen_height = gdk_screen_get_height (screen);
+  scale = get_window_scaling_factor ();
+  get_screen_size (&screen_width, &screen_height, scale);
 
   return x >= 0 && y >= 0 && width > 0 && height > 0 &&
          x + width <= screen_width && y + height <= screen_height;
@@ -1112,14 +1119,14 @@ handle_screenshot (GfDBusScreenshot      *dbus_screenshot,
                    gpointer               user_data)
 {
   GfScreenshot *screenshot;
-  GdkScreen *screen;
+  gint scale;
   gint width;
   gint height;
 
   screenshot = GF_SCREENSHOT (user_data);
-  screen = gdk_screen_get_default ();
-  width = gdk_screen_get_width (screen);
-  height = gdk_screen_get_height (screen);
+
+  scale = get_window_scaling_factor ();
+  get_screen_size (&width, &height, scale);
 
   take_screenshot (screenshot, invocation, SCREENSHOT_SCREEN,
                    FALSE, include_cursor, 0, 0, width, height,
@@ -1174,7 +1181,6 @@ handle_screenshot_area (GfDBusScreenshot      *dbus_screenshot,
       return TRUE;
     }
 
-  scale_area (&x, &y, &width, &height);
   take_screenshot (screenshot, invocation, SCREENSHOT_AREA,
                    FALSE, FALSE, x, y, width, height,
                    gf_dbus_screenshot_complete_screenshot_area,
@@ -1202,8 +1208,6 @@ handle_flash_area (GfDBusScreenshot      *dbus_screenshot,
 
       return TRUE;
     }
-
-  scale_area (&x, &y, &width, &height);
 
   flashspot = gf_flashspot_new ();
   gf_flashspot_fire (flashspot, x, y, width, height);
@@ -1236,8 +1240,6 @@ handle_select_area (GfDBusScreenshot      *dbus_screenshot,
 
   if (selected)
     {
-      unscale_area (&x, &y, &width, &height);
-
       /* wait 200ms to allow compositor finish redrawing selected area
        * without selection overlay.
        */
