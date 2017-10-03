@@ -343,7 +343,7 @@ save_screenshot (GdkPixbuf    *pixbuf,
 }
 
 static void
-blank_rectangle_in_pixbuf (GdkPixbuf *pixbuf,
+blank_rectangle_in_pixbuf (GdkPixbuf    *pixbuf,
                            GdkRectangle *rect)
 {
   gint x;
@@ -418,20 +418,33 @@ blank_region_in_pixbuf (GdkPixbuf      *pixbuf,
 }
 
 static cairo_region_t *
-make_region_with_monitors (GdkScreen *screen)
+make_region_with_monitors (void)
 {
-  cairo_region_t *region;
+  GdkDisplay *display;
   gint num_monitors;
+  cairo_region_t *region;
   gint i;
 
-  num_monitors = gdk_screen_get_n_monitors (screen);
+  display = gdk_display_get_default ();
+  num_monitors = gdk_display_get_n_monitors (display);
   region = cairo_region_create ();
 
   for (i = 0; i < num_monitors; i++)
     {
+      GdkMonitor *monitor;
+      gint scale;
       GdkRectangle rect;
 
-      gdk_screen_get_monitor_geometry (screen, i, &rect);
+      monitor = gdk_display_get_monitor (display, i);
+      scale = gdk_monitor_get_scale_factor (monitor);
+
+      gdk_monitor_get_geometry (monitor, &rect);
+
+      rect.x *= scale;
+      rect.y *= scale;
+      rect.width *= scale;
+      rect.height *= scale;
+
       cairo_region_union_rectangle (region, &rect);
     }
 
@@ -448,7 +461,7 @@ mask_monitors (GdkPixbuf *pixbuf,
   cairo_rectangle_int_t rect;
 
   screen = gdk_window_get_screen (root_window);
-  region_with_monitors = make_region_with_monitors (screen);
+  region_with_monitors = make_region_with_monitors ();
 
   rect.x = 0;
   rect.y = 0;
