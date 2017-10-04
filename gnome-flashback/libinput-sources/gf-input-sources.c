@@ -47,6 +47,8 @@ struct _GfInputSources
 
 G_DEFINE_TYPE (GfInputSources, gf_input_sources, G_TYPE_OBJECT)
 
+static void update_status_icon (GfInputSources *sources);
+
 static GString *
 cairo_path_to_string (cairo_path_t   *path,
                       cairo_matrix_t *matrix)
@@ -334,6 +336,7 @@ get_icon_name (GfInputSources *sources)
 {
   const gchar *text;
   gint font_size;
+  IBusPropList *prop_list;
   gchar *font_family;
   gint font_weight;
   gchar *bg_color;
@@ -343,6 +346,41 @@ get_icon_name (GfInputSources *sources)
 
   text = gf_input_source_get_short_name (sources->current_source);
   font_size = 8;
+
+  prop_list = gf_input_source_get_properties (sources->current_source);
+  if (prop_list != NULL)
+    {
+      IBusProperty *prop;
+      guint index;
+
+      index = 0;
+      while ((prop = ibus_prop_list_get (prop_list, index++)) != NULL)
+        {
+          const gchar *key;
+          IBusText *symbol;
+          IBusText *label;
+          const gchar *tmp;
+
+          if (!ibus_property_get_visible (prop))
+            continue;
+
+          key = ibus_property_get_key (prop);
+
+          if (g_strcmp0 (key, "InputMode") != 0)
+            continue;
+
+          symbol = ibus_property_get_symbol (prop);
+          label = ibus_property_get_label (prop);
+
+          if (symbol != NULL)
+            tmp = ibus_text_get_text (symbol);
+          else
+            tmp = ibus_text_get_text (label);
+
+          if (tmp != NULL && *tmp != '\0' && g_utf8_strlen (tmp, -1) < 3)
+            text = tmp;
+        }
+    }
 
   font_family = g_settings_get_string (sources->status_icon_settings, "font-family");
   font_weight = g_settings_get_int (sources->status_icon_settings, "font-weight");
@@ -365,17 +403,239 @@ get_icon_name (GfInputSources *sources)
 }
 
 static void
+normal_activate_cb (GtkMenuItem    *item,
+                    GfInputSources *sources)
+{
+  IBusProperty *prop;
+  const gchar *key;
+  guint state;
+
+  prop = g_object_get_data (G_OBJECT (item), "prop");
+  if (prop == NULL)
+    return;
+
+  key = ibus_property_get_key (prop);
+  state = ibus_property_get_state (prop);
+
+  gf_ibus_manager_activate_property (sources->ibus_manager, key, state);
+}
+
+static void
+toggle_activate_cb (GtkMenuItem    *item,
+                    GfInputSources *sources)
+{
+  IBusProperty *prop;
+
+  prop = g_object_get_data (G_OBJECT (item), "prop");
+  if (prop == NULL)
+    return;
+
+  if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (item)))
+    {
+      ibus_property_set_state (prop, PROP_STATE_CHECKED);
+      gf_ibus_manager_activate_property (sources->ibus_manager,
+                                         ibus_property_get_key (prop),
+                                         PROP_STATE_CHECKED);
+    }
+  else
+    {
+      ibus_property_set_state (prop, PROP_STATE_UNCHECKED);
+      gf_ibus_manager_activate_property (sources->ibus_manager,
+                                         ibus_property_get_key (prop),
+                                         PROP_STATE_UNCHECKED);
+    }
+}
+
+static void
+radio_activate_cb (GtkMenuItem    *item,
+                   GfInputSources *sources)
+{
+  IBusProperty *prop;
+  gboolean active;
+  IBusPropState state;
+
+  prop = g_object_get_data (G_OBJECT (item), "prop");
+  if (prop == NULL)
+    return;
+
+  active = gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (item));
+  state = ibus_property_get_state (prop);
+
+  if (active && state == PROP_STATE_CHECKED)
+    return;
+
+  if (!active && state == PROP_STATE_UNCHECKED)
+    return;
+
+  if (active)
+    {
+      ibus_property_set_state (prop, PROP_STATE_CHECKED);
+      gf_ibus_manager_activate_property (sources->ibus_manager,
+                                         ibus_property_get_key (prop),
+                                         PROP_STATE_CHECKED);
+
+      update_status_icon (sources);
+    }
+  else
+    {
+      ibus_property_set_state (prop, PROP_STATE_UNCHECKED);
+      gf_ibus_manager_activate_property (sources->ibus_manager,
+                                         ibus_property_get_key (prop),
+                                         PROP_STATE_UNCHECKED);
+    }
+}
+
+static GPtrArray *
+get_prop_section_items (GfInputSources *sources,
+                        IBusPropList   *prop_list)
+{
+  GPtrArray *items;
+  GSList *radio_group;
+  IBusProperty *prop;
+  guint index;
+
+  items = g_ptr_array_new ();
+  radio_group = NULL;
+  index = 0;
+
+  while ((prop = ibus_prop_list_get (prop_list, index++)) != NULL)
+    {
+      IBusPropType prop_type;
+      const gchar *prop_key;
+      IBusText *label;
+      const gchar *text;
+      GtkWidget *item;
+
+      if (!ibus_property_get_visible (prop))
+        continue;
+
+      prop_type = ibus_property_get_prop_type (prop);
+      prop_key = ibus_property_get_key (prop);
+      label = ibus_property_get_label (prop);
+      text = ibus_text_get_text (label);
+      item = NULL;
+
+      switch (prop_type)
+        {
+          case PROP_TYPE_NORMAL:
+            item = gtk_menu_item_new_with_label (text);
+
+            g_signal_connect (item, "activate",
+                              G_CALLBACK (normal_activate_cb),
+                              sources);
+            break;
+
+          case PROP_TYPE_TOGGLE:
+            item = gtk_check_menu_item_new_with_label (text);
+
+            if (ibus_property_get_state (prop) == PROP_STATE_CHECKED)
+              gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), TRUE);
+
+            g_signal_connect (item, "activate",
+                              G_CALLBACK (toggle_activate_cb),
+                              sources);
+            break;
+
+          case PROP_TYPE_RADIO:
+            item = gtk_radio_menu_item_new_with_label (radio_group, text);
+            radio_group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (item));
+
+            if (ibus_property_get_state (prop) == PROP_STATE_CHECKED)
+              gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), TRUE);
+
+            g_signal_connect (item, "activate",
+                              G_CALLBACK (radio_activate_cb),
+                              sources);
+            break;
+
+          case PROP_TYPE_MENU:
+            {
+              IBusPropList *sub_props;
+              GPtrArray *menu_items;
+
+              sub_props = ibus_property_get_sub_props (prop);
+              menu_items = get_prop_section_items (sources, sub_props);
+
+              if (menu_items->len > 0)
+                {
+                  GtkWidget *submenu;
+                  guint i;
+
+                  submenu = gtk_menu_new ();
+                  for (i = 0; i < menu_items->len; i++)
+                    {
+                      GtkWidget *submenu_item;
+
+                      submenu_item = g_ptr_array_index (menu_items, i);
+                      gtk_menu_shell_append (GTK_MENU_SHELL (submenu), submenu_item);
+                    }
+
+                  item = gtk_menu_item_new_with_label (text);
+                  gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
+                }
+
+              g_ptr_array_unref (menu_items);
+            }
+            break;
+
+          case PROP_TYPE_SEPARATOR:
+            item = gtk_separator_menu_item_new ();
+            break;
+
+          default:
+            g_warning ("IBus property %s has invalid type %d",
+                       prop_key, prop_type);
+            break;
+        }
+
+      if (item != NULL)
+        {
+          gboolean sensitive;
+
+          g_object_set_data (G_OBJECT (item), "prop", prop);
+
+          sensitive = ibus_property_get_sensitive (prop);
+          gtk_widget_set_sensitive (item, sensitive);
+
+          g_ptr_array_add (items, item);
+        }
+    }
+
+  return items;
+}
+
+static void
 build_prop_section (GfInputSources *sources,
                     GtkMenu        *menu)
 {
   IBusPropList *prop_list;
+  GPtrArray *items;
 
   prop_list = gf_input_source_get_properties (sources->current_source);
 
   if (!prop_list)
     return;
 
-  /* FIXME: */
+  items = get_prop_section_items (sources, prop_list);
+
+  if (items->len > 0)
+    {
+      GtkWidget *separator;
+      guint i;
+
+      separator = gtk_separator_menu_item_new ();
+      gtk_menu_shell_append (GTK_MENU_SHELL (menu), separator);
+
+      for (i = 0; i < items->len; i++)
+        {
+          GtkWidget *item;
+
+          item = g_ptr_array_index (items, i);
+          gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+        }
+    }
+
+  g_ptr_array_unref (items);
 }
 
 static void
