@@ -1308,6 +1308,8 @@ gf_input_settings_constructed (GObject *object)
 
   settings = GF_INPUT_SETTINGS (object);
 
+  G_OBJECT_CLASS (gf_input_settings_parent_class)->constructed (object);
+
   apply_device_settings (settings, NULL);
   update_keyboard_repeat (settings);
   check_mappable_devices (settings);
