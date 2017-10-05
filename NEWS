@@ -1,3 +1,16 @@
+Version 3.26.0
+==============
+- Don't include selection overlay in screenshot. (#780358)
+- Don't exlude any desktop files from menus. (Balló György; #772959)
+- Don't disable password entry in polkit dialog. (LP:#1698994)
+- Fix missing cursor in CSD window screenshots. (#780394)
+- Fix a FIXME about ibus properties in input sources. (#788547)
+- Replace old display-config with new/updated monitor manager.
+- Imporve HiDPI support in screenshots.
+- Updated translations:
+  Anders Jonsson (sv), Dušan Kazik (sk), Fabio Tomat (fur), Kukuh Syafaat (id),
+  Marek Cernocky (cs), Mario Blättermann (de), Piotr Drąg (pl).
+
 Version 3.24.0
 ==============
 - Ignore invalid inhibitors in end-session-dialog. (Alberts Muktupāvels; #771759)
