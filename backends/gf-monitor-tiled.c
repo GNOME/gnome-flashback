@@ -268,7 +268,7 @@ generate_tiled_monitor_modes (GfMonitorTiled *tiled)
       mode = l->data;
       tiled_modes = g_list_remove_link (tiled_modes, l);
 
-      if (!gf_monitor_add_mode (monitor, mode))
+      if (!gf_monitor_add_mode (monitor, mode, FALSE))
         {
           gf_monitor_mode_free (mode);
           continue;
@@ -308,7 +308,7 @@ generate_untiled_monitor_modes (GfMonitorTiled *tiled)
       if (!mode)
         continue;
 
-      if (!gf_monitor_add_mode (monitor, mode))
+      if (!gf_monitor_add_mode (monitor, mode, FALSE))
         {
           gf_monitor_mode_free (mode);
           continue;

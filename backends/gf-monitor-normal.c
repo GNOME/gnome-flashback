@@ -36,15 +36,18 @@ generate_modes (GfMonitorNormal *normal)
 {
   GfMonitor *monitor;
   GfOutput *output;
+  GfCrtcModeFlag preferred_mode_flags;
   guint i;
 
   monitor = GF_MONITOR (normal);
   output = gf_monitor_get_main_output (monitor);
+  preferred_mode_flags = output->preferred_mode->flags;
 
   for (i = 0; i < output->n_modes; i++)
     {
       GfCrtcMode *crtc_mode;
       GfMonitorMode *mode;
+      gboolean replace;
 
       crtc_mode = output->modes[i];
 
@@ -60,18 +63,27 @@ generate_modes (GfMonitorNormal *normal)
       mode->crtc_modes[0].output = output;
       mode->crtc_modes[0].crtc_mode = crtc_mode;
 
-      if (gf_monitor_add_mode (monitor, mode))
-        {
-          if (crtc_mode == output->preferred_mode)
-            gf_monitor_set_preferred_mode (monitor, mode);
+      /*
+       * We don't distinguish between all available mode flags, just the ones
+       * that are configurable. We still need to pick some mode though, so
+       * prefer ones that has the same set of flags as the preferred mode;
+       * otherwise take the first one in the list. This guarantees that the
+       * preferred mode is always added.
+       */
+      replace = crtc_mode->flags == preferred_mode_flags;
 
-          if (output->crtc && crtc_mode == output->crtc->current_mode)
-            gf_monitor_set_current_mode (monitor, mode);
-        }
-      else
+      if (!gf_monitor_add_mode (monitor, mode, replace))
         {
+          g_assert (crtc_mode != output->preferred_mode);
           gf_monitor_mode_free (mode);
+          continue;
         }
+
+      if (crtc_mode == output->preferred_mode)
+        gf_monitor_set_preferred_mode (monitor, mode);
+
+      if (output->crtc && crtc_mode == output->crtc->current_mode)
+        gf_monitor_set_current_mode (monitor, mode);
     }
 }
 

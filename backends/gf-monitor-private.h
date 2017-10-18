@@ -105,7 +105,8 @@ void               gf_monitor_set_preferred_mode         (GfMonitor             
 void               gf_monitor_generate_spec              (GfMonitor                  *monitor);
 
 gboolean           gf_monitor_add_mode                   (GfMonitor                  *monitor,
-                                                          GfMonitorMode              *monitor_mode);
+                                                          GfMonitorMode              *monitor_mode,
+                                                          gboolean                    replace);
 
 void               gf_monitor_mode_free                  (GfMonitorMode              *monitor_mode);
 

@@ -443,18 +443,25 @@ gf_monitor_generate_spec (GfMonitor *monitor)
 
 gboolean
 gf_monitor_add_mode (GfMonitor     *monitor,
-                     GfMonitorMode *monitor_mode)
+                     GfMonitorMode *monitor_mode,
+                     gboolean       replace)
 {
   GfMonitorPrivate *priv;
+  GfMonitorMode *existing_mode;
 
   priv = gf_monitor_get_instance_private (monitor);
 
-  if (g_hash_table_lookup (priv->mode_ids,
-                           gf_monitor_mode_get_id (monitor_mode)))
+  existing_mode = g_hash_table_lookup (priv->mode_ids,
+                                       gf_monitor_mode_get_id (monitor_mode));
+
+  if (existing_mode && !replace)
     return FALSE;
 
+  if (existing_mode)
+    priv->modes = g_list_remove (priv->modes, existing_mode);
+
   priv->modes = g_list_append (priv->modes, monitor_mode);
-  g_hash_table_insert (priv->mode_ids, monitor_mode->id, monitor_mode);
+  g_hash_table_replace (priv->mode_ids, monitor_mode->id, monitor_mode);
 
   return TRUE;
 }
