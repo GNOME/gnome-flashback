@@ -71,8 +71,25 @@ derive_monitor_transform (GfMonitor *monitor)
 }
 
 static void
+gf_logical_monitor_finalize (GObject *object)
+{
+  GfLogicalMonitor *logical_monitor;
+
+  logical_monitor = GF_LOGICAL_MONITOR (object);
+
+  g_list_free (logical_monitor->monitors);
+
+  G_OBJECT_CLASS (gf_logical_monitor_parent_class)->finalize (object);
+}
+
+static void
 gf_logical_monitor_class_init (GfLogicalMonitorClass *logical_monitor_class)
 {
+  GObjectClass *object_class;
+
+  object_class = G_OBJECT_CLASS (logical_monitor_class);
+
+  object_class->finalize = gf_logical_monitor_finalize;
 }
 
 static void
