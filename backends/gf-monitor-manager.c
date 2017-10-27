@@ -866,6 +866,8 @@ create_logical_monitor_config_from_variant (GfMonitorManager            *manager
                                                            monitor_config_variant,
                                                            error);
 
+      g_variant_unref (monitor_config_variant);
+
       if (!monitor_config)
         goto err;
 
