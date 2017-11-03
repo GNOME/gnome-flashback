@@ -169,6 +169,10 @@ gf_monitors_config_new (GfMonitorManager           *monitor_manager,
       GfMonitor *monitor = l->data;
       GfMonitorSpec *monitor_spec;
 
+      if (gf_monitor_manager_is_lid_closed (monitor_manager) &&
+          gf_monitor_is_laptop_panel (monitor))
+        continue;
+
       monitor_spec = gf_monitor_get_spec (monitor);
       if (gf_logical_monitor_configs_have_monitor (logical_monitor_configs,
                                                    monitor_spec))
