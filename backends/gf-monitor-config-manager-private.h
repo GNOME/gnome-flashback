@@ -25,6 +25,7 @@
 #include "gf-logical-monitor-config-private.h"
 #include "gf-monitor-config-private.h"
 #include "gf-monitor-manager-private.h"
+#include "gf-monitors-config-private.h"
 
 G_BEGIN_DECLS
 
@@ -70,6 +71,8 @@ GfMonitorsConfig       *gf_monitor_config_manager_get_previous              (GfM
 void                    gf_monitor_config_manager_clear_history             (GfMonitorConfigManager      *config_manager);
 
 void                    gf_monitor_config_manager_save_current              (GfMonitorConfigManager      *config_manager);
+
+GfMonitorsConfigKey    *gf_create_monitors_config_key_for_current_state     (GfMonitorManager            *monitor_manager);
 
 G_END_DECLS
 

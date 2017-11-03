@@ -271,35 +271,17 @@ static gboolean
 gf_monitor_manager_is_config_complete (GfMonitorManager *manager,
                                        GfMonitorsConfig *config)
 {
-  GList *l;
-  guint configured_monitor_count = 0;
-  guint expected_monitor_count = 0;
+  GfMonitorsConfigKey *current_state_key;
+  gboolean is_config_complete;
 
-  for (l = config->logical_monitor_configs; l; l = l->next)
-    {
-      GfLogicalMonitorConfig *logical_monitor_config = l->data;
-      GList *k;
+  current_state_key = gf_create_monitors_config_key_for_current_state (manager);
+  if (!current_state_key)
+    return FALSE;
 
-      for (k = logical_monitor_config->monitor_configs; k; k = k->next)
-        configured_monitor_count++;
-    }
+  is_config_complete = gf_monitors_config_key_equal (current_state_key, config->key);
+  gf_monitors_config_key_free (current_state_key);
 
-  for (l = manager->monitors; l; l = l->next)
-    {
-      GfMonitor *monitor = l->data;
-
-      if (gf_monitor_is_laptop_panel (monitor))
-        {
-          if (!gf_monitor_manager_is_lid_closed (manager))
-            expected_monitor_count++;
-        }
-      else
-        {
-          expected_monitor_count++;
-        }
-    }
-
-  if (configured_monitor_count != expected_monitor_count)
+  if (!is_config_complete)
     return FALSE;
 
   return gf_monitor_manager_is_config_applicable (manager, config, NULL);

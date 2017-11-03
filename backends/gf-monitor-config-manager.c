@@ -644,8 +644,8 @@ assign_logical_monitor_crtcs (GfMonitorManager        *manager,
   return TRUE;
 }
 
-static GfMonitorsConfigKey *
-create_key_for_current_state (GfMonitorManager *monitor_manager)
+GfMonitorsConfigKey *
+gf_create_monitors_config_key_for_current_state (GfMonitorManager *monitor_manager)
 {
   GfMonitorsConfigKey *config_key;
   GList *l;
@@ -778,7 +778,7 @@ gf_monitor_config_manager_get_stored (GfMonitorConfigManager *config_manager)
   GfMonitorsConfig *config;
   GError *error = NULL;
 
-  config_key = create_key_for_current_state (monitor_manager);
+  config_key = gf_create_monitors_config_key_for_current_state (monitor_manager);
   if (!config_key)
     return NULL;
 
