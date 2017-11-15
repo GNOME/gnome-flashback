@@ -542,10 +542,9 @@ gf_keyboard_manager_set_user_layouts (GfKeyboardManager  *manager,
                                       gchar             **ids)
 {
   gint i;
+  gint j;
   const gchar *layout;
   const gchar *variant;
-  GHashTableIter iter;
-  gpointer value;
   LayoutInfo **group;
 
   manager->current = NULL;
@@ -556,46 +555,40 @@ gf_keyboard_manager_set_user_layouts (GfKeyboardManager  *manager,
   manager->layout_infos = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                  g_free, layout_info_free);
 
-  for (i = 0; ids[i] != NULL; i++)
+  for (i = 0, j = 0; ids[i] != NULL; i++)
     {
       if (gnome_xkb_info_get_layout_info (manager->xkb_info, ids[i],
                                           NULL, NULL, &layout, &variant))
         {
           LayoutInfo *info;
+          guint index;
+
+          if (g_hash_table_contains (manager->layout_infos, ids[i]))
+            continue;
 
           info = layout_info_new (ids[i], layout, variant);
 
+          /*
+           * We need to leave one slot on each group free so that we
+           * can add a layout containing the symbols for the language
+           * used in UI strings to ensure that toolkits can handle
+           * mnemonics like Alt+Ф even if the user is actually typing
+           * in a different layout.
+           */
+          index = j % (MAX_LAYOUTS_PER_GROUP - 1);
+
+          if (index == 0)
+            group = g_new0 (LayoutInfo *, (MAX_LAYOUTS_PER_GROUP - 1));
+
+          group[index] = info;
+
+          info->group = group;
+          info->index = index;
+
           g_hash_table_insert (manager->layout_infos, g_strdup (ids[i]), info);
+
+          ++j;
         }
-    }
-
-  i = 0;
-  g_hash_table_iter_init (&iter, manager->layout_infos);
-
-  while (g_hash_table_iter_next (&iter, NULL, &value))
-    {
-      LayoutInfo *info;
-      guint index;
-
-      info = (LayoutInfo *) value;
-
-      /*
-       * We need to leave one slot on each group free so that we can add a
-       * layout containing the symbols for the language used in UI strings to
-       * ensure that toolkits can handle mnemonics like Alt+Ф even if the user
-       * is actually typing in a different layout.
-       */
-      index = i % (MAX_LAYOUTS_PER_GROUP - 1);
-
-      if (index == 0)
-        group = g_new0 (LayoutInfo *, (MAX_LAYOUTS_PER_GROUP - 1));
-
-      group[index] = info;
-
-      info->group = group;
-      info->index = index;
-
-      i++;
     }
 }
 
