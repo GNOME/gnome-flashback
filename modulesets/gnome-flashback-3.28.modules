@@ -133,6 +133,14 @@
     </dependencies>
   </autotools>
 
+  <autotools id="libwnck">
+    <branch />
+    <dependencies>
+      <dep package="gtk+-3" />
+      <dep package="startup-notification" />
+    </dependencies>
+  </autotools>
+
   <autotools id="metacity">
     <branch />
     <dependencies>
