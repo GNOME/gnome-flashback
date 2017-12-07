@@ -88,7 +88,7 @@
   </autotools>
 
   <autotools id="gnome-panel">
-    <branch />
+    <branch revision="gnome-3-26" />
     <dependencies>
       <dep package="intltool" />
       <dep package="gnome-desktop" />
