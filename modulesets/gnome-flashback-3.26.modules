@@ -75,7 +75,7 @@
   </autotools>
 
   <autotools id="gnome-flashback">
-    <branch />
+    <branch revision="gnome-3-26" />
     <dependencies>
       <dep package="ibus" />
       <dep package="intltool" />
