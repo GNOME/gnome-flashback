@@ -35,7 +35,7 @@
 #define MINIMUM_SCALE_FACTOR 1.0f
 #define MAXIMUM_SCALE_FACTOR 4.0f
 #define MINIMUM_LOGICAL_WIDTH 800
-#define MINIMUM_LOGICAL_HEIGHT 600
+#define MINIMUM_LOGICAL_HEIGHT 480
 #define MAXIMUM_REFRESH_RATE_DIFF 0.001
 
 /* The minimum screen height at which we turn on a window-scale of 2;
