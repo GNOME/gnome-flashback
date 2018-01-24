@@ -382,12 +382,11 @@ is_assignments_changed (GfMonitorManager  *manager,
                         GfOutputInfo     **output_infos,
                         guint              n_output_infos)
 {
-  guint i;
   GList *l;
 
-  for (i = 0; i < manager->n_crtcs; i++)
+  for (l = manager->crtcs; l; l = l->next)
     {
-      GfCrtc *crtc = &manager->crtcs[i];
+      GfCrtc *crtc = l->data;
 
       if (is_crtc_assignment_changed (crtc, crtc_infos, n_crtc_infos))
         return TRUE;
@@ -895,19 +894,22 @@ output_get_crtcs (GfMonitorManager *manager,
                   GfOutput         *output,
                   XRROutputInfo    *xrandr_output)
 {
-  guint j, k;
+  guint j;
   guint n_actual_crtcs;
+  GList *l;
 
   output->possible_crtcs = g_new0 (GfCrtc *, xrandr_output->ncrtc);
 
   n_actual_crtcs = 0;
   for (j = 0; j < (guint) xrandr_output->ncrtc; j++)
     {
-      for (k = 0; k < manager->n_crtcs; k++)
+      for (l = manager->crtcs; l; l = l->next)
         {
-          if ((XID) manager->crtcs[k].crtc_id == xrandr_output->crtcs[j])
+          GfCrtc *crtc = l->data;
+
+          if ((XID) crtc->crtc_id == xrandr_output->crtcs[j])
             {
-              output->possible_crtcs[n_actual_crtcs] = &manager->crtcs[k];
+              output->possible_crtcs[n_actual_crtcs] = crtc;
               n_actual_crtcs += 1;
               break;
             }
@@ -916,11 +918,13 @@ output_get_crtcs (GfMonitorManager *manager,
   output->n_possible_crtcs = n_actual_crtcs;
 
   output->crtc = NULL;
-  for (j = 0; j < manager->n_crtcs; j++)
+  for (l = manager->crtcs; l; l = l->next)
     {
-      if ((XID) manager->crtcs[j].crtc_id == xrandr_output->crtc)
+      GfCrtc *crtc = l->data;
+
+      if ((XID) crtc->crtc_id == xrandr_output->crtc)
         {
-          output->crtc = &manager->crtcs[j];
+          output->crtc = crtc;
           break;
         }
     }
@@ -1206,9 +1210,9 @@ apply_crtc_assignments (GfMonitorManager  *manager,
     }
 
   /* Disable CRTCs not mentioned in the list */
-  for (i = 0; i < manager->n_crtcs; i++)
+  for (l = manager->crtcs; l; l = l->next)
     {
-      GfCrtc *crtc = &manager->crtcs[i];
+      GfCrtc *crtc = l->data;
 
       if (crtc->is_dirty)
         {
@@ -1586,11 +1590,10 @@ gf_monitor_manager_xrandr_read_current (GfMonitorManager *manager)
     return;
 
   xrandr->resources = resources;
-  manager->n_crtcs = resources->ncrtc;
   manager->n_modes = resources->nmode;
   manager->outputs = NULL;
   manager->modes = g_new0 (GfCrtcMode, manager->n_modes);
-  manager->crtcs = g_new0 (GfCrtc, manager->n_crtcs);
+  manager->crtcs = NULL;
 
   for (i = 0; i < (guint) resources->nmode; i++)
     {
@@ -1614,7 +1617,7 @@ gf_monitor_manager_xrandr_read_current (GfMonitorManager *manager)
       GfCrtc *crtc;
 
       xrandr_crtc = XRRGetCrtcInfo (xrandr->xdisplay, resources, resources->crtcs[i]);
-      crtc = &manager->crtcs[i];
+      crtc = g_object_new (GF_TYPE_CRTC, NULL);
 
       crtc->crtc_id = resources->crtcs[i];
       crtc->rect.x = xrandr_crtc->x;
@@ -1634,6 +1637,7 @@ gf_monitor_manager_xrandr_read_current (GfMonitorManager *manager)
             }
         }
 
+      manager->crtcs = g_list_append (manager->crtcs, crtc);
       XRRFreeCrtcInfo (xrandr_crtc);
     }
 

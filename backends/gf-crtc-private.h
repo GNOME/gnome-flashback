@@ -25,6 +25,8 @@
 #ifndef GF_CRTC_MODE_PRIVATE_H
 #define GF_CRTC_MODE_PRIVATE_H
 
+#include <glib-object.h>
+
 #include "gf-monitor-manager-enums-private.h"
 #include "gf-monitor-manager-types-private.h"
 #include "gf-rectangle.h"
@@ -33,6 +35,8 @@ G_BEGIN_DECLS
 
 struct _GfCrtc
 {
+  GObject             parent;
+
   glong               crtc_id;
   GfRectangle         rect;
   GfCrtcMode         *current_mode;
@@ -75,6 +79,10 @@ typedef struct
   GfMonitorTransform  transform;
   GPtrArray          *outputs;
 } GfCrtcInfo;
+
+
+#define GF_TYPE_CRTC (gf_crtc_get_type ())
+G_DECLARE_FINAL_TYPE (GfCrtc, gf_crtc, GF, CRTC, GObject)
 
 G_END_DECLS
 

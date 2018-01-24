@@ -30,6 +30,7 @@ libbackends_la_SOURCES = \
 	gf-backend.c \
 	gf-backend.h \
 	gf-crtc-private.h \
+	gf-crtc.c \
 	gf-direction.h \
 	gf-display-config-shared.h \
 	gf-edid-parse.c \

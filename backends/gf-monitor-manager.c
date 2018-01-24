@@ -1103,18 +1103,6 @@ free_mode_array (GfCrtcMode *old_modes,
   g_free (old_modes);
 }
 
-static void
-free_crtc_array (GfCrtc *old_crtcs,
-                 gint    n_old_crtcs)
-{
-  gint i;
-
-  for (i = 0; i < n_old_crtcs; i++)
-    gf_monitor_manager_clear_crtc (&old_crtcs[i]);
-
-  g_free (old_crtcs);
-}
-
 static gboolean
 gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
                                          GDBusMethodInvocation *invocation)
@@ -1136,9 +1124,9 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
   g_variant_builder_init (&output_builder, G_VARIANT_TYPE ("a(uxiausauaua{sv})"));
   g_variant_builder_init (&mode_builder, G_VARIANT_TYPE ("a(uxuudu)"));
 
-  for (i = 0; i < manager->n_crtcs; i++)
+  for (l = manager->crtcs, i = 0; l; l = l->next, i++)
     {
-      GfCrtc *crtc = &manager->crtcs[i];
+      GfCrtc *crtc = l->data;
       GVariantBuilder transforms;
 
       g_variant_builder_init (&transforms, G_VARIANT_TYPE ("au"));
@@ -1165,11 +1153,19 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
       GVariantBuilder crtcs, modes, clones, properties;
       GBytes *edid;
       gchar *edid_file;
+      gint crtc_index;
 
       g_variant_builder_init (&crtcs, G_VARIANT_TYPE ("au"));
       for (j = 0; j < output->n_possible_crtcs; j++)
-        g_variant_builder_add (&crtcs, "u",
-                               (guint) (output->possible_crtcs[j] - manager->crtcs));
+        {
+          GfCrtc *possible_crtc;
+          guint possible_crtc_index;
+
+          possible_crtc = output->possible_crtcs[j];
+          possible_crtc_index = g_list_index (manager->crtcs, possible_crtc);
+
+          g_variant_builder_add (&crtcs, "u", possible_crtc_index);
+        }
 
       g_variant_builder_init (&modes, G_VARIANT_TYPE ("au"));
       for (j = 0; j < output->n_modes; j++)
@@ -1249,10 +1245,12 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
                                                 output->tile_info.tile_h));
         }
 
+      crtc_index = output->crtc ? g_list_index (manager->crtcs, output->crtc) : -1;
+
       g_variant_builder_add (&output_builder, "(uxiausauaua{sv})",
                              i, /* ID */
                              (gint64) output->winsys_id,
-                             (gint) (output->crtc ? output->crtc - manager->crtcs : -1),
+                             crtc_index,
                              &crtcs,
                              output->name,
                              &modes,
@@ -1379,7 +1377,7 @@ gf_monitor_manager_handle_get_crtc_gamma (GfDBusDisplayConfig   *skeleton,
       return TRUE;
     }
 
-  if (crtc_id >= manager->n_crtcs)
+  if (crtc_id >= g_list_length (manager->crtcs))
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
@@ -1387,7 +1385,7 @@ gf_monitor_manager_handle_get_crtc_gamma (GfDBusDisplayConfig   *skeleton,
       return TRUE;
     }
 
-  crtc = &manager->crtcs[crtc_id];
+  crtc = g_list_nth_data (manager->crtcs, crtc_id);
 
   if (manager_class->get_crtc_gamma)
     {
@@ -1448,7 +1446,7 @@ gf_monitor_manager_handle_set_crtc_gamma (GfDBusDisplayConfig   *skeleton,
       return TRUE;
     }
 
-  if (crtc_id >= manager->n_crtcs)
+  if (crtc_id >= g_list_length (manager->crtcs))
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
@@ -1456,7 +1454,7 @@ gf_monitor_manager_handle_set_crtc_gamma (GfDBusDisplayConfig   *skeleton,
       return TRUE;
     }
 
-  crtc = &manager->crtcs[crtc_id];
+  crtc = g_list_nth_data (manager->crtcs, crtc_id);
 
   red_bytes = g_variant_get_data_as_bytes (red_v);
   green_bytes = g_variant_get_data_as_bytes (green_v);
@@ -2015,7 +2013,7 @@ gf_monitor_manager_finalize (GObject *object)
 
   g_list_free_full (manager->outputs, g_object_unref);
   free_mode_array (manager->modes, manager->n_modes);
-  free_crtc_array (manager->crtcs, manager->n_crtcs);
+  g_list_free_full (manager->crtcs, g_object_unref);
 
   g_list_free_full (manager->logical_monitors, g_object_unref);
 
@@ -2205,6 +2203,12 @@ gf_monitor_manager_get_outputs (GfMonitorManager *manager)
   return manager->outputs;
 }
 
+GList *
+gf_monitor_manager_get_crtcs (GfMonitorManager *manager)
+{
+  return manager->crtcs;
+}
+
 gboolean
 gf_monitor_manager_has_hotplug_mode_update (GfMonitorManager *manager)
 {
@@ -2225,9 +2229,8 @@ void
 gf_monitor_manager_read_current_state (GfMonitorManager *manager)
 {
   GList *old_outputs;
-  GfCrtc *old_crtcs;
+  GList *old_crtcs;
   GfCrtcMode *old_modes;
-  guint n_old_crtcs;
   guint n_old_modes;
 
   /* Some implementations of read_current use the existing information
@@ -2236,7 +2239,6 @@ gf_monitor_manager_read_current_state (GfMonitorManager *manager)
    */
   old_outputs = manager->outputs;
   old_crtcs = manager->crtcs;
-  n_old_crtcs = manager->n_crtcs;
   old_modes = manager->modes;
   n_old_modes = manager->n_modes;
 
@@ -2247,7 +2249,7 @@ gf_monitor_manager_read_current_state (GfMonitorManager *manager)
 
   g_list_free_full (old_outputs, g_object_unref);
   free_mode_array (old_modes, n_old_modes);
-  free_crtc_array (old_crtcs, n_old_crtcs);
+  g_list_free_full (old_crtcs, g_object_unref);
 }
 
 void
@@ -2557,15 +2559,6 @@ gf_monitor_manager_clear_mode (GfCrtcMode *mode)
     mode->driver_notify (mode);
 
   memset (mode, 0, sizeof (*mode));
-}
-
-void
-gf_monitor_manager_clear_crtc (GfCrtc *crtc)
-{
-  if (crtc->driver_notify)
-    crtc->driver_notify (crtc);
-
-  memset (crtc, 0, sizeof (*crtc));
 }
 
 gint

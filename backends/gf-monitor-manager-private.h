@@ -65,12 +65,10 @@ struct _GfMonitorManager
    * while logical_monitors refer to logical ones.
    */
   GList                       *outputs;
+  GList                       *crtcs;
 
   GfCrtcMode                  *modes;
   guint                        n_modes;
-
-  GfCrtc                      *crtcs;
-  guint                        n_crtcs;
 
   GList                       *monitors;
 
@@ -176,6 +174,8 @@ GList                      *gf_monitor_manager_get_monitors                 (GfM
 
 GList                      *gf_monitor_manager_get_outputs                  (GfMonitorManager            *manager);
 
+GList                      *gf_monitor_manager_get_crtcs                    (GfMonitorManager            *manager);
+
 gboolean                    gf_monitor_manager_has_hotplug_mode_update      (GfMonitorManager            *manager);
 void                        gf_monitor_manager_read_current_state           (GfMonitorManager            *manager);
 void                        gf_monitor_manager_on_hotplug                   (GfMonitorManager            *manager);
@@ -228,8 +228,6 @@ GfLogicalMonitorLayoutMode  gf_monitor_manager_get_default_layout_mode      (GfM
 GfMonitorConfigManager     *gf_monitor_manager_get_config_manager           (GfMonitorManager            *manager);
 
 void                        gf_monitor_manager_clear_mode                   (GfCrtcMode                  *mode);
-
-void                        gf_monitor_manager_clear_crtc                   (GfCrtc                      *crtc);
 
 static inline gboolean
 gf_monitor_transform_is_rotated (GfMonitorTransform transform)
