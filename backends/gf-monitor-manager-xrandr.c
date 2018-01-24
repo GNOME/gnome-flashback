@@ -1287,7 +1287,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
             {
               g_warning ("Configuring CRTC %d with mode %d (%d x %d @ %f) at position %d, %d and transform %u failed\n",
                          (guint) (crtc->crtc_id), (guint) (mode->mode_id),
-                         mode->width, mode->height, (gfloat) mode->refresh_rate,
+                         mode->width, mode->height, (gdouble) mode->refresh_rate,
                          crtc_info->x, crtc_info->y, crtc_info->transform);
 
               g_free (output_ids);
