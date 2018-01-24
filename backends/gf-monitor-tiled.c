@@ -614,8 +614,8 @@ gf_monitor_tiled_get_main_output (GfMonitor *monitor)
 }
 
 static void
-gf_monitor_tiled_derived_derive_layout (GfMonitor   *monitor,
-                                        GfRectangle *layout)
+gf_monitor_tiled_derive_layout (GfMonitor   *monitor,
+                                GfRectangle *layout)
 {
   GList *outputs;
   GList *l;
@@ -695,7 +695,7 @@ gf_monitor_tiled_class_init (GfMonitorTiledClass *tiled_class)
   object_class->finalize = gf_monitor_tiled_finalize;
 
   monitor_class->get_main_output = gf_monitor_tiled_get_main_output;
-  monitor_class->derive_layout = gf_monitor_tiled_derived_derive_layout;
+  monitor_class->derive_layout = gf_monitor_tiled_derive_layout;
   monitor_class->calculate_crtc_pos = gf_monitor_tiled_calculate_crtc_pos;
   monitor_class->get_suggested_position = gf_monitor_tiled_get_suggested_position;
 }
