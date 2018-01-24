@@ -32,7 +32,30 @@ typedef struct
   GfLogicalMonitor *logical_monitor;
 } AddMonitorFromConfigData;
 
+typedef struct
+{
+  GfLogicalMonitor         *logical_monitor;
+  GfLogicalMonitorCrtcFunc  func;
+  gpointer                  user_data;
+} ForeachCrtcData;
+
 G_DEFINE_TYPE (GfLogicalMonitor, gf_logical_monitor, G_TYPE_OBJECT)
+
+static gboolean
+foreach_crtc (GfMonitor          *monitor,
+              GfMonitorMode      *mode,
+              GfMonitorCrtcMode  *monitor_crtc_mode,
+              gpointer            user_data,
+              GError            **error)
+{
+  ForeachCrtcData *data = user_data;
+
+  data->func (data->logical_monitor,
+              monitor_crtc_mode->output->crtc,
+              data->user_data);
+
+  return TRUE;
+}
 
 static void
 add_monitor_from_config (GfMonitorConfig          *monitor_config,
@@ -267,4 +290,28 @@ gf_logical_monitor_has_neighbor (GfLogicalMonitor *monitor,
     }
 
   return FALSE;
+}
+
+void
+gf_logical_monitor_foreach_crtc (GfLogicalMonitor         *logical_monitor,
+                                 GfLogicalMonitorCrtcFunc  func,
+                                 gpointer                  user_data)
+{
+  GList *l;
+
+  for (l = logical_monitor->monitors; l; l = l->next)
+    {
+      GfMonitor *monitor;
+      GfMonitorMode *mode;
+      ForeachCrtcData data;
+
+      monitor = l->data;
+      mode = gf_monitor_get_current_mode (monitor);
+
+      data.logical_monitor = logical_monitor;
+      data.func = func;
+      data.user_data = user_data;
+
+      gf_monitor_mode_foreach_crtc (monitor, mode, foreach_crtc, &data, NULL);
+    }
 }

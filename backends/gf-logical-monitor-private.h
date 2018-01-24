@@ -59,6 +59,11 @@ struct _GfLogicalMonitor
   GList              *monitors;
 };
 
+typedef void (* GfLogicalMonitorCrtcFunc) (GfLogicalMonitor *logical_monitor,
+                                           GfCrtc           *crtc,
+                                           gpointer          user_data);
+
+
 GfLogicalMonitor   *gf_logical_monitor_new           (GfMonitorManager       *monitor_manager,
                                                       GfLogicalMonitorConfig *logical_monitor_config,
                                                       gint                    monitor_number);
@@ -87,6 +92,11 @@ GList              *gf_logical_monitor_get_monitors  (GfLogicalMonitor       *lo
 gboolean            gf_logical_monitor_has_neighbor  (GfLogicalMonitor       *monitor,
                                                       GfLogicalMonitor       *neighbor,
                                                       GfDirection             direction);
+
+void                gf_logical_monitor_foreach_crtc  (GfLogicalMonitor         *logical_monitor,
+                                                      GfLogicalMonitorCrtcFunc  func,
+                                                      gpointer                  user_data);
+
 
 G_END_DECLS
 
