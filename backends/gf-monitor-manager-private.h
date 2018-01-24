@@ -66,9 +66,7 @@ struct _GfMonitorManager
    */
   GList                       *outputs;
   GList                       *crtcs;
-
-  GfCrtcMode                  *modes;
-  guint                        n_modes;
+  GList                       *modes;
 
   GList                       *monitors;
 
@@ -226,8 +224,6 @@ gboolean                    gf_monitor_manager_get_max_screen_size          (GfM
 GfLogicalMonitorLayoutMode  gf_monitor_manager_get_default_layout_mode      (GfMonitorManager            *manager);
 
 GfMonitorConfigManager     *gf_monitor_manager_get_config_manager           (GfMonitorManager            *manager);
-
-void                        gf_monitor_manager_clear_mode                   (GfCrtcMode                  *mode);
 
 static inline gboolean
 gf_monitor_transform_is_rotated (GfMonitorTransform transform)

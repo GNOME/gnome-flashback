@@ -1091,18 +1091,6 @@ rebuild_monitors (GfMonitorManager *manager)
     }
 }
 
-static void
-free_mode_array (GfCrtcMode *old_modes,
-                 gint        n_old_modes)
-{
-  gint i;
-
-  for (i = 0; i < n_old_modes; i++)
-    gf_monitor_manager_clear_mode (&old_modes[i]);
-
-  g_free (old_modes);
-}
-
 static gboolean
 gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
                                          GDBusMethodInvocation *invocation)
@@ -1128,11 +1116,17 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
     {
       GfCrtc *crtc = l->data;
       GVariantBuilder transforms;
+      gint current_mode_index;
 
       g_variant_builder_init (&transforms, G_VARIANT_TYPE ("au"));
       for (j = 0; j <= GF_MONITOR_TRANSFORM_FLIPPED_270; j++)
         if (crtc->all_transforms & (1 << j))
           g_variant_builder_add (&transforms, "u", j);
+
+      if (crtc->current_mode)
+        current_mode_index = g_list_index (manager->modes, crtc->current_mode);
+      else
+        current_mode_index = -1;
 
       g_variant_builder_add (&crtc_builder, "(uxiiiiiuaua{sv})",
                              i, /* ID */
@@ -1141,7 +1135,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
                              (gint) crtc->rect.y,
                              (gint) crtc->rect.width,
                              (gint) crtc->rect.height,
-                             (gint) (crtc->current_mode ? crtc->current_mode - manager->modes : -1),
+                             current_mode_index,
                              (guint32) crtc->transform,
                              &transforms,
                              NULL /* properties */);
@@ -1169,8 +1163,13 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
 
       g_variant_builder_init (&modes, G_VARIANT_TYPE ("au"));
       for (j = 0; j < output->n_modes; j++)
-        g_variant_builder_add (&modes, "u",
-                               (guint) (output->modes[j] - manager->modes));
+        {
+          guint mode_index;
+
+          mode_index = g_list_index (manager->modes, output->modes[j]);
+          g_variant_builder_add (&modes, "u", mode_index);
+
+        }
 
       g_variant_builder_init (&clones, G_VARIANT_TYPE ("au"));
       for (j = 0; j < output->n_possible_clones; j++)
@@ -1258,9 +1257,9 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
                              &properties);
     }
 
-  for (i = 0; i < manager->n_modes; i++)
+  for (l = manager->modes, i = 0; l; l = l->next, i++)
     {
-      GfCrtcMode *mode = &manager->modes[i];
+      GfCrtcMode *mode = l->data;
 
       g_variant_builder_add (&mode_builder, "(uxuudu)",
                              i, /* ID */
@@ -2012,7 +2011,7 @@ gf_monitor_manager_finalize (GObject *object)
   manager = GF_MONITOR_MANAGER (object);
 
   g_list_free_full (manager->outputs, g_object_unref);
-  free_mode_array (manager->modes, manager->n_modes);
+  g_list_free_full (manager->modes, g_object_unref);
   g_list_free_full (manager->crtcs, g_object_unref);
 
   g_list_free_full (manager->logical_monitors, g_object_unref);
@@ -2230,8 +2229,7 @@ gf_monitor_manager_read_current_state (GfMonitorManager *manager)
 {
   GList *old_outputs;
   GList *old_crtcs;
-  GfCrtcMode *old_modes;
-  guint n_old_modes;
+  GList *old_modes;
 
   /* Some implementations of read_current use the existing information
    * we have available, so don't free the old configuration until after
@@ -2240,7 +2238,6 @@ gf_monitor_manager_read_current_state (GfMonitorManager *manager)
   old_outputs = manager->outputs;
   old_crtcs = manager->crtcs;
   old_modes = manager->modes;
-  n_old_modes = manager->n_modes;
 
   manager->serial++;
   GF_MONITOR_MANAGER_GET_CLASS (manager)->read_current (manager);
@@ -2248,7 +2245,7 @@ gf_monitor_manager_read_current_state (GfMonitorManager *manager)
   rebuild_monitors (manager);
 
   g_list_free_full (old_outputs, g_object_unref);
-  free_mode_array (old_modes, n_old_modes);
+  g_list_free_full (old_modes, g_object_unref);
   g_list_free_full (old_crtcs, g_object_unref);
 }
 
@@ -2548,17 +2545,6 @@ GfMonitorConfigManager *
 gf_monitor_manager_get_config_manager (GfMonitorManager *manager)
 {
   return manager->config_manager;
-}
-
-void
-gf_monitor_manager_clear_mode (GfCrtcMode *mode)
-{
-  g_free (mode->name);
-
-  if (mode->driver_notify)
-    mode->driver_notify (mode);
-
-  memset (mode, 0, sizeof (*mode));
 }
 
 gint

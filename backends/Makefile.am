@@ -29,6 +29,7 @@ libbackends_la_SOURCES = \
 	gf-backend-x11.c \
 	gf-backend.c \
 	gf-backend.h \
+	gf-crtc-mode.c \
 	gf-crtc-private.h \
 	gf-crtc.c \
 	gf-direction.h \

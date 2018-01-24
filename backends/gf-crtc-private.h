@@ -57,6 +57,8 @@ struct _GfCrtc
 
 struct _GfCrtcMode
 {
+  GObject         parent;
+
   /* The low-level ID of this mode, used to apply back configuration */
   glong           mode_id;
   gchar          *name;
@@ -80,9 +82,11 @@ typedef struct
   GPtrArray          *outputs;
 } GfCrtcInfo;
 
-
 #define GF_TYPE_CRTC (gf_crtc_get_type ())
 G_DECLARE_FINAL_TYPE (GfCrtc, gf_crtc, GF, CRTC, GObject)
+
+#define GF_TYPE_CRTC_MODE (gf_crtc_mode_get_type ())
+G_DECLARE_FINAL_TYPE (GfCrtcMode, gf_crtc_mode, GF, CRTC_MODE, GObject)
 
 G_END_DECLS
 
