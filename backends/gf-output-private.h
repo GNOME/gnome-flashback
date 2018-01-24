@@ -25,6 +25,8 @@
 #ifndef GF_OUTPUT_PRIVATE_H
 #define GF_OUTPUT_PRIVATE_H
 
+#include <glib-object.h>
+
 #include "gf-monitor-manager-enums-private.h"
 #include "gf-monitor-manager-types-private.h"
 
@@ -52,6 +54,8 @@ typedef struct
 
 struct _GfOutput
 {
+  GObject           parent;
+
   /* The CRTC driving this output, NULL if the output is not enabled */
   GfCrtc           *crtc;
 
@@ -101,6 +105,9 @@ struct _GfOutput
 
   GfTileInfo        tile_info;
 };
+
+#define GF_TYPE_OUTPUT (gf_output_get_type ())
+G_DECLARE_FINAL_TYPE (GfOutput, gf_output, GF, OUTPUT, GObject)
 
 void     gf_output_parse_edid (GfOutput *output,
                                GBytes   *edid);

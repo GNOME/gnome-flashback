@@ -1059,7 +1059,7 @@ is_main_tiled_monitor_output (GfOutput *output)
 static void
 rebuild_monitors (GfMonitorManager *manager)
 {
-  guint i;
+  GList *l;
 
   if (manager->monitors)
     {
@@ -1067,9 +1067,9 @@ rebuild_monitors (GfMonitorManager *manager)
       manager->monitors = NULL;
     }
 
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      GfOutput *output = &manager->outputs[i];
+      GfOutput *output = l->data;
 
       if (output->tile_info.group_id)
         {
@@ -1089,18 +1089,6 @@ rebuild_monitors (GfMonitorManager *manager)
           manager->monitors = g_list_append (manager->monitors, monitor_normal);
         }
     }
-}
-
-static void
-free_output_array (GfOutput *old_outputs,
-                   gint      n_old_outputs)
-{
-  gint i;
-
-  for (i = 0; i < n_old_outputs; i++)
-    gf_monitor_manager_clear_output (&old_outputs[i]);
-
-  g_free (old_outputs);
 }
 
 static void
@@ -1136,6 +1124,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
   GVariantBuilder crtc_builder;
   GVariantBuilder output_builder;
   GVariantBuilder mode_builder;
+  GList *l;
   guint i, j;
   gint max_screen_width;
   gint max_screen_height;
@@ -1170,9 +1159,9 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
                              NULL /* properties */);
     }
 
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      GfOutput *output = &manager->outputs[i];
+      GfOutput *output = l->data;
       GVariantBuilder crtcs, modes, clones, properties;
       GBytes *edid;
       gchar *edid_file;
@@ -1189,8 +1178,14 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
 
       g_variant_builder_init (&clones, G_VARIANT_TYPE ("au"));
       for (j = 0; j < output->n_possible_clones; j++)
-        g_variant_builder_add (&clones, "u",
-                               (guint) (output->possible_clones[j] - manager->outputs));
+        {
+          guint possible_clone_index;
+
+          possible_clone_index = g_list_index (manager->outputs,
+                                               output->possible_clones[j]);
+
+          g_variant_builder_add (&clones, "u", possible_clone_index);
+        }
 
       g_variant_builder_init (&properties, G_VARIANT_TYPE ("a{sv}"));
       g_variant_builder_add (&properties, "{sv}", "vendor",
@@ -1318,7 +1313,7 @@ gf_monitor_manager_handle_change_backlight (GfDBusDisplayConfig   *skeleton,
       return TRUE;
     }
 
-  if (output_index >= manager->n_outputs)
+  if (output_index >= g_list_length (manager->outputs))
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
@@ -1326,7 +1321,7 @@ gf_monitor_manager_handle_change_backlight (GfDBusDisplayConfig   *skeleton,
       return TRUE;
     }
 
-  output = &manager->outputs[output_index];
+  output = g_list_nth_data (manager->outputs, output_index);
 
   if (value < 0 || value > 100)
     {
@@ -2018,7 +2013,7 @@ gf_monitor_manager_finalize (GObject *object)
 
   manager = GF_MONITOR_MANAGER (object);
 
-  free_output_array (manager->outputs, manager->n_outputs);
+  g_list_free_full (manager->outputs, g_object_unref);
   free_mode_array (manager->modes, manager->n_modes);
   free_crtc_array (manager->crtcs, manager->n_crtcs);
 
@@ -2204,22 +2199,20 @@ gf_monitor_manager_get_monitors (GfMonitorManager *manager)
   return manager->monitors;
 }
 
-GfOutput *
-gf_monitor_manager_get_outputs (GfMonitorManager *manager,
-                                guint            *n_outputs)
+GList *
+gf_monitor_manager_get_outputs (GfMonitorManager *manager)
 {
-  *n_outputs = manager->n_outputs;
   return manager->outputs;
 }
 
 gboolean
 gf_monitor_manager_has_hotplug_mode_update (GfMonitorManager *manager)
 {
-  guint i;
+  GList *l;
 
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      GfOutput *output = &manager->outputs[i];
+      GfOutput *output = l->data;
 
       if (output->hotplug_mode_update)
         return TRUE;
@@ -2231,10 +2224,9 @@ gf_monitor_manager_has_hotplug_mode_update (GfMonitorManager *manager)
 void
 gf_monitor_manager_read_current_state (GfMonitorManager *manager)
 {
-  GfOutput *old_outputs;
+  GList *old_outputs;
   GfCrtc *old_crtcs;
   GfCrtcMode *old_modes;
-  guint n_old_outputs;
   guint n_old_crtcs;
   guint n_old_modes;
 
@@ -2243,7 +2235,6 @@ gf_monitor_manager_read_current_state (GfMonitorManager *manager)
    * read_current finishes.
    */
   old_outputs = manager->outputs;
-  n_old_outputs = manager->n_outputs;
   old_crtcs = manager->crtcs;
   n_old_crtcs = manager->n_crtcs;
   old_modes = manager->modes;
@@ -2254,7 +2245,7 @@ gf_monitor_manager_read_current_state (GfMonitorManager *manager)
 
   rebuild_monitors (manager);
 
-  free_output_array (old_outputs, n_old_outputs);
+  g_list_free_full (old_outputs, g_object_unref);
   free_mode_array (old_modes, n_old_modes);
   free_crtc_array (old_crtcs, n_old_crtcs);
 }
@@ -2558,23 +2549,6 @@ gf_monitor_manager_get_config_manager (GfMonitorManager *manager)
 }
 
 void
-gf_monitor_manager_clear_output (GfOutput *output)
-{
-  g_free (output->name);
-  g_free (output->vendor);
-  g_free (output->product);
-  g_free (output->serial);
-  g_free (output->modes);
-  g_free (output->possible_crtcs);
-  g_free (output->possible_clones);
-
-  if (output->driver_notify)
-    output->driver_notify (output);
-
-  memset (output, 0, sizeof (*output));
-}
-
-void
 gf_monitor_manager_clear_mode (GfCrtcMode *mode)
 {
   g_free (mode->name);
@@ -2602,9 +2576,9 @@ gf_monitor_manager_get_monitor_for_output (GfMonitorManager *manager,
   GList *l;
 
   g_return_val_if_fail (GF_IS_MONITOR_MANAGER (manager), -1);
-  g_return_val_if_fail (id < manager->n_outputs, -1);
+  g_return_val_if_fail (id < g_list_length (manager->outputs), -1);
 
-  output = &manager->outputs[id];
+  output = g_list_nth_data (manager->outputs, id);
   if (!output || !output->crtc)
     return -1;
 

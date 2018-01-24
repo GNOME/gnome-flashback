@@ -498,15 +498,17 @@ add_tiled_monitor_outputs (GfMonitorManager *monitor_manager,
                            GfMonitorTiled   *tiled)
 {
   GfMonitor *monitor;
-  guint i;
+  GList *outputs;
+  GList *l;
 
   monitor = GF_MONITOR (tiled);
 
-  for (i = 0; i < monitor_manager->n_outputs; i++)
+  outputs = monitor_manager->outputs;
+  for (l = outputs; l; l = l->next)
     {
       GfOutput *output;
 
-      output = &monitor_manager->outputs[i];
+      output = l->data;
 
       if (output->tile_info.group_id != tiled->tile_group_id)
         continue;

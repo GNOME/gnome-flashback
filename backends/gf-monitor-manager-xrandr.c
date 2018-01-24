@@ -383,6 +383,7 @@ is_assignments_changed (GfMonitorManager  *manager,
                         guint              n_output_infos)
 {
   guint i;
+  GList *l;
 
   for (i = 0; i < manager->n_crtcs; i++)
     {
@@ -392,9 +393,9 @@ is_assignments_changed (GfMonitorManager  *manager,
         return TRUE;
     }
 
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      GfOutput *output = &manager->outputs[i];
+      GfOutput *output = l->data;
 
       if (is_output_assignment_changed (output,
                                         crtc_infos,
@@ -1144,6 +1145,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
   GfMonitorManagerXrandr *xrandr;
   gint width, height, width_mm, height_mm;
   guint i;
+  GList *l;
 
   xrandr = GF_MONITOR_MANAGER_XRANDR (manager);
 
@@ -1338,9 +1340,9 @@ apply_crtc_assignments (GfMonitorManager  *manager,
     }
 
   /* Disable outputs not mentioned in the list */
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      GfOutput *output = &manager->outputs[i];
+      GfOutput *output = l->data;
 
       if (output->is_dirty)
         {
@@ -1529,9 +1531,9 @@ gf_monitor_manager_xrandr_read_current (GfMonitorManager *manager)
   gint min_width;
   gint min_height;
   Screen *screen;
-  guint i, j, k;
+  guint i, j;
+  GList *l;
   RROutput primary_output;
-  guint n_actual_outputs;
 
   xrandr = GF_MONITOR_MANAGER_XRANDR (manager);
 
@@ -1584,10 +1586,9 @@ gf_monitor_manager_xrandr_read_current (GfMonitorManager *manager)
     return;
 
   xrandr->resources = resources;
-  manager->n_outputs = resources->noutput;
   manager->n_crtcs = resources->ncrtc;
   manager->n_modes = resources->nmode;
-  manager->outputs = g_new0 (GfOutput, manager->n_outputs);
+  manager->outputs = NULL;
   manager->modes = g_new0 (GfCrtcMode, manager->n_modes);
   manager->crtcs = g_new0 (GfCrtc, manager->n_crtcs);
 
@@ -1638,7 +1639,6 @@ gf_monitor_manager_xrandr_read_current (GfMonitorManager *manager)
 
   primary_output = XRRGetOutputPrimary (xrandr->xdisplay, xrandr->xroot);
 
-  n_actual_outputs = 0;
   for (i = 0; i < (guint) resources->noutput; i++)
     {
       XRROutputInfo *xrandr_output;
@@ -1650,11 +1650,11 @@ gf_monitor_manager_xrandr_read_current (GfMonitorManager *manager)
       if (!xrandr_output)
         continue;
 
-      output = &manager->outputs[n_actual_outputs];
-
       if (xrandr_output->connection != RR_Disconnected)
         {
           GBytes *edid;
+
+          output = g_object_new (GF_TYPE_OUTPUT, NULL);
 
           output->winsys_id = resources->outputs[i];
           output->name = g_strdup (xrandr_output->name);
@@ -1699,35 +1699,36 @@ gf_monitor_manager_xrandr_read_current (GfMonitorManager *manager)
             output->backlight = -1;
 
           if (output->n_modes == 0 || output->n_possible_crtcs == 0)
-            gf_monitor_manager_clear_output (output);
+            g_object_unref (output);
           else
-            n_actual_outputs++;
+            manager->outputs = g_list_prepend (manager->outputs, output);
         }
 
       XRRFreeOutputInfo (xrandr_output);
     }
 
-  manager->n_outputs = n_actual_outputs;
-
   /* Sort the outputs for easier handling in GfMonitorConfig */
-  qsort (manager->outputs, manager->n_outputs, sizeof (GfOutput), compare_outputs);
+  manager->outputs = g_list_sort (manager->outputs, compare_outputs);
 
   /* Now fix the clones */
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
       GfOutput *output;
+      GList *k;
 
-      output = &manager->outputs[i];
+      output = l->data;
 
       for (j = 0; j < output->n_possible_clones; j++)
         {
           RROutput clone = GPOINTER_TO_INT (output->possible_clones[j]);
 
-          for (k = 0; k < manager->n_outputs; k++)
+          for (k = manager->outputs; k; k = k->next)
             {
-              if (clone == (XID) manager->outputs[k].winsys_id)
+              GfOutput *possible_clone = k->data;
+
+              if (clone == (XID) possible_clone->winsys_id)
                 {
-                  output->possible_clones[j] = &manager->outputs[k];
+                  output->possible_clones[j] = possible_clone;
                   break;
                 }
             }

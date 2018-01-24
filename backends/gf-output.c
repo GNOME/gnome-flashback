@@ -7,6 +7,7 @@
  * Copyright (C) 2004-2006 Elijah Newren
  * Copyright (C) 2013 Red Hat Inc.
  * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017 Red Hat
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +29,44 @@
 #include "config.h"
 #include "gf-edid-private.h"
 #include "gf-output-private.h"
+
+G_DEFINE_TYPE (GfOutput, gf_output, G_TYPE_OBJECT)
+
+static void
+gf_output_finalize (GObject *object)
+{
+  GfOutput *output;
+
+  output = GF_OUTPUT (object);
+
+  g_free (output->name);
+  g_free (output->vendor);
+  g_free (output->product);
+  g_free (output->serial);
+  g_free (output->modes);
+  g_free (output->possible_crtcs);
+  g_free (output->possible_clones);
+
+  if (output->driver_notify)
+    output->driver_notify (output);
+
+  G_OBJECT_CLASS (gf_output_parent_class)->finalize (object);
+}
+
+static void
+gf_output_class_init (GfOutputClass *output_class)
+{
+  GObjectClass *object_class;
+
+  object_class = G_OBJECT_CLASS (output_class);
+
+  object_class->finalize = gf_output_finalize;
+}
+
+static void
+gf_output_init (GfOutput *output)
+{
+}
 
 void
 gf_output_parse_edid (GfOutput *output,

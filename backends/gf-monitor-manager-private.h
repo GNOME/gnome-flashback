@@ -64,8 +64,7 @@ struct _GfMonitorManager
    * (like encoders, but less tied to the HW),
    * while logical_monitors refer to logical ones.
    */
-  GfOutput                    *outputs;
-  guint                        n_outputs;
+  GList                       *outputs;
 
   GfCrtcMode                  *modes;
   guint                        n_modes;
@@ -175,8 +174,7 @@ GfMonitor                  *gf_monitor_manager_get_monitor_from_spec        (GfM
 
 GList                      *gf_monitor_manager_get_monitors                 (GfMonitorManager            *manager);
 
-GfOutput                   *gf_monitor_manager_get_outputs                  (GfMonitorManager            *manager,
-                                                                             guint                       *n_outputs);
+GList                      *gf_monitor_manager_get_outputs                  (GfMonitorManager            *manager);
 
 gboolean                    gf_monitor_manager_has_hotplug_mode_update      (GfMonitorManager            *manager);
 void                        gf_monitor_manager_read_current_state           (GfMonitorManager            *manager);
@@ -228,8 +226,6 @@ gboolean                    gf_monitor_manager_get_max_screen_size          (GfM
 GfLogicalMonitorLayoutMode  gf_monitor_manager_get_default_layout_mode      (GfMonitorManager            *manager);
 
 GfMonitorConfigManager     *gf_monitor_manager_get_config_manager           (GfMonitorManager            *manager);
-
-void                        gf_monitor_manager_clear_output                 (GfOutput                    *output);
 
 void                        gf_monitor_manager_clear_mode                   (GfCrtcMode                  *mode);
 
