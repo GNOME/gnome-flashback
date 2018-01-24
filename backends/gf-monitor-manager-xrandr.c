@@ -1610,31 +1610,31 @@ gf_monitor_manager_xrandr_read_current (GfMonitorManager *manager)
 
   for (i = 0; i < (guint) resources->ncrtc; i++)
     {
-      XRRCrtcInfo *crtc;
-      GfCrtc *gf_crtc;
+      XRRCrtcInfo *xrandr_crtc;
+      GfCrtc *crtc;
 
-      crtc = XRRGetCrtcInfo (xrandr->xdisplay, resources, resources->crtcs[i]);
-      gf_crtc = &manager->crtcs[i];
+      xrandr_crtc = XRRGetCrtcInfo (xrandr->xdisplay, resources, resources->crtcs[i]);
+      crtc = &manager->crtcs[i];
 
-      gf_crtc->crtc_id = resources->crtcs[i];
-      gf_crtc->rect.x = crtc->x;
-      gf_crtc->rect.y = crtc->y;
-      gf_crtc->rect.width = crtc->width;
-      gf_crtc->rect.height = crtc->height;
-      gf_crtc->is_dirty = FALSE;
-      gf_crtc->transform = gf_monitor_transform_from_xrandr (crtc->rotation);
-      gf_crtc->all_transforms = gf_monitor_transform_from_xrandr_all (crtc->rotations);
+      crtc->crtc_id = resources->crtcs[i];
+      crtc->rect.x = xrandr_crtc->x;
+      crtc->rect.y = xrandr_crtc->y;
+      crtc->rect.width = xrandr_crtc->width;
+      crtc->rect.height = xrandr_crtc->height;
+      crtc->is_dirty = FALSE;
+      crtc->transform = gf_monitor_transform_from_xrandr (xrandr_crtc->rotation);
+      crtc->all_transforms = gf_monitor_transform_from_xrandr_all (xrandr_crtc->rotations);
 
       for (j = 0; j < (guint) resources->nmode; j++)
         {
-          if (resources->modes[j].id == crtc->mode)
+          if (resources->modes[j].id == xrandr_crtc->mode)
             {
-              gf_crtc->current_mode = &manager->modes[j];
+              crtc->current_mode = &manager->modes[j];
               break;
             }
         }
 
-      XRRFreeCrtcInfo (crtc);
+      XRRFreeCrtcInfo (xrandr_crtc);
     }
 
   primary_output = XRRGetOutputPrimary (xrandr->xdisplay, xrandr->xroot);
