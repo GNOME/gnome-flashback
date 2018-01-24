@@ -48,3 +48,9 @@ static void
 gf_crtc_init (GfCrtc *crtc)
 {
 }
+
+GfMonitorManager *
+gf_crtc_get_monitor_manager (GfCrtc *crtc)
+{
+  return crtc->monitor_manager;
+}

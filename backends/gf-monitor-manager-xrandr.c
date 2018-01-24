@@ -1624,6 +1624,7 @@ gf_monitor_manager_xrandr_read_current (GfMonitorManager *manager)
       xrandr_crtc = XRRGetCrtcInfo (xrandr->xdisplay, resources, resources->crtcs[i]);
       crtc = g_object_new (GF_TYPE_CRTC, NULL);
 
+      crtc->monitor_manager = manager;
       crtc->crtc_id = resources->crtcs[i];
       crtc->rect.x = xrandr_crtc->x;
       crtc->rect.y = xrandr_crtc->y;

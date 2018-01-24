@@ -29,6 +29,7 @@
 
 #include "gf-monitor-manager-enums-private.h"
 #include "gf-monitor-manager-types-private.h"
+#include "gf-monitor-manager.h"
 #include "gf-rectangle.h"
 
 G_BEGIN_DECLS
@@ -36,6 +37,8 @@ G_BEGIN_DECLS
 struct _GfCrtc
 {
   GObject             parent;
+
+  GfMonitorManager   *monitor_manager;
 
   glong               crtc_id;
   GfRectangle         rect;
@@ -87,6 +90,8 @@ G_DECLARE_FINAL_TYPE (GfCrtc, gf_crtc, GF, CRTC, GObject)
 
 #define GF_TYPE_CRTC_MODE (gf_crtc_mode_get_type ())
 G_DECLARE_FINAL_TYPE (GfCrtcMode, gf_crtc_mode, GF, CRTC_MODE, GObject)
+
+GfMonitorManager *gf_crtc_get_monitor_manager (GfCrtc *crtc);
 
 G_END_DECLS
 
