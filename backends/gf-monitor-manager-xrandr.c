@@ -1664,6 +1664,7 @@ gf_monitor_manager_xrandr_read_current (GfMonitorManager *manager)
           GBytes *edid;
 
           output = g_object_new (GF_TYPE_OUTPUT, NULL);
+          output->monitor_manager = manager;
 
           output->winsys_id = resources->outputs[i];
           output->name = g_strdup (xrandr_output->name);

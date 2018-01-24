@@ -68,6 +68,12 @@ gf_output_init (GfOutput *output)
 {
 }
 
+GfMonitorManager *
+gf_output_get_monitor_manager (GfOutput *output)
+{
+  return output->monitor_manager;
+}
+
 void
 gf_output_parse_edid (GfOutput *output,
                       GBytes   *edid)
