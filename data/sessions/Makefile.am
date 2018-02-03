@@ -7,7 +7,6 @@ required_components_common = \
 	$(NULL)
 
 required_components_gsd = \
-	org.gnome.SettingsDaemon.A11yKeyboard \
 	org.gnome.SettingsDaemon.A11ySettings \
 	org.gnome.SettingsDaemon.Clipboard \
 	org.gnome.SettingsDaemon.Color \
