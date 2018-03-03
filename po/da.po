@@ -1,16 +1,19 @@
 # Danish translation for gnome-flashback.
-# Copyright (C) 2016 gnome-flashback's COPYRIGHT HOLDER
+# Copyright (C) 2018 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
 # Ask Hjorth Larsen <asklarsen@gmail.com>, 2016.
+# Joe Hansen <joedalton2@yahoo.dk>, 2018.
+#
+# font weight -> skriftstyrke
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-09-29 11:33+0000\n"
-"PO-Revision-Date: 2016-11-10 16:35+0100\n"
-"Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
+"POT-Creation-Date: 2017-11-28 22:45+0000\n"
+"PO-Revision-Date: 2018-03-03 16:35+0100\n"
+"Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
@@ -18,23 +21,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: backends/gf-monitor-manager.c:980
+#: backends/gf-monitor-manager.c:989
 msgid "Built-in display"
 msgstr "Indbygget skærm"
 
-#: backends/gf-monitor-manager.c:1011
+#: backends/gf-monitor-manager.c:1020
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
 msgid "Unknown"
 msgstr "Ukendt"
 
-#: backends/gf-monitor-manager.c:1013
+#: backends/gf-monitor-manager.c:1022
 msgid "Unknown Display"
 msgstr "Ukendt skærm"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: backends/gf-monitor-manager.c:1023
+#: backends/gf-monitor-manager.c:1032
 #, c-format
 msgid "%s %s"
 msgstr "%2$s %1$s"
@@ -316,26 +319,24 @@ msgstr ""
 "skrivebordsbaggrunden."
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
-#, fuzzy
 msgid "The background color"
-msgstr "Baggrundsfarven for statusikonet."
+msgstr "Baggrundsfarven"
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:13
-#, fuzzy
 msgid "The foreground color"
-msgstr "Forgrundsfarven for statusikonet."
+msgstr "Forgrundsfarven"
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:18
 msgid "The font family"
-msgstr ""
+msgstr "Skrifttypens familie"
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:24
 msgid "The font weight"
-msgstr ""
+msgstr "Skrifttypens styrke"
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
 msgid "Symbolic"
-msgstr ""
+msgstr "Symbolsk"
 
 #: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:5
 msgid "Fix missing app menu button"
@@ -381,9 +382,8 @@ msgid "_Keep Changes"
 msgstr "_Behold ændringer"
 
 #: data/ui/gf-confirm-display-change-dialog.ui:144
-#, fuzzy
 msgid "Confirm Changes"
-msgstr "Bekræft"
+msgstr "Bekræft ændringer"
 
 #: data/xsessions/gnome-flashback-compiz.desktop.in.in:3
 msgid "GNOME Flashback (Compiz)"
@@ -405,8 +405,8 @@ msgstr "Denne session logger dig ind i GNOME Flashback med Metacity"
 #, c-format
 msgid "Settings changes will revert in %d second!"
 msgid_plural "Settings changes will revert in %d seconds!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Indstillingsændringer vil blive nulstillet om %d sekund!"
+msgstr[1] "Indstillingsændringer vil blive nulstillet om %d sekunder!"
 
 #: gnome-flashback/gf-main.c:40
 msgid "Enable debugging code"
@@ -719,11 +719,11 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Lås skærm"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:541
+#: gnome-flashback/libinput-sources/gf-input-sources.c:801
 msgid "Show Keyboard Layout"
 msgstr "Vis tastaturlayout"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:607
+#: gnome-flashback/libinput-sources/gf-input-sources.c:867
 msgid "Keyboard"
 msgstr "Tastatur"
 
