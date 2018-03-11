@@ -134,7 +134,7 @@
   </autotools>
 
   <autotools id="metacity">
-    <branch />
+    <branch revision="gnome-3-26" />
     <dependencies>
       <dep package="gdk-pixbuf" />
       <dep package="gtk+-3" />
