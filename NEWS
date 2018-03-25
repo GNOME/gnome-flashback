@@ -1,3 +1,13 @@
+Version 3.28.0
+==============
+- Use symbolic window close icon. (#794234)
+- Remove nautilus-classic from required components.
+- Remove A11yKeyboard plugin from required components.
+- Updated translations:
+  Ask Hjorth Larsen (da), Balázs Meskó (hu), Daniel Mustieles (es),
+  Dingzhong Chen (zh_CN), Isaac F. Ferreira Filho (pt_BR), Joe Hansen (da),
+  Мирослав Николић (sr, sr@latin).
+
 Version 3.26.0
 ==============
 - Don't include selection overlay in screenshot. (#780358)
