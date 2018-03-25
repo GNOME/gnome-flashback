@@ -155,6 +155,7 @@ ensure_supported_monitor_scales (GfMonitorManager *manager)
         }
 
       g_array_sort (supported_scales, compare_scales);
+      g_free (monitor_scales);
     }
 
   xrandr->supported_scales = (gfloat *) supported_scales->data;
