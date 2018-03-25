@@ -326,7 +326,7 @@ nd_notification_box_init (NdNotificationBox *notification_box)
         atk_object_set_name (atkobj, "");
         atk_object_set_description (atkobj, _("Closes the notification."));
 
-        image = gtk_image_new_from_icon_name ("window-close", GTK_ICON_SIZE_MENU);
+        image = gtk_image_new_from_icon_name ("window-close-symbolic", GTK_ICON_SIZE_MENU);
         gtk_widget_show (image);
         gtk_container_add (GTK_CONTAINER (notification_box->priv->close_button), image);
 

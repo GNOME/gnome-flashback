@@ -599,7 +599,7 @@ gf_bubble_init (GfBubble *bubble)
   atk_action_set_description (ATK_ACTION (atkobj), 0,
                               _("Closes the notification."));
 
-  image = gtk_image_new_from_icon_name ("window-close", GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("window-close-symbolic", GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (priv->close_button), image);
   gtk_widget_show (image);
 
