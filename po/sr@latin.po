@@ -59,7 +59,7 @@ msgstr "Upravljajte mrežnim povezivanjima"
 #. TRANSLATORS: Don't translate this text (this is icon name)
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:6
 msgid "nm-device-wireless"
-msgstr "um—uređaj—bežična"
+msgstr "nm-device-wireless"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:4
 msgid "Screensaver (GNOME Flashback)"
@@ -72,7 +72,7 @@ msgstr "Pokrenite čuvara ekrana i program zaključavanja"
 #. TRANSLATORS: Don't translate this text (this is icon name)
 #: data/autostart/gnome-flashback-screensaver.desktop.in:7
 msgid "preferences-desktop-screensaver"
-msgstr "postavke—radna površ—čuvar ekrana"
+msgstr "preferences-desktop-screensaver"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -85,7 +85,7 @@ msgstr "Lične postavke"
 #. TRANSLATORS: Don't translate this text (this is icon name)
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
 msgid "preferences-desktop"
-msgstr "postavke—radna površ"
+msgstr "preferences-desktop"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
@@ -98,7 +98,7 @@ msgstr "Izmenite podešavanja sveopšteg sistema (utiče na sve korisnike)"
 #. TRANSLATORS: Don't translate this text (this is icon name)
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
 msgid "preferences-system"
-msgstr "postavke—sistem"
+msgstr "preferences-system"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
 msgid "Audio device selection"

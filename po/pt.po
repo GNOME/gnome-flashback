@@ -38,7 +38,7 @@ msgstr "Gerir as suas ligações de rede"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:5
 msgid "nm-device-wireless"
-msgstr "nm-dispositivo-sem fios"
+msgstr "nm-device-wireless"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:4
 msgid "Screensaver (GNOME Flashback)"
@@ -50,7 +50,7 @@ msgstr "Iniciar o protetor de ecrã e programa de tranca"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:6
 msgid "preferences-desktop-screensaver"
-msgstr "preferências-área de trabalho-protetor de ecrã"
+msgstr "preferences-desktop-screensaver"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -62,7 +62,7 @@ msgstr "Preferências pessoais"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:6
 msgid "preferences-desktop"
-msgstr "preferências-área de trabalho"
+msgstr "preferences-desktop"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
@@ -74,7 +74,7 @@ msgstr "Alterar definições globalmente (afeta todos os utilizadores)"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:6
 msgid "preferences-system"
-msgstr "preferências-sistema"
+msgstr "preferences-system"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
 msgid "Automount manager"
