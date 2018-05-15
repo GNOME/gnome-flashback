@@ -1141,7 +1141,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
                              NULL /* properties */);
     }
 
-  for (l = manager->outputs; l; l = l->next)
+  for (l = manager->outputs, i = 0; l; l = l->next, i++)
     {
       GfOutput *output = l->data;
       GVariantBuilder crtcs, modes, clones, properties;
