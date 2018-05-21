@@ -661,11 +661,11 @@ gf_keyboard_manager_grab (GfKeyboardManager *manager,
   root = gdk_screen_get_root_window (screen);
   xroot = gdk_x11_window_get_xid (root);
 
-  gdk_error_trap_push ();
+  gdk_x11_display_error_trap_push (display);
   status = XGrabKeyboard (manager->xdisplay, xroot, False,
                           GrabModeAsync, GrabModeSync,
                           timestamp);
-  error = gdk_error_trap_pop ();
+  error = gdk_x11_display_error_trap_pop (display);
 
   if (error != 0)
     return FALSE;
