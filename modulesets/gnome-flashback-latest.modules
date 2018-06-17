@@ -2,10 +2,10 @@
 <!DOCTYPE moduleset SYSTEM "moduleset.dtd">
 <?xml-stylesheet type="text/xsl" href="moduleset.xsl"?>
 <moduleset>
-  <repository type="git" name="git.gnome.org" default="yes" href="git://git.gnome.org/" />
+  <repository type="git" name="gitlab.gnome.org" default="yes" href="git@gitlab.gnome.org:" />
   <repository type="tarball" name="launchpad-tar" href="https://launchpad.net/" />
 
-  <include href="https://git.gnome.org/browse/jhbuild/plain/modulesets/gnome-apps-3.28.modules" />
+  <include href="https://gitlab.gnome.org/GNOME/jhbuild/raw/master/modulesets/gnome-apps-3.28.modules" />
 
   <cmake id="compiz" force-non-srcdir-builds="yes"
          cmakeargs="-DCOMPIZ_BUILD_TESTING=OFF -DBUILD_KDE4=Off -DCOMPIZ_WERROR=OFF -DCOMPIZ_DEFAULT_PLUGINS=core,composite,opengl,decor,resize,place,move">
@@ -47,7 +47,7 @@
   </cmake>
 
   <autotools id="gnome-applets" autogenargs="--enable-mini-commander">
-    <branch />
+    <branch checkoutdir="gnome-applets" module="GNOME/gnome-applets.git" />
     <dependencies>
       <dep package="intltool" />
       <dep package="gnome-panel" />
@@ -75,7 +75,7 @@
   </autotools>
 
   <autotools id="gnome-flashback">
-    <branch />
+    <branch checkoutdir="gnome-flashback" module="GNOME/gnome-flashback.git" />
     <dependencies>
       <dep package="ibus" />
       <dep package="intltool" />
@@ -88,7 +88,7 @@
   </autotools>
 
   <autotools id="gnome-panel">
-    <branch />
+    <branch checkoutdir="gnome-panel" module="GNOME/gnome-panel.git" />
     <dependencies>
       <dep package="intltool" />
       <dep package="gnome-desktop" />
@@ -108,7 +108,7 @@
   </autotools>
 
   <autotools id="gnome-screensaver">
-    <branch />
+    <branch checkoutdir="gnome-screensaver" module="GNOME/gnome-screensaver.git" />
     <dependencies>
       <dep package="dbus-glib" />
       <dep package="intltool" />
@@ -124,7 +124,7 @@
   </autotools>
 
   <autotools id="gucharmap" autogenargs="--with-unicode-data=download">
-    <branch />
+    <branch checkoutdir="gucharmap" module="GNOME/gucharmap.git" />
     <dependencies>
       <dep package="intltool"/>
       <dep package="glib"/>
@@ -134,7 +134,7 @@
   </autotools>
 
   <autotools id="libwnck">
-    <branch />
+    <branch checkoutdir="libwnck" module="GNOME/libwnck.git" />
     <dependencies>
       <dep package="gtk+-3" />
       <dep package="startup-notification" />
@@ -142,7 +142,7 @@
   </autotools>
 
   <autotools id="metacity">
-    <branch />
+    <branch checkoutdir="metacity" module="GNOME/metacity.git" />
     <dependencies>
       <dep package="gdk-pixbuf" />
       <dep package="gtk+-3" />
