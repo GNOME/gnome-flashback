@@ -2,10 +2,10 @@
 <!DOCTYPE moduleset SYSTEM "moduleset.dtd">
 <?xml-stylesheet type="text/xsl" href="moduleset.xsl"?>
 <moduleset>
-  <repository type="git" name="git.gnome.org" default="yes" href="git://git.gnome.org/" />
+  <repository type="git" name="gitlab.gnome.org" default="yes" href="git@gitlab.gnome.org:GNOME/" />
   <repository type="tarball" name="launchpad-tar" href="https://launchpad.net/" />
 
-  <include href="https://git.gnome.org/browse/jhbuild/plain/modulesets/gnome-apps-3.28.modules" />
+  <include href="https://gitlab.gnome.org/GNOME/jhbuild/raw/master/modulesets/gnome-apps-3.28.modules" />
 
   <cmake id="compiz" force-non-srcdir-builds="yes"
          cmakeargs="-DCOMPIZ_BUILD_TESTING=OFF -DBUILD_KDE4=Off -DCOMPIZ_WERROR=OFF -DCOMPIZ_DEFAULT_PLUGINS=core,composite,opengl,decor,resize,place,move">
