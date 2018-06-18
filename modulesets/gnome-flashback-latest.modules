@@ -4,14 +4,13 @@
 <moduleset>
   <repository type="git" name="gitlab.gnome.org" default="yes" href="git@gitlab.gnome.org:" />
   <repository type="tarball" name="launchpad-tar" href="https://launchpad.net/" />
+  <repository type="bzr" name="launchpad.net" href="lp:" />
 
   <include href="https://gitlab.gnome.org/GNOME/jhbuild/raw/master/modulesets/gnome-apps-latest.modules" />
 
   <cmake id="compiz" force-non-srcdir-builds="yes"
          cmakeargs="-DCOMPIZ_BUILD_TESTING=OFF -DBUILD_KDE4=Off -DCOMPIZ_WERROR=OFF -DCOMPIZ_DEFAULT_PLUGINS=core,composite,opengl,decor,resize,place,move">
-    <branch repo="launchpad-tar" module="compiz/0.9.13/${version}/+download/compiz-${version}.tar.bz2"
-            hash="sha256:9854802ba2a072a497552a55cc03cce1e947ff68ed3755b484c218f688222cbf"
-            version="0.9.13.1" size="4540030" />
+    <branch repo="launchpad.net" module="compiz" />
     <dependencies>
       <dep package="boost" />
       <dep package="cairo" />
