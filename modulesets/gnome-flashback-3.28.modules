@@ -142,7 +142,7 @@
   </autotools>
 
   <autotools id="metacity">
-    <branch checkoutdir="metacity" module="GNOME/metacity.git" />
+    <branch revision="gnome-3-28" checkoutdir="metacity" module="GNOME/metacity.git" />
     <dependencies>
       <dep package="gdk-pixbuf" />
       <dep package="gtk+-3" />
