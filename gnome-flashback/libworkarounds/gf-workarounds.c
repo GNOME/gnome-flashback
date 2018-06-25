@@ -41,7 +41,6 @@ struct _GfWorkarounds
   GtkSettings *gtk_settings;
 
   gboolean     fix_app_menu;
-  gchar       *fix_button_layout;
 
   guint        idle_id;
   guint        timeout_id;
@@ -451,51 +450,17 @@ apply_app_menu_workaround (GfWorkarounds *workarounds)
   g_hash_table_insert (workarounds->xsettings, g_strdup (key), setting);
 }
 
-static void
-apply_button_layout_workaround (GfWorkarounds *workarounds)
-{
-  const gchar *key;
-  XSettingsSetting *old;
-  XSettingsSetting *setting;
-
-  key = "Gtk/DecorationLayout";
-  old = g_hash_table_lookup (workarounds->xsettings, key);
-
-  setting = g_new0 (XSettingsSetting, 1);
-  setting->name = g_strdup (key);
-  setting->type = XSETTINGS_TYPE_STRING;
-  setting->value = g_new0 (GValue, 1);
-  setting->last_change_serial = 0;
-
-  g_value_init (setting->value, G_TYPE_STRING);
-  g_value_set_string (setting->value, workarounds->fix_button_layout);
-
-  if (old != NULL)
-    setting->last_change_serial = old->last_change_serial;
-
-  g_hash_table_insert (workarounds->xsettings, g_strdup (key), setting);
-}
-
 static gboolean
 apply_workarounds (GfWorkarounds *workarounds)
 {
   gboolean gtk_shell_shows_app_menu;
-  gchar *gtk_decoration_layout;
   gboolean need_workarounds;
 
   g_object_get (workarounds->gtk_settings,
                 "gtk-shell-shows-app-menu", &gtk_shell_shows_app_menu,
                 NULL);
 
-  g_object_get (workarounds->gtk_settings,
-                "gtk-decoration-layout", &gtk_decoration_layout,
-                NULL);
-
   need_workarounds = gtk_shell_shows_app_menu;
-  if (g_strcmp0 (gtk_decoration_layout, workarounds->fix_button_layout) != 0)
-    need_workarounds = TRUE;
-
-  g_free (gtk_decoration_layout);
 
   if (!need_workarounds)
     return TRUE;
@@ -511,9 +476,6 @@ apply_workarounds (GfWorkarounds *workarounds)
 
   if (workarounds->fix_app_menu)
     apply_app_menu_workaround (workarounds);
-
-  if (g_strcmp0 (workarounds->fix_button_layout, "") != 0)
-    apply_button_layout_workaround (workarounds);
 
   write_settings (workarounds);
 
@@ -538,21 +500,15 @@ add_workarounds_real (gpointer user_data)
 {
   GfWorkarounds *workarounds;
   gboolean fix_app_menu;
-  gchar *fix_button_layout;
 
   workarounds = GF_WORKAROUNDS (user_data);
 
   fix_app_menu = g_settings_get_boolean (workarounds->g_settings,
                                          "fix-app-menu");
-  fix_button_layout = g_settings_get_string (workarounds->g_settings,
-                                             "fix-button-layout");
-
-  g_free (workarounds->fix_button_layout);
 
   workarounds->fix_app_menu = fix_app_menu;
-  workarounds->fix_button_layout = fix_button_layout;
 
-  if (!fix_app_menu && g_strcmp0 (fix_button_layout, "") == 0)
+  if (!fix_app_menu)
     {
       workarounds->idle_id = 0;
       return G_SOURCE_REMOVE;
@@ -605,26 +561,17 @@ g_settings_changed (GSettings   *settings,
 {
   GfWorkarounds *workarounds;
   gboolean fix_app_menu;
-  gchar *fix_button_layout;
   gboolean reset;
 
   workarounds = GF_WORKAROUNDS (user_data);
 
   fix_app_menu = g_settings_get_boolean (workarounds->g_settings,
                                          "fix-app-menu");
-  fix_button_layout = g_settings_get_string (workarounds->g_settings,
-                                             "fix-button-layout");
 
   reset = FALSE;
 
   if (workarounds->fix_app_menu && !fix_app_menu)
     reset = TRUE;
-
-  if (g_strcmp0 (workarounds->fix_button_layout, "") != 0 &&
-      g_strcmp0 (fix_button_layout, "") == 0)
-    reset = TRUE;
-
-  g_free (fix_button_layout);
 
   if (reset)
     {
@@ -681,8 +628,6 @@ gf_workarounds_dispose (GObject *object)
                                         gtk_settings_changed,
                                         workarounds);
 
-  g_free (workarounds->fix_button_layout);
-
   if (workarounds->idle_id > 0)
     {
       g_source_remove (workarounds->idle_id);
@@ -727,8 +672,6 @@ gf_workarounds_init (GfWorkarounds *workarounds)
   g_signal_connect (workarounds->g_settings, "changed",
                     G_CALLBACK (g_settings_changed), workarounds);
   g_signal_connect (workarounds->gtk_settings, "notify::gtk-shell-shows-app-menu",
-                    G_CALLBACK (gtk_settings_changed), workarounds);
-  g_signal_connect (workarounds->gtk_settings, "notify::gtk-decoration-layout",
                     G_CALLBACK (gtk_settings_changed), workarounds);
 
   add_workarounds (workarounds);
