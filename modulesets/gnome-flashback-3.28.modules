@@ -75,7 +75,7 @@
   </autotools>
 
   <autotools id="gnome-flashback">
-    <branch checkoutdir="gnome-flashback" module="GNOME/gnome-flashback.git" />
+    <branch revision="gnome-3-28" checkoutdir="gnome-flashback" module="GNOME/gnome-flashback.git" />
     <dependencies>
       <dep package="ibus" />
       <dep package="intltool" />
