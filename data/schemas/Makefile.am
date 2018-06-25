@@ -1,5 +1,8 @@
 NULL =
 
+overridedir = $(datadir)/glib-2.0/schemas
+override_DATA = 00_gnome-flashback.gschema.override
+
 gsettings_SCHEMAS = \
 	org.gnome.gnome-flashback.gschema.xml \
 	org.gnome.gnome-flashback.desktop-background.gschema.xml \
@@ -10,6 +13,7 @@ gsettings_SCHEMAS = \
 @GSETTINGS_RULES@
 
 EXTRA_DIST = \
+	$(override_DATA) \
 	$(gsettings_SCHEMAS) \
 	$(NULL)
 
