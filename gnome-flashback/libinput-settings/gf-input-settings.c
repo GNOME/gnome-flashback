@@ -635,7 +635,9 @@ update_mouse_speed (GfInputSettings *settings,
 {
   gdouble value;
 
-  if (device && gdk_device_get_source (device) != GDK_SOURCE_MOUSE)
+  if (device &&
+      gdk_device_get_source (device) != GDK_SOURCE_MOUSE &&
+      gdk_device_get_source (device) != GDK_SOURCE_TRACKPOINT)
     return;
 
   value = g_settings_get_double (settings->mouse, "speed");
@@ -647,6 +649,7 @@ update_mouse_speed (GfInputSettings *settings,
   else
     {
       set_double_setting (settings, GDK_SOURCE_MOUSE, set_speed, value);
+      set_double_setting (settings, GDK_SOURCE_TRACKPOINT, set_speed, value);
     }
 }
 
@@ -656,7 +659,9 @@ update_mouse_natural_scroll (GfInputSettings *settings,
 {
   gboolean value;
 
-  if (device && gdk_device_get_source (device) != GDK_SOURCE_MOUSE)
+  if (device &&
+      gdk_device_get_source (device) != GDK_SOURCE_MOUSE &&
+      gdk_device_get_source (device) != GDK_SOURCE_TRACKPOINT)
     return;
 
   value = g_settings_get_boolean (settings->mouse, "natural-scroll");
@@ -668,6 +673,8 @@ update_mouse_natural_scroll (GfInputSettings *settings,
   else
     {
       set_bool_setting (settings, GDK_SOURCE_MOUSE,
+                        set_invert_scroll, value);
+      set_bool_setting (settings, GDK_SOURCE_TRACKPOINT,
                         set_invert_scroll, value);
     }
 }
