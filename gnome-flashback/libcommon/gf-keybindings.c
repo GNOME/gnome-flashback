@@ -158,10 +158,12 @@ change_keygrab (GfKeybindings *keybindings,
   guint keycode;
   guint mask;
   gint error_code;
+  GdkDisplay *display;
 
   ignored_mask = 0;
   keycode = keybinding->keycode;
   mask = keybinding->mask;
+  display = gdk_display_get_default ();
 
   if (keycode == 0)
     return;
@@ -174,7 +176,7 @@ change_keygrab (GfKeybindings *keybindings,
           continue;
         }
 
-      gdk_error_trap_push ();
+      gdk_x11_display_error_trap_push (display);
 
       if (grab)
         {
@@ -187,7 +189,7 @@ change_keygrab (GfKeybindings *keybindings,
                       keybindings->xwindow);
         }
 
-      error_code = gdk_error_trap_pop ();
+      error_code = gdk_x11_display_error_trap_pop (display);
       if (error_code != 0)
         {
           g_debug ("Failed to grab/ ungrab key. Error code - %d", error_code);
