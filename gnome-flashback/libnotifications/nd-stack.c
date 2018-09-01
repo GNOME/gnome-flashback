@@ -21,12 +21,6 @@
 #include <strings.h>
 #include <glib.h>
 
-#include <X11/Xproto.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xatom.h>
-#include <gdk/gdkx.h>
-
 #include "nd-stack.h"
 
 #define NOTIFY_STACK_SPACING 2
@@ -34,8 +28,7 @@
 
 struct NdStackPrivate
 {
-        GdkScreen      *screen;
-        guint           monitor;
+        GdkMonitor     *monitor;
         NdStackLocation location;
         GList          *bubbles;
         guint           update_id;
@@ -49,105 +42,6 @@ GList *
 nd_stack_get_bubbles (NdStack *stack)
 {
         return stack->priv->bubbles;
-}
-
-static int
-get_current_desktop (GdkScreen *screen)
-{
-        Display *display;
-        Window win;
-        Atom current_desktop, type;
-        int format;
-        unsigned long n_items, bytes_after;
-        unsigned char *data_return = NULL;
-        int workspace = 0;
-
-        display = GDK_DISPLAY_XDISPLAY (gdk_screen_get_display (screen));
-        win = XRootWindow (display, GDK_SCREEN_XNUMBER (screen));
-
-        current_desktop = XInternAtom (display, "_NET_CURRENT_DESKTOP", True);
-
-        XGetWindowProperty (display,
-                            win,
-                            current_desktop,
-                            0, G_MAXLONG,
-                            False, XA_CARDINAL,
-                            &type, &format, &n_items, &bytes_after,
-                            &data_return);
-
-        if (type == XA_CARDINAL && format == 32 && n_items > 0)
-                workspace = (int) data_return[0];
-        if (data_return)
-                XFree (data_return);
-
-        return workspace;
-}
-
-static gboolean
-get_work_area (NdStack      *stack,
-               GdkRectangle *rect)
-{
-        Atom            workarea;
-        Atom            type;
-        Window          win;
-        int             format;
-        gulong          num;
-        gulong          leftovers;
-        gulong          max_len = 4 * 32;
-        guchar         *ret_workarea;
-        long           *workareas;
-        int             result;
-        int             disp_screen;
-        int             desktop;
-        Display        *display;
-
-        display = GDK_DISPLAY_XDISPLAY (gdk_screen_get_display (stack->priv->screen));
-        workarea = XInternAtom (display, "_NET_WORKAREA", True);
-
-        disp_screen = GDK_SCREEN_XNUMBER (stack->priv->screen);
-
-        /* Defaults in case of error */
-        rect->x = 0;
-        rect->y = 0;
-        rect->width = gdk_screen_get_width (stack->priv->screen);
-        rect->height = gdk_screen_get_height (stack->priv->screen);
-
-        if (workarea == None)
-                return FALSE;
-
-        win = XRootWindow (display, disp_screen);
-        result = XGetWindowProperty (display,
-                                     win,
-                                     workarea,
-                                     0,
-                                     max_len,
-                                     False,
-                                     AnyPropertyType,
-                                     &type,
-                                     &format,
-                                     &num,
-                                     &leftovers,
-                                     &ret_workarea);
-
-        if (result != Success
-            || type == None
-            || format == 0
-            || leftovers
-            || num % 4) {
-                return FALSE;
-        }
-
-        desktop = get_current_desktop (stack->priv->screen);
-
-        workareas = (long *) ret_workarea;
-        rect->x = workareas[desktop * 4];
-        rect->y = workareas[desktop * 4 + 1];
-        rect->width = workareas[desktop * 4 + 2];
-        rect->height = workareas[desktop * 4 + 3];
-
-        XFree (ret_workarea);
-
-        return TRUE;
 }
 
 static void
@@ -274,16 +168,13 @@ nd_stack_set_location (NdStack        *stack,
 }
 
 NdStack *
-nd_stack_new (GdkScreen *screen,
-              guint      monitor)
+nd_stack_new (GdkMonitor *monitor)
 {
         NdStack *stack;
 
-        g_assert (screen != NULL && GDK_IS_SCREEN (screen));
-        g_assert (monitor < (guint)gdk_screen_get_n_monitors (screen));
+        g_assert (monitor != NULL && GDK_IS_MONITOR (monitor));
 
         stack = g_object_new (ND_TYPE_STACK, NULL);
-        stack->priv->screen = screen;
         stack->priv->monitor = monitor;
 
         return stack;
@@ -314,7 +205,6 @@ nd_stack_shift_notifications (NdStack     *stack,
                               gint        *nw_y)
 {
         GdkRectangle    workarea;
-        GdkRectangle    monitor;
         GdkRectangle   *positions;
         GList          *l;
         gint            x, y;
@@ -323,11 +213,7 @@ nd_stack_shift_notifications (NdStack     *stack,
         int             i;
         int             n_wins;
 
-        get_work_area (stack, &workarea);
-        gdk_screen_get_monitor_geometry (stack->priv->screen,
-                                         stack->priv->monitor,
-                                         &monitor);
-        gdk_rectangle_intersect (&monitor, &workarea, &workarea);
+        gdk_monitor_get_workarea (stack->priv->monitor, &workarea);
 
         add_padding_to_rect (&workarea);
 
