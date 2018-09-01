@@ -55,8 +55,7 @@ typedef enum
 
 GType           nd_stack_get_type              (void);
 
-NdStack *       nd_stack_new                   (GdkScreen      *screen,
-                                                guint           monitor);
+NdStack *       nd_stack_new                   (GdkMonitor *monitor);
 
 void            nd_stack_set_location          (NdStack        *stack,
                                                 NdStackLocation location);
