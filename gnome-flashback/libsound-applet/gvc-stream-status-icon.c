@@ -127,8 +127,8 @@ popup_dock (GvcStreamStatusIcon *icon,
         gboolean       res;
         int            x;
         int            y;
-        int            monitor_num;
-        GdkRectangle   monitor;
+        GdkMonitor *monitor;
+        GdkRectangle   monitor_rect;
         GtkRequisition dock_req;
         GdkWindow     *window;
         GdkSeat *seat;
@@ -155,34 +155,35 @@ popup_dock (GvcStreamStatusIcon *icon,
         gvc_channel_bar_set_orientation (GVC_CHANNEL_BAR (icon->priv->bar),
                                          1 - orientation);
 
-        monitor_num = gdk_screen_get_monitor_at_point (screen, area.x, area.y);
-        gdk_screen_get_monitor_geometry (screen, monitor_num, &monitor);
+        display = gtk_widget_get_display (icon->priv->dock);
+        monitor = gdk_display_get_monitor_at_point (display, area.x, area.y);
+        gdk_monitor_get_geometry (monitor, &monitor_rect);
 
         gtk_container_foreach (GTK_CONTAINER (icon->priv->dock),
                                show_all_cb, NULL);
         gtk_widget_get_preferred_size (icon->priv->dock, &dock_req, NULL);
 
         if (orientation == GTK_ORIENTATION_VERTICAL) {
-                if (area.x + area.width + dock_req.width <= monitor.x + monitor.width) {
+                if (area.x + area.width + dock_req.width <= monitor_rect.x + monitor_rect.width) {
                         x = area.x + area.width;
                 } else {
                         x = area.x - dock_req.width;
                 }
-                if (area.y + dock_req.height <= monitor.y + monitor.height) {
+                if (area.y + dock_req.height <= monitor_rect.y + monitor_rect.height) {
                         y = area.y;
                 } else {
-                        y = monitor.y + monitor.height - dock_req.height;
+                        y = monitor_rect.y + monitor_rect.height - dock_req.height;
                 }
         } else {
-                if (area.y + area.height + dock_req.height <= monitor.y + monitor.height) {
+                if (area.y + area.height + dock_req.height <= monitor_rect.y + monitor_rect.height) {
                         y = area.y + area.height;
                 } else {
                         y = area.y - dock_req.height;
                 }
-                if (area.x + dock_req.width <= monitor.x + monitor.width) {
+                if (area.x + dock_req.width <= monitor_rect.x + monitor_rect.width) {
                         x = area.x;
                 } else {
-                        x = monitor.x + monitor.width - dock_req.width;
+                        x = monitor_rect.x + monitor_rect.width - dock_req.width;
                 }
         }
 
@@ -198,7 +199,6 @@ popup_dock (GvcStreamStatusIcon *icon,
         /* grab focus */
         gtk_grab_add (icon->priv->dock);
 
-        display = gtk_widget_get_display (icon->priv->dock);
         window = gtk_widget_get_window (icon->priv->dock);
         seat = gdk_display_get_default_seat (display);
 
