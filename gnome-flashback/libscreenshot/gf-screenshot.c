@@ -549,11 +549,11 @@ get_gtk_frame_extents (GdkWindow *window,
   xwindow = gdk_x11_window_get_xid (window);
   gtk_frame_extents = XInternAtom (xdisplay, "_GTK_FRAME_EXTENTS", False);
 
-  gdk_error_trap_push ();
+  gdk_x11_display_error_trap_push (display);
   result = XGetWindowProperty (xdisplay, xwindow, gtk_frame_extents,
                                0, G_MAXLONG, False, XA_CARDINAL,
                                &type, &format, &n_items, &bytes_after, &data);
-  gdk_error_trap_pop_ignored ();
+  gdk_x11_display_error_trap_pop_ignored (display);
 
   if (data == NULL)
     return FALSE;
@@ -1229,6 +1229,7 @@ handle_select_area (GfDBusScreenshot      *dbus_screenshot,
   gint width;
   gint height;
   gboolean selected;
+  GdkDisplay *display;
 
   select_area = gf_select_area_new ();
   x = y = width = height = 0;
@@ -1236,7 +1237,8 @@ handle_select_area (GfDBusScreenshot      *dbus_screenshot,
   selected = gf_select_area_select (select_area, &x, &y, &width, &height);
   g_object_unref (select_area);
 
-  gdk_flush ();
+  display = gdk_display_get_default ();
+  gdk_display_flush (display);
 
   if (selected)
     {
