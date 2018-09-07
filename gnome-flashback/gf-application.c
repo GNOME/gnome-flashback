@@ -211,6 +211,7 @@ gf_application_dispose (GObject *object)
   g_clear_object (&application->bluetooth);
   g_clear_object (&application->background);
   g_clear_object (&application->dialog);
+  g_clear_object (&application->input_settings);
   g_clear_object (&application->input_sources);
   g_clear_object (&application->notifications);
   g_clear_object (&application->power);
