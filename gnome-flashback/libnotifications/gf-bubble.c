@@ -48,6 +48,7 @@ typedef struct
 
   guint           timeout_id;
   gulong          changed_id;
+  gulong          closed_id;
 } GfBubblePrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (GfBubble, gf_bubble, GF_TYPE_POPUP_WINDOW)
@@ -401,6 +402,15 @@ notification_changed_cb (NdNotification *notification,
 }
 
 static void
+notification_closed_cb (NdNotification *notification,
+                        gint            reason,
+                        GfBubble       *bubble)
+{
+  if (reason == ND_NOTIFICATION_CLOSED_API)
+    gtk_widget_destroy (GTK_WIDGET (bubble));
+}
+
+static void
 gf_bubble_dispose (GObject *object)
 {
   GfBubble *bubble;
@@ -419,6 +429,12 @@ gf_bubble_dispose (GObject *object)
     {
       g_signal_handler_disconnect (priv->notification, priv->changed_id);
       priv->changed_id = 0;
+    }
+
+  if (priv->closed_id != 0)
+    {
+      g_signal_handler_disconnect (priv->notification, priv->closed_id);
+      priv->closed_id = 0;
     }
 
   G_OBJECT_CLASS (gf_bubble_parent_class)->dispose (object);
@@ -674,9 +690,14 @@ gf_bubble_new_for_notification (NdNotification *notification)
   priv = gf_bubble_get_instance_private (bubble);
 
   priv->notification = g_object_ref (notification);
+
   priv->changed_id = g_signal_connect (notification, "changed",
                                        G_CALLBACK (notification_changed_cb),
                                        bubble);
+
+  priv->closed_id = g_signal_connect (notification, "closed",
+                                      G_CALLBACK (notification_closed_cb),
+                                      bubble);
 
   update_bubble (bubble);
 
