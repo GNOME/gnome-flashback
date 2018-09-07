@@ -92,7 +92,7 @@ GTK_REQUIRED=3.22.0
 LIBGNOME_DESKTOP_REQUIRED=3.12.0
 CANBERRA_REQUIRED=0.13
 GLIB_REQUIRED=2.44.0
-GSETTINGS_DESKTOP_SCHEMAS_REQUIRED=3.21.4
+GSETTINGS_DESKTOP_SCHEMAS_REQUIRED=3.24.0
 POLKIT_AGENT_REQUIRED=0.97
 POLKIT_GOBJECT_REQUIRED=0.97
 IBUS_REQUIRED=1.5.2
@@ -113,6 +113,13 @@ PKG_CHECK_MODULES([BACKENDS], [
 
 PKG_CHECK_MODULES([GNOME_FLASHBACK], [
   gtk+-3.0 >= $GTK_REQUIRED
+])
+
+PKG_CHECK_MODULES([A11Y_KEYBOARD], [
+  gio-unix-2.0 >= $GLIB_REQUIRED
+  gtk+-3.0
+  gsettings-desktop-schemas >= $GSETTINGS_DESKTOP_SCHEMAS_REQUIRED
+  x11
 ])
 
 PKG_CHECK_MODULES([AUDIO_DEVICE_SELECTION], [
@@ -290,6 +297,7 @@ AC_CONFIG_FILES([
   data/xsessions/Makefile
 
   gnome-flashback/Makefile
+  gnome-flashback/liba11y-keyboard/Makefile
   gnome-flashback/libaudio-device-selection/Makefile
   gnome-flashback/libautomount-manager/Makefile
   gnome-flashback/libbluetooth-applet/Makefile

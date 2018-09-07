@@ -1,5 +1,10 @@
 <schemalist gettext-domain="gnome-flashback">
   <schema id="org.gnome.gnome-flashback" path="/org/gnome/gnome-flashback/">
+    <key name="a11y-keyboard" type="b">
+      <default>true</default>
+      <summary>a11y-keyboard</summary>
+    </key>
+
     <key name="audio-device-selection" type="b">
       <default>true</default>
       <summary>Audio device selection</summary>

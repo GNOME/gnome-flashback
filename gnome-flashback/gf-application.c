@@ -23,6 +23,7 @@
 #include "gf-application.h"
 #include "gf-confirm-display-change-dialog.h"
 #include "backends/gf-backend.h"
+#include "liba11y-keyboard/gf-a11y-keyboard.h"
 #include "libaudio-device-selection/gf-audio-device-selection.h"
 #include "libautomount-manager/gsd-automount-manager.h"
 #include "libbluetooth-applet/gf-bluetooth-applet.h"
@@ -58,6 +59,7 @@ struct _GfApplication
   FlashbackIdleMonitor    *idle_monitor;
   FlashbackPolkit         *polkit;
   FlashbackShell          *shell;
+  GfA11yKeyboard          *a11y_keyboard;
   GfAudioDeviceSelection  *audio_device_selection;
   GfBluetoothApplet       *bluetooth;
   GfDesktopBackground     *background;
@@ -157,6 +159,7 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (idle_monitor, "idle-monitor", flashback_idle_monitor_new)
   SETTING_CHANGED (polkit, "polkit", flashback_polkit_new)
   SETTING_CHANGED (shell, "shell", flashback_shell_new)
+  SETTING_CHANGED (a11y_keyboard, "a11y-keyboard", gf_a11y_keyboard_new)
   SETTING_CHANGED (audio_device_selection, "audio-device-selection", gf_audio_device_selection_new)
   SETTING_CHANGED (bluetooth, "bluetooth-applet", gf_bluetooth_applet_new)
   SETTING_CHANGED (background, "desktop-background", gf_desktop_background_new)
@@ -203,6 +206,7 @@ gf_application_dispose (GObject *object)
   g_clear_object (&application->idle_monitor);
   g_clear_object (&application->polkit);
   g_clear_object (&application->shell);
+  g_clear_object (&application->a11y_keyboard);
   g_clear_object (&application->audio_device_selection);
   g_clear_object (&application->bluetooth);
   g_clear_object (&application->background);

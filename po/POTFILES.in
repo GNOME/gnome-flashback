@@ -16,6 +16,7 @@ data/xsessions/gnome-flashback-compiz.desktop.in.in
 data/xsessions/gnome-flashback-metacity.desktop.in.in
 gnome-flashback/gf-confirm-display-change-dialog.c
 gnome-flashback/gf-main.c
+gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c
 gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c
 gnome-flashback/libautomount-manager/gsd-automount-manager.c
 gnome-flashback/libautomount-manager/gsd-autorun.c
