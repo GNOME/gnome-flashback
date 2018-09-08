@@ -109,6 +109,13 @@ ungrab (GvcStreamStatusIcon *icon,
 	gtk_widget_hide (icon->priv->dock);
 }
 
+static void
+show_all_cb (GtkWidget *widget,
+             gpointer   user_data)
+{
+  gtk_widget_show_all (widget);
+}
+
 static gboolean
 popup_dock (GvcStreamStatusIcon *icon,
             guint                time)
@@ -152,7 +159,7 @@ popup_dock (GvcStreamStatusIcon *icon,
         gdk_screen_get_monitor_geometry (screen, monitor_num, &monitor);
 
         gtk_container_foreach (GTK_CONTAINER (icon->priv->dock),
-                               (GtkCallback) gtk_widget_show_all, NULL);
+                               show_all_cb, NULL);
         gtk_widget_get_preferred_size (icon->priv->dock, &dock_req, NULL);
 
         if (orientation == GTK_ORIENTATION_VERTICAL) {
