@@ -19,9 +19,11 @@
 #include "config.h"
 
 #include <gdk/gdk.h>
+#include <gdk/gdkx.h>
 #include <gio/gio.h>
 #include <glib/gi18n.h>
 #include <libcommon/gf-keybindings.h>
+#include <X11/Xatom.h>
 
 #include "gf-ibus-manager.h"
 #include "gf-input-source.h"
@@ -45,6 +47,12 @@ struct _SourceInfo
   gchar *display_name;
   gchar *short_name;
 };
+
+typedef struct
+{
+  GHashTable    *input_sources;
+  GfInputSource *current_source;
+} SourceWindow;
 
 struct _GfInputSourceManager
 {
@@ -74,6 +82,9 @@ struct _GfInputSourceManager
   GfInputSource         *current_source;
 
   gboolean               sources_per_window;
+  gboolean               event_filter_added;
+
+  GHashTable            *source_windows;
 };
 
 enum
@@ -99,13 +110,256 @@ static GParamSpec *properties[LAST_PROP] = { NULL };
 
 G_DEFINE_TYPE (GfInputSourceManager, gf_input_source_manager, G_TYPE_OBJECT)
 
+static SourceWindow *
+source_window_new (void)
+{
+  SourceWindow *window;
+
+  window = g_new0 (SourceWindow, 1);
+
+  return window;
+}
+
+static void
+source_window_free (gpointer user_data)
+{
+  SourceWindow *window;
+
+  window = user_data;
+
+  g_clear_pointer (&window->input_sources, g_hash_table_unref);
+  g_clear_object (&window->current_source);
+  g_free (window);
+}
+
+static Window
+get_active_window (void)
+{
+  GdkDisplay *display;
+  Display *xdisplay;
+  Atom _net_active_window;
+  int status;
+  Atom actual_type;
+  int actual_format;
+  unsigned long n_items;
+  unsigned long bytes_after;
+  unsigned char *prop;
+  Window window;
+
+  display = gdk_display_get_default ();
+  xdisplay = gdk_x11_display_get_xdisplay (display);
+
+  _net_active_window = XInternAtom (xdisplay, "_NET_ACTIVE_WINDOW", True);
+  if (_net_active_window == None)
+    return None;
+
+  gdk_x11_display_error_trap_push (display);
+
+  status = XGetWindowProperty (xdisplay,
+                               DefaultRootWindow (xdisplay),
+                               _net_active_window,
+                               0,
+                               G_MAXLONG,
+                               False,
+                               XA_WINDOW,
+                               &actual_type,
+                               &actual_format,
+                               &n_items,
+                               &bytes_after,
+                               &prop);
+
+  if (status != Success ||
+      actual_type != XA_WINDOW)
+    {
+      if (prop)
+        XFree (prop);
+
+      gdk_x11_display_error_trap_pop_ignored (display);
+
+      return None;
+    }
+
+  if (gdk_x11_display_error_trap_pop (display) != Success)
+    {
+      if (prop)
+        XFree (prop);
+
+      return None;
+    }
+
+  window = *(Window *) prop;
+  XFree (prop);
+
+  return window;
+}
+
+static SourceWindow *
+get_current_window (GfInputSourceManager *manager)
+{
+  Window active_window;
+  SourceWindow *window;
+
+  active_window = get_active_window ();
+  if (active_window == None)
+    return NULL;
+
+  window = g_hash_table_lookup (manager->source_windows,
+                                GUINT_TO_POINTER (active_window));
+
+  if (window == NULL)
+    {
+      window = source_window_new ();
+      g_hash_table_insert (manager->source_windows,
+                           GUINT_TO_POINTER (active_window),
+                           window);
+    }
+
+  return window;
+}
+
+static gint
+compare_indexes (gconstpointer a,
+                 gconstpointer b)
+{
+  return GPOINTER_TO_UINT (a) - GPOINTER_TO_UINT (b);
+}
+
+static gboolean
+compare_sources (GfInputSource *source1,
+                 GfInputSource *source2)
+{
+  const gchar *type1;
+  const gchar *type2;
+  const gchar *id1;
+  const gchar *id2;
+
+  type1 = gf_input_source_get_source_type (source1);
+  type2 = gf_input_source_get_source_type (source2);
+
+  id1 = gf_input_source_get_id (source1);
+  id2 = gf_input_source_get_id (source2);
+
+  if (g_strcmp0 (type1, type2) == 0 && g_strcmp0 (id1, id2) == 0)
+    return TRUE;
+
+  return FALSE;
+}
+
+static GfInputSource *
+get_new_input_source (GfInputSourceManager *manager,
+                      GfInputSource        *current)
+{
+  GList *keys;
+  gpointer index;
+  GfInputSource *input_source;
+
+  if (g_hash_table_size (manager->input_sources) == 0)
+    return NULL;
+
+  input_source = NULL;
+
+  if (current != NULL)
+    {
+      GList *sources;
+      GList *l;
+
+      sources = g_hash_table_get_values (manager->input_sources);
+
+      for (l = sources; l != NULL; l = g_list_next (l))
+        {
+          GfInputSource *source;
+
+          source = l->data;
+
+          if (compare_sources (current, source))
+            {
+              input_source = source;
+              break;
+            }
+        }
+
+      g_list_free (sources);
+
+      if (input_source != NULL)
+        return g_object_ref (input_source);
+    }
+
+  keys = g_hash_table_get_keys (manager->input_sources);
+  keys = g_list_sort (keys, compare_indexes);
+
+  index = g_list_nth_data (keys, 0);
+  input_source = g_hash_table_lookup (manager->input_sources, index);
+  g_list_free (keys);
+
+  return g_object_ref (input_source);
+}
+
+static void
+set_per_window_input_source (GfInputSourceManager *manager)
+{
+  SourceWindow *window;
+
+  window = get_current_window (manager);
+  if (window == NULL)
+    return;
+
+  if (window->input_sources != manager->input_sources)
+    {
+      GfInputSource *old;
+
+      g_clear_pointer (&window->input_sources, g_hash_table_unref);
+      window->input_sources = g_hash_table_ref (manager->input_sources);
+
+      old = window->current_source;
+      window->current_source = get_new_input_source (manager, old);
+      g_clear_object (&old);
+    }
+
+  if (window->current_source != NULL)
+    gf_input_source_activate (window->current_source, FALSE);
+}
+
+static GdkFilterReturn
+event_filter_cb (GdkXEvent *xevent,
+                 GdkEvent  *event,
+                 gpointer   user_data)
+{
+  XEvent *e;
+
+  e = (XEvent *) xevent;
+
+  if (e->type == PropertyNotify)
+    {
+      XPropertyEvent *p;
+
+      p = (XPropertyEvent *) e;
+
+      if (p->atom == XInternAtom (p->display, "_NET_ACTIVE_WINDOW", True))
+        set_per_window_input_source (GF_INPUT_SOURCE_MANAGER (user_data));
+    }
+
+  return GDK_FILTER_CONTINUE;
+}
+
 static void
 change_per_window_source (GfInputSourceManager *manager)
 {
+  SourceWindow *window;
+
   if (!manager->sources_per_window)
     return;
 
-  /* FIXME: */
+  window = get_current_window (manager);
+  if (window == NULL)
+    return;
+
+  g_clear_pointer (&window->input_sources, g_hash_table_unref);
+  g_clear_object (&window->current_source);
+
+  window->input_sources = g_hash_table_ref (manager->input_sources);
+
+  if (manager->current_source != NULL)
+    window->current_source = g_object_ref (manager->current_source);
 }
 
 static gint
@@ -253,13 +507,6 @@ fade_finished_cb (GfInputSourcePopup *popup,
 
   gtk_widget_destroy (widget);
   manager->popup = NULL;
-}
-
-static gint
-compare_indexes (gconstpointer a,
-                 gconstpointer b)
-{
-  return GPOINTER_TO_UINT (a) - GPOINTER_TO_UINT (b);
 }
 
 static gboolean
@@ -496,27 +743,6 @@ get_source_info_list (GfInputSourceManager *manager)
   g_object_unref (xkb_info);
 
   return list;
-}
-
-static gboolean
-compare_sources (GfInputSource *source1,
-                 GfInputSource *source2)
-{
-  const gchar *type1;
-  const gchar *type2;
-  const gchar *id1;
-  const gchar *id2;
-
-  type1 = gf_input_source_get_source_type (source1);
-  type2 = gf_input_source_get_source_type (source2);
-
-  id1 = gf_input_source_get_id (source1);
-  id2 = gf_input_source_get_id (source2);
-
-  if (g_strcmp0 (type1, type2) == 0 && g_strcmp0 (id1, id2) == 0)
-    return TRUE;
-
-  return FALSE;
 }
 
 static void
@@ -861,7 +1087,7 @@ sources_changed_cb (GfInputSourceSettings *settings,
   source_infos = get_source_info_list (manager);
 
   if (manager->input_sources != NULL)
-    g_hash_table_destroy (manager->input_sources);
+    g_hash_table_unref (manager->input_sources);
   manager->input_sources = g_hash_table_new_full (NULL, NULL, NULL,
                                                   g_object_unref);
 
@@ -963,7 +1189,23 @@ per_window_changed_cb (GfInputSourceSettings *settings,
 
   manager->sources_per_window = per_window;
 
-  /* FIXME: */
+  if (manager->sources_per_window && !manager->event_filter_added)
+    {
+      g_assert (manager->source_windows == NULL);
+      manager->source_windows = g_hash_table_new_full (NULL, NULL, NULL,
+                                                       source_window_free);
+
+      gdk_window_add_filter (NULL, event_filter_cb, manager);
+      manager->event_filter_added = TRUE;
+    }
+  else if (!manager->sources_per_window && manager->event_filter_added)
+    {
+      gdk_window_remove_filter (NULL, event_filter_cb, manager);
+      manager->event_filter_added = FALSE;
+
+      g_hash_table_destroy (manager->source_windows);
+      manager->source_windows = NULL;
+    }
 }
 
 static void
@@ -1177,13 +1419,13 @@ gf_input_source_manager_dispose (GObject *object)
 
   g_clear_object (&manager->keyboard_manager);
 
-  if (manager->input_sources != 0)
+  if (manager->input_sources != NULL)
     {
       g_hash_table_destroy (manager->input_sources);
       manager->input_sources = NULL;
     }
 
-  if (manager->ibus_sources != 0)
+  if (manager->ibus_sources != NULL)
     {
       g_hash_table_destroy (manager->ibus_sources);
       manager->ibus_sources = NULL;
@@ -1205,6 +1447,18 @@ gf_input_source_manager_dispose (GObject *object)
     {
       gtk_widget_destroy (manager->popup);
       manager->popup = NULL;
+    }
+
+  if (manager->event_filter_added)
+    {
+      gdk_window_remove_filter (NULL, event_filter_cb, manager);
+      manager->event_filter_added = FALSE;
+    }
+
+  if (manager->source_windows != NULL)
+    {
+      g_hash_table_destroy (manager->source_windows);
+      manager->source_windows = NULL;
     }
 
   G_OBJECT_CLASS (gf_input_source_manager_parent_class)->dispose (object);

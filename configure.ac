@@ -175,6 +175,7 @@ PKG_CHECK_MODULES([INPUT_SOURCES], [
   gsettings-desktop-schemas >= $GSETTINGS_DESKTOP_SCHEMAS_REQUIRED
   ibus-1.0 >= $IBUS_REQUIRED
   pango
+  x11
   xkbfile
   xkeyboard-config
 ])
