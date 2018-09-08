@@ -130,7 +130,7 @@ gf_inhibit_dialog_set_inhibitor_paths (GfInhibitDialog    *dialog,
 
   gtk_list_store_clear (priv->list_store);
 
-  if (G_N_ELEMENTS (paths) == 0 || paths[0] == NULL)
+  if (paths == NULL || paths[0] == NULL)
     update_dialog_text (dialog);
   else
     populate_model (dialog);
