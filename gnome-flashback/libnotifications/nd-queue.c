@@ -32,8 +32,6 @@
 #include "nd-notification-box.h"
 #include "nd-stack.h"
 
-#define ND_QUEUE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ND_TYPE_QUEUE, NdQueuePrivate))
-
 #define WIDTH         400
 
 typedef struct
@@ -74,7 +72,7 @@ static void     on_notification_close   (NdNotification *notification,
 
 static gpointer queue_object = NULL;
 
-G_DEFINE_TYPE (NdQueue, nd_queue, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_PRIVATE (NdQueue, nd_queue, G_TYPE_OBJECT)
 
 static void
 create_stack_for_monitor (NdQueue    *queue,
@@ -231,8 +229,6 @@ nd_queue_class_init (NdQueueClass *klass)
                               g_cclosure_marshal_VOID__VOID,
                               G_TYPE_NONE,
                               0);
-
-        g_type_class_add_private (klass, sizeof (NdQueuePrivate));
 }
 
 static void
@@ -454,7 +450,7 @@ create_dock (NdQueue *queue)
 static void
 nd_queue_init (NdQueue *queue)
 {
-        queue->priv = ND_QUEUE_GET_PRIVATE (queue);
+        queue->priv = nd_queue_get_instance_private (queue);
         queue->priv->notifications = g_hash_table_new_full (NULL, NULL, NULL, g_object_unref);
         queue->priv->bubbles = g_hash_table_new_full (NULL, NULL, NULL, g_object_unref);
         queue->priv->queue = g_queue_new ();

@@ -25,8 +25,6 @@
 #include "nd-notification.h"
 #include "nd-notification-box.h"
 
-#define ND_NOTIFICATION_BOX_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ND_TYPE_NOTIFICATION_BOX, NdNotificationBoxPrivate))
-
 #define IMAGE_SIZE    48
 #define BODY_X_OFFSET (IMAGE_SIZE + 8)
 #define WIDTH         400
@@ -48,7 +46,7 @@ struct NdNotificationBoxPrivate
 
 static void     nd_notification_box_finalize    (GObject                *object);
 
-G_DEFINE_TYPE (NdNotificationBox, nd_notification_box, GTK_TYPE_EVENT_BOX)
+G_DEFINE_TYPE_WITH_PRIVATE (NdNotificationBox, nd_notification_box, GTK_TYPE_EVENT_BOX)
 
 NdNotification *
 nd_notification_box_get_notification (NdNotificationBox *notification_box)
@@ -77,8 +75,6 @@ nd_notification_box_class_init (NdNotificationBoxClass *klass)
 
         object_class->finalize = nd_notification_box_finalize;
         widget_class->button_release_event = nd_notification_box_button_release_event;
-
-        g_type_class_add_private (klass, sizeof (NdNotificationBoxPrivate));
 }
 
 static void
@@ -279,7 +275,7 @@ nd_notification_box_init (NdNotificationBox *notification_box)
         GtkWidget     *vbox;
         AtkObject     *atkobj;
 
-        notification_box->priv = ND_NOTIFICATION_BOX_GET_PRIVATE (notification_box);
+        notification_box->priv = nd_notification_box_get_instance_private (notification_box);
         box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_container_add (GTK_CONTAINER (notification_box), box);
         gtk_widget_show (box);

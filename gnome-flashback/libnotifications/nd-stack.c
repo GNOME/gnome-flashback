@@ -29,8 +29,6 @@
 
 #include "nd-stack.h"
 
-#define ND_STACK_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ND_TYPE_STACK, NdStackPrivate))
-
 #define NOTIFY_STACK_SPACING 2
 #define WORKAREA_PADDING 6
 
@@ -45,7 +43,7 @@ struct NdStackPrivate
 
 static void     nd_stack_finalize    (GObject       *object);
 
-G_DEFINE_TYPE (NdStack, nd_stack, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_PRIVATE (NdStack, nd_stack, G_TYPE_OBJECT)
 
 GList *
 nd_stack_get_bubbles (NdStack *stack)
@@ -236,14 +234,12 @@ nd_stack_class_init (NdStackClass *klass)
         GObjectClass   *object_class = G_OBJECT_CLASS (klass);
 
         object_class->finalize = nd_stack_finalize;
-
-        g_type_class_add_private (klass, sizeof (NdStackPrivate));
 }
 
 static void
 nd_stack_init (NdStack *stack)
 {
-        stack->priv = ND_STACK_GET_PRIVATE (stack);
+        stack->priv = nd_stack_get_instance_private (stack);
         stack->priv->location = ND_STACK_LOCATION_DEFAULT;
 }
 
