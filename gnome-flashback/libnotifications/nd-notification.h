@@ -85,6 +85,8 @@ void                  nd_notification_action_invoked      (NdNotification *notif
 void                  nd_notification_url_clicked         (NdNotification *notification,
                                                            const char     *url);
 
+gboolean              validate_markup                     (const gchar    *markup);
+
 G_END_DECLS
 
 #endif

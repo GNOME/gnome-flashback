@@ -307,7 +307,7 @@ update_bubble (GfBubble *bubble)
 
   body = nd_notification_get_body (priv->notification);
 
-  if (pango_parse_markup (body, -1, 0, NULL, NULL, NULL, NULL))
+  if (validate_markup (body))
     {
       gtk_label_set_markup (GTK_LABEL (priv->body_label), body);
     }

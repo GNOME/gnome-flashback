@@ -219,7 +219,7 @@ update_notification_box (NdNotificationBox *notification_box)
 
         /* body */
         body = nd_notification_get_body (notification_box->priv->notification);
-        if (pango_parse_markup (body, -1, 0, NULL, NULL, NULL, NULL))
+        if (validate_markup (body))
                 gtk_label_set_markup (GTK_LABEL (notification_box->priv->body_label), body);
         else {
                 gchar *tmp;

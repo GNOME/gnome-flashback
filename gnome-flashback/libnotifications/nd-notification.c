@@ -76,6 +76,124 @@ get_next_notification_serial (void)
 }
 
 static void
+start_element_cb (GMarkupParseContext  *context,
+                  const gchar          *element_name,
+                  const gchar         **attribute_names,
+                  const gchar         **attribute_values,
+                  gpointer              user_data,
+                  GError              **error)
+{
+  GString *str;
+  gint i;
+
+  if (g_strcmp0 (element_name, "a") == 0)
+    return;
+
+  str = user_data;
+
+  g_string_append (str, "<");
+  g_string_append (str, element_name);
+
+  for (i = 0; attribute_names[i] != NULL; i++)
+    {
+      gchar *tmp;
+
+      tmp = g_markup_escape_text (attribute_values[i], -1);
+      g_string_append_printf (str, " %s=\"%s\"", attribute_names[i], tmp);
+      g_free (tmp);
+    }
+
+  g_string_append (str, ">");
+}
+
+static void
+end_element_cb (GMarkupParseContext  *context,
+                const gchar          *element_name,
+                gpointer              user_data,
+                GError              **error)
+{
+  GString *str;
+
+  if (g_strcmp0 (element_name, "a") == 0)
+    return;
+
+  str = user_data;
+
+  g_string_append_printf (str, "</%s>", element_name);
+}
+
+static void
+text_cb (GMarkupParseContext  *context,
+         const gchar          *text,
+         gsize                 text_len,
+         gpointer              user_data,
+         GError              **error)
+{
+  GString *str;
+  gchar *tmp;
+
+  str = user_data;
+
+  tmp = g_markup_escape_text (text, text_len);
+  g_string_append (str, tmp);
+  g_free (tmp);
+}
+
+static gboolean
+parse_markup (const gchar  *text,
+              gchar       **parsed_markup,
+              GError      **error)
+{
+  GString *str;
+  GMarkupParseContext *context;
+
+  str = g_string_new (NULL);
+  context = g_markup_parse_context_new (&(GMarkupParser) {
+                                          start_element_cb,
+                                          end_element_cb,
+                                          text_cb
+                                        },
+                                        0, str, NULL);
+
+  if (!g_markup_parse_context_parse (context, "<markup>", -1, error))
+    {
+      g_markup_parse_context_free (context);
+      g_string_free (str, TRUE);
+
+      return FALSE;
+    }
+
+  if (!g_markup_parse_context_parse (context, text, -1, error))
+    {
+      g_markup_parse_context_free (context);
+      g_string_free (str, TRUE);
+
+      return FALSE;
+    }
+
+  if (!g_markup_parse_context_parse (context, "</markup>", -1, error))
+    {
+      g_markup_parse_context_free (context);
+      g_string_free (str, TRUE);
+
+      return FALSE;
+    }
+
+  if (!g_markup_parse_context_end_parse (context, error))
+    {
+      g_markup_parse_context_free (context);
+      g_string_free (str, TRUE);
+
+      return FALSE;
+    }
+
+  *parsed_markup = g_string_free (str, FALSE);
+  g_markup_parse_context_free (context);
+
+  return TRUE;
+}
+
+static void
 nd_notification_class_init (NdNotificationClass *class)
 {
         GObjectClass *gobject_class;
@@ -565,4 +683,36 @@ nd_notification_new (const char *sender)
         notification->sender = g_strdup (sender);
 
         return notification;
+}
+
+gboolean
+validate_markup (const gchar *markup)
+{
+  gchar *parsed_markup;
+  GError *error;
+
+  parsed_markup = NULL;
+  error = NULL;
+
+  if (!parse_markup (markup, &parsed_markup, &error))
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+
+      return FALSE;
+    }
+
+  if (!pango_parse_markup (parsed_markup, -1, 0, NULL, NULL, NULL, &error))
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+
+      g_free (parsed_markup);
+
+      return FALSE;
+    }
+
+  g_free (parsed_markup);
+
+  return TRUE;
 }
