@@ -69,6 +69,13 @@ static guint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (FlashbackAuthenticator, flashback_authenticator, G_TYPE_OBJECT)
 
+static gpointer
+copy_identities (gconstpointer src,
+                 gpointer      data)
+{
+  return g_object_ref ((gpointer) src);
+}
+
 static void
 session_request (PolkitAgentSession *session,
                  const char         *request,
@@ -331,8 +338,7 @@ get_desc_for_action (FlashbackAuthenticator *authenticator)
         }
     }
 
-  g_list_foreach (descs, (GFunc) g_object_unref, NULL);
-  g_list_free (descs);
+  g_list_free_full (descs, g_object_unref);
 
   return result;
 }
@@ -383,8 +389,7 @@ flashback_authenticator_finalize (GObject *object)
   g_free (authenticator->icon_name);
   g_free (authenticator->cookie);
 
-  g_list_foreach (authenticator->identities, (GFunc) g_object_unref, NULL);
-  g_list_free (authenticator->identities);
+  g_list_free_full (authenticator->identities, g_object_unref);
 
   g_strfreev (authenticator->users);
 
@@ -461,9 +466,7 @@ flashback_authenticator_new (const gchar   *action_id,
   authenticator->icon_name = g_strdup (icon_name);
   authenticator->details = details != NULL ? g_object_ref (details) : NULL;
   authenticator->cookie = g_strdup (cookie);
-  authenticator->identities = g_list_copy (identities);
-  g_list_foreach (authenticator->identities, (GFunc) g_object_ref, NULL);
-
+  authenticator->identities = g_list_copy_deep (identities, copy_identities, NULL);
   authenticator->action_desc = get_desc_for_action (authenticator);
 
   if (authenticator->action_desc == NULL)
