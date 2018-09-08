@@ -427,20 +427,20 @@ update_icon (GvcStreamStatusIcon *icon)
                 markup = g_strdup_printf (
                                           "<b>%s: %.0f%%</b>\n<small>%0.2f dB\n%s</small>",
                                           icon->priv->display_name,
-                                          100 * (float)volume / PA_VOLUME_NORM,
+                                          100 * (double) volume / PA_VOLUME_NORM,
                                           db,
                                           gvc_mixer_stream_get_description (icon->priv->mixer_stream));
         } else if (can_decibel) {
                 markup = g_strdup_printf (
                                           "<b>%s: %.0f%%</b>\n<small>-&#8734; dB\n%s</small>",
                                           icon->priv->display_name,
-                                          100 * (float)volume / PA_VOLUME_NORM,
+                                          100 * (double) volume / PA_VOLUME_NORM,
                                           gvc_mixer_stream_get_description (icon->priv->mixer_stream));
         } else {
                 markup = g_strdup_printf (
                                           "<b>%s: %.0f%%</b>\n<small>%s</small>",
                                           icon->priv->display_name,
-                                          100 * (float)volume / PA_VOLUME_NORM,
+                                          100 * (double) volume / PA_VOLUME_NORM,
                                           gvc_mixer_stream_get_description (icon->priv->mixer_stream));
         }
 
