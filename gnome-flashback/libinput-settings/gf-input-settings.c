@@ -1220,6 +1220,13 @@ mapped_device_changed_cb (GSettings         *gsettings,
 }
 
 static void
+free_device_mapping_info (gpointer  data,
+                          GClosure *closure)
+{
+  g_free (data);
+}
+
+static void
 check_add_mappable_device (GfInputSettings *settings,
                            GdkDevice       *device)
 {
@@ -1239,7 +1246,7 @@ check_add_mappable_device (GfInputSettings *settings,
 
   g_signal_connect_data (gsettings, "changed",
                          G_CALLBACK (mapped_device_changed_cb),
-                         info, (GClosureNotify) g_free, 0);
+                         info, free_device_mapping_info, 0);
 
   g_hash_table_insert (settings->mappable_devices, device, gsettings);
   update_device_display (settings, gsettings, device);
