@@ -713,6 +713,13 @@ update_dock (NdQueue *queue)
         g_list_free (list);
 }
 
+static void
+show_all_cb (GtkWidget *widget,
+             gpointer   user_data)
+{
+  gtk_widget_show_all (widget);
+}
+
 static gboolean
 popup_dock (NdQueue *queue,
             guint    time)
@@ -753,7 +760,7 @@ popup_dock (NdQueue *queue,
         gdk_screen_get_monitor_geometry (screen, monitor_num, &monitor);
 
         gtk_container_foreach (GTK_CONTAINER (queue->priv->dock),
-                               (GtkCallback) gtk_widget_show_all, NULL);
+                               show_all_cb, NULL);
         gtk_widget_get_preferred_size (queue->priv->dock, &dock_req, NULL);
 
         if (orientation == GTK_ORIENTATION_VERTICAL) {

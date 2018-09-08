@@ -511,6 +511,13 @@ scale_pixbuf (GdkPixbuf *pixbuf,
         }
 }
 
+static void
+free_pixels (guchar   *pixels,
+             gpointer  user_data)
+{
+  g_free (pixels);
+}
+
 static GdkPixbuf *
 _notify_daemon_pixbuf_from_data_hint (GVariant *icon_data,
                                       int       size)
@@ -557,7 +564,7 @@ _notify_daemon_pixbuf_from_data_hint (GVariant *icon_data,
                                            width,
                                            height,
                                            rowstride,
-                                           (GdkPixbufDestroyNotify) g_free,
+                                           free_pixels,
                                            NULL);
         if (pixbuf != NULL && size > 0) {
                 GdkPixbuf *scaled;

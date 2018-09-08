@@ -274,6 +274,13 @@ add_timeout (GfBubble *bubble)
 }
 
 static void
+destroy_widget (GtkWidget *widget,
+                gpointer   user_data)
+{
+  gtk_widget_destroy (widget);
+}
+
+static void
 update_bubble (GfBubble *bubble)
 {
   GfBubblePrivate *priv;
@@ -326,7 +333,7 @@ update_bubble (GfBubble *bubble)
 
   have_actions = FALSE;
   gtk_container_foreach (GTK_CONTAINER (priv->actions_box),
-                         (GtkCallback) gtk_widget_destroy, NULL);
+                         destroy_widget, NULL);
 
   actions = nd_notification_get_actions (priv->notification);
 

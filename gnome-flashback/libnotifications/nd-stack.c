@@ -471,6 +471,5 @@ nd_stack_remove_all (NdStack  *stack)
         GList *bubbles;
 
         bubbles = g_list_copy (stack->priv->bubbles);
-        g_list_foreach (bubbles, (GFunc)gtk_widget_destroy, NULL);
-        g_list_free (bubbles);
+        g_list_free_full (bubbles, (GDestroyNotify) gtk_widget_destroy);
 }
