@@ -30,8 +30,6 @@
 #include "gsd-automount-manager.h"
 #include "gsd-autorun.h"
 
-#define GSD_AUTOMOUNT_MANAGER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GSD_TYPE_AUTOMOUNT_MANAGER, GsdAutomountManagerPrivate))
-
 #define GNOME_SESSION_DBUS_NAME      "org.gnome.SessionManager"
 #define GNOME_SESSION_DBUS_OBJECT    "/org/gnome/SessionManager"
 #define GNOME_SESSION_DBUS_INTERFACE "org.gnome.SessionManager"
@@ -52,7 +50,7 @@ struct GsdAutomountManagerPrivate
         GList *volume_queue;
 };
 
-G_DEFINE_TYPE (GsdAutomountManager, gsd_automount_manager, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_PRIVATE (GsdAutomountManager, gsd_automount_manager, G_TYPE_OBJECT)
 
 static GDBusProxy *
 get_session_proxy (void)
@@ -542,7 +540,7 @@ gsd_automount_manager_finalize (GObject *object)
 static void
 gsd_automount_manager_init (GsdAutomountManager *manager)
 {
-        manager->priv = GSD_AUTOMOUNT_MANAGER_GET_PRIVATE (manager);
+        manager->priv = gsd_automount_manager_get_instance_private (manager);
 
         g_debug ("Starting automounting manager");
 
@@ -556,8 +554,6 @@ gsd_automount_manager_class_init (GsdAutomountManagerClass *klass)
         GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
         object_class->finalize = gsd_automount_manager_finalize;
-
-        g_type_class_add_private (klass, sizeof (GsdAutomountManagerPrivate));
 }
 
 GsdAutomountManager *
