@@ -38,8 +38,6 @@
 #define ADJUSTMENT_MAX (bar->priv->is_amplified ? ADJUSTMENT_MAX_AMPLIFIED : ADJUSTMENT_MAX_NORMAL)
 #define SCROLLSTEP (ADJUSTMENT_MAX / 100.0 * 5.0)
 
-#define GVC_CHANNEL_BAR_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GVC_TYPE_CHANNEL_BAR, GvcChannelBarPrivate))
-
 struct GvcChannelBarPrivate
 {
         GtkOrientation orientation;
@@ -87,7 +85,7 @@ static gboolean on_scale_scroll_event         (GtkWidget      *widget,
                                                GdkEventScroll *event,
                                                GvcChannelBar  *bar);
 
-G_DEFINE_TYPE (GvcChannelBar, gvc_channel_bar, GTK_TYPE_BOX)
+G_DEFINE_TYPE_WITH_PRIVATE (GvcChannelBar, gvc_channel_bar, GTK_TYPE_BOX)
 
 static GtkWidget *
 _scale_box_new (GvcChannelBar *bar)
@@ -719,8 +717,6 @@ gvc_channel_bar_class_init (GvcChannelBarClass *klass)
                                                                "Whether the stream is digitally amplified",
                                                                FALSE,
                                                                G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-
-        g_type_class_add_private (klass, sizeof (GvcChannelBarPrivate));
 }
 
 static void
@@ -728,7 +724,7 @@ gvc_channel_bar_init (GvcChannelBar *bar)
 {
         GtkWidget *frame;
 
-        bar->priv = GVC_CHANNEL_BAR_GET_PRIVATE (bar);
+        bar->priv = gvc_channel_bar_get_instance_private (bar);
 
         bar->priv->base_volume = ADJUSTMENT_MAX_NORMAL;
         bar->priv->low_icon_name = g_strdup ("audio-volume-low");

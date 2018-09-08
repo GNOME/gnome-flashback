@@ -32,8 +32,6 @@
 #include "gvc-channel-bar.h"
 #include "gvc-stream-status-icon.h"
 
-#define GVC_STREAM_STATUS_ICON_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GVC_TYPE_STREAM_STATUS_ICON, GvcStreamStatusIconPrivate))
-
 struct GvcStreamStatusIconPrivate
 {
         char          **icon_names;
@@ -55,7 +53,7 @@ enum
 
 static void     gvc_stream_status_icon_finalize   (GObject                  *object);
 
-G_DEFINE_TYPE (GvcStreamStatusIcon, gvc_stream_status_icon, GTK_TYPE_STATUS_ICON)
+G_DEFINE_TYPE_WITH_PRIVATE (GvcStreamStatusIcon, gvc_stream_status_icon, GTK_TYPE_STATUS_ICON)
 
 static void
 on_adjustment_value_changed (GtkAdjustment *adjustment,
@@ -724,8 +722,6 @@ gvc_stream_status_icon_class_init (GvcStreamStatusIconClass *klass)
                                                              "Name of icon to display for this stream",
                                                               G_TYPE_STRV,
                                                               G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-
-        g_type_class_add_private (klass, sizeof (GvcStreamStatusIconPrivate));
 }
 
 static void
@@ -744,7 +740,7 @@ on_status_icon_visible_notify (GvcStreamStatusIcon *icon)
 static void
 gvc_stream_status_icon_init (GvcStreamStatusIcon *icon)
 {
-        icon->priv = GVC_STREAM_STATUS_ICON_GET_PRIVATE (icon);
+        icon->priv = gvc_stream_status_icon_get_instance_private (icon);
 
         g_signal_connect (icon,
                           "activate",
