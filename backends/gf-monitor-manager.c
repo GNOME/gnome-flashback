@@ -676,7 +676,7 @@ find_monitor_mode_scale (GfMonitorManager            *manager,
 
   g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                "Scale %g not valid for resolution %dx%d",
-               scale,
+               (gdouble) scale,
                monitor_mode_spec->width,
                monitor_mode_spec->height);
 
@@ -1580,7 +1580,7 @@ gf_monitor_manager_handle_get_current_state (GfDBusDisplayConfig   *skeleton,
                                  mode_id,
                                  mode_width,
                                  mode_height,
-                                 refresh_rate,
+                                 (gdouble) refresh_rate,
                                  (gdouble) preferred_scale,
                                  &supported_scales_builder,
                                  &mode_properties_builder);

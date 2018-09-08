@@ -36,7 +36,7 @@
 #define MAXIMUM_SCALE_FACTOR 4.0f
 #define MINIMUM_LOGICAL_WIDTH 800
 #define MINIMUM_LOGICAL_HEIGHT 480
-#define MAXIMUM_REFRESH_RATE_DIFF 0.001
+#define MAXIMUM_REFRESH_RATE_DIFF 0.001f
 
 /* The minimum screen height at which we turn on a window-scale of 2;
  * below this there just isn't enough vertical real estate for GNOME
@@ -834,7 +834,7 @@ gf_monitor_calculate_supported_scales (GfMonitor                 *monitor,
   gfloat scale_steps;
   GArray *supported_scales;
 
-  scale_steps = 1.0 / (gfloat) SCALE_FACTORS_PER_INTEGER;
+  scale_steps = 1.0f / SCALE_FACTORS_PER_INTEGER;
   supported_scales = g_array_new (FALSE, FALSE, sizeof (gfloat));
 
   gf_monitor_mode_get_resolution (monitor_mode, &width, &height);
@@ -849,7 +849,7 @@ gf_monitor_calculate_supported_scales (GfMonitor                 *monitor,
           gfloat scale_value = i + j * scale_steps;
 
           if ((constraints & GF_MONITOR_SCALES_CONSTRAINT_NO_FRAC) &&
-              fmodf (scale_value, 1.0) != 0.0)
+              fmodf (scale_value, 1.0) != 0.0f)
             {
               continue;
             }
