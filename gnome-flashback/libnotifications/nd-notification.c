@@ -496,7 +496,7 @@ scale_pixbuf (GdkPixbuf *pixbuf,
         }
 
         /* always scale down, allow to disable scaling up */
-        if (scale_factor < 1.0 || !no_stretch_hint) {
+        if (scale_factor < 1.0f || !no_stretch_hint) {
                 int scale_x;
                 int scale_y;
 

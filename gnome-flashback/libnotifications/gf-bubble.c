@@ -218,7 +218,7 @@ scale_pixbuf (GdkPixbuf *pixbuf,
   if (scale_factor_x > scale_factor_y)
     scale_factor = scale_factor_y;
 
-  if (scale_factor < 1.0)
+  if (scale_factor < 1.0f)
     {
       gint scale_x;
       gint scale_y;
