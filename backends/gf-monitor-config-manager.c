@@ -62,6 +62,13 @@ struct _GfMonitorConfigManager
 
 G_DEFINE_TYPE (GfMonitorConfigManager, gf_monitor_config_manager, G_TYPE_OBJECT)
 
+static void
+history_unref (gpointer data,
+               gpointer user_data)
+{
+  g_object_unref (data);
+}
+
 static GfMonitor *
 find_monitor_with_highest_preferred_resolution (GfMonitorManager *monitor_manager,
                                                 MonitorMatchRule  match_rule)
@@ -1039,7 +1046,7 @@ gf_monitor_config_manager_get_previous (GfMonitorConfigManager *config_manager)
 void
 gf_monitor_config_manager_clear_history (GfMonitorConfigManager *config_manager)
 {
-  g_queue_foreach (&config_manager->config_history, (GFunc) g_object_unref, NULL);
+  g_queue_foreach (&config_manager->config_history, history_unref, NULL);
   g_queue_clear (&config_manager->config_history);
 }
 
