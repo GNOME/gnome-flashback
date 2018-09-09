@@ -1,3 +1,15 @@
+Version 3.30.0
+==============
+- Fix build warnings.
+- Remove button-layout workaround (replaced with GSettings override file).
+- Reintroduce a11y-keyboard plugin. (#6)
+- Implement per window input sources. (#5)
+- Apply input settings to trackpoint. (#4)
+- Assign input source groups in correct order. (#790453)
+- Updated translations:
+  Anders Jonsson (sv), Mario Blättermann (de), Rafael Fontenelle (pt_BR),
+  Piotr Drąg (pl).
+
 Version 3.28.0
 ==============
 - Use symbolic window close icon. (#794234)
