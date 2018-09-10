@@ -83,7 +83,7 @@ create_stack_for_monitor (NdQueue    *queue,
         nscreen = queue->priv->screen;
         stack = nd_stack_new (monitor);
 
-        g_hash_table_insert (nscreen->stacks, (gpointer) monitor, stack);
+        g_hash_table_insert (nscreen->stacks, monitor, stack);
 }
 
 static NdStack *
@@ -92,7 +92,6 @@ get_stack_with_pointer (NdQueue *queue)
         GdkDisplay *display;
         GdkSeat    *seat;
         GdkDevice  *pointer;
-        GdkScreen  *screen;
         GdkMonitor *monitor;
         int         x, y;
 
@@ -100,7 +99,7 @@ get_stack_with_pointer (NdQueue *queue)
         seat = gdk_display_get_default_seat (display);
         pointer = gdk_seat_get_pointer (seat);
 
-        gdk_device_get_position (pointer, &screen, &x, &y);
+        gdk_device_get_position (pointer, NULL, &x, &y);
         monitor = gdk_display_get_monitor_at_point (display, x, y);
 
         return g_hash_table_lookup (queue->priv->screen->stacks, monitor);
@@ -165,13 +164,13 @@ static void
 create_stacks_for_display (NdQueue    *queue,
                            GdkDisplay *display)
 {
-        int           n_stacks;
+        int           n_monitors;
         int           i;
 
-        n_stacks = gdk_display_get_n_monitors (display);
+        n_monitors = gdk_display_get_n_monitors (display);
 
-        for (i = 0; i < n_stacks; i++) {
-                GdkMonitor   *monitor;
+        for (i = 0; i < n_monitors; i++) {
+                GdkMonitor *monitor;
 
                 monitor = gdk_display_get_monitor (display, i);
                 create_stack_for_monitor (queue, monitor);
