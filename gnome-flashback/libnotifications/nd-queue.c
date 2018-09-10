@@ -105,57 +105,41 @@ get_stack_with_pointer (NdQueue *queue)
         return g_hash_table_lookup (queue->priv->screen->stacks, monitor);
 }
 
+static void
+monitor_added_cb (GdkDisplay *display,
+                  GdkMonitor *monitor,
+                  NdQueue    *queue)
+{
+        create_stack_for_monitor (queue, monitor);
+}
 
 static void
-on_screen_monitors_changed (GdkScreen *screen,
-                            NdQueue   *queue)
+monitor_removed_cb (GdkDisplay *display,
+                    GdkMonitor *monitor,
+                    NdQueue    *queue)
 {
         NotifyScreen *nscreen;
-        GdkDisplay   *display;
-        int           n_monitors;
-        int           n_stacks;
-        int           i;
+        NdStack      *stack;
+        NdStack      *focused_stack;
+        GList       *bubbles;
+        GList       *l;
+
+        /* transfer items before removing stack */
 
         nscreen = queue->priv->screen;
-        display = gdk_screen_get_display (screen);
+        stack = g_hash_table_lookup (nscreen->stacks, monitor);
+        focused_stack = get_stack_with_pointer (queue);
 
-        n_monitors = gdk_display_get_n_monitors (display);
-        n_stacks = g_hash_table_size (nscreen->stacks);
-
-        if (n_monitors > n_stacks) {
-                /* add more stacks */
-                for (i = n_stacks; i < n_monitors; i++) {
-                        GdkMonitor   *monitor;
-
-                        monitor = gdk_display_get_monitor (display, i);
-                        create_stack_for_monitor (queue, monitor);
-                }
-        } else if (n_monitors < n_stacks) {
-                NdStack *focused_stack;
-
-                focused_stack = get_stack_with_pointer (queue);
-
-                /* transfer items before removing stacks */
-                for (i = n_monitors; i < n_stacks; i++) {
-                        GdkMonitor  *monitor;
-                        NdStack     *stack;
-                        GList       *bubbles;
-                        GList       *l;
-
-                        monitor = gdk_display_get_monitor (display, i);
-                        stack = g_hash_table_lookup (nscreen->stacks, monitor);
-                        bubbles = g_list_copy (nd_stack_get_bubbles (stack));
-                        for (l = bubbles; l != NULL; l = l->next) {
-                                /* skip removing the bubble from the
-                                   old stack since it will try to
-                                   unrealize the window.  And the
-                                   stack is going away anyhow. */
-                                nd_stack_add_bubble (focused_stack, l->data, TRUE);
-                        }
-                        g_list_free (bubbles);
-                        g_hash_table_remove (nscreen->stacks, monitor);
-                }
+        bubbles = g_list_copy (nd_stack_get_bubbles (stack));
+        for (l = bubbles; l != NULL; l = l->next) {
+                /* skip removing the bubble from the
+                   old stack since it will try to
+                   unrealize the window.  And the
+                   stack is going away anyhow. */
+                nd_stack_add_bubble (focused_stack, l->data, TRUE);
         }
+        g_list_free (bubbles);
+        g_hash_table_remove (nscreen->stacks, monitor);
 
         queue_update (queue);
 }
@@ -176,7 +160,6 @@ create_stacks_for_display (NdQueue    *queue,
                 create_stack_for_monitor (queue, monitor);
         }
 }
-
 
 static void
 queue_update_position (gpointer key,
@@ -215,10 +198,11 @@ create_screen (NdQueue *queue)
         display = gdk_display_get_default ();
         screen = gdk_display_get_default_screen (display);
 
-        g_signal_connect (screen,
-                          "monitors-changed",
-                          G_CALLBACK (on_screen_monitors_changed),
-                          queue);
+        g_signal_connect (display, "monitor-added",
+                          G_CALLBACK (monitor_added_cb), queue);
+
+        g_signal_connect (display, "monitor-removed",
+                          G_CALLBACK (monitor_removed_cb), queue);
 
         queue->priv->screen = g_new0 (NotifyScreen, 1);
         queue->priv->screen->workarea_atom = XInternAtom (GDK_DISPLAY_XDISPLAY (display), "_NET_WORKAREA", True);
@@ -340,8 +324,8 @@ on_dock_key_release (GtkWidget   *widget,
 
 static void
 remove_all (gpointer key,
-                     gpointer value,
-                     gpointer user_data)
+            gpointer value,
+            gpointer user_data)
 {
         nd_stack_remove_all ((NdStack *) value);
 }
@@ -492,8 +476,12 @@ destroy_screen (NdQueue *queue)
         display = gdk_display_get_default ();
         screen = gdk_display_get_default_screen (display);
 
-        g_signal_handlers_disconnect_by_func (screen,
-                                              G_CALLBACK (on_screen_monitors_changed),
+        g_signal_handlers_disconnect_by_func (display,
+                                              G_CALLBACK (monitor_added_cb),
+                                              queue);
+
+        g_signal_handlers_disconnect_by_func (display,
+                                              G_CALLBACK (monitor_removed_cb),
                                               queue);
 
         gdkwindow = gdk_screen_get_root_window (screen);
