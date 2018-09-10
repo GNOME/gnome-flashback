@@ -436,10 +436,9 @@ nd_stack_add_bubble (NdStack  *stack,
         gtk_window_move (GTK_WINDOW (bubble), x, y);
 
         if (new_notification) {
-                g_signal_connect_swapped (G_OBJECT (bubble),
-                                          "destroy",
-                                          G_CALLBACK (nd_stack_remove_bubble),
-                                          stack);
+                g_signal_connect_object (bubble, "destroy",
+                                         G_CALLBACK (nd_stack_remove_bubble), stack,
+                                         G_CONNECT_SWAPPED);
                 stack->priv->bubbles = g_list_prepend (stack->priv->bubbles, bubble);
         }
 }
