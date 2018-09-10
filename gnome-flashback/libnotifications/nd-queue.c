@@ -136,7 +136,7 @@ monitor_removed_cb (GdkDisplay *display,
                    old stack since it will try to
                    unrealize the window.  And the
                    stack is going away anyhow. */
-                nd_stack_add_bubble (focused_stack, l->data, TRUE);
+                nd_stack_add_bubble (focused_stack, l->data);
         }
         g_list_free (bubbles);
         g_hash_table_remove (nscreen->stacks, monitor);
@@ -605,7 +605,7 @@ maybe_show_notification (NdQueue *queue)
         bubble = gf_bubble_new_for_notification (notification);
         g_signal_connect (bubble, "destroy", G_CALLBACK (on_bubble_destroyed), queue);
 
-        nd_stack_add_bubble (stack, bubble, TRUE);
+        nd_stack_add_bubble (stack, bubble);
 }
 
 static int

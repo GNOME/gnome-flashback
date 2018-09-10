@@ -304,8 +304,7 @@ nd_stack_queue_update_position (NdStack *stack)
 
 void
 nd_stack_add_bubble (NdStack  *stack,
-                     GfBubble *bubble,
-                     gboolean  new_notification)
+                     GfBubble *bubble)
 {
         GtkRequisition  req;
         int             x, y;
@@ -321,13 +320,11 @@ nd_stack_add_bubble (NdStack  *stack,
         gtk_widget_show (GTK_WIDGET (bubble));
         gtk_window_move (GTK_WINDOW (bubble), x, y);
 
-        if (new_notification) {
-                g_signal_connect_swapped (G_OBJECT (bubble),
-                                          "destroy",
-                                          G_CALLBACK (nd_stack_remove_bubble),
-                                          stack);
-                stack->priv->bubbles = g_list_prepend (stack->priv->bubbles, bubble);
-        }
+        g_signal_connect_swapped (G_OBJECT (bubble),
+                                  "destroy",
+                                  G_CALLBACK (nd_stack_remove_bubble),
+                                  stack);
+        stack->priv->bubbles = g_list_prepend (stack->priv->bubbles, bubble);
 }
 
 void

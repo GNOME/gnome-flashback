@@ -60,8 +60,7 @@ NdStack *       nd_stack_new                   (GdkMonitor     *monitor);
 void            nd_stack_set_location          (NdStack        *stack,
                                                 NdStackLocation location);
 void            nd_stack_add_bubble            (NdStack        *stack,
-                                                GfBubble       *bubble,
-                                                gboolean        new_notification);
+                                                GfBubble       *bubble);
 void            nd_stack_remove_bubble         (NdStack        *stack,
                                                 GfBubble       *bubble);
 void            nd_stack_remove_all            (NdStack        *stack);
