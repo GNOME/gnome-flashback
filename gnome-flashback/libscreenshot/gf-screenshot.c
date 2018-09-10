@@ -662,14 +662,80 @@ window_is_desktop (GdkWindow *window)
   return FALSE;
 }
 
+static Window
+get_active_window (void)
+{
+  GdkDisplay *display;
+  Display *xdisplay;
+  Atom _net_active_window;
+  int status;
+  Atom actual_type;
+  int actual_format;
+  unsigned long n_items;
+  unsigned long bytes_after;
+  unsigned char *prop;
+  Window window;
+
+  display = gdk_display_get_default ();
+  xdisplay = gdk_x11_display_get_xdisplay (display);
+
+  _net_active_window = XInternAtom (xdisplay, "_NET_ACTIVE_WINDOW", True);
+  if (_net_active_window == None)
+    return None;
+
+  gdk_x11_display_error_trap_push (display);
+
+  status = XGetWindowProperty (xdisplay,
+                               DefaultRootWindow (xdisplay),
+                               _net_active_window,
+                               0,
+                               G_MAXLONG,
+                               False,
+                               XA_WINDOW,
+                               &actual_type,
+                               &actual_format,
+                               &n_items,
+                               &bytes_after,
+                               &prop);
+
+  if (status != Success ||
+      actual_type != XA_WINDOW)
+    {
+      if (prop)
+        XFree (prop);
+
+      gdk_x11_display_error_trap_pop_ignored (display);
+
+      return None;
+    }
+
+  if (gdk_x11_display_error_trap_pop (display) != Success)
+    {
+      if (prop)
+        XFree (prop);
+
+      return None;
+    }
+
+  window = *(Window *) prop;
+  XFree (prop);
+
+  return window;
+}
+
 static GdkWindow *
 find_active_window (void)
 {
-  GdkScreen *screen;
+  Window xwindow;
+  GdkDisplay *display;
 
-  screen = gdk_screen_get_default ();
+  xwindow = get_active_window ();
+  if (xwindow == None)
+    return NULL;
 
-  return gdk_screen_get_active_window (screen);
+  display = gdk_display_get_default ();
+
+  return gdk_x11_window_foreign_new_for_display (display, xwindow);
 }
 
 static GdkWindow *
