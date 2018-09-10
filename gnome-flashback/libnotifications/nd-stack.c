@@ -172,6 +172,8 @@ nd_stack_new (GdkMonitor *monitor)
 {
         NdStack *stack;
 
+        g_assert (monitor != NULL && GDK_IS_MONITOR (monitor));
+
         stack = g_object_new (ND_TYPE_STACK, NULL);
         stack->priv->monitor = monitor;
 
@@ -203,7 +205,6 @@ nd_stack_shift_notifications (NdStack     *stack,
                               gint        *nw_y)
 {
         GdkRectangle    workarea;
-        GdkRectangle    monitor_rect;
         GdkRectangle   *positions;
         GList          *l;
         gint            x, y;
@@ -213,8 +214,6 @@ nd_stack_shift_notifications (NdStack     *stack,
         int             n_wins;
 
         gdk_monitor_get_workarea (stack->priv->monitor, &workarea);
-        gdk_monitor_get_geometry (stack->priv->monitor, &monitor_rect);
-        gdk_rectangle_intersect (&monitor_rect, &workarea, &workarea);
 
         add_padding_to_rect (&workarea);
 

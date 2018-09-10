@@ -178,6 +178,15 @@ create_stacks_for_display (NdQueue    *queue,
         }
 }
 
+
+static void
+queue_update_position (gpointer key,
+                       gpointer value,
+                       gpointer user_data)
+{
+        nd_stack_queue_update_position ((NdStack *) value);
+}
+
 static GdkFilterReturn
 screen_xevent_filter (GdkXEvent    *xevent,
                       GdkEvent     *event,
@@ -189,17 +198,7 @@ screen_xevent_filter (GdkXEvent    *xevent,
 
         if (xev->type == PropertyNotify &&
             xev->xproperty.atom == nscreen->workarea_atom) {
-                GList *list;
-                GList *l;
-
-                list = g_hash_table_get_values (nscreen->stacks);
-                for (l = list; l != NULL; l = l->next) {
-                        NdStack *stack;
-
-                        stack = l->data;
-                        nd_stack_queue_update_position (stack);
-                }
-                g_list_free (list);
+                g_hash_table_foreach (nscreen->stacks, queue_update_position, NULL);
         }
 
         return GDK_FILTER_CONTINUE;
@@ -341,20 +340,20 @@ on_dock_key_release (GtkWidget   *widget,
 }
 
 static void
+remove_all (gpointer key,
+                     gpointer value,
+                     gpointer user_data)
+{
+        nd_stack_remove_all ((NdStack *) value);
+}
+
+static void
 clear_stacks (NdQueue *queue)
 {
         NotifyScreen *nscreen;
-        GList        *list;
-        GList        *l;
 
         nscreen = queue->priv->screen;
-        list = g_hash_table_get_values (nscreen->stacks);
-        for (l = list; l != NULL; l = l->next) {
-                NdStack *stack;
-
-                stack = l->data;
-                nd_stack_remove_all (stack);
-        }
+        g_hash_table_foreach (nscreen->stacks, remove_all, NULL);
 }
 
 static void
@@ -695,6 +694,7 @@ update_dock (NdQueue *queue)
 
         if (visible) {
                 GdkMonitor *monitor;
+
                 gtk_widget_get_preferred_height (child, &min_height, &height);
 
                 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
@@ -730,14 +730,14 @@ popup_dock (NdQueue *queue,
         gboolean       res;
         int            x;
         int            y;
-        GdkRectangle   geometry;
+        GdkMonitor    *monitor;
+        GdkRectangle   monitor_rect;
         GtkRequisition dock_req;
         GtkStatusIcon *status_icon;
         GdkWindow *window;
         GdkSeat *seat;
         GdkSeatCapabilities capabilities;
         GdkGrabStatus status;
-        GdkMonitor *monitor;
 
         update_dock (queue);
 
@@ -756,33 +756,33 @@ popup_dock (NdQueue *queue,
         gtk_window_set_screen (GTK_WINDOW (queue->priv->dock), screen);
 
         monitor = gdk_display_get_monitor_at_point (gdk_screen_get_display (screen), area.x, area.y);
-        gdk_monitor_get_geometry (monitor, &geometry);
+        gdk_monitor_get_geometry (monitor, &monitor_rect);
 
         gtk_container_foreach (GTK_CONTAINER (queue->priv->dock),
                                show_all_cb, NULL);
         gtk_widget_get_preferred_size (queue->priv->dock, &dock_req, NULL);
 
         if (orientation == GTK_ORIENTATION_VERTICAL) {
-                if (area.x + area.width + dock_req.width <= geometry.x + geometry.width) {
+                if (area.x + area.width + dock_req.width <= monitor_rect.x + monitor_rect.width) {
                         x = area.x + area.width;
                 } else {
                         x = area.x - dock_req.width;
                 }
-                if (area.y + dock_req.height <= geometry.y + geometry.height) {
+                if (area.y + dock_req.height <= monitor_rect.y + monitor_rect.height) {
                         y = area.y;
                 } else {
-                        y = geometry.y + geometry.height - dock_req.height;
+                        y = monitor_rect.y + monitor_rect.height - dock_req.height;
                 }
         } else {
-                if (area.y + area.height + dock_req.height <= geometry.y + geometry.height) {
+                if (area.y + area.height + dock_req.height <= monitor_rect.y + monitor_rect.height) {
                         y = area.y + area.height;
                 } else {
                         y = area.y - dock_req.height;
                 }
-                if (area.x + dock_req.width <= geometry.x + geometry.width) {
+                if (area.x + dock_req.width <= monitor_rect.x + monitor_rect.width) {
                         x = area.x;
                 } else {
-                        x = geometry.x + geometry.width - dock_req.width;
+                        x = monitor_rect.x + monitor_rect.width - dock_req.width;
                 }
         }
 
