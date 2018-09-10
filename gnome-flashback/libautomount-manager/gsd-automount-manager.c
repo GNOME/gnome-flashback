@@ -283,7 +283,7 @@ autorun_show_window (GMount *mount, gpointer user_data)
 
         error = NULL;
 	/* use default folder handler */
-        if (! gtk_show_uri (NULL, uri, GDK_CURRENT_TIME, &error)) {
+        if (!gtk_show_uri_on_window (NULL, uri, GDK_CURRENT_TIME, &error)) {
 		name = g_mount_get_name (mount);
 		primary = g_strdup_printf (_("Unable to open a folder for %s"), name);
 		g_free (name);
