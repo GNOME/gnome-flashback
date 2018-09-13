@@ -1,24 +1,23 @@
-# Hungarian translation of gnome-flashback
-# Copyright (C) 2014. Free Software Foundation, Inc.
+# Hungarian translation for gnome-flashback.
+# Copyright (C) 2014, 2015, 2016, 2018. Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-flashback package.
 #
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2014, 2015, 2016.
-# Balázs Úr <urbalazs at gmail dot com>, 2014, 2015.
+# Balázs Úr <urbalazs at gmail dot com>, 2014, 2015, 2018.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-01-16 15:16+0000\n"
-"PO-Revision-Date: 2018-01-24 21:27+0100\n"
-"Last-Translator: Meskó Balázs <meskobalazs@fedoraproject.org>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
+"POT-Creation-Date: 2018-09-11 19:34+0000\n"
+"PO-Revision-Date: 2018-09-14 00:04+0200\n"
+"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Lokalize 1.2\n"
 
 #: backends/gf-monitor-manager.c:971
 msgid "Built-in display"
@@ -102,10 +101,14 @@ msgid "preferences-system"
 msgstr "preferences-system"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
+msgid "a11y-keyboard"
+msgstr "a11y-keyboard"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:10
 msgid "Audio device selection"
 msgstr "Automatikus eszközválasztás"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
 msgid ""
 "If set to true, then GNOME Flashback application will be used to provide the "
 "audio device selection dialog."
@@ -113,11 +116,11 @@ msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás lesz használva a "
 "hangeszközválasztó párbeszédablak megjelenítéséhez."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:16
 msgid "Automount manager"
 msgstr "Automatikus csatolás kezelő"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
 msgid ""
 "If set to true, then GNOME Flashback application will be used to automount "
 "removable media."
@@ -125,11 +128,11 @@ msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás lesz használva "
 "cserélhető adathordozók automatikus csatolásához."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:22
 msgid "Bluetooth applet"
 msgstr "Bluetooth kisalkalmazás"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "Bluetooth applet."
@@ -137,11 +140,11 @@ msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás lesz használva egy "
 "Bluetooth kisalkalmazás megjelenítéséhez."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:28
 msgid "Desktop background"
 msgstr "Asztal háttere"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
 msgid ""
 "If set to true, then GNOME Flashback application will be used to draw the "
 "desktop background."
@@ -149,11 +152,11 @@ msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás lesz használva az "
 "asztal hátterének kirajzolásához."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:34
 msgid "End session dialog"
 msgstr "Munkamenet befejezése párbeszédablak"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
@@ -161,11 +164,11 @@ msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás lesz használva a "
 "munkamenet befejezése párbeszédablak megjelenítéséhez."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:40
 msgid "Idle monitor"
 msgstr "Üresjárat figyelő"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
@@ -173,15 +176,15 @@ msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás lesz használva a "
 "felhasználói tevékenység monitorozásához."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
 msgid "Input settings"
 msgstr "Bemeneti beállítások"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:51
 msgid "Keyboard layouts and input methods"
 msgstr "Billentyűzetkiosztások és beviteli módok"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:47
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -189,11 +192,11 @@ msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás lesz használva a "
 "billentyűzetkiosztások és a beviteli módok kezeléséhez."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:57
 msgid "Notification daemon"
 msgstr "Értesítésdémon"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:53
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
@@ -201,21 +204,21 @@ msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás lesz használva az "
 "értesítések kezelésére."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:63
 msgid "Authentication agent for polkit"
 msgstr "PolicyKit hitelesítési ügynök"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:59
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
 "Ugyanaz a hitelesítési ügynök, mint amit a PolicyKit-gnome biztosított."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:69
 msgid "Power applet"
 msgstr "Energia kisalkalmazás"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:65
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
@@ -223,11 +226,11 @@ msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás lesz használva egy "
 "energia kisalkalmazás megjelenítéséhez."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:75
 msgid "Screencasts"
 msgstr "Képernyővideók"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:71
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -235,11 +238,11 @@ msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás lesz használva a "
 "képernyővideók rögzítéséhez."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:81
 msgid "Screensaver"
 msgstr "Képernyővédő"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:77
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
@@ -247,11 +250,11 @@ msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás lesz használva "
 "képernyővédőként."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:87
 msgid "Screenshots"
 msgstr "Képernyőképek"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:83
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -259,22 +262,22 @@ msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás lesz használva a "
 "képernyőképek készítése."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:93
 msgid "Shell"
 msgstr "Parancsértelmező"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:89
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás lesz használva "
 "parancsértelmezőként."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:99
 msgid "Sound applet"
 msgstr "Hang kisalkalmazás"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:95
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -284,11 +287,11 @@ msgstr ""
 "hang kisalkalmazás megjelenítéséhez. Ez ugyanaz a hang kisalkalmazás, amely "
 "a GNOME vezérlőpult része volt."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:105
 msgid "Status Notifier Watcher"
 msgstr "Állapotértesítés-figyelő"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:101
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -296,11 +299,11 @@ msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás lesz használva "
 "állapotértesítés-figyelőkként."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:111
 msgid "Workarounds"
 msgstr "Kerülő megoldások"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:112
 msgid ""
 "If set to true, then GNOME Flashback application will use workarounds to fix "
 "bugs."
@@ -355,22 +358,6 @@ msgstr ""
 "felülbírálásokat szeretné használni az xsettings bővítményben a „Gtk/"
 "ShellShowsAppMenu” tulajdonságnál."
 
-#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:11
-msgid "Fix wrong button layout"
-msgstr "Rossz gombelrendezés javítása"
-
-#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:12
-msgid ""
-"If set to non-empty string, then gnome-flashback will force Gtk/"
-"DecorationLayout to value set by this setting. Set to empty string if you "
-"want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
-"DecorationLayout' property."
-msgstr ""
-"Ha nem üres szövegre van állítva, akkor a gnome-flashback a Gtk/"
-"DecorationLayout értékét ezen beállítás szerint fogja kényszeríteni. Állítsa "
-"üres szövegre, ha a gnome-settings-daemon felülbírálásokat szeretné "
-"használni az xsettings bővítményben a „Gtk/DecorationLayout” tulajdonságnál."
-
 #: data/ui/gf-confirm-display-change-dialog.ui:57
 msgid "Do you want to keep these display settings?"
 msgstr "Meg szeretné tartani ezeket a kijelzőbeállításokat?"
@@ -422,6 +409,75 @@ msgstr "A GNOME Flashback munkamenet előkészítése"
 msgid "Replace a currently running application"
 msgstr "Egy jelenleg futó alkalmazás cseréje"
 
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:295
+msgid "Slow Keys Turned On"
+msgstr "A lassú billentyűk bekapcsolva"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:296
+msgid "Slow Keys Turned Off"
+msgstr "A lassú billentyűk kikapcsolva"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:298
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Lenyomva tartotta a Shift billentyűt 8 másodpercig. Ez a Lassú billentyűk "
+"szolgáltatás gyorsbillentyűje, ami a billentyűzet működését befolyásolja."
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
+msgid "Turn Off"
+msgstr "Kikapcsolás"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
+msgid "Turn On"
+msgstr "Bekapcsolás"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
+msgid "Leave On"
+msgstr "Bekapcsolva hagyás"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
+msgid "Leave Off"
+msgstr "Kikapcsolva hagyás"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:313
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:400
+msgid "Universal Access"
+msgstr "Akadálymentesítés"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:379
+msgid "Sticky Keys Turned On"
+msgstr "A ragadós billentyűk bekapcsolva"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:380
+msgid "Sticky Keys Turned Off"
+msgstr "A ragadós billentyűk kikapcsolva"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:383
+msgid ""
+"You just pressed the Shift key 5 times in a row.  This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Egymás után ötször nyomta meg a Shift billentyűt. Ez a Ragadós billentyűk "
+"szolgáltatás gyorsbillentyűje, ami a billentyűzet viselkedését befolyásolja."
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:385
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+"Egyszerre két billentyűt nyomott meg, vagy a Shift billentyűt egymás után "
+"ötször. Ez kikapcsolja a Ragadós billentyűk szolgáltatást, ami a "
+"billentyűzet viselkedését befolyásolja."
+
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:109
 msgid "Headphones"
 msgstr "Fejhallgató"
@@ -435,7 +491,7 @@ msgid "Microphone"
 msgstr "Mikrofon"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:260
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
 msgstr "A Hangbeállítások indítása meghiúsult: %s"
@@ -457,12 +513,12 @@ msgstr "Mégse"
 msgid "Unknown Audio Device"
 msgstr "Ismeretlen hangeszköz"
 
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:177
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:175
 #, c-format
 msgid "Unable to mount %s"
 msgstr "A(z) %s nem csatolható"
 
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:290
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:288
 #, c-format
 msgid "Unable to open a folder for %s"
 msgstr "Nem nyitható meg mappa ehhez: %s"
@@ -588,17 +644,9 @@ msgstr "_Kiadás"
 msgid "_Unmount"
 msgstr "_Leválasztás"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
-msgid "Turn Off"
-msgstr "Kikapcsolás"
-
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:164
 msgid "Send Files"
 msgstr "Fájlok küldése"
-
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
-msgid "Turn On"
-msgstr "Bekapcsolás"
 
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
 msgid "Bluetooth Settings"
@@ -739,20 +787,20 @@ msgstr "Billentyűzetkiosztás megjelenítése"
 msgid "Keyboard"
 msgstr "Billentyűzet"
 
-#: gnome-flashback/libnotifications/gf-bubble.c:596
-#: gnome-flashback/libnotifications/gf-bubble.c:600
-#: gnome-flashback/libnotifications/nd-notification-box.c:325
-#: gnome-flashback/libnotifications/nd-notification-box.c:327
+#: gnome-flashback/libnotifications/gf-bubble.c:619
+#: gnome-flashback/libnotifications/gf-bubble.c:623
+#: gnome-flashback/libnotifications/nd-notification-box.c:321
+#: gnome-flashback/libnotifications/nd-notification-box.c:323
 msgid "Closes the notification."
 msgstr "Bezárja az értesítést."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:620
-#: gnome-flashback/libnotifications/gf-bubble.c:651
-#: gnome-flashback/libnotifications/nd-notification-box.c:343
+#: gnome-flashback/libnotifications/gf-bubble.c:643
+#: gnome-flashback/libnotifications/gf-bubble.c:674
+#: gnome-flashback/libnotifications/nd-notification-box.c:339
 msgid "Notification summary text."
 msgstr "Értesítés összefoglaló szövege."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:670
+#: gnome-flashback/libnotifications/gf-bubble.c:693
 msgid "Notification"
 msgstr "Értesítés"
 
@@ -764,29 +812,29 @@ msgstr "Érvénytelen értesítésazonosító"
 msgid "Exceeded maximum number of notifications"
 msgstr "Az értesítések maximális száma túllépve"
 
-#: gnome-flashback/libnotifications/nd-notification-box.c:363
+#: gnome-flashback/libnotifications/nd-notification-box.c:359
 msgid "Notification body text."
 msgstr "Értesítés törzs szövege."
 
-#: gnome-flashback/libnotifications/nd-queue.c:449
+#: gnome-flashback/libnotifications/nd-queue.c:445
 msgid "Clear all notifications"
 msgstr "Minden értesítés törlése"
 
-#: gnome-flashback/libnotifications/nd-queue.c:878
+#: gnome-flashback/libnotifications/nd-queue.c:881
 msgid "Notifications"
 msgstr "Értesítések"
 
-#: gnome-flashback/libpolkit/flashback-authenticator.c:93
+#: gnome-flashback/libpolkit/flashback-authenticator.c:100
 #, c-format
 msgid "_Password for %s:"
 msgstr "%s jel_szava:"
 
-#: gnome-flashback/libpolkit/flashback-authenticator.c:97
+#: gnome-flashback/libpolkit/flashback-authenticator.c:104
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
 msgid "_Password:"
 msgstr "_Jelszó:"
 
-#: gnome-flashback/libpolkit/flashback-authenticator.c:252
+#: gnome-flashback/libpolkit/flashback-authenticator.c:259
 msgid "Your authentication attempt was unsuccessful. Please try again."
 msgstr "A hitelesítési kísérlete sikertelen volt. Próbálja újra."
 
@@ -917,13 +965,13 @@ msgstr "Bemenet"
 msgid "Microphone Volume"
 msgstr "Mikrofon hangereje"
 
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:537
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:546
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:535
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:544
 msgctxt "volume"
 msgid "100%"
 msgstr "100%"
 
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:541
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:539
 msgctxt "volume"
 msgid "Unamplified"
 msgstr "Erősítetlen"
@@ -956,40 +1004,15 @@ msgstr[1] "%u bemenet"
 msgid "System Sounds"
 msgstr "Rendszerhangok"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:280
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:285
 msgid "_Mute"
 msgstr "_Némítás"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:289
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:294
 msgid "_Sound Preferences"
 msgstr "_Hangbeállítások"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:424
 msgid "Muted"
 msgstr "Némítva"
 
-#~ msgid "Display configuration"
-#~ msgstr "Kijelző beállítás"
-
-#~ msgid ""
-#~ "If set to true, then GNOME Flashback application will be used to provide "
-#~ "the display configuration."
-#~ msgstr ""
-#~ "Ha igazra van állítva, akkor a GNOME Flashback alkalmazás lesz használva "
-#~ "a kijelző beállításának biztosításához."
-
-#~ msgid ""
-#~ "This contains the background color for the status icon that is shown in "
-#~ "the system tray."
-#~ msgstr "A rendszertálcán megjelenő állapotikon háttérszíne."
-
-#~ msgid ""
-#~ "This contains the foreground color for the status icon that is shown in "
-#~ "the system tray."
-#~ msgstr "A rendszertálcán megjelenő állapotikon előtérszíne."
-
-#~ msgid "Authentication Failure"
-#~ msgstr "Hitelesítési hiba"
-
-#~ msgid "Key grabber"
-#~ msgstr "Billentyűelfogó"
