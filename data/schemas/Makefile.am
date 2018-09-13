@@ -1,6 +1,6 @@
 NULL =
 
-overridedir = $(datadir)/glib-2.0/schemas
+overridedir = $(gsettingsschemadir)
 override_DATA = 00_gnome-flashback.gschema.override
 
 gsettings_SCHEMAS = \
