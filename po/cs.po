@@ -1,15 +1,14 @@
 # Czech translation for gnome-flashback.
 # Copyright (C) 2014 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
-# Marek Černocký <marek@manet.cz>, 2014, 2015, 2016, 2017.
+# Marek Černocký <marek@manet.cz>, 2014, 2015, 2016, 2017, 2018.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-flashback master\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-09-29 11:33+0000\n"
-"PO-Revision-Date: 2017-10-01 20:06+0200\n"
+"Project-Id-Version: gnome-flashback\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
+"POT-Creation-Date: 2018-09-07 12:40+0000\n"
+"PO-Revision-Date: 2018-09-13 15:11+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -19,23 +18,23 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Gtranslator 2.91.7\n"
 
-#: backends/gf-monitor-manager.c:980
+#: backends/gf-monitor-manager.c:971
 msgid "Built-in display"
 msgstr "Vestavěný displej"
 
-#: backends/gf-monitor-manager.c:1011
+#: backends/gf-monitor-manager.c:1002
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: backends/gf-monitor-manager.c:1013
+#: backends/gf-monitor-manager.c:1004
 msgid "Unknown Display"
 msgstr "Neznámý displej"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: backends/gf-monitor-manager.c:1023
+#: backends/gf-monitor-manager.c:1014
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -101,10 +100,14 @@ msgid "preferences-system"
 msgstr "preferences-system"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
+msgid "a11y-keyboard"
+msgstr "Klávesnice pro zpřístupnění"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:10
 msgid "Audio device selection"
 msgstr "Výběr zvukového zařízení"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
 msgid ""
 "If set to true, then GNOME Flashback application will be used to provide the "
 "audio device selection dialog."
@@ -112,11 +115,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k zobrazení "
 "dialogového okna pro výběr zvukového zařízení."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:16
 msgid "Automount manager"
 msgstr "Správa automatického připojování"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
 msgid ""
 "If set to true, then GNOME Flashback application will be used to automount "
 "removable media."
@@ -124,11 +127,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k automatickému "
 "připojování výměnných médií."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:22
 msgid "Bluetooth applet"
 msgstr "Aplet Bluetooth"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "Bluetooth applet."
@@ -136,11 +139,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k zobrazení apletu "
 "Bluetooth."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:28
 msgid "Desktop background"
 msgstr "Pozadí pracovní plochy"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
 msgid ""
 "If set to true, then GNOME Flashback application will be used to draw the "
 "desktop background."
@@ -148,11 +151,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k vykreslování "
 "pozadí pracovní plochy."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:34
 msgid "End session dialog"
 msgstr "Dialogové okno pro ukončení sezení"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
@@ -160,11 +163,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k zobrazení "
 "dialogového okna pro ukončení sezení."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:40
 msgid "Idle monitor"
 msgstr "Sledovat nežinnost"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
@@ -172,15 +175,15 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita ke sledování "
 "činnosti uživatele."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
 msgid "Input settings"
 msgstr "Nastavení vstupu"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:51
 msgid "Keyboard layouts and input methods"
 msgstr "Rozložení klávesnice a vstupní metody"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:47
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -188,32 +191,32 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita ke správě rozložení "
 "klávesnice a vstupních metod."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:57
 msgid "Notification daemon"
 msgstr "Démon pro upozornění"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:53
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
 msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita ke správě upozornění."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:63
 msgid "Authentication agent for polkit"
 msgstr "Ověřovací agent pro polkit"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:59
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
 "Jedná se o toho samého ověřovacího agenta, které poskytuje PolicyKit-gnome."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:69
 msgid "Power applet"
 msgstr "Aplet napájení"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:65
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
@@ -221,11 +224,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k zobrazení apletu "
 "napájení."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:75
 msgid "Screencasts"
 msgstr "Záznamy obrazovky"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:71
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -233,11 +236,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k pořizování záznamů "
 "obrazovky."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:81
 msgid "Screensaver"
 msgstr "Šetřič obrazovky"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:77
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
@@ -245,11 +248,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita jako šetřič "
 "obrazovky."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:87
 msgid "Screenshots"
 msgstr "Snímky obrazovky"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:83
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -257,20 +260,20 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k pořizování snímků "
 "obrazovky."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:93
 msgid "Shell"
 msgstr "Shell"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:89
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr "Když je zapnuto, bude aplikace GNOME historické použita jako shell."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:99
 msgid "Sound applet"
 msgstr "Aplet zvuku"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:95
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -280,11 +283,11 @@ msgstr ""
 "zvukového apletu. Jedná se o stejný zvukový aplet, který je použit v části "
 "řídícího centra GNOME."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:105
 msgid "Status Notifier Watcher"
 msgstr "Hlídač upozornění na stav"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:101
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -292,11 +295,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita jako hlídač "
 "upozornění na stav."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:111
 msgid "Workarounds"
 msgstr "Náhradní řešení"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:112
 msgid ""
 "If set to true, then GNOME Flashback application will use workarounds to fix "
 "bugs."
@@ -351,22 +354,6 @@ msgstr ""
 "přepisování v zásuvném modulu xsettings pro vlastnost „Gtk/"
 "ShellShowsAppMenu“."
 
-#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:11
-msgid "Fix wrong button layout"
-msgstr "Opravovat nesprávné rozložení tlačítek"
-
-#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:12
-msgid ""
-"If set to non-empty string, then gnome-flashback will force Gtk/"
-"DecorationLayout to value set by this setting. Set to empty string if you "
-"want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
-"DecorationLayout' property."
-msgstr ""
-"Když je nastaveno na neprázdný řetězec, gnome-flashback vynutí nastavení Gtk/"
-"DecorationLayout na hodnotu podle tohoto nastavení. Nastavte na prázdný "
-"řetězec, když chcete používat démona gnome-settings-daemon k přepisování v "
-"zásuvném modulu xsettings pro vlastnost „Gtk/DecorationLayout“."
-
 #: data/ui/gf-confirm-display-change-dialog.ui:57
 msgid "Do you want to keep these display settings?"
 msgstr "Chcete zachovat toto nastavení displeje?"
@@ -418,6 +405,76 @@ msgstr "Inicializovat sezení GNOME historické"
 #: gnome-flashback/gf-main.c:52
 msgid "Replace a currently running application"
 msgstr "Nahradit právě běžící aplikaci"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:295
+msgid "Slow Keys Turned On"
+msgstr "Pomalé klávesy jsou zapnuté"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:296
+msgid "Slow Keys Turned Off"
+msgstr "Pomalé klávesy jsou vypnuté"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:298
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Stačí podržet klávesu Shift zmáčknutou po 8 sekund. Jedná se o klávesovou "
+"zkratku pro funkci Pomalé klávesy, která ovlivňuje, jak se chová klávesnice."
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
+msgid "Turn Off"
+msgstr "Vypnout"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
+msgid "Turn On"
+msgstr "Zapnout"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
+msgid "Leave On"
+msgstr "Ponechat zapnuté"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
+msgid "Leave Off"
+msgstr "Ponechat vypnuté"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:313
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:400
+msgid "Universal Access"
+msgstr "Univerzální přístup"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:379
+msgid "Sticky Keys Turned On"
+msgstr "Kombinace kláves jedním prstem je zapnutá"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:380
+msgid "Sticky Keys Turned Off"
+msgstr "Kombinace kláves jedním prstem je vypnutá"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:383
+msgid ""
+"You just pressed the Shift key 5 times in a row.  This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Stačí zmáčknout klávesu Shift 5 krát po sobě. Jedná se o klávesovou zkratku "
+"pro funkci Kombinace kláves jedním prstem, která ovlivňuje, jak se chová "
+"klávesnice."
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:385
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+"Stačí zmáčknout zmáčknout dvě klávesy naráz nebo klávesu Shift 5 krát po "
+"sobě. Jedná se o klávesovou zkratku pro funkci Kombinace kláves jedním "
+"prstem, která ovlivňuje, jak se chová klávesnice."
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:109
 msgid "Headphones"
@@ -585,17 +642,9 @@ msgstr "_Vysunout"
 msgid "_Unmount"
 msgstr "_Odpojit"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
-msgid "Turn Off"
-msgstr "Vypnout"
-
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:164
 msgid "Send Files"
 msgstr "Odeslat soubory"
-
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
-msgid "Turn On"
-msgstr "Zapnout"
 
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
 msgid "Bluetooth Settings"
@@ -728,11 +777,11 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Uzamknout obrazovku"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:541
+#: gnome-flashback/libinput-sources/gf-input-sources.c:801
 msgid "Show Keyboard Layout"
 msgstr "Zobrazit rozložení klávesnice"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:607
+#: gnome-flashback/libinput-sources/gf-input-sources.c:867
 msgid "Keyboard"
 msgstr "Klávesnice"
 
@@ -964,6 +1013,21 @@ msgstr "_Předvolby zvuku"
 #: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
 msgid "Muted"
 msgstr "Ztišeno"
+
+#~ msgid "Fix wrong button layout"
+#~ msgstr "Opravovat nesprávné rozložení tlačítek"
+
+#~ msgid ""
+#~ "If set to non-empty string, then gnome-flashback will force Gtk/"
+#~ "DecorationLayout to value set by this setting. Set to empty string if you "
+#~ "want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
+#~ "DecorationLayout' property."
+#~ msgstr ""
+#~ "Když je nastaveno na neprázdný řetězec, gnome-flashback vynutí nastavení "
+#~ "Gtk/DecorationLayout na hodnotu podle tohoto nastavení. Nastavte na "
+#~ "prázdný řetězec, když chcete používat démona gnome-settings-daemon k "
+#~ "přepisování v zásuvném modulu xsettings pro vlastnost „Gtk/"
+#~ "DecorationLayout“."
 
 #~ msgid "Display configuration"
 #~ msgstr "Nastavení displeje"
