@@ -377,7 +377,7 @@ handle_ungrab_accelerator (FlashbackDBusShell    *dbus_shell,
   sender = (gchar *) g_hash_table_lookup (shell->grabbed_accelerators,
                                           GUINT_TO_POINTER (action));
 
-  if (g_str_equal (sender, g_dbus_method_invocation_get_sender (invocation)))
+  if (g_strcmp0 (sender, g_dbus_method_invocation_get_sender (invocation)) == 0)
     {
       success = real_ungrab (shell, action);
 
