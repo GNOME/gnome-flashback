@@ -186,6 +186,8 @@ get_tooltip_text (GfPowerApplet *applet)
     seconds = gf_upower_device_get_time_to_full (applet->device);
   else if (state == UP_DEVICE_STATE_DISCHARGING)
     seconds = gf_upower_device_get_time_to_empty (applet->device);
+  else if (state == UP_DEVICE_STATE_PENDING_CHARGE)
+    return g_strdup (_("Not Charging"));
   else
     return g_strdup (_("Estimating..."));
 
