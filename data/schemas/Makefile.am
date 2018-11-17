@@ -7,7 +7,6 @@ gsettings_SCHEMAS = \
 	org.gnome.gnome-flashback.gschema.xml \
 	org.gnome.gnome-flashback.desktop-background.gschema.xml \
 	org.gnome.gnome-flashback.input-sources.gschema.xml \
-	org.gnome.gnome-flashback.workarounds.gschema.xml \
 	$(NULL)
 
 @GSETTINGS_RULES@

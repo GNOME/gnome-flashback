@@ -41,7 +41,6 @@
 #include "libshell/flashback-shell.h"
 #include "libsound-applet/gf-sound-applet.h"
 #include "libstatus-notifier-watcher/gf-status-notifier-watcher.h"
-#include "libworkarounds/gf-workarounds.h"
 
 struct _GfApplication
 {
@@ -73,7 +72,6 @@ struct _GfApplication
   GfScreenshot            *screenshot;
   GfSoundApplet           *sound;
   GfStatusNotifierWatcher *status_notifier_watcher;
-  GfWorkarounds           *workarounds;
 
   GtkWidget               *display_change_dialog;
 };
@@ -173,7 +171,6 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (screenshot, "screenshot", gf_screenshot_new)
   SETTING_CHANGED (sound, "sound-applet", gf_sound_applet_new)
   SETTING_CHANGED (status_notifier_watcher, "status-notifier-watcher", gf_status_notifier_watcher_new)
-  SETTING_CHANGED (workarounds, "workarounds", gf_workarounds_new)
 
 #undef SETTING_CHANGED
 
@@ -220,7 +217,6 @@ gf_application_dispose (GObject *object)
   g_clear_object (&application->screensaver);
   g_clear_object (&application->sound);
   g_clear_object (&application->status_notifier_watcher);
-  g_clear_object (&application->workarounds);
 
   g_clear_pointer (&application->display_change_dialog, gtk_widget_destroy);
 

@@ -247,12 +247,6 @@ PKG_CHECK_MODULES([STATUS_NOTIFIER_WATCHER], [
   gio-unix-2.0 >= $GLIB_REQUIRED
 ])
 
-PKG_CHECK_MODULES([WORKAROUNDS], [
-  glib-2.0 >= $GLIB_REQUIRED
-  gtk+-3.0 >= $GTK_REQUIRED
-  x11
-])
-
 dnl **************************************************************************
 dnl Define XKB base directory
 dnl **************************************************************************
@@ -318,7 +312,6 @@ AC_CONFIG_FILES([
   gnome-flashback/libsound-applet/Makefile
   gnome-flashback/libsound-applet/gvc/Makefile
   gnome-flashback/libstatus-notifier-watcher/Makefile
-  gnome-flashback/libworkarounds/Makefile
 
   po/Makefile.in
 ])

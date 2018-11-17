@@ -105,11 +105,5 @@
       <summary>Status Notifier Watcher</summary>
       <description>If set to true, then GNOME Flashback application will be used as Status Notifier Watcher.</description>
     </key>
-
-    <key name="workarounds" type="b">
-      <default>true</default>
-      <summary>Workarounds</summary>
-      <description>If set to true, then GNOME Flashback application will use workarounds to fix bugs.</description>
-    </key>
   </schema>
 </schemalist>

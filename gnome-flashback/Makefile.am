@@ -20,7 +20,6 @@ SUBDIRS = \
 	libshell \
 	libsound-applet \
 	libstatus-notifier-watcher \
-	libworkarounds \
 	$(NULL)
 
 bin_PROGRAMS = \
@@ -79,7 +78,6 @@ gnome_flashback_LDADD = \
 	$(top_builddir)/gnome-flashback/libshell/libshell.la \
 	$(top_builddir)/gnome-flashback/libsound-applet/libsound-applet.la \
 	$(top_builddir)/gnome-flashback/libstatus-notifier-watcher/libstatus-notifier-watcher.la \
-	$(top_builddir)/gnome-flashback/libworkarounds/libworkarounds.la \
 	$(NULL)
 
 gf-resources.c: flashback.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/flashback.gresource.xml)
