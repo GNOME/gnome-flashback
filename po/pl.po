@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2018-09-07 12:40+0000\n"
-"PO-Revision-Date: 2018-09-08 18:05+0200\n"
+"POT-Creation-Date: 2018-11-19 14:11+0000\n"
+"PO-Revision-Date: 2018-11-25 10:29+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -302,18 +302,6 @@ msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
 "GNOME będzie używany jako obserwator obszaru powiadamiania."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:111
-msgid "Workarounds"
-msgstr "Obejścia błędów"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:112
-msgid ""
-"If set to true, then GNOME Flashback application will use workarounds to fix "
-"bugs."
-msgstr ""
-"Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
-"GNOME będzie używał obejść błędów."
-
 #: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
 msgid "Fade the background on change"
 msgstr "Efekt przejścia podczas zmiany tła"
@@ -345,21 +333,6 @@ msgstr "Waga czcionki"
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
 msgid "Symbolic"
 msgstr "Symboliczne"
-
-#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:5
-msgid "Fix missing app menu button"
-msgstr "Naprawa brakującego przycisku menu programu"
-
-#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:6
-msgid ""
-"If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
-"FALSE. Disable if you want to use gnome-settings-daemon overrides in "
-"xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
-msgstr ""
-"Jeśli jest ustawione na wartość „true”, to gnome-flashback wymusi wartość "
-"„false” właściwości Gtk/ShellShowsAppMenu. Należy wyłączyć, aby używać "
-"wtyczki XSettings usługi gnome-settings-daemon dla właściwości „Gtk/"
-"ShellShowsAppMenu”."
 
 #: data/ui/gf-confirm-display-change-dialog.ui:57
 msgid "Do you want to keep these display settings?"
@@ -499,7 +472,7 @@ msgid "Microphone"
 msgstr "Mikrofon"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:260
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
 msgstr "Uruchomienie preferencji dźwięku się nie powiodło: %s"
@@ -521,12 +494,12 @@ msgstr "Anuluj"
 msgid "Unknown Audio Device"
 msgstr "Nieznane urządzenie dźwiękowe"
 
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:177
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:175
 #, c-format
 msgid "Unable to mount %s"
 msgstr "Nie można zamontować %s"
 
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:290
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:288
 #, c-format
 msgid "Unable to open a folder for %s"
 msgstr "Nie można otworzyć katalogu dla %s"
@@ -543,69 +516,69 @@ msgstr "Nierobienie niczego"
 msgid "Open Folder"
 msgstr "Otwarcie katalogu"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:496
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
 #, c-format
 msgid "Unable to eject %p"
 msgstr "Nie można wysunąć %p"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:500
 #, c-format
 msgid "Unable to unmount %p"
 msgstr "Nie można odmontować %p"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:707
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
 msgid "You have just inserted an Audio CD."
 msgstr "Włożono płytę CD-Audio."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
 msgid "You have just inserted an Audio DVD."
 msgstr "Włożono płytę DVD-Audio."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
 msgid "You have just inserted a Video DVD."
 msgstr "Włożono płytę wideo DVD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
 msgid "You have just inserted a Video CD."
 msgstr "Włożono płytę Video CD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
 msgid "You have just inserted a Super Video CD."
 msgstr "Włożono płytę Super Video CD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
 msgid "You have just inserted a blank CD."
 msgstr "Włożono pustą płytę CD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
 msgid "You have just inserted a blank DVD."
 msgstr "Włożono pustą płytę DVD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
 msgid "You have just inserted a blank Blu-Ray disc."
 msgstr "Włożono pustą płytę Blu-ray."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
 msgid "You have just inserted a blank HD DVD."
 msgstr "Włożono pustą płytę HD DVD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
 msgid "You have just inserted a Photo CD."
 msgstr "Włożono płytę CD ze zdjęciami."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
 msgid "You have just inserted a Picture CD."
 msgstr "Włożono płytę Picture CD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
 msgid "You have just inserted a medium with digital photos."
 msgstr "Włożono nośnik ze zdjęciami cyfrowymi."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
 msgid "You have just inserted a digital audio player."
 msgstr "Włożono cyfrowy odtwarzacz dźwięku."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:735
 msgid ""
 "You have just inserted a medium with software intended to be automatically "
 "started."
@@ -614,15 +587,15 @@ msgstr ""
 "uruchamiania."
 
 #. fallback to generic greeting
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:736
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
 msgid "You have just inserted a medium."
 msgstr "Włożono nośnik."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:740
 msgid "Choose what application to launch."
 msgstr "Wybór programu do uruchomienia."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:747
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:749
 #, c-format
 msgid ""
 "Select how to open \"%s\" and whether to perform this action in the future "
@@ -631,24 +604,24 @@ msgstr ""
 "Wybór sposobu otwierania nośników typu „%s” i czy wykonywać to działanie "
 "w przyszłości dla innych nośników typu „%s”."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:774
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:776
 msgid "_Always perform this action"
 msgstr "Wy_konywanie tego działania za każdym razem"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:783
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
 msgid "_Cancel"
 msgstr "_Anuluj"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:784
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:786
 msgid "_OK"
 msgstr "_OK"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:790
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:792
 msgid "_Eject"
 msgstr "_Wysuń"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:795
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:797
 msgid "_Unmount"
 msgstr "Od_montuj"
 
@@ -800,20 +773,20 @@ msgstr "Wyświetl układ klawiatury"
 msgid "Keyboard"
 msgstr "Klawiatura"
 
-#: gnome-flashback/libnotifications/gf-bubble.c:596
-#: gnome-flashback/libnotifications/gf-bubble.c:600
-#: gnome-flashback/libnotifications/nd-notification-box.c:325
-#: gnome-flashback/libnotifications/nd-notification-box.c:327
+#: gnome-flashback/libnotifications/gf-bubble.c:619
+#: gnome-flashback/libnotifications/gf-bubble.c:623
+#: gnome-flashback/libnotifications/nd-notification-box.c:321
+#: gnome-flashback/libnotifications/nd-notification-box.c:323
 msgid "Closes the notification."
 msgstr "Zamyka powiadomienie."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:620
-#: gnome-flashback/libnotifications/gf-bubble.c:651
-#: gnome-flashback/libnotifications/nd-notification-box.c:343
+#: gnome-flashback/libnotifications/gf-bubble.c:643
+#: gnome-flashback/libnotifications/gf-bubble.c:674
+#: gnome-flashback/libnotifications/nd-notification-box.c:339
 msgid "Notification summary text."
 msgstr "Tekst podsumowania powiadomienia."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:670
+#: gnome-flashback/libnotifications/gf-bubble.c:693
 msgid "Notification"
 msgstr "Powiadomienie"
 
@@ -825,29 +798,29 @@ msgstr "Nieprawidłowy identyfikator powiadomienia"
 msgid "Exceeded maximum number of notifications"
 msgstr "Przekroczono maksymalną liczbę powiadomień"
 
-#: gnome-flashback/libnotifications/nd-notification-box.c:363
+#: gnome-flashback/libnotifications/nd-notification-box.c:359
 msgid "Notification body text."
 msgstr "Tekst treści powiadomienia."
 
-#: gnome-flashback/libnotifications/nd-queue.c:449
+#: gnome-flashback/libnotifications/nd-queue.c:451
 msgid "Clear all notifications"
 msgstr "Wyczyść wszystkie powiadomienia"
 
-#: gnome-flashback/libnotifications/nd-queue.c:878
+#: gnome-flashback/libnotifications/nd-queue.c:867
 msgid "Notifications"
 msgstr "Powiadomienia"
 
-#: gnome-flashback/libpolkit/flashback-authenticator.c:93
+#: gnome-flashback/libpolkit/flashback-authenticator.c:100
 #, c-format
 msgid "_Password for %s:"
 msgstr "_Hasło dla %s:"
 
-#: gnome-flashback/libpolkit/flashback-authenticator.c:97
+#: gnome-flashback/libpolkit/flashback-authenticator.c:104
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
 msgid "_Password:"
 msgstr "_Hasło"
 
-#: gnome-flashback/libpolkit/flashback-authenticator.c:252
+#: gnome-flashback/libpolkit/flashback-authenticator.c:259
 msgid "Your authentication attempt was unsuccessful. Please try again."
 msgstr "Próba uwierzytelnienia się nie powiodła. Proszę spróbować ponownie."
 
@@ -936,27 +909,31 @@ msgid "Empty"
 msgstr "Puste"
 
 #: gnome-flashback/libpower-applet/gf-power-applet.c:190
-#: gnome-flashback/libpower-applet/gf-power-applet.c:195
+msgid "Not Charging"
+msgstr "Nie jest ładowane"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:192
+#: gnome-flashback/libpower-applet/gf-power-applet.c:197
 msgid "Estimating..."
 msgstr "Obliczanie…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:204
+#: gnome-flashback/libpower-applet/gf-power-applet.c:206
 #, c-format
 msgid "%.0f:%02.0f Remaining (%.0f%%)"
 msgstr "Pozostało: %.0f∶%02.0f (%.0f%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:211
+#: gnome-flashback/libpower-applet/gf-power-applet.c:213
 #, c-format
 msgid "%.0f:%02.0f Until Full (%.0f%%)"
 msgstr "Do naładowania: %.0f∶%02.0f (%.0f%%)"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:226
+#: gnome-flashback/libpower-applet/gf-power-applet.c:228
 msgid "UPS"
 msgstr "UPS"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:228
+#: gnome-flashback/libpower-applet/gf-power-applet.c:230
 msgid "Battery"
 msgstr "Akumulator"
 
@@ -976,26 +953,26 @@ msgstr "Wejście"
 msgid "Microphone Volume"
 msgstr "Głośność mikrofonu"
 
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:537
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:546
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:535
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:544
 msgctxt "volume"
 msgid "100%"
 msgstr "100%"
 
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:541
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:539
 msgctxt "volume"
 msgid "Unamplified"
 msgstr "Bez wzmocnienia"
 
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1866
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1864
 msgid "Disabled"
 msgstr "Wyłączone"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1873
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1871
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1005,7 +982,7 @@ msgstr[2] "%u wyjść"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1881
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -1013,18 +990,18 @@ msgstr[0] "%u wejście"
 msgstr[1] "%u wejścia"
 msgstr[2] "%u wejść"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2738
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2736
 msgid "System Sounds"
 msgstr "Dźwięki systemu"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:280
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:285
 msgid "_Mute"
 msgstr "_Wycisz"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:289
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:294
 msgid "_Sound Preferences"
 msgstr "Preferencje _dźwięku"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:424
 msgid "Muted"
 msgstr "Wyciszone"
