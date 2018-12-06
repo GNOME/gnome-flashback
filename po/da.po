@@ -3,41 +3,42 @@
 # This file is distributed under the same license as the gnome-flashback package.
 # Ask Hjorth Larsen <asklarsen@gmail.com>, 2016.
 # Joe Hansen <joedalton2@yahoo.dk>, 2018.
+# Alan Mortensen <alanmortensen.am@gmail.com>, 2018.
 #
 # font weight -> skriftstyrke
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-11-28 22:45+0000\n"
-"PO-Revision-Date: 2018-03-03 16:35+0100\n"
-"Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
+"POT-Creation-Date: 2018-09-07 12:40+0000\n"
+"PO-Revision-Date: 2018-11-06 14:59+0100\n"
+"Last-Translator: Alan Mortensen <alanmortensen.am@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.6\n"
 
-#: backends/gf-monitor-manager.c:989
+#: backends/gf-monitor-manager.c:971
 msgid "Built-in display"
 msgstr "Indbygget skærm"
 
-#: backends/gf-monitor-manager.c:1020
+#: backends/gf-monitor-manager.c:1002
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
 msgid "Unknown"
 msgstr "Ukendt"
 
-#: backends/gf-monitor-manager.c:1022
+#: backends/gf-monitor-manager.c:1004
 msgid "Unknown Display"
 msgstr "Ukendt skærm"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: backends/gf-monitor-manager.c:1032
+#: backends/gf-monitor-manager.c:1014
 #, c-format
 msgid "%s %s"
 msgstr "%2$s %1$s"
@@ -103,10 +104,14 @@ msgid "preferences-system"
 msgstr "preferences-system"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
+msgid "a11y-keyboard"
+msgstr "tilgængelighedstastatur"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:10
 msgid "Audio device selection"
 msgstr "Valg af lydenhed"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
 msgid ""
 "If set to true, then GNOME Flashback application will be used to provide the "
 "audio device selection dialog."
@@ -114,11 +119,11 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til dialogen "
 "for valg af lydenhed."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:16
 msgid "Automount manager"
 msgstr "Håndtering af automatisk montering"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
 msgid ""
 "If set to true, then GNOME Flashback application will be used to automount "
 "removable media."
@@ -126,11 +131,11 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at montere "
 "flytbare medier automatisk."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:22
 msgid "Bluetooth applet"
 msgstr "Bluetooth-panelprogram"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "Bluetooth applet."
@@ -138,11 +143,11 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at vise et "
 "Bluetooth-panelprogram."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:28
 msgid "Desktop background"
 msgstr "Skrivebordsbaggrund"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
 msgid ""
 "If set to true, then GNOME Flashback application will be used to draw the "
 "desktop background."
@@ -150,11 +155,11 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at tegne "
 "skrivebordsbaggrunden."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:34
 msgid "End session dialog"
 msgstr "Afslut session-dialog"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
@@ -162,11 +167,11 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at vise "
 "dialogen afslut session."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:40
 msgid "Idle monitor"
 msgstr "Overvåg aktivitet"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
@@ -174,15 +179,15 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at måle "
 "brugeraktivitet."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
 msgid "Input settings"
 msgstr "Inputindstillinger"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:51
 msgid "Keyboard layouts and input methods"
 msgstr "Tastaturlayout og inputmetoder"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:47
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -190,11 +195,11 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at "
 "håndtere tastaturlayout og inputmetoder."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:57
 msgid "Notification daemon"
 msgstr "Påmindelsesdæmon"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:53
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
@@ -202,20 +207,20 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at "
 "håndtere påmindelser."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:63
 msgid "Authentication agent for polkit"
 msgstr "Godkendelsesagent for polkit"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:59
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr "Dette er samme godkendelsesagent, som PolyciKit-gnome tilbød."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:69
 msgid "Power applet"
 msgstr "Strømpanelprogram"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:65
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
@@ -223,11 +228,11 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at vise et "
 "strømpanelprogram."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:75
 msgid "Screencasts"
 msgstr "Skærmoptagelse"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:71
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -235,22 +240,22 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at optage "
 "skærmen."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:81
 msgid "Screensaver"
 msgstr "Pauseskærm"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:77
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
 msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt som pauseskærm."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:87
 msgid "Screenshots"
 msgstr "Skærmbilleder"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:83
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -258,21 +263,21 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at tage "
 "skærmbilleder."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:93
 msgid "Shell"
 msgstr "Skal"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:89
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt som skal."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:99
 msgid "Sound applet"
 msgstr "Lydpanelprogram"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:95
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -282,11 +287,11 @@ msgstr ""
 "lydpanelprogram. Det drejer sig om samme panelprogram, som tidligere var del "
 "af GNOME Kontrolcenter."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:105
 msgid "Status Notifier Watcher"
 msgstr "Statuspåmindelsesovervågning"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:101
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -294,11 +299,11 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt som "
 "statuspåmindelsesovervågning."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:111
 msgid "Workarounds"
 msgstr "Omgå fejl"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:112
 msgid ""
 "If set to true, then GNOME Flashback application will use workarounds to fix "
 "bugs."
@@ -353,22 +358,6 @@ msgstr ""
 "settings-daemon i xsettings-udvidelsesmodulet til “Gtk/ShellShowsAppMenu”-"
 "egenskaben."
 
-#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:11
-msgid "Fix wrong button layout"
-msgstr "Fiks forkert knaplayout"
-
-#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:12
-msgid ""
-"If set to non-empty string, then gnome-flashback will force Gtk/"
-"DecorationLayout to value set by this setting. Set to empty string if you "
-"want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
-"DecorationLayout' property."
-msgstr ""
-"Hvis sat til en ikke-tom streng, vil gnome-flashback tvinge Gtk/"
-"DecorationLayout til en værdi angivet af denne indstilling. Sæt til en tom "
-"streng hvis du vil bruge særindstillinger fra gnome-settings-daemon i "
-"xsettings-udvidelsesmodulet til “Gtk/DecorationLayout”-egenskaben."
-
 #: data/ui/gf-confirm-display-change-dialog.ui:57
 msgid "Do you want to keep these display settings?"
 msgstr "Vil du beholde disse visningsindstillinger?"
@@ -419,6 +408,77 @@ msgstr "Klargør GNOME Flashback-session"
 #: gnome-flashback/gf-main.c:52
 msgid "Replace a currently running application"
 msgstr "Erstat et kørende program"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:295
+msgid "Slow Keys Turned On"
+msgstr "Langsomme taster slået til"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:296
+msgid "Slow Keys Turned Off"
+msgstr "Langsomme taster slået fra"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:298
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Du har lige holdt skifttasten nede i otte sekunder. Det er genvejen til "
+"funktionen langsomme taster, som påvirker, hvordan dit tastatur opfører "
+"sig."
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
+msgid "Turn Off"
+msgstr "Sluk"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
+msgid "Turn On"
+msgstr "Tænd"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
+msgid "Leave On"
+msgstr "Lad være tændt"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
+msgid "Leave Off"
+msgstr "Lad være slukket"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:313
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:400
+msgid "Universal Access"
+msgstr "Universel adgang"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:379
+msgid "Sticky Keys Turned On"
+msgstr "Klæbetaster slået til"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:380
+msgid "Sticky Keys Turned Off"
+msgstr "Klæbetaster slået fra"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:383
+msgid ""
+"You just pressed the Shift key 5 times in a row.  This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Du har lige trykket skifttasten fem gange i træk. Det er genvejen til "
+"funktionen klæbetaster, som påvirker, hvordan dit tastatur opfører "
+"sig."
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:385
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+"Du har lige trykket på to taster samtidigt eller trykket på skifttasten fem "
+"gange i træk. Det slår funktionen klæbetaster fra, som påvirker, "
+"hvordan dit tastatur opfører sig."
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:109
 msgid "Headphones"
@@ -584,17 +644,9 @@ msgstr "_Skub ud"
 msgid "_Unmount"
 msgstr "_Afmontér"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
-msgid "Turn Off"
-msgstr "Sluk"
-
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:164
 msgid "Send Files"
 msgstr "Send filer"
-
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
-msgid "Turn On"
-msgstr "Tænd"
 
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
 msgid "Bluetooth Settings"
@@ -954,6 +1006,20 @@ msgstr "_Lydindstillinger"
 #: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
 msgid "Muted"
 msgstr "Stilhed"
+
+#~ msgid "Fix wrong button layout"
+#~ msgstr "Fiks forkert knaplayout"
+
+#~ msgid ""
+#~ "If set to non-empty string, then gnome-flashback will force Gtk/"
+#~ "DecorationLayout to value set by this setting. Set to empty string if you "
+#~ "want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
+#~ "DecorationLayout' property."
+#~ msgstr ""
+#~ "Hvis sat til en ikke-tom streng, vil gnome-flashback tvinge Gtk/"
+#~ "DecorationLayout til en værdi angivet af denne indstilling. Sæt til en "
+#~ "tom streng hvis du vil bruge særindstillinger fra gnome-settings-daemon i "
+#~ "xsettings-udvidelsesmodulet til “Gtk/DecorationLayout”-egenskaben."
 
 #~ msgid "Display configuration"
 #~ msgstr "Vis konfiguration"
