@@ -31,6 +31,7 @@ static GfApplication *application = NULL;
 static gboolean debug = FALSE;
 static gboolean initialize = FALSE;
 static gboolean replace = FALSE;
+static gboolean version = FALSE;
 
 static GOptionEntry entries[] =
 {
@@ -50,6 +51,12 @@ static GOptionEntry entries[] =
     "replace", 'r', G_OPTION_FLAG_NONE,
     G_OPTION_ARG_NONE, &replace,
     N_("Replace a currently running application"),
+    NULL
+  },
+  {
+    "version", 'v', G_OPTION_FLAG_NONE,
+    G_OPTION_ARG_NONE, &version,
+    N_("Print version and exit"),
     NULL
   },
   {
@@ -84,6 +91,15 @@ parse_arguments (int    *argc,
 
   if (debug)
     g_setenv ("G_MESSAGES_DEBUG", "all", FALSE);
+
+  if (version)
+  {
+    g_print (PACKAGE_STRING "\n");
+    g_print ("This is free software; see the source for copying conditions.\n");
+    g_print ("There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n");
+
+    exit(0);
+  }
 
   g_option_context_free (context);
 
