@@ -31,6 +31,7 @@ static GfApplication *application = NULL;
 static gboolean debug = FALSE;
 static gboolean initialize = FALSE;
 static gboolean replace = FALSE;
+static gboolean version = FALSE;
 
 static GOptionEntry entries[] =
 {
@@ -50,6 +51,12 @@ static GOptionEntry entries[] =
     "replace", 'r', G_OPTION_FLAG_NONE,
     G_OPTION_ARG_NONE, &replace,
     N_("Replace a currently running application"),
+    NULL
+  },
+  {
+    "version", 'v', G_OPTION_FLAG_NONE,
+    G_OPTION_ARG_NONE, &version,
+    N_("Print version and exit"),
     NULL
   },
   {
@@ -156,6 +163,13 @@ main (int argc, char *argv[])
 
   if (!parse_arguments (&argc, &argv))
     return EXIT_FAILURE;
+
+  if (version)
+    {
+      g_print (PACKAGE_STRING "\n");
+
+      return EXIT_FAILURE;
+    }
 
   loop = g_main_loop_new (NULL, FALSE);
   session = gf_session_new (replace, session_ready_cb, session_end_cb, NULL);
