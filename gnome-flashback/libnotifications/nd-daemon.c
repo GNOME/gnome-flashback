@@ -266,7 +266,8 @@ name_lost_handler_cb (GDBusConnection *connection,
                       const gchar     *name,
                       gpointer         user_data)
 {
-  gtk_main_quit ();
+  if (gtk_main_level () > 0)
+    gtk_main_quit ();
 }
 
 static void
