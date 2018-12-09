@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2018-11-19 14:11+0000\n"
-"PO-Revision-Date: 2018-11-25 10:29+0100\n"
+"POT-Creation-Date: 2018-12-08 17:20+0000\n"
+"PO-Revision-Date: 2018-12-09 12:12+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -378,17 +378,21 @@ msgstr[0] "Zmiany ustawień zostaną przywrócone za %d sekundę."
 msgstr[1] "Zmiany ustawień zostaną przywrócone za %d sekundy."
 msgstr[2] "Zmiany ustawień zostaną przywrócone za %d sekund."
 
-#: gnome-flashback/gf-main.c:40
+#: gnome-flashback/gf-main.c:41
 msgid "Enable debugging code"
 msgstr "Włącza kod debugowania"
 
-#: gnome-flashback/gf-main.c:46
+#: gnome-flashback/gf-main.c:47
 msgid "Initialize GNOME Flashback session"
 msgstr "Inicjuje sesję tradycyjnego środowiska GNOME"
 
-#: gnome-flashback/gf-main.c:52
+#: gnome-flashback/gf-main.c:53
 msgid "Replace a currently running application"
 msgstr "Zastępuje obecnie uruchomiony program"
+
+#: gnome-flashback/gf-main.c:59
+msgid "Print version and exit"
+msgstr "Wyświetla wersję i kończy działanie"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:295
 msgid "Slow Keys Turned On"
