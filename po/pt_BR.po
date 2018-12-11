@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2018-11-19 14:11+0000\n"
-"PO-Revision-Date: 2018-11-22 07:55-0200\n"
+"POT-Creation-Date: 2018-12-08 17:20+0000\n"
+"PO-Revision-Date: 2018-12-10 22:24-0200\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -369,17 +369,21 @@ msgid_plural "Settings changes will revert in %d seconds!"
 msgstr[0] "Mudanças nas configurações serão revertidas em %d segundo!"
 msgstr[1] "Mudanças nas configurações serão revertidas em %d segundos!"
 
-#: gnome-flashback/gf-main.c:40
+#: gnome-flashback/gf-main.c:41
 msgid "Enable debugging code"
-msgstr "Habilitar código de depuração"
+msgstr "Habilita código de depuração"
 
-#: gnome-flashback/gf-main.c:46
+#: gnome-flashback/gf-main.c:47
 msgid "Initialize GNOME Flashback session"
-msgstr "Inicializar uma sessão do GNOME Flashback"
+msgstr "Inicializa uma sessão do GNOME Flashback"
 
-#: gnome-flashback/gf-main.c:52
+#: gnome-flashback/gf-main.c:53
 msgid "Replace a currently running application"
-msgstr "Substituir um aplicativo atualmente em execução"
+msgstr "Substitui um aplicativo atualmente em execução"
+
+#: gnome-flashback/gf-main.c:59
+msgid "Print version and exit"
+msgstr "Imprime a versão e sai"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:295
 msgid "Slow Keys Turned On"
