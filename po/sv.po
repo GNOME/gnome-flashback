@@ -1,15 +1,15 @@
 # Swedish translation for gnome-flashback.
-# Copyright © 2016, 2017, 2018 gnome-flashback's COPYRIGHT HOLDER
+# Copyright © 2016, 2017, 2018, 2019 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
-# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2016, 2017, 2018.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2016, 2017, 2018, 2019.
 # Josef Andersson <josef.andersson@fripost.org>, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2018-11-19 14:11+0000\n"
-"PO-Revision-Date: 2018-11-30 22:45+0100\n"
+"POT-Creation-Date: 2018-12-08 17:20+0000\n"
+"PO-Revision-Date: 2019-01-06 20:03+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -370,17 +370,21 @@ msgid_plural "Settings changes will revert in %d seconds!"
 msgstr[0] "Inställningsändringar kommer att återställas om %d sekund!"
 msgstr[1] "Inställningsändringar kommer att återställas om %d sekunder!"
 
-#: gnome-flashback/gf-main.c:40
+#: gnome-flashback/gf-main.c:41
 msgid "Enable debugging code"
 msgstr "Aktivera felsökningskod"
 
-#: gnome-flashback/gf-main.c:46
+#: gnome-flashback/gf-main.c:47
 msgid "Initialize GNOME Flashback session"
 msgstr "Initiera GNOME Flashback-session"
 
-#: gnome-flashback/gf-main.c:52
+#: gnome-flashback/gf-main.c:53
 msgid "Replace a currently running application"
 msgstr "Ersätt ett för närvarande körande program"
+
+#: gnome-flashback/gf-main.c:59
+msgid "Print version and exit"
+msgstr "Skriv ut version och avsluta"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:295
 msgid "Slow Keys Turned On"
