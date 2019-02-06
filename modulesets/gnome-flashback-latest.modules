@@ -6,7 +6,7 @@
   <repository type="tarball" name="launchpad-tar" href="https://launchpad.net/" />
   <repository type="bzr" name="launchpad.net" href="lp:" />
 
-  <include href="https://gitlab.gnome.org/GNOME/jhbuild/raw/master/modulesets/gnome-apps-latest.modules" />
+  <include href="https://gitlab.gnome.org/GNOME/jhbuild/raw/master/modulesets/gnome-world.modules" />
 
   <cmake id="compiz" force-non-srcdir-builds="yes"
          cmakeargs="-DCOMPIZ_BUILD_TESTING=OFF -DBUILD_KDE4=Off -DCOMPIZ_WERROR=OFF -DCOMPIZ_DEFAULT_PLUGINS=core,composite,opengl,decor,resize,place,move">
