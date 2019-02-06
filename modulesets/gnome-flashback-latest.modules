@@ -106,22 +106,6 @@
     </suggests>
   </autotools>
 
-  <autotools id="gnome-screensaver">
-    <branch checkoutdir="gnome-screensaver" module="GNOME/gnome-screensaver.git" />
-    <dependencies>
-      <dep package="dbus-glib" />
-      <dep package="intltool" />
-      <dep package="gtk+-3" />
-      <dep package="gnome-menus" />
-      <dep package="gnome-desktop" />
-      <dep package="libgnomekbd" />
-      <dep package="pam" />
-    </dependencies>
-    <suggests>
-      <dep package="libnotify" />
-    </suggests>
-  </autotools>
-
   <autotools id="libwnck">
     <branch checkoutdir="libwnck" module="GNOME/libwnck.git" />
     <dependencies>
