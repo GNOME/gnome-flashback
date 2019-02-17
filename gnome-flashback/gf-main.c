@@ -124,6 +124,9 @@ session_ready_cb (GfSession *session,
 
   application = gf_application_new ();
   gf_session_set_environment (session, "XDG_MENU_PREFIX", "gnome-flashback-");
+#ifdef HAVE_COMPIZ_SESSION
+  gf_session_set_environment (session, "COMPIZ_CONFIG_PROFILE", "gnome-flashback");
+#endif
   gf_session_register (session);
 }
 
