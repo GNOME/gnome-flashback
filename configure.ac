@@ -270,6 +270,35 @@ PKG_CHECK_EXISTS([xrandr >= 1.5.0],
                            [Define if XRandR is 1.5.0 or newer]))
 
 dnl **************************************************************************
+dnl Compiz session
+dnl **************************************************************************
+
+AC_ARG_WITH([compiz-session],
+            [AS_HELP_STRING([--with-compiz-session], [build with Compiz session support])],
+            [with_compiz_session="$withval"], [with_compiz_session="auto"])
+
+AS_IF([test "x$with_compiz_session" != "xno"], [
+  PKG_CHECK_EXISTS([libcompizconfig >= 0.9.14.0],
+                   [found_compiz="yes"], [found_compiz="no"])
+
+  AS_IF([test "x$found_compiz" = "xyes"], [
+    AC_DEFINE([HAVE_COMPIZ_SESSION], [1], [Define if built with compiz session support])
+
+    COMPIZCONFIG_CONFIG_DIR=`$PKG_CONFIG --variable=configdir libcompizconfig`
+    AC_SUBST([COMPIZCONFIG_CONFIG_DIR], [$COMPIZCONFIG_CONFIG_DIR])
+
+    COMPIZCONFIG_UPGRADES_DIR=`$PKG_CONFIG --variable=upgradesdir libcompizconfig`
+    AC_SUBST([COMPIZCONFIG_UPGRADES_DIR], [$COMPIZCONFIG_UPGRADES_DIR])
+  ], [
+    AS_IF([test "x$with_compiz_session" = "xyes"], [
+      AC_MSG_ERROR([Compiz session requested but libcompizconfig not found])
+    ])
+  ])
+], [found_compiz=no])
+
+AM_CONDITIONAL(WITH_COMPIZ_SESSION, [test "x$found_compiz" = "xyes"])
+
+dnl **************************************************************************
 dnl Process .in files
 dnl **************************************************************************
 
@@ -281,6 +310,7 @@ AC_CONFIG_FILES([
   data/Makefile
   data/applications/Makefile
   data/autostart/Makefile
+  data/compizconfig/Makefile
   data/directories/Makefile
   data/menus/Makefile
   data/schemas/Makefile
@@ -336,4 +366,6 @@ echo "  exec_prefix .................: ${exec_prefix}"
 echo "  libdir ......................: ${libdir}"
 echo "  sysconfdir ..................: ${sysconfdir}"
 echo "  libexecdir ..................: ${libexecdir}"
+echo ""
+echo "  Compiz session ..............: ${found_compiz}"
 echo ""
