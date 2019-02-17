@@ -39,12 +39,6 @@ space = $(NULL) $(NULL)
 compiz = $(subst $(space),;,$(strip $(required_components_compiz)))
 metacity = $(subst $(space),;,$(strip $(required_components_metacity)))
 
-gnome-flashback-compiz.session: Makefile.am gnome-flashback.session.in
-	$(AM_V_GEN) sed \
-		-e 's,[@]NAME[@],Compiz,g' \
-		-e 's,[@]REQUIRED_COMPONENTS[@],$(compiz),g' \
-		< $(srcdir)/gnome-flashback.session.in > $@
-
 gnome-flashback-metacity.session: Makefile.am gnome-flashback.session.in
 	$(AM_V_GEN) sed \
 		-e 's,[@]NAME[@],Metacity,g' \
@@ -52,9 +46,20 @@ gnome-flashback-metacity.session: Makefile.am gnome-flashback.session.in
 		< $(srcdir)/gnome-flashback.session.in > $@
 
 sessions = \
-	gnome-flashback-compiz.session \
 	gnome-flashback-metacity.session \
 	$(NULL)
+
+if WITH_COMPIZ_SESSION
+gnome-flashback-compiz.session: Makefile.am gnome-flashback.session.in
+	$(AM_V_GEN) sed \
+		-e 's,[@]NAME[@],Compiz,g' \
+		-e 's,[@]REQUIRED_COMPONENTS[@],$(compiz),g' \
+		< $(srcdir)/gnome-flashback.session.in > $@
+
+sessions += \
+	gnome-flashback-compiz.session \
+	$(NULL)
+endif
 
 sessiondir = $(datadir)/gnome-session/sessions
 session_DATA = $(sessions)
