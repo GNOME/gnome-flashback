@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2018-09-11 19:34+0000\n"
-"PO-Revision-Date: 2018-09-22 15:11+0700\n"
+"POT-Creation-Date: 2018-12-08 17:20+0000\n"
+"PO-Revision-Date: 2019-02-28 18:26+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.0.6\n"
+"Plural-Forms: nplurals=2; plural= n!=1;\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: backends/gf-monitor-manager.c:971
 msgid "Built-in display"
@@ -294,18 +294,6 @@ msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai sebagai Pengamat "
 "Pemberitahu Status."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:111
-msgid "Workarounds"
-msgstr "Workaround"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:112
-msgid ""
-"If set to true, then GNOME Flashback application will use workarounds to fix "
-"bugs."
-msgstr ""
-"Bila diisi true, aplikasi GNOME Flashback akan memakai akal-akalan untuk "
-"memperbaiki kutu."
-
 #: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
 msgid "Fade the background on change"
 msgstr "Pudarkan latar belakang pada perubahan"
@@ -337,20 +325,6 @@ msgstr "Bobot fonta"
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
 msgid "Symbolic"
 msgstr "Simbolis"
-
-#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:5
-msgid "Fix missing app menu button"
-msgstr "Perbaiki tombol menu app yang hilang"
-
-#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:6
-msgid ""
-"If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
-"FALSE. Disable if you want to use gnome-settings-daemon overrides in "
-"xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
-msgstr ""
-"Bila diisi true, maka gnome-flashback akan memaksa Gtk/ShellShowsAppMenu "
-"menjadi FALSE. Nonaktifkan bila Anda ingin memakai penimpaan gnome-settings-"
-"daemon dalam pengaya xsettings untuk properti 'Gtk/ShellShowsAppMenu'."
 
 #: data/ui/gf-confirm-display-change-dialog.ui:57
 msgid "Do you want to keep these display settings?"
@@ -389,18 +363,23 @@ msgstr "Sesi ini melog Anda ke dalam GNOME Flashback dengan Metacity"
 msgid "Settings changes will revert in %d second!"
 msgid_plural "Settings changes will revert in %d seconds!"
 msgstr[0] "Perubahan pengaturan akan pulih dalam %d detik!"
+msgstr[1] "Perubahan pengaturan akan pulih dalam %d detik!"
 
-#: gnome-flashback/gf-main.c:40
+#: gnome-flashback/gf-main.c:41
 msgid "Enable debugging code"
 msgstr "Fungsikan kode pengawakutu"
 
-#: gnome-flashback/gf-main.c:46
+#: gnome-flashback/gf-main.c:47
 msgid "Initialize GNOME Flashback session"
 msgstr "Inisialisasikan sesi GNOME Flashback"
 
-#: gnome-flashback/gf-main.c:52
+#: gnome-flashback/gf-main.c:53
 msgid "Replace a currently running application"
 msgstr "Gantikan suatu aplikasi yang sekarang sedang berjalan"
+
+#: gnome-flashback/gf-main.c:59
+msgid "Print version and exit"
+msgstr "Cetak versi dan keluar"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:295
 msgid "Slow Keys Turned On"
@@ -528,69 +507,69 @@ msgstr "Jangan Lakukan Apapun"
 msgid "Open Folder"
 msgstr "Buka Folder"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:496
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
 #, c-format
 msgid "Unable to eject %p"
 msgstr "Tak dapat mengeluarkan %p"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:500
 #, c-format
 msgid "Unable to unmount %p"
 msgstr "Tak dapat melepas kait %p"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:707
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
 msgid "You have just inserted an Audio CD."
 msgstr "Anda baru saja memasukkan CD Audio."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
 msgid "You have just inserted an Audio DVD."
 msgstr "Anda baru saja memasukkan DVD Audio."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
 msgid "You have just inserted a Video DVD."
 msgstr "Anda baru saja memasukkan DVD Video."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
 msgid "You have just inserted a Video CD."
 msgstr "Anda baru saja memasukkan CD Video."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
 msgid "You have just inserted a Super Video CD."
 msgstr "Anda baru saja memasukkan CD Super Video."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
 msgid "You have just inserted a blank CD."
 msgstr "Anda baru saja memasukkan CD kosong."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
 msgid "You have just inserted a blank DVD."
 msgstr "Anda baru saja memasukkan DVD kosong."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
 msgid "You have just inserted a blank Blu-Ray disc."
 msgstr "Anda baru saja memasukkan cakram Blu-Ray."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
 msgid "You have just inserted a blank HD DVD."
 msgstr "Anda baru saja memasukkan DVD HD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
 msgid "You have just inserted a Photo CD."
 msgstr "Anda baru saja memasukkan CD Photo."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
 msgid "You have just inserted a Picture CD."
 msgstr "Anda baru saja memasukkan CD Picture."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
 msgid "You have just inserted a medium with digital photos."
 msgstr "Anda baru saja memasukkan suatu medium dengan foto-foto digital."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
 msgid "You have just inserted a digital audio player."
 msgstr "Anda baru saja memasukkan pemutar audio digital."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:735
 msgid ""
 "You have just inserted a medium with software intended to be automatically "
 "started."
@@ -599,15 +578,15 @@ msgstr ""
 "untuk secara otomatis mulai."
 
 #. fallback to generic greeting
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:736
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
 msgid "You have just inserted a medium."
 msgstr "Anda baru saja memasukkan sebuah medium."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:740
 msgid "Choose what application to launch."
 msgstr "Pilih aplikasi apa yang akan diluncurkan."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:747
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:749
 #, c-format
 msgid ""
 "Select how to open \"%s\" and whether to perform this action in the future "
@@ -616,24 +595,24 @@ msgstr ""
 "Pilih bagaimana membuka \"%s\" dan apakah melakukan aksi ini di masa "
 "mendatang bagi media lain bertipe \"%s\"."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:774
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:776
 msgid "_Always perform this action"
 msgstr "Sel_alu lakukan aksi ini"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:783
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
 msgid "_Cancel"
 msgstr "_Batal"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:784
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:786
 msgid "_OK"
 msgstr "_OK"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:790
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:792
 msgid "_Eject"
 msgstr "K_eluarkan"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:795
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:797
 msgid "_Unmount"
 msgstr "_Lepas Kait"
 
@@ -658,6 +637,7 @@ msgstr "Bluetooth dinonaktifkan"
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d Perangkat Tersambung"
+msgstr[1] "%d Perangkat Tersambung"
 
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
 msgid "Not Connected"
@@ -678,7 +658,8 @@ msgstr ""
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s akan otomatis dilog-keluarkan dalam %d detik"
+msgstr[0] "%s akan otomatis dilog-keluarkan dalam %d detik."
+msgstr[1] "%s akan otomatis dilog-keluarkan dalam %d detik."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:696
@@ -688,13 +669,14 @@ msgstr "Matikan"
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:482
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
-"Klik Matikan untuk keluar dari aplikasi-aplikasi ini dan mematikan sistem"
+"Klik Matikan untuk keluar dari aplikasi-aplikasi ini dan mematikan sistem."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:484
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Sistem akan otomatis dimatikan dalam %d detik."
+msgstr[1] "Sistem akan otomatis dimatikan dalam %d detik."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:700
@@ -704,14 +686,15 @@ msgstr "Start Ulang"
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:494
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
-"Klik Start Ulang untuk keluar dari aplikasi-aplikasi ini dan memulai ulang "
-"sistem"
+"Klik Mulai Ulang untuk keluar dari aplikasi-aplikasi ini dan memulai ulang "
+"sistem."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:496
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Sistem akan otomatis dimulai ulang dalam %d detik."
+msgstr[1] "Sistem akan otomatis dimulai ulang dalam %d detik."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:503
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:704
@@ -723,6 +706,7 @@ msgstr "Hibernasi"
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
 msgstr[0] "Sistem akan otomatis dihibernasi dalam %d detik."
+msgstr[1] "Sistem akan otomatis dihibernasi dalam %d detik."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:511
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:708
@@ -734,6 +718,7 @@ msgstr "Suspensi"
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
 msgstr[0] "Sistem akan otomatis disuspensi dalam %d detik."
+msgstr[1] "Sistem akan otomatis disuspensi dalam %d detik."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:712
@@ -745,6 +730,7 @@ msgstr "Tidur Hibrida"
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
 msgstr[0] "Sistem akan otomatis tidur hibrida dalam %d detik."
+msgstr[1] "Sistem akan otomatis tidur hibrida dalam %d detik."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:29
 msgid "Some programs are still running:"
@@ -799,11 +785,11 @@ msgstr "Melebihi cacah maksimum notifikasi"
 msgid "Notification body text."
 msgstr "Teks tubuh notifikasi."
 
-#: gnome-flashback/libnotifications/nd-queue.c:445
+#: gnome-flashback/libnotifications/nd-queue.c:451
 msgid "Clear all notifications"
 msgstr "Bersihkan semua notifikasi"
 
-#: gnome-flashback/libnotifications/nd-queue.c:881
+#: gnome-flashback/libnotifications/nd-queue.c:867
 msgid "Notifications"
 msgstr "Notifikasi"
 
@@ -906,27 +892,31 @@ msgid "Empty"
 msgstr "Kosong"
 
 #: gnome-flashback/libpower-applet/gf-power-applet.c:190
-#: gnome-flashback/libpower-applet/gf-power-applet.c:195
+msgid "Not Charging"
+msgstr "Tidak Mengisi Daya"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:192
+#: gnome-flashback/libpower-applet/gf-power-applet.c:197
 msgid "Estimating..."
 msgstr "Memperkirakan…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:204
+#: gnome-flashback/libpower-applet/gf-power-applet.c:206
 #, c-format
 msgid "%.0f:%02.0f Remaining (%.0f%%)"
 msgstr "%.0f:%02.0f Tersisa (%.0f%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:211
+#: gnome-flashback/libpower-applet/gf-power-applet.c:213
 #, c-format
 msgid "%.0f:%02.0f Until Full (%.0f%%)"
 msgstr "%.0f:%02.0f Sampai Penuh (%.0f%%)"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:226
+#: gnome-flashback/libpower-applet/gf-power-applet.c:228
 msgid "UPS"
 msgstr "UPS"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:228
+#: gnome-flashback/libpower-applet/gf-power-applet.c:230
 msgid "Battery"
 msgstr "Baterai"
 
@@ -959,27 +949,29 @@ msgstr "Tak diperkuat"
 
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1866
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1864
 msgid "Disabled"
 msgstr "Dinonaktifkan"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1873
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1871
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
 msgstr[0] "%u Keluaran"
+msgstr[1] "%u Keluaran"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1881
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Masukan"
+msgstr[1] "%u Masukan"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2738
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2736
 msgid "System Sounds"
 msgstr "Suara Sistem"
 
@@ -994,6 +986,29 @@ msgstr "Preferensi _Suara"
 #: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:424
 msgid "Muted"
 msgstr "Senyap"
+
+#~ msgid "Workarounds"
+#~ msgstr "Workaround"
+
+#~ msgid ""
+#~ "If set to true, then GNOME Flashback application will use workarounds to "
+#~ "fix bugs."
+#~ msgstr ""
+#~ "Bila diisi true, aplikasi GNOME Flashback akan memakai akal-akalan untuk "
+#~ "memperbaiki kutu."
+
+#~ msgid "Fix missing app menu button"
+#~ msgstr "Perbaiki tombol menu app yang hilang"
+
+#~ msgid ""
+#~ "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
+#~ "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
+#~ "xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
+#~ msgstr ""
+#~ "Bila diisi true, maka gnome-flashback akan memaksa Gtk/ShellShowsAppMenu "
+#~ "menjadi FALSE. Nonaktifkan bila Anda ingin memakai penimpaan gnome-"
+#~ "settings-daemon dalam pengaya xsettings untuk properti 'Gtk/"
+#~ "ShellShowsAppMenu'."
 
 #~ msgid "Fix wrong button layout"
 #~ msgstr "Perbaiki tata letak tombol yang salah"
