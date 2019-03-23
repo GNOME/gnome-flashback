@@ -1491,15 +1491,20 @@ gf_monitor_manager_handle_get_current_state (GfDBusDisplayConfig   *skeleton,
                                              GDBusMethodInvocation *invocation)
 {
   GfMonitorManager *manager;
+  GfMonitorManagerPrivate *priv;
+  GfSettings *settings;
   GVariantBuilder monitors_builder;
   GVariantBuilder logical_monitors_builder;
   GVariantBuilder properties_builder;
   GList *l;
   GfMonitorManagerCapability capabilities;
+  gint ui_scaling_factor;
   gint max_screen_width;
   gint max_screen_height;
 
   manager = GF_MONITOR_MANAGER (skeleton);
+  priv = gf_monitor_manager_get_instance_private (manager);
+  settings = gf_backend_get_settings (priv->backend);
 
   g_variant_builder_init (&monitors_builder, G_VARIANT_TYPE (MONITORS_FORMAT));
   g_variant_builder_init (&logical_monitors_builder, G_VARIANT_TYPE (LOGICAL_MONITORS_FORMAT));
@@ -1674,6 +1679,10 @@ gf_monitor_manager_handle_get_current_state (GfDBusDisplayConfig   *skeleton,
                              "global-scale-required",
                              g_variant_new_boolean (TRUE));
     }
+
+  ui_scaling_factor = gf_settings_get_ui_scaling_factor (settings);
+  g_variant_builder_add (&properties_builder, "{sv}",
+                         "legacy-ui-scaling-factor",g_variant_new_int32 (ui_scaling_factor));
 
   if (gf_monitor_manager_get_max_screen_size (manager,
                                               &max_screen_width,
