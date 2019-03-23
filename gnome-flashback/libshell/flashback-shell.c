@@ -95,7 +95,9 @@ accelerator_activated (GfKeybindings *keybindings,
 
 static gint
 real_grab (FlashbackShell *shell,
-           const gchar    *accelerator)
+           const gchar    *accelerator,
+           guint           mode_flags,
+           guint           grab_flags)
 {
   return gf_keybindings_grab (shell->keybindings, accelerator);
 }
@@ -156,12 +158,13 @@ name_vanished_handler (GDBusConnection *connection,
 static guint
 grab_accelerator (FlashbackShell *shell,
                   const gchar    *accelerator,
-                  guint           flags,
+                  guint           mode_flags,
+                  guint           grab_flags,
                   const gchar    *sender)
 {
   guint action;
 
-  action = real_grab (shell, accelerator);
+  action = real_grab (shell, accelerator, mode_flags, grab_flags);
   g_hash_table_insert (shell->grabbed_accelerators,
                        GUINT_TO_POINTER (action), g_strdup (sender));
 
@@ -306,7 +309,8 @@ static gboolean
 handle_grab_accelerator (FlashbackDBusShell    *dbus_shell,
                          GDBusMethodInvocation *invocation,
                          const gchar           *accelerator,
-                         guint                  flags,
+                         guint                  mode_flags,
+                         guint                  grab_flags,
                          gpointer               user_data)
 {
   FlashbackShell *shell;
@@ -315,7 +319,7 @@ handle_grab_accelerator (FlashbackDBusShell    *dbus_shell,
 
   shell = FLASHBACK_SHELL (user_data);
   sender = g_dbus_method_invocation_get_sender (invocation);
-  action = grab_accelerator (shell, accelerator, flags, sender);
+  action = grab_accelerator (shell, accelerator, mode_flags, grab_flags, sender);
 
   flashback_dbus_shell_complete_grab_accelerator (dbus_shell, invocation, action);
 
@@ -344,12 +348,13 @@ handle_grab_accelerators (FlashbackDBusShell    *dbus_shell,
   while ((child = g_variant_iter_next_value (&iter)))
     {
       gchar *accelerator;
-      guint flags;
+      guint mode_flags;
+      guint grab_flags;
       guint action;
 
-      g_variant_get (child, "(su)", &accelerator, &flags);
+      g_variant_get (child, "(suu)", &accelerator, &mode_flags, &grab_flags);
 
-      action = grab_accelerator (shell, accelerator, flags, sender);
+      action = grab_accelerator (shell, accelerator, mode_flags, grab_flags, sender);
       g_variant_builder_add (&builder, "u", action);
 
       g_free (accelerator);
