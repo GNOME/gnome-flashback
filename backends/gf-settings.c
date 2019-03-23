@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  * Copyright (C) 2017 Red Hat
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,11 +20,13 @@
  */
 
 #include "config.h"
+#include "gf-settings-private.h"
 
 #include <gio/gio.h>
 
 #include "gf-backend-private.h"
-#include "gf-settings-private.h"
+#include "gf-logical-monitor-private.h"
+#include "gf-monitor-manager-private.h"
 
 struct _GfSettings
 {
@@ -34,6 +36,7 @@ struct _GfSettings
 
   GSettings *interface;
 
+  gint       ui_scaling_factor;
   gint       global_scaling_factor;
 };
 
@@ -50,6 +53,7 @@ static GParamSpec *settings_properties[LAST_PROP] = { NULL };
 
 enum
 {
+  UI_SCALING_FACTOR_CHANGED,
   GLOBAL_SCALING_FACTOR_CHANGED,
 
   LAST_SIGNAL
@@ -58,6 +62,57 @@ enum
 static guint settings_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GfSettings, gf_settings, G_TYPE_OBJECT)
+
+static gint
+calculate_ui_scaling_factor (GfSettings *settings)
+{
+  GfMonitorManager *monitor_manager;
+  GfLogicalMonitor *primary_logical_monitor;
+
+  monitor_manager = gf_backend_get_monitor_manager (settings->backend);
+
+  if (!monitor_manager)
+    return 1;
+
+  primary_logical_monitor = gf_monitor_manager_get_primary_logical_monitor (monitor_manager);
+
+  if (!primary_logical_monitor)
+    return 1;
+
+  return (gint) gf_logical_monitor_get_scale (primary_logical_monitor);
+}
+
+static gboolean
+update_ui_scaling_factor (GfSettings *settings)
+{
+  gint ui_scaling_factor;
+
+  ui_scaling_factor = calculate_ui_scaling_factor (settings);
+
+  if (settings->ui_scaling_factor != ui_scaling_factor)
+    {
+      settings->ui_scaling_factor = ui_scaling_factor;
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static void
+monitors_changed_cb (GfMonitorManager *monitor_manager,
+                     GfSettings       *settings)
+{
+  if (update_ui_scaling_factor (settings))
+    g_signal_emit (settings, settings_signals[UI_SCALING_FACTOR_CHANGED], 0);
+}
+
+static void
+global_scaling_factor_changed_cb (GfSettings *settings,
+                                  gpointer    user_data)
+{
+  if (update_ui_scaling_factor (settings))
+    g_signal_emit (settings, settings_signals[UI_SCALING_FACTOR_CHANGED], 0);
+}
 
 static gboolean
 update_global_scaling_factor (GfSettings *settings)
@@ -163,6 +218,11 @@ gf_settings_install_properties (GObjectClass *object_class)
 static void
 gf_settings_install_signals (GObjectClass *object_class)
 {
+  settings_signals[UI_SCALING_FACTOR_CHANGED] =
+    g_signal_new ("ui-scaling-factor-changed",
+                  G_TYPE_FROM_CLASS (object_class), G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+
   settings_signals[GLOBAL_SCALING_FACTOR_CHANGED] =
     g_signal_new ("global-scaling-factor-changed",
                   G_TYPE_FROM_CLASS (object_class), G_SIGNAL_RUN_LAST,
@@ -192,6 +252,10 @@ gf_settings_init (GfSettings *settings)
   g_signal_connect (settings->interface, "changed",
                     G_CALLBACK (interface_changed_cb), settings);
 
+  /* Chain up inter-dependent settings. */
+  g_signal_connect (settings, "global-scaling-factor-changed",
+                    G_CALLBACK (global_scaling_factor_changed_cb), NULL);
+
   update_global_scaling_factor (settings);
 }
 
@@ -205,6 +269,27 @@ gf_settings_new (GfBackend *backend)
                            NULL);
 
   return settings;
+}
+
+void
+gf_settings_post_init (GfSettings *settings)
+{
+  GfMonitorManager *monitor_manager;
+
+  monitor_manager = gf_backend_get_monitor_manager (settings->backend);
+  g_signal_connect_object (monitor_manager, "monitors-changed",
+                           G_CALLBACK (monitors_changed_cb),
+                           settings, G_CONNECT_AFTER);
+
+  update_ui_scaling_factor (settings);
+}
+
+gint
+gf_settings_get_ui_scaling_factor (GfSettings *settings)
+{
+  g_assert (settings->ui_scaling_factor != 0);
+
+  return settings->ui_scaling_factor;
 }
 
 gboolean

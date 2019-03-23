@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  * Copyright (C) 2017 Red Hat
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,6 +31,10 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (GfSettings, gf_settings, GF, SETTINGS, GObject)
 
 GfSettings *gf_settings_new                       (GfBackend  *backend);
+
+void        gf_settings_post_init                 (GfSettings *settings);
+
+gint        gf_settings_get_ui_scaling_factor     (GfSettings *settings);
 
 gboolean    gf_settings_get_global_scaling_factor (GfSettings *settings,
                                                    gint       *global_scaling_factor);

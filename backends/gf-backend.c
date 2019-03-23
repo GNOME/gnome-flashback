@@ -134,6 +134,7 @@ gf_backend_new (GfBackendType type)
 {
   GType gtype;
   GfBackend *backend;
+  GfBackendPrivate *priv;
   GError *error;
 
   switch (type)
@@ -156,6 +157,7 @@ gf_backend_new (GfBackendType type)
     }
 
   backend = g_object_new (gtype, NULL);
+  priv = gf_backend_get_instance_private (backend);
 
   error = NULL;
   if (!g_initable_init (G_INITABLE (backend), NULL, &error))
@@ -169,6 +171,7 @@ gf_backend_new (GfBackendType type)
     }
 
   GF_BACKEND_GET_CLASS (backend)->post_init (backend);
+  gf_settings_post_init (priv->settings);
 
   return backend;
 }
