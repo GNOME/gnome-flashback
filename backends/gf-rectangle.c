@@ -90,7 +90,7 @@ gf_rectangle_overlaps_with_region (const GList       *spanning_rects,
 }
 
 gboolean
-gf_rectangle_is_adjecent_to (const GfRectangle *rect,
+gf_rectangle_is_adjacent_to (const GfRectangle *rect,
                              const GfRectangle *other)
 {
   gint rect_x1 = rect->x;

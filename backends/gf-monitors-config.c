@@ -29,7 +29,7 @@
 G_DEFINE_TYPE (GfMonitorsConfig, gf_monitors_config, G_TYPE_OBJECT)
 
 static gboolean
-has_adjecent_neighbour (GfMonitorsConfig       *config,
+has_adjacent_neighbour (GfMonitorsConfig       *config,
                         GfLogicalMonitorConfig *logical_monitor_config)
 {
   GList *l;
@@ -47,7 +47,7 @@ has_adjecent_neighbour (GfMonitorsConfig       *config,
       if (logical_monitor_config == other_logical_monitor_config)
         continue;
 
-      if (gf_rectangle_is_adjecent_to (&logical_monitor_config->layout,
+      if (gf_rectangle_is_adjacent_to (&logical_monitor_config->layout,
                                        &other_logical_monitor_config->layout))
         return TRUE;
     }
@@ -315,10 +315,10 @@ gf_verify_monitors_config (GfMonitorsConfig  *config,
           has_primary = TRUE;
         }
 
-      if (!has_adjecent_neighbour (config, logical_monitor_config))
+      if (!has_adjacent_neighbour (config, logical_monitor_config))
         {
           g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                       "Logical monitors not adjecent");
+                       "Logical monitors not adjacent");
 
           return FALSE;
         }

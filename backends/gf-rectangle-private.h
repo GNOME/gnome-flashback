@@ -29,7 +29,7 @@ G_BEGIN_DECLS
 gboolean gf_rectangle_overlaps_with_region (const GList       *spanning_rects,
                                             const GfRectangle *rect);
 
-gboolean gf_rectangle_is_adjecent_to       (const GfRectangle *rect,
+gboolean gf_rectangle_is_adjacent_to       (const GfRectangle *rect,
                                             const GfRectangle *other);
 
 G_END_DECLS
