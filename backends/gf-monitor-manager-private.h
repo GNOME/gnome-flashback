@@ -3,7 +3,7 @@
  * Copyright (C) 2003 Rob Adams
  * Copyright (C) 2004-2006 Elijah Newren
  * Copyright (C) 2013 Red Hat Inc.
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -169,6 +169,8 @@ GfMonitor                  *gf_monitor_manager_get_monitor_from_spec        (GfM
                                                                              GfMonitorSpec               *monitor_spec);
 
 GList                      *gf_monitor_manager_get_monitors                 (GfMonitorManager            *manager);
+
+GfLogicalMonitor           *gf_monitor_manager_get_primary_logical_monitor  (GfMonitorManager            *manager);
 
 GList                      *gf_monitor_manager_get_outputs                  (GfMonitorManager            *manager);
 
