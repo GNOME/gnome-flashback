@@ -2563,31 +2563,6 @@ gf_monitor_manager_get_config_manager (GfMonitorManager *manager)
 }
 
 gint
-gf_monitor_manager_get_monitor_for_output (GfMonitorManager *manager,
-                                           guint             id)
-{
-  GfOutput *output;
-  GList *l;
-
-  g_return_val_if_fail (GF_IS_MONITOR_MANAGER (manager), -1);
-  g_return_val_if_fail (id < g_list_length (manager->outputs), -1);
-
-  output = g_list_nth_data (manager->outputs, id);
-  if (!output || !output->crtc)
-    return -1;
-
-  for (l = manager->logical_monitors; l; l = l->next)
-    {
-      GfLogicalMonitor *logical_monitor = l->data;
-
-      if (gf_rectangle_contains_rect (&logical_monitor->rect, &output->crtc->rect))
-        return logical_monitor->number;
-    }
-
-  return -1;
-}
-
-gint
 gf_monitor_manager_get_monitor_for_connector (GfMonitorManager *manager,
                                               const gchar      *connector)
 {

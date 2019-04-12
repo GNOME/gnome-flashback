@@ -37,9 +37,6 @@ typedef enum
 
 typedef struct _GfMonitorManager GfMonitorManager;
 
-gint                      gf_monitor_manager_get_monitor_for_output            (GfMonitorManager          *manager,
-                                                                                guint                      id);
-
 gint                      gf_monitor_manager_get_monitor_for_connector         (GfMonitorManager          *manager,
                                                                                 const gchar               *connector);
 
