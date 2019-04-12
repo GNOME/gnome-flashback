@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Alberts Muktupāvels
+ * Copyright (C) 2015-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -114,14 +114,16 @@ flashback_osd_new (void)
 }
 
 void
-flashback_osd_show (FlashbackOsd *osd,
-                    GVariant     *params)
+flashback_osd_show (FlashbackOsd     *osd,
+                    GfMonitorManager *monitor_manager,
+                    GVariant         *params)
 {
   GVariantDict dict;
   const gchar *icon_name;
   const gchar *label;
   GIcon *icon;
   gint level;
+  const gchar *connector;
   gint monitor;
   gint i;
 
@@ -136,8 +138,12 @@ flashback_osd_show (FlashbackOsd *osd,
   if (!g_variant_dict_lookup (&dict, "level", "i", &level))
     level = -1;
 
-  if (!g_variant_dict_lookup (&dict, "monitor", "i", &monitor))
-    monitor = -1;
+  if (!g_variant_dict_lookup (&dict, "connector", "&s", &connector))
+    connector = NULL;
+
+  monitor = -1;
+  if (connector != NULL)
+    monitor = gf_monitor_manager_get_monitor_for_connector (monitor_manager, connector);
 
   icon = NULL;
   if (icon_name)

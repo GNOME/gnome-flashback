@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Alberts Muktupāvels
+ * Copyright (C) 2015-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #ifndef FLASHBACK_OSD_H
 #define FLASHBACK_OSD_H
 
-#include <glib-object.h>
+#include "flashback-shell.h"
 
 G_BEGIN_DECLS
 
@@ -27,8 +27,9 @@ G_DECLARE_FINAL_TYPE (FlashbackOsd, flashback_osd, FLASHBACK, OSD, GObject)
 
 FlashbackOsd *flashback_osd_new  (void);
 
-void          flashback_osd_show (FlashbackOsd *osd,
-                                  GVariant     *params);
+void          flashback_osd_show (FlashbackOsd     *osd,
+                                  GfMonitorManager *monitor_manager,
+                                  GVariant         *params);
 
 G_END_DECLS
 

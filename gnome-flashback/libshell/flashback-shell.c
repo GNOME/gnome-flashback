@@ -215,7 +215,7 @@ handle_show_osd (FlashbackDBusShell    *dbus_shell,
 
   shell = FLASHBACK_SHELL (user_data);
 
-  flashback_osd_show (shell->osd, params);
+  flashback_osd_show (shell->osd, shell->monitor_manager, params);
 
   flashback_dbus_shell_complete_show_osd (dbus_shell, invocation);
 
