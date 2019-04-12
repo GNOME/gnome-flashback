@@ -28,11 +28,6 @@ G_DECLARE_FINAL_TYPE (FlashbackMonitorLabeler, flashback_monitor_labeler,
 
 FlashbackMonitorLabeler *flashback_monitor_labeler_new   (void);
 
-void                     flashback_monitor_labeler_show  (FlashbackMonitorLabeler *labeler,
-                                                          GfMonitorManager        *monitor_manager,
-                                                          const gchar             *sender,
-                                                          GVariant                *params);
-
 void                     flashback_monitor_labeler_show2 (FlashbackMonitorLabeler *labeler,
                                                           GfMonitorManager        *monitor_manager,
                                                           const gchar             *sender,

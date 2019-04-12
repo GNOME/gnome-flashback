@@ -223,28 +223,6 @@ handle_show_osd (FlashbackDBusShell    *dbus_shell,
 }
 
 static gboolean
-handle_show_monitor_labels (FlashbackDBusShell    *dbus_shell,
-                            GDBusMethodInvocation *invocation,
-                            GVariant              *params,
-                            gpointer               user_data)
-{
-  FlashbackShell *shell;
-  const gchar *sender;
-
-  shell = FLASHBACK_SHELL (user_data);
-  sender = g_dbus_method_invocation_get_sender (invocation);
-
-  g_assert (shell->monitor_manager != NULL);
-
-  flashback_monitor_labeler_show (shell->labeler, shell->monitor_manager,
-                                  sender, params);
-
-  flashback_dbus_shell_complete_show_monitor_labels (dbus_shell, invocation);
-
-  return TRUE;
-}
-
-static gboolean
 handle_show_monitor_labels2 (FlashbackDBusShell    *dbus_shell,
                              GDBusMethodInvocation *invocation,
                              GVariant              *params,
@@ -414,8 +392,6 @@ name_appeared_handler (GDBusConnection *connection,
                     G_CALLBACK (handle_focus_search), shell);
   g_signal_connect (skeleton, "handle-show-osd",
                     G_CALLBACK (handle_show_osd), shell);
-  g_signal_connect (skeleton, "handle-show-monitor-labels",
-                    G_CALLBACK (handle_show_monitor_labels), shell);
   g_signal_connect (skeleton, "handle-show-monitor-labels2",
                     G_CALLBACK (handle_show_monitor_labels2), shell);
   g_signal_connect (skeleton, "handle-hide-monitor-labels",
