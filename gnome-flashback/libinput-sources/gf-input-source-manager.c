@@ -70,6 +70,7 @@ struct _GfInputSourceManager
   GfIBusManager         *ibus_manager;
   gboolean               ibus_ready;
   gboolean               disable_ibus;
+  gboolean               reloading;
 
   GHashTable            *input_sources;
   GHashTable            *ibus_sources;
@@ -784,6 +785,9 @@ engine_set_cb (GfIBusManager *manager,
 
   source_manager = GF_INPUT_SOURCE_MANAGER (user_data);
 
+  if (source_manager->reloading)
+    return;
+
   gf_keyboard_manager_ungrab (source_manager->keyboard_manager,
                               GDK_CURRENT_TIME);
 }
@@ -835,7 +839,18 @@ activate_cb (GfInputSource        *source,
 
   xkb_id = gf_input_source_get_xkb_id (source);
 
-  gf_keyboard_manager_grab (manager->keyboard_manager, GDK_CURRENT_TIME);
+  /*
+   * The focus changes during grab/ungrab may trick the client into hiding
+   * UI containing the currently focused entry. So grab/ungrab are not called
+   * when 'set-content-type' signal is received. E.g. Focusing on a password
+   * entry in a popup in Xorg Firefox will emit 'set-content-type' signal.
+   *
+   * https://gitlab.gnome.org/GNOME/gnome-shell/issues/391
+   * https://gitlab.gnome.org/GNOME/gnome-flashback/issues/15
+   */
+  if (!manager->reloading)
+    gf_keyboard_manager_grab (manager->keyboard_manager, GDK_CURRENT_TIME);
+
   gf_keyboard_manager_apply (manager->keyboard_manager, xkb_id);
 
   if (manager->ibus_manager == NULL)
@@ -1561,12 +1576,16 @@ gf_input_source_manager_reload (GfInputSourceManager *manager)
 {
   gchar **options;
 
+  manager->reloading = TRUE;
+
   options = gf_input_source_settings_get_xkb_options (manager->settings);
 
   gf_keyboard_manager_set_xkb_options (manager->keyboard_manager, options);
   g_strfreev (options);
 
   sources_changed_cb (manager->settings, manager);
+
+  manager->reloading = FALSE;
 }
 
 GfInputSource *
