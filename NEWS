@@ -1,3 +1,17 @@
+Version 3.32.0
+==============
+- Fix deprecation warnings.
+- Fix crash in notifications module when removing monitor.
+- Fix crash in shell module when calling UngrabAccelerator with invalid action.
+- Remove workarounds module, no longer needed.
+- Update org.gnome.Mutter.DisplayConfig D-Bus interface.
+- Update org.gnome.Shell D-Bus interface.
+- Updated translations:
+  Alan Mortensen (da), Anders Jonsson (sv), Balázs Úr (hu),
+  Daniel Mustieles (es), Daniel Mustieles García (es), Kukuh Syafaat (id),
+  Марко М. Костић (sr), Marek Cernocky (cs), Matej Urbančič (sl),
+  Nathan Follens (nl), Rafael Fontenelle (pt_BR), Piotr Drąg (pl).
+
 Version 3.30.0
 ==============
 - Fix build warnings.
