@@ -873,13 +873,6 @@ update_status_icon (GfInputSources *sources)
 }
 
 static void
-sources_changed_cb (GfInputSourceManager *manager,
-                    GfInputSources       *sources)
-{
-  update_status_icon (sources);
-}
-
-static void
 current_source_changed_cb (GfInputSourceManager *manager,
                            GfInputSource        *old_source,
                            GfInputSources       *sources)
@@ -953,9 +946,6 @@ gf_input_sources_init (GfInputSources *sources)
 
   gtk_icon_theme_append_search_path (gtk_icon_theme_get_default (),
                                      sources->icon_theme_path);
-
-  g_signal_connect (sources->input_source_manager, "sources-changed",
-                    G_CALLBACK (sources_changed_cb), sources);
 
   g_signal_connect (sources->input_source_manager, "current-source-changed",
                     G_CALLBACK (current_source_changed_cb), sources);
