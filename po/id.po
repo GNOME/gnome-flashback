@@ -2,12 +2,13 @@
 # Copyright (C) 2014 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
 # Andika Triwidada <andika@gmail.com>, 2014.
+# Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017, 2018, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2018-12-08 17:20+0000\n"
+"POT-Creation-Date: 2019-03-23 18:18+0000\n"
 "PO-Revision-Date: 2019-02-28 18:26+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
@@ -205,13 +206,13 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:63
 msgid "Authentication agent for polkit"
-msgstr "Agen otentikasi bagi polkit"
+msgstr "Agen autentikasi bagi polkit"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
-"Ini adalah agen otentikasi yang sama yang disediakan oleh PolicyKit-gnome."
+"Ini adalah agen autentikasi yang sama yang disediakan oleh PolicyKit-gnome."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:69
 msgid "Power applet"
@@ -805,18 +806,18 @@ msgstr "_Sandi:"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:259
 msgid "Your authentication attempt was unsuccessful. Please try again."
-msgstr "Percobaan otentikasi Anda tidak berhasil. Harap coba lagi."
+msgstr "Percobaan autentikasi Anda tidak berhasil. Harap coba lagi."
 
 #: gnome-flashback/libpolkit/flashback-listener.c:139
 msgid "Authentication dialog was dismissed by the user"
-msgstr "Dialog otentikasi ditutup oleh pengguna"
+msgstr "Dialog autentikasi ditutup oleh pengguna"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:202
 msgid ""
 "An application is attempting to perform an action that requires privileges. "
 "Authentication as one of the users below is required to perform this action."
 msgstr ""
-"Suatu aplikasi mencoba melakukan aksi yang memerlukan hak khusus. Otentikasi "
+"Suatu aplikasi mencoba melakukan aksi yang memerlukan hak khusus. Autentikasi "
 "sebagai salah satu pengguna di bawah diperlukan untuk melaksanakan aksi ini."
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
@@ -825,7 +826,7 @@ msgid ""
 "An application is attempting to perform an action that requires privileges. "
 "Authentication is required to perform this action."
 msgstr ""
-"Suatu aplikasi mencoba melakukan aksi yang memerlukan hak khusus. Otentikasi "
+"Suatu aplikasi mencoba melakukan aksi yang memerlukan hak khusus. Autentikasi "
 "diperlukan untuk melaksanakan aksi ini."
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:217
@@ -833,7 +834,7 @@ msgid ""
 "An application is attempting to perform an action that requires privileges. "
 "Authentication as the super user is required to perform this action."
 msgstr ""
-"Suatu aplikasi mencoba melakukan aksi yang memerlukan hak khusus. Otentikasi "
+"Suatu aplikasi mencoba melakukan aksi yang memerlukan hak khusus. Autentikasi "
 "sebagai pengguna super diperlukan untuk melaksanakan aksi ini."
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:386
@@ -865,7 +866,7 @@ msgstr "Klik untuk membuka %s"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:8
 msgid "Authenticate"
-msgstr "Otentikasi"
+msgstr "Autentikasi"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:53
 msgid "<big><b>Title</b></big>"
