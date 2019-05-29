@@ -184,6 +184,28 @@ grab_accelerator (FlashbackShell *shell,
 }
 
 static gboolean
+ungrab_accelerator (FlashbackShell *shell,
+                    guint           action,
+                    const gchar    *sender)
+{
+  const gchar *grabbed_by;
+  gboolean success;
+
+  grabbed_by = g_hash_table_lookup (shell->grabbed_accelerators,
+                                    GUINT_TO_POINTER (action));
+
+  if (g_strcmp0 (grabbed_by, sender) != 0)
+    return FALSE;
+
+  success = real_ungrab (shell, action);
+
+  if (success)
+    g_hash_table_remove (shell->grabbed_accelerators, GUINT_TO_POINTER (action));
+
+  return success;
+}
+
+static gboolean
 handle_eval (FlashbackDBusShell    *dbus_shell,
              GDBusMethodInvocation *invocation,
              const gchar            action,
@@ -352,23 +374,50 @@ handle_ungrab_accelerator (FlashbackDBusShell    *dbus_shell,
                            gpointer               user_data)
 {
   FlashbackShell *shell;
-  gchar *sender;
-	gboolean success;
+  const gchar *sender;
+  gboolean success;
 
   shell = FLASHBACK_SHELL (user_data);
-  success = FALSE;
-  sender = (gchar *) g_hash_table_lookup (shell->grabbed_accelerators,
-                                          GUINT_TO_POINTER (action));
 
-  if (g_strcmp0 (sender, g_dbus_method_invocation_get_sender (invocation)) == 0)
-    {
-      success = real_ungrab (shell, action);
-
-      if (success)
-        g_hash_table_remove (shell->grabbed_accelerators, GUINT_TO_POINTER (action));
-    }
+  sender = g_dbus_method_invocation_get_sender (invocation);
+  success = ungrab_accelerator (shell, action, sender);
 
   flashback_dbus_shell_complete_ungrab_accelerator (dbus_shell, invocation, success);
+
+  return TRUE;
+}
+
+static gboolean
+handle_ungrab_accelerators (FlashbackDBusShell    *dbus_shell,
+                            GDBusMethodInvocation *invocation,
+                            GVariant              *actions,
+                            gpointer               user_data)
+{
+  FlashbackShell *shell;
+  const char *sender;
+  gboolean success;
+  GVariantIter iter;
+  GVariant *child;
+
+  shell = FLASHBACK_SHELL (user_data);
+
+  sender = g_dbus_method_invocation_get_sender (invocation);
+  success = TRUE;
+
+  g_variant_iter_init (&iter, actions);
+  while ((child = g_variant_iter_next_value (&iter)))
+    {
+      guint action;
+
+      g_variant_get (child, "u", &action);
+      g_variant_unref (child);
+
+      success &= ungrab_accelerator (shell, action, sender);
+    }
+
+  flashback_dbus_shell_complete_ungrab_accelerators (dbus_shell,
+                                                     invocation,
+                                                     success);
 
   return TRUE;
 }
@@ -406,6 +455,8 @@ name_appeared_handler (GDBusConnection *connection,
                     G_CALLBACK (handle_grab_accelerators), shell);
   g_signal_connect (skeleton, "handle-ungrab-accelerator",
                     G_CALLBACK (handle_ungrab_accelerator), shell);
+  g_signal_connect (skeleton, "handle-ungrab-accelerators",
+                    G_CALLBACK (handle_ungrab_accelerators), shell);
 
   flashback_dbus_shell_set_mode (skeleton, "");
   flashback_dbus_shell_set_overview_active (skeleton, FALSE);
