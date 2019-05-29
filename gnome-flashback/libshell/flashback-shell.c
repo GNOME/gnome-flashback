@@ -110,7 +110,7 @@ real_ungrab (FlashbackShell *shell,
 }
 
 static gboolean
-ungrab_accelerator (gpointer key,
+remove_accelerator (gpointer key,
                     gpointer value,
                     gpointer user_data)
 {
@@ -148,7 +148,7 @@ name_vanished_handler (GDBusConnection *connection,
   data->shell = shell;
 
   g_hash_table_foreach_remove (shell->grabbed_accelerators,
-                               ungrab_accelerator, data);
+                               remove_accelerator, data);
   g_free (data);
 
   g_bus_unwatch_name (id);
