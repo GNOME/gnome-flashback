@@ -37,15 +37,12 @@
 #include <xcb/randr.h>
 
 #include "gf-backend-x11-private.h"
-#include "gf-crtc-private.h"
+#include "gf-crtc-xrandr-private.h"
 #include "gf-monitor-config-manager-private.h"
 #include "gf-monitor-manager-xrandr-private.h"
 #include "gf-monitor-private.h"
 #include "gf-monitor-tiled-private.h"
 #include "gf-output-private.h"
-
-#define ALL_ROTATIONS (RR_Rotate_0 | RR_Rotate_90 | RR_Rotate_180 | RR_Rotate_270)
-#define ALL_TRANSFORMS ((1 << (GF_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
 /* Look for DPI_FALLBACK in:
  * http://git.gnome.org/browse/gnome-settings-daemon/tree/plugins/xsettings/gsd-xsettings-manager.c
@@ -177,8 +174,9 @@ gf_monitor_manager_xrandr_rebuild_derived (GfMonitorManager *manager,
 
 static gboolean
 xrandr_set_crtc_config (GfMonitorManagerXrandr *xrandr,
+                        GfCrtc                 *crtc,
                         gboolean                save_timestamp,
-                        xcb_randr_crtc_t        crtc,
+                        xcb_randr_crtc_t        xrandr_crtc,
                         xcb_timestamp_t         timestamp,
                         gint                    x,
                         gint                    y,
@@ -187,33 +185,16 @@ xrandr_set_crtc_config (GfMonitorManagerXrandr *xrandr,
                         xcb_randr_output_t     *outputs,
                         gint                    n_outputs)
 {
-  xcb_connection_t *xcb_conn;
-  xcb_timestamp_t config_timestamp;
-  xcb_randr_set_crtc_config_cookie_t cookie;
-  xcb_randr_set_crtc_config_reply_t *reply;
-  xcb_generic_error_t *xcb_error;
+  xcb_timestamp_t new_timestamp;
 
-  xcb_conn = XGetXCBConnection (xrandr->xdisplay);
-  config_timestamp = xrandr->resources->configTimestamp;
-  cookie = xcb_randr_set_crtc_config (xcb_conn, crtc,
-                                      timestamp, config_timestamp,
-                                      x, y, mode, rotation,
-                                      n_outputs, outputs);
-
-  xcb_error = NULL;
-  reply = xcb_randr_set_crtc_config_reply (xcb_conn, cookie, &xcb_error);
-  if (xcb_error || !reply)
-    {
-      g_free (xcb_error);
-      g_free (reply);
-
-      return FALSE;
-    }
+  if (!gf_crtc_xrandr_set_config (crtc, xrandr_crtc, timestamp,
+                                  x, y, mode, rotation,
+                                  outputs, n_outputs,
+                                  &new_timestamp))
+    return FALSE;
 
   if (save_timestamp)
-    xrandr->last_xrandr_set_timestamp = reply->timestamp;
-
-  g_free (reply);
+    xrandr->last_xrandr_set_timestamp = new_timestamp;
 
   return TRUE;
 }
@@ -471,45 +452,6 @@ read_output_edid (GfMonitorManagerXrandr *xrandr,
   return NULL;
 }
 
-static GfMonitorTransform
-gf_monitor_transform_from_xrandr (Rotation rotation)
-{
-  static const GfMonitorTransform y_reflected_map[4] = {
-    GF_MONITOR_TRANSFORM_FLIPPED_180,
-    GF_MONITOR_TRANSFORM_FLIPPED_90,
-    GF_MONITOR_TRANSFORM_FLIPPED,
-    GF_MONITOR_TRANSFORM_FLIPPED_270
-  };
-  GfMonitorTransform ret;
-
-  switch (rotation & 0x7F)
-    {
-      default:
-      case RR_Rotate_0:
-        ret = GF_MONITOR_TRANSFORM_NORMAL;
-        break;
-
-      case RR_Rotate_90:
-        ret = GF_MONITOR_TRANSFORM_90;
-        break;
-
-      case RR_Rotate_180:
-        ret = GF_MONITOR_TRANSFORM_180;
-        break;
-
-      case RR_Rotate_270:
-        ret = GF_MONITOR_TRANSFORM_270;
-        break;
-    }
-
-  if (rotation & RR_Reflect_X)
-    return ret + 4;
-  else if (rotation & RR_Reflect_Y)
-    return y_reflected_map[ret];
-  else
-    return ret;
-}
-
 static xcb_randr_rotation_t
 gf_monitor_transform_to_xrandr (GfMonitorTransform transform)
 {
@@ -557,39 +499,6 @@ gf_monitor_transform_to_xrandr (GfMonitorTransform transform)
     }
 
   return rotation;
-}
-
-static GfMonitorTransform
-gf_monitor_transform_from_xrandr_all (Rotation rotation)
-{
-  GfMonitorTransform ret;
-
-  /* Handle the common cases first (none or all) */
-  if (rotation == 0 || rotation == RR_Rotate_0)
-    return (1 << GF_MONITOR_TRANSFORM_NORMAL);
-
-  /* All rotations and one reflection -> all of them by composition */
-  if ((rotation & ALL_ROTATIONS) &&
-      ((rotation & RR_Reflect_X) || (rotation & RR_Reflect_Y)))
-    return ALL_TRANSFORMS;
-
-  ret = 1 << GF_MONITOR_TRANSFORM_NORMAL;
-  if (rotation & RR_Rotate_90)
-    ret |= 1 << GF_MONITOR_TRANSFORM_90;
-  if (rotation & RR_Rotate_180)
-    ret |= 1 << GF_MONITOR_TRANSFORM_180;
-  if (rotation & RR_Rotate_270)
-    ret |= 1 << GF_MONITOR_TRANSFORM_270;
-  if (rotation & (RR_Rotate_0 | RR_Reflect_X))
-    ret |= 1 << GF_MONITOR_TRANSFORM_FLIPPED;
-  if (rotation & (RR_Rotate_90 | RR_Reflect_X))
-    ret |= 1 << GF_MONITOR_TRANSFORM_FLIPPED_90;
-  if (rotation & (RR_Rotate_180 | RR_Reflect_X))
-    ret |= 1 << GF_MONITOR_TRANSFORM_FLIPPED_180;
-  if (rotation & (RR_Rotate_270 | RR_Reflect_X))
-    ret |= 1 << GF_MONITOR_TRANSFORM_FLIPPED_270;
-
-  return ret;
 }
 
 static gboolean
@@ -1199,6 +1108,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
           crtc->rect.y + crtc->rect.height > height)
         {
           xrandr_set_crtc_config (xrandr,
+                                  crtc,
                                   save_timestamp,
                                   (xcb_randr_crtc_t) crtc->crtc_id,
                                   XCB_CURRENT_TIME,
@@ -1229,6 +1139,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
         continue;
 
       xrandr_set_crtc_config (xrandr,
+                              crtc,
                               save_timestamp,
                               (xcb_randr_crtc_t) crtc->crtc_id,
                               XCB_CURRENT_TIME,
@@ -1286,6 +1197,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
 
           rotation = gf_monitor_transform_to_xrandr (crtc_info->transform);
           if (!xrandr_set_crtc_config (xrandr,
+                                       crtc,
                                        save_timestamp,
                                        (xcb_randr_crtc_t) crtc->crtc_id,
                                        XCB_CURRENT_TIME,
@@ -1620,29 +1532,12 @@ gf_monitor_manager_xrandr_read_current (GfMonitorManager *manager)
   for (i = 0; i < (guint) resources->ncrtc; i++)
     {
       XRRCrtcInfo *xrandr_crtc;
+      RRCrtc crtc_id;
       GfCrtc *crtc;
 
-      xrandr_crtc = XRRGetCrtcInfo (xrandr->xdisplay, resources, resources->crtcs[i]);
-      crtc = g_object_new (GF_TYPE_CRTC, NULL);
-
-      crtc->monitor_manager = manager;
-      crtc->crtc_id = resources->crtcs[i];
-      crtc->rect.x = xrandr_crtc->x;
-      crtc->rect.y = xrandr_crtc->y;
-      crtc->rect.width = xrandr_crtc->width;
-      crtc->rect.height = xrandr_crtc->height;
-      crtc->is_dirty = FALSE;
-      crtc->transform = gf_monitor_transform_from_xrandr (xrandr_crtc->rotation);
-      crtc->all_transforms = gf_monitor_transform_from_xrandr_all (xrandr_crtc->rotations);
-
-      for (j = 0; j < (guint) resources->nmode; j++)
-        {
-          if (resources->modes[j].id == xrandr_crtc->mode)
-            {
-              crtc->current_mode = g_list_nth_data (manager->modes, j);
-              break;
-            }
-        }
+      crtc_id = resources->crtcs[i];
+      xrandr_crtc = XRRGetCrtcInfo (xrandr->xdisplay, resources, crtc_id);
+      crtc = gf_create_xrandr_crtc (manager, xrandr_crtc, crtc_id, resources);
 
       manager->crtcs = g_list_append (manager->crtcs, crtc);
       XRRFreeCrtcInfo (xrandr_crtc);
@@ -2120,6 +2015,18 @@ gf_monitor_manager_xrandr_class_init (GfMonitorManagerXrandrClass *xrandr_class)
 static void
 gf_monitor_manager_xrandr_init (GfMonitorManagerXrandr *xrandr)
 {
+}
+
+Display *
+gf_monitor_manager_xrandr_get_xdisplay (GfMonitorManagerXrandr *xrandr)
+{
+  return xrandr->xdisplay;
+}
+
+XRRScreenResources *
+gf_monitor_manager_xrandr_get_resources (GfMonitorManagerXrandr *xrandr)
+{
+  return xrandr->resources;
 }
 
 gboolean

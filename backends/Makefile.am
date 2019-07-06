@@ -31,6 +31,8 @@ libbackends_la_SOURCES = \
 	gf-backend.h \
 	gf-crtc-mode.c \
 	gf-crtc-private.h \
+	gf-crtc-xrandr-private.h \
+	gf-crtc-xrandr.c \
 	gf-crtc.c \
 	gf-direction.h \
 	gf-display-config-shared.h \

@@ -26,6 +26,8 @@
 #define GF_MONITOR_MANAGER_XRANDR_PRIVATE_H
 
 #include <X11/Xlib.h>
+#include <X11/extensions/Xrandr.h>
+
 #include "gf-monitor-manager-private.h"
 
 G_BEGIN_DECLS
@@ -34,8 +36,12 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (GfMonitorManagerXrandr, gf_monitor_manager_xrandr,
                       GF, MONITOR_MANAGER_XRANDR, GfMonitorManager)
 
-gboolean gf_monitor_manager_xrandr_handle_xevent (GfMonitorManagerXrandr *xrandr,
-                                                  XEvent                 *event);
+Display            *gf_monitor_manager_xrandr_get_xdisplay  (GfMonitorManagerXrandr *xrandr);
+
+XRRScreenResources *gf_monitor_manager_xrandr_get_resources (GfMonitorManagerXrandr *xrandr);
+
+gboolean            gf_monitor_manager_xrandr_handle_xevent (GfMonitorManagerXrandr *xrandr,
+                                                             XEvent                 *event);
 
 G_END_DECLS
 
