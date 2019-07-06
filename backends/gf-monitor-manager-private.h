@@ -156,6 +156,8 @@ GType                       gf_monitor_manager_get_type                     (voi
 
 GfBackend                  *gf_monitor_manager_get_backend                  (GfMonitorManager            *manager);
 
+void                        gf_monitor_manager_setup                        (GfMonitorManager            *manager);
+
 void                        gf_monitor_manager_rebuild_derived              (GfMonitorManager            *manager,
                                                                              GfMonitorsConfig            *config);
 

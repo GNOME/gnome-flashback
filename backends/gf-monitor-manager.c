@@ -1971,11 +1971,6 @@ gf_monitor_manager_constructed (GObject *object)
 
   manager->current_switch_config = GF_MONITOR_SWITCH_CONFIG_UNKNOWN;
 
-  manager->config_manager = gf_monitor_config_manager_new (manager);
-
-  gf_monitor_manager_read_current_state (manager);
-  manager_class->ensure_initial_config (manager);
-
   priv->bus_name_id = g_bus_own_name (G_BUS_TYPE_SESSION,
                                       "org.gnome.Mutter.DisplayConfig",
                                       G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
@@ -1985,8 +1980,6 @@ gf_monitor_manager_constructed (GObject *object)
                                       name_lost_cb,
                                       g_object_ref (manager),
                                       g_object_unref);
-
-  priv->in_init = FALSE;
 }
 
 static void
@@ -2125,11 +2118,6 @@ gf_monitor_manager_class_init (GfMonitorManagerClass *manager_class)
 static void
 gf_monitor_manager_init (GfMonitorManager *manager)
 {
-  GfMonitorManagerPrivate *priv;
-
-  priv = gf_monitor_manager_get_instance_private (manager);
-
-  priv->in_init = TRUE;
 }
 
 GfBackend *
@@ -2140,6 +2128,25 @@ gf_monitor_manager_get_backend (GfMonitorManager *manager)
   priv = gf_monitor_manager_get_instance_private (manager);
 
   return priv->backend;
+}
+
+void
+gf_monitor_manager_setup (GfMonitorManager *manager)
+{
+  GfMonitorManagerPrivate *priv;
+  GfMonitorManagerClass *manager_class;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
+
+  priv->in_init = TRUE;
+
+  manager->config_manager = gf_monitor_config_manager_new (manager);
+
+  gf_monitor_manager_read_current_state (manager);
+  manager_class->ensure_initial_config (manager);
+
+  priv->in_init = FALSE;
 }
 
 void

@@ -77,6 +77,8 @@ gf_backend_initable_init (GInitable     *initable,
   priv->settings = gf_settings_new (backend);
   priv->orientation_manager = gf_orientation_manager_new ();
 
+  priv->monitor_manager = create_monitor_manager (backend);
+
   return TRUE;
 }
 
@@ -109,7 +111,7 @@ gf_backend_real_post_init (GfBackend *backend)
 
   priv = gf_backend_get_instance_private (backend);
 
-  priv->monitor_manager = create_monitor_manager (backend);
+  gf_monitor_manager_setup (priv->monitor_manager);
 }
 
 static void
