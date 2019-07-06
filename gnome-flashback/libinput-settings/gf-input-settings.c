@@ -361,6 +361,17 @@ set_tap_enabled (GfInputSettings *settings,
 }
 
 static void
+set_disable_while_typing (GfInputSettings *settings,
+                          GdkDevice       *device,
+                          gboolean         enabled)
+{
+  guchar value = (enabled) ? 1 : 0;
+
+  change_property (settings, device, "libinput Disable While Typing Enabled",
+                   XA_INTEGER, 8, &value, 1);
+}
+
+static void
 set_send_events (GfInputSettings          *settings,
                  GdkDevice                *device,
                  GDesktopDeviceSendEvents  mode)
@@ -767,6 +778,29 @@ update_touchpad_tap_enabled (GfInputSettings *settings,
 }
 
 static void
+update_touchpad_disable_while_typing (GfInputSettings *settings,
+                                      GdkDevice       *device)
+{
+  gboolean enabled;
+
+  if (device && gdk_device_get_source (device) != GDK_SOURCE_TOUCHPAD)
+    return;
+
+  enabled = g_settings_get_boolean (settings->touchpad, "disable-while-typing");
+
+  if (device)
+    {
+      device_set_bool_setting (settings, device,
+                               set_disable_while_typing, enabled);
+    }
+  else
+    {
+      set_bool_setting (settings, GDK_SOURCE_TOUCHPAD,
+                        set_disable_while_typing, enabled);
+    }
+}
+
+static void
 update_touchpad_send_events (GfInputSettings *settings,
                              GdkDevice       *device)
 {
@@ -996,6 +1030,8 @@ settings_changed_cb (GSettings       *gsettings,
         update_touchpad_natural_scroll (settings, NULL);
       else if (strcmp (key, "tap-to-click") == 0)
         update_touchpad_tap_enabled (settings, NULL);
+      else if (strcmp (key, "disable-while-typing") == 0)
+        update_touchpad_disable_while_typing (settings, NULL);
       else if (strcmp (key, "send-events") == 0)
         update_touchpad_send_events (settings, NULL);
       else if (strcmp (key, "edge-scrolling-enabled") == 0)
@@ -1265,6 +1301,7 @@ apply_device_settings (GfInputSettings *settings,
   update_touchpad_speed (settings, device);
   update_touchpad_natural_scroll (settings, device);
   update_touchpad_tap_enabled (settings, device);
+  update_touchpad_disable_while_typing (settings, device);
   update_touchpad_send_events (settings, device);
   update_touchpad_two_finger_scroll (settings, device);
   update_touchpad_edge_scroll (settings, device);
