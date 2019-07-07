@@ -22,8 +22,8 @@
  * - src/backends/meta-monitor-manager-private.h
  */
 
-#ifndef GF_CRTC_MODE_PRIVATE_H
-#define GF_CRTC_MODE_PRIVATE_H
+#ifndef GF_CRTC_PRIVATE_H
+#define GF_CRTC_PRIVATE_H
 
 #include <glib-object.h>
 
