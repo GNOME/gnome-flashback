@@ -74,6 +74,8 @@ libbackends_la_SOURCES = \
 	gf-orientation-manager-private.h \
 	gf-orientation-manager.c \
 	gf-output-private.h \
+	gf-output-xrandr-private.h \
+	gf-output-xrandr.c \
 	gf-output.c \
 	gf-rectangle-private.h \
 	gf-rectangle.c \

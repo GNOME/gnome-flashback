@@ -3,7 +3,7 @@
  * Copyright (C) 2003 Rob Adams
  * Copyright (C) 2004-2006 Elijah Newren
  * Copyright (C) 2013 Red Hat Inc.
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,8 @@ G_DECLARE_FINAL_TYPE (GfMonitorManagerXrandr, gf_monitor_manager_xrandr,
                       GF, MONITOR_MANAGER_XRANDR, GfMonitorManager)
 
 Display            *gf_monitor_manager_xrandr_get_xdisplay  (GfMonitorManagerXrandr *xrandr);
+
+gboolean            gf_monitor_manager_xrandr_has_randr15   (GfMonitorManagerXrandr *xrandr);
 
 XRRScreenResources *gf_monitor_manager_xrandr_get_resources (GfMonitorManagerXrandr *xrandr);
 
