@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2014 Red Hat
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,11 +41,13 @@ gf_backend_native_post_init (GfBackend *backend)
 }
 
 static GfMonitorManager *
-gf_backend_native_create_monitor_manager (GfBackend *backend)
+gf_backend_native_create_monitor_manager (GfBackend  *backend,
+                                          GError    **error)
 {
-  return g_object_new (GF_TYPE_MONITOR_MANAGER_KMS,
-                       "backend", backend,
-                       NULL);
+  return g_initable_new (GF_TYPE_MONITOR_MANAGER_KMS,
+                         NULL, error,
+                         "backend", backend,
+                         NULL);
 }
 
 static void

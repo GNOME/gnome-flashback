@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2014 Red Hat
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,9 +37,10 @@ struct _GfBackendClass
 {
   GObjectClass parent_class;
 
-  void               (* post_init)              (GfBackend *backend);
+  void               (* post_init)              (GfBackend  *backend);
 
-  GfMonitorManager * (* create_monitor_manager) (GfBackend *backend);
+  GfMonitorManager * (* create_monitor_manager) (GfBackend  *backend,
+                                                 GError    **error);
 };
 
 GfOrientationManager *gf_backend_get_orientation_manager (GfBackend *backend);

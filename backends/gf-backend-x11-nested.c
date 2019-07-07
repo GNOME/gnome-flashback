@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  * Copyright (C) 2017 Red Hat
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,7 +31,8 @@ struct _GfBackendX11Nested
 G_DEFINE_TYPE (GfBackendX11Nested, gf_backend_x11_nested, GF_TYPE_BACKEND_X11)
 
 static GfMonitorManager *
-gf_backend_x11_nested_create_monitor_manager (GfBackend *backend)
+gf_backend_x11_nested_create_monitor_manager (GfBackend  *backend,
+                                              GError    **error)
 {
   return g_object_new (GF_TYPE_MONITOR_MANAGER_DUMMY,
                        "backend", backend,

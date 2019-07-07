@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2014 Red Hat
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,8 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GfBackend, gf_backend, G_TYPE_OBJECT,
                                                          initable_iface_init))
 
 static GfMonitorManager *
-create_monitor_manager (GfBackend *backend)
+create_monitor_manager (GfBackend  *backend,
+                        GError    **error)
 {
   if (g_getenv ("DUMMY_MONITORS"))
     {
@@ -60,7 +61,7 @@ create_monitor_manager (GfBackend *backend)
                            NULL);
     }
 
-  return GF_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend);
+  return GF_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend, error);
 }
 
 static gboolean
@@ -77,7 +78,9 @@ gf_backend_initable_init (GInitable     *initable,
   priv->settings = gf_settings_new (backend);
   priv->orientation_manager = gf_orientation_manager_new ();
 
-  priv->monitor_manager = create_monitor_manager (backend);
+  priv->monitor_manager = create_monitor_manager (backend, error);
+  if (!priv->monitor_manager)
+    return FALSE;
 
   return TRUE;
 }
