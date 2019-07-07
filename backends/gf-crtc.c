@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2017 Red Hat
- * Copyright (C) 2018 Alberts Muktupāvels
+ * Copyright (C) 2018-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,8 +49,8 @@ gf_crtc_init (GfCrtc *crtc)
 {
 }
 
-GfMonitorManager *
-gf_crtc_get_monitor_manager (GfCrtc *crtc)
+GfGpu *
+gf_crtc_get_gpu (GfCrtc *crtc)
 {
-  return crtc->monitor_manager;
+  return crtc->gpu;
 }

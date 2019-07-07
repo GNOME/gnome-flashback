@@ -25,6 +25,7 @@
 #include <string.h>
 
 #include "gf-crtc-private.h"
+#include "gf-gpu-private.h"
 #include "gf-monitor-manager-private.h"
 #include "gf-monitor-private.h"
 #include "gf-monitor-spec-private.h"
@@ -52,16 +53,16 @@
 
 typedef struct
 {
-  GfMonitorManager *monitor_manager;
+  GfGpu         *gpu;
 
-  GList            *outputs;
-  GList            *modes;
-  GHashTable       *mode_ids;
+  GList         *outputs;
+  GList         *modes;
+  GHashTable    *mode_ids;
 
-  GfMonitorMode    *preferred_mode;
-  GfMonitorMode    *current_mode;
+  GfMonitorMode *preferred_mode;
+  GfMonitorMode *current_mode;
 
-  GfMonitorSpec    *spec;
+  GfMonitorSpec *spec;
 
   /*
    * The primary or first output for this monitor, 0 if we can't figure out.
@@ -72,14 +73,14 @@ typedef struct
    * (it's an attempt to keep windows on the same monitor, and preferably on
    * the primary one).
    */
-  glong             winsys_id;
+  glong          winsys_id;
 } GfMonitorPrivate;
 
 enum
 {
   PROP_0,
 
-  PROP_MONITOR_MANAGER,
+  PROP_GPU,
 
   LAST_PROP
 };
@@ -278,8 +279,8 @@ gf_monitor_get_property (GObject    *object,
 
   switch (property_id)
     {
-      case PROP_MONITOR_MANAGER:
-        g_value_set_object (value, priv->monitor_manager);
+      case PROP_GPU:
+        g_value_set_object (value, priv->gpu);
         break;
 
       default:
@@ -302,8 +303,8 @@ gf_monitor_set_property (GObject      *object,
 
   switch (property_id)
     {
-      case PROP_MONITOR_MANAGER:
-        priv->monitor_manager = g_value_get_object (value);
+      case PROP_GPU:
+        priv->gpu = g_value_get_object (value);
         break;
 
       default:
@@ -315,11 +316,11 @@ gf_monitor_set_property (GObject      *object,
 static void
 gf_monitor_install_properties (GObjectClass *object_class)
 {
-  monitor_properties[PROP_MONITOR_MANAGER] =
-    g_param_spec_object ("monitor-manager",
-                         "GfMonitorManager",
-                         "GfMonitorManager",
-                         GF_TYPE_MONITOR_MANAGER,
+  monitor_properties[PROP_GPU] =
+    g_param_spec_object ("gpu",
+                         "GfGpu",
+                         "GfGpu",
+                         GF_TYPE_GPU,
                          G_PARAM_READWRITE |
                          G_PARAM_STATIC_STRINGS |
                          G_PARAM_CONSTRUCT_ONLY);
@@ -352,14 +353,14 @@ gf_monitor_init (GfMonitor *monitor)
   priv->mode_ids = g_hash_table_new (g_str_hash, g_str_equal);
 }
 
-GfMonitorManager *
-gf_monitor_get_monitor_manager (GfMonitor *monitor)
+GfGpu *
+gf_monitor_get_gpu (GfMonitor *monitor)
 {
   GfMonitorPrivate *priv;
 
   priv = gf_monitor_get_instance_private (monitor);
 
-  return priv->monitor_manager;
+  return priv->gpu;
 }
 
 gboolean
@@ -809,12 +810,14 @@ gf_monitor_calculate_mode_scale (GfMonitor     *monitor,
                                  GfMonitorMode *monitor_mode)
 {
   GfMonitorPrivate *priv;
+  GfMonitorManager *monitor_manager;
   GfBackend *backend;
   GfSettings *settings;
   gint global_scaling_factor;
 
   priv = gf_monitor_get_instance_private (monitor);
-  backend = gf_monitor_manager_get_backend (priv->monitor_manager);
+  monitor_manager = gf_gpu_get_monitor_manager (priv->gpu);
+  backend = gf_monitor_manager_get_backend (monitor_manager);
   settings = gf_backend_get_settings (backend);
 
   if (gf_settings_get_global_scaling_factor (settings, &global_scaling_factor))

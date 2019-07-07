@@ -53,11 +53,6 @@ initable_iface_init (GInitableIface *initable_iface)
   initable_iface->init = gf_monitor_manager_kms_initable_init;
 }
 
-static void
-gf_monitor_manager_kms_read_current (GfMonitorManager *manager)
-{
-}
-
 static GBytes *
 gf_monitor_manager_kms_read_edid (GfMonitorManager *manager,
                                   GfOutput         *output)
@@ -160,7 +155,6 @@ gf_monitor_manager_kms_class_init (GfMonitorManagerKmsClass *kms_class)
 
   manager_class = GF_MONITOR_MANAGER_CLASS (kms_class);
 
-  manager_class->read_current = gf_monitor_manager_kms_read_current;
   manager_class->read_edid = gf_monitor_manager_kms_read_edid;
   manager_class->ensure_initial_config = gf_monitor_manager_kms_ensure_initial_config;
   manager_class->apply_monitors_config = gf_monitor_manager_kms_apply_monitors_config;

@@ -6,7 +6,7 @@
  * Copyright (C) 2003 Rob Adams
  * Copyright (C) 2004-2006 Elijah Newren
  * Copyright (C) 2013 Red Hat Inc.
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,11 +34,6 @@ struct _GfMonitorManagerDummy
 };
 
 G_DEFINE_TYPE (GfMonitorManagerDummy, gf_monitor_manager_dummy, GF_TYPE_MONITOR_MANAGER)
-
-static void
-gf_monitor_manager_dummy_read_current (GfMonitorManager *manager)
-{
-}
 
 static void
 gf_monitor_manager_dummy_ensure_initial_config (GfMonitorManager *manager)
@@ -110,7 +105,6 @@ gf_monitor_manager_dummy_class_init (GfMonitorManagerDummyClass *dummy_class)
 
   manager_class = GF_MONITOR_MANAGER_CLASS (dummy_class);
 
-  manager_class->read_current = gf_monitor_manager_dummy_read_current;
   manager_class->ensure_initial_config = gf_monitor_manager_dummy_ensure_initial_config;
   manager_class->apply_monitors_config = gf_monitor_manager_dummy_apply_monitors_config;
   manager_class->is_transform_handled = gf_monitor_manager_dummy_is_transform_handled;

@@ -1067,28 +1067,51 @@ rebuild_monitors (GfMonitorManager *manager)
       manager->monitors = NULL;
     }
 
-  for (l = manager->outputs; l; l = l->next)
+  for (l = manager->gpus; l; l = l->next)
     {
-      GfOutput *output = l->data;
+      GfGpu *gpu = l->data;
+      GList *k;
 
-      if (output->tile_info.group_id)
+      for (k = gf_gpu_get_outputs (gpu); k; k = k->next)
         {
-          if (is_main_tiled_monitor_output (output))
-            {
-              GfMonitorTiled *monitor_tiled;
+          GfOutput *output = k->data;
 
-              monitor_tiled = gf_monitor_tiled_new (manager, output);
-              manager->monitors = g_list_append (manager->monitors, monitor_tiled);
+          if (output->tile_info.group_id)
+            {
+              if (is_main_tiled_monitor_output (output))
+                {
+                  GfMonitorTiled *monitor_tiled;
+
+                  monitor_tiled = gf_monitor_tiled_new (gpu, output);
+                  manager->monitors = g_list_append (manager->monitors, monitor_tiled);
+                }
+            }
+          else
+            {
+              GfMonitorNormal *monitor_normal;
+
+              monitor_normal = gf_monitor_normal_new (gpu, output);
+              manager->monitors = g_list_append (manager->monitors, monitor_normal);
             }
         }
-      else
-        {
-          GfMonitorNormal *monitor_normal;
-
-          monitor_normal = gf_monitor_normal_new (manager, output);
-          manager->monitors = g_list_append (manager->monitors, monitor_normal);
-        }
     }
+}
+
+static GList *
+combine_gpu_lists (GfMonitorManager *manager,
+                   GList            * (*list_getter) (GfGpu *gpu))
+{
+  GList *list = NULL;
+  GList *l;
+
+  for (l = manager->gpus; l; l = l->next)
+    {
+      GfGpu *gpu = l->data;
+
+      list = g_list_concat (list, g_list_copy (list_getter (gpu)));
+    }
+
+  return list;
 }
 
 static gboolean
@@ -1097,6 +1120,9 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
 {
   GfMonitorManager *manager;
   GfMonitorManagerClass *manager_class;
+  GList *combined_modes;
+  GList *combined_outputs;
+  GList *combined_crtcs;
   GVariantBuilder crtc_builder;
   GVariantBuilder output_builder;
   GVariantBuilder mode_builder;
@@ -1108,11 +1134,15 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
   manager = GF_MONITOR_MANAGER (skeleton);
   manager_class = GF_MONITOR_MANAGER_GET_CLASS (skeleton);
 
+  combined_modes = combine_gpu_lists (manager, gf_gpu_get_modes);
+  combined_outputs = combine_gpu_lists (manager, gf_gpu_get_outputs);
+  combined_crtcs = combine_gpu_lists (manager, gf_gpu_get_crtcs);
+
   g_variant_builder_init (&crtc_builder, G_VARIANT_TYPE ("a(uxiiiiiuaua{sv})"));
   g_variant_builder_init (&output_builder, G_VARIANT_TYPE ("a(uxiausauaua{sv})"));
   g_variant_builder_init (&mode_builder, G_VARIANT_TYPE ("a(uxuudu)"));
 
-  for (l = manager->crtcs, i = 0; l; l = l->next, i++)
+  for (l = combined_crtcs, i = 0; l; l = l->next, i++)
     {
       GfCrtc *crtc = l->data;
       GVariantBuilder transforms;
@@ -1124,7 +1154,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
           g_variant_builder_add (&transforms, "u", j);
 
       if (crtc->current_mode)
-        current_mode_index = g_list_index (manager->modes, crtc->current_mode);
+        current_mode_index = g_list_index (combined_modes, crtc->current_mode);
       else
         current_mode_index = -1;
 
@@ -1141,7 +1171,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
                              NULL /* properties */);
     }
 
-  for (l = manager->outputs, i = 0; l; l = l->next, i++)
+  for (l = combined_outputs, i = 0; l; l = l->next, i++)
     {
       GfOutput *output = l->data;
       GVariantBuilder crtcs, modes, clones, properties;
@@ -1156,7 +1186,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
           guint possible_crtc_index;
 
           possible_crtc = output->possible_crtcs[j];
-          possible_crtc_index = g_list_index (manager->crtcs, possible_crtc);
+          possible_crtc_index = g_list_index (combined_crtcs, possible_crtc);
 
           g_variant_builder_add (&crtcs, "u", possible_crtc_index);
         }
@@ -1166,7 +1196,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
         {
           guint mode_index;
 
-          mode_index = g_list_index (manager->modes, output->modes[j]);
+          mode_index = g_list_index (combined_modes, output->modes[j]);
           g_variant_builder_add (&modes, "u", mode_index);
 
         }
@@ -1176,7 +1206,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
         {
           guint possible_clone_index;
 
-          possible_clone_index = g_list_index (manager->outputs,
+          possible_clone_index = g_list_index (combined_outputs,
                                                output->possible_clones[j]);
 
           g_variant_builder_add (&clones, "u", possible_clone_index);
@@ -1244,7 +1274,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
                                                 output->tile_info.tile_h));
         }
 
-      crtc_index = output->crtc ? g_list_index (manager->crtcs, output->crtc) : -1;
+      crtc_index = output->crtc ? g_list_index (combined_crtcs, output->crtc) : -1;
 
       g_variant_builder_add (&output_builder, "(uxiausauaua{sv})",
                              i, /* ID */
@@ -1257,7 +1287,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
                              &properties);
     }
 
-  for (l = manager->modes, i = 0; l; l = l->next, i++)
+  for (l = combined_modes, i = 0; l; l = l->next, i++)
     {
       GfCrtcMode *mode = l->data;
 
@@ -1285,6 +1315,10 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
                                                  g_variant_builder_end (&mode_builder),
                                                  max_screen_width, max_screen_height);
 
+  g_list_free (combined_modes);
+  g_list_free (combined_outputs);
+  g_list_free (combined_crtcs);
+
   return TRUE;
 }
 
@@ -1297,6 +1331,7 @@ gf_monitor_manager_handle_change_backlight (GfDBusDisplayConfig   *skeleton,
 {
   GfMonitorManager *manager;
   GfMonitorManagerClass *manager_class;
+  GList *combined_outputs;
   GfOutput *output;
 
   manager = GF_MONITOR_MANAGER (skeleton);
@@ -1310,15 +1345,20 @@ gf_monitor_manager_handle_change_backlight (GfDBusDisplayConfig   *skeleton,
       return TRUE;
     }
 
-  if (output_index >= g_list_length (manager->outputs))
+  combined_outputs = combine_gpu_lists (manager, gf_gpu_get_outputs);
+
+  if (output_index >= g_list_length (combined_outputs))
+
     {
+      g_list_free (combined_outputs);
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
                                              "Invalid output id");
       return TRUE;
     }
 
-  output = g_list_nth_data (manager->outputs, output_index);
+  output = g_list_nth_data (combined_outputs, output_index);
+  g_list_free (combined_outputs);
 
   if (value < 0 || value > 100)
     {
@@ -1353,6 +1393,7 @@ gf_monitor_manager_handle_get_crtc_gamma (GfDBusDisplayConfig   *skeleton,
 {
   GfMonitorManager *manager;
   GfMonitorManagerClass *manager_class;
+  GList *combined_crtcs;
   GfCrtc *crtc;
   gsize size;
   gushort *red;
@@ -1376,15 +1417,19 @@ gf_monitor_manager_handle_get_crtc_gamma (GfDBusDisplayConfig   *skeleton,
       return TRUE;
     }
 
-  if (crtc_id >= g_list_length (manager->crtcs))
+  combined_crtcs = combine_gpu_lists (manager, gf_gpu_get_crtcs);
+
+  if (crtc_id >= g_list_length (combined_crtcs))
     {
+      g_list_free (combined_crtcs);
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
                                              "Invalid crtc id");
       return TRUE;
     }
 
-  crtc = g_list_nth_data (manager->crtcs, crtc_id);
+  crtc = g_list_nth_data (combined_crtcs, crtc_id);
+  g_list_free (combined_crtcs);
 
   if (manager_class->get_crtc_gamma)
     {
@@ -1425,6 +1470,7 @@ gf_monitor_manager_handle_set_crtc_gamma (GfDBusDisplayConfig   *skeleton,
 {
   GfMonitorManager *manager;
   GfMonitorManagerClass *manager_class;
+  GList *combined_crtcs;
   GfCrtc *crtc;
   GBytes *red_bytes;
   GBytes *green_bytes;
@@ -1445,15 +1491,19 @@ gf_monitor_manager_handle_set_crtc_gamma (GfDBusDisplayConfig   *skeleton,
       return TRUE;
     }
 
-  if (crtc_id >= g_list_length (manager->crtcs))
+  combined_crtcs = combine_gpu_lists (manager, gf_gpu_get_crtcs);
+
+  if (crtc_id >= g_list_length (combined_crtcs))
     {
+      g_list_free (combined_crtcs);
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
                                              "Invalid crtc id");
       return TRUE;
     }
 
-  crtc = g_list_nth_data (manager->crtcs, crtc_id);
+  crtc = g_list_nth_data (combined_crtcs, crtc_id);
+  g_list_free (combined_crtcs);
 
   red_bytes = g_variant_get_data_as_bytes (red_v);
   green_bytes = g_variant_get_data_as_bytes (green_v);
@@ -2012,10 +2062,7 @@ gf_monitor_manager_finalize (GObject *object)
 
   manager = GF_MONITOR_MANAGER (object);
 
-  g_list_free_full (manager->outputs, g_object_unref);
-  g_list_free_full (manager->modes, g_object_unref);
-  g_list_free_full (manager->crtcs, g_object_unref);
-
+  g_list_free_full (manager->gpus, g_object_unref);
   g_list_free_full (manager->logical_monitors, g_object_unref);
 
   G_OBJECT_CLASS (gf_monitor_manager_parent_class)->finalize (object);
@@ -2218,16 +2265,17 @@ gf_monitor_manager_get_primary_logical_monitor (GfMonitorManager *manager)
   return manager->primary_logical_monitor;
 }
 
-GList *
-gf_monitor_manager_get_outputs (GfMonitorManager *manager)
+void
+gf_monitor_manager_add_gpu (GfMonitorManager *manager,
+                            GfGpu            *gpu)
 {
-  return manager->outputs;
+  manager->gpus = g_list_append (manager->gpus, gpu);
 }
 
 GList *
-gf_monitor_manager_get_crtcs (GfMonitorManager *manager)
+gf_monitor_manager_get_gpus (GfMonitorManager *manager)
 {
-  return manager->crtcs;
+  return manager->gpus;
 }
 
 gboolean
@@ -2235,11 +2283,11 @@ gf_monitor_manager_has_hotplug_mode_update (GfMonitorManager *manager)
 {
   GList *l;
 
-  for (l = manager->outputs; l; l = l->next)
+  for (l = manager->gpus; l; l = l->next)
     {
-      GfOutput *output = l->data;
+      GfGpu *gpu = l->data;
 
-      if (output->hotplug_mode_update)
+      if (gf_gpu_has_hotplug_mode_update (gpu))
         return TRUE;
     }
 
@@ -2249,26 +2297,23 @@ gf_monitor_manager_has_hotplug_mode_update (GfMonitorManager *manager)
 void
 gf_monitor_manager_read_current_state (GfMonitorManager *manager)
 {
-  GList *old_outputs;
-  GList *old_crtcs;
-  GList *old_modes;
-
-  /* Some implementations of read_current use the existing information
-   * we have available, so don't free the old configuration until after
-   * read_current finishes.
-   */
-  old_outputs = manager->outputs;
-  old_crtcs = manager->crtcs;
-  old_modes = manager->modes;
+  GList *l;
 
   manager->serial++;
-  GF_MONITOR_MANAGER_GET_CLASS (manager)->read_current (manager);
+
+  for (l = manager->gpus; l; l = l->next)
+    {
+      GfGpu *gpu = l->data;
+      GError *error = NULL;
+
+      if (!gf_gpu_read_current (gpu, &error))
+        {
+          g_warning ("Failed to read current KMS state: %s", error->message);
+          g_clear_error (&error);
+        }
+    }
 
   rebuild_monitors (manager);
-
-  g_list_free_full (old_outputs, g_object_unref);
-  g_list_free_full (old_modes, g_object_unref);
-  g_list_free_full (old_crtcs, g_object_unref);
 }
 
 void

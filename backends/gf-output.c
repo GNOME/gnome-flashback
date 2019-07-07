@@ -6,7 +6,7 @@
  * Copyright (C) 2003 Rob Adams
  * Copyright (C) 2004-2006 Elijah Newren
  * Copyright (C) 2013 Red Hat Inc.
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  * Copyright (C) 2017 Red Hat
  *
  * This program is free software: you can redistribute it and/or modify
@@ -68,10 +68,10 @@ gf_output_init (GfOutput *output)
 {
 }
 
-GfMonitorManager *
-gf_output_get_monitor_manager (GfOutput *output)
+GfGpu *
+gf_output_get_gpu (GfOutput *output)
 {
-  return output->monitor_manager;
+  return output->gpu;
 }
 
 void

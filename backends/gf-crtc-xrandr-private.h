@@ -26,11 +26,11 @@
 #include <xcb/randr.h>
 
 #include "gf-crtc-private.h"
-#include "gf-monitor-manager-xrandr-private.h"
+#include "gf-gpu-xrandr-private.h"
 
 G_BEGIN_DECLS
 
-GfCrtc   *gf_create_xrandr_crtc     (GfMonitorManager     *monitor_manager,
+GfCrtc   *gf_create_xrandr_crtc     (GfGpuXrandr          *gpu_xrandr,
                                      XRRCrtcInfo          *xrandr_crtc,
                                      RRCrtc                crtc_id,
                                      XRRScreenResources   *resources);

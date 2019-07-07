@@ -59,14 +59,7 @@ struct _GfMonitorManager
   gint                         screen_width;
   gint                         screen_height;
 
-  /* Outputs refer to physical screens,
-   * CRTCs refer to stuff that can drive outputs
-   * (like encoders, but less tied to the HW),
-   * while logical_monitors refer to logical ones.
-   */
-  GList                       *outputs;
-  GList                       *crtcs;
-  GList                       *modes;
+  GList                       *gpus;
 
   GList                       *monitors;
 
@@ -84,8 +77,6 @@ struct _GfMonitorManager
 typedef struct
 {
   GfDBusDisplayConfigSkeletonClass parent_class;
-
-  void                         (* read_current)                 (GfMonitorManager            *manager);
 
   gchar                      * (* get_edid_file)                (GfMonitorManager            *manager,
                                                                  GfOutput                    *output);
@@ -174,9 +165,11 @@ GList                      *gf_monitor_manager_get_monitors                 (GfM
 
 GfLogicalMonitor           *gf_monitor_manager_get_primary_logical_monitor  (GfMonitorManager            *manager);
 
-GList                      *gf_monitor_manager_get_outputs                  (GfMonitorManager            *manager);
+void                        gf_monitor_manager_add_gpu                      (GfMonitorManager            *manager,
+                                                                             GfGpu                       *gpu);
 
-GList                      *gf_monitor_manager_get_crtcs                    (GfMonitorManager            *manager);
+GList                      *gf_monitor_manager_get_gpus                     (GfMonitorManager            *manager);
+
 
 gboolean                    gf_monitor_manager_has_hotplug_mode_update      (GfMonitorManager            *manager);
 void                        gf_monitor_manager_read_current_state           (GfMonitorManager            *manager);

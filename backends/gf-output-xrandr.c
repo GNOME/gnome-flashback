@@ -36,10 +36,12 @@
 static Display *
 xdisplay_from_output (GfOutput *output)
 {
+  GfGpu *gpu;
   GfMonitorManager *monitor_manager;
   GfMonitorManagerXrandr *monitor_manager_xrandr;
 
-  monitor_manager = gf_output_get_monitor_manager (output);
+  gpu = gf_output_get_gpu (output);
+  monitor_manager = gf_gpu_get_monitor_manager (gpu);
   monitor_manager_xrandr = GF_MONITOR_MANAGER_XRANDR (monitor_manager);
 
   return gf_monitor_manager_xrandr_get_xdisplay (monitor_manager_xrandr);
@@ -376,6 +378,7 @@ output_get_connector_type (GfOutput *output)
 static void
 output_get_tile_info (GfOutput *output)
 {
+  GfGpu *gpu;
   GfMonitorManager *monitor_manager;
   GfMonitorManagerXrandr *monitor_manager_xrandr;
   Display *xdisplay;
@@ -385,7 +388,8 @@ output_get_tile_info (GfOutput *output)
   gint actual_format;
   Atom actual_type;
 
-  monitor_manager = gf_output_get_monitor_manager (output);
+  gpu = gf_output_get_gpu (output);
+  monitor_manager = gf_gpu_get_monitor_manager (gpu);
   monitor_manager_xrandr = GF_MONITOR_MANAGER_XRANDR (monitor_manager);
 
   if (!gf_monitor_manager_xrandr_has_randr15 (monitor_manager_xrandr))
@@ -417,12 +421,14 @@ output_get_tile_info (GfOutput *output)
 }
 
 static void
-output_get_modes (GfMonitorManager *manager,
-                  GfOutput         *output,
-                  XRROutputInfo    *xrandr_output)
+output_get_modes (GfOutput      *output,
+                  XRROutputInfo *xrandr_output)
 {
+  GfGpu *gpu;
   guint j;
   guint n_actual_modes;
+
+  gpu = gf_output_get_gpu (output);
 
   output->modes = g_new0 (GfCrtcMode *, xrandr_output->nmode);
 
@@ -431,7 +437,7 @@ output_get_modes (GfMonitorManager *manager,
     {
       GList *l;
 
-      for (l = manager->modes; l; l = l->next)
+      for (l = gf_gpu_get_modes (gpu); l; l = l->next)
         {
           GfCrtcMode *mode = l->data;
 
@@ -450,20 +456,22 @@ output_get_modes (GfMonitorManager *manager,
 }
 
 static void
-output_get_crtcs (GfMonitorManager *manager,
-                  GfOutput         *output,
-                  XRROutputInfo    *xrandr_output)
+output_get_crtcs (GfOutput      *output,
+                  XRROutputInfo *xrandr_output)
 {
+  GfGpu *gpu;
   guint j;
   guint n_actual_crtcs;
   GList *l;
+
+  gpu = gf_output_get_gpu (output);
 
   output->possible_crtcs = g_new0 (GfCrtc *, xrandr_output->ncrtc);
 
   n_actual_crtcs = 0;
   for (j = 0; j < (guint) xrandr_output->ncrtc; j++)
     {
-      for (l = manager->crtcs; l; l = l->next)
+      for (l = gf_gpu_get_crtcs (gpu); l; l = l->next)
         {
           GfCrtc *crtc = l->data;
 
@@ -478,7 +486,7 @@ output_get_crtcs (GfMonitorManager *manager,
   output->n_possible_crtcs = n_actual_crtcs;
 
   output->crtc = NULL;
-  for (l = manager->crtcs; l; l = l->next)
+  for (l = gf_gpu_get_crtcs (gpu); l; l = l->next)
     {
       GfCrtc *crtc = l->data;
 
@@ -694,17 +702,17 @@ output_get_backlight_limits_xrandr (GfOutput *output)
 }
 
 GfOutput *
-gf_create_xrandr_output (GfMonitorManager *monitor_manager,
-                         XRROutputInfo    *xrandr_output,
-                         RROutput          output_id,
-                         RROutput          primary_output)
+gf_create_xrandr_output (GfGpuXrandr   *gpu_xrandr,
+                         XRROutputInfo *xrandr_output,
+                         RROutput       output_id,
+                         RROutput       primary_output)
 {
   GfOutput *output;
   GBytes *edid;
   unsigned int i;
 
   output = g_object_new (GF_TYPE_OUTPUT, NULL);
-  output->monitor_manager = monitor_manager;
+  output->gpu = GF_GPU (gpu_xrandr);
 
   output->winsys_id = output_id;
   output->name = g_strdup (xrandr_output->name);
@@ -721,8 +729,8 @@ gf_create_xrandr_output (GfMonitorManager *monitor_manager,
   output->connector_type = output_get_connector_type (output);
 
   output_get_tile_info (output);
-  output_get_modes (monitor_manager, output, xrandr_output);
-  output_get_crtcs (monitor_manager, output, xrandr_output);
+  output_get_modes (output, xrandr_output);
+  output_get_crtcs (output, xrandr_output);
 
   output->n_possible_clones = xrandr_output->nclone;
   output->possible_clones = g_new0 (GfOutput *, output->n_possible_clones);

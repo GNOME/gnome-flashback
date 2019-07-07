@@ -22,9 +22,9 @@
 #ifndef GF_MONITOR_PRIVATE_H
 #define GF_MONITOR_PRIVATE_H
 
+#include "gf-gpu-private.h"
 #include "gf-monitor-manager-enums-private.h"
 #include "gf-monitor-manager-types-private.h"
-#include "gf-monitor-manager.h"
 #include "gf-rectangle.h"
 
 G_BEGIN_DECLS
@@ -88,7 +88,7 @@ struct _GfMonitorClass
                                           gint               *height);
 };
 
-GfMonitorManager  *gf_monitor_get_monitor_manager        (GfMonitor                  *monitor);
+GfGpu             *gf_monitor_get_gpu                    (GfMonitor                  *monitor);
 
 gboolean           gf_monitor_is_mode_assigned           (GfMonitor                  *monitor,
                                                           GfMonitorMode              *mode);

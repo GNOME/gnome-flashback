@@ -103,7 +103,7 @@ gf_monitor_transform_from_xrandr_all (Rotation rotation)
 }
 
 GfCrtc *
-gf_create_xrandr_crtc (GfMonitorManager   *monitor_manager,
+gf_create_xrandr_crtc (GfGpuXrandr        *gpu_xrandr,
                        XRRCrtcInfo        *xrandr_crtc,
                        RRCrtc              crtc_id,
                        XRRScreenResources *resources)
@@ -111,10 +111,11 @@ gf_create_xrandr_crtc (GfMonitorManager   *monitor_manager,
 {
   GfCrtc *crtc;
   unsigned int i;
+  GList *modes;
 
   crtc = g_object_new (GF_TYPE_CRTC, NULL);
 
-  crtc->monitor_manager = monitor_manager;
+  crtc->gpu = GF_GPU (gpu_xrandr);
   crtc->crtc_id = crtc_id;
   crtc->rect.x = xrandr_crtc->x;
   crtc->rect.y = xrandr_crtc->y;
@@ -124,11 +125,12 @@ gf_create_xrandr_crtc (GfMonitorManager   *monitor_manager,
   crtc->transform = gf_monitor_transform_from_xrandr (xrandr_crtc->rotation);
   crtc->all_transforms = gf_monitor_transform_from_xrandr_all (xrandr_crtc->rotations);
 
+  modes = gf_gpu_get_modes (crtc->gpu);
   for (i = 0; i < (guint) resources->nmode; i++)
     {
       if (resources->modes[i].id == xrandr_crtc->mode)
         {
-          crtc->current_mode = g_list_nth_data (monitor_manager->modes, i);
+          crtc->current_mode = g_list_nth_data (modes, i);
           break;
         }
     }
@@ -148,6 +150,8 @@ gf_crtc_xrandr_set_config (GfCrtc               *crtc,
                            int                   n_outputs,
                            xcb_timestamp_t      *out_timestamp)
 {
+  GfGpu *gpu;
+  GfGpuXrandr *gpu_xrandr;
   GfMonitorManager *monitor_manager;
   GfMonitorManagerXrandr *monitor_manager_xrandr;
   Display *xdisplay;
@@ -158,11 +162,14 @@ gf_crtc_xrandr_set_config (GfCrtc               *crtc,
   xcb_randr_set_crtc_config_reply_t *reply;
   xcb_generic_error_t *xcb_error;
 
-  monitor_manager = gf_crtc_get_monitor_manager (crtc);
+  gpu = gf_crtc_get_gpu (crtc);
+  gpu_xrandr = GF_GPU_XRANDR (gpu);
+
+  monitor_manager = gf_gpu_get_monitor_manager (gpu);
   monitor_manager_xrandr = GF_MONITOR_MANAGER_XRANDR (monitor_manager);
 
   xdisplay = gf_monitor_manager_xrandr_get_xdisplay (monitor_manager_xrandr);
-  resources = gf_monitor_manager_xrandr_get_resources (monitor_manager_xrandr);
+  resources = gf_gpu_xrandr_get_resources (gpu_xrandr);
   xcb_conn = XGetXCBConnection (xdisplay);
 
   config_timestamp = resources->configTimestamp;

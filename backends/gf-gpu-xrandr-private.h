@@ -16,27 +16,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GF_OUTPUT_XRANDR_PRIVATE_H
-#define GF_OUTPUT_XRANDR_PRIVATE_H
+#ifndef GF_GPU_XRANDR_PRIVATE_H
+#define GF_GPU_XRANDR_PRIVATE_H
 
+#include <glib-object.h>
 #include <X11/extensions/Xrandr.h>
 
-#include "gf-gpu-xrandr-private.h"
-#include "gf-output-private.h"
+#include "gf-gpu-private.h"
+#include "gf-monitor-manager-xrandr-private.h"
 
 G_BEGIN_DECLS
 
-GfOutput *gf_create_xrandr_output           (GfGpuXrandr   *gpu_xrandr,
-                                             XRROutputInfo *xrandr_output,
-                                             RROutput       output_id,
-                                             RROutput       primary_output);
+#define GF_TYPE_GPU_XRANDR (gf_gpu_xrandr_get_type ())
+G_DECLARE_FINAL_TYPE (GfGpuXrandr, gf_gpu_xrandr, GF, GPU_XRANDR, GfGpu)
 
-GBytes   *gf_output_xrandr_read_edid        (GfOutput      *output);
+GfGpuXrandr        *gf_gpu_xrandr_new                 (GfMonitorManagerXrandr *monitor_manager_xrandr);
 
-void      gf_output_xrandr_apply_mode       (GfOutput      *output);
+XRRScreenResources *gf_gpu_xrandr_get_resources       (GfGpuXrandr            *gpu_xrandr);
 
-void      gf_output_xrandr_change_backlight (GfOutput      *output,
-                                             int            value);
+void                gf_gpu_xrandr_get_max_screen_size (GfGpuXrandr            *gpu_xrandr,
+                                                       int                    *max_width,
+                                                       int                    *max_height);
 
 G_END_DECLS
 

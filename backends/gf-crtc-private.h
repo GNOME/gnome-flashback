@@ -3,7 +3,7 @@
  * Copyright (C) 2003 Rob Adams
  * Copyright (C) 2004-2006 Elijah Newren
  * Copyright (C) 2013 Red Hat Inc.
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,9 +27,9 @@
 
 #include <glib-object.h>
 
+#include "gf-gpu-private.h"
 #include "gf-monitor-manager-enums-private.h"
 #include "gf-monitor-manager-types-private.h"
-#include "gf-monitor-manager.h"
 #include "gf-rectangle.h"
 
 G_BEGIN_DECLS
@@ -38,7 +38,7 @@ struct _GfCrtc
 {
   GObject             parent;
 
-  GfMonitorManager   *monitor_manager;
+  GfGpu              *gpu;
 
   glong               crtc_id;
   GfRectangle         rect;
@@ -91,7 +91,7 @@ G_DECLARE_FINAL_TYPE (GfCrtc, gf_crtc, GF, CRTC, GObject)
 #define GF_TYPE_CRTC_MODE (gf_crtc_mode_get_type ())
 G_DECLARE_FINAL_TYPE (GfCrtcMode, gf_crtc_mode, GF, CRTC_MODE, GObject)
 
-GfMonitorManager *gf_crtc_get_monitor_manager (GfCrtc *crtc);
+GfGpu *gf_crtc_get_gpu (GfCrtc *crtc);
 
 G_END_DECLS
 

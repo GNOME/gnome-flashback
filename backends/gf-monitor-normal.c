@@ -161,14 +161,14 @@ gf_monitor_normal_init (GfMonitorNormal *normal)
 }
 
 GfMonitorNormal *
-gf_monitor_normal_new (GfMonitorManager *monitor_manager,
-                       GfOutput         *output)
+gf_monitor_normal_new (GfGpu    *gpu,
+                       GfOutput *output)
 {
   GfMonitorNormal *normal;
   GfMonitor *monitor;
 
   normal = g_object_new (GF_TYPE_MONITOR_NORMAL,
-                         "monitor-manager", monitor_manager,
+                         "gpu", gpu,
                          NULL);
 
   monitor = GF_MONITOR (normal);

@@ -36,14 +36,12 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (GfMonitorManagerXrandr, gf_monitor_manager_xrandr,
                       GF, MONITOR_MANAGER_XRANDR, GfMonitorManager)
 
-Display            *gf_monitor_manager_xrandr_get_xdisplay  (GfMonitorManagerXrandr *xrandr);
+Display  *gf_monitor_manager_xrandr_get_xdisplay  (GfMonitorManagerXrandr *xrandr);
 
-gboolean            gf_monitor_manager_xrandr_has_randr15   (GfMonitorManagerXrandr *xrandr);
+gboolean  gf_monitor_manager_xrandr_has_randr15   (GfMonitorManagerXrandr *xrandr);
 
-XRRScreenResources *gf_monitor_manager_xrandr_get_resources (GfMonitorManagerXrandr *xrandr);
-
-gboolean            gf_monitor_manager_xrandr_handle_xevent (GfMonitorManagerXrandr *xrandr,
-                                                             XEvent                 *event);
+gboolean  gf_monitor_manager_xrandr_handle_xevent (GfMonitorManagerXrandr *xrandr,
+                                                   XEvent                 *event);
 
 G_END_DECLS
 

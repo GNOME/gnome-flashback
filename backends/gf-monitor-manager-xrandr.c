@@ -37,6 +37,7 @@
 
 #include "gf-backend-x11-private.h"
 #include "gf-crtc-xrandr-private.h"
+#include "gf-gpu-xrandr-private.h"
 #include "gf-monitor-config-manager-private.h"
 #include "gf-monitor-manager-xrandr-private.h"
 #include "gf-monitor-private.h"
@@ -51,26 +52,28 @@
 
 struct _GfMonitorManagerXrandr
 {
-  GfMonitorManager    parent;
+  GfMonitorManager  parent;
 
-  Display            *xdisplay;
-  Window              xroot;
+  Display          *xdisplay;
+  Window            xroot;
 
-  gint                rr_event_base;
-  gint                rr_error_base;
+  gint              rr_event_base;
+  gint              rr_error_base;
 
-  gboolean            has_randr15;
-  GHashTable         *tiled_monitor_atoms;
+  gboolean          has_randr15;
+  GHashTable       *tiled_monitor_atoms;
 
-  XRRScreenResources *resources;
+  /*
+   * The X server deals with multiple GPUs for us, soe just see what the X
+   * server gives us as one single GPU, even though it may actually be backed
+   * by multiple.
+   */
+  GfGpu            *gpu;
 
-  Time                last_xrandr_set_timestamp;
+  Time              last_xrandr_set_timestamp;
 
-  gint                max_screen_width;
-  gint                max_screen_height;
-
-  gfloat             *supported_scales;
-  gint                n_supported_scales;
+  gfloat           *supported_scales;
+  gint              n_supported_scales;
 };
 
 typedef struct
@@ -298,9 +301,12 @@ is_assignments_changed (GfMonitorManager  *manager,
                         GfOutputInfo     **output_infos,
                         guint              n_output_infos)
 {
+  GfMonitorManagerXrandr *manager_xrandr;
   GList *l;
 
-  for (l = manager->crtcs; l; l = l->next)
+  manager_xrandr = GF_MONITOR_MANAGER_XRANDR (manager);
+
+  for (l = gf_gpu_get_crtcs (manager_xrandr->gpu); l; l = l->next)
     {
       GfCrtc *crtc = l->data;
 
@@ -308,7 +314,7 @@ is_assignments_changed (GfMonitorManager  *manager,
         return TRUE;
     }
 
-  for (l = manager->outputs; l; l = l->next)
+  for (l = gf_gpu_get_outputs (manager_xrandr->gpu); l; l = l->next)
     {
       GfOutput *output = l->data;
 
@@ -370,15 +376,6 @@ gf_monitor_transform_to_xrandr (GfMonitorTransform transform)
     }
 
   return rotation;
-}
-
-static gint
-compare_outputs (const void *one,
-                 const void *two)
-{
-  const GfOutput *o_one = one, *o_two = two;
-
-  return strcmp (o_one->name, o_two->name);
 }
 
 static void
@@ -454,7 +451,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
     }
 
   /* Disable CRTCs not mentioned in the list */
-  for (l = manager->crtcs; l; l = l->next)
+  for (l = gf_gpu_get_crtcs (xrandr->gpu); l; l = l->next)
     {
       GfCrtc *crtc = l->data;
 
@@ -579,7 +576,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
     }
 
   /* Disable outputs not mentioned in the list */
-  for (l = manager->outputs; l; l = l->next)
+  for (l = gf_gpu_get_outputs (xrandr->gpu); l; l = l->next)
     {
       GfOutput *output = l->data;
 
@@ -704,6 +701,9 @@ gf_monitor_manager_xrandr_constructed (GObject *object)
   xrandr->xdisplay = gf_backend_x11_get_xdisplay (GF_BACKEND_X11 (backend));
   xrandr->xroot = DefaultRootWindow (xrandr->xdisplay);
 
+  xrandr->gpu = GF_GPU (gf_gpu_xrandr_new (xrandr));
+  gf_monitor_manager_add_gpu (GF_MONITOR_MANAGER (xrandr), xrandr->gpu);
+
   if (XRRQueryExtension (xrandr->xdisplay, &rr_event_base, &rr_error_base))
     {
       gint major_version;
@@ -754,170 +754,10 @@ gf_monitor_manager_xrandr_finalize (GObject *object)
 
   xrandr = GF_MONITOR_MANAGER_XRANDR (object);
 
-  g_clear_pointer (&xrandr->resources, XRRFreeScreenResources);
+  g_clear_object (&xrandr->gpu);
   g_clear_pointer (&xrandr->supported_scales, g_free);
 
   G_OBJECT_CLASS (gf_monitor_manager_xrandr_parent_class)->finalize (object);
-}
-
-static void
-gf_monitor_manager_xrandr_read_current (GfMonitorManager *manager)
-{
-  GfMonitorManagerXrandr *xrandr;
-  XRRScreenResources *resources;
-  CARD16 dpms_state;
-  BOOL dpms_enabled;
-  gint min_width;
-  gint min_height;
-  Screen *screen;
-  guint i, j;
-  GList *l;
-  RROutput primary_output;
-
-  xrandr = GF_MONITOR_MANAGER_XRANDR (manager);
-
-  if (DPMSCapable (xrandr->xdisplay) &&
-      DPMSInfo (xrandr->xdisplay, &dpms_state, &dpms_enabled) &&
-      dpms_enabled)
-    {
-      switch (dpms_state)
-        {
-          case DPMSModeOn:
-            manager->power_save_mode = GF_POWER_SAVE_ON;
-            break;
-
-          case DPMSModeStandby:
-            manager->power_save_mode = GF_POWER_SAVE_STANDBY;
-            break;
-
-          case DPMSModeSuspend:
-            manager->power_save_mode = GF_POWER_SAVE_SUSPEND;
-            break;
-
-          case DPMSModeOff:
-            manager->power_save_mode = GF_POWER_SAVE_OFF;
-            break;
-
-          default:
-            manager->power_save_mode = GF_POWER_SAVE_UNSUPPORTED;
-            break;
-        }
-    }
-  else
-    {
-      manager->power_save_mode = GF_POWER_SAVE_UNSUPPORTED;
-    }
-
-  XRRGetScreenSizeRange (xrandr->xdisplay, xrandr->xroot,
-                         &min_width, &min_height,
-                         &xrandr->max_screen_width,
-                         &xrandr->max_screen_height);
-
-  /* This is updated because we called RRUpdateConfiguration below */
-  screen = ScreenOfDisplay (xrandr->xdisplay, DefaultScreen (xrandr->xdisplay));
-  manager->screen_width = WidthOfScreen (screen);
-  manager->screen_height = HeightOfScreen (screen);
-
-  g_clear_pointer (&xrandr->resources, XRRFreeScreenResources);
-  resources = XRRGetScreenResourcesCurrent (xrandr->xdisplay, xrandr->xroot);
-
-  if (!resources)
-    return;
-
-  xrandr->resources = resources;
-  manager->outputs = NULL;
-  manager->modes = NULL;
-  manager->crtcs = NULL;
-
-  for (i = 0; i < (guint) resources->nmode; i++)
-    {
-      XRRModeInfo *xmode;
-      GfCrtcMode *mode;
-
-      xmode = &resources->modes[i];
-      mode = g_object_new (GF_TYPE_CRTC_MODE, NULL);
-
-      mode->mode_id = xmode->id;
-      mode->width = xmode->width;
-      mode->height = xmode->height;
-      mode->refresh_rate = (xmode->dotClock / ((gfloat) xmode->hTotal * xmode->vTotal));
-      mode->flags = xmode->modeFlags;
-      mode->name = g_strdup_printf ("%dx%d", xmode->width, xmode->height);
-
-      manager->modes = g_list_append (manager->modes, mode);
-    }
-
-  for (i = 0; i < (guint) resources->ncrtc; i++)
-    {
-      XRRCrtcInfo *xrandr_crtc;
-      RRCrtc crtc_id;
-      GfCrtc *crtc;
-
-      crtc_id = resources->crtcs[i];
-      xrandr_crtc = XRRGetCrtcInfo (xrandr->xdisplay, resources, crtc_id);
-      crtc = gf_create_xrandr_crtc (manager, xrandr_crtc, crtc_id, resources);
-
-      manager->crtcs = g_list_append (manager->crtcs, crtc);
-      XRRFreeCrtcInfo (xrandr_crtc);
-    }
-
-  primary_output = XRRGetOutputPrimary (xrandr->xdisplay, xrandr->xroot);
-
-  for (i = 0; i < (guint) resources->noutput; i++)
-    {
-      RROutput output_id;
-      XRROutputInfo *xrandr_output;
-
-      output_id = resources->outputs[i];
-      xrandr_output = XRRGetOutputInfo (xrandr->xdisplay, resources,
-                                        output_id);
-
-      if (!xrandr_output)
-        continue;
-
-      if (xrandr_output->connection != RR_Disconnected)
-        {
-          GfOutput *output;
-
-          output = gf_create_xrandr_output (manager,
-                                            xrandr_output,
-                                            output_id,
-                                            primary_output);
-
-          if (output)
-            manager->outputs = g_list_prepend (manager->outputs, output);
-        }
-
-      XRRFreeOutputInfo (xrandr_output);
-    }
-
-  /* Sort the outputs for easier handling in GfMonitorConfig */
-  manager->outputs = g_list_sort (manager->outputs, compare_outputs);
-
-  /* Now fix the clones */
-  for (l = manager->outputs; l; l = l->next)
-    {
-      GfOutput *output;
-      GList *k;
-
-      output = l->data;
-
-      for (j = 0; j < output->n_possible_clones; j++)
-        {
-          RROutput clone = GPOINTER_TO_INT (output->possible_clones[j]);
-
-          for (k = manager->outputs; k; k = k->next)
-            {
-              GfOutput *possible_clone = k->data;
-
-              if (clone == (XID) possible_clone->winsys_id)
-                {
-                  output->possible_clones[j] = possible_clone;
-                  break;
-                }
-            }
-        }
-    }
 }
 
 static GBytes *
@@ -1226,8 +1066,8 @@ gf_monitor_manager_xrandr_get_max_screen_size (GfMonitorManager *manager,
 
   xrandr = GF_MONITOR_MANAGER_XRANDR (manager);
 
-  *max_width = xrandr->max_screen_width;
-  *max_height = xrandr->max_screen_height;
+  gf_gpu_xrandr_get_max_screen_size (GF_GPU_XRANDR (xrandr->gpu),
+                                     max_width, max_height);
 
   return TRUE;
 }
@@ -1251,7 +1091,6 @@ gf_monitor_manager_xrandr_class_init (GfMonitorManagerXrandrClass *xrandr_class)
   object_class->dispose = gf_monitor_manager_xrandr_dispose;
   object_class->finalize = gf_monitor_manager_xrandr_finalize;
 
-  manager_class->read_current = gf_monitor_manager_xrandr_read_current;
   manager_class->read_edid = gf_monitor_manager_xrandr_read_edid;
   manager_class->ensure_initial_config = gf_monitor_manager_xrandr_ensure_initial_config;
   manager_class->apply_monitors_config = gf_monitor_manager_xrandr_apply_monitors_config;
@@ -1286,17 +1125,12 @@ gf_monitor_manager_xrandr_has_randr15 (GfMonitorManagerXrandr *xrandr)
   return xrandr->has_randr15;
 }
 
-XRRScreenResources *
-gf_monitor_manager_xrandr_get_resources (GfMonitorManagerXrandr *xrandr)
-{
-  return xrandr->resources;
-}
-
 gboolean
 gf_monitor_manager_xrandr_handle_xevent (GfMonitorManagerXrandr *xrandr,
                                          XEvent                 *event)
 {
   GfMonitorManager *manager;
+  GfGpuXrandr *gpu_xrandr;
   XRRScreenResources *resources;
 
   manager = GF_MONITOR_MANAGER (xrandr);
@@ -1307,7 +1141,9 @@ gf_monitor_manager_xrandr_handle_xevent (GfMonitorManagerXrandr *xrandr,
   XRRUpdateConfiguration (event);
   gf_monitor_manager_read_current_state (manager);
 
-  resources = xrandr->resources;
+  gpu_xrandr = GF_GPU_XRANDR (xrandr->gpu);
+  resources = gf_gpu_xrandr_get_resources (gpu_xrandr);
+
   if (!resources)
     return TRUE;
 
