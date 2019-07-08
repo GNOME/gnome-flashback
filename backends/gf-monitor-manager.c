@@ -2614,6 +2614,16 @@ gf_monitor_manager_get_config_manager (GfMonitorManager *manager)
   return manager->config_manager;
 }
 
+char *
+gf_monitor_manager_get_vendor_name (GfMonitorManager *manager,
+                                    const char       *vendor)
+{
+  if (!manager->pnp_ids)
+    manager->pnp_ids = gnome_pnp_ids_new ();
+
+  return gnome_pnp_ids_get_pnp_id (manager->pnp_ids, vendor);
+}
+
 gint
 gf_monitor_manager_get_monitor_for_connector (GfMonitorManager *manager,
                                               const gchar      *connector)

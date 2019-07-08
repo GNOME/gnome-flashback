@@ -222,6 +222,9 @@ GfLogicalMonitorLayoutMode  gf_monitor_manager_get_default_layout_mode      (GfM
 
 GfMonitorConfigManager     *gf_monitor_manager_get_config_manager           (GfMonitorManager            *manager);
 
+char                       *gf_monitor_manager_get_vendor_name              (GfMonitorManager            *manager,
+                                                                             const char                  *vendor);
+
 static inline gboolean
 gf_monitor_transform_is_rotated (GfMonitorTransform transform)
 {
