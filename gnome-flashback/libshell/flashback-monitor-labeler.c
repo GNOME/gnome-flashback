@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Alberts Muktupāvels
+ * Copyright (C) 2015-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -178,10 +178,10 @@ flashback_monitor_labeler_new (void)
 }
 
 void
-flashback_monitor_labeler_show2 (FlashbackMonitorLabeler *labeler,
-                                 GfMonitorManager        *monitor_manager,
-                                 const gchar             *sender,
-                                 GVariant                *params)
+flashback_monitor_labeler_show (FlashbackMonitorLabeler *labeler,
+                                GfMonitorManager        *monitor_manager,
+                                const gchar             *sender,
+                                GVariant                *params)
 {
   GVariantIter iter;
   const gchar *connector;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Alberts Muktupāvels
+ * Copyright (C) 2015-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -245,10 +245,10 @@ handle_show_osd (FlashbackDBusShell    *dbus_shell,
 }
 
 static gboolean
-handle_show_monitor_labels2 (FlashbackDBusShell    *dbus_shell,
-                             GDBusMethodInvocation *invocation,
-                             GVariant              *params,
-                             gpointer               user_data)
+handle_show_monitor_labels (FlashbackDBusShell    *dbus_shell,
+                            GDBusMethodInvocation *invocation,
+                            GVariant              *params,
+                            gpointer               user_data)
 {
   FlashbackShell *shell;
   const gchar *sender;
@@ -258,10 +258,10 @@ handle_show_monitor_labels2 (FlashbackDBusShell    *dbus_shell,
 
   g_assert (shell->monitor_manager != NULL);
 
-  flashback_monitor_labeler_show2 (shell->labeler, shell->monitor_manager,
-                                   sender, params);
+  flashback_monitor_labeler_show (shell->labeler, shell->monitor_manager,
+                                  sender, params);
 
-  flashback_dbus_shell_complete_show_monitor_labels2 (dbus_shell, invocation);
+  flashback_dbus_shell_complete_show_monitor_labels (dbus_shell, invocation);
 
   return TRUE;
 }
@@ -441,8 +441,8 @@ name_appeared_handler (GDBusConnection *connection,
                     G_CALLBACK (handle_focus_search), shell);
   g_signal_connect (skeleton, "handle-show-osd",
                     G_CALLBACK (handle_show_osd), shell);
-  g_signal_connect (skeleton, "handle-show-monitor-labels2",
-                    G_CALLBACK (handle_show_monitor_labels2), shell);
+  g_signal_connect (skeleton, "handle-show-monitor-labels",
+                    G_CALLBACK (handle_show_monitor_labels), shell);
   g_signal_connect (skeleton, "handle-hide-monitor-labels",
                     G_CALLBACK (handle_hide_monitor_labels), shell);
   g_signal_connect (skeleton, "handle-focus-app",

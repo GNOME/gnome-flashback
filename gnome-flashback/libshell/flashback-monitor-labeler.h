@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Alberts Muktupāvels
+ * Copyright (C) 2015-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,15 +26,15 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (FlashbackMonitorLabeler, flashback_monitor_labeler,
                       FLASHBACK, MONITOR_LABELER, GObject)
 
-FlashbackMonitorLabeler *flashback_monitor_labeler_new   (void);
+FlashbackMonitorLabeler *flashback_monitor_labeler_new  (void);
 
-void                     flashback_monitor_labeler_show2 (FlashbackMonitorLabeler *labeler,
-                                                          GfMonitorManager        *monitor_manager,
-                                                          const gchar             *sender,
-                                                          GVariant                *params);
+void                     flashback_monitor_labeler_show (FlashbackMonitorLabeler *labeler,
+                                                         GfMonitorManager        *monitor_manager,
+                                                         const gchar             *sender,
+                                                         GVariant                *params);
 
-void                     flashback_monitor_labeler_hide  (FlashbackMonitorLabeler *labeler,
-                                                          const gchar             *sender);
+void                     flashback_monitor_labeler_hide (FlashbackMonitorLabeler *labeler,
+                                                         const gchar             *sender);
 
 G_END_DECLS
 
