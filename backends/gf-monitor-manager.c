@@ -1027,10 +1027,9 @@ make_display_name (GfMonitorManager *manager,
     {
       gchar *display_name;
 
-      /* TRANSLATORS: this is a monitor vendor name, followed by a
-       * size in inches, like 'Dell 15"'
-       */
-      display_name = g_strdup_printf (_("%s %s"), vendor_name, inches);
+      display_name = g_strdup_printf (C_("This is a monitor vendor name, followed by a "
+                                         "size in inches, like 'Dell 15\"'",
+                                         "%s %s"), vendor_name, inches);
 
       g_free (vendor_name);
       g_free (inches);
@@ -1041,11 +1040,11 @@ make_display_name (GfMonitorManager *manager,
     {
       gchar *display_name;
 
-      /* Translators: this is a monitor vendor name followed by
-       * product/model name where size in inches could not be calculated,
-       * e.g. Dell U2414H
-       */
-      display_name =  g_strdup_printf (_("%s %s"), vendor_name, product_name);
+      display_name =  g_strdup_printf (C_("This is a monitor vendor name followed by "
+                                          "product/model name where size in inches "
+                                          "could not be calculated, e.g. Dell U2414H",
+                                          "%s %s"), vendor_name, product_name);
+
       g_free (vendor_name);
 
       return display_name;
