@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2016 Red Hat
  * Copyright (C) 2017-2019 Alberts Muktupāvels
+ * Copyright (c) 2018 DisplayLink (UK) Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -476,11 +477,16 @@ static GfCrtc *
 find_unassigned_crtc (GfOutput  *output,
                       GPtrArray *crtc_infos)
 {
+  GfCrtc *crtc;
   unsigned int i;
+
+  crtc = gf_output_get_assigned_crtc (output);
+  if (crtc && !is_crtc_assigned (crtc, crtc_infos))
+    return crtc;
 
   for (i = 0; i < output->n_possible_crtcs; i++)
     {
-      GfCrtc *crtc = output->possible_crtcs[i];
+      crtc = output->possible_crtcs[i];
 
       if (is_crtc_assigned (crtc, crtc_infos))
         continue;
