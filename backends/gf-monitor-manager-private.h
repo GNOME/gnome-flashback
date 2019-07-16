@@ -70,6 +70,7 @@ struct _GfMonitorManager
 
   GnomePnpIds                 *pnp_ids;
   UpClient                    *up_client;
+  gboolean                     lid_is_closed;
 
   GfMonitorSwitchConfigType    current_switch_config;
 };
