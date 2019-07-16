@@ -249,6 +249,24 @@ out:
 }
 
 static void
+gf_monitor_dispose (GObject *object)
+{
+  GfMonitor *monitor;
+  GfMonitorPrivate *priv;
+
+  monitor = GF_MONITOR (object);
+  priv = gf_monitor_get_instance_private (monitor);
+
+  if (priv->outputs)
+    {
+      g_list_free_full (priv->outputs, g_object_unref);
+      priv->outputs = NULL;
+    }
+
+  G_OBJECT_CLASS (gf_monitor_parent_class)->dispose (object);
+}
+
+static void
 gf_monitor_finalize (GObject *object)
 {
   GfMonitor *monitor;
@@ -259,7 +277,6 @@ gf_monitor_finalize (GObject *object)
 
   g_hash_table_destroy (priv->mode_ids);
   g_list_free_full (priv->modes, (GDestroyNotify) gf_monitor_mode_free);
-  g_clear_pointer (&priv->outputs, g_list_free);
   gf_monitor_spec_free (priv->spec);
 
   G_OBJECT_CLASS (gf_monitor_parent_class)->finalize (object);
@@ -336,6 +353,7 @@ gf_monitor_class_init (GfMonitorClass *monitor_class)
 
   object_class = G_OBJECT_CLASS (monitor_class);
 
+  object_class->dispose = gf_monitor_dispose;
   object_class->finalize = gf_monitor_finalize;
   object_class->get_property = gf_monitor_get_property;
   object_class->set_property = gf_monitor_set_property;
@@ -401,7 +419,7 @@ gf_monitor_append_output (GfMonitor *monitor,
 
   priv = gf_monitor_get_instance_private (monitor);
 
-  priv->outputs = g_list_append (priv->outputs, output);
+  priv->outputs = g_list_append (priv->outputs, g_object_ref (output));
 }
 
 void

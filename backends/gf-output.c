@@ -39,6 +39,20 @@ typedef struct
 G_DEFINE_TYPE_WITH_PRIVATE (GfOutput, gf_output, G_TYPE_OBJECT)
 
 static void
+gf_output_dispose (GObject *object)
+{
+  GfOutput *output;
+  GfOutputPrivate *priv;
+
+  output = GF_OUTPUT (object);
+  priv = gf_output_get_instance_private (output);
+
+  g_clear_object (&priv->crtc);
+
+  G_OBJECT_CLASS (gf_output_parent_class)->dispose (object);
+}
+
+static void
 gf_output_finalize (GObject *object)
 {
   GfOutput *output;
@@ -66,6 +80,7 @@ gf_output_class_init (GfOutputClass *output_class)
 
   object_class = G_OBJECT_CLASS (output_class);
 
+  object_class->dispose = gf_output_dispose;
   object_class->finalize = gf_output_finalize;
 }
 
@@ -90,7 +105,7 @@ gf_output_assign_crtc (GfOutput *output,
 
   g_assert (crtc);
 
-  priv->crtc = crtc;
+  g_set_object (&priv->crtc, crtc);
 }
 
 void
@@ -100,7 +115,7 @@ gf_output_unassign_crtc (GfOutput *output)
 
   priv = gf_output_get_instance_private (output);
 
-  priv->crtc = NULL;
+  g_clear_object (&priv->crtc);
 }
 
 GfCrtc *

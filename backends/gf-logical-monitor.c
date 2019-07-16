@@ -96,15 +96,19 @@ derive_monitor_transform (GfMonitor *monitor)
 }
 
 static void
-gf_logical_monitor_finalize (GObject *object)
+gf_logical_monitor_dispose (GObject *object)
 {
   GfLogicalMonitor *logical_monitor;
 
   logical_monitor = GF_LOGICAL_MONITOR (object);
 
-  g_list_free (logical_monitor->monitors);
+  if (logical_monitor->monitors)
+    {
+      g_list_free_full (logical_monitor->monitors, g_object_unref);
+      logical_monitor->monitors = NULL;
+    }
 
-  G_OBJECT_CLASS (gf_logical_monitor_parent_class)->finalize (object);
+  G_OBJECT_CLASS (gf_logical_monitor_parent_class)->dispose (object);
 }
 
 static void
@@ -114,7 +118,7 @@ gf_logical_monitor_class_init (GfLogicalMonitorClass *logical_monitor_class)
 
   object_class = G_OBJECT_CLASS (logical_monitor_class);
 
-  object_class->finalize = gf_logical_monitor_finalize;
+  object_class->dispose = gf_logical_monitor_dispose;
 }
 
 static void
@@ -194,7 +198,8 @@ gf_logical_monitor_add_monitor (GfLogicalMonitor *logical_monitor,
   GList *l;
 
   is_presentation = logical_monitor->is_presentation;
-  logical_monitor->monitors = g_list_append (logical_monitor->monitors, monitor);
+  logical_monitor->monitors = g_list_append (logical_monitor->monitors,
+                                             g_object_ref (monitor));
 
   for (l = logical_monitor->monitors; l; l = l->next)
     {
