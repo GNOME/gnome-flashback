@@ -1184,7 +1184,6 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
       GfOutput *output = l->data;
       GVariantBuilder crtcs, modes, clones, properties;
       GBytes *edid;
-      gchar *edid_file;
       GfCrtc *crtc;
       gint crtc_index;
 
@@ -1250,23 +1249,14 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
       g_variant_builder_add (&properties, "{sv}", "supports-underscanning",
                              g_variant_new_boolean (output->supports_underscanning));
 
-      edid_file = manager_class->get_edid_file (manager, output);
-      if (edid_file)
-        {
-          g_variant_builder_add (&properties, "{sv}", "edid-file",
-                                 g_variant_new_take_string (edid_file));
-        }
-      else
-        {
-          edid = manager_class->read_edid (manager, output);
+      edid = manager_class->read_edid (manager, output);
 
-          if (edid)
-            {
-              g_variant_builder_add (&properties, "{sv}", "edid",
-                                     g_variant_new_from_bytes (G_VARIANT_TYPE ("ay"),
-                                                               edid, TRUE));
-              g_bytes_unref (edid);
-            }
+      if (edid)
+        {
+          g_variant_builder_add (&properties, "{sv}", "edid",
+                                 g_variant_new_from_bytes (G_VARIANT_TYPE ("ay"),
+                                                           edid, TRUE));
+          g_bytes_unref (edid);
         }
 
       if (output->tile_info.group_id)
@@ -1974,13 +1964,6 @@ gf_monitor_manager_real_read_edid (GfMonitorManager *manager,
   return NULL;
 }
 
-static gchar *
-gf_monitor_manager_real_get_edid_file (GfMonitorManager *manager,
-                                       GfOutput         *output)
-{
-  return NULL;
-}
-
 static gboolean
 gf_monitor_manager_real_is_lid_closed (GfMonitorManager *manager)
 {
@@ -2177,7 +2160,6 @@ gf_monitor_manager_class_init (GfMonitorManagerClass *manager_class)
   object_class->get_property = gf_monitor_manager_get_property;
   object_class->set_property = gf_monitor_manager_set_property;
 
-  manager_class->get_edid_file = gf_monitor_manager_real_get_edid_file;
   manager_class->read_edid = gf_monitor_manager_real_read_edid;
   manager_class->is_lid_closed = gf_monitor_manager_real_is_lid_closed;
 

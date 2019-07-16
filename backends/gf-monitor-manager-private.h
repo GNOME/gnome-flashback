@@ -79,9 +79,6 @@ typedef struct
 {
   GfDBusDisplayConfigSkeletonClass parent_class;
 
-  gchar                      * (* get_edid_file)                (GfMonitorManager            *manager,
-                                                                 GfOutput                    *output);
-
   GBytes                     * (* read_edid)                    (GfMonitorManager            *manager,
                                                                  GfOutput                    *output);
 
