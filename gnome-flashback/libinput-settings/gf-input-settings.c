@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2014 Red Hat, Inc.
- * Copyright (C) 2016 Alberts Muktupāvels
+ * Copyright (C) 2016-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1057,12 +1057,11 @@ settings_changed_cb (GSettings       *gsettings,
     }
 }
 
-static gboolean
-logical_monitor_has_monitor (GfMonitorManager *monitor_manager,
-                             GfLogicalMonitor *logical_monitor,
-                             const gchar      *vendor,
-                             const gchar      *product,
-                             const gchar      *serial)
+static GfMonitor *
+logical_monitor_find_monitor (GfLogicalMonitor *logical_monitor,
+                              const gchar      *vendor,
+                              const gchar      *product,
+                              const gchar      *serial)
 {
   GList *monitors;
   GList *l;
@@ -1076,26 +1075,28 @@ logical_monitor_has_monitor (GfMonitorManager *monitor_manager,
       if (g_strcmp0 (gf_monitor_get_vendor (monitor), vendor) == 0 &&
           g_strcmp0 (gf_monitor_get_product (monitor), product) == 0 &&
           g_strcmp0 (gf_monitor_get_serial (monitor), serial) == 0)
-        return TRUE;
+        return monitor;
     }
 
-  return FALSE;
+  return NULL;
 }
 
-static GfLogicalMonitor *
-find_logical_monitor (GfInputSettings *settings,
-                      GSettings       *gsettings,
-                      GdkDevice       *device)
+static void
+find_monitor (GfInputSettings   *settings,
+              GSettings         *gsettings,
+              GdkDevice         *device,
+              GfMonitor        **out_monitor,
+              GfLogicalMonitor **out_logical_monitor)
 {
   gchar **edid;
   guint n_values;
   GfMonitorManager *monitor_manager;
   GList *logical_monitors;
-  GfLogicalMonitor *ret;
+  GfMonitor *monitor;
   GList *l;
 
- if (!settings->monitor_manager)
-    return NULL;
+  if (!settings->monitor_manager)
+    return;
 
   edid = g_settings_get_strv (gsettings, "display");
   n_values = g_strv_length (edid);
@@ -1106,33 +1107,38 @@ find_logical_monitor (GfInputSettings *settings,
                  "must have 3 values", gdk_device_get_name (device));
 
       g_strfreev (edid);
-      return NULL;
+      return;
     }
 
   if (!*edid[0] && !*edid[1] && !*edid[2])
     {
       g_strfreev (edid);
-      return NULL;
+      return;
     }
 
   monitor_manager = settings->monitor_manager;
   logical_monitors = gf_monitor_manager_get_logical_monitors (monitor_manager);
-  ret = NULL;
 
   for (l = logical_monitors; l; l = l->next)
     {
       GfLogicalMonitor *logical_monitor = l->data;
 
-      if (logical_monitor_has_monitor (monitor_manager, logical_monitor,
-                                       edid[0], edid[1], edid[2]))
+      monitor = logical_monitor_find_monitor (logical_monitor,
+                                              edid[0], edid[1], edid[2]);
+
+      if (monitor)
         {
-          ret = logical_monitor;
+          if (out_monitor)
+            *out_monitor = monitor;
+
+          if (out_logical_monitor)
+            *out_logical_monitor = logical_monitor;
+
           break;
         }
     }
 
   g_strfreev (edid);
-  return ret;
 }
 
 static void
@@ -1141,6 +1147,7 @@ update_device_display (GfInputSettings *settings,
                        GdkDevice       *device)
 {
   GdkInputSource source;
+  GfMonitor *monitor;
   GfLogicalMonitor *logical_monitor;
   gfloat matrix[6] = { 1, 0, 0, 0, 1, 0 };
   gfloat full_matrix[9];
@@ -1153,17 +1160,18 @@ update_device_display (GfInputSettings *settings,
       source != GDK_SOURCE_TOUCHSCREEN)
     return;
 
+  monitor = NULL;
+  logical_monitor = NULL;
+
   /* If mapping is relative, the device can move on all displays */
   if (source == GDK_SOURCE_TOUCHSCREEN /* ||
       get_mapping_mode (device) == CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE*/)
-    logical_monitor = find_logical_monitor (settings, gsettings, device);
-  else
-    logical_monitor = NULL;
+    find_monitor (settings, gsettings, device, &monitor, &logical_monitor);
 
-  if (logical_monitor)
+  if (monitor)
     {
       gf_monitor_manager_get_monitor_matrix (settings->monitor_manager,
-                                             logical_monitor, matrix);
+                                             monitor, logical_monitor, matrix);
     }
 
   full_matrix[0] = matrix[0];

@@ -176,6 +176,7 @@ void                        gf_monitor_manager_read_current_state           (GfM
 void                        gf_monitor_manager_on_hotplug                   (GfMonitorManager            *manager);
 
 gboolean                    gf_monitor_manager_get_monitor_matrix           (GfMonitorManager            *manager,
+                                                                             GfMonitor                   *monitor,
                                                                              GfLogicalMonitor            *logical_monitor,
                                                                              gfloat                       matrix[6]);
 
