@@ -206,6 +206,12 @@ find_monitor (GfMonitorManager *monitor_manager,
   return NULL;
 }
 
+static GfMonitor *
+get_active_monitor (GfMonitorManager *manager)
+{
+  return find_monitor (manager, gf_monitor_is_active);
+}
+
 static gboolean
 gf_monitor_manager_is_config_applicable (GfMonitorManager  *manager,
                                          GfMonitorsConfig  *config,
@@ -322,13 +328,17 @@ calculate_monitor_scale (GfMonitorManager *manager,
 static gfloat
 derive_calculated_global_scale (GfMonitorManager *manager)
 {
-  GfMonitor *primary_monitor;
+  GfMonitor *monitor;
 
-  primary_monitor = gf_monitor_manager_get_primary_monitor (manager);
-  if (!primary_monitor)
+  monitor = gf_monitor_manager_get_primary_monitor (manager);
+
+  if (!monitor || !gf_monitor_is_active (monitor))
+    monitor = get_active_monitor (manager);
+
+  if (!monitor)
     return 1.0;
 
-  return calculate_monitor_scale (manager, primary_monitor);
+  return calculate_monitor_scale (manager, monitor);
 }
 
 static GfLogicalMonitor *
