@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <glib/gi18n-lib.h>
 #include <math.h>
 #include <string.h>
 
@@ -74,6 +75,8 @@ typedef struct
    * the primary one).
    */
   glong          winsys_id;
+
+  char          *display_name;
 } GfMonitorPrivate;
 
 enum
@@ -88,6 +91,112 @@ enum
 static GParamSpec *monitor_properties[LAST_PROP] = { NULL };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GfMonitor, gf_monitor, G_TYPE_OBJECT)
+
+static const gdouble known_diagonals[] =
+  {
+    12.1,
+    13.3,
+    15.6
+  };
+
+static gchar *
+diagonal_to_str (gdouble d)
+{
+  guint i;
+
+  for (i = 0; i < G_N_ELEMENTS (known_diagonals); i++)
+    {
+      gdouble delta;
+
+      delta = fabs(known_diagonals[i] - d);
+
+      if (delta < 0.1)
+        return g_strdup_printf ("%0.1lf\"", known_diagonals[i]);
+    }
+
+  return g_strdup_printf ("%d\"", (int) (d + 0.5));
+}
+
+static gchar *
+make_display_name (GfMonitor        *monitor,
+                   GfMonitorManager *manager)
+{
+  gchar *inches;
+  gchar *vendor_name;
+  const char *vendor;
+  const char *product_name;
+  int width_mm;
+  int height_mm;
+
+  if (gf_monitor_is_laptop_panel (monitor))
+    return g_strdup (_("Built-in display"));
+
+  inches = NULL;
+  vendor_name = NULL;
+  vendor = gf_monitor_get_vendor (monitor);
+  product_name = NULL;
+
+  gf_monitor_get_physical_dimensions (monitor, &width_mm, &height_mm);
+
+  if (width_mm > 0 && height_mm > 0)
+    {
+      if (!gf_monitor_has_aspect_as_size (monitor))
+        {
+          double d;
+
+          d = sqrt (width_mm * width_mm + height_mm * height_mm);
+          inches = diagonal_to_str (d / 25.4);
+        }
+      else
+        {
+          product_name = gf_monitor_get_product (monitor);
+        }
+    }
+
+  if (g_strcmp0 (vendor, "unknown") != 0)
+    {
+      vendor_name = gf_monitor_manager_get_vendor_name (manager, vendor);
+
+      if (!vendor_name)
+        vendor_name = g_strdup (vendor);
+    }
+  else
+    {
+      if (inches != NULL)
+        vendor_name = g_strdup (_("Unknown"));
+      else
+        vendor_name = g_strdup (_("Unknown Display"));
+    }
+
+  if (inches != NULL)
+    {
+      gchar *display_name;
+
+      display_name = g_strdup_printf (C_("This is a monitor vendor name, followed by a "
+                                         "size in inches, like 'Dell 15\"'",
+                                         "%s %s"), vendor_name, inches);
+
+      g_free (vendor_name);
+      g_free (inches);
+
+      return display_name;
+    }
+  else if (product_name != NULL)
+    {
+      gchar *display_name;
+
+      display_name =  g_strdup_printf (C_("This is a monitor vendor name followed by "
+                                          "product/model name where size in inches "
+                                          "could not be calculated, e.g. Dell U2414H",
+                                          "%s %s"), vendor_name, product_name);
+
+      g_free (vendor_name);
+
+      return display_name;
+    }
+
+  return vendor_name;
+}
 
 static gboolean
 is_current_mode_known (GfMonitor *monitor)
@@ -287,6 +396,7 @@ gf_monitor_finalize (GObject *object)
   g_hash_table_destroy (priv->mode_ids);
   g_list_free_full (priv->modes, (GDestroyNotify) gf_monitor_mode_free);
   gf_monitor_spec_free (priv->spec);
+  g_free (priv->display_name);
 
   G_OBJECT_CLASS (gf_monitor_parent_class)->finalize (object);
 }
@@ -388,6 +498,30 @@ gf_monitor_get_gpu (GfMonitor *monitor)
   priv = gf_monitor_get_instance_private (monitor);
 
   return priv->gpu;
+}
+
+void
+gf_monitor_make_display_name (GfMonitor *monitor)
+{
+  GfMonitorPrivate *priv;
+  GfMonitorManager *manager;
+
+  priv = gf_monitor_get_instance_private (monitor);
+
+  manager = gf_gpu_get_monitor_manager (priv->gpu);
+
+  g_free (priv->display_name);
+  priv->display_name = make_display_name (monitor, manager);
+}
+
+const char *
+gf_monitor_get_display_name (GfMonitor *monitor)
+{
+  GfMonitorPrivate *priv;
+
+  priv = gf_monitor_get_instance_private (monitor);
+
+  return priv->display_name;
 }
 
 gboolean

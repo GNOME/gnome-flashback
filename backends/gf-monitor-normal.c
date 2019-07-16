@@ -182,5 +182,7 @@ gf_monitor_normal_new (GfGpu    *gpu,
   gf_monitor_generate_spec (monitor);
   generate_modes (normal);
 
+  gf_monitor_make_display_name (monitor);
+
   return normal;
 }

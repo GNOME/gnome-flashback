@@ -90,6 +90,10 @@ struct _GfMonitorClass
 
 GfGpu              *gf_monitor_get_gpu                    (GfMonitor                  *monitor);
 
+void                gf_monitor_make_display_name          (GfMonitor                  *monitor);
+
+const char         *gf_monitor_get_display_name           (GfMonitor                  *monitor);
+
 gboolean            gf_monitor_is_mode_assigned           (GfMonitor                  *monitor,
                                                            GfMonitorMode              *mode);
 

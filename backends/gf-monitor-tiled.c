@@ -739,6 +739,8 @@ gf_monitor_tiled_new (GfGpu    *gpu,
   gf_monitor_manager_tiled_monitor_added (monitor_manager, monitor);
   generate_modes (tiled);
 
+  gf_monitor_make_display_name (monitor);
+
   return tiled;
 }
 
