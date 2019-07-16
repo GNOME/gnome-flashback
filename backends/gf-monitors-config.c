@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2016 Red Hat
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -149,6 +149,7 @@ gf_monitors_config_new_full (GList                      *logical_monitor_configs
                                             disabled_monitor_specs);
   config->layout_mode = layout_mode;
   config->flags = flags;
+  config->switch_config = GF_MONITOR_SWITCH_CONFIG_UNKNOWN;
 
   return config;
 }
@@ -186,6 +187,19 @@ gf_monitors_config_new (GfMonitorManager           *monitor_manager,
   return gf_monitors_config_new_full (logical_monitor_configs,
                                       disabled_monitor_specs,
                                       layout_mode, flags);
+}
+
+GfMonitorSwitchConfigType
+gf_monitors_config_get_switch_config (GfMonitorsConfig *config)
+{
+  return config->switch_config;
+}
+
+void
+gf_monitors_config_set_switch_config (GfMonitorsConfig          *config,
+                                      GfMonitorSwitchConfigType  switch_config)
+{
+  config->switch_config = switch_config;
 }
 
 guint

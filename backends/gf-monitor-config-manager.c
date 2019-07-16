@@ -994,7 +994,11 @@ GfMonitorsConfig *
 gf_monitor_config_manager_create_for_switch_config (GfMonitorConfigManager    *config_manager,
                                                     GfMonitorSwitchConfigType  config_type)
 {
-  GfMonitorManager *monitor_manager = config_manager->monitor_manager;
+  GfMonitorManager *monitor_manager;
+  GfMonitorsConfig *config;
+
+  monitor_manager = config_manager->monitor_manager;
+  config = NULL;
 
   if (!gf_monitor_manager_can_switch_config (monitor_manager))
     return NULL;
@@ -1002,16 +1006,20 @@ gf_monitor_config_manager_create_for_switch_config (GfMonitorConfigManager    *c
   switch (config_type)
     {
       case GF_MONITOR_SWITCH_CONFIG_ALL_MIRROR:
-        return create_for_switch_config_all_mirror (config_manager);
+        config = create_for_switch_config_all_mirror (config_manager);
+        break;
 
       case GF_MONITOR_SWITCH_CONFIG_ALL_LINEAR:
-        return gf_monitor_config_manager_create_linear (config_manager);
+        config = gf_monitor_config_manager_create_linear (config_manager);
+        break;
 
       case GF_MONITOR_SWITCH_CONFIG_EXTERNAL:
-        return create_for_switch_config_external (config_manager);
+        config = create_for_switch_config_external (config_manager);
+        break;
 
       case GF_MONITOR_SWITCH_CONFIG_BUILTIN:
-        return create_for_switch_config_builtin (config_manager);
+        config = create_for_switch_config_builtin (config_manager);
+        break;
 
       case GF_MONITOR_SWITCH_CONFIG_UNKNOWN:
       default:
@@ -1019,7 +1027,10 @@ gf_monitor_config_manager_create_for_switch_config (GfMonitorConfigManager    *c
         break;
     }
 
-  return NULL;
+  if (config)
+    gf_monitors_config_set_switch_config (config, config_type);
+
+  return config;
 }
 
 void

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2016 Red Hat
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,32 +49,39 @@ struct _GfMonitorsConfig
   GfMonitorsConfigFlag        flags;
 
   GfLogicalMonitorLayoutMode  layout_mode;
+
+  GfMonitorSwitchConfigType   switch_config;
 };
 
 #define GF_TYPE_MONITORS_CONFIG (gf_monitors_config_get_type ())
 G_DECLARE_FINAL_TYPE (GfMonitorsConfig, gf_monitors_config,
                       GF, MONITORS_CONFIG, GObject)
 
-GfMonitorsConfig *gf_monitors_config_new_full  (GList                       *logical_monitor_configs,
-                                                GList                       *disabled_monitor_specs,
-                                                GfLogicalMonitorLayoutMode   layout_mode,
-                                                GfMonitorsConfigFlag         flags);
+GfMonitorsConfig          *gf_monitors_config_new_full          (GList                       *logical_monitor_configs,
+                                                                 GList                       *disabled_monitor_specs,
+                                                                 GfLogicalMonitorLayoutMode   layout_mode,
+                                                                 GfMonitorsConfigFlag         flags);
 
-GfMonitorsConfig *gf_monitors_config_new       (GfMonitorManager            *monitor_manager,
-                                                GList                       *logical_monitor_configs,
-                                                GfLogicalMonitorLayoutMode   layout_mode,
-                                                GfMonitorsConfigFlag         flags);
+GfMonitorsConfig          *gf_monitors_config_new               (GfMonitorManager            *monitor_manager,
+                                                                 GList                       *logical_monitor_configs,
+                                                                 GfLogicalMonitorLayoutMode   layout_mode,
+                                                                 GfMonitorsConfigFlag         flags);
 
-guint             gf_monitors_config_key_hash  (gconstpointer                data);
+GfMonitorSwitchConfigType  gf_monitors_config_get_switch_config (GfMonitorsConfig            *config);
 
-gboolean          gf_monitors_config_key_equal (gconstpointer                data_a,
-                                                gconstpointer                data_b);
+void                       gf_monitors_config_set_switch_config (GfMonitorsConfig            *config,
+                                                                 GfMonitorSwitchConfigType    switch_config);
 
-void              gf_monitors_config_key_free  (GfMonitorsConfigKey         *config_key);
+guint                      gf_monitors_config_key_hash          (gconstpointer                data);
 
-gboolean          gf_verify_monitors_config    (GfMonitorsConfig            *config,
-                                                GfMonitorManager            *monitor_manager,
-                                                GError                     **error);
+gboolean                   gf_monitors_config_key_equal         (gconstpointer                data_a,
+                                                                 gconstpointer                data_b);
+
+void                       gf_monitors_config_key_free          (GfMonitorsConfigKey         *config_key);
+
+gboolean                   gf_verify_monitors_config            (GfMonitorsConfig            *config,
+                                                                 GfMonitorManager            *monitor_manager,
+                                                                 GError                     **error);
 
 G_END_DECLS
 

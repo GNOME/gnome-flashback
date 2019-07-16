@@ -180,8 +180,6 @@ gf_monitor_manager_notify_monitors_changed (GfMonitorManager *manager)
 
   priv = gf_monitor_manager_get_instance_private (manager);
 
-  manager->current_switch_config = GF_MONITOR_SWITCH_CONFIG_UNKNOWN;
-
   gf_backend_monitors_changed (priv->backend);
 
   g_signal_emit_by_name (manager, "monitors-changed");
@@ -2484,7 +2482,9 @@ gf_monitor_manager_ensure_configured (GfMonitorManager *manager)
       g_clear_object (&config);
     }
 
-  config = gf_monitor_config_manager_create_linear (manager->config_manager);
+  config = gf_monitor_config_manager_create_for_switch_config (manager->config_manager,
+                                                               GF_MONITOR_SWITCH_CONFIG_ALL_LINEAR);
+
   if (config)
     {
       if (!gf_monitor_manager_apply_monitors_config (manager, config,
@@ -2537,6 +2537,11 @@ void
 gf_monitor_manager_update_logical_state_derived (GfMonitorManager *manager,
                                                  GfMonitorsConfig *config)
 {
+  if (config)
+    manager->current_switch_config = gf_monitors_config_get_switch_config (config);
+  else
+    manager->current_switch_config = GF_MONITOR_SWITCH_CONFIG_UNKNOWN;
+
   manager->layout_mode = GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL;
 
   gf_monitor_manager_rebuild_logical_monitors_derived (manager, config);
