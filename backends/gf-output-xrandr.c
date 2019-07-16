@@ -767,13 +767,22 @@ gf_create_xrandr_output (GfGpuXrandr   *gpu_xrandr,
   gf_output_parse_edid (output, edid);
   g_bytes_unref (edid);
 
-  output->width_mm = xrandr_output->mm_width;
-  output->height_mm = xrandr_output->mm_height;
   output->hotplug_mode_update = output_get_hotplug_mode_update (output);
   output->suggested_x = output_get_suggested_x (output);
   output->suggested_y = output_get_suggested_y (output);
   output->connector_type = output_get_connector_type (output);
   output->panel_orientation_transform = output_get_panel_orientation_transform (output);
+
+  if (gf_monitor_transform_is_rotated (output->panel_orientation_transform))
+    {
+      output->width_mm = xrandr_output->mm_height;
+      output->height_mm = xrandr_output->mm_width;
+    }
+  else
+    {
+      output->width_mm = xrandr_output->mm_width;
+      output->height_mm = xrandr_output->mm_height;
+    }
 
   output_get_tile_info (output);
   output_get_modes (output, xrandr_output);
