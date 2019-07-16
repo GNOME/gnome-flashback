@@ -170,6 +170,8 @@ typedef struct
   GfMonitorConfig        *current_monitor_config;
   GfLogicalMonitorConfig *current_logical_monitor_config;
   GList                  *current_disabled_monitor_specs;
+
+  GfMonitorsConfigFlag    extra_config_flags;
 } ConfigParser;
 
 typedef struct
@@ -190,6 +192,12 @@ enum
 static GParamSpec *config_store_properties[LAST_PROP] = { NULL };
 
 G_DEFINE_TYPE (GfMonitorConfigStore, gf_monitor_config_store, G_TYPE_OBJECT)
+
+static gboolean
+is_system_config (GfMonitorsConfig *config)
+{
+  return !!(config->flags & GF_MONITORS_CONFIG_FLAG_SYSTEM_CONFIG);
+}
 
 static void
 handle_start_element (GMarkupParseContext  *context,
@@ -799,6 +807,8 @@ handle_end_element (GMarkupParseContext  *context,
           if (parser->current_was_migrated)
             config_flags |= GF_MONITORS_CONFIG_FLAG_MIGRATED;
 
+          config_flags |= parser->extra_config_flags;
+
           config = gf_monitors_config_new_full (parser->current_logical_monitor_configs,
                                                 parser->current_disabled_monitor_specs,
                                                 layout_mode, config_flags);
@@ -1114,6 +1124,7 @@ static const GMarkupParser config_parser =
 static gboolean
 read_config_file (GfMonitorConfigStore  *config_store,
                   GFile                 *file,
+                  GfMonitorsConfigFlag   extra_config_flags,
                   GError               **error)
 {
   gchar *buffer;
@@ -1126,7 +1137,8 @@ read_config_file (GfMonitorConfigStore  *config_store,
 
   parser = (ConfigParser) {
     .state = STATE_INITIAL,
-    .config_store = config_store
+    .config_store = config_store,
+    .extra_config_flags = extra_config_flags
   };
 
   parse_context = g_markup_parse_context_new (&config_parser,
@@ -1314,6 +1326,9 @@ generate_config_xml (GfMonitorConfigStore *config_store)
     {
       GList *l;
 
+      if (config->flags & GF_MONITORS_CONFIG_FLAG_SYSTEM_CONFIG)
+        continue;
+
       g_string_append (buffer, "  <configuration>\n");
 
       if (config->flags & GF_MONITORS_CONFIG_FLAG_MIGRATED)
@@ -1465,21 +1480,63 @@ static void
 gf_monitor_config_store_constructed (GObject *object)
 {
   GfMonitorConfigStore *config_store;
-  gchar *filename;
+  const char * const *system_dirs;
+  char *user_file_path;
+  GError *error;
 
   G_OBJECT_CLASS (gf_monitor_config_store_parent_class)->constructed (object);
 
   config_store = GF_MONITOR_CONFIG_STORE (object);
+  error = NULL;
 
-  filename = g_build_filename (g_get_user_config_dir (), "monitors.xml", NULL);
-  config_store->user_file = g_file_new_for_path (filename);
-
-  if (g_file_test (filename, G_FILE_TEST_EXISTS))
+  for (system_dirs = g_get_system_config_dirs ();
+       system_dirs && *system_dirs;
+       system_dirs++)
     {
-      GError *error;
+      char *system_file_path;
 
-      error = NULL;
-      if (!read_config_file (config_store, config_store->user_file, &error))
+      system_file_path = g_build_filename (*system_dirs, "monitors.xml", NULL);
+
+      if (g_file_test (system_file_path, G_FILE_TEST_EXISTS))
+        {
+          GFile *system_file;
+
+          system_file = g_file_new_for_path (system_file_path);
+
+          if (!read_config_file (config_store,
+                                 system_file,
+                                 GF_MONITORS_CONFIG_FLAG_SYSTEM_CONFIG,
+                                 &error))
+            {
+              if (g_error_matches (error,
+                                   GF_MONITOR_CONFIG_STORE_ERROR,
+                                   GF_MONITOR_CONFIG_STORE_ERROR_NEEDS_MIGRATION))
+                g_warning ("System monitor configuration file (%s) is "
+                           "incompatible; ask your administrator to migrate "
+                           "the system monitor configuation.",
+                           system_file_path);
+              else
+                g_warning ("Failed to read monitors config file '%s': %s",
+                           system_file_path, error->message);
+
+              g_clear_error (&error);
+            }
+
+          g_object_unref (system_file);
+        }
+
+      g_free (system_file_path);
+    }
+
+  user_file_path = g_build_filename (g_get_user_config_dir (), "monitors.xml", NULL);
+  config_store->user_file = g_file_new_for_path (user_file_path);
+
+  if (g_file_test (user_file_path, G_FILE_TEST_EXISTS))
+    {
+      if (!read_config_file (config_store,
+                             config_store->user_file,
+                             GF_MONITORS_CONFIG_FLAG_NONE,
+                             &error))
         {
           if (error->domain == GF_MONITOR_CONFIG_STORE_ERROR &&
               error->code == GF_MONITOR_CONFIG_STORE_ERROR_NEEDS_MIGRATION)
@@ -1495,13 +1552,13 @@ gf_monitor_config_store_constructed (GObject *object)
           else
             {
               g_warning ("Failed to read monitors config file '%s': %s",
-                         filename, error->message);
+                         user_file_path, error->message);
               g_error_free (error);
             }
         }
     }
 
-  g_free (filename);
+  g_free (user_file_path);
 }
 
 static void
@@ -1627,7 +1684,9 @@ gf_monitor_config_store_add (GfMonitorConfigStore *config_store,
                              GfMonitorsConfig     *config)
 {
   g_hash_table_replace (config_store->configs, config->key, g_object_ref (config));
-  maybe_save_configs (config_store);
+
+  if (!is_system_config (config))
+    maybe_save_configs (config_store);
 }
 
 void
@@ -1635,7 +1694,9 @@ gf_monitor_config_store_remove (GfMonitorConfigStore *config_store,
                                 GfMonitorsConfig     *config)
 {
   g_hash_table_remove (config_store->configs, config->key);
-  maybe_save_configs (config_store);
+
+  if (!is_system_config (config))
+    maybe_save_configs (config_store);
 }
 
 gboolean
@@ -1652,7 +1713,10 @@ gf_monitor_config_store_set_custom (GfMonitorConfigStore  *config_store,
   if (write_path)
     config_store->custom_write_file = g_file_new_for_path (write_path);
 
-  return read_config_file (config_store, config_store->custom_read_file, error);
+  return read_config_file (config_store,
+                           config_store->custom_read_file,
+                           GF_MONITORS_CONFIG_FLAG_NONE,
+                           error);
 }
 
 gint
