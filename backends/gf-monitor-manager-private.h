@@ -48,7 +48,9 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC (GfMonitorManager, g_object_unref)
 
 struct _GfMonitorManager
 {
-  GfDBusDisplayConfigSkeleton  parent;
+  GObject                      parent;
+
+  GfDBusDisplayConfig         *display_config;
 
   guint                        serial;
 
@@ -77,7 +79,7 @@ struct _GfMonitorManager
 
 typedef struct
 {
-  GfDBusDisplayConfigSkeletonClass parent_class;
+  GObjectClass parent_class;
 
   GBytes                     * (* read_edid)                    (GfMonitorManager            *manager,
                                                                  GfOutput                    *output);

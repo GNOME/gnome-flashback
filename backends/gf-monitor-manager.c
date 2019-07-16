@@ -70,6 +70,8 @@ static GParamSpec *manager_properties[LAST_PROP] = { NULL };
 
 enum
 {
+  MONITORS_CHANGED,
+  POWER_SAVE_MODE_CHANGED,
   CONFIRM_DISPLAY_CHANGE,
 
   LAST_SIGNAL
@@ -77,11 +79,7 @@ enum
 
 static guint manager_signals[LAST_SIGNAL] = { 0 };
 
-static void gf_monitor_manager_display_config_init (GfDBusDisplayConfigIface *iface);
-
-G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GfMonitorManager, gf_monitor_manager, GF_DBUS_TYPE_DISPLAY_CONFIG_SKELETON,
-                                  G_ADD_PRIVATE (GfMonitorManager)
-                                  G_IMPLEMENT_INTERFACE (GF_DBUS_TYPE_DISPLAY_CONFIG, gf_monitor_manager_display_config_init))
+G_DEFINE_TYPE_WITH_PRIVATE (GfMonitorManager, gf_monitor_manager, G_TYPE_OBJECT)
 
 /* Array index matches GfMonitorTransform */
 static gfloat transform_matrices[][6] =
@@ -137,12 +135,10 @@ power_save_mode_changed (GfMonitorManager *manager,
                          gpointer          user_data)
 {
   GfMonitorManagerClass *manager_class;
-  GfDBusDisplayConfig *display_config;
   gint mode;
 
   manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
-  display_config = GF_DBUS_DISPLAY_CONFIG (manager);
-  mode = gf_dbus_display_config_get_power_save_mode (display_config);
+  mode = gf_dbus_display_config_get_power_save_mode (manager->display_config);
 
   if (mode == GF_POWER_SAVE_UNSUPPORTED)
     return;
@@ -150,7 +146,8 @@ power_save_mode_changed (GfMonitorManager *manager,
   /* If DPMS is unsupported, force the property back. */
   if (manager->power_save_mode == GF_POWER_SAVE_UNSUPPORTED)
     {
-      gf_dbus_display_config_set_power_save_mode (display_config, GF_POWER_SAVE_UNSUPPORTED);
+      gf_dbus_display_config_set_power_save_mode (manager->display_config,
+                                                  GF_POWER_SAVE_UNSUPPORTED);
       return;
     }
 
@@ -158,6 +155,8 @@ power_save_mode_changed (GfMonitorManager *manager,
     manager_class->set_power_save_mode (manager, mode);
 
   manager->power_save_mode = mode;
+
+  g_signal_emit (manager, manager_signals[POWER_SAVE_MODE_CHANGED], 0);
 }
 
 static void
@@ -182,7 +181,9 @@ gf_monitor_manager_notify_monitors_changed (GfMonitorManager *manager)
 
   gf_backend_monitors_changed (priv->backend);
 
-  g_signal_emit_by_name (manager, "monitors-changed");
+  g_signal_emit (manager, manager_signals[MONITORS_CHANGED], 0);
+
+  gf_dbus_display_config_emit_monitors_changed (manager->display_config);
 }
 
 static GfMonitor *
@@ -1124,9 +1125,9 @@ combine_gpu_lists (GfMonitorManager *manager,
 
 static gboolean
 gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
-                                         GDBusMethodInvocation *invocation)
+                                         GDBusMethodInvocation *invocation,
+                                         GfMonitorManager      *manager)
 {
-  GfMonitorManager *manager;
   GfMonitorManagerClass *manager_class;
   GList *combined_modes;
   GList *combined_outputs;
@@ -1139,8 +1140,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
   gint max_screen_width;
   gint max_screen_height;
 
-  manager = GF_MONITOR_MANAGER (skeleton);
-  manager_class = GF_MONITOR_MANAGER_GET_CLASS (skeleton);
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
 
   combined_modes = combine_gpu_lists (manager, gf_gpu_get_modes);
   combined_outputs = combine_gpu_lists (manager, gf_gpu_get_outputs);
@@ -1327,15 +1327,14 @@ gf_monitor_manager_handle_change_backlight (GfDBusDisplayConfig   *skeleton,
                                             GDBusMethodInvocation *invocation,
                                             guint                  serial,
                                             guint                  output_index,
-                                            gint                   value)
+                                            gint                   value,
+                                            GfMonitorManager      *manager)
 {
-  GfMonitorManager *manager;
   GfMonitorManagerClass *manager_class;
   GList *combined_outputs;
   GfOutput *output;
 
-  manager = GF_MONITOR_MANAGER (skeleton);
-  manager_class = GF_MONITOR_MANAGER_GET_CLASS (skeleton);
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
 
   if (serial != manager->serial)
     {
@@ -1389,9 +1388,9 @@ static gboolean
 gf_monitor_manager_handle_get_crtc_gamma (GfDBusDisplayConfig   *skeleton,
                                           GDBusMethodInvocation *invocation,
                                           guint                  serial,
-                                          guint                  crtc_id)
+                                          guint                  crtc_id,
+                                          GfMonitorManager      *manager)
 {
-  GfMonitorManager *manager;
   GfMonitorManagerClass *manager_class;
   GList *combined_crtcs;
   GfCrtc *crtc;
@@ -1406,8 +1405,7 @@ gf_monitor_manager_handle_get_crtc_gamma (GfDBusDisplayConfig   *skeleton,
   GVariant *green_v;
   GVariant *blue_v;
 
-  manager = GF_MONITOR_MANAGER (skeleton);
-  manager_class = GF_MONITOR_MANAGER_GET_CLASS (skeleton);
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
 
   if (serial != manager->serial)
     {
@@ -1466,9 +1464,9 @@ gf_monitor_manager_handle_set_crtc_gamma (GfDBusDisplayConfig   *skeleton,
                                           guint                  crtc_id,
                                           GVariant              *red_v,
                                           GVariant              *green_v,
-                                          GVariant              *blue_v)
+                                          GVariant              *blue_v,
+                                          GfMonitorManager      *manager)
 {
-  GfMonitorManager *manager;
   GfMonitorManagerClass *manager_class;
   GList *combined_crtcs;
   GfCrtc *crtc;
@@ -1480,8 +1478,7 @@ gf_monitor_manager_handle_set_crtc_gamma (GfDBusDisplayConfig   *skeleton,
   gushort *green;
   gushort *blue;
 
-  manager = GF_MONITOR_MANAGER (skeleton);
-  manager_class = GF_MONITOR_MANAGER_GET_CLASS (skeleton);
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
 
   if (serial != manager->serial)
     {
@@ -1538,9 +1535,9 @@ gf_monitor_manager_handle_set_crtc_gamma (GfDBusDisplayConfig   *skeleton,
 
 static gboolean
 gf_monitor_manager_handle_get_current_state (GfDBusDisplayConfig   *skeleton,
-                                             GDBusMethodInvocation *invocation)
+                                             GDBusMethodInvocation *invocation,
+                                             GfMonitorManager      *manager)
 {
-  GfMonitorManager *manager;
   GfMonitorManagerPrivate *priv;
   GfSettings *settings;
   GVariantBuilder monitors_builder;
@@ -1552,7 +1549,6 @@ gf_monitor_manager_handle_get_current_state (GfDBusDisplayConfig   *skeleton,
   gint max_screen_width;
   gint max_screen_height;
 
-  manager = GF_MONITOR_MANAGER (skeleton);
   priv = gf_monitor_manager_get_instance_private (manager);
   settings = gf_backend_get_settings (priv->backend);
 
@@ -1775,9 +1771,9 @@ gf_monitor_manager_handle_apply_monitors_config (GfDBusDisplayConfig   *skeleton
                                                  guint                  serial,
                                                  guint                  method,
                                                  GVariant              *logical_monitor_configs_variant,
-                                                 GVariant              *properties_variant)
+                                                 GVariant              *properties_variant,
+                                                 GfMonitorManager      *manager)
 {
-  GfMonitorManager *manager;
   GfMonitorManagerCapability capabilities;
   GVariant *layout_mode_variant;
   GfLogicalMonitorLayoutMode layout_mode;
@@ -1785,8 +1781,6 @@ gf_monitor_manager_handle_apply_monitors_config (GfDBusDisplayConfig   *skeleton
   GList *logical_monitor_configs;
   GError *error;
   GfMonitorsConfig *config;
-
-  manager = GF_MONITOR_MANAGER (skeleton);
 
   if (serial != manager->serial)
     {
@@ -1917,14 +1911,26 @@ gf_monitor_manager_handle_apply_monitors_config (GfDBusDisplayConfig   *skeleton
 }
 
 static void
-gf_monitor_manager_display_config_init (GfDBusDisplayConfigIface *iface)
+monitor_manager_setup_dbus_config_handlers (GfMonitorManager *manager)
 {
-  iface->handle_get_resources = gf_monitor_manager_handle_get_resources;
-  iface->handle_change_backlight = gf_monitor_manager_handle_change_backlight;
-  iface->handle_get_crtc_gamma = gf_monitor_manager_handle_get_crtc_gamma;
-  iface->handle_set_crtc_gamma = gf_monitor_manager_handle_set_crtc_gamma;
-  iface->handle_get_current_state = gf_monitor_manager_handle_get_current_state;
-  iface->handle_apply_monitors_config = gf_monitor_manager_handle_apply_monitors_config;
+  g_signal_connect_object (manager->display_config, "handle-get-resources",
+                           G_CALLBACK (gf_monitor_manager_handle_get_resources),
+                           manager, 0);
+  g_signal_connect_object (manager->display_config, "handle-change-backlight",
+                           G_CALLBACK (gf_monitor_manager_handle_change_backlight),
+                           manager, 0);
+  g_signal_connect_object (manager->display_config, "handle-get-crtc-gamma",
+                           G_CALLBACK (gf_monitor_manager_handle_get_crtc_gamma),
+                           manager, 0);
+  g_signal_connect_object (manager->display_config, "handle-set-crtc-gamma",
+                           G_CALLBACK (gf_monitor_manager_handle_set_crtc_gamma),
+                           manager, 0);
+  g_signal_connect_object (manager->display_config, "handle-get-current-state",
+                           G_CALLBACK (gf_monitor_manager_handle_get_current_state),
+                           manager, 0);
+  g_signal_connect_object (manager->display_config, "handle-apply-monitors-config",
+                           G_CALLBACK (gf_monitor_manager_handle_apply_monitors_config),
+                           manager, 0);
 }
 
 static void
@@ -1936,7 +1942,7 @@ bus_acquired_cb (GDBusConnection *connection,
   GDBusInterfaceSkeleton *skeleton;
 
   manager = GF_MONITOR_MANAGER (user_data);
-  skeleton = G_DBUS_INTERFACE_SKELETON (manager);
+  skeleton = G_DBUS_INTERFACE_SKELETON (manager->display_config);
 
   g_dbus_interface_skeleton_export (skeleton, connection,
                                     "/org/gnome/Mutter/DisplayConfig",
@@ -2005,6 +2011,9 @@ gf_monitor_manager_constructed (GObject *object)
 
   G_OBJECT_CLASS (gf_monitor_manager_parent_class)->constructed (object);
 
+  manager->display_config = gf_dbus_display_config_skeleton_new ();
+  monitor_manager_setup_dbus_config_handlers (manager);
+
   if (manager_class->is_lid_closed == gf_monitor_manager_real_is_lid_closed)
     {
       manager->up_client = up_client_new ();
@@ -2018,8 +2027,9 @@ gf_monitor_manager_constructed (GObject *object)
         }
     }
 
-  g_signal_connect_object (manager, "notify::power-save-mode",
-                           G_CALLBACK (power_save_mode_changed), manager, 0);
+  g_signal_connect_object (manager->display_config, "notify::power-save-mode",
+                           G_CALLBACK (power_save_mode_changed), manager,
+                           G_CONNECT_SWAPPED);
 
   orientation_manager = gf_backend_get_orientation_manager (priv->backend);
   g_signal_connect_object (orientation_manager, "orientation-changed",
@@ -2053,6 +2063,7 @@ gf_monitor_manager_dispose (GObject *object)
       priv->bus_name_id = 0;
     }
 
+  g_clear_object (&manager->display_config);
   g_clear_object (&manager->config_manager);
   g_clear_object (&manager->up_client);
 
@@ -2141,10 +2152,28 @@ gf_monitor_manager_install_properties (GObjectClass *object_class)
 static void
 gf_monitor_manager_install_signals (GObjectClass *object_class)
 {
+  manager_signals[MONITORS_CHANGED] =
+    g_signal_new ("monitors-changed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+
+  manager_signals[POWER_SAVE_MODE_CHANGED] =
+    g_signal_new ("power-save-mode-changed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+
   manager_signals[CONFIRM_DISPLAY_CHANGE] =
     g_signal_new ("confirm-display-change",
-                  G_TYPE_FROM_CLASS (object_class), G_SIGNAL_RUN_LAST,
-                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
 }
 
 static void
