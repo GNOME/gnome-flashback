@@ -179,8 +179,8 @@ create_preferred_logical_monitor_config (GfMonitorManager           *monitor_man
   switch (layout_mode)
     {
       case GF_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
-        width /= scale;
-        height /= scale;
+        width = (int) roundf (width / scale);
+        height = (int) roundf (height / scale);
         break;
 
       case GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
