@@ -50,6 +50,8 @@ struct _GfScreenshot
   GHashTable       *senders;
 
   GSettings        *lockdown;
+
+  GDateTime        *datetime;
 };
 
 typedef struct
@@ -310,12 +312,14 @@ get_filename (const gchar *filename)
 }
 
 static gboolean
-save_screenshot (GdkPixbuf    *pixbuf,
-                 const gchar  *filename_in,
-                 gchar       **filename_out)
+save_screenshot (GfScreenshot  *screenshot,
+                 GdkPixbuf     *pixbuf,
+                 const gchar   *filename_in,
+                 gchar        **filename_out)
 {
   gboolean result;
   gchar *filename;
+  gchar *creation_time;
   GError *error;
 
   if (pixbuf == NULL)
@@ -323,8 +327,12 @@ save_screenshot (GdkPixbuf    *pixbuf,
 
   filename = get_filename (filename_in);
 
+  creation_time = g_date_time_format (screenshot->datetime, "%c");
+
   error = NULL;
-  result = gdk_pixbuf_save (pixbuf, filename, "png", &error, NULL);
+  result = gdk_pixbuf_save (pixbuf, filename, "png", &error,
+                            "tEXt::Creation Time", creation_time,
+                            NULL);
 
   if (result)
     *filename_out = filename;
@@ -338,6 +346,7 @@ save_screenshot (GdkPixbuf    *pixbuf,
     }
 
   g_object_unref (pixbuf);
+  g_free (creation_time);
 
   return result;
 }
@@ -857,7 +866,7 @@ take_screenshot_real (GfScreenshot    *screenshot,
           *height -= extents.top + extents.bottom;
         }
 
-      return save_screenshot (pixbuf, filename_in, filename_out);
+      return save_screenshot (screenshot, pixbuf, filename_in, filename_out);
     }
 
   get_window_rect_coords (window, include_frame, &real, &s);
@@ -1020,7 +1029,7 @@ take_screenshot_real (GfScreenshot    *screenshot,
       *height = rect.height;
     }
 
-  return save_screenshot (pixbuf, filename_in, filename_out);
+  return save_screenshot (screenshot, pixbuf, filename_in, filename_out);
 }
 
 static void
@@ -1396,6 +1405,8 @@ gf_screenshot_dispose (GObject *object)
 
   g_clear_object (&screenshot->lockdown);
 
+  g_clear_pointer (&screenshot->datetime, g_date_time_unref);
+
   G_OBJECT_CLASS (gf_screenshot_parent_class)->dispose (object);
 }
 
@@ -1425,6 +1436,8 @@ gf_screenshot_init (GfScreenshot *screenshot)
                                                g_free, NULL);
 
   screenshot->lockdown = g_settings_new ("org.gnome.desktop.lockdown");
+
+  screenshot->datetime = g_date_time_new_now_local ();
 }
 
 GfScreenshot *
