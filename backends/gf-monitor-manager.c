@@ -2020,8 +2020,11 @@ gf_monitor_manager_constructed (GObject *object)
     {
       manager->up_client = up_client_new ();
 
-      g_signal_connect_object (manager->up_client, "notify::lid-is-closed",
-                               G_CALLBACK (lid_is_closed_changed), manager, 0);
+      if (manager->up_client)
+        {
+          g_signal_connect_object (manager->up_client, "notify::lid-is-closed",
+                                   G_CALLBACK (lid_is_closed_changed), manager, 0);
+        }
     }
 
   g_signal_connect_object (manager, "notify::power-save-mode",
