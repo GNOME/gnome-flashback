@@ -55,58 +55,59 @@ typedef struct
 
 struct _GfOutput
 {
-  GObject            parent;
+  GObject              parent;
 
-  GfGpu             *gpu;
+  GfGpu               *gpu;
 
   /* The CRTC driving this output, NULL if the output is not enabled */
-  GfCrtc            *crtc;
+  GfCrtc              *crtc;
 
   /* The low-level ID of this output, used to apply back configuration */
-  glong              winsys_id;
-  gchar             *name;
-  gchar             *vendor;
-  gchar             *product;
-  gchar             *serial;
-  gint               width_mm;
-  gint               height_mm;
+  glong                winsys_id;
+  gchar               *name;
+  gchar               *vendor;
+  gchar               *product;
+  gchar               *serial;
+  gint                 width_mm;
+  gint                 height_mm;
 
-  GfConnectorType    connector_type;
+  GfConnectorType      connector_type;
+  GfMonitorTransform   panel_orientation_transform;
 
-  GfCrtcMode        *preferred_mode;
-  GfCrtcMode       **modes;
-  guint              n_modes;
+  GfCrtcMode          *preferred_mode;
+  GfCrtcMode         **modes;
+  guint                n_modes;
 
-  GfCrtc           **possible_crtcs;
-  guint              n_possible_crtcs;
+  GfCrtc             **possible_crtcs;
+  guint                n_possible_crtcs;
 
-  GfOutput         **possible_clones;
-  guint              n_possible_clones;
+  GfOutput           **possible_clones;
+  guint                n_possible_clones;
 
-  gint               backlight;
-  gint               backlight_min;
-  gint               backlight_max;
+  gint                 backlight;
+  gint                 backlight_min;
+  gint                 backlight_max;
 
   /* Used when changing configuration */
-  gboolean           is_dirty;
+  gboolean             is_dirty;
 
   /* The low-level bits used to build the high-level info in GfLogicalMonitor */
-  gboolean           is_primary;
-  gboolean           is_presentation;
-  gboolean           is_underscanning;
-  gboolean           supports_underscanning;
+  gboolean             is_primary;
+  gboolean             is_presentation;
+  gboolean             is_underscanning;
+  gboolean             supports_underscanning;
 
-  gpointer           driver_private;
-  GDestroyNotify     driver_notify;
+  gpointer             driver_private;
+  GDestroyNotify       driver_notify;
 
   /* Get a new preferred mode on hotplug events, to handle
    * dynamic guest resizing
    */
-  gboolean           hotplug_mode_update;
-  gint               suggested_x;
-  gint               suggested_y;
+  gboolean             hotplug_mode_update;
+  gint                 suggested_x;
+  gint                 suggested_y;
 
-  GfTileInfo         tile_info;
+  GfTileInfo           tile_info;
 };
 
 #define GF_TYPE_OUTPUT (gf_output_get_type ())

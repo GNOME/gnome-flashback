@@ -375,6 +375,52 @@ output_get_connector_type (GfOutput *output)
   return GF_CONNECTOR_TYPE_Unknown;
 }
 
+static GfMonitorTransform
+output_get_panel_orientation_transform (GfOutput *output)
+{
+  Display *xdisplay;
+  unsigned long nitems;
+  unsigned long bytes_after;
+  Atom atom;
+  Atom actual_type;
+  int actual_format;
+  unsigned char *buffer;
+  char *str;
+  GfMonitorTransform transform;
+
+  xdisplay = xdisplay_from_output (output);
+  buffer = NULL;
+  str = NULL;
+
+  atom = XInternAtom (xdisplay, "panel orientation", False);
+  XRRGetOutputProperty (xdisplay, (XID) output->winsys_id, atom,
+                        0, G_MAXLONG, False, False, XA_ATOM,
+                        &actual_type, &actual_format,
+                        &nitems, &bytes_after, &buffer);
+
+  if (actual_type != XA_ATOM || actual_format != 32 || nitems < 1)
+    {
+      g_free (buffer);
+      return GF_MONITOR_TRANSFORM_NORMAL;
+    }
+
+  str = XGetAtomName (xdisplay, *(Atom *) buffer);
+  g_free (buffer);
+
+  transform = GF_MONITOR_TRANSFORM_NORMAL;
+
+  if (strcmp (str, "Upside Down") == 0)
+    transform = GF_MONITOR_TRANSFORM_180;
+  else if (strcmp (str, "Left Side Up") == 0)
+    transform = GF_MONITOR_TRANSFORM_90;
+  else if (strcmp (str, "Right Side Up") == 0)
+    transform = GF_MONITOR_TRANSFORM_270;
+
+  g_free (str);
+
+  return transform;
+}
+
 static void
 output_get_tile_info (GfOutput *output)
 {
@@ -727,6 +773,7 @@ gf_create_xrandr_output (GfGpuXrandr   *gpu_xrandr,
   output->suggested_x = output_get_suggested_x (output);
   output->suggested_y = output_get_suggested_y (output);
   output->connector_type = output_get_connector_type (output);
+  output->panel_orientation_transform = output_get_panel_orientation_transform (output);
 
   output_get_tile_info (output);
   output_get_modes (output, xrandr_output);

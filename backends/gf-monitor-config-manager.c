@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2016 Red Hat
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -511,10 +511,9 @@ assign_monitor_crtc (GfMonitor          *monitor,
     }
 
   transform = data->logical_monitor_config->transform;
-  if (gf_monitor_manager_is_transform_handled (data->monitor_manager,
-                                               crtc, transform))
-    crtc_transform = transform;
-  else
+  crtc_transform = gf_monitor_logical_to_crtc_transform (monitor, transform);
+  if (!gf_monitor_manager_is_transform_handled (data->monitor_manager,
+                                                crtc, crtc_transform))
     crtc_transform = GF_MONITOR_TRANSFORM_NORMAL;
 
   gf_monitor_calculate_crtc_pos (monitor, mode, output, crtc_transform,

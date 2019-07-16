@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2016 Red Hat
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -138,10 +138,10 @@ create_tiled_monitor_mode (GfMonitorTiled *tiled,
 
   calculate_tiled_size (monitor, &width, &height);
 
-  mode->parent.spec.width = width;
-  mode->parent.spec.height = height;
-  mode->parent.spec.refresh_rate = reference_crtc_mode->refresh_rate;
-  mode->parent.spec.flags = reference_crtc_mode->flags & HANDLED_CRTC_MODE_FLAGS;
+  mode->parent.spec = gf_monitor_create_spec (monitor,
+                                              width,
+                                              height,
+                                              reference_crtc_mode);
 
   mode->parent.id = gf_monitor_mode_spec_generate_id (&mode->parent.spec);
   mode->parent.crtc_modes = g_new0 (GfMonitorCrtcMode, g_list_length (outputs));
@@ -192,10 +192,10 @@ create_untiled_monitor_mode (GfMonitorTiled *tiled,
   mode = g_new0 (GfMonitorModeTiled, 1);
   mode->is_tiled = FALSE;
 
-  mode->parent.spec.width = crtc_mode->width;
-  mode->parent.spec.height = crtc_mode->height;
-  mode->parent.spec.refresh_rate = crtc_mode->refresh_rate;
-  mode->parent.spec.flags = crtc_mode->flags & HANDLED_CRTC_MODE_FLAGS;
+  mode->parent.spec = gf_monitor_create_spec (monitor,
+                                              crtc_mode->width,
+                                              crtc_mode->height,
+                                              crtc_mode);
 
   mode->parent.id = gf_monitor_mode_spec_generate_id (&mode->parent.spec);
   mode->parent.crtc_modes = g_new0 (GfMonitorCrtcMode, g_list_length (outputs));

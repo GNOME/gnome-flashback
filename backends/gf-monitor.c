@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2016 Red Hat
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -422,6 +422,34 @@ gf_monitor_set_preferred_mode (GfMonitor     *monitor,
   priv->preferred_mode = mode;
 }
 
+GfMonitorModeSpec
+gf_monitor_create_spec (GfMonitor  *monitor,
+                        int         width,
+                        int         height,
+                        GfCrtcMode *crtc_mode)
+{
+  GfOutput *output;
+  GfMonitorModeSpec spec;
+
+  output = gf_monitor_get_main_output (monitor);
+
+  if (gf_monitor_transform_is_rotated (output->panel_orientation_transform))
+    {
+      int temp;
+
+      temp = width;
+      width = height;
+      height = temp;
+    }
+
+  spec.width = width;
+  spec.height = height;
+  spec.refresh_rate = crtc_mode->refresh_rate;
+  spec.flags = crtc_mode->flags & HANDLED_CRTC_MODE_FLAGS;
+
+  return spec;
+}
+
 void
 gf_monitor_generate_spec (GfMonitor *monitor)
 {
@@ -676,6 +704,41 @@ gf_monitor_get_connector_type (GfMonitor *monitor)
 
   output = gf_monitor_get_main_output (monitor);
   return output->connector_type;
+}
+
+GfMonitorTransform
+gf_monitor_logical_to_crtc_transform (GfMonitor          *monitor,
+                                      GfMonitorTransform  transform)
+{
+  GfOutput *output;
+  GfMonitorTransform new_transform;
+
+  output = gf_monitor_get_main_output (monitor);
+  new_transform = (transform + output->panel_orientation_transform) %
+                  GF_MONITOR_TRANSFORM_FLIPPED;
+
+  if (gf_monitor_transform_is_flipped (transform))
+    new_transform += GF_MONITOR_TRANSFORM_FLIPPED;
+
+  return new_transform;
+}
+
+GfMonitorTransform
+gf_monitor_crtc_to_logical_transform (GfMonitor          *monitor,
+                                      GfMonitorTransform  transform)
+{
+  GfOutput *output;
+  GfMonitorTransform new_transform;
+
+  output = gf_monitor_get_main_output (monitor);
+  new_transform = (transform + GF_MONITOR_TRANSFORM_FLIPPED -
+                   output->panel_orientation_transform) %
+                  GF_MONITOR_TRANSFORM_FLIPPED;
+
+  if (gf_monitor_transform_is_flipped (transform))
+    new_transform += GF_MONITOR_TRANSFORM_FLIPPED;
+
+  return new_transform;
 }
 
 gboolean

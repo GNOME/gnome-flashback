@@ -231,6 +231,12 @@ gf_monitor_transform_is_rotated (GfMonitorTransform transform)
   return (transform % 2);
 }
 
+static inline gboolean
+gf_monitor_transform_is_flipped (GfMonitorTransform transform)
+{
+  return (transform >= GF_MONITOR_TRANSFORM_FLIPPED);
+}
+
 G_END_DECLS
 
 #endif

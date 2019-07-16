@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2016 Red Hat
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,10 +52,10 @@ generate_modes (GfMonitorNormal *normal)
       crtc_mode = output->modes[i];
 
       mode = g_new0 (GfMonitorMode, 1);
-      mode->spec.width = crtc_mode->width;
-      mode->spec.height = crtc_mode->height;
-      mode->spec.refresh_rate = crtc_mode->refresh_rate;
-      mode->spec.flags = crtc_mode->flags & HANDLED_CRTC_MODE_FLAGS;
+      mode->spec = gf_monitor_create_spec (monitor,
+                                           crtc_mode->width,
+                                           crtc_mode->height,
+                                           crtc_mode);
 
       mode->id = gf_monitor_mode_spec_generate_id (&mode->spec);
 

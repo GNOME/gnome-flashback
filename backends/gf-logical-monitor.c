@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2016 Red Hat
- * Copyright (C) 2017 Alberts Muktupāvels
+ * Copyright (C) 2017-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,7 +90,7 @@ derive_monitor_transform (GfMonitor *monitor)
 
   main_output = gf_monitor_get_main_output (monitor);
 
-  return main_output->crtc->transform;
+  return gf_monitor_crtc_to_logical_transform (monitor, main_output->crtc->transform);
 }
 
 static void
