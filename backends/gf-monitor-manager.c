@@ -971,39 +971,49 @@ diagonal_to_str (gdouble d)
 
 static gchar *
 make_display_name (GfMonitorManager *manager,
-                   GfOutput         *output)
+                   GfMonitor        *monitor)
 {
   gchar *inches;
   gchar *vendor_name;
+  const char *vendor;
+  const char *product_name;
+  int width_mm;
+  int height_mm;
 
-  if (gf_output_is_laptop (output))
+  if (gf_monitor_is_laptop_panel (monitor))
     return g_strdup (_("Built-in display"));
 
   inches = NULL;
   vendor_name = NULL;
+  vendor = gf_monitor_get_vendor (monitor);
+  product_name = NULL;
 
-  if (output->width_mm > 0 && output->height_mm > 0)
+  gf_monitor_get_physical_dimensions (monitor, &width_mm, &height_mm);
+
+  if (width_mm > 0 && height_mm > 0)
     {
-      gint width_mm;
-      gint height_mm;
-      gdouble d;
+      if (!gf_monitor_has_aspect_as_size (monitor))
+        {
+          double d;
 
-      width_mm = output->width_mm;
-      height_mm = output->height_mm;
-      d = sqrt (width_mm * width_mm + height_mm * height_mm);
-
-      inches = diagonal_to_str (d / 25.4);
+          d = sqrt (width_mm * width_mm + height_mm * height_mm);
+          inches = diagonal_to_str (d / 25.4);
+        }
+      else
+        {
+          product_name = gf_monitor_get_product (monitor);
+        }
     }
 
-  if (g_strcmp0 (output->vendor, "unknown") != 0)
+  if (g_strcmp0 (vendor, "unknown") != 0)
     {
       if (!manager->pnp_ids)
         manager->pnp_ids = gnome_pnp_ids_new ();
 
-      vendor_name = gnome_pnp_ids_get_pnp_id (manager->pnp_ids, output->vendor);
+      vendor_name = gnome_pnp_ids_get_pnp_id (manager->pnp_ids, vendor);
 
       if (!vendor_name)
-        vendor_name = g_strdup (output->vendor);
+        vendor_name = g_strdup (vendor);
     }
   else
     {
@@ -1024,6 +1034,19 @@ make_display_name (GfMonitorManager *manager,
 
       g_free (vendor_name);
       g_free (inches);
+
+      return display_name;
+    }
+  else if (product_name != NULL)
+    {
+      gchar *display_name;
+
+      /* Translators: this is a monitor vendor name followed by
+       * product/model name where size in inches could not be calculated,
+       * e.g. Dell U2414H
+       */
+      display_name =  g_strdup_printf (_("%s %s"), vendor_name, product_name);
+      g_free (vendor_name);
 
       return display_name;
     }
@@ -1566,7 +1589,6 @@ gf_monitor_manager_handle_get_current_state (GfDBusDisplayConfig   *skeleton,
       GVariantBuilder monitor_properties_builder;
       GList *k;
       gboolean is_builtin;
-      GfOutput *main_output;
       gchar *display_name;
       gint i;
 
@@ -1653,8 +1675,7 @@ gf_monitor_manager_handle_get_current_state (GfDBusDisplayConfig   *skeleton,
                              "is-builtin",
                              g_variant_new_boolean (is_builtin));
 
-      main_output = gf_monitor_get_main_output (monitor);
-      display_name = make_display_name (manager, main_output);
+      display_name = make_display_name (manager, monitor);
       g_variant_builder_add (&monitor_properties_builder, "{sv}",
                              "display-name",
                              g_variant_new_take_string (display_name));

@@ -165,10 +165,7 @@ calculate_scale (GfMonitor     *monitor,
   /* Somebody encoded the aspect ratio (16/9 or 16/10) instead of the
    * physical size.
    */
-  if ((width_mm == 160 && height_mm == 90) ||
-      (width_mm == 160 && height_mm == 100) ||
-      (width_mm == 16 && height_mm == 9) ||
-      (width_mm == 16 && height_mm == 10))
+  if (gf_monitor_has_aspect_as_size (monitor))
     goto out;
 
   if (width_mm > 0 && height_mm > 0)
@@ -1084,4 +1081,18 @@ gf_verify_monitor_mode_spec (GfMonitorModeSpec  *mode_spec,
 
       return FALSE;
     }
+}
+
+gboolean
+gf_monitor_has_aspect_as_size (GfMonitor *monitor)
+{
+  int width_mm;
+  int height_mm;
+
+  gf_monitor_get_physical_dimensions (monitor, &width_mm, &height_mm);
+
+  return (width_mm == 160 && height_mm == 90) ||
+         (width_mm == 160 && height_mm == 100) ||
+         (width_mm == 16 && height_mm == 9) ||
+         (width_mm == 16 && height_mm == 10);
 }

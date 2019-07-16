@@ -228,6 +228,8 @@ gboolean            gf_monitor_mode_foreach_output        (GfMonitor            
 gboolean            gf_verify_monitor_mode_spec           (GfMonitorModeSpec          *mode_spec,
                                                            GError                    **error);
 
+gboolean            gf_monitor_has_aspect_as_size         (GfMonitor                  *monitor);
+
 G_END_DECLS
 
 #endif
