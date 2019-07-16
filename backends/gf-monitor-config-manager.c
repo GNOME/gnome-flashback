@@ -41,6 +41,7 @@ typedef struct
   GfMonitorConfig        *monitor_config;
   GPtrArray              *crtc_infos;
   GPtrArray              *output_infos;
+  GArray                 *reserved_crtcs;
 } MonitorAssignmentData;
 
 typedef enum
@@ -457,6 +458,22 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
 }
 
 static gboolean
+is_crtc_reserved (GfCrtc *crtc,
+                  GArray *reserved_crtcs)
+{
+  unsigned int i;
+
+  for (i = 0; i < reserved_crtcs->len; i++)
+    {
+       glong id = g_array_index (reserved_crtcs, glong, i);
+       if (id == crtc->crtc_id)
+         return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
 is_crtc_assigned (GfCrtc    *crtc,
                   GPtrArray *crtc_infos)
 {
@@ -475,7 +492,8 @@ is_crtc_assigned (GfCrtc    *crtc,
 
 static GfCrtc *
 find_unassigned_crtc (GfOutput  *output,
-                      GPtrArray *crtc_infos)
+                      GPtrArray *crtc_infos,
+                      GArray    *reserved_crtcs)
 {
   GfCrtc *crtc;
   unsigned int i;
@@ -484,6 +502,21 @@ find_unassigned_crtc (GfOutput  *output,
   if (crtc && !is_crtc_assigned (crtc, crtc_infos))
     return crtc;
 
+  /* then try to assign a CRTC that wasn't used */
+  for (i = 0; i < output->n_possible_crtcs; i++)
+    {
+      crtc = output->possible_crtcs[i];
+
+      if (is_crtc_assigned (crtc, crtc_infos))
+        continue;
+
+      if (is_crtc_reserved (crtc, reserved_crtcs))
+        continue;
+
+      return crtc;
+    }
+
+  /* finally just give a CRTC that we haven't assigned */
   for (i = 0; i < output->n_possible_crtcs; i++)
     {
       crtc = output->possible_crtcs[i];
@@ -517,8 +550,8 @@ assign_monitor_crtc (GfMonitor          *monitor,
   gboolean assign_output_as_presentation;
 
   output = monitor_crtc_mode->output;
+  crtc = find_unassigned_crtc (output, data->crtc_infos, data->reserved_crtcs);
 
-  crtc = find_unassigned_crtc (output, data->crtc_infos);
   if (!crtc)
     {
       GfMonitorSpec *monitor_spec = gf_monitor_get_spec (monitor);
@@ -600,6 +633,7 @@ assign_monitor_crtcs (GfMonitorManager        *manager,
                       GfMonitorConfig         *monitor_config,
                       GPtrArray               *crtc_infos,
                       GPtrArray               *output_infos,
+                      GArray                  *reserved_crtcs,
                       GError                 **error)
 {
   GfMonitorSpec *monitor_spec = monitor_config->monitor_spec;
@@ -635,7 +669,8 @@ assign_monitor_crtcs (GfMonitorManager        *manager,
     .logical_monitor_config = logical_monitor_config,
     .monitor_config = monitor_config,
     .crtc_infos = crtc_infos,
-    .output_infos = output_infos
+    .output_infos = output_infos,
+    .reserved_crtcs = reserved_crtcs
   };
 
   if (!gf_monitor_mode_foreach_crtc (monitor, monitor_mode,
@@ -651,6 +686,7 @@ assign_logical_monitor_crtcs (GfMonitorManager        *manager,
                               GfLogicalMonitorConfig  *logical_monitor_config,
                               GPtrArray               *crtc_infos,
                               GPtrArray               *output_infos,
+                              GArray                  *reserved_crtcs,
                               GError                 **error)
 {
   GList *l;
@@ -663,7 +699,7 @@ assign_logical_monitor_crtcs (GfMonitorManager        *manager,
                                  logical_monitor_config,
                                  monitor_config,
                                  crtc_infos, output_infos,
-                                 error))
+                                 reserved_crtcs, error))
         return FALSE;
     }
 
@@ -771,10 +807,38 @@ gf_monitor_config_manager_assign (GfMonitorManager  *manager,
 {
   GPtrArray *crtc_infos;
   GPtrArray *output_infos;
+  GArray *reserved_crtcs;
   GList *l;
 
   crtc_infos = g_ptr_array_new_with_free_func ((GDestroyNotify) gf_crtc_info_free);
   output_infos = g_ptr_array_new_with_free_func ((GDestroyNotify) gf_output_info_free);
+  reserved_crtcs = g_array_new (FALSE, FALSE, sizeof (glong));
+
+  for (l = config->logical_monitor_configs; l; l = l->next)
+    {
+      GfLogicalMonitorConfig *logical_monitor_config = l->data;
+      GList *k;
+
+      for (k = logical_monitor_config->monitor_configs; k; k = k->next)
+        {
+          GfMonitorConfig *monitor_config = k->data;
+          GfMonitorSpec *monitor_spec = monitor_config->monitor_spec;
+          GfMonitor *monitor;
+          GList *o;
+
+          monitor = gf_monitor_manager_get_monitor_from_spec (manager, monitor_spec);
+
+          for (o = gf_monitor_get_outputs (monitor); o; o = o->next)
+            {
+              GfOutput *output = o->data;
+              GfCrtc *crtc;
+
+              crtc = gf_output_get_assigned_crtc (output);
+              if (crtc)
+                g_array_append_val (reserved_crtcs, crtc->crtc_id);
+            }
+        }
+    }
 
   for (l = config->logical_monitor_configs; l; l = l->next)
     {
@@ -782,16 +846,19 @@ gf_monitor_config_manager_assign (GfMonitorManager  *manager,
 
       if (!assign_logical_monitor_crtcs (manager, logical_monitor_config,
                                          crtc_infos, output_infos,
-                                         error))
+                                         reserved_crtcs, error))
         {
           g_ptr_array_free (crtc_infos, TRUE);
           g_ptr_array_free (output_infos, TRUE);
+          g_array_free (reserved_crtcs, TRUE);
           return FALSE;
         }
     }
 
   *out_crtc_infos = crtc_infos;
   *out_output_infos = output_infos;
+
+  g_array_free (reserved_crtcs, TRUE);
 
   return TRUE;
 }
