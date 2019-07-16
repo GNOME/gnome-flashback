@@ -90,6 +90,18 @@ static GParamSpec *monitor_properties[LAST_PROP] = { NULL };
 G_DEFINE_TYPE_WITH_PRIVATE (GfMonitor, gf_monitor, G_TYPE_OBJECT)
 
 static gboolean
+is_current_mode_known (GfMonitor *monitor)
+{
+  GfOutput *output;
+  GfCrtc *crtc;
+
+  output = gf_monitor_get_main_output (monitor);
+  crtc = gf_output_get_assigned_crtc (output);
+
+  return gf_monitor_is_active (monitor) == (crtc && crtc->current_mode);
+}
+
+static gboolean
 gf_monitor_mode_spec_equals (GfMonitorModeSpec *spec,
                              GfMonitorModeSpec *other_spec)
 {
@@ -551,13 +563,11 @@ gf_monitor_get_spec (GfMonitor *monitor)
 gboolean
 gf_monitor_is_active (GfMonitor *monitor)
 {
-  GfOutput *output;
-  GfCrtc *crtc;
+  GfMonitorPrivate *priv;
 
-  output = gf_monitor_get_main_output (monitor);
-  crtc = gf_output_get_assigned_crtc (output);
+  priv = gf_monitor_get_instance_private (monitor);
 
-  return crtc && crtc->current_mode;
+  return !!priv->current_mode;
 }
 
 GfOutput *
@@ -860,6 +870,8 @@ gf_monitor_derive_current_mode (GfMonitor *monitor)
     }
 
   priv->current_mode = current_mode;
+
+  g_warn_if_fail (is_current_mode_known (monitor));
 }
 
 void
