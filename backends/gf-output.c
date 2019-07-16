@@ -30,7 +30,13 @@
 #include "gf-edid-private.h"
 #include "gf-output-private.h"
 
-G_DEFINE_TYPE (GfOutput, gf_output, G_TYPE_OBJECT)
+typedef struct
+{
+  /* The CRTC driving this output, NULL if the output is not enabled */
+  GfCrtc *crtc;
+} GfOutputPrivate;
+
+G_DEFINE_TYPE_WITH_PRIVATE (GfOutput, gf_output, G_TYPE_OBJECT)
 
 static void
 gf_output_finalize (GObject *object)
@@ -72,6 +78,39 @@ GfGpu *
 gf_output_get_gpu (GfOutput *output)
 {
   return output->gpu;
+}
+
+void
+gf_output_assign_crtc (GfOutput *output,
+                       GfCrtc   *crtc)
+{
+  GfOutputPrivate *priv;
+
+  priv = gf_output_get_instance_private (output);
+
+  g_assert (crtc);
+
+  priv->crtc = crtc;
+}
+
+void
+gf_output_unassign_crtc (GfOutput *output)
+{
+  GfOutputPrivate *priv;
+
+  priv = gf_output_get_instance_private (output);
+
+  priv->crtc = NULL;
+}
+
+GfCrtc *
+gf_output_get_assigned_crtc (GfOutput *output)
+{
+  GfOutputPrivate *priv;
+
+  priv = gf_output_get_instance_private (output);
+
+  return priv->crtc;
 }
 
 void

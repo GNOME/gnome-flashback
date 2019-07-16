@@ -1187,6 +1187,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
       GVariantBuilder crtcs, modes, clones, properties;
       GBytes *edid;
       gchar *edid_file;
+      GfCrtc *crtc;
       gint crtc_index;
 
       g_variant_builder_init (&crtcs, G_VARIANT_TYPE ("au"));
@@ -1284,7 +1285,8 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
                                                 output->tile_info.tile_h));
         }
 
-      crtc_index = output->crtc ? g_list_index (combined_crtcs, output->crtc) : -1;
+      crtc = gf_output_get_assigned_crtc (output);
+      crtc_index = crtc ? g_list_index (combined_crtcs, crtc) : -1;
 
       g_variant_builder_add (&output_builder, "(uxiausauaua{sv})",
                              i, /* ID */
@@ -2649,11 +2651,7 @@ gf_monitor_manager_get_monitor_for_connector (GfMonitorManager *manager,
 
       if (gf_monitor_is_active (monitor) &&
           g_str_equal (connector, gf_monitor_get_connector (monitor)))
-        {
-          GfOutput *main_output = gf_monitor_get_main_output (monitor);
-
-          return main_output->crtc->logical_monitor->number;
-        }
+        return gf_monitor_get_logical_monitor (monitor)->number;
     }
 
   return -1;

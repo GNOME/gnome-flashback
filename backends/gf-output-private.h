@@ -59,9 +59,6 @@ struct _GfOutput
 
   GfGpu               *gpu;
 
-  /* The CRTC driving this output, NULL if the output is not enabled */
-  GfCrtc              *crtc;
-
   /* The low-level ID of this output, used to apply back configuration */
   glong                winsys_id;
   gchar               *name;
@@ -113,13 +110,19 @@ struct _GfOutput
 #define GF_TYPE_OUTPUT (gf_output_get_type ())
 G_DECLARE_FINAL_TYPE (GfOutput, gf_output, GF, OUTPUT, GObject)
 
-GfGpu    *gf_output_get_gpu    (GfOutput *output);
+GfGpu    *gf_output_get_gpu           (GfOutput *output);
 
+void      gf_output_assign_crtc       (GfOutput *output,
+                                       GfCrtc   *crtc);
 
-void      gf_output_parse_edid (GfOutput *output,
-                                GBytes   *edid);
+void      gf_output_unassign_crtc     (GfOutput *output);
 
-gboolean  gf_output_is_laptop  (GfOutput *output);
+GfCrtc   *gf_output_get_assigned_crtc (GfOutput *output);
+
+void      gf_output_parse_edid        (GfOutput *output,
+                                       GBytes   *edid);
+
+gboolean  gf_output_is_laptop         (GfOutput *output);
 
 G_END_DECLS
 

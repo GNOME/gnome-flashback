@@ -375,14 +375,18 @@ gf_monitor_is_mode_assigned (GfMonitor     *monitor,
 
   for (l = priv->outputs, i = 0; l; l = l->next, i++)
     {
-      GfOutput *output = l->data;
-      GfMonitorCrtcMode *monitor_crtc_mode = &mode->crtc_modes[i];
+      GfOutput *output;
+      GfMonitorCrtcMode *monitor_crtc_mode;
+      GfCrtc *crtc;
+
+      output = l->data;
+      monitor_crtc_mode = &mode->crtc_modes[i];
+      crtc = gf_output_get_assigned_crtc (output);
 
       if (monitor_crtc_mode->crtc_mode &&
-          (!output->crtc ||
-           output->crtc->current_mode != monitor_crtc_mode->crtc_mode))
+          (!crtc || crtc->current_mode != monitor_crtc_mode->crtc_mode))
         return FALSE;
-      else if (!monitor_crtc_mode->crtc_mode && output->crtc)
+      else if (!monitor_crtc_mode->crtc_mode && crtc)
         return FALSE;
     }
 
@@ -530,10 +534,12 @@ gboolean
 gf_monitor_is_active (GfMonitor *monitor)
 {
   GfOutput *output;
+  GfCrtc *crtc;
 
   output = gf_monitor_get_main_output (monitor);
+  crtc = gf_output_get_assigned_crtc (output);
 
-  return output->crtc && output->crtc->current_mode;
+  return crtc && crtc->current_mode;
 }
 
 GfOutput *
@@ -752,10 +758,14 @@ gf_monitor_get_suggested_position (GfMonitor *monitor,
 GfLogicalMonitor *
 gf_monitor_get_logical_monitor (GfMonitor *monitor)
 {
-  GfOutput *output = gf_monitor_get_main_output (monitor);
+  GfOutput *output;
+  GfCrtc *crtc;
 
-  if (output->crtc)
-    return output->crtc->logical_monitor;
+  output = gf_monitor_get_main_output (monitor);
+  crtc = gf_output_get_assigned_crtc (output);
+
+  if (crtc)
+    return crtc->logical_monitor;
   else
     return NULL;
 }

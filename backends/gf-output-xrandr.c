@@ -92,10 +92,13 @@ output_set_underscanning_xrandr (GfOutput *output,
    */
   if (underscanning)
     {
+      GfCrtc *crtc;
       uint32_t border_value;
 
+      crtc = gf_output_get_assigned_crtc (output);
+
       prop = XInternAtom (xdisplay, "underscan hborder", False);
-      border_value = output->crtc->current_mode->width * 0.05;
+      border_value = crtc->current_mode->width * 0.05;
 
       xcb_randr_change_output_property (XGetXCBConnection (xdisplay),
                                         (XID) output->winsys_id,
@@ -104,7 +107,7 @@ output_set_underscanning_xrandr (GfOutput *output,
                                         1, &border_value);
 
       prop = XInternAtom (xdisplay, "underscan vborder", False);
-      border_value = output->crtc->current_mode->height * 0.05;
+      border_value = crtc->current_mode->height * 0.05;
 
       xcb_randr_change_output_property (XGetXCBConnection (xdisplay),
                                         (XID) output->winsys_id,
@@ -531,14 +534,14 @@ output_get_crtcs (GfOutput      *output,
     }
   output->n_possible_crtcs = n_actual_crtcs;
 
-  output->crtc = NULL;
+  gf_output_unassign_crtc (output);
   for (l = gf_gpu_get_crtcs (gpu); l; l = l->next)
     {
       GfCrtc *crtc = l->data;
 
       if ((XID) crtc->crtc_id == xrandr_output->crtc)
         {
-          output->crtc = crtc;
+          gf_output_assign_crtc (output, crtc);
           break;
         }
     }

@@ -230,9 +230,13 @@ is_crtc_assignment_changed (GfCrtc      *crtc,
 
       for (j = 0; j < crtc_info->outputs->len; j++)
         {
-          GfOutput *output = ((GfOutput**) crtc_info->outputs->pdata)[j];
+          GfOutput *output;
+          GfCrtc *assigned_crtc;
 
-          if (output->crtc != crtc)
+          output = ((GfOutput**) crtc_info->outputs->pdata)[j];
+          assigned_crtc = gf_output_get_assigned_crtc (output);
+
+          if (assigned_crtc != crtc)
             return TRUE;
         }
 
@@ -249,8 +253,11 @@ is_output_assignment_changed (GfOutput      *output,
                               GfOutputInfo **output_infos,
                               guint          n_output_infos)
 {
-  gboolean output_is_found = FALSE;
+  gboolean output_is_found;
+  GfCrtc *assigned_crtc;
   guint i;
+
+  output_is_found = FALSE;
 
   for (i = 0; i < n_output_infos; i++)
     {
@@ -271,8 +278,10 @@ is_output_assignment_changed (GfOutput      *output,
       output_is_found = TRUE;
     }
 
+  assigned_crtc = gf_output_get_assigned_crtc (output);
+
   if (!output_is_found)
-    return output->crtc != NULL;
+    return assigned_crtc != NULL;
 
   for (i = 0; i < n_crtc_infos; i++)
     {
@@ -286,7 +295,7 @@ is_output_assignment_changed (GfOutput      *output,
           crtc_info_output = ((GfOutput**) crtc_info->outputs->pdata)[j];
 
           if (crtc_info_output == output &&
-              crtc_info->crtc == output->crtc)
+              crtc_info->crtc == assigned_crtc)
             return FALSE;
         }
     }
@@ -516,7 +525,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
               output = ((GfOutput**) crtc_info->outputs->pdata)[j];
 
               output->is_dirty = TRUE;
-              output->crtc = crtc;
+              gf_output_assign_crtc (output, crtc);
 
               output_ids[j] = output->winsys_id;
             }
@@ -586,7 +595,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
           continue;
         }
 
-      output->crtc = NULL;
+      gf_output_unassign_crtc (output);
       output->is_primary = FALSE;
     }
 

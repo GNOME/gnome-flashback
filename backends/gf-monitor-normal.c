@@ -48,6 +48,7 @@ generate_modes (GfMonitorNormal *normal)
       GfCrtcMode *crtc_mode;
       GfMonitorMode *mode;
       gboolean replace;
+      GfCrtc *crtc;
 
       crtc_mode = output->modes[i];
 
@@ -82,7 +83,8 @@ generate_modes (GfMonitorNormal *normal)
       if (crtc_mode == output->preferred_mode)
         gf_monitor_set_preferred_mode (monitor, mode);
 
-      if (output->crtc && crtc_mode == output->crtc->current_mode)
+      crtc = gf_output_get_assigned_crtc (output);
+      if (crtc && crtc_mode == crtc->current_mode)
         gf_monitor_set_current_mode (monitor, mode);
     }
 }
@@ -102,14 +104,16 @@ gf_monitor_normal_derive_layout (GfMonitor   *monitor,
                                  GfRectangle *layout)
 {
   GfOutput *output;
+  GfCrtc *crtc;
 
   output = gf_monitor_get_main_output (monitor);
+  crtc = gf_output_get_assigned_crtc (output);
 
   *layout = (GfRectangle) {
-    .x = output->crtc->rect.x,
-    .y = output->crtc->rect.y,
-    .width = output->crtc->rect.width,
-    .height = output->crtc->rect.height
+    .x = crtc->rect.x,
+    .y = crtc->rect.y,
+    .width = crtc->rect.width,
+    .height = crtc->rect.height
   };
 }
 

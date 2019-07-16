@@ -51,7 +51,7 @@ foreach_crtc (GfMonitor          *monitor,
   ForeachCrtcData *data = user_data;
 
   data->func (data->logical_monitor,
-              monitor_crtc_mode->output->crtc,
+              gf_output_get_assigned_crtc (monitor_crtc_mode->output),
               data->user_data);
 
   return TRUE;
@@ -87,10 +87,12 @@ static GfMonitorTransform
 derive_monitor_transform (GfMonitor *monitor)
 {
   GfOutput *main_output;
+  GfMonitorTransform transform;
 
   main_output = gf_monitor_get_main_output (monitor);
+  transform = gf_output_get_assigned_crtc (main_output)->transform;
 
-  return gf_monitor_crtc_to_logical_transform (monitor, main_output->crtc->transform);
+  return gf_monitor_crtc_to_logical_transform (monitor, transform);
 }
 
 static void
@@ -206,12 +208,14 @@ gf_logical_monitor_add_monitor (GfLogicalMonitor *logical_monitor,
       for (l_output = outputs; l_output; l_output = l_output->next)
         {
           GfOutput *output;
+          GfCrtc *crtc;
 
           output = l_output->data;
           is_presentation = is_presentation && output->is_presentation;
+          crtc = gf_output_get_assigned_crtc (output);
 
-          if (output->crtc)
-            output->crtc->logical_monitor = logical_monitor;
+          if (crtc)
+            crtc->logical_monitor = logical_monitor;
         }
     }
 
