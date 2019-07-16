@@ -2464,8 +2464,7 @@ gf_monitor_manager_ensure_configured (GfMonitorManager *manager)
       g_clear_object (&config);
     }
 
-  config = gf_monitor_config_manager_create_for_switch_config (manager->config_manager,
-                                                               GF_MONITOR_SWITCH_CONFIG_ALL_LINEAR);
+  config = gf_monitor_config_manager_create_linear (manager->config_manager);
 
   if (config)
     {
