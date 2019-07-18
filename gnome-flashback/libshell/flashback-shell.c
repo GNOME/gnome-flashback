@@ -437,6 +437,14 @@ flashback_shell_finalize (GObject *object)
       shell->bus_name = 0;
     }
 
+  if (shell->iface != NULL)
+    {
+      g_dbus_interface_skeleton_unexport (shell->iface);
+
+      g_object_unref (shell->iface);
+      shell->iface = NULL;
+    }
+
   if (shell->grabbed_accelerators)
     {
       g_hash_table_destroy (shell->grabbed_accelerators);
