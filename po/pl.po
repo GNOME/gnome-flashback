@@ -1,15 +1,15 @@
 # Polish translation for gnome-flashback.
-# Copyright © 2007-2018 the gnome-flashback authors.
+# Copyright © 2007-2019 the gnome-flashback authors.
 # This file is distributed under the same license as the gnome-flashback package.
-# Piotr Drąg <piotrdrag@gmail.com>, 2007-2018.
-# Aviary.pl <community-poland@mozilla.org>, 2010-2018.
+# Piotr Drąg <piotrdrag@gmail.com>, 2007-2019.
+# Aviary.pl <community-poland@mozilla.org>, 2010-2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2018-12-08 17:20+0000\n"
-"PO-Revision-Date: 2018-12-09 12:12+0100\n"
+"POT-Creation-Date: 2019-07-18 17:40+0000\n"
+"PO-Revision-Date: 2019-07-21 13:28+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -19,26 +19,33 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
 
-#: backends/gf-monitor-manager.c:971
+#: backends/gf-monitor.c:132
 msgid "Built-in display"
 msgstr "Wbudowany ekran"
 
-#: backends/gf-monitor-manager.c:1002
+#: backends/gf-monitor.c:166
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
 msgid "Unknown"
 msgstr "Nieznany"
 
-#: backends/gf-monitor-manager.c:1004
+#: backends/gf-monitor.c:168
 msgid "Unknown Display"
 msgstr "Nieznany ekran"
 
-#. TRANSLATORS: this is a monitor vendor name, followed by a
-#. * size in inches, like 'Dell 15"'
-#.
-#: backends/gf-monitor-manager.c:1014
+#: backends/gf-monitor.c:177
 #, c-format
+msgctxt ""
+"This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
-msgstr "%s (%s)"
+msgstr "%s %s"
+
+#: backends/gf-monitor.c:191
+#, c-format
+msgctxt ""
+"This is a monitor vendor name followed by product/model name where size in "
+"inches could not be calculated, e.g. Dell U2414H"
+msgid "%s %s"
+msgstr "%s %s"
 
 #: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
@@ -970,13 +977,13 @@ msgstr "Bez wzmocnienia"
 
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1864
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1876
 msgid "Disabled"
 msgstr "Wyłączone"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1871
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -986,7 +993,7 @@ msgstr[2] "%u wyjść"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1881
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1893
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -994,7 +1001,7 @@ msgstr[0] "%u wejście"
 msgstr[1] "%u wejścia"
 msgstr[2] "%u wejść"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2736
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2750
 msgid "System Sounds"
 msgstr "Dźwięki systemu"
 
