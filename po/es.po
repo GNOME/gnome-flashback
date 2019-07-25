@@ -4,41 +4,50 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 # Alejandro Quiroz <alejandro.quiroz.f@gmail.com>, 2016.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2014, 2015, 2016, 2017, 2018, 2019.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2014-2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2018-12-08 17:20+0000\n"
-"PO-Revision-Date: 2019-01-08 16:12+0100\n"
+"POT-Creation-Date: 2019-07-18 17:40+0000\n"
+"PO-Revision-Date: 2019-07-25 11:56+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: es <gnome-es-list@gnome.org>\n"
-"Language: \n"
+"Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
+"Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.7\n"
+"X-Generator: Gtranslator 3.32.1\n"
 
-#: backends/gf-monitor-manager.c:971
+#: backends/gf-monitor.c:132
 msgid "Built-in display"
 msgstr "Pantalla integrada"
 
-#: backends/gf-monitor-manager.c:1002
+#: backends/gf-monitor.c:166
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: backends/gf-monitor-manager.c:1004
+#: backends/gf-monitor.c:168
 msgid "Unknown Display"
 msgstr "Pantalla desconocida"
 
-#. TRANSLATORS: this is a monitor vendor name, followed by a
-#. * size in inches, like 'Dell 15"'
-#.
-#: backends/gf-monitor-manager.c:1014
+#: backends/gf-monitor.c:177
 #, c-format
+#| msgid "%s %s"
+msgctxt ""
+"This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
+msgid "%s %s"
+msgstr "%s %s"
+
+#: backends/gf-monitor.c:191
+#, c-format
+#| msgid "%s %s"
+msgctxt ""
+"This is a monitor vendor name followed by product/model name where size in "
+"inches could not be calculated, e.g. Dell U2414H"
 msgid "%s %s"
 msgstr "%s %s"
 
@@ -959,13 +968,13 @@ msgstr "Sin amplificar"
 
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1864
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1876
 msgid "Disabled"
 msgstr "Desactivado"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1871
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -974,14 +983,14 @@ msgstr[1] "%u salidas"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1881
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1893
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u entrada"
 msgstr[1] "%u entradas"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2736
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2750
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
 
