@@ -1098,7 +1098,7 @@ find_monitor (GfInputSettings   *settings,
   if (!settings->monitor_manager)
     return;
 
-  edid = g_settings_get_strv (gsettings, "display");
+  edid = g_settings_get_strv (gsettings, "output");
   n_values = g_strv_length (edid);
 
   if (n_values != 3)
@@ -1259,7 +1259,7 @@ mapped_device_changed_cb (GSettings         *gsettings,
                           const gchar       *key,
                           DeviceMappingInfo *info)
 {
-  if (strcmp (key, "display") == 0)
+  if (strcmp (key, "output") == 0)
     update_device_display (info->settings, gsettings, info->device);
 }
 
