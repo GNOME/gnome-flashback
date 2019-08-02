@@ -13,7 +13,6 @@ required_components_gsd = \
 	org.gnome.SettingsDaemon.Housekeeping \
 	org.gnome.SettingsDaemon.Keyboard \
 	org.gnome.SettingsDaemon.MediaKeys \
-	org.gnome.SettingsDaemon.Mouse \
 	org.gnome.SettingsDaemon.Power \
 	org.gnome.SettingsDaemon.PrintNotifications \
 	org.gnome.SettingsDaemon.Rfkill \
