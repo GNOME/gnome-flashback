@@ -8,7 +8,6 @@ required_components_common = \
 
 required_components_gsd = \
 	org.gnome.SettingsDaemon.A11ySettings \
-	org.gnome.SettingsDaemon.Clipboard \
 	org.gnome.SettingsDaemon.Color \
 	org.gnome.SettingsDaemon.Datetime \
 	org.gnome.SettingsDaemon.Housekeeping \
