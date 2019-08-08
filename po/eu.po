@@ -2,23 +2,43 @@
 # Copyright (C) 2017 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
 #
-# Alexander Gabilondo <alexgabi@openmailbox.org>, 2017.
+# Alexander Gabilondo <alexgabi@openmailbox.org>, 2017, 2019
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2017.
+# Asier Sarasua Garmendia  <asier.sarasua@gmail.com>, 2019.
+#
 msgid ""
-msgstr ""
-"Project-Id-Version: gnome-flashback master\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"flashback&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-23 22:19+0000\n"
-"PO-Revision-Date: 2017-02-23 23:12+0100\n"
-"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
+msgstr "Project-Id-Version: gnome-flashback master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
+"POT-Creation-Date: 2018-12-08 17:20+0000\n"
+"PO-Revision-Date: 2019-08-08 10:00+0100\n"
+"Last-Translator: Asier Sarasua Garmendia <asier.sarasua@gmail.com>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+
+#: backends/gf-monitor-manager.c:971
+msgid "Built-in display"
+msgstr "Bertako pantaila"
+
+#: backends/gf-monitor-manager.c:1002
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
+msgid "Unknown"
+msgstr "Ezezaguna"
+
+#: backends/gf-monitor-manager.c:1004
+msgid "Unknown Display"
+msgstr "Pantaila ezezaguna"
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: backends/gf-monitor-manager.c:1014
+#, c-format
+msgid "%s %s"
+msgstr "%s %s"
 
 #: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
@@ -80,279 +100,218 @@ msgstr "Aldatu sistema osoaren ezarpenak (erabiltzaile guztiei eragiten die)"
 msgid "preferences-system"
 msgstr "preferences-system"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
+msgid "a11y-keyboard"
+msgstr "a11y-teklatua"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:10
 msgid "Audio device selection"
 msgstr "Audio gailuen aukeraketa"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:7
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
 msgid ""
 "If set to true, then GNOME Flashback application will be used to provide the "
 "audio device selection dialog."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aurkezteko audio "
-"gailuen aukeraketaren elkarrizketa."
+msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aurkezteko audio gailuen aukeraketaren elkarrizketa."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:16
 msgid "Automount manager"
 msgstr "Automuntaketa kudeatzailea"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:13
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
 msgid ""
 "If set to true, then GNOME Flashback application will be used to automount "
 "removable media."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da automuntatzeko "
-"euskarri aldagarriak."
+msgstr "Gaitzen bada, GNOME Flashback aplikazioa erabiliko da euskarri aldagarriak automatikoki muntatzeko."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:22
 msgid "Bluetooth applet"
 msgstr "Bluetooth appleta"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:19
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "Bluetooth applet."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko Bluetooth "
-"appleta."
+msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko Bluetooth appleta."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:28
 msgid "Desktop background"
 msgstr "Mahaigainaren atzeko planoa"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:25
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
 msgid ""
 "If set to true, then GNOME Flashback application will be used to draw the "
 "desktop background."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da ezartzeko "
-"mahaigainaren atzeko planoa."
+msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da ezartzeko mahaigainaren atzeko planoa."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
-msgid "Display configuration"
-msgstr "Pantailaren konfigurazioa"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:31
-msgid ""
-"If set to true, then GNOME Flashback application will be used to provide the "
-"display configuration."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aurkezteko "
-"pantailaren konfigurazioa."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:34
 msgid "End session dialog"
 msgstr "Saioa bukatzeko elkarrizketa"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:37
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aurkezteko saioa "
-"bukatzeko elkarrizketa."
+msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aurkezteko saioa bukatzeko elkarrizketa."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:42
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:40
 msgid "Idle monitor"
 msgstr "Pantaila inaktiboa"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:43
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da monitorizatzeko "
-"erabiltzailearen aktibitatea."
+msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da monitorizatzeko erabiltzailearen aktibitatea."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:48
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
 msgid "Input settings"
 msgstr "Sarreraren ezarpenak"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:53
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:51
 msgid "Keyboard layouts and input methods"
 msgstr "Teklatuak eta testu-sarrerako metodoak"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:54
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
-msgstr ""
-"True (egia) bada, GNOME Flashback aplikazioa erabiliko da laster-teklen "
-"diseinuak eta sarrerako metodoak kudeatzeko."
+msgstr "True (egia) bada, GNOME Flashback aplikazioa erabiliko da laster-teklen diseinuak eta sarrerako metodoak kudeatzeko."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:59
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:57
 msgid "Notification daemon"
 msgstr "Jakinarazpenen deabrua"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:60
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da kudeatzeko "
-"jakinarazpenak."
+msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da kudeatzeko jakinarazpenak."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:65
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:63
 msgid "Authentication agent for polkit"
 msgstr "Polkit-entzako autentifikazio-agentea"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:66
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr "PolicyKit-gnomek hornitzen duen autentifikazio-agente berbera da"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:71
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:69
 msgid "Power applet"
 msgstr "Energia appleta"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko energia "
-"appleta."
+msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko energia appleta."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:77
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:75
 msgid "Screencasts"
 msgstr "Pantaila-kaptura"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da grabatzeko pantaila."
+msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da grabatzeko pantaila."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:83
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:81
 msgid "Screensaver"
 msgstr "Pantaila-babeslea"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da pantaila-babesteko."
+msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da pantaila-babesteko."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:89
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:87
 msgid "Screenshots"
 msgstr "Pantaila-argazkiak"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
-msgstr ""
-"True (egia) gisa ezartzean, GNOME Flashback aplikazioa erabiliko da pantaila-"
-"argazkiak egiteko."
+msgstr "True (egia) gisa ezartzean, GNOME Flashback aplikazioa erabiliko da pantaila-argazkiak egiteko."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:95
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:93
 msgid "Shell"
 msgstr "Shell"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da shell moduan."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:101
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:99
 msgid "Sound applet"
 msgstr "Soinu appleta"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:102
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
 "Control Center."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko soinu "
-"appleta. GNOME Kontrol Zentruak erabiltzen duen soinu applet berbera da."
+msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko soinu appleta. GNOME Kontrol Zentroak erabiltzen duen soinu applet berbera da."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:105
 msgid "Status Notifier Watcher"
-msgstr "Egoeraren Jakinapenen begiralea"
+msgstr "Egoeraren Jakinarazpenen begiralea"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da jakinarazpenen "
-"begirale moduan."
+msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da jakinarazpenen begirale moduan."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:113
-msgid "Workarounds"
-msgstr "Konponbideak"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
-msgid ""
-"If set to true, then GNOME Flashback application will use workarounds to fix "
-"bugs."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da akatsak konpontzeko."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:126
+#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
 msgid "Fade the background on change"
-msgstr "Iraungitu atzeko planoa aldatzean"
+msgstr "Iraungi atzeko planoa aldatzean"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:127
+#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:6
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aldatzeko "
-"mahaigainaren atzeko planoa."
+msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aldatzeko mahaigainaren atzeko planoa."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:136
-msgid "The background color for the status icon."
-msgstr "Egoeraren ikonoaren atzeko planoaren kolorea."
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
+msgid "The background color"
+msgstr "Atzeko planoaren kolorea"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:137
-msgid ""
-"This contains the background color for the status icon that is shown in the "
-"system tray."
-msgstr ""
-"Honek du sistemaren erretiluko egoera ikonoaren atzeko planoaren kolorea."
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:13
+msgid "The foreground color"
+msgstr "Aurreko planoaren kolorea"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:142
-msgid "The foreground color for the status icon."
-msgstr "Egorea ikonoaren aurreko planoaren kolorea."
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:18
+msgid "The font family"
+msgstr "Letra-tipoen familia"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:143
-msgid ""
-"This contains the foreground color for the status icon that is shown in the "
-"system tray."
-msgstr ""
-"Honek du sistemaren erretiluko egoera ikonoaren aurreko planoaren kolorea."
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:24
+msgid "The font weight"
+msgstr "Letra-tipoaren lodiera"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:152
-msgid "Fix missing app menu button"
-msgstr "Konpondu falta den aplikazioaren menu-botoia"
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
+msgid "Symbolic"
+msgstr "Sinbolikoa"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:153
-msgid ""
-"If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
-"FALSE. Disable if you want to use gnome-settings-daemon overrides in "
-"xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
-msgstr ""
-"Gaitzen baduzu GNOME Flashback aplikazioak ezarriko du Gtk/ShellShowsAppMenu "
-"ezgaitua egoerara.Ezgaitu ezazu nahi baduzu erabili gnome-settings-daemon "
-"'Gtk/ShellShowsAppMenu' propietateen xsettings plugina ezgaitzen duena."
+#: data/ui/gf-confirm-display-change-dialog.ui:57
+msgid "Do you want to keep these display settings?"
+msgstr "Pantailaren ezarpen hauek mantendu nahi duzu?"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:158
-msgid "Fix wrong button layout"
-msgstr "Konpondu akatsdun botoien diseinua"
+#: data/ui/gf-confirm-display-change-dialog.ui:103
+msgid "_Revert Settings"
+msgstr "_Leheneratu ezarpenak"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:159
-msgid ""
-"If set to non-empty string, then gnome-flashback will force Gtk/"
-"DecorationLayout to value set by this setting. Set to empty string if you "
-"want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
-"DecorationLayout' property."
-msgstr ""
-"Hutsik ez dagoen katea ezartzen baduzu gnome-flashback-ek bortzatuko du Gtk/"
-"Dekorazio diseinua"
+#: data/ui/gf-confirm-display-change-dialog.ui:118
+msgid "_Keep Changes"
+msgstr "_Mantendu aldaketak"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:144
+msgid "Confirm Changes"
+msgstr "Egiaztatu aldaketak"
 
 #: data/xsessions/gnome-flashback-compiz.desktop.in.in:3
 msgid "GNOME Flashback (Compiz)"
@@ -360,7 +319,7 @@ msgstr "GNOME Flashback (Compiz)"
 
 #: data/xsessions/gnome-flashback-compiz.desktop.in.in:4
 msgid "This session logs you into GNOME Flashback with Compiz"
-msgstr "Honek sartzen zaitu GNOME Flashback-en Compiz-ekin"
+msgstr "Honek Compiz-ekin hasten du saioa GNOME Flashback-en"
 
 #: data/xsessions/gnome-flashback-metacity.desktop.in.in:3
 msgid "GNOME Flashback (Metacity)"
@@ -368,19 +327,92 @@ msgstr "GNOME Flashback (Metacity)"
 
 #: data/xsessions/gnome-flashback-metacity.desktop.in.in:4
 msgid "This session logs you into GNOME Flashback with Metacity"
-msgstr "Honek sartzen zaitu GNOME Flashback-en Metacity-rekin"
+msgstr "Honek Metacity-rekin hasten du saioa GNOME Flashback-en"
 
-#: gnome-flashback/gf-main.c:40
+#: gnome-flashback/gf-confirm-display-change-dialog.c:62
+#, c-format
+msgid "Settings changes will revert in %d second!"
+msgid_plural "Settings changes will revert in %d seconds!"
+msgstr[0] "Ezarpenen aldaketa %d segundotan leheneratuko da"
+msgstr[1] "Ezarpenen aldaketak %d segundotan leheneratuko dira"
+
+#: gnome-flashback/gf-main.c:41
 msgid "Enable debugging code"
 msgstr "Gaitu arazketa-kodea"
 
-#: gnome-flashback/gf-main.c:46
+#: gnome-flashback/gf-main.c:47
 msgid "Initialize GNOME Flashback session"
 msgstr "Hasieratu GNOME Flashback saioa"
 
-#: gnome-flashback/gf-main.c:52
+#: gnome-flashback/gf-main.c:53
 msgid "Replace a currently running application"
 msgstr "Aldatu uneko aplikazioa"
+
+#: gnome-flashback/gf-main.c:59
+msgid "Print version and exit"
+msgstr "Erakutsi bertsioa eta irten"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:295
+msgid "Slow Keys Turned On"
+msgstr "Tekla motelak aktibatuta"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:296
+msgid "Slow Keys Turned Off"
+msgstr "Tekla motelak desaktibatuta"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:298
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr "Shift teklari 8 segundo baino denbora gehiago eutsi diozu sakatuta. Hori tekla motelen eginbidea aktibatzeko lasterbidea da, eta zure teklatuaren funtzionamendua aldatzen du."
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
+msgid "Turn Off"
+msgstr "Itzali"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
+msgid "Turn On"
+msgstr "Piztu"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
+msgid "Leave On"
+msgstr "Utzi piztuta"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
+msgid "Leave Off"
+msgstr "Utzi itzalita"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:313
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:400
+msgid "Universal Access"
+msgstr "Sarbide unibertsala"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:379
+msgid "Sticky Keys Turned On"
+msgstr "Tekla itsaskorrak aktibatuta"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:380
+msgid "Sticky Keys Turned Off"
+msgstr "Tekla itsaskorrak desaktibatuta"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:383
+msgid ""
+"You just pressed the Shift key 5 times in a row.  This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr "Maiuskulen tekla 5 aldiz jarraian sakatu duzu. Tekla itsaskorren funtzioaren lasterbidea da; teklatua erabiltzeko moduari eragingo dio."
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:385
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr "Bi tekla aldi berean sakatu dituzu, edo Shift teklari 5 aldiz jarraian sakatu diozu. Hori tekla itsaskorren eginbidea desaktibatzeko lasterbidea da, eta zure teklatuaren funtzionamendua aldatzen du."
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:109
 msgid "Headphones"
@@ -395,11 +427,10 @@ msgid "Microphone"
 msgstr "Mikrofonoa"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
-#: gnome-flashback/libsound-applet/gf-sound-item.c:395
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:257
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:260
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
-msgstr "Huts egin du Soinu Ezarpenak hasieratzen: %s"
+msgstr "Huts egin du soinu-ezarpenak hasieratzeak: %s"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:248
 msgid "What kind of device did you plug in?"
@@ -407,7 +438,7 @@ msgstr "Zer gailu mota konektatu duzu?"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
 msgid "Sound Settings"
-msgstr "Soinu ezarpenak"
+msgstr "Soinu-ezarpenak"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
@@ -418,19 +449,19 @@ msgstr "Utzi"
 msgid "Unknown Audio Device"
 msgstr "Audio gailu ezezaguna"
 
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:177
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:175
 #, c-format
 msgid "Unable to mount %s"
-msgstr "Ezin da muntatu %s"
+msgstr "Ezin da %s muntatu"
 
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:290
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:288
 #, c-format
 msgid "Unable to open a folder for %s"
 msgstr "Ezin da karpeta ireki %s-rentzat"
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:339
 msgid "Ask what to do"
-msgstr "Galdetu zer egin behar den"
+msgstr "Galdetu zer egin"
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:345
 msgid "Do Nothing"
@@ -438,126 +469,116 @@ msgstr "Ez egin ezer"
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:351
 msgid "Open Folder"
-msgstr "Irekin karpeta"
+msgstr "Ireki karpeta"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:496
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
 #, c-format
 msgid "Unable to eject %p"
 msgstr "Ezin da egotzi %p"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:500
 #, c-format
 msgid "Unable to unmount %p"
 msgstr "Ezin da desmuntatu %p"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:707
-msgid "You have just inserted an Audio CD."
-msgstr "Sartu duzu audio CD bat"
-
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:709
-msgid "You have just inserted an Audio DVD."
-msgstr "Sartu duzu audio DVD bat"
+msgid "You have just inserted an Audio CD."
+msgstr "Audio CD bat sartu duzu."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:711
+msgid "You have just inserted an Audio DVD."
+msgstr "Audio DVD bat sartu duzu."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
 msgid "You have just inserted a Video DVD."
 msgstr "Bideo DVDa sartu duzu."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
 msgid "You have just inserted a Video CD."
 msgstr "Bideo CDa sartu duzu."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
-msgid "You have just inserted a Super Video CD."
-msgstr "Sartu duzu Super Video CD bat."
-
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:717
-msgid "You have just inserted a blank CD."
-msgstr "Sartu duzu CD huts bat."
+msgid "You have just inserted a Super Video CD."
+msgstr "Super Video CD bat sartu duzu."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:719
-msgid "You have just inserted a blank DVD."
-msgstr "Sartu duzu DVD huts bat."
+msgid "You have just inserted a blank CD."
+msgstr "CD huts bat sartu duzu."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:721
-msgid "You have just inserted a blank Blu-Ray disc."
-msgstr "Sartu duzu Blu-Ray diska huts bat."
+msgid "You have just inserted a blank DVD."
+msgstr "DVD huts bat sartu duzu."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:723
-msgid "You have just inserted a blank HD DVD."
-msgstr "HD DVD disko garbia sartu duzu."
+msgid "You have just inserted a blank Blu-Ray disc."
+msgstr "Blu-Ray disko huts bat sartu duzu."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:725
-msgid "You have just inserted a Photo CD."
-msgstr "'Photo CD'a sartu duzu."
+msgid "You have just inserted a blank HD DVD."
+msgstr "HD DVD disko huts bat sartu duzu."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:727
-msgid "You have just inserted a Picture CD."
-msgstr "Sartu duzu irudien CD bat."
+msgid "You have just inserted a Photo CD."
+msgstr "Photo CD bat sartu duzu."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:729
-msgid "You have just inserted a medium with digital photos."
-msgstr "Sarty duzu argazki digitalak dituen gailu bat."
+msgid "You have just inserted a Picture CD."
+msgstr "Irudien CD bat sartu duzu."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:731
-msgid "You have just inserted a digital audio player."
-msgstr "Sartu duzu audio erreproduzigailu digital bat."
+msgid "You have just inserted a medium with digital photos."
+msgstr "Argazki digitalak dituen gailu bat sartu duzu."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:733
+msgid "You have just inserted a digital audio player."
+msgstr "Audio erreproduzigailu digital bat sartu duzu."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:735
 msgid ""
 "You have just inserted a medium with software intended to be automatically "
 "started."
-msgstr "Sartu duzu automatikoki abiarazteko softwarea duen gailu bat."
+msgstr "Automatikoki abiarazteko softwarea duen gailu bat sartu duzu."
 
 #. fallback to generic greeting
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:736
-msgid "You have just inserted a medium."
-msgstr "Sartu duzu gailu bat."
-
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:738
-msgid "Choose what application to launch."
-msgstr "Aukeratu zein aplikazioa abiarazi."
+msgid "You have just inserted a medium."
+msgstr "Gailu bat sartu duzu."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:747
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:740
+msgid "Choose what application to launch."
+msgstr "Aukeratu zein aplikazio abiarazi."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:749
 #, c-format
 msgid ""
 "Select how to open \"%s\" and whether to perform this action in the future "
 "for other media of type \"%s\"."
-msgstr ""
-"Hautatu nola ireki \"%s\" eta etorkizunean ekintza hau exekutatzea %s\" "
-"motako beste gailuekin"
+msgstr "Hautatu nola ireki \"%s\" eta etorkizunean ekintza hori exekutatuko den %s\" motako beste gailuekin"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:774
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:776
 msgid "_Always perform this action"
 msgstr "_Exekutatu beti ekintza hau"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:783
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
 msgid "_Cancel"
 msgstr "_Utzi"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:784
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:786
 msgid "_OK"
 msgstr "_Ados"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:790
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:792
 msgid "_Eject"
-msgstr "_Egotzi"
+msgstr "E_gotzi"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:795
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:797
 msgid "_Unmount"
 msgstr "_Desmuntatu"
-
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
-msgid "Turn Off"
-msgstr "Itzali"
 
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:164
 msgid "Send Files"
 msgstr "Bidali fitxategiak"
-
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
-msgid "Turn On"
-msgstr "Piztu"
 
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
 msgid "Bluetooth Settings"
@@ -569,55 +590,18 @@ msgstr "Bluetooth aktiboa"
 
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:276
 msgid "Bluetooth disabled"
-msgstr "Bluetooth desgaitua"
+msgstr "Bluetooth-a desgaituta"
 
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:282
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
-msgstr[0] "%d gailu konektatua"
-msgstr[1] "%d gailu konektatuak"
+msgstr[0] "Gailu %d konektatuta"
+msgstr[1] "%d gailu konektatuta"
 
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
 msgid "Not Connected"
 msgstr "Konektatu gabe"
-
-#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:8
-msgid "Confirm"
-msgstr "Egiaztatu"
-
-#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:53
-msgid "Do you want to keep these display settings?"
-msgstr "Mantendu nahi duzu pantailaren ezarpen hauek?"
-
-#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:96
-msgid "_Keep Changes"
-msgstr "_Mantendu aldaketak"
-
-#: gnome-flashback/libdisplay-config/flashback-confirm-dialog.ui:116
-msgid "_Revert Settings"
-msgstr "_Leheneratu ezarpenak"
-
-#: gnome-flashback/libdisplay-config/flashback-display-config.c:195
-msgid "Built-in display"
-msgstr "Barneko pantaila"
-
-#: gnome-flashback/libdisplay-config/flashback-display-config.c:218
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
-msgid "Unknown"
-msgstr "Ezezaguna"
-
-#: gnome-flashback/libdisplay-config/flashback-display-config.c:220
-msgid "Unknown Display"
-msgstr "Pantaila ezezaguna"
-
-#. TRANSLATORS: this is a monitor vendor name, followed by a
-#. * size in inches, like 'Dell 15"'
-#.
-#: gnome-flashback/libdisplay-config/flashback-display-config.c:228
-#, c-format
-msgid "%s %s"
-msgstr "%s %s"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
@@ -626,16 +610,14 @@ msgstr "Amaitu saioa"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:470
 msgid "Click Log Out to quit these applications and log out of the system."
-msgstr ""
-"Egin klik \"Amaitu saioa\" aukeran aplikazioak ixteko eta sistemaren saioa "
-"amaitzeko."
+msgstr "Egin klik \"Amaitu saioa\" aukeran aplikazioak ixteko eta sistemaren saioa amaitzeko."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:472
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s erabiltzailearen saioa automatikoki amaituko da segundo %d-ean."
-msgstr[1] "%s erabiltzailearen saioa automatikoki amaituko da %d segundotan."
+msgstr[0] "%s erabiltzailearen saioa automatikoki %d segundotan amaituko da."
+msgstr[1] "%s erabiltzailearen saioa automatikoki %d segundotan amaituko da."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:696
@@ -644,15 +626,14 @@ msgstr "Itzali"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:482
 msgid "Click Power Off to quit these applications and power off the system."
-msgstr ""
-"Egin klik \"Itzali\" aukeran aplikazioak ixteko eta sistema itzaltzeko."
+msgstr "Egin klik \"Itzali\" aukeran aplikazioak ixteko eta sistema itzaltzeko."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:484
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Sistema automatikoki itzaliko da segundo %d-ean."
-msgstr[1] "Sistema automatikoki itzaliko da %d segundotan."
+msgstr[0] "Sistema automatikoki segundo %dean itzaliko da."
+msgstr[1] "Sistema automatikoki %d segundotan itzaliko da."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:700
@@ -661,16 +642,14 @@ msgstr "Berrabiarazi"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:494
 msgid "Click Restart to quit these applications and restart the system."
-msgstr ""
-"Egin klik \"Berrabiarazi\" aukeran aplikazioak ixteko eta sistema "
-"berrabiarazteko."
+msgstr "Egin klik \"Berrabiarazi\" aukeran aplikazioak ixteko eta sistema berrabiarazteko."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:496
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "Sistema automatikoki berrabiaraziko da segundo %d-ean."
-msgstr[1] "Sistema automatikoki berrabiaraziko da %d segundotan."
+msgstr[0] "Sistema automatikoki segundo %dean berrabiaraziko da."
+msgstr[1] "Sistema automatikoki %d segundotan berrabiaraziko da."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:503
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:704
@@ -681,7 +660,7 @@ msgstr "Hibernatu"
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
-msgstr[0] "Sistema automatikoki hibernatuko da segundo %d-ean."
+msgstr[0] "Sistema automatikoki hibernatuko da segundo %dean."
 msgstr[1] "Sistema automatikoki hibernatuko da %d segundotan."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:511
@@ -693,19 +672,19 @@ msgstr "Eseki"
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
-msgstr[0] "Sistema automatikoki esekiko da segundo %d-ean."
+msgstr[0] "Sistema automatikoki esekiko da segundo %dean."
 msgstr[1] "Sistema automatikoki esekiko da %d segundotan."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:712
 msgid "Hybrid Sleep"
-msgstr "Lokartze hibridoa"
+msgstr "Lo hibridoa"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:520
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
-msgstr[0] "Sistema automatikoki lokartze hibridoan sartuko da segundo %d-ean."
+msgstr[0] "Sistema automatikoki lokartze hibridoan sartuko da segundo %dean."
 msgstr[1] "Sistema automatikoki lokartze hibridoan sartuko da %d segundotan."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:29
@@ -722,62 +701,62 @@ msgstr "Aplikazio horiek amaitzeko zain. Eteteak datuen galera eragin lezake."
 msgid "Lock Screen"
 msgstr "Blokeatu pantaila"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:362
+#: gnome-flashback/libinput-sources/gf-input-sources.c:801
 msgid "Show Keyboard Layout"
 msgstr "Erakutsi teklatuaren diseinua"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:425
+#: gnome-flashback/libinput-sources/gf-input-sources.c:867
 msgid "Keyboard"
 msgstr "Teklatua"
 
-#: gnome-flashback/libnotifications/gf-bubble.c:596
-#: gnome-flashback/libnotifications/gf-bubble.c:600
-#: gnome-flashback/libnotifications/nd-notification-box.c:325
-#: gnome-flashback/libnotifications/nd-notification-box.c:327
+#: gnome-flashback/libnotifications/gf-bubble.c:619
+#: gnome-flashback/libnotifications/gf-bubble.c:623
+#: gnome-flashback/libnotifications/nd-notification-box.c:321
+#: gnome-flashback/libnotifications/nd-notification-box.c:323
 msgid "Closes the notification."
 msgstr "Jakinarazpenak ixten ditu."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:620
-#: gnome-flashback/libnotifications/gf-bubble.c:651
-#: gnome-flashback/libnotifications/nd-notification-box.c:343
+#: gnome-flashback/libnotifications/gf-bubble.c:643
+#: gnome-flashback/libnotifications/gf-bubble.c:674
+#: gnome-flashback/libnotifications/nd-notification-box.c:339
 msgid "Notification summary text."
 msgstr "Jakinarazpenaren laburpenaren testua."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:670
+#: gnome-flashback/libnotifications/gf-bubble.c:693
 msgid "Notification"
 msgstr "Jakinarazpena"
 
 #: gnome-flashback/libnotifications/nd-daemon.c:100
 msgid "Invalid notification identifier"
-msgstr "Jakinarazpen-identifikadore baliogabea"
+msgstr "Jakinarazpen-identifikatzaile baliogabea"
 
 #: gnome-flashback/libnotifications/nd-daemon.c:181
 msgid "Exceeded maximum number of notifications"
-msgstr "Gehienezko jakinarazpen kopurua gaindituta"
+msgstr "Gehieneko jakinarazpen kopurua gaindituta"
 
-#: gnome-flashback/libnotifications/nd-notification-box.c:363
+#: gnome-flashback/libnotifications/nd-notification-box.c:359
 msgid "Notification body text."
 msgstr "Jakinarazpenaren testua."
 
-#: gnome-flashback/libnotifications/nd-queue.c:453
+#: gnome-flashback/libnotifications/nd-queue.c:451
 msgid "Clear all notifications"
 msgstr "Garbitu jakinarazpen guztiak"
 
-#: gnome-flashback/libnotifications/nd-queue.c:890
+#: gnome-flashback/libnotifications/nd-queue.c:867
 msgid "Notifications"
 msgstr "Jakinarazpenak"
 
-#: gnome-flashback/libpolkit/flashback-authenticator.c:93
+#: gnome-flashback/libpolkit/flashback-authenticator.c:100
 #, c-format
 msgid "_Password for %s:"
 msgstr "%s(r)en _pasahitza:"
 
-#: gnome-flashback/libpolkit/flashback-authenticator.c:97
+#: gnome-flashback/libpolkit/flashback-authenticator.c:104
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
 msgid "_Password:"
 msgstr "_Pasahitza:"
 
-#: gnome-flashback/libpolkit/flashback-authenticator.c:252
+#: gnome-flashback/libpolkit/flashback-authenticator.c:259
 msgid "Your authentication attempt was unsuccessful. Please try again."
 msgstr "Zure autentifikazio saioak huts egin du. Saiatu berriro."
 
@@ -789,51 +768,44 @@ msgstr "Erabiltzaileak autentifikatzeko elkarrizketa-koadroa itxi du"
 msgid ""
 "An application is attempting to perform an action that requires privileges. "
 "Authentication as one of the users below is required to perform this action."
-msgstr ""
-"Aplikazio bat baimena behar duen ekintza bat lantzen saiatzen ari da. "
-"Ekintza hau lantzeko, azpiko erabiltzaileetako bat bezala autentifikatu "
-"behar da."
+msgstr "Aplikazio bat baimena behar duen ekintza bat lantzen saiatzen ari da. Ekintza hori gauzatzeko, azpiko erabiltzaileetako bat bezala autentifikatu behar da."
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
 msgid ""
 "An application is attempting to perform an action that requires privileges. "
 "Authentication is required to perform this action."
-msgstr ""
-"Aplikazio bat baimena behar duen ekintza bat lantzen saiatzen ari da. "
-"Ekintza hau lantzeko, autentifikatu egin behar da."
+msgstr "Aplikazio bat baimena behar duen ekintza bat lantzen saiatzen ari da. Ekintza hori gauzatzeko, autentifikatu egin behar da."
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:217
 msgid ""
 "An application is attempting to perform an action that requires privileges. "
 "Authentication as the super user is required to perform this action."
-msgstr ""
-"Aplikazio bat baimena behar duen ekintza bat lantzen saiatzen ari da. "
-"Ekintza hau lantzeko, supererabiltzaile gisa autentifikatu behar da."
+msgstr "Aplikazio bat baimena behar duen ekintza bat lantzen saiatzen ari da. Ekintza hori gauzatzeko, supererabiltzaile gisa autentifikatu behar da."
 
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:383
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:386
 msgid "Select user..."
 msgstr "Hautatu erabiltzailea..."
 
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:422
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:425
 #, c-format
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:593
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:600
 msgid "Action:"
 msgstr "Ekintza:"
 
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:596
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:603
 #, c-format
 msgid "Click to edit %s"
 msgstr "Egin klik %s editatzeko"
 
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:604
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:611
 msgid "Vendor:"
 msgstr "Hornitzailea:"
 
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:607
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:614
 #, c-format
 msgid "Click to open %s"
 msgstr "Egin klik %s irekitzeko"
@@ -867,85 +839,70 @@ msgid "Empty"
 msgstr "Hutsa"
 
 #: gnome-flashback/libpower-applet/gf-power-applet.c:190
-#: gnome-flashback/libpower-applet/gf-power-applet.c:195
+msgid "Not Charging"
+msgstr "Kargarik ez"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:192
+#: gnome-flashback/libpower-applet/gf-power-applet.c:197
 msgid "Estimating..."
 msgstr "Kalkulatzen..."
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:204
+#: gnome-flashback/libpower-applet/gf-power-applet.c:206
 #, c-format
 msgid "%.0f:%02.0f Remaining (%.0f%%)"
 msgstr "%.0f:%02.0f geratzen da (%% %.0f)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:211
+#: gnome-flashback/libpower-applet/gf-power-applet.c:213
 #, c-format
 msgid "%.0f:%02.0f Until Full (%.0f%%)"
 msgstr "%.0f:%02.0f betetzeko (%% %.0f)"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:226
+#: gnome-flashback/libpower-applet/gf-power-applet.c:228
 msgid "UPS"
 msgstr "UPS"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:228
+#: gnome-flashback/libpower-applet/gf-power-applet.c:230
 msgid "Battery"
 msgstr "Bateria"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:320
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:344
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:283
 msgid "Output"
 msgstr "Irteera"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:323
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:343
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:286
 msgid "Sound Output Volume"
 msgstr "Soinuaren irteerako bolumena"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:330
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:350
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:293
 msgid "Input"
 msgstr "Sarrera"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:333
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:349
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:296
 msgid "Microphone Volume"
 msgstr "Mikrofonoaren bolumena"
 
-#: gnome-flashback/libsound-applet/gf-sound-item.c:161
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:421
-msgid "Muted"
-msgstr "Mutututa"
-
-#: gnome-flashback/libsound-applet/gf-sound-item.c:452
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:282
-msgid "_Mute"
-msgstr "_Mututu"
-
-#: gnome-flashback/libsound-applet/gf-sound-item.c:460
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:291
-msgid "_Sound Preferences"
-msgstr "_Soinuaren hobespenak"
-
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:537
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:546
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:535
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:544
 msgctxt "volume"
 msgid "100%"
-msgstr "%100"
+msgstr "% 100"
 
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:541
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:539
 msgctxt "volume"
 msgid "Unamplified"
 msgstr "Anplifikatu gabea"
 
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1866
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1864
 msgid "Disabled"
 msgstr "Desgaituta"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1873
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1871
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -954,13 +911,82 @@ msgstr[1] "%u irteera"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1881
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "Sarrera %u"
 msgstr[1] "%u sarrera"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2738
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2736
 msgid "System Sounds"
 msgstr "Sistemaren soinuak"
+
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:285
+msgid "_Mute"
+msgstr "_Mututu"
+
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:294
+msgid "_Sound Preferences"
+msgstr "_Soinuaren hobespenak"
+
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:424
+msgid "Muted"
+msgstr "Mutututa"
+
+#~ msgid "Display configuration"
+#~ msgstr "Pantailaren konfigurazioa"
+
+#~ msgid ""
+#~ "If set to true, then GNOME Flashback application will be used to provide "
+#~ "the display configuration."
+#~ msgstr ""
+#~ "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aurkezteko "
+#~ "pantailaren konfigurazioa."
+
+#~ msgid "Workarounds"
+#~ msgstr "Konponbideak"
+
+#~ msgid ""
+#~ "If set to true, then GNOME Flashback application will use workarounds to "
+#~ "fix bugs."
+#~ msgstr ""
+#~ "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da akatsak "
+#~ "konpontzeko."
+
+#~ msgid ""
+#~ "This contains the background color for the status icon that is shown in "
+#~ "the system tray."
+#~ msgstr ""
+#~ "Honek du sistemaren erretiluko egoera ikonoaren atzeko planoaren kolorea."
+
+#~ msgid ""
+#~ "This contains the foreground color for the status icon that is shown in "
+#~ "the system tray."
+#~ msgstr ""
+#~ "Honek du sistemaren erretiluko egoera ikonoaren aurreko planoaren kolorea."
+
+#~ msgid "Fix missing app menu button"
+#~ msgstr "Konpondu falta den aplikazioaren menu-botoia"
+
+#~ msgid ""
+#~ "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
+#~ "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
+#~ "xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
+#~ msgstr ""
+#~ "Gaitzen baduzu GNOME Flashback aplikazioak ezarriko du Gtk/"
+#~ "ShellShowsAppMenu ezgaitua egoerara.Ezgaitu ezazu nahi baduzu erabili "
+#~ "gnome-settings-daemon 'Gtk/ShellShowsAppMenu' propietateen xsettings "
+#~ "plugina ezgaitzen duena."
+
+#~ msgid "Fix wrong button layout"
+#~ msgstr "Konpondu akatsdun botoien diseinua"
+
+#~ msgid ""
+#~ "If set to non-empty string, then gnome-flashback will force Gtk/"
+#~ "DecorationLayout to value set by this setting. Set to empty string if you "
+#~ "want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
+#~ "DecorationLayout' property."
+#~ msgstr ""
+#~ "Hutsik ez dagoen katea ezartzen baduzu gnome-flashback-ek bortzatuko du "
+#~ "Gtk/Dekorazio diseinua"
