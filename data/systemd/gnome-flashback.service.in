@@ -1,0 +1,21 @@
+[Unit]
+Description=GNOME Flashback
+OnFailure=gnome-session-failed.target
+OnFailureJobMode=replace
+CollectMode=inactive-or-failed
+
+After=gnome-session-manager.target
+
+Requisite=gnome-session-initialized.target
+PartOf=gnome-session-initialized.target
+Before=gnome-session-initialized.target
+
+StartLimitIntervalSec=15s
+StartLimitBurst=3
+
+[Service]
+Type=dbus
+ExecStart=@bindir@/gnome-flashback
+Restart=on-failure
+RestartSec=0ms
+BusName=org.gnome.Shell

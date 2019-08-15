@@ -285,6 +285,7 @@ AC_CONFIG_FILES([
   data/menus/Makefile
   data/schemas/Makefile
   data/sessions/Makefile
+  data/systemd/Makefile
   data/theme/Makefile
   data/theme/Adwaita/Makefile
   data/theme/HighContrast/Makefile
