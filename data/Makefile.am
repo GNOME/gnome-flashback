@@ -7,6 +7,7 @@ SUBDIRS = \
 	menus \
 	schemas \
 	sessions \
+	systemd \
 	theme \
 	ui \
 	xsessions \
