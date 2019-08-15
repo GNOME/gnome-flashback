@@ -1,0 +1,10 @@
+[Unit]
+Description=GNOME Flashback
+DefaultDependencies=no
+
+Requisite=gnome-session-initialized.target
+PartOf=gnome-session-initialized.target
+Before=gnome-session-initialized.target
+
+Requires=gnome-flashback.service
+After=gnome-flashback.service
