@@ -559,77 +559,14 @@ gvc_channel_bar_get_property (GObject     *object,
         }
 }
 
-static GObject *
-gvc_channel_bar_constructor (GType                  type,
-                             guint                  n_construct_properties,
-                             GObjectConstructParam *construct_params)
-{
-        GObject       *object;
-        GvcChannelBar *self;
-
-        object = G_OBJECT_CLASS (gvc_channel_bar_parent_class)->constructor (type, n_construct_properties, construct_params);
-
-        self = GVC_CHANNEL_BAR (object);
-
-        update_mute_switch (self);
-
-        return object;
-}
-
 static void
-gvc_channel_bar_dispose (GObject *object)
+gvc_channel_bar_constructed (GObject *object)
 {
-        GvcChannelBar *channel_bar;
-
-        channel_bar = GVC_CHANNEL_BAR (object);
-
-        g_clear_object (&channel_bar->priv->mixer_control);
-
-        G_OBJECT_CLASS (gvc_channel_bar_parent_class)->dispose (object);
-}
-
-static void
-gvc_channel_bar_class_init (GvcChannelBarClass *klass)
-{
-        GObjectClass   *object_class = G_OBJECT_CLASS (klass);
-
-        object_class->constructor = gvc_channel_bar_constructor;
-        object_class->dispose = gvc_channel_bar_dispose;
-        object_class->finalize = gvc_channel_bar_finalize;
-        object_class->set_property = gvc_channel_bar_set_property;
-        object_class->get_property = gvc_channel_bar_get_property;
-
-        g_object_class_install_property (object_class,
-                                         PROP_MIXER_CONTROL,
-                                         g_param_spec_object ("mixer-control",
-                                                              "mixer control",
-                                                              "mixer control",
-                                                              GVC_TYPE_MIXER_CONTROL,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
-
-        g_object_class_install_property (object_class,
-                                         PROP_ORIENTATION,
-                                         g_param_spec_enum ("orientation",
-                                                            "Orientation",
-                                                            "The orientation of the scale",
-                                                            GTK_TYPE_ORIENTATION,
-                                                            GTK_ORIENTATION_VERTICAL,
-                                                            G_PARAM_READWRITE));
-        g_object_class_install_property (object_class,
-                                         PROP_IS_MUTED,
-                                         g_param_spec_boolean ("is-muted",
-                                                               "is muted",
-                                                               "Whether stream is muted",
-                                                               FALSE,
-                                                               G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-}
-
-static void
-gvc_channel_bar_init (GvcChannelBar *bar)
-{
+        GvcChannelBar *bar;
         GtkWidget *frame;
 
-        bar->priv = gvc_channel_bar_get_instance_private (bar);
+        bar = GVC_CHANNEL_BAR (object);
+        G_OBJECT_CLASS (gvc_channel_bar_parent_class)->constructed (object);
 
         bar->priv->base_volume = ADJUSTMENT_MAX_NORMAL;
         bar->priv->low_icon_name = g_strdup ("audio-volume-low");
@@ -680,6 +617,62 @@ gvc_channel_bar_init (GvcChannelBar *bar)
 
         gtk_container_add (GTK_CONTAINER (frame), bar->priv->scale_box);
         gtk_widget_show_all (frame);
+
+        update_mute_switch (bar);
+}
+
+static void
+gvc_channel_bar_dispose (GObject *object)
+{
+        GvcChannelBar *channel_bar;
+
+        channel_bar = GVC_CHANNEL_BAR (object);
+
+        g_clear_object (&channel_bar->priv->mixer_control);
+
+        G_OBJECT_CLASS (gvc_channel_bar_parent_class)->dispose (object);
+}
+
+static void
+gvc_channel_bar_class_init (GvcChannelBarClass *klass)
+{
+        GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+
+        object_class->constructed = gvc_channel_bar_constructed;
+        object_class->dispose = gvc_channel_bar_dispose;
+        object_class->finalize = gvc_channel_bar_finalize;
+        object_class->set_property = gvc_channel_bar_set_property;
+        object_class->get_property = gvc_channel_bar_get_property;
+
+        g_object_class_install_property (object_class,
+                                         PROP_MIXER_CONTROL,
+                                         g_param_spec_object ("mixer-control",
+                                                              "mixer control",
+                                                              "mixer control",
+                                                              GVC_TYPE_MIXER_CONTROL,
+                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
+
+        g_object_class_install_property (object_class,
+                                         PROP_ORIENTATION,
+                                         g_param_spec_enum ("orientation",
+                                                            "Orientation",
+                                                            "The orientation of the scale",
+                                                            GTK_TYPE_ORIENTATION,
+                                                            GTK_ORIENTATION_VERTICAL,
+                                                            G_PARAM_READWRITE));
+        g_object_class_install_property (object_class,
+                                         PROP_IS_MUTED,
+                                         g_param_spec_boolean ("is-muted",
+                                                               "is muted",
+                                                               "Whether stream is muted",
+                                                               FALSE,
+                                                               G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
+}
+
+static void
+gvc_channel_bar_init (GvcChannelBar *bar)
+{
+        bar->priv = gvc_channel_bar_get_instance_private (bar);
 }
 
 static void
