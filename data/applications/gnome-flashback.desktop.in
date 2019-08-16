@@ -4,6 +4,6 @@ Name=GNOME Flashback
 Exec=gnome-flashback
 OnlyShowIn=GNOME-Flashback;
 NoDisplay=true
-X-GNOME-Autostart-Phase=Desktop
+X-GNOME-Autostart-Phase=Initialization
 X-GNOME-Autostart-Notify=true
 X-GNOME-AutoRestart=true

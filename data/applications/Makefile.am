@@ -2,7 +2,6 @@ NULL =
 
 desktop_in_files = \
 	gnome-flashback.desktop.in \
-	gnome-flashback-init.desktop.in \
 	$(NULL)
 
 desktopdir = $(datadir)/applications

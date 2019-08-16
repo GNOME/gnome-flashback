@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 - 2015 Alberts Muktupāvels
+ * Copyright (C) 2014 - 2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ static GMainLoop *loop = NULL;
 static GfApplication *application = NULL;
 
 static gboolean debug = FALSE;
-static gboolean initialize = FALSE;
 static gboolean replace = FALSE;
 static gboolean version = FALSE;
 
@@ -39,12 +38,6 @@ static GOptionEntry entries[] =
     "debug", 0, G_OPTION_FLAG_NONE,
     G_OPTION_ARG_NONE, &debug,
     N_("Enable debugging code"),
-    NULL
-  },
-  {
-    "initialize", 0, G_OPTION_FLAG_NONE,
-    G_OPTION_ARG_NONE, &initialize,
-    N_("Initialize GNOME Flashback session"),
     NULL
   },
   {
@@ -129,18 +122,9 @@ session_ready_cb (GfSession *session,
   g_unix_signal_add (SIGTERM, on_term_signal, NULL);
   g_unix_signal_add (SIGINT, on_int_signal, NULL);
 
-  if (initialize)
-    {
-      gf_session_set_environment (session, "XDG_MENU_PREFIX", "gnome-flashback-");
-      gf_session_register (session);
-
-      g_main_loop_quit (loop);
-    }
-  else
-    {
-      application = gf_application_new ();
-      gf_session_register (session);
-    }
+  application = gf_application_new ();
+  gf_session_set_environment (session, "XDG_MENU_PREFIX", "gnome-flashback-");
+  gf_session_register (session);
 }
 
 static void

@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=GNOME Flashback Initialization
-Exec=gnome-flashback --initialize
-OnlyShowIn=GNOME-Flashback;
-NoDisplay=true
-X-GNOME-Autostart-Phase=Initialization
-X-GNOME-Autostart-Notify=true
-X-GNOME-AutoRestart=false

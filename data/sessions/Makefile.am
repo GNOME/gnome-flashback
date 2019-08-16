@@ -1,7 +1,6 @@
 NULL =
 
 required_components_common = \
-	gnome-flashback-init \
 	gnome-flashback \
 	gnome-panel \
 	$(NULL)
