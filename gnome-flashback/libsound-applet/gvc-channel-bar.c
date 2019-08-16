@@ -56,8 +56,6 @@ struct GvcChannelBarPrivate
         char            *icon_name;
         char            *low_icon_name;
         char            *high_icon_name;
-        GtkSizeGroup    *size_group;
-        gboolean         symmetric;
         gboolean         click_lock;
         gboolean         is_amplified;
         guint32          base_volume;
@@ -150,14 +148,6 @@ _scale_box_new (GvcChannelBar *bar)
         g_signal_connect (G_OBJECT (bar->priv->scale), "scroll-event",
                           G_CALLBACK (on_scale_scroll_event), bar);
 
-        if (bar->priv->size_group != NULL) {
-                gtk_size_group_add_widget (bar->priv->size_group, sbox);
-
-                if (bar->priv->symmetric) {
-                        gtk_size_group_add_widget (bar->priv->size_group, ebox);
-                }
-        }
-
         gtk_scale_set_draw_value (GTK_SCALE (priv->scale), FALSE);
 
         return box;
@@ -217,28 +207,6 @@ update_layout (GvcChannelBar *bar)
         g_object_unref (bar->priv->high_image);
 
         gtk_widget_show_all (frame);
-}
-
-void
-gvc_channel_bar_set_size_group (GvcChannelBar *bar,
-                                GtkSizeGroup  *group,
-                                gboolean       symmetric)
-{
-        g_return_if_fail (GVC_IS_CHANNEL_BAR (bar));
-
-        bar->priv->size_group = group;
-        bar->priv->symmetric = symmetric;
-
-        if (bar->priv->size_group != NULL) {
-                gtk_size_group_add_widget (bar->priv->size_group,
-                                           bar->priv->start_box);
-
-                if (bar->priv->symmetric) {
-                        gtk_size_group_add_widget (bar->priv->size_group,
-                                                   bar->priv->end_box);
-                }
-        }
-        gtk_widget_queue_draw (GTK_WIDGET (bar));
 }
 
 void

@@ -68,10 +68,6 @@ gboolean        gvc_channel_bar_get_is_muted       (GvcChannelBar   *bar);
 void            gvc_channel_bar_set_is_muted       (GvcChannelBar   *bar,
                                                     gboolean         is_muted);
 
-void            gvc_channel_bar_set_size_group     (GvcChannelBar   *bar,
-                                                    GtkSizeGroup    *group,
-                                                    gboolean         symmetric);
-
 void            gvc_channel_bar_set_is_amplified   (GvcChannelBar   *bar,
                                                     gboolean         amplified);
 
