@@ -48,9 +48,7 @@ struct GvcStreamStatusIconPrivate
 enum
 {
         PROP_0,
-        PROP_DISPLAY_NAME,
         PROP_MIXER_CONTROL,
-        PROP_MIXER_STREAM,
         PROP_ICON_NAMES,
 };
 
@@ -493,7 +491,6 @@ gvc_stream_status_icon_set_display_name (GvcStreamStatusIcon *icon,
         g_free (icon->priv->display_name);
         icon->priv->display_name = g_strdup (name);
         update_icon (icon);
-        g_object_notify (G_OBJECT (icon), "display-name");
 }
 
 void
@@ -547,8 +544,6 @@ gvc_stream_status_icon_set_mixer_stream (GvcStreamStatusIcon *icon,
         }
 
         update_icon (icon);
-
-        g_object_notify (G_OBJECT (icon), "mixer-stream");
 }
 
 static void
@@ -562,12 +557,6 @@ gvc_stream_status_icon_set_property (GObject       *object,
         switch (prop_id) {
         case PROP_MIXER_CONTROL:
                 self->priv->mixer_control = g_value_dup_object (value);
-                break;
-        case PROP_MIXER_STREAM:
-                gvc_stream_status_icon_set_mixer_stream (self, g_value_get_object (value));
-                break;
-        case PROP_DISPLAY_NAME:
-                gvc_stream_status_icon_set_display_name (self, g_value_get_string (value));
                 break;
         case PROP_ICON_NAMES:
                 gvc_stream_status_icon_set_icon_names (self, g_value_get_boxed (value));
@@ -590,12 +579,6 @@ gvc_stream_status_icon_get_property (GObject     *object,
         switch (prop_id) {
         case PROP_MIXER_CONTROL:
                 g_value_set_object (value, priv->mixer_control);
-                break;
-        case PROP_MIXER_STREAM:
-                g_value_set_object (value, priv->mixer_stream);
-                break;
-        case PROP_DISPLAY_NAME:
-                g_value_set_string (value, priv->display_name);
                 break;
         case PROP_ICON_NAMES:
                 g_value_set_boxed (value, priv->icon_names);
@@ -727,20 +710,6 @@ gvc_stream_status_icon_class_init (GvcStreamStatusIconClass *klass)
                                                               GVC_TYPE_MIXER_CONTROL,
                                                               G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
 
-        g_object_class_install_property (object_class,
-                                         PROP_MIXER_STREAM,
-                                         g_param_spec_object ("mixer-stream",
-                                                              "mixer stream",
-                                                              "mixer stream",
-                                                              GVC_TYPE_MIXER_STREAM,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (object_class,
-                                         PROP_DISPLAY_NAME,
-                                         g_param_spec_string ("display-name",
-                                                              "Display Name",
-                                                              "Name to display for this stream",
-                                                              NULL,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
         g_object_class_install_property (object_class,
                                          PROP_ICON_NAMES,
                                          g_param_spec_boxed ("icon-names",

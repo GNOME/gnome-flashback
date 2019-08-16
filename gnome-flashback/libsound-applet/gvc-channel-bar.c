@@ -66,11 +66,6 @@ enum
         PROP_0,
         PROP_ORIENTATION,
         PROP_IS_MUTED,
-        PROP_ADJUSTMENT,
-        PROP_ICON_NAME,
-        PROP_LOW_ICON_NAME,
-        PROP_HIGH_ICON_NAME,
-        PROP_IS_AMPLIFIED
 };
 
 static void     gvc_channel_bar_finalize      (GObject            *object);
@@ -252,7 +247,6 @@ gvc_channel_bar_set_icon_name (GvcChannelBar  *bar,
         g_free (bar->priv->icon_name);
         bar->priv->icon_name = g_strdup (name);
         update_image (bar);
-        g_object_notify (G_OBJECT (bar), "icon-name");
 }
 
 void
@@ -267,7 +261,6 @@ gvc_channel_bar_set_low_icon_name   (GvcChannelBar *bar,
                 gtk_image_set_from_icon_name (GTK_IMAGE (bar->priv->low_image),
                                               bar->priv->low_icon_name,
                                               GTK_ICON_SIZE_MENU);
-                g_object_notify (G_OBJECT (bar), "low-icon-name");
         }
 }
 
@@ -283,7 +276,6 @@ gvc_channel_bar_set_high_icon_name  (GvcChannelBar *bar,
                 gtk_image_set_from_icon_name (GTK_IMAGE (bar->priv->high_image),
                                               bar->priv->high_icon_name,
                                               GTK_ICON_SIZE_MENU);
-                g_object_notify (G_OBJECT (bar), "high-icon-name");
         }
 }
 
@@ -298,25 +290,6 @@ gvc_channel_bar_set_orientation (GvcChannelBar  *bar,
                 update_layout (bar);
                 g_object_notify (G_OBJECT (bar), "orientation");
         }
-}
-
-static void
-gvc_channel_bar_set_adjustment (GvcChannelBar *bar,
-                                GtkAdjustment *adjustment)
-{
-        g_return_if_fail (GVC_CHANNEL_BAR (bar));
-        g_return_if_fail (GTK_IS_ADJUSTMENT (adjustment));
-
-        if (bar->priv->adjustment != NULL) {
-                g_object_unref (bar->priv->adjustment);
-        }
-        bar->priv->adjustment = g_object_ref_sink (adjustment);
-
-        if (bar->priv->scale != NULL) {
-                gtk_range_set_adjustment (GTK_RANGE (bar->priv->scale), adjustment);
-        }
-
-        g_object_notify (G_OBJECT (bar), "adjustment");
 }
 
 GtkAdjustment *
@@ -581,21 +554,6 @@ gvc_channel_bar_set_property (GObject       *object,
         case PROP_IS_MUTED:
                 gvc_channel_bar_set_is_muted (self, g_value_get_boolean (value));
                 break;
-        case PROP_ICON_NAME:
-                gvc_channel_bar_set_icon_name (self, g_value_get_string (value));
-                break;
-        case PROP_LOW_ICON_NAME:
-                gvc_channel_bar_set_low_icon_name (self, g_value_get_string (value));
-                break;
-        case PROP_HIGH_ICON_NAME:
-                gvc_channel_bar_set_high_icon_name (self, g_value_get_string (value));
-                break;
-        case PROP_ADJUSTMENT:
-                gvc_channel_bar_set_adjustment (self, g_value_get_object (value));
-                break;
-        case PROP_IS_AMPLIFIED:
-                gvc_channel_bar_set_is_amplified (self, g_value_get_boolean (value));
-                break;
         default:
                 G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
                 break;
@@ -617,21 +575,6 @@ gvc_channel_bar_get_property (GObject     *object,
                 break;
         case PROP_IS_MUTED:
                 g_value_set_boolean (value, priv->is_muted);
-                break;
-        case PROP_ICON_NAME:
-                g_value_set_string (value, priv->icon_name);
-                break;
-        case PROP_LOW_ICON_NAME:
-                g_value_set_string (value, priv->low_icon_name);
-                break;
-        case PROP_HIGH_ICON_NAME:
-                g_value_set_string (value, priv->high_icon_name);
-                break;
-        case PROP_ADJUSTMENT:
-                g_value_set_object (value, gvc_channel_bar_get_adjustment (self));
-                break;
-        case PROP_IS_AMPLIFIED:
-                g_value_set_boolean (value, priv->is_amplified);
                 break;
         default:
                 G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -679,42 +622,6 @@ gvc_channel_bar_class_init (GvcChannelBarClass *klass)
                                          g_param_spec_boolean ("is-muted",
                                                                "is muted",
                                                                "Whether stream is muted",
-                                                               FALSE,
-                                                               G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-
-        g_object_class_install_property (object_class,
-                                         PROP_ADJUSTMENT,
-                                         g_param_spec_object ("adjustment",
-                                                              "Adjustment",
-                                                              "The GtkAdjustment that contains the current value of this scale button object",
-                                                              GTK_TYPE_ADJUSTMENT,
-                                                              G_PARAM_READWRITE));
-        g_object_class_install_property (object_class,
-                                         PROP_ICON_NAME,
-                                         g_param_spec_string ("icon-name",
-                                                              "Icon Name",
-                                                              "Name of icon to display for this stream",
-                                                              NULL,
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (object_class,
-                                         PROP_LOW_ICON_NAME,
-                                         g_param_spec_string ("low-icon-name",
-                                                              "Icon Name",
-                                                              "Name of icon to display for this stream",
-                                                              "audio-volume-low",
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (object_class,
-                                         PROP_HIGH_ICON_NAME,
-                                         g_param_spec_string ("high-icon-name",
-                                                              "Icon Name",
-                                                              "Name of icon to display for this stream",
-                                                              "audio-volume-high",
-                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
-        g_object_class_install_property (object_class,
-                                         PROP_IS_AMPLIFIED,
-                                         g_param_spec_boolean ("is-amplified",
-                                                               "Is amplified",
-                                                               "Whether the stream is digitally amplified",
                                                                FALSE,
                                                                G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
 }
