@@ -19,6 +19,7 @@
 #define __GVC_CHANNEL_BAR_H
 
 #include <glib-object.h>
+#include "gvc-mixer-control.h"
 
 G_BEGIN_DECLS
 
@@ -42,36 +43,43 @@ typedef struct
         GtkBoxClass           parent_class;
 } GvcChannelBarClass;
 
-GType               gvc_channel_bar_get_type            (void);
+GType           gvc_channel_bar_get_type           (void);
 
-GtkWidget *         gvc_channel_bar_new                 (void);
+GtkWidget      *gvc_channel_bar_new                (GvcMixerControl *mixer_control);
 
-void                gvc_channel_bar_set_icon_name       (GvcChannelBar *bar,
-                                                         const char    *icon_name);
-void                gvc_channel_bar_set_low_icon_name   (GvcChannelBar *bar,
-                                                         const char    *icon_name);
-void                gvc_channel_bar_set_high_icon_name  (GvcChannelBar *bar,
-                                                         const char    *icon_name);
+void            gvc_channel_bar_set_icon_name      (GvcChannelBar   *bar,
+                                                    const char      *icon_name);
 
-void                gvc_channel_bar_set_orientation     (GvcChannelBar *bar,
-                                                         GtkOrientation orientation);
-GtkOrientation      gvc_channel_bar_get_orientation     (GvcChannelBar *bar);
+void            gvc_channel_bar_set_low_icon_name  (GvcChannelBar   *bar,
+                                                    const char      *icon_name);
 
-GtkAdjustment *     gvc_channel_bar_get_adjustment      (GvcChannelBar *bar);
+void            gvc_channel_bar_set_high_icon_name (GvcChannelBar   *bar,
+                                                    const char      *icon_name);
 
-gboolean            gvc_channel_bar_get_is_muted        (GvcChannelBar *bar);
-void                gvc_channel_bar_set_is_muted        (GvcChannelBar *bar,
-                                                         gboolean       is_muted);
-void                gvc_channel_bar_set_size_group      (GvcChannelBar *bar,
-                                                         GtkSizeGroup  *group,
-                                                         gboolean       symmetric);
-void                gvc_channel_bar_set_is_amplified    (GvcChannelBar *bar,
-                                                         gboolean amplified);
-void                gvc_channel_bar_set_base_volume     (GvcChannelBar *bar,
-                                                         guint32        base_volume);
+void            gvc_channel_bar_set_orientation    (GvcChannelBar   *bar,
+                                                    GtkOrientation   orientation);
 
-gboolean            gvc_channel_bar_scroll              (GvcChannelBar  *bar,
-                                                         GdkEventScroll *event);
+GtkOrientation  gvc_channel_bar_get_orientation    (GvcChannelBar   *bar);
+
+GtkAdjustment  *gvc_channel_bar_get_adjustment     (GvcChannelBar   *bar);
+
+gboolean        gvc_channel_bar_get_is_muted       (GvcChannelBar   *bar);
+
+void            gvc_channel_bar_set_is_muted       (GvcChannelBar   *bar,
+                                                    gboolean         is_muted);
+
+void            gvc_channel_bar_set_size_group     (GvcChannelBar   *bar,
+                                                    GtkSizeGroup    *group,
+                                                    gboolean         symmetric);
+
+void            gvc_channel_bar_set_is_amplified   (GvcChannelBar   *bar,
+                                                    gboolean         amplified);
+
+void            gvc_channel_bar_set_base_volume    (GvcChannelBar   *bar,
+                                                    guint32          base_volume);
+
+gboolean        gvc_channel_bar_scroll             (GvcChannelBar   *bar,
+                                                    GdkEventScroll  *event);
 
 G_END_DECLS
 

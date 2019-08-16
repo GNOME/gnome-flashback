@@ -652,7 +652,7 @@ gvc_stream_status_icon_constructor (GType                  type,
         gtk_container_set_border_width (GTK_CONTAINER (box), 2);
         gtk_container_add (GTK_CONTAINER (frame), box);
 
-        icon->priv->bar = gvc_channel_bar_new ();
+        icon->priv->bar = gvc_channel_bar_new (icon->priv->mixer_control);
         gvc_channel_bar_set_orientation (GVC_CHANNEL_BAR (icon->priv->bar),
                                          GTK_ORIENTATION_VERTICAL);
 

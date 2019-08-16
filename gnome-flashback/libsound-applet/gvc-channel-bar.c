@@ -40,30 +40,33 @@
 
 struct GvcChannelBarPrivate
 {
-        GtkOrientation orientation;
-        GtkWidget     *scale_box;
-        GtkWidget     *start_box;
-        GtkWidget     *end_box;
-        GtkWidget     *image;
-        GtkWidget     *low_image;
-        GtkWidget     *scale;
-        GtkWidget     *high_image;
-        GtkAdjustment *adjustment;
-        GtkAdjustment *zero_adjustment;
-        gboolean       is_muted;
-        char          *icon_name;
-        char          *low_icon_name;
-        char          *high_icon_name;
-        GtkSizeGroup  *size_group;
-        gboolean       symmetric;
-        gboolean       click_lock;
-        gboolean       is_amplified;
-        guint32        base_volume;
+        GvcMixerControl *mixer_control;
+
+        GtkOrientation   orientation;
+        GtkWidget       *scale_box;
+        GtkWidget       *start_box;
+        GtkWidget       *end_box;
+        GtkWidget       *image;
+        GtkWidget       *low_image;
+        GtkWidget       *scale;
+        GtkWidget       *high_image;
+        GtkAdjustment   *adjustment;
+        GtkAdjustment   *zero_adjustment;
+        gboolean         is_muted;
+        char            *icon_name;
+        char            *low_icon_name;
+        char            *high_icon_name;
+        GtkSizeGroup    *size_group;
+        gboolean         symmetric;
+        gboolean         click_lock;
+        gboolean         is_amplified;
+        guint32          base_volume;
 };
 
 enum
 {
         PROP_0,
+        PROP_MIXER_CONTROL,
         PROP_ORIENTATION,
         PROP_IS_MUTED,
 };
@@ -548,6 +551,9 @@ gvc_channel_bar_set_property (GObject       *object,
         GvcChannelBar *self = GVC_CHANNEL_BAR (object);
 
         switch (prop_id) {
+        case PROP_MIXER_CONTROL:
+                self->priv->mixer_control = g_value_dup_object (value);
+                break;
         case PROP_ORIENTATION:
                 gvc_channel_bar_set_orientation (self, g_value_get_enum (value));
                 break;
@@ -570,6 +576,9 @@ gvc_channel_bar_get_property (GObject     *object,
         GvcChannelBarPrivate *priv = self->priv;
 
         switch (prop_id) {
+        case PROP_MIXER_CONTROL:
+                g_value_set_object (value, priv->mixer_control);
+                break;
         case PROP_ORIENTATION:
                 g_value_set_enum (value, priv->orientation);
                 break;
@@ -600,14 +609,35 @@ gvc_channel_bar_constructor (GType                  type,
 }
 
 static void
+gvc_channel_bar_dispose (GObject *object)
+{
+        GvcChannelBar *channel_bar;
+
+        channel_bar = GVC_CHANNEL_BAR (object);
+
+        g_clear_object (&channel_bar->priv->mixer_control);
+
+        G_OBJECT_CLASS (gvc_channel_bar_parent_class)->dispose (object);
+}
+
+static void
 gvc_channel_bar_class_init (GvcChannelBarClass *klass)
 {
         GObjectClass   *object_class = G_OBJECT_CLASS (klass);
 
         object_class->constructor = gvc_channel_bar_constructor;
+        object_class->dispose = gvc_channel_bar_dispose;
         object_class->finalize = gvc_channel_bar_finalize;
         object_class->set_property = gvc_channel_bar_set_property;
         object_class->get_property = gvc_channel_bar_get_property;
+
+        g_object_class_install_property (object_class,
+                                         PROP_MIXER_CONTROL,
+                                         g_param_spec_object ("mixer-control",
+                                                              "mixer control",
+                                                              "mixer control",
+                                                              GVC_TYPE_MIXER_CONTROL,
+                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
 
         g_object_class_install_property (object_class,
                                          PROP_ORIENTATION,
@@ -704,10 +734,11 @@ gvc_channel_bar_finalize (GObject *object)
 }
 
 GtkWidget *
-gvc_channel_bar_new (void)
+gvc_channel_bar_new (GvcMixerControl *mixer_control)
 {
         GObject *bar;
         bar = g_object_new (GVC_TYPE_CHANNEL_BAR,
+                            "mixer-control", mixer_control,
                             "orientation", GTK_ORIENTATION_HORIZONTAL,
                             NULL);
         return GTK_WIDGET (bar);
