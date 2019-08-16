@@ -40,7 +40,7 @@ struct _NdNotification {
         gboolean      is_queued;
         gboolean      is_closed;
 
-        GTimeVal      update_time;
+        gint64        update_time;
 
         char         *sender;
         guint32       id;
@@ -315,23 +315,17 @@ nd_notification_update (NdNotification     *notification,
 
         g_signal_emit (notification, signals[CHANGED], 0);
 
-        g_get_current_time (&notification->update_time);
+        notification->update_time = g_get_real_time ();
 
         return TRUE;
 }
 
-void
-nd_notification_get_update_time (NdNotification *notification,
-                                 GTimeVal       *tvp)
+gint64
+nd_notification_get_update_time (NdNotification *notification)
 {
-        g_return_if_fail (ND_IS_NOTIFICATION (notification));
+        g_return_val_if_fail (ND_IS_NOTIFICATION (notification), 0);
 
-        if (tvp == NULL) {
-                return;
-        }
-
-        tvp->tv_usec = notification->update_time.tv_usec;
-        tvp->tv_sec = notification->update_time.tv_sec;
+        return notification->update_time;
 }
 
 void

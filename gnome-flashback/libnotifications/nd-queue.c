@@ -612,12 +612,13 @@ static int
 collate_notifications (NdNotification *a,
                        NdNotification *b)
 {
-        GTimeVal tva;
-        GTimeVal tvb;
+        gint64 time_a;
+        gint64 time_b;
 
-        nd_notification_get_update_time (a, &tva);
-        nd_notification_get_update_time (b, &tvb);
-        if (tva.tv_sec > tvb.tv_sec) {
+        time_a = nd_notification_get_update_time (a);
+        time_b = nd_notification_get_update_time (b);
+
+        if (time_a > time_b) {
                 return 1;
         } else {
                 return -1;
