@@ -33,10 +33,6 @@
 #include "gvc-mixer-control.h"
 
 #define SCALE_SIZE 128
-#define ADJUSTMENT_MAX_NORMAL gvc_mixer_control_get_vol_max_norm(NULL)
-#define ADJUSTMENT_MAX_AMPLIFIED gvc_mixer_control_get_vol_max_amplified(NULL)
-#define ADJUSTMENT_MAX (bar->priv->is_amplified ? ADJUSTMENT_MAX_AMPLIFIED : ADJUSTMENT_MAX_NORMAL)
-#define SCROLLSTEP (ADJUSTMENT_MAX / 100.0 * 5.0)
 
 struct GvcChannelBarPrivate
 {
@@ -316,6 +312,8 @@ gvc_channel_bar_scroll (GvcChannelBar *bar, GdkEventScroll *event)
         gdouble value;
         GdkScrollDirection direction;
         gdouble dx, dy;
+        gdouble adjustment_max;
+        gdouble scrollstep;
 
         g_return_val_if_fail (bar != NULL, FALSE);
         g_return_val_if_fail (GVC_IS_CHANNEL_BAR (bar), FALSE);
@@ -369,16 +367,23 @@ gvc_channel_bar_scroll (GvcChannelBar *bar, GdkEventScroll *event)
 
         value = gtk_adjustment_get_value (adj);
 
+        if (bar->priv->is_amplified)
+                adjustment_max = gvc_mixer_control_get_vol_max_amplified (bar->priv->mixer_control);
+        else
+                adjustment_max = gvc_mixer_control_get_vol_max_norm (bar->priv->mixer_control);
+
+        scrollstep = (adjustment_max / 100.0 * 5.0);
+
         if (dy > 0) {
-                if (value + dy * SCROLLSTEP > ADJUSTMENT_MAX)
-                        value = ADJUSTMENT_MAX;
+                if (value + dy * scrollstep > adjustment_max)
+                        value = adjustment_max;
                 else
-                        value = value + dy * SCROLLSTEP;
+                        value = value + dy * scrollstep;
         } else if (dy < 0) {
-                if (value + dy * SCROLLSTEP < 0)
+                if (value + dy * scrollstep < 0)
                         value = 0.0;
                 else
-                        value = value + dy * SCROLLSTEP;
+                        value = value + dy * scrollstep;
         }
 
         gvc_channel_bar_set_is_muted (bar, (value == 0.0));
@@ -465,28 +470,38 @@ gvc_channel_bar_get_is_muted  (GvcChannelBar *bar)
 void
 gvc_channel_bar_set_is_amplified (GvcChannelBar *bar, gboolean amplified)
 {
+        gdouble vol_max_normal;
+        gdouble adjustment_max;
+
         g_return_if_fail (GVC_IS_CHANNEL_BAR (bar));
 
+        vol_max_normal = gvc_mixer_control_get_vol_max_norm (bar->priv->mixer_control);
+
+        if (amplified)
+                adjustment_max = gvc_mixer_control_get_vol_max_amplified (bar->priv->mixer_control);
+        else
+                adjustment_max = gvc_mixer_control_get_vol_max_norm (bar->priv->mixer_control);
+
         bar->priv->is_amplified = amplified;
-        gtk_adjustment_set_upper (bar->priv->adjustment, ADJUSTMENT_MAX);
-        gtk_adjustment_set_upper (bar->priv->zero_adjustment, ADJUSTMENT_MAX);
+        gtk_adjustment_set_upper (bar->priv->adjustment, adjustment_max);
+        gtk_adjustment_set_upper (bar->priv->zero_adjustment, adjustment_max);
         gtk_scale_clear_marks (GTK_SCALE (bar->priv->scale));
 
         if (amplified) {
                 char *str;
 
-                if (bar->priv->base_volume == ADJUSTMENT_MAX_NORMAL) {
+                if (bar->priv->base_volume == vol_max_normal) {
                         str = g_strdup_printf ("<small>%s</small>", C_("volume", "100%"));
-                        gtk_scale_add_mark (GTK_SCALE (bar->priv->scale), ADJUSTMENT_MAX_NORMAL,
+                        gtk_scale_add_mark (GTK_SCALE (bar->priv->scale), vol_max_normal,
                                             GTK_POS_BOTTOM, str);
                 } else {
                         str = g_strdup_printf ("<small>%s</small>", C_("volume", "Unamplified"));
                         gtk_scale_add_mark (GTK_SCALE (bar->priv->scale), bar->priv->base_volume,
                                             GTK_POS_BOTTOM, str);
                         /* Only show 100% if it's higher than the base volume */
-                        if (bar->priv->base_volume < ADJUSTMENT_MAX_NORMAL) {
+                        if (bar->priv->base_volume < vol_max_normal) {
                                 str = g_strdup_printf ("<small>%s</small>", C_("volume", "100%"));
-                                gtk_scale_add_mark (GTK_SCALE (bar->priv->scale), ADJUSTMENT_MAX_NORMAL,
+                                gtk_scale_add_mark (GTK_SCALE (bar->priv->scale), vol_max_normal,
                                                     GTK_POS_BOTTOM, str);
                         }
                 }
@@ -502,7 +517,7 @@ gvc_channel_bar_set_base_volume (GvcChannelBar *bar,
         g_return_if_fail (GVC_IS_CHANNEL_BAR (bar));
 
         if (base_volume == 0) {
-                bar->priv->base_volume = ADJUSTMENT_MAX_NORMAL;
+                bar->priv->base_volume = gvc_mixer_control_get_vol_max_norm (bar->priv->mixer_control);
                 return;
         }
 
@@ -563,29 +578,32 @@ static void
 gvc_channel_bar_constructed (GObject *object)
 {
         GvcChannelBar *bar;
+        gdouble vol_max_normal;
         GtkWidget *frame;
 
         bar = GVC_CHANNEL_BAR (object);
         G_OBJECT_CLASS (gvc_channel_bar_parent_class)->constructed (object);
 
-        bar->priv->base_volume = ADJUSTMENT_MAX_NORMAL;
+        vol_max_normal = gvc_mixer_control_get_vol_max_norm (bar->priv->mixer_control);
+
+        bar->priv->base_volume = vol_max_normal;
         bar->priv->low_icon_name = g_strdup ("audio-volume-low");
         bar->priv->high_icon_name = g_strdup ("audio-volume-high");
 
         bar->priv->orientation = GTK_ORIENTATION_VERTICAL;
         bar->priv->adjustment = GTK_ADJUSTMENT (gtk_adjustment_new (0.0,
                                                                     0.0,
-                                                                    ADJUSTMENT_MAX_NORMAL,
-                                                                    ADJUSTMENT_MAX_NORMAL/100.0,
-                                                                    ADJUSTMENT_MAX_NORMAL/10.0,
+                                                                    vol_max_normal,
+                                                                    vol_max_normal / 100.0,
+                                                                    vol_max_normal / 10.0,
                                                                     0.0));
         g_object_ref_sink (bar->priv->adjustment);
 
         bar->priv->zero_adjustment = GTK_ADJUSTMENT (gtk_adjustment_new (0.0,
                                                                          0.0,
-                                                                         ADJUSTMENT_MAX_NORMAL,
-                                                                         ADJUSTMENT_MAX_NORMAL/100.0,
-                                                                         ADJUSTMENT_MAX_NORMAL/10.0,
+                                                                         vol_max_normal,
+                                                                         vol_max_normal / 100.0,
+                                                                         vol_max_normal / 10.0,
                                                                          0.0));
         g_object_ref_sink (bar->priv->zero_adjustment);
 
