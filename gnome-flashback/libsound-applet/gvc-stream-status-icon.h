@@ -19,6 +19,7 @@
 #define __GVC_STREAM_STATUS_ICON_H
 
 #include <glib-object.h>
+#include "gvc-mixer-control.h"
 #include "gvc-mixer-stream.h"
 
 G_BEGIN_DECLS
@@ -45,7 +46,7 @@ typedef struct
 
 GType                 gvc_stream_status_icon_get_type            (void);
 
-GvcStreamStatusIcon * gvc_stream_status_icon_new                 (GvcMixerStream      *stream,
+GvcStreamStatusIcon * gvc_stream_status_icon_new                 (GvcMixerControl     *control,
                                                                   const char         **icon_names);
 
 void                  gvc_stream_status_icon_set_icon_names      (GvcStreamStatusIcon *icon,

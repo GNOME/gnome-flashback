@@ -222,33 +222,6 @@ on_control_stream_removed (GvcMixerControl *control,
 }
 
 static void
-gf_sound_applet_constructed (GObject *object)
-{
-  GfSoundApplet *applet;
-
-  applet = GF_SOUND_APPLET (object);
-
-  G_OBJECT_CLASS (gf_sound_applet_parent_class)->constructed (object);
-
-  applet->control = gvc_mixer_control_new ("GNOME Volume Control Applet");
-
-  g_signal_connect (applet->control, "state-changed",
-                    G_CALLBACK (on_control_state_changed), applet);
-  g_signal_connect (applet->control, "default-sink-changed",
-                    G_CALLBACK (on_control_default_sink_changed), applet);
-  g_signal_connect (applet->control, "default-source-changed",
-                    G_CALLBACK (on_control_default_source_changed), applet);
-  g_signal_connect (applet->control, "stream-added",
-                    G_CALLBACK (on_control_stream_added), applet);
-  g_signal_connect (applet->control, "stream-removed",
-                    G_CALLBACK (on_control_stream_removed), applet);
-
-  gvc_mixer_control_open (applet->control);
-
-  maybe_show_status_icons (applet);
-}
-
-static void
 gf_sound_applet_dispose (GObject *object)
 {
   GfSoundApplet *applet;
@@ -269,7 +242,6 @@ gf_sound_applet_class_init (GfSoundAppletClass *applet_class)
 
   object_class = G_OBJECT_CLASS (applet_class);
 
-  object_class->constructed = gf_sound_applet_constructed;
   object_class->dispose = gf_sound_applet_dispose;
 }
 
@@ -278,8 +250,21 @@ gf_sound_applet_init (GfSoundApplet *applet)
 {
   GvcStreamStatusIcon *icon;
 
+  applet->control = gvc_mixer_control_new ("GNOME Volume Control Applet");
+
+  g_signal_connect (applet->control, "state-changed",
+                    G_CALLBACK (on_control_state_changed), applet);
+  g_signal_connect (applet->control, "default-sink-changed",
+                    G_CALLBACK (on_control_default_sink_changed), applet);
+  g_signal_connect (applet->control, "default-source-changed",
+                    G_CALLBACK (on_control_default_source_changed), applet);
+  g_signal_connect (applet->control, "stream-added",
+                    G_CALLBACK (on_control_stream_added), applet);
+  g_signal_connect (applet->control, "stream-removed",
+                    G_CALLBACK (on_control_stream_removed), applet);
+
   /* Output icon */
-  icon = gvc_stream_status_icon_new (NULL, output_icons);
+  icon = gvc_stream_status_icon_new (applet->control, output_icons);
   gvc_stream_status_icon_set_display_name (icon, _("Output"));
 
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
@@ -289,7 +274,7 @@ gf_sound_applet_init (GfSoundApplet *applet)
   applet->output_status_icon = icon;
 
   /* Input icon */
-  icon = gvc_stream_status_icon_new (NULL, input_icons);
+  icon = gvc_stream_status_icon_new (applet->control, input_icons);
   gvc_stream_status_icon_set_display_name (icon, _("Input"));
 
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
@@ -297,6 +282,9 @@ gf_sound_applet_init (GfSoundApplet *applet)
   G_GNUC_END_IGNORE_DEPRECATIONS
 
   applet->input_status_icon = icon;
+
+  gvc_mixer_control_open (applet->control);
+  maybe_show_status_icons (applet);
 }
 
 GfSoundApplet *

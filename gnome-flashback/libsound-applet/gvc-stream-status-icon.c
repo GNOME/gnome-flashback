@@ -34,19 +34,22 @@
 
 struct GvcStreamStatusIconPrivate
 {
-        char          **icon_names;
-        GvcMixerStream *mixer_stream;
-        GtkWidget      *dock;
-        GtkWidget      *bar;
-        guint           current_icon;
-        char           *display_name;
-        gboolean        thaw;
+        GvcMixerControl  *mixer_control;
+
+        char            **icon_names;
+        GvcMixerStream   *mixer_stream;
+        GtkWidget        *dock;
+        GtkWidget        *bar;
+        guint             current_icon;
+        char             *display_name;
+        gboolean          thaw;
 };
 
 enum
 {
         PROP_0,
         PROP_DISPLAY_NAME,
+        PROP_MIXER_CONTROL,
         PROP_MIXER_STREAM,
         PROP_ICON_NAMES,
 };
@@ -557,6 +560,9 @@ gvc_stream_status_icon_set_property (GObject       *object,
         GvcStreamStatusIcon *self = GVC_STREAM_STATUS_ICON (object);
 
         switch (prop_id) {
+        case PROP_MIXER_CONTROL:
+                self->priv->mixer_control = g_value_dup_object (value);
+                break;
         case PROP_MIXER_STREAM:
                 gvc_stream_status_icon_set_mixer_stream (self, g_value_get_object (value));
                 break;
@@ -582,6 +588,9 @@ gvc_stream_status_icon_get_property (GObject     *object,
         GvcStreamStatusIconPrivate *priv = self->priv;
 
         switch (prop_id) {
+        case PROP_MIXER_CONTROL:
+                g_value_set_object (value, priv->mixer_control);
+                break;
         case PROP_MIXER_STREAM:
                 g_value_set_object (value, priv->mixer_stream);
                 break;
@@ -684,6 +693,8 @@ gvc_stream_status_icon_dispose (GObject *object)
 {
         GvcStreamStatusIcon *icon = GVC_STREAM_STATUS_ICON (object);
 
+        g_clear_object (&icon->priv->mixer_control);
+
         if (icon->priv->dock != NULL) {
                 gtk_widget_destroy (icon->priv->dock);
                 icon->priv->dock = NULL;
@@ -707,6 +718,14 @@ gvc_stream_status_icon_class_init (GvcStreamStatusIconClass *klass)
         object_class->dispose = gvc_stream_status_icon_dispose;
         object_class->set_property = gvc_stream_status_icon_set_property;
         object_class->get_property = gvc_stream_status_icon_get_property;
+
+        g_object_class_install_property (object_class,
+                                         PROP_MIXER_CONTROL,
+                                         g_param_spec_object ("mixer-control",
+                                                              "mixer control",
+                                                              "mixer control",
+                                                              GVC_TYPE_MIXER_CONTROL,
+                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
 
         g_object_class_install_property (object_class,
                                          PROP_MIXER_STREAM,
@@ -788,12 +807,12 @@ gvc_stream_status_icon_finalize (GObject *object)
 }
 
 GvcStreamStatusIcon *
-gvc_stream_status_icon_new (GvcMixerStream *stream,
-                            const char    **icon_names)
+gvc_stream_status_icon_new (GvcMixerControl  *control,
+                            const char      **icon_names)
 {
         GObject *icon;
         icon = g_object_new (GVC_TYPE_STREAM_STATUS_ICON,
-                             "mixer-stream", stream,
+                             "mixer-control", control,
                              "icon-names", icon_names,
                              NULL);
         return GVC_STREAM_STATUS_ICON (icon);
