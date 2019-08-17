@@ -491,7 +491,7 @@ reload_keybindings (GfKeybindings *keybindings)
 
       gtk_accelerator_parse (keybinding->name, &keyval, &modifiers);
 
-      if (gtk_accelerator_valid (keyval, modifiers) && keyval != 0)
+      if (keyval != 0)
         {
           keycode = XKeysymToKeycode (keybindings->xdisplay, keyval);
 
@@ -919,8 +919,6 @@ gf_keybindings_grab (GfKeybindings *keybindings,
 
   gtk_accelerator_parse (accelerator, &keyval, &modifiers);
 
-  if (!gtk_accelerator_valid (keyval, modifiers))
-    return 0;
 
   if (keyval == 0)
     return 0;

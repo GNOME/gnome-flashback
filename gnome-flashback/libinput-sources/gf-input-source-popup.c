@@ -355,7 +355,7 @@ gf_input_source_popup_key_release_event (GtkWidget   *widget,
   popup = GF_INPUT_SOURCE_POPUP (widget);
   modifiers = gtk_accelerator_get_default_mod_mask ();
 
-  if ((event->state & modifiers) != popup->modifiers)
+  if (((event->state & modifiers) != popup->modifiers) && ((event->state & popup->modifiers) == popup->modifiers))
     return TRUE;
 
   activate_selected_input_source (popup);
