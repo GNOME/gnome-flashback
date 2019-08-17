@@ -90,6 +90,17 @@ static GParamSpec *properties[LAST_PROP] = { NULL };
 G_DEFINE_TYPE (GfKeybindings, gf_keybindings, G_TYPE_OBJECT)
 
 static gboolean
+is_valid_accelerator (guint           keyval,
+                      GdkModifierType modifiers)
+{
+  /* Unlike gtk_accelerator_valid(), we want to allow Tab when combined
+   * with some modifiers (Alt+Tab and friends)
+   */
+  return gtk_accelerator_valid (keyval, modifiers) ||
+         (keyval == GDK_KEY_Tab && modifiers != 0);
+}
+
+static gboolean
 devirtualize_modifier (GdkModifierType  modifiers,
                        GdkModifierType  gdk_mask,
                        unsigned int     real_mask,
@@ -491,7 +502,7 @@ reload_keybindings (GfKeybindings *keybindings)
 
       gtk_accelerator_parse (keybinding->name, &keyval, &modifiers);
 
-      if (gtk_accelerator_valid (keyval, modifiers) && keyval != 0)
+      if (is_valid_accelerator (keyval, modifiers))
         {
           keycode = XKeysymToKeycode (keybindings->xdisplay, keyval);
 
@@ -919,7 +930,7 @@ gf_keybindings_grab (GfKeybindings *keybindings,
 
   gtk_accelerator_parse (accelerator, &keyval, &modifiers);
 
-  if (!gtk_accelerator_valid (keyval, modifiers))
+  if (!is_valid_accelerator (keyval, modifiers))
     return 0;
 
   if (keyval == 0)
