@@ -11,8 +11,8 @@ target_files = \
 	gnome-session-x11@gnome-flashback-metacity.target \
 	$(NULL)
 
-systemduserdir = $(libdir)/systemd/user
-systemduser_DATA = \
+systemduserunitdir = $(prefix)/lib/systemd/user
+systemduserunit_DATA = \
 	$(service_files) \
 	$(target_files) \
 	$(NULL)
