@@ -47,6 +47,34 @@ struct _GfSession
 
 G_DEFINE_TYPE (GfSession, gf_session, G_TYPE_OBJECT)
 
+static gboolean
+is_session_running (GfSession *self)
+{
+  GError *error;
+  GVariant *variant;
+  gboolean is_session_running;
+
+  error = NULL;
+  variant = g_dbus_proxy_call_sync (self->manager_proxy,
+                                    "IsSessionRunning", NULL,
+                                    G_DBUS_CALL_FLAGS_NONE,
+                                    -1, NULL, &error);
+
+  if (error != NULL)
+    {
+      g_warning ("Failed to check if the session has entered the Running phase: %s",
+                 error->message);
+      g_error_free (error);
+
+      return FALSE;
+    }
+
+  g_variant_get_child (variant, 0, "b", &is_session_running, NULL);
+  g_variant_unref (variant);
+
+  return is_session_running;
+}
+
 static void
 respond_to_end_session (GDBusProxy *proxy)
 {
@@ -258,7 +286,8 @@ gf_session_new (gboolean                replace,
  * @value: the value
  *
  * Set environment variable to specified value. May only be used during the
- * Session Manager initialization phase.
+ * Session Manager Initialization phase. If session has entered Running phase
+ * this function does nothing.
  */
 void
 gf_session_set_environment (GfSession   *session,
@@ -268,6 +297,9 @@ gf_session_set_environment (GfSession   *session,
   GVariant *parameters;
   GError *error;
   GVariant *variant;
+
+  if (is_session_running (session))
+    return;
 
   parameters = g_variant_new ("(ss)", name, value);
 
