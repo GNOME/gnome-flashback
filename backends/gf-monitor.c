@@ -36,8 +36,7 @@
 #define SCALE_FACTORS_PER_INTEGER 4
 #define MINIMUM_SCALE_FACTOR 1.0f
 #define MAXIMUM_SCALE_FACTOR 4.0f
-#define MINIMUM_LOGICAL_WIDTH 800
-#define MINIMUM_LOGICAL_HEIGHT 480
+#define MINIMUM_LOGICAL_AREA (800 * 480)
 #define MAXIMUM_REFRESH_RATE_DIFF 0.001f
 
 /* The minimum screen height at which we turn on a window-scale of 2;
@@ -300,8 +299,7 @@ static gboolean
 is_logical_size_large_enough (gint width,
                               gint height)
 {
-  return width >= MINIMUM_LOGICAL_WIDTH &&
-         height >= MINIMUM_LOGICAL_HEIGHT;
+  return width * height >= MINIMUM_LOGICAL_AREA;
 }
 
 static gfloat
