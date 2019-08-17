@@ -259,10 +259,8 @@ gf_session_new (gboolean                replace,
  *
  * Set environment variable to specified value. May only be used during the
  * Session Manager initialization phase.
- *
- * Returns: %TRUE if environment was set, %FALSE otherwise.
  */
-gboolean
+void
 gf_session_set_environment (GfSession   *session,
                             const gchar *name,
                             const gchar *value)
@@ -283,13 +281,10 @@ gf_session_set_environment (GfSession   *session,
     {
       g_warning ("Failed to set the environment: %s", error->message);
       g_error_free (error);
-
-      return FALSE;
+      return;
     }
 
   g_variant_unref (variant);
-
-  return TRUE;
 }
 
 /**

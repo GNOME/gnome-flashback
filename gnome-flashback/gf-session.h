@@ -46,7 +46,7 @@ GfSession *gf_session_new             (gboolean                replace,
                                        GfSessionEndCallback    end_cb,
                                        gpointer                user_data);
 
-gboolean   gf_session_set_environment (GfSession              *session,
+void       gf_session_set_environment (GfSession              *session,
                                        const gchar            *name,
                                        const gchar            *value);
 
