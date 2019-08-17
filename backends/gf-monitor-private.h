@@ -53,6 +53,8 @@ typedef struct
 
 struct _GfMonitorMode
 {
+  GfMonitor         *monitor;
+
   gchar             *id;
   GfMonitorModeSpec  spec;
   GfMonitorCrtcMode *crtc_modes;

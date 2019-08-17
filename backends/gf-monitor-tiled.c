@@ -138,6 +138,7 @@ create_tiled_monitor_mode (GfMonitorTiled *tiled,
 
   calculate_tiled_size (monitor, &width, &height);
 
+  mode->parent.monitor = monitor;
   mode->parent.spec = gf_monitor_create_spec (monitor,
                                               width,
                                               height,
@@ -192,6 +193,7 @@ create_untiled_monitor_mode (GfMonitorTiled *tiled,
   mode = g_new0 (GfMonitorModeTiled, 1);
   mode->is_tiled = FALSE;
 
+  mode->parent.monitor = monitor;
   mode->parent.spec = gf_monitor_create_spec (monitor,
                                               crtc_mode->width,
                                               crtc_mode->height,

@@ -1206,7 +1206,14 @@ gf_monitor_mode_foreach_output (GfMonitor          *monitor,
 gboolean
 gf_monitor_mode_should_be_advertised (GfMonitorMode *monitor_mode)
 {
+  GfMonitorMode *preferred_mode;
+
   g_return_val_if_fail (monitor_mode != NULL, FALSE);
+
+  preferred_mode = gf_monitor_get_preferred_mode (monitor_mode->monitor);
+  if (monitor_mode->spec.width == preferred_mode->spec.width &&
+      monitor_mode->spec.height == preferred_mode->spec.height)
+    return TRUE;
 
   return is_logical_size_large_enough (monitor_mode->spec.width,
                                        monitor_mode->spec.height);

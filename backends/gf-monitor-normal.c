@@ -53,6 +53,7 @@ generate_modes (GfMonitorNormal *normal)
       crtc_mode = output->modes[i];
 
       mode = g_new0 (GfMonitorMode, 1);
+      mode->monitor = monitor;
       mode->spec = gf_monitor_create_spec (monitor,
                                            crtc_mode->width,
                                            crtc_mode->height,
