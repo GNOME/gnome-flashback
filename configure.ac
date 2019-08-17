@@ -270,6 +270,22 @@ PKG_CHECK_EXISTS([xrandr >= 1.5.0],
                            [Define if XRandR is 1.5.0 or newer]))
 
 dnl **************************************************************************
+dnl Systemd session
+dnl **************************************************************************
+
+AC_ARG_ENABLE([systemd-session],
+              [AS_HELP_STRING([--enable-systemd-session], [enable systemd session support])],
+              [enable_systemd_session="$enableval"], [enable_systemd_session="yes"])
+
+HIDDEN_UNDER_SYSTEMD="false"
+AS_IF([test "x$enable_systemd_session" = "xyes"], [
+  HIDDEN_UNDER_SYSTEMD="true"
+])
+
+AM_CONDITIONAL([ENABLE_SYSTEMD_SESSION], [test "x$enable_systemd_session" = "xyes"])
+AC_SUBST([HIDDEN_UNDER_SYSTEMD])
+
+dnl **************************************************************************
 dnl Process .in files
 dnl **************************************************************************
 
@@ -285,6 +301,7 @@ AC_CONFIG_FILES([
   data/menus/Makefile
   data/schemas/Makefile
   data/sessions/Makefile
+  data/systemd/Makefile
   data/theme/Makefile
   data/theme/Adwaita/Makefile
   data/theme/HighContrast/Makefile
