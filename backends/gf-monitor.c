@@ -296,6 +296,14 @@ out:
   return scale;
 }
 
+static gboolean
+is_logical_size_large_enough (gint width,
+                              gint height)
+{
+  return width >= MINIMUM_LOGICAL_WIDTH &&
+         height >= MINIMUM_LOGICAL_HEIGHT;
+}
+
 static gfloat
 get_closest_scale_factor_for_resolution (gfloat width,
                                          gfloat height,
@@ -316,8 +324,7 @@ get_closest_scale_factor_for_resolution (gfloat width,
 
   if (scale < MINIMUM_SCALE_FACTOR ||
       scale > MAXIMUM_SCALE_FACTOR ||
-      floorf (scaled_w) < MINIMUM_LOGICAL_WIDTH ||
-      floorf (scaled_h) < MINIMUM_LOGICAL_HEIGHT)
+      !is_logical_size_large_enough (floorf (scaled_w), floorf (scaled_h)))
     goto out;
 
   if (floorf (scaled_w) == scaled_w && floorf (scaled_h) == scaled_h)
@@ -1196,6 +1203,15 @@ gf_monitor_mode_foreach_output (GfMonitor          *monitor,
     }
 
   return TRUE;
+}
+
+gboolean
+gf_monitor_mode_should_be_advertised (GfMonitorMode *monitor_mode)
+{
+  g_return_val_if_fail (monitor_mode != NULL, FALSE);
+
+  return is_logical_size_large_enough (monitor_mode->spec.width,
+                                       monitor_mode->spec.height);
 }
 
 gboolean

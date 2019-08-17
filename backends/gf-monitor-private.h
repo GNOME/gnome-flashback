@@ -229,6 +229,8 @@ gboolean            gf_monitor_mode_foreach_output        (GfMonitor            
                                                            gpointer                    user_data,
                                                            GError                    **error);
 
+gboolean            gf_monitor_mode_should_be_advertised  (GfMonitorMode              *monitor_mode);
+
 gboolean            gf_verify_monitor_mode_spec           (GfMonitorModeSpec          *mode_spec,
                                                            GError                    **error);
 

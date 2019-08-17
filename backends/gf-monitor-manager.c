@@ -1498,9 +1498,13 @@ gf_monitor_manager_handle_get_current_state (GfDBusDisplayConfig   *skeleton,
           GVariantBuilder mode_properties_builder;
           GfCrtcModeFlag mode_flags;
 
+          if (!gf_monitor_mode_should_be_advertised (monitor_mode))
+            continue;
+
           mode_id = gf_monitor_mode_get_id (monitor_mode);
           gf_monitor_mode_get_resolution (monitor_mode,
                                           &mode_width, &mode_height);
+
           refresh_rate = gf_monitor_mode_get_refresh_rate (monitor_mode);
 
           preferred_scale =
