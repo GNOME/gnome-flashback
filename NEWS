@@ -1,3 +1,15 @@
+Version 3.33.1
+==============
+- Remove Clipboard plugin from required components. (#19)
+- Remove Mouse plugin from required components. (#20)
+- Support startup via systemd user instance. (!17)
+- Fix input source status icon flickering. (#16)
+- Remove gnome-flashback-init.desktop file.
+- Update org.gnome.Shell D-Bus interface.
+- Updated translations:
+  Asier Sarasua Garmendia (eu), Daniel Mustieles García (es),
+  Kukuh Syafaat (id), Piotr Drąg (pl).
+
 Version 3.32.0
 ==============
 - Fix deprecation warnings.
