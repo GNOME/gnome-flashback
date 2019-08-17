@@ -622,8 +622,7 @@ process_event (GfKeybindings *keybindings,
         {
           XUngrabKeyboard (keybindings->xdisplay, event->xkey.time);
           g_signal_emit (keybindings, signals[SIGNAL_ACCELERATOR_ACTIVATED],
-                         0, keybinding->action);
-
+                         0, keybinding->action, NULL, 0, event->xkey.time);
 
           processed = TRUE;
           break;
@@ -826,7 +825,8 @@ gf_keybindings_class_init (GfKeybindingsClass *keybindings_class)
   signals[SIGNAL_ACCELERATOR_ACTIVATED] =
     g_signal_new ("accelerator-activated",
                   G_TYPE_FROM_CLASS (keybindings_class), G_SIGNAL_RUN_LAST,
-                  0, NULL, NULL, NULL, G_TYPE_NONE, 1, G_TYPE_UINT);
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 4, G_TYPE_UINT,
+                  G_TYPE_STRING, G_TYPE_UINT, G_TYPE_UINT);
 
   /**
    * GfKeybindings::modifiers-accelerator-activated:

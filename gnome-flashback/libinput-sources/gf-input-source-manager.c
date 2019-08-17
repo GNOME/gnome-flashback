@@ -553,6 +553,9 @@ modifiers_accelerator_activated_cb (GfKeybindings *keybindings,
 static void
 accelerator_activated_cb (GfKeybindings *keybindings,
                           guint          action,
+                          const gchar   *device_node,
+                          guint          device_id,
+                          guint          timestamp,
                           gpointer       user_data)
 {
   GfInputSourceManager *manager;
