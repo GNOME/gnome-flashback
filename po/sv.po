@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
 "POT-Creation-Date: 2019-08-16 12:22+0000\n"
-"PO-Revision-Date: 2019-01-06 20:03+0100\n"
+"PO-Revision-Date: 2019-08-22 17:47+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: backends/gf-monitor.c:132
 msgid "Built-in display"
@@ -33,7 +33,7 @@ msgid "Unknown Display"
 msgstr "Okänd display"
 
 #: backends/gf-monitor.c:177
-#, fuzzy, c-format
+#, c-format
 #| msgid "%s %s"
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
@@ -41,7 +41,7 @@ msgid "%s %s"
 msgstr "%s %s"
 
 #: backends/gf-monitor.c:191
-#, fuzzy, c-format
+#, c-format
 #| msgid "%s %s"
 msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
