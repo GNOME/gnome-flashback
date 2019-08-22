@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2018-12-08 17:20+0000\n"
+"POT-Creation-Date: 2019-08-16 12:22+0000\n"
 "PO-Revision-Date: 2019-01-06 20:03+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -19,34 +19,39 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.2\n"
 
-#: backends/gf-monitor-manager.c:971
+#: backends/gf-monitor.c:132
 msgid "Built-in display"
 msgstr "Inbyggd display"
 
-#: backends/gf-monitor-manager.c:1002
+#: backends/gf-monitor.c:166
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
 msgid "Unknown"
 msgstr "Okänd"
 
-#: backends/gf-monitor-manager.c:1004
+#: backends/gf-monitor.c:168
 msgid "Unknown Display"
 msgstr "Okänd display"
 
-#. TRANSLATORS: this is a monitor vendor name, followed by a
-#. * size in inches, like 'Dell 15"'
-#.
-#: backends/gf-monitor-manager.c:1014
-#, c-format
+#: backends/gf-monitor.c:177
+#, fuzzy, c-format
+#| msgid "%s %s"
+msgctxt ""
+"This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
+msgid "%s %s"
+msgstr "%s %s"
+
+#: backends/gf-monitor.c:191
+#, fuzzy, c-format
+#| msgid "%s %s"
+msgctxt ""
+"This is a monitor vendor name followed by product/model name where size in "
+"inches could not be calculated, e.g. Dell U2414H"
 msgid "%s %s"
 msgstr "%s %s"
 
 #: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME Flashback"
-
-#: data/applications/gnome-flashback-init.desktop.in:4
-msgid "GNOME Flashback Initialization"
-msgstr "GNOME Flashback initiering"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
@@ -370,19 +375,15 @@ msgid_plural "Settings changes will revert in %d seconds!"
 msgstr[0] "Inställningsändringar kommer att återställas om %d sekund!"
 msgstr[1] "Inställningsändringar kommer att återställas om %d sekunder!"
 
-#: gnome-flashback/gf-main.c:41
+#: gnome-flashback/gf-main.c:40
 msgid "Enable debugging code"
 msgstr "Aktivera felsökningskod"
 
-#: gnome-flashback/gf-main.c:47
-msgid "Initialize GNOME Flashback session"
-msgstr "Initiera GNOME Flashback-session"
-
-#: gnome-flashback/gf-main.c:53
+#: gnome-flashback/gf-main.c:46
 msgid "Replace a currently running application"
 msgstr "Ersätt ett för närvarande körande program"
 
-#: gnome-flashback/gf-main.c:59
+#: gnome-flashback/gf-main.c:52
 msgid "Print version and exit"
 msgstr "Skriv ut version och avsluta"
 
@@ -954,13 +955,13 @@ msgstr "Ej förstärkt"
 
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1864
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1876
 msgid "Disabled"
 msgstr "Inaktiverad"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1871
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -969,14 +970,14 @@ msgstr[1] "%u utgångar"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1881
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1893
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u ingång"
 msgstr[1] "%u ingångar"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2736
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2750
 msgid "System Sounds"
 msgstr "Systemljud"
 
@@ -991,6 +992,12 @@ msgstr "Ljudin_ställningar"
 #: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:424
 msgid "Muted"
 msgstr "Tystad"
+
+#~ msgid "GNOME Flashback Initialization"
+#~ msgstr "GNOME Flashback initiering"
+
+#~ msgid "Initialize GNOME Flashback session"
+#~ msgstr "Initiera GNOME Flashback-session"
 
 #~ msgid "Workarounds"
 #~ msgstr "Speciallösningar"
