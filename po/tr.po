@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
 "POT-Creation-Date: 2019-08-22 15:48+0000\n"
-"PO-Revision-Date: 2019-08-24 17:44+0300\n"
+"PO-Revision-Date: 2019-08-24 17:48+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -941,7 +941,7 @@ msgstr "Mikrofon Sesi"
 #: gnome-flashback/libsound-applet/gvc-channel-bar.c:503
 msgctxt "volume"
 msgid "100%"
-msgstr "100%"
+msgstr "%100"
 
 #: gnome-flashback/libsound-applet/gvc-channel-bar.c:498
 msgctxt "volume"
