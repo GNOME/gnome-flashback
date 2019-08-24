@@ -3,50 +3,55 @@
 # This file is distributed under the same license as the gnome-flashback package.
 #
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2014, 2015, 2016.
-# Balázs Úr <urbalazs at gmail dot com>, 2014, 2015, 2018, 2019.
+# Balázs Úr <ur.balazs at fsf dot hu>, 2014, 2015, 2018, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2018-12-08 17:20+0000\n"
-"PO-Revision-Date: 2019-01-27 18:27+0100\n"
-"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
+"POT-Creation-Date: 2019-08-16 12:22+0000\n"
+"PO-Revision-Date: 2019-08-24 20:49+0200\n"
+"Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Lokalize 18.12.3\n"
 
-#: backends/gf-monitor-manager.c:971
+#: backends/gf-monitor.c:132
 msgid "Built-in display"
 msgstr "Beépített kijelző"
 
-#: backends/gf-monitor-manager.c:1002
+#: backends/gf-monitor.c:166
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
 msgid "Unknown"
 msgstr "Ismeretlen"
 
-#: backends/gf-monitor-manager.c:1004
+#: backends/gf-monitor.c:168
 msgid "Unknown Display"
 msgstr "Ismeretlen kijelző"
 
-#. TRANSLATORS: this is a monitor vendor name, followed by a
-#. * size in inches, like 'Dell 15"'
-#.
-#: backends/gf-monitor-manager.c:1014
+#: backends/gf-monitor.c:177
 #, c-format
+#| msgid "%s %s"
+msgctxt ""
+"This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
+msgid "%s %s"
+msgstr "%s %s"
+
+#: backends/gf-monitor.c:191
+#, c-format
+#| msgid "%s %s"
+msgctxt ""
+"This is a monitor vendor name followed by product/model name where size in "
+"inches could not be calculated, e.g. Dell U2414H"
 msgid "%s %s"
 msgstr "%s %s"
 
 #: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME Flashback"
-
-#: data/applications/gnome-flashback-init.desktop.in:4
-msgid "GNOME Flashback Initialization"
-msgstr "GNOME Flashback előkészítés"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
@@ -370,19 +375,15 @@ msgid_plural "Settings changes will revert in %d seconds!"
 msgstr[0] "A beállítások módosításai %d másodperc múlva visszaállnak."
 msgstr[1] "A beállítások módosításai %d másodperc múlva visszaállnak."
 
-#: gnome-flashback/gf-main.c:41
+#: gnome-flashback/gf-main.c:40
 msgid "Enable debugging code"
 msgstr "Hibakereső kód engedélyezése"
 
-#: gnome-flashback/gf-main.c:47
-msgid "Initialize GNOME Flashback session"
-msgstr "A GNOME Flashback munkamenet előkészítése"
-
-#: gnome-flashback/gf-main.c:53
+#: gnome-flashback/gf-main.c:46
 msgid "Replace a currently running application"
 msgstr "Egy jelenleg futó alkalmazás cseréje"
 
-#: gnome-flashback/gf-main.c:59
+#: gnome-flashback/gf-main.c:52
 msgid "Print version and exit"
 msgstr "Verzió kiírása és kilépés"
 
@@ -959,13 +960,13 @@ msgstr "Erősítetlen"
 
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1864
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1876
 msgid "Disabled"
 msgstr "Tiltva"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1871
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -974,14 +975,14 @@ msgstr[1] "%u kimenet"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1881
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1893
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u bemenet"
 msgstr[1] "%u bemenet"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2736
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2750
 msgid "System Sounds"
 msgstr "Rendszerhangok"
 
@@ -996,4 +997,3 @@ msgstr "_Hangbeállítások"
 #: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:424
 msgid "Muted"
 msgstr "Némítva"
-
