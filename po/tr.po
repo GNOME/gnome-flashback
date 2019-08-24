@@ -1,0 +1,1023 @@
+# Turkish translation for gnome-flashback
+# Copyright (C) 2015-2019 gnome-flashback'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-flashback package.
+#
+# Simge Sezgin <simgesezgin88@gmail.com>, 2015.
+# Necdet Yücel <necdetyucel@gmail.com>, 2015.
+# Serdar Sağlam <teknomobil@yandex.com>, 2019.
+# Sabri Ünal <libreajans@gmail.com>, 2019.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-flashback master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
+"POT-Creation-Date: 2019-08-22 15:48+0000\n"
+"PO-Revision-Date: 2019-08-24 17:44+0300\n"
+"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"Language-Team: Turkish <gnome-turk@gnome.org>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 3.32.1\n"
+"X-POOTLE-MTIME: 1432972725.000000\n"
+
+#: backends/gf-monitor.c:131
+msgid "Built-in display"
+msgstr "Dahili ekran"
+
+#: backends/gf-monitor.c:165
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
+msgid "Unknown"
+msgstr "Bilinmeyen"
+
+#: backends/gf-monitor.c:167
+msgid "Unknown Display"
+msgstr "Bilinmeyen Ekran"
+
+#: backends/gf-monitor.c:176
+#, c-format
+msgctxt ""
+"This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
+msgid "%s %s"
+msgstr "%s %s"
+
+#: backends/gf-monitor.c:190
+#, c-format
+msgctxt ""
+"This is a monitor vendor name followed by product/model name where size in "
+"inches could not be calculated, e.g. Dell U2414H"
+msgid "%s %s"
+msgstr "%s %s"
+
+#: data/applications/gnome-flashback.desktop.in.in:4
+msgid "GNOME Flashback"
+msgstr "GNOME Flashback"
+
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:3
+msgid "Network (GNOME Flashback)"
+msgstr "Ağ (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:4
+msgid "Manage your network connections"
+msgstr "Ağ bağlantılarını yönet"
+
+# Çevirmeyin!
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
+msgid "nm-device-wireless"
+msgstr "nm-device-wireless"
+
+#: data/autostart/gnome-flashback-screensaver.desktop.in:4
+msgid "Screensaver (GNOME Flashback)"
+msgstr "Ekran Koruyucu (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-screensaver.desktop.in:5
+msgid "Launch screensaver and locker program"
+msgstr "Ekran koruyucuyu başlat ve programı kilitle"
+
+# Çevirmeyin!
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/autostart/gnome-flashback-screensaver.desktop.in:7
+msgid "preferences-desktop-screensaver"
+msgstr "preferences-desktop-screensaver"
+
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
+msgid "Preferences"
+msgstr "Tercihler"
+
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:5
+msgid "Personal preferences"
+msgstr "Kişisel tercihler"
+
+# Çevirmeyin!
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
+msgid "preferences-desktop"
+msgstr "preferences-desktop"
+
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
+msgid "Administration"
+msgstr "Yönetici"
+
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
+msgid "Change system-wide settings (affects all users)"
+msgstr "Sistem geneli ayarları değiştir (tüm kullanıcıları etkiler)"
+
+# Çevirmeyin!
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
+msgid "preferences-system"
+msgstr "preferences-system"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
+msgid "a11y-keyboard"
+msgstr "a11y-klavye"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:10
+msgid "Audio device selection"
+msgstr "Ses aygıtı seçimi"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide the "
+"audio device selection dialog."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback uygulaması ses aygıtı seçim "
+"iletişimini sağlamak için kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:16
+msgid "Automount manager"
+msgstr "Kendiliğinden bağlama yöneticisi"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
+msgid ""
+"If set to true, then GNOME Flashback application will be used to automount "
+"removable media."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback uygulaması çıkarılabilir ortamı "
+"kendiliğinden bağlamak için kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:22
+msgid "Bluetooth applet"
+msgstr "Bluetooth uygulaması"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"Bluetooth applet."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback uygulaması Bluetooth uygulamasını "
+"göstermek için kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:28
+msgid "Desktop background"
+msgstr "Masaüstü arka planı"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
+msgid ""
+"If set to true, then GNOME Flashback application will be used to draw the "
+"desktop background."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback uygulaması  masaüstü arkaplanını "
+"çizmek için kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:34
+msgid "End session dialog"
+msgstr "Son oturum iletişim kutusu"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show the "
+"end session dialog."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback uygulaması son oturum iletişim "
+"kutusunu göstermek için kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:40
+msgid "Idle monitor"
+msgstr "Ekran boşta"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback uygulaması kullanıcı etkinliği "
+"izlemek için kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
+msgid "Input settings"
+msgstr "Giriş ayarları"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:51
+msgid "Keyboard layouts and input methods"
+msgstr "Klavye düzenleri ve giriş yöntemleri"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"keyboard layouts and input methods."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback uygulaması klavye düzenlerini ve "
+"giriş yöntemlerini yönetmek için kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:57
+msgid "Notification daemon"
+msgstr "Bildirim yönetimi"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"notifications."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback uygulaması bildirimleri yönetmek "
+"için kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:63
+msgid "Authentication agent for polkit"
+msgstr "Polkit için kimlik doğrulama aracısı"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
+msgid ""
+"This is the same authentication agent that was provided by PolicyKit-gnome."
+msgstr "PolicyKit-Gnome tarafından sağlanan aynı kimlik doğrulama aracıdır."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:69
+msgid "Power applet"
+msgstr "Güç uygulaması"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"power applet."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback uygulaması, bir güç uygulamasını "
+"göstermek için kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:75
+msgid "Screencasts"
+msgstr "Ekran paylaşımı"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
+msgid ""
+"If set to true, then GNOME Flashback application will be used to record the "
+"screen."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback uygulaması ekranı kaydetmek için "
+"kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:81
+msgid "Screensaver"
+msgstr "Ekran koruyucu"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a "
+"screensaver."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback uygulaması, ekran koruyucu olarak "
+"kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:87
+msgid "Screenshots"
+msgstr "Ekran alıntısı"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
+msgid ""
+"If set to true, then GNOME Flashback application will be used to take "
+"screenshots."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback uygulaması, ekran görüntülerini "
+"almak için kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:93
+msgid "Shell"
+msgstr "Kabuk"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a shell."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback uygulaması Kabuk olarak "
+"kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:99
+msgid "Sound applet"
+msgstr "Ses uygulaması"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"sound applet. This is the same sound applet that used to be a part of GNOME "
+"Control Center."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback uygulaması, bir ses uygulamasını "
+"göstermek için kullanılacaktır. Bu GNOME kontrol merkezinin bir parçası "
+"olarak kullanılan aynı ses uygulamasıdır."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:105
+msgid "Status Notifier Watcher"
+msgstr "Durum Bildirimi İzleyici"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
+msgid ""
+"If set to true, then GNOME Flashback application will be used as Status "
+"Notifier Watcher."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback uygulaması Durum Bildirimi "
+"İzleyicisi olarak kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
+msgid "Fade the background on change"
+msgstr "Arka plan değiştiğinde soldur"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:6
+msgid ""
+"If set to true, then fade effect will be used to change the desktop "
+"background."
+msgstr ""
+"Doğru olarak seçilirse, masaüstü arka planını değiştirmek için soldurma "
+"efekti kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
+msgid "The background color"
+msgstr "Arka plan rengi"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:13
+msgid "The foreground color"
+msgstr "Ön plan rengi"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:18
+msgid "The font family"
+msgstr "Yazı tipi ailesi"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:24
+msgid "The font weight"
+msgstr "Yazı tipi genişliği"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
+msgid "Symbolic"
+msgstr "Simgesel"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:57
+msgid "Do you want to keep these display settings?"
+msgstr "Bu görüntü ayarlarını saklamak istiyor musunuz?"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:103
+msgid "_Revert Settings"
+msgstr "Ayarları _Geri Al"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:118
+msgid "_Keep Changes"
+msgstr "Değişiklikleri _Koru"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:144
+msgid "Confirm Changes"
+msgstr "Değişiklikleri Onayla"
+
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:3
+msgid "GNOME Flashback (Compiz)"
+msgstr "GNOME Flashback (Compiz)"
+
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:4
+msgid "This session logs you into GNOME Flashback with Compiz"
+msgstr "Bu oturum Compiz ile GNOME Flashback uygulamasına giriş yaptırır"
+
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:3
+msgid "GNOME Flashback (Metacity)"
+msgstr "GNOME Flashback (Metacity)"
+
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:4
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr "Bu oturum Metacity ile GNOME Flashback uygulamasına giriş yaptırır"
+
+#: gnome-flashback/gf-confirm-display-change-dialog.c:62
+#, c-format
+msgid "Settings changes will revert in %d second!"
+msgid_plural "Settings changes will revert in %d seconds!"
+msgstr[0] "Ayar değişiklikleri %d saniye içinde geri dönecek!"
+
+#: gnome-flashback/gf-main.c:40
+msgid "Enable debugging code"
+msgstr "Hata ayıklama kodunu etkinleştir"
+
+#: gnome-flashback/gf-main.c:46
+msgid "Replace a currently running application"
+msgstr "Şu an çalışan bir uygulama ile değiştir"
+
+#: gnome-flashback/gf-main.c:52
+msgid "Print version and exit"
+msgstr "Sürüm bilgisini yazdır ve çık"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:295
+msgid "Slow Keys Turned On"
+msgstr "Yavaş Tuşlar Açık"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:296
+msgid "Slow Keys Turned Off"
+msgstr "Yavaş Tuşlar Kapalı"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:298
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Shift tuşuna 8 saniye boyunca bastınız. Bu, klavyenizin çalışma yolunu "
+"etkileyen Yavaş Tuşlar özelliğinin kısayoludur."
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
+msgid "Turn Off"
+msgstr "Kapat"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
+msgid "Turn On"
+msgstr "Aç"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
+msgid "Leave On"
+msgstr "Açık Bırak"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
+msgid "Leave Off"
+msgstr "Kapalı Bırak"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:313
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:400
+msgid "Universal Access"
+msgstr "Evrensel Erişim"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:379
+msgid "Sticky Keys Turned On"
+msgstr "Yapışkan Tuşlar Açık"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:380
+msgid "Sticky Keys Turned Off"
+msgstr "Yapışkan Tuşlar Kapalı"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:383
+msgid ""
+"You just pressed the Shift key 5 times in a row.  This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Shift tuşuna art arda 5 kez bastınız. Bu, klavyenizin çalışma yolunu "
+"etkileyen Yapışkan Tuşlar özelliğinin kısayoludur."
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:385
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+"İki tuşa aynı anda veya Shift tuşuna art arda 5 kez bastınız. Bu, "
+"klavyenizin çalışma yolunu etkileyen Yapışkan Tuşlar özelliğini kapatır."
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:109
+msgid "Headphones"
+msgstr "Kulaklıklar"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:112
+msgid "Headset"
+msgstr "Kulaklıklı Mikrofon"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:115
+msgid "Microphone"
+msgstr "Mikrofon"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:261
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "Ses Tercihleri başlatılamadı: %s"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:248
+msgid "What kind of device did you plug in?"
+msgstr "Ne tür bir aygıt taktınız?"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
+msgid "Sound Settings"
+msgstr "Ses Ayarları"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
+msgid "Cancel"
+msgstr "İptal"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:285
+msgid "Unknown Audio Device"
+msgstr "Bilinmeyen Ses Aygıtı"
+
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:175
+#, c-format
+msgid "Unable to mount %s"
+msgstr "%s bağlanamadı"
+
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:288
+#, c-format
+msgid "Unable to open a folder for %s"
+msgstr "%s için klasör açılamıyor"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:339
+msgid "Ask what to do"
+msgstr "Ne yapılacağını sor"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:345
+msgid "Do Nothing"
+msgstr "Hiçbir şey yapma"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:351
+msgid "Open Folder"
+msgstr "Klasörü Aç"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
+#, c-format
+msgid "Unable to eject %p"
+msgstr "%p çıkarılamıyor"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:500
+#, c-format
+msgid "Unable to unmount %p"
+msgstr "%p bağı kaldırılamıyor"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
+msgid "You have just inserted an Audio CD."
+msgstr "Az önce bir Audio CD eklediniz."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
+msgid "You have just inserted an Audio DVD."
+msgstr "Az önce bir Audio DVD eklediniz."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
+msgid "You have just inserted a Video DVD."
+msgstr "Az önce bir Video DVD'si taktınız."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
+msgid "You have just inserted a Video CD."
+msgstr "Az önce bir Video CD'si taktınız."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
+msgid "You have just inserted a Super Video CD."
+msgstr "Az önce bir Super Video CD taktınız."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
+msgid "You have just inserted a blank CD."
+msgstr "Az önce boş bir CD taktınız."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
+msgid "You have just inserted a blank DVD."
+msgstr "Az önce boş bir DVD taktınız."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
+msgid "You have just inserted a blank Blu-Ray disc."
+msgstr "Az önce boş bir Blu-Ray disk taktınız."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
+msgid "You have just inserted a blank HD DVD."
+msgstr "Az önce boş bir HD DVD taktınız."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
+msgid "You have just inserted a Photo CD."
+msgstr "Bir Fotoğraf CD'si takıldı."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
+msgid "You have just inserted a Picture CD."
+msgstr "Bir Resim CD'si takıldı."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
+msgid "You have just inserted a medium with digital photos."
+msgstr "Az önce dijital fotoğraflı bir ortam yerleştirdiniz."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
+msgid "You have just inserted a digital audio player."
+msgstr "Az önce bir dijital ses oynatıcı taktınız."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:735
+msgid ""
+"You have just inserted a medium with software intended to be automatically "
+"started."
+msgstr "Az önce kendiliğinden başlaması amaçlanan bir yazılım ortamı taktınız."
+
+#. fallback to generic greeting
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
+msgid "You have just inserted a medium."
+msgstr "Az önce bir ortam yerleştirdiniz."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:740
+msgid "Choose what application to launch."
+msgstr "Başlatılacak uygulamayı seçin."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:749
+#, c-format
+msgid ""
+"Select how to open \"%s\" and whether to perform this action in the future "
+"for other media of type \"%s\"."
+msgstr ""
+"\"%s\" türünün nasıl açılacağını ve bundan sonra \"%s\" türündeki diğer "
+"ortamlar için bu eylemin uygulanıp uygulanmayacağını seçin."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:776
+msgid "_Always perform this action"
+msgstr "Bu eylemi _her zaman uygula"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
+msgid "_Cancel"
+msgstr "_İptal"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:786
+msgid "_OK"
+msgstr "_TAMAM"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:792
+msgid "_Eject"
+msgstr "_Çıkar"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:797
+msgid "_Unmount"
+msgstr "_Bağı Kaldır"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:164
+msgid "Send Files"
+msgstr "Dosya Gönder"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
+msgid "Bluetooth Settings"
+msgstr "Bluetooth Ayarları"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:271
+msgid "Bluetooth active"
+msgstr "Bluetooth etkin"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:276
+msgid "Bluetooth disabled"
+msgstr "Bluetooth devre dışı"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:282
+#, c-format
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "%d Bağlı Aygıt"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
+msgid "Not Connected"
+msgstr "Bağlı Değil"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
+msgid "Log Out"
+msgstr "Oturumu Kapat"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:470
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Bu uygulamalardan çıkmak ve sistem oturumunu kapatmak için Çıkış tıklayın."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:472
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s oturumu %d saniye içinde kendiliğinden kapatılacak."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:696
+msgid "Power Off"
+msgstr "Kapat"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:482
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr "Bu uygulamadan çıkmak ve sistemi kapatmak için Kapatı tıklayın."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:484
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Sistem %d saniye içinde kendiliğinden kapatılacak."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:700
+msgid "Restart"
+msgstr "Yeniden başlat"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:494
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Bu uygulamalardan çıkmak ve sistemi yeniden başlatmak için Yeniden Başlatı "
+"tıklayın."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:496
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Sistem %d saniye içinde kendiliğinden yeniden başlatılacak."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:503
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:704
+msgid "Hibernate"
+msgstr "Uyku Kipi"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:504
+#, c-format
+msgid "The system will hibernate automatically in %d second."
+msgid_plural "The system will hibernate automatically in %d seconds."
+msgstr[0] "Sistem %d saniye içinde kendiliğinden uyku kipine geçecek."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:511
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:708
+msgid "Suspend"
+msgstr "Askıya Al"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:512
+#, c-format
+msgid "The system will suspend automatically in %d second."
+msgid_plural "The system will suspend automatically in %d seconds."
+msgstr[0] "Sistem %d saniye içinde kendiliğinden askıya alınacak."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:712
+msgid "Hybrid Sleep"
+msgstr "Karma Uyku"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:520
+#, c-format
+msgid "The system will hybrid sleep automatically in %d second."
+msgid_plural "The system will hybrid sleep automatically in %d seconds."
+msgstr[0] "Sistem %d saniye içinde kendiliğinden karma uykuya geçecek."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:29
+msgid "Some programs are still running:"
+msgstr "Bazı programlar hala çalışıyor:"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:78
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr ""
+"Uygulamaların işlemlerinin bitmesi için bekleniyor. Uygulamaların kesilmesi "
+"veri kayıplarına neden olabilir."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
+msgid "Lock Screen"
+msgstr "Ekranı Kilitle"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:801
+msgid "Show Keyboard Layout"
+msgstr "Klavye Düzenini Göster"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:867
+msgid "Keyboard"
+msgstr "Klavye"
+
+#: gnome-flashback/libnotifications/gf-bubble.c:619
+#: gnome-flashback/libnotifications/gf-bubble.c:623
+#: gnome-flashback/libnotifications/nd-notification-box.c:321
+#: gnome-flashback/libnotifications/nd-notification-box.c:323
+msgid "Closes the notification."
+msgstr "Bildirimi kapatır."
+
+#: gnome-flashback/libnotifications/gf-bubble.c:643
+#: gnome-flashback/libnotifications/gf-bubble.c:674
+#: gnome-flashback/libnotifications/nd-notification-box.c:339
+msgid "Notification summary text."
+msgstr "Bildirim özeti metni."
+
+#: gnome-flashback/libnotifications/gf-bubble.c:693
+msgid "Notification"
+msgstr "Bildirim"
+
+#: gnome-flashback/libnotifications/nd-daemon.c:100
+msgid "Invalid notification identifier"
+msgstr "Tanımlanmamış bildirim"
+
+#: gnome-flashback/libnotifications/nd-daemon.c:181
+msgid "Exceeded maximum number of notifications"
+msgstr "Azami sayıda bildirime ulaşıldı"
+
+#: gnome-flashback/libnotifications/nd-notification-box.c:359
+msgid "Notification body text."
+msgstr "Bildirim gövdesi metni."
+
+#: gnome-flashback/libnotifications/nd-queue.c:451
+msgid "Clear all notifications"
+msgstr "Tüm bildirimleri temizle"
+
+#: gnome-flashback/libnotifications/nd-queue.c:868
+msgid "Notifications"
+msgstr "Bildirimler"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:100
+#, c-format
+msgid "_Password for %s:"
+msgstr "%s _Parolası:"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:104
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
+msgid "_Password:"
+msgstr "_Parola:"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:259
+msgid "Your authentication attempt was unsuccessful. Please try again."
+msgstr "Kimlik doğrulama girişiminiz başarısız oldu. Lütfen yeniden deneyin."
+
+#: gnome-flashback/libpolkit/flashback-listener.c:139
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Kimlik doğrulama penceresi kullanıcı tarafından kapatıldı"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:202
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as one of the users below is required to perform this action."
+msgstr ""
+"Bir uygulama ayrıcalıklar gerektiren bir eylem gerçekleştirmeye çalışıyor. "
+"Bu işlemi gerçekleştirmek için aşağıdaki kullanıcılardan biri olarak kimlik "
+"doğrulaması gerekiyor."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication is required to perform this action."
+msgstr ""
+"Bir uygulama ayrıcalıklar gerektiren bir eylem gerçekleştirmeye çalışıyor. "
+"Bu işlemi gerçekleştirmek için kimlik doğrulaması gerekiyor."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:217
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as the super user is required to perform this action."
+msgstr ""
+"Bir uygulama ayrıcalıklar gerektiren bir eylem gerçekleştirmeye çalışıyor. "
+"Bu işlemi gerçekleştirmek için süper kullanıcı olarak kimlik doğrulaması "
+"gerekiyor."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:386
+msgid "Select user..."
+msgstr "Kullanıcı seç..."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:425
+#, c-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:600
+msgid "Action:"
+msgstr "Eylem:"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:603
+#, c-format
+msgid "Click to edit %s"
+msgstr "Düzenlemek için tıkla %s"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:611
+msgid "Vendor:"
+msgstr "Sağlayıcı:"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:614
+#, c-format
+msgid "Click to open %s"
+msgstr "Açmak için tıkla %s"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:8
+msgid "Authenticate"
+msgstr "Doğrula"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:53
+msgid "<big><b>Title</b></big>"
+msgstr "<big><b>Başlık</b></big>"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:192
+msgid "<small><b>_Details</b></small>"
+msgstr "<small><b>_Ayrıntılar</b></small>"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:228
+msgid "_Authenticate"
+msgstr "_Kimlik Doğrula"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:135
+msgid "Power Settings"
+msgstr "Güç Ayarları"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:182
+msgid "Fully Charged"
+msgstr "Şarj Oldu"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:184
+msgid "Empty"
+msgstr "Boş"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:190
+msgid "Not Charging"
+msgstr "Şarj Olmuyor"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:192
+#: gnome-flashback/libpower-applet/gf-power-applet.c:197
+msgid "Estimating..."
+msgstr "Öngörülüyor..."
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: gnome-flashback/libpower-applet/gf-power-applet.c:206
+#, c-format
+msgid "%.0f:%02.0f Remaining (%.0f%%)"
+msgstr "%.0f:%02.0f Kaldı (%%%.0f)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: gnome-flashback/libpower-applet/gf-power-applet.c:213
+#, c-format
+msgid "%.0f:%02.0f Until Full (%.0f%%)"
+msgstr "Tümüyle Dolmasına %.0f:%02.0f (%%%.0f)"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:228
+msgid "UPS"
+msgstr "Güç Kaynağı (UPS)"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:230
+msgid "Battery"
+msgstr "Pil"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:268
+msgid "Output"
+msgstr "Çıktı"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:271
+msgid "Sound Output Volume"
+msgstr "Ses Çıkış Hacmi"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:278
+msgid "Input"
+msgstr "Girdi"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:281
+msgid "Microphone Volume"
+msgstr "Mikrofon Sesi"
+
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:494
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:503
+msgctxt "volume"
+msgid "100%"
+msgstr "100%"
+
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:498
+msgctxt "volume"
+msgid "Unamplified"
+msgstr "Yükseltilmemiş"
+
+#. translators:
+#. * The device has been disabled
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1876
+msgid "Disabled"
+msgstr "Devre dışı"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u Çıktı"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1893
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u Girdi"
+
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2750
+msgid "System Sounds"
+msgstr "Sistem Sesleri"
+
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:286
+msgid "_Mute"
+msgstr "_Sessiz"
+
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:295
+msgid "_Sound Preferences"
+msgstr "_Ses Tercihleri"
+
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:425
+msgid "Muted"
+msgstr "Sessiz"
+
+#~ msgid "GNOME Flashback Initialization"
+#~ msgstr "GNOME Flashback Başlatılıyor"
+
+#~ msgid "Initialize GNOME Flashback session"
+#~ msgstr "GNOME Flashback oturumunu başlat"
+
+#, fuzzy
+#~| msgid "Display config"
+#~ msgid "Display configuration"
+#~ msgstr "Ekran yapılandırması"
+
+#, fuzzy
+#~| msgid ""
+#~| "If set to true, then GNOME Flashback application will be used to provide "
+#~| "display configuration."
+#~ msgid ""
+#~ "If set to true, then GNOME Flashback application will be used to provide "
+#~ "the display configuration."
+#~ msgstr ""
+#~ "Eğer doğru olarak ayarlarsanız, GNOME Flashback uygulaması ekran "
+#~ "yapılandırmasını sağlamak için kullanılacaktır."
+
+#, fuzzy
+#~| msgid ""
+#~| "If set to true, then GNOME Flashback application will be used for key "
+#~| "grabbing."
+#~ msgid ""
+#~ "If set to true, then GNOME Flashback application will use workarounds to "
+#~ "fix bugs."
+#~ msgstr ""
+#~ "Eğer doğru olarak ayarlanırsa, GNOME Flashback uygulaması anahtar "
+#~ "aktarmak için kullanılacaktır."
+
+#~ msgid "Key grabber"
+#~ msgstr "Anahtar aktarıcı"
