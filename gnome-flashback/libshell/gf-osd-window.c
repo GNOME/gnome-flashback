@@ -30,15 +30,44 @@ struct _GfOsdWindow
 
   guint          hide_timeout_id;
 
+  gdouble        max_level;
+  gdouble        level;
+
   GtkWidget     *icon_image;
   gint           icon_size;
 
   GtkWidget     *label;
 
-  GtkWidget     *level;
+  GtkWidget     *level_bar;
 };
 
 G_DEFINE_TYPE (GfOsdWindow, gf_osd_window, GF_TYPE_POPUP_WINDOW)
+
+static void
+update_level_bar (GfOsdWindow *window)
+{
+  gdouble level;
+  GtkLevelBar *level_bar;
+
+  if (window->level < 0.0)
+    {
+      gtk_widget_hide (window->level_bar);
+      return;
+    }
+
+  level = MAX (0.0, MIN (window->level, window->max_level));
+  level_bar = GTK_LEVEL_BAR (window->level_bar);
+
+  gtk_level_bar_set_max_value (level_bar, window->max_level);
+  gtk_level_bar_set_value (level_bar, level);
+
+  if (window->max_level > 1.0)
+    gtk_level_bar_add_offset_value (level_bar, "overdrive", window->max_level);
+  else
+    gtk_level_bar_remove_offset_value (level_bar, "overdrive");
+
+  gtk_widget_show (window->level_bar);
+}
 
 static void
 fade_finished_cb (GfPopupWindow *window)
@@ -128,6 +157,9 @@ gf_osd_window_init (GfOsdWindow *window)
   gtk_container_add (GTK_CONTAINER (window), box);
   gtk_widget_show (box);
 
+  window->max_level = 1.0;
+  window->level = -1;
+
   window->icon_image = gtk_image_new ();
   gtk_widget_set_halign (window->icon_image, GTK_ALIGN_CENTER);
   gtk_widget_set_valign (window->icon_image, GTK_ALIGN_CENTER);
@@ -137,9 +169,9 @@ gf_osd_window_init (GfOsdWindow *window)
   gtk_widget_set_halign (window->label, GTK_ALIGN_CENTER);
   gtk_box_pack_start (GTK_BOX (box), window->label, FALSE, FALSE, 0);
 
-  window->level = gtk_level_bar_new_for_interval (0, 100);
-  gtk_widget_set_halign (window->level, GTK_ALIGN_FILL);
-  gtk_box_pack_start (GTK_BOX (box), window->level, FALSE, FALSE, 0);
+  window->level_bar = gtk_level_bar_new_for_interval (0.0, window->max_level);
+  gtk_box_pack_start (GTK_BOX (box), window->level_bar, FALSE, FALSE, 0);
+  gtk_widget_set_halign (window->level_bar, GTK_ALIGN_FILL);
 
   g_signal_connect (window, "fade-finished",
                     G_CALLBACK (fade_finished_cb), NULL);
@@ -209,17 +241,20 @@ gf_osd_window_set_label (GfOsdWindow *window,
 
 void
 gf_osd_window_set_level (GfOsdWindow *window,
-                         gint         level)
+                         gdouble      level)
 {
-  if (level == -1)
-    {
-      gtk_widget_hide (window->level);
-      return;
-    }
+  window->level = level;
 
-  level = MAX (0, MIN (level, 100));
-  gtk_level_bar_set_value (GTK_LEVEL_BAR (window->level), level);
-  gtk_widget_show (window->level);
+  update_level_bar (window);
+}
+
+void
+gf_osd_window_set_max_level (GfOsdWindow *window,
+                             gdouble      max_level)
+{
+  window->max_level = max_level;
+
+  update_level_bar (window);
 }
 
 void

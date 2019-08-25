@@ -122,7 +122,8 @@ flashback_osd_show (FlashbackOsd     *osd,
   const gchar *icon_name;
   const gchar *label;
   GIcon *icon;
-  gint level;
+  gdouble level;
+  gdouble max_level;
   const gchar *connector;
   gint monitor;
   gint i;
@@ -135,8 +136,11 @@ flashback_osd_show (FlashbackOsd     *osd,
   if (!g_variant_dict_lookup (&dict, "label", "&s", &label))
     label = NULL;
 
-  if (!g_variant_dict_lookup (&dict, "level", "i", &level))
+  if (!g_variant_dict_lookup (&dict, "level", "d", &level))
     level = -1;
+
+  if (!g_variant_dict_lookup (&dict, "max_level", "d", &max_level))
+    max_level = 1.0;
 
   if (!g_variant_dict_lookup (&dict, "connector", "&s", &connector))
     connector = NULL;
@@ -158,6 +162,7 @@ flashback_osd_show (FlashbackOsd     *osd,
               gf_osd_window_set_icon (osd->windows[i], icon);
               gf_osd_window_set_label (osd->windows[i], label);
               gf_osd_window_set_level (osd->windows[i], level);
+              gf_osd_window_set_max_level (osd->windows[i], max_level);
               gf_osd_window_show (osd->windows[i]);
             }
           else
@@ -173,6 +178,7 @@ flashback_osd_show (FlashbackOsd     *osd,
           gf_osd_window_set_icon (osd->windows[i], icon);
           gf_osd_window_set_label (osd->windows[i], label);
           gf_osd_window_set_level (osd->windows[i], level);
+          gf_osd_window_set_max_level (osd->windows[i], max_level);
           gf_osd_window_show (osd->windows[i]);
         }
     }

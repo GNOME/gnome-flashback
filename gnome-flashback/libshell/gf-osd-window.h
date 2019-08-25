@@ -26,17 +26,23 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (GfOsdWindow, gf_osd_window,
                       GF, OSD_WINDOW, GfPopupWindow)
 
-GfOsdWindow *gf_osd_window_new       (gint         monitor);
+GfOsdWindow *gf_osd_window_new           (gint         monitor);
 
-void         gf_osd_window_set_icon  (GfOsdWindow *window,
-                                      GIcon       *icon);
-void         gf_osd_window_set_label (GfOsdWindow *window,
-                                      const gchar *label);
-void         gf_osd_window_set_level (GfOsdWindow *window,
-                                      gint         level);
+void         gf_osd_window_set_icon      (GfOsdWindow *window,
+                                          GIcon       *icon);
 
-void         gf_osd_window_show      (GfOsdWindow *window);
-void         gf_osd_window_hide      (GfOsdWindow *window);
+void         gf_osd_window_set_label     (GfOsdWindow *window,
+                                          const gchar *label);
+
+void         gf_osd_window_set_level     (GfOsdWindow *window,
+                                          gdouble      level);
+
+void         gf_osd_window_set_max_level (GfOsdWindow *window,
+                                          gdouble      max_level);
+
+void         gf_osd_window_show          (GfOsdWindow *window);
+
+void         gf_osd_window_hide          (GfOsdWindow *window);
 
 G_END_DECLS
 

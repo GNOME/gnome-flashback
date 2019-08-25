@@ -55,5 +55,10 @@ gf-popup-window.solid {
 #gf-osd-window {
 }
 
+#gf-osd-window levelbar block.overdrive {
+  background-color: #e01b24;
+  border-color: #e01b24;
+}
+
 #gf-bubble {
 }
