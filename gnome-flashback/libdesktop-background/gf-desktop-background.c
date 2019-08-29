@@ -30,6 +30,8 @@ struct _GfDesktopBackground
   gulong            size_changed_id;
   gulong            change_event_id;
 
+  guint             redraw_idle_id;
+
   GnomeBG          *bg;
   GnomeBGCrossfade *fade;
 
@@ -112,18 +114,40 @@ transitioned_cb (GnomeBG             *bg,
   draw_background (background, FALSE);
 }
 
+static gboolean
+redraw_cb (gpointer user_data)
+{
+  GfDesktopBackground *background;
+
+  background = GF_DESKTOP_BACKGROUND (user_data);
+
+  draw_background (background, FALSE);
+
+  background->redraw_idle_id = 0;
+  return G_SOURCE_REMOVE;
+}
+
+static void
+queue_redraw (GfDesktopBackground *background)
+{
+  if (background->redraw_idle_id != 0)
+    return;
+
+  background->redraw_idle_id = g_idle_add (redraw_cb, background);
+}
+
 static void
 monitors_changed_cb (GdkScreen           *screen,
                      GfDesktopBackground *background)
 {
-  draw_background (background, FALSE);
+  queue_redraw (background);
 }
 
 static void
 size_changed_cb (GdkScreen           *screen,
                  GfDesktopBackground *background)
 {
-  draw_background (background, FALSE);
+  queue_redraw (background);
 }
 
 static void
@@ -151,6 +175,12 @@ gf_desktop_background_dispose (GObject *object)
     {
       g_signal_handler_disconnect (background->settings, background->change_event_id);
       background->change_event_id = 0;
+    }
+
+  if (background->redraw_idle_id != 0)
+    {
+      g_source_remove (background->redraw_idle_id);
+      background->redraw_idle_id = 0;
     }
 
   g_clear_object (&background->bg);
