@@ -7,45 +7,48 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2018-09-07 12:40+0000\n"
-"PO-Revision-Date: 2018-09-13 15:11+0200\n"
-"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"POT-Creation-Date: 2019-08-16 12:22+0000\n"
+"PO-Revision-Date: 2019-08-16 20:40+0200\n"
+"Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.7\n"
+"X-Generator: Poedit 2.2.3\n"
 
-#: backends/gf-monitor-manager.c:971
+#: backends/gf-monitor.c:132
 msgid "Built-in display"
 msgstr "Vestavěný displej"
 
-#: backends/gf-monitor-manager.c:1002
+#: backends/gf-monitor.c:166
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: backends/gf-monitor-manager.c:1004
+#: backends/gf-monitor.c:168
 msgid "Unknown Display"
 msgstr "Neznámý displej"
 
-#. TRANSLATORS: this is a monitor vendor name, followed by a
-#. * size in inches, like 'Dell 15"'
-#.
-#: backends/gf-monitor-manager.c:1014
+#: backends/gf-monitor.c:177
 #, c-format
+msgctxt ""
+"This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
+msgid "%s %s"
+msgstr "%s %s"
+
+#: backends/gf-monitor.c:191
+#, c-format
+msgctxt ""
+"This is a monitor vendor name followed by product/model name where size in "
+"inches could not be calculated, e.g. Dell U2414H"
 msgid "%s %s"
 msgstr "%s %s"
 
 #: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME historické"
-
-#: data/applications/gnome-flashback-init.desktop.in:4
-msgid "GNOME Flashback Initialization"
-msgstr "Inicializace GNOME historické"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
@@ -295,18 +298,6 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita jako hlídač "
 "upozornění na stav."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:111
-msgid "Workarounds"
-msgstr "Náhradní řešení"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:112
-msgid ""
-"If set to true, then GNOME Flashback application will use workarounds to fix "
-"bugs."
-msgstr ""
-"Když je zapnuto, bude aplikace GNOME historické používat náhradní řešení k "
-"opravám chyb."
-
 #: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
 msgid "Fade the background on change"
 msgstr "Prolínat při změně pozadí"
@@ -338,21 +329,6 @@ msgstr "Tloušťka fontu"
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
 msgid "Symbolic"
 msgstr "Symbolický"
-
-#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:5
-msgid "Fix missing app menu button"
-msgstr "Opravovat chybějící tlačítko aplikační nabídky"
-
-#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:6
-msgid ""
-"If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
-"FALSE. Disable if you want to use gnome-settings-daemon overrides in "
-"xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
-msgstr ""
-"Když je zapnuto, gnome-flashback vynutí nastavení Gtk/ShellShowsAppMenu na "
-"FALSE. Vypněte, když chcete používat démona gnome-settings-daemon k "
-"přepisování v zásuvném modulu xsettings pro vlastnost „Gtk/"
-"ShellShowsAppMenu“."
 
 #: data/ui/gf-confirm-display-change-dialog.ui:57
 msgid "Do you want to keep these display settings?"
@@ -399,12 +375,12 @@ msgid "Enable debugging code"
 msgstr "Povolit ladicí kód"
 
 #: gnome-flashback/gf-main.c:46
-msgid "Initialize GNOME Flashback session"
-msgstr "Inicializovat sezení GNOME historické"
-
-#: gnome-flashback/gf-main.c:52
 msgid "Replace a currently running application"
 msgstr "Nahradit právě běžící aplikaci"
+
+#: gnome-flashback/gf-main.c:52
+msgid "Print version and exit"
+msgstr "Vypsat verzi a skončit"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:295
 msgid "Slow Keys Turned On"
@@ -489,7 +465,7 @@ msgid "Microphone"
 msgstr "Mikrofon"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:260
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
 msgstr "Selhalo spuštění předvoleb zvuku: %s"
@@ -511,12 +487,12 @@ msgstr "Zrušit"
 msgid "Unknown Audio Device"
 msgstr "Neznámé zvukové zařízení"
 
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:177
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:175
 #, c-format
 msgid "Unable to mount %s"
 msgstr "Nelze připojit %s"
 
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:290
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:288
 #, c-format
 msgid "Unable to open a folder for %s"
 msgstr "Nelze otevřít složku pro %s"
@@ -533,69 +509,69 @@ msgstr "Nedělat nic"
 msgid "Open Folder"
 msgstr "Otevřít složku"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:496
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
 #, c-format
 msgid "Unable to eject %p"
 msgstr "Nelze vysunout %p"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:500
 #, c-format
 msgid "Unable to unmount %p"
 msgstr "Nelze odpojit %p"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:707
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
 msgid "You have just inserted an Audio CD."
 msgstr "Právě jste vložili Audio CD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
 msgid "You have just inserted an Audio DVD."
 msgstr "Právě jste vložili Audio DVD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
 msgid "You have just inserted a Video DVD."
 msgstr "Právě jste vložili Video DVD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
 msgid "You have just inserted a Video CD."
 msgstr "Právě jste vložili Video CD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
 msgid "You have just inserted a Super Video CD."
 msgstr "Právě jste vložili Super Video CD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
 msgid "You have just inserted a blank CD."
 msgstr "Právě jste vložili prázdné CD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
 msgid "You have just inserted a blank DVD."
 msgstr "Právě jste vložili prázdné DVD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
 msgid "You have just inserted a blank Blu-Ray disc."
 msgstr "Právě jste vložili prázdný disk Blu-Ray."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
 msgid "You have just inserted a blank HD DVD."
 msgstr "Právě jste vložili prázdné HD DVD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
 msgid "You have just inserted a Photo CD."
 msgstr "Právě jste vložili Photo CD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
 msgid "You have just inserted a Picture CD."
 msgstr "Právě jste vložili Picture CD."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
 msgid "You have just inserted a medium with digital photos."
 msgstr "Právě jste vložili médium s digitálními fotografiemi."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
 msgid "You have just inserted a digital audio player."
 msgstr "Právě jste vložili digitální hudební přehrávač."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:735
 msgid ""
 "You have just inserted a medium with software intended to be automatically "
 "started."
@@ -604,15 +580,15 @@ msgstr ""
 "spustit."
 
 #. fallback to generic greeting
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:736
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
 msgid "You have just inserted a medium."
 msgstr "Právě jste vložili médium."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:740
 msgid "Choose what application to launch."
 msgstr "Zvolte, kterou aplikaci spustit."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:747
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:749
 #, c-format
 msgid ""
 "Select how to open \"%s\" and whether to perform this action in the future "
@@ -621,24 +597,24 @@ msgstr ""
 "Vyberte, jak otevřít „%s“ a jestli se má stejná činnost pro média typu „%s“ "
 "provádět i v budoucnu."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:774
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:776
 msgid "_Always perform this action"
 msgstr "Vž_dy provést tuto činnost"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:783
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
 msgid "_Cancel"
 msgstr "_Zrušit"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:784
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:786
 msgid "_OK"
 msgstr "_Budiž"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:790
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:792
 msgid "_Eject"
 msgstr "_Vysunout"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:795
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:797
 msgid "_Unmount"
 msgstr "_Odpojit"
 
@@ -785,20 +761,20 @@ msgstr "Zobrazit rozložení klávesnice"
 msgid "Keyboard"
 msgstr "Klávesnice"
 
-#: gnome-flashback/libnotifications/gf-bubble.c:596
-#: gnome-flashback/libnotifications/gf-bubble.c:600
-#: gnome-flashback/libnotifications/nd-notification-box.c:325
-#: gnome-flashback/libnotifications/nd-notification-box.c:327
+#: gnome-flashback/libnotifications/gf-bubble.c:619
+#: gnome-flashback/libnotifications/gf-bubble.c:623
+#: gnome-flashback/libnotifications/nd-notification-box.c:321
+#: gnome-flashback/libnotifications/nd-notification-box.c:323
 msgid "Closes the notification."
 msgstr "Zavírá upozornění."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:620
-#: gnome-flashback/libnotifications/gf-bubble.c:651
-#: gnome-flashback/libnotifications/nd-notification-box.c:343
+#: gnome-flashback/libnotifications/gf-bubble.c:643
+#: gnome-flashback/libnotifications/gf-bubble.c:674
+#: gnome-flashback/libnotifications/nd-notification-box.c:339
 msgid "Notification summary text."
 msgstr "Souhrnný text upozornění."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:670
+#: gnome-flashback/libnotifications/gf-bubble.c:693
 msgid "Notification"
 msgstr "Upozornění"
 
@@ -810,29 +786,29 @@ msgstr "Neplatný identifikátor upozornění"
 msgid "Exceeded maximum number of notifications"
 msgstr "Byl překročen maximální počet upozornění."
 
-#: gnome-flashback/libnotifications/nd-notification-box.c:363
+#: gnome-flashback/libnotifications/nd-notification-box.c:359
 msgid "Notification body text."
 msgstr "Text v těle upozornění."
 
-#: gnome-flashback/libnotifications/nd-queue.c:449
+#: gnome-flashback/libnotifications/nd-queue.c:451
 msgid "Clear all notifications"
 msgstr "Smazat všechna upozornění"
 
-#: gnome-flashback/libnotifications/nd-queue.c:878
+#: gnome-flashback/libnotifications/nd-queue.c:867
 msgid "Notifications"
 msgstr "Upozornění"
 
-#: gnome-flashback/libpolkit/flashback-authenticator.c:93
+#: gnome-flashback/libpolkit/flashback-authenticator.c:100
 #, c-format
 msgid "_Password for %s:"
 msgstr "_Heslo pro uživatele %s:"
 
-#: gnome-flashback/libpolkit/flashback-authenticator.c:97
+#: gnome-flashback/libpolkit/flashback-authenticator.c:104
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
 msgid "_Password:"
 msgstr "_Heslo:"
 
-#: gnome-flashback/libpolkit/flashback-authenticator.c:252
+#: gnome-flashback/libpolkit/flashback-authenticator.c:259
 msgid "Your authentication attempt was unsuccessful. Please try again."
 msgstr "Váš pokus o ověření byl neúspěšný. Zkuste to prosím znovu."
 
@@ -921,27 +897,31 @@ msgid "Empty"
 msgstr "Zcela vybito"
 
 #: gnome-flashback/libpower-applet/gf-power-applet.c:190
-#: gnome-flashback/libpower-applet/gf-power-applet.c:195
+msgid "Not Charging"
+msgstr "Nenabíjí se"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:192
+#: gnome-flashback/libpower-applet/gf-power-applet.c:197
 msgid "Estimating..."
 msgstr "Odhaduje se…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:204
+#: gnome-flashback/libpower-applet/gf-power-applet.c:206
 #, c-format
 msgid "%.0f:%02.0f Remaining (%.0f%%)"
 msgstr "Zbývá %.0f:%02.0f (%.0f %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:211
+#: gnome-flashback/libpower-applet/gf-power-applet.c:213
 #, c-format
 msgid "%.0f:%02.0f Until Full (%.0f%%)"
 msgstr "%.0f:%02.0f do nabití (%.0f %%)"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:226
+#: gnome-flashback/libpower-applet/gf-power-applet.c:228
 msgid "UPS"
 msgstr "Záložní zdroj"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:228
+#: gnome-flashback/libpower-applet/gf-power-applet.c:230
 msgid "Battery"
 msgstr "Baterie"
 
@@ -961,26 +941,26 @@ msgstr "Vstup"
 msgid "Microphone Volume"
 msgstr "Hlasitost mikrofonu"
 
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:537
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:546
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:535
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:544
 msgctxt "volume"
 msgid "100%"
 msgstr "100%"
 
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:541
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:539
 msgctxt "volume"
 msgid "Unamplified"
 msgstr "Nezesíleno"
 
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1866
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1876
 msgid "Disabled"
 msgstr "Zakázáno"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1873
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -990,7 +970,7 @@ msgstr[2] "%u výstupů"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1893
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -998,21 +978,50 @@ msgstr[0] "%u vstup"
 msgstr[1] "%u vstupy"
 msgstr[2] "%u vstupů"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2738
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2750
 msgid "System Sounds"
 msgstr "Systémové zvuky"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:280
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:285
 msgid "_Mute"
 msgstr "_Ztišit"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:289
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:294
 msgid "_Sound Preferences"
 msgstr "_Předvolby zvuku"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:424
 msgid "Muted"
 msgstr "Ztišeno"
+
+#~ msgid "GNOME Flashback Initialization"
+#~ msgstr "Inicializace GNOME historické"
+
+#~ msgid "Workarounds"
+#~ msgstr "Náhradní řešení"
+
+#~ msgid ""
+#~ "If set to true, then GNOME Flashback application will use workarounds to "
+#~ "fix bugs."
+#~ msgstr ""
+#~ "Když je zapnuto, bude aplikace GNOME historické používat náhradní řešení "
+#~ "k opravám chyb."
+
+#~ msgid "Fix missing app menu button"
+#~ msgstr "Opravovat chybějící tlačítko aplikační nabídky"
+
+#~ msgid ""
+#~ "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
+#~ "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
+#~ "xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
+#~ msgstr ""
+#~ "Když je zapnuto, gnome-flashback vynutí nastavení Gtk/ShellShowsAppMenu "
+#~ "na FALSE. Vypněte, když chcete používat démona gnome-settings-daemon k "
+#~ "přepisování v zásuvném modulu xsettings pro vlastnost „Gtk/"
+#~ "ShellShowsAppMenu“."
+
+#~ msgid "Initialize GNOME Flashback session"
+#~ msgstr "Inicializovat sezení GNOME historické"
 
 #~ msgid "Fix wrong button layout"
 #~ msgstr "Opravovat nesprávné rozložení tlačítek"
