@@ -1,3 +1,10 @@
+Version 3.33.92
+==============
+- Fix level bar in OSD window. (#22)
+- Fix background when changing resolution. (#23)
+- Updated translations:
+  Anders Jonsson (sv), Balázs Úr (hu), Daniel Rusek (cs), Serdar Sağlam (tr).
+
 Version 3.33.1
 ==============
 - Remove Clipboard plugin from required components. (#19)
