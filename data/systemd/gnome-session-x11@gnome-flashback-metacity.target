@@ -8,6 +8,9 @@ RefuseManualStart=no
 Conflicts=shutdown.target gnome-session-shutdown.target
 PartOf=graphical-session.target
 
+# Pull in all X11-specific services the session might depend on
+Requires=gnome-session-x11-services.target
+
 BindsTo=gnome-session@.target
 After=gnome-session@.target
 
