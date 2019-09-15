@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2018-09-11 19:34+0000\n"
-"PO-Revision-Date: 2019-03-11 19:26+0100\n"
+"POT-Creation-Date: 2019-08-08 08:23+0000\n"
+"PO-Revision-Date: 2019-09-15 15:27+0200\n"
 "Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
 "Language-Team: српски <gnome-sr@googlegroups.org>\n"
 "Language: sr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: backends/gf-monitor-manager.c:971
 msgid "Built-in display"
@@ -297,18 +297,6 @@ msgstr ""
 "Ако је изабрано, тада ће програм старог Гнома бити коришћен за осматрача "
 "обавештења стања."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:111
-msgid "Workarounds"
-msgstr "Решења"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:112
-msgid ""
-"If set to true, then GNOME Flashback application will use workarounds to fix "
-"bugs."
-msgstr ""
-"Ако је изабрано, тада ће програм старог Гнома користити решења за исправљање "
-"грешака."
-
 #: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
 msgid "Fade the background on change"
 msgstr "Претапање позадине приликом измене"
@@ -340,21 +328,6 @@ msgstr "Тежина слова"
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
 msgid "Symbolic"
 msgstr "Симболичко"
-
-#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:5
-msgid "Fix missing app menu button"
-msgstr "Поправља недостајуће дугме изборника програма"
-
-#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:6
-msgid ""
-"If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
-"FALSE. Disable if you want to use gnome-settings-daemon overrides in "
-"xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
-msgstr ""
-"Ако је изабрано, тада ће стари Гном да примора Гтк/"
-"Шкољка_приказује_изборник_програма да се искључи. Искључите ово ако желите "
-"да користите преписивања позадинца-гномових-подешавања у прикључку икс-"
-"подешавања за својство „Gtk/ShellShowsAppMenu“."
 
 #: data/ui/gf-confirm-display-change-dialog.ui:57
 msgid "Do you want to keep these display settings?"
@@ -397,17 +370,21 @@ msgstr[1] "Измене подешавања биће враћене за %d с�
 msgstr[2] "Измене подешавања биће враћене за %d секунди!"
 msgstr[3] "Измене подешавања биће враћене за једну секунду!"
 
-#: gnome-flashback/gf-main.c:40
+#: gnome-flashback/gf-main.c:41
 msgid "Enable debugging code"
 msgstr "Укључује код прочишћавања"
 
-#: gnome-flashback/gf-main.c:46
+#: gnome-flashback/gf-main.c:47
 msgid "Initialize GNOME Flashback session"
 msgstr "Покреће сесију Старог Гнома"
 
-#: gnome-flashback/gf-main.c:52
+#: gnome-flashback/gf-main.c:53
 msgid "Replace a currently running application"
 msgstr "Мења тренутно покренут програм"
+
+#: gnome-flashback/gf-main.c:59
+msgid "Print version and exit"
+msgstr "Испиши издање и изађи"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:295
 msgid "Slow Keys Turned On"
@@ -535,84 +512,84 @@ msgstr "Не ради ништа"
 msgid "Open Folder"
 msgstr "Отворите фасциклу"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:496
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
 #, c-format
 msgid "Unable to eject %p"
 msgstr "Не могу да избацим „%p“"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:500
 #, c-format
 msgid "Unable to unmount %p"
 msgstr "Не могу да откачим „%p“"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:707
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
 msgid "You have just inserted an Audio CD."
 msgstr "Управо сте убацили звучни ЦД."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
 msgid "You have just inserted an Audio DVD."
 msgstr "Управо сте убацили звучни ДВД."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
 msgid "You have just inserted a Video DVD."
 msgstr "Управо сте убацили видео ДВД."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
 msgid "You have just inserted a Video CD."
 msgstr "Управо сте убацили видео ЦД."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
 msgid "You have just inserted a Super Video CD."
 msgstr "Управо сте убацили супер видео ЦД."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
 msgid "You have just inserted a blank CD."
 msgstr "Управо сте убацили празан ЦД."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
 msgid "You have just inserted a blank DVD."
 msgstr "Управо сте убацили празан ДВД."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
 msgid "You have just inserted a blank Blu-Ray disc."
 msgstr "Управо сте убацили празан плаво-зрачни диск."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
 msgid "You have just inserted a blank HD DVD."
 msgstr "Управо сте убацили празан ДВД високе резолуције."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
 msgid "You have just inserted a Photo CD."
 msgstr "Управо сте убацили ЦД са фотографијама."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
 msgid "You have just inserted a Picture CD."
 msgstr "Управо сте убацили ЦД са сликама."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
 msgid "You have just inserted a medium with digital photos."
 msgstr "Управо сте убацили носач са дигиталним фотографијама."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
 msgid "You have just inserted a digital audio player."
 msgstr "Управо сте убацили дигитални пуштач звука."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:735
 msgid ""
 "You have just inserted a medium with software intended to be automatically "
 "started."
 msgstr "Управо сте убацили носач са самопокретачким програмима."
 
 #. fallback to generic greeting
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:736
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
 msgid "You have just inserted a medium."
 msgstr "Управо сте убацили носач."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:740
 msgid "Choose what application to launch."
 msgstr "Изаберите програм за покретање."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:747
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:749
 #, c-format
 msgid ""
 "Select how to open \"%s\" and whether to perform this action in the future "
@@ -621,24 +598,24 @@ msgstr ""
 "Изаберите како ће се отворити „%s“ и да ли ће се та радња извршавати убудуће "
 "и за друге носаче врсте „%s“."
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:774
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:776
 msgid "_Always perform this action"
 msgstr "_Увек изврши ову радњу"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:783
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
 msgid "_Cancel"
 msgstr "_Откажи"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:784
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:786
 msgid "_OK"
 msgstr "У _реду"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:790
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:792
 msgid "_Eject"
 msgstr "_Избаци"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:795
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:797
 msgid "_Unmount"
 msgstr "_Откачи"
 
@@ -823,11 +800,11 @@ msgstr "Превазиђен је највећи број обавештења"
 msgid "Notification body text."
 msgstr "Текст поруке обавештења."
 
-#: gnome-flashback/libnotifications/nd-queue.c:445
+#: gnome-flashback/libnotifications/nd-queue.c:451
 msgid "Clear all notifications"
 msgstr "Очисти сва обавештења"
 
-#: gnome-flashback/libnotifications/nd-queue.c:881
+#: gnome-flashback/libnotifications/nd-queue.c:867
 msgid "Notifications"
 msgstr "Обавештења"
 
@@ -931,27 +908,31 @@ msgid "Empty"
 msgstr "Празна"
 
 #: gnome-flashback/libpower-applet/gf-power-applet.c:190
-#: gnome-flashback/libpower-applet/gf-power-applet.c:195
+msgid "Not Charging"
+msgstr "Не пуни се"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:192
+#: gnome-flashback/libpower-applet/gf-power-applet.c:197
 msgid "Estimating..."
 msgstr "Процењујем..."
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:204
+#: gnome-flashback/libpower-applet/gf-power-applet.c:206
 #, c-format
 msgid "%.0f:%02.0f Remaining (%.0f%%)"
 msgstr "%.0f:%02.0f Преостало је (%.0f%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:211
+#: gnome-flashback/libpower-applet/gf-power-applet.c:213
 #, c-format
 msgid "%.0f:%02.0f Until Full (%.0f%%)"
 msgstr "%.0f:%02.0f Док се не напуни (%.0f%%)"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:226
+#: gnome-flashback/libpower-applet/gf-power-applet.c:228
 msgid "UPS"
 msgstr "Резервно напајање"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:228
+#: gnome-flashback/libpower-applet/gf-power-applet.c:230
 msgid "Battery"
 msgstr "Батерија"
 
@@ -984,13 +965,13 @@ msgstr "Без појачања"
 
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1866
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1864
 msgid "Disabled"
 msgstr "Искључен"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1873
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1871
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1001,7 +982,7 @@ msgstr[3] "један излаз"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1881
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -1010,7 +991,7 @@ msgstr[1] "%u улаза"
 msgstr[2] "%u улаза"
 msgstr[3] "један улаз"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2738
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2736
 msgid "System Sounds"
 msgstr "Системски звуци"
 
@@ -1025,6 +1006,29 @@ msgstr "Поставке _звука"
 #: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:424
 msgid "Muted"
 msgstr "Утишан"
+
+#~ msgid "Workarounds"
+#~ msgstr "Решења"
+
+#~ msgid ""
+#~ "If set to true, then GNOME Flashback application will use workarounds to "
+#~ "fix bugs."
+#~ msgstr ""
+#~ "Ако је изабрано, тада ће програм старог Гнома користити решења за "
+#~ "исправљање грешака."
+
+#~ msgid "Fix missing app menu button"
+#~ msgstr "Поправља недостајуће дугме изборника програма"
+
+#~ msgid ""
+#~ "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
+#~ "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
+#~ "xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
+#~ msgstr ""
+#~ "Ако је изабрано, тада ће стари Гном да примора Гтк/"
+#~ "Шкољка_приказује_изборник_програма да се искључи. Искључите ово ако "
+#~ "желите да користите преписивања позадинца-гномових-подешавања у прикључку "
+#~ "икс-подешавања за својство „Gtk/ShellShowsAppMenu“."
 
 #~ msgid "Fix wrong button layout"
 #~ msgstr "Поправља погрешан распоред дугмета"
