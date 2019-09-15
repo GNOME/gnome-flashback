@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-08-08 08:23+0000\n"
-"PO-Revision-Date: 2019-09-15 15:27+0200\n"
+"POT-Creation-Date: 2019-09-15 13:29+0000\n"
+"PO-Revision-Date: 2019-09-15 16:44+0200\n"
 "Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
 "Language-Team: српски <gnome-sr@googlegroups.org>\n"
 "Language: sr\n"
@@ -19,34 +19,37 @@ msgstr ""
 "X-Project-Style: gnome\n"
 "X-Generator: Poedit 2.2.3\n"
 
-#: backends/gf-monitor-manager.c:971
+#: backends/gf-monitor.c:131
 msgid "Built-in display"
 msgstr "Уграђени екран"
 
-#: backends/gf-monitor-manager.c:1002
+#: backends/gf-monitor.c:165
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
 msgid "Unknown"
 msgstr "Непознато"
 
-#: backends/gf-monitor-manager.c:1004
+#: backends/gf-monitor.c:167
 msgid "Unknown Display"
 msgstr "Непознати екран"
 
-#. TRANSLATORS: this is a monitor vendor name, followed by a
-#. * size in inches, like 'Dell 15"'
-#.
-#: backends/gf-monitor-manager.c:1014
+#: backends/gf-monitor.c:176
 #, c-format
+msgctxt ""
+"This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: data/applications/gnome-flashback.desktop.in:4
+#: backends/gf-monitor.c:190
+#, c-format
+msgctxt ""
+"This is a monitor vendor name followed by product/model name where size in "
+"inches could not be calculated, e.g. Dell U2414H"
+msgid "%s %s"
+msgstr "%s %s"
+
+#: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
 msgstr "Стари Гном"
-
-#: data/applications/gnome-flashback-init.desktop.in:4
-msgid "GNOME Flashback Initialization"
-msgstr "Покретање старог Гнома"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
@@ -370,19 +373,15 @@ msgstr[1] "Измене подешавања биће враћене за %d с�
 msgstr[2] "Измене подешавања биће враћене за %d секунди!"
 msgstr[3] "Измене подешавања биће враћене за једну секунду!"
 
-#: gnome-flashback/gf-main.c:41
+#: gnome-flashback/gf-main.c:40
 msgid "Enable debugging code"
 msgstr "Укључује код прочишћавања"
 
-#: gnome-flashback/gf-main.c:47
-msgid "Initialize GNOME Flashback session"
-msgstr "Покреће сесију Старог Гнома"
-
-#: gnome-flashback/gf-main.c:53
+#: gnome-flashback/gf-main.c:46
 msgid "Replace a currently running application"
 msgstr "Мења тренутно покренут програм"
 
-#: gnome-flashback/gf-main.c:59
+#: gnome-flashback/gf-main.c:52
 msgid "Print version and exit"
 msgstr "Испиши издање и изађи"
 
@@ -468,7 +467,7 @@ msgid "Microphone"
 msgstr "Микрофон"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:260
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:261
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
 msgstr "Нисам успео да покренем поставке звука: %s"
@@ -804,7 +803,7 @@ msgstr "Текст поруке обавештења."
 msgid "Clear all notifications"
 msgstr "Очисти сва обавештења"
 
-#: gnome-flashback/libnotifications/nd-queue.c:867
+#: gnome-flashback/libnotifications/nd-queue.c:868
 msgid "Notifications"
 msgstr "Обавештења"
 
@@ -936,42 +935,42 @@ msgstr "Резервно напајање"
 msgid "Battery"
 msgstr "Батерија"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:283
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:268
 msgid "Output"
 msgstr "Излаз"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:286
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:271
 msgid "Sound Output Volume"
 msgstr "Јачина излазног звука"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:293
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:278
 msgid "Input"
 msgstr "Улаз"
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:296
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:281
 msgid "Microphone Volume"
 msgstr "Јачина звука микрофона"
 
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:535
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:544
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:494
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:503
 msgctxt "volume"
 msgid "100%"
 msgstr "100%"
 
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:539
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:498
 msgctxt "volume"
 msgid "Unamplified"
 msgstr "Без појачања"
 
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1864
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1876
 msgid "Disabled"
 msgstr "Искључен"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1871
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -982,7 +981,7 @@ msgstr[3] "један излаз"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1881
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1893
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -991,21 +990,27 @@ msgstr[1] "%u улаза"
 msgstr[2] "%u улаза"
 msgstr[3] "један улаз"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2736
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2750
 msgid "System Sounds"
 msgstr "Системски звуци"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:285
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:286
 msgid "_Mute"
 msgstr "_Утишај"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:294
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:295
 msgid "_Sound Preferences"
 msgstr "Поставке _звука"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:424
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:425
 msgid "Muted"
 msgstr "Утишан"
+
+#~ msgid "GNOME Flashback Initialization"
+#~ msgstr "Покретање старог Гнома"
+
+#~ msgid "Initialize GNOME Flashback session"
+#~ msgstr "Покреће сесију Старог Гнома"
 
 #~ msgid "Workarounds"
 #~ msgstr "Решења"
