@@ -65,7 +65,7 @@ struct _GsdClipboardManager
 typedef struct
 {
         unsigned char *data;
-        int            length;
+        unsigned long  length;
         Atom           target;
         Atom           type;
         int            format;
@@ -621,7 +621,7 @@ convert_clipboard (GsdClipboardManager *manager,
         List           *conversions;
         IncrConversion *rdata;
         Atom            type;
-        int             i;
+        unsigned long   i;
         int             format;
         unsigned long   nitems;
         unsigned long   remaining;
