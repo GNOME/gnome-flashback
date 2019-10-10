@@ -491,18 +491,18 @@ convert_clipboard_manager (GsdClipboardManager *manager,
 
                 finish_selection_request (manager, xev, True);
         } else if (xev->xselectionrequest.target == XA_TARGETS) {
-                int  n_targets = 0;
-                Atom targets[3];
+                int  n_new_targets = 0;
+                Atom new_targets[3];
 
-                targets[n_targets++] = XA_TARGETS;
-                targets[n_targets++] = XA_TIMESTAMP;
-                targets[n_targets++] = XA_SAVE_TARGETS;
+                new_targets[n_new_targets++] = XA_TARGETS;
+                new_targets[n_new_targets++] = XA_TIMESTAMP;
+                new_targets[n_new_targets++] = XA_SAVE_TARGETS;
 
                 XChangeProperty (manager->display,
                                  xev->xselectionrequest.requestor,
                                  xev->xselectionrequest.property,
                                  XA_ATOM, 32, PropModeReplace,
-                                 (unsigned char *) targets, n_targets);
+                                 (unsigned char *) new_targets, n_new_targets);
 
                 finish_selection_request (manager, xev, True);
         } else
