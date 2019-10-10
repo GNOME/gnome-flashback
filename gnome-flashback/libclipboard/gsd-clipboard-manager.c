@@ -105,7 +105,8 @@ target_data_ref (TargetData *data)
 }
 
 static void
-target_data_unref (TargetData *data)
+target_data_unref (TargetData *data,
+                   void       *user_data)
 {
         data->refcount--;
         if (data->refcount == 0) {
@@ -115,10 +116,11 @@ target_data_unref (TargetData *data)
 }
 
 static void
-conversion_free (IncrConversion *rdata)
+conversion_free (IncrConversion *rdata,
+                 void           *user_data)
 {
         if (rdata->data) {
-                target_data_unref (rdata->data);
+                target_data_unref (rdata->data, NULL);
         }
         free (rdata);
 }
@@ -248,15 +250,19 @@ save_targets (GsdClipboardManager *manager,
 
 static int
 find_content_target (TargetData *tdata,
-                     Atom        target)
+                     void       *user_data)
 {
+        Atom target = *(Atom *) user_data;
+
         return tdata->target == target;
 }
 
 static int
 find_content_type (TargetData *tdata,
-                   Atom        type)
+                   void       *user_data)
 {
+        Atom type = *(Atom *) user_data;
+
         return tdata->type == type;
 }
 
@@ -408,7 +414,7 @@ send_incrementally (GsdClipboardManager *manager,
                                             NULL);
 
                 manager->conversions = list_remove (manager->conversions, rdata);
-                conversion_free (rdata);
+                conversion_free (rdata, NULL);
         }
 
         return True;
@@ -600,7 +606,7 @@ collect_incremental (IncrConversion      *rdata,
                 manager->conversions = list_prepend (manager->conversions, rdata);
         else {
                 if (rdata->data) {
-                        target_data_unref (rdata->data);
+                        target_data_unref (rdata->data, NULL);
                         rdata->data = NULL;
                 }
                 free (rdata);
