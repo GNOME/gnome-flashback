@@ -27,6 +27,7 @@
 #include "libaudio-device-selection/gf-audio-device-selection.h"
 #include "libautomount-manager/gsd-automount-manager.h"
 #include "libbluetooth-applet/gf-bluetooth-applet.h"
+#include "libclipboard/gf-clipboard.h"
 #include "libdesktop-background/gf-desktop-background.h"
 #include "libend-session-dialog/gf-end-session-dialog.h"
 #include "libidle-monitor/flashback-idle-monitor.h"
@@ -61,6 +62,7 @@ struct _GfApplication
   GfA11yKeyboard          *a11y_keyboard;
   GfAudioDeviceSelection  *audio_device_selection;
   GfBluetoothApplet       *bluetooth;
+  GfClipboard             *clipboard;
   GfDesktopBackground     *background;
   GfEndSessionDialog      *dialog;
   GfInputSettings         *input_settings;
@@ -161,6 +163,7 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (audio_device_selection, "audio-device-selection", gf_audio_device_selection_new)
   SETTING_CHANGED (bluetooth, "bluetooth-applet", gf_bluetooth_applet_new)
   SETTING_CHANGED (background, "desktop-background", gf_desktop_background_new)
+  SETTING_CHANGED (clipboard, "clipboard", gf_clipboard_new)
   SETTING_CHANGED (dialog, "end-session-dialog", gf_end_session_dialog_new)
   SETTING_CHANGED (input_settings, "input-settings", gf_input_settings_new)
   SETTING_CHANGED (input_sources, "input-sources", gf_input_sources_new)
