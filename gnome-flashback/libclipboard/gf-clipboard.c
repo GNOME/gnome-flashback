@@ -18,21 +18,49 @@
 #include "config.h"
 #include "gf-clipboard.h"
 
+#include "gsd-clipboard-manager.h"
+
 struct _GfClipboard
 {
-  GObject parent;
+  GObject              parent;
+
+  GsdClipboardManager *manager;
 };
 
 G_DEFINE_TYPE (GfClipboard, gf_clipboard, G_TYPE_OBJECT)
 
 static void
+gf_clipboard_dispose (GObject *object)
+{
+  GfClipboard *self;
+
+  self = GF_CLIPBOARD (object);
+
+  if (self->manager != NULL)
+    {
+      gsd_clipboard_manager_stop (self->manager);
+      g_clear_object (&self->manager);
+    }
+
+  G_OBJECT_CLASS (gf_clipboard_parent_class)->dispose (object);
+}
+
+static void
 gf_clipboard_class_init (GfClipboardClass *self_class)
 {
+  GObjectClass *object_class;
+
+  object_class = G_OBJECT_CLASS (self_class);
+
+  object_class->dispose = gf_clipboard_dispose;
 }
 
 static void
 gf_clipboard_init (GfClipboard *self)
 {
+  self->manager = gsd_clipboard_manager_new ();
+
+  gsd_clipboard_manager_start (self->manager, NULL);
 }
 
 GfClipboard *

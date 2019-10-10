@@ -17,6 +17,12 @@ libclipboard_la_CFLAGS = \
 libclipboard_la_SOURCES = \
 	gf-clipboard.c \
 	gf-clipboard.h \
+	gsd-clipboard-manager.c \
+	gsd-clipboard-manager.h \
+	list.c \
+	list.h \
+	xutils.c \
+	xutils.h \
 	$(NULL)
 
 libclipboard_la_LDFLAGS = \
