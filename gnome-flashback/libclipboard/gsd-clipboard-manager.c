@@ -81,8 +81,6 @@ typedef struct
         int         offset;
 } IncrConversion;
 
-static void     gsd_clipboard_manager_class_init  (GsdClipboardManagerClass *klass);
-static void     gsd_clipboard_manager_init        (GsdClipboardManager      *clipboard_manager);
 static void     gsd_clipboard_manager_finalize    (GObject                  *object);
 
 static void     clipboard_manager_watch_cb        (GsdClipboardManager *manager,
