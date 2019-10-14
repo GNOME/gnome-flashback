@@ -175,8 +175,8 @@ motion_notify_event_cb (GtkWidget      *widget,
           cairo_region_t *region;
           cairo_rectangle_int_t rectangle;
 
-          rectangle.x = x;
-          rectangle.y = y;
+          rectangle.x = 0;
+          rectangle.y = 0;
           rectangle.width = width;
           rectangle.height = height;
 
