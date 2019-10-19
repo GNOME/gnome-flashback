@@ -28,6 +28,11 @@
       <summary>Clipboard</summary>
     </key>
 
+    <key name="desktop" type="b">
+      <default>true</default>
+      <summary>Desktop</summary>
+    </key>
+
     <key name="desktop-background" type="b">
       <default>true</default>
       <summary>Desktop background</summary>

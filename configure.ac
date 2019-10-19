@@ -151,6 +151,11 @@ PKG_CHECK_MODULES([COMMON], [
   x11
 ])
 
+PKG_CHECK_MODULES([DESKTOP], [
+  glib-2.0 >= $GLIB_REQUIRED
+  gtk+-3.0 >= $GTK_REQUIRED
+])
+
 PKG_CHECK_MODULES([DESKTOP_BACKGROUND], [
   gtk+-3.0 >= $GTK_REQUIRED
   gnome-desktop-3.0 >= $LIBGNOME_DESKTOP_REQUIRED
@@ -321,6 +326,7 @@ AC_CONFIG_FILES([
   gnome-flashback/libbluetooth-applet/Makefile
   gnome-flashback/libcommon/Makefile
   gnome-flashback/libclipboard/Makefile
+  gnome-flashback/libdesktop/Makefile
   gnome-flashback/libdesktop-background/Makefile
   gnome-flashback/libend-session-dialog/Makefile
   gnome-flashback/libidle-monitor/Makefile

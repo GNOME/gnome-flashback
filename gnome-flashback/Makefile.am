@@ -7,6 +7,7 @@ SUBDIRS = \
 	libbluetooth-applet \
 	libcommon \
 	libclipboard \
+	libdesktop \
 	libdesktop-background \
 	libend-session-dialog \
 	libidle-monitor \
@@ -66,6 +67,7 @@ gnome_flashback_LDADD = \
 	$(top_builddir)/gnome-flashback/libautomount-manager/libautomount-manager.la \
 	$(top_builddir)/gnome-flashback/libbluetooth-applet/libbluetooth-applet.la \
 	$(top_builddir)/gnome-flashback/libclipboard/libclipboard.la \
+	$(top_builddir)/gnome-flashback/libdesktop/libdesktop.la \
 	$(top_builddir)/gnome-flashback/libdesktop-background/libdesktop-background.la \
 	$(top_builddir)/gnome-flashback/libend-session-dialog/libend-session-dialog.la \
 	$(top_builddir)/gnome-flashback/libidle-monitor/libidle-monitor.la \
