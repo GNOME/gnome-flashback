@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-10-10 15:08+0000\n"
-"PO-Revision-Date: 2019-10-14 08:54+0200\n"
+"POT-Creation-Date: 2019-10-19 00:14+0000\n"
+"PO-Revision-Date: 2019-10-23 12:07+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -150,10 +150,14 @@ msgid "Clipboard"
 msgstr "Portapapeles"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
+msgid "Desktop"
+msgstr "Escritorio"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "Desktop background"
 msgstr "Fondo de escritorio"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:34
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
 msgid ""
 "If set to true, then GNOME Flashback application will be used to draw the "
 "desktop background."
@@ -161,11 +165,11 @@ msgstr ""
 "Si es cierto, la aplicación GNOME Flashback se usará para dibujar el fondo "
 "del escritorio."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "End session dialog"
 msgstr "Terminar el diálogo de sesión"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:40
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:45
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
@@ -173,11 +177,11 @@ msgstr ""
 "Si es cierto, la aplicación GNOME Flashback se usará para mostrar el diálogo "
 "de cierre de la sesión."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:45
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
 msgid "Idle monitor"
 msgstr "Monitor inactivo"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:51
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
@@ -185,15 +189,15 @@ msgstr ""
 "Si es cierto, la aplicación GNOME Flashback se usará para monitorizar la "
 "actividad del usuario."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:51
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
 msgid "Input settings"
 msgstr "Configuración de entrada"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid "Keyboard layouts and input methods"
 msgstr "Distribuciones de teclado y métodos de entrada"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:57
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -201,11 +205,11 @@ msgstr ""
 "Si es cierto, la aplicación GNOME Flashback se usará para gestionar las "
 "distribuciones de teclado y métodos de entrada."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
 msgid "Notification daemon"
 msgstr "Demonio de notificaciones"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:63
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:68
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
@@ -213,21 +217,21 @@ msgstr ""
 "Si es cierto, la aplicación GNOME Flashback se usará para gestionar las "
 "notificaciones."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:68
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
 msgid "Authentication agent for polkit"
 msgstr "Agente de autenticación para polkit"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:69
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:74
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
 "Este es el mismo agente de autenticación proporcionado por PolicyKit-gnome."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:74
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
 msgid "Power applet"
 msgstr "Miniaplicación de energía"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:75
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:80
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
@@ -235,33 +239,33 @@ msgstr ""
 "Si es cierto, la aplicación GNOME Flashback se usará para mostrar una "
 "miniaplicación de energía."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:80
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 msgid "Screencasts"
 msgstr "Grabaciones de la pantalla"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:81
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:86
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
 msgstr ""
 "Si es cierto, la aplicación GNOME Flashback se usará para grabar la panatlla."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:86
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
 msgid "Screensaver"
 msgstr "Salvapantallas"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:87
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:92
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
 msgstr ""
 "Si es cierto, la aplicación GNOME Flashback se usará como un salvapantallas."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:92
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid "Screenshots"
 msgstr "Capturas de pantalla"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:93
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:98
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -269,20 +273,20 @@ msgstr ""
 "Si es cierto, la aplicación GNOME Flashback se usará para hacer capturas de "
 "pantalla."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:98
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
 msgid "Shell"
 msgstr "Shell"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:99
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:104
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr "Si es cierto, la aplicación GNOME Flashback se usará como una shell."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:104
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:109
 msgid "Sound applet"
 msgstr "Miniaplicación de sonido"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:105
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:110
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -292,11 +296,11 @@ msgstr ""
 "miniaplicación de sonido. Esta es la misma miniaplicación de sonido que "
 "solía formar parte del centro de control de GNOME."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:110
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:115
 msgid "Status Notifier Watcher"
 msgstr "Vigilante del estado de las notificaciones"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:111
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:116
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
