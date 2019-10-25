@@ -115,5 +115,9 @@
       <summary>Status Notifier Watcher</summary>
       <description>If set to true, then GNOME Flashback application will be used as Status Notifier Watcher.</description>
     </key>
+
+    <child schema="org.gnome.gnome-flashback.desktop" name="desktop" />
+    <child schema="org.gnome.gnome-flashback.desktop-background" name="desktop-background" />
+    <child schema="org.gnome.gnome-flashback.input-sources" name="input-sources" />
   </schema>
 </schemalist>

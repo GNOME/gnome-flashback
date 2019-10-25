@@ -1,0 +1,15 @@
+<schemalist gettext-domain="gnome-flashback">
+  <schema id="org.gnome.gnome-flashback.desktop" path="/org/gnome/gnome-flashback/desktop/">
+    <key name="draw-background" type="b">
+      <default>true</default>
+      <summary>Draw desktop background</summary>
+      <description>If set to true, then GNOME Flashback will draw the desktop background.</description>
+    </key>
+
+    <key name="show-icons" type="b">
+      <default>true</default>
+      <summary>Show desktop icons</summary>
+      <description>If set to true, then GNOME Flashback will draw the icons on the desktop.</description>
+    </key>
+  </schema>
+</schemalist>

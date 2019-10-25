@@ -18,21 +18,43 @@
 #include "config.h"
 #include "gf-desktop.h"
 
+#include <gio/gio.h>
+
 struct _GfDesktop
 {
-  GObject parent;
+  GObject    parent;
+
+  GSettings *settings;
 };
 
 G_DEFINE_TYPE (GfDesktop, gf_desktop, G_TYPE_OBJECT)
 
 static void
+gf_desktop_dispose (GObject *object)
+{
+  GfDesktop *self;
+
+  self = GF_DESKTOP (object);
+
+  g_clear_object (&self->settings);
+
+  G_OBJECT_CLASS (gf_desktop_parent_class)->dispose (object);
+}
+
+static void
 gf_desktop_class_init (GfDesktopClass *self_class)
 {
+  GObjectClass *object_class;
+
+  object_class = G_OBJECT_CLASS (self_class);
+
+  object_class->dispose = gf_desktop_dispose;
 }
 
 static void
 gf_desktop_init (GfDesktop *self)
 {
+  self->settings = g_settings_new ("org.gnome.gnome-flashback.desktop");
 }
 
 GfDesktop *
