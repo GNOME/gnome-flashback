@@ -119,7 +119,7 @@
       <dep package="gdk-pixbuf" />
       <dep package="gtk+-3" />
       <dep package="gsettings-desktop-schemas" />
-      <dep package="libcanberra" />
+      <dep package="libcanberra-gtk3" />
       <dep package="m4-common" />
       <dep package="zenity" />
     </dependencies>
