@@ -20,11 +20,15 @@
 
 #include <gio/gio.h>
 
+#include "gf-desktop-window.h"
+
 struct _GfDesktop
 {
   GObject    parent;
 
   GSettings *settings;
+
+  GtkWidget *window;
 };
 
 G_DEFINE_TYPE (GfDesktop, gf_desktop, G_TYPE_OBJECT)
@@ -37,6 +41,7 @@ gf_desktop_dispose (GObject *object)
   self = GF_DESKTOP (object);
 
   g_clear_object (&self->settings);
+  g_clear_pointer (&self->window, gtk_widget_destroy);
 
   G_OBJECT_CLASS (gf_desktop_parent_class)->dispose (object);
 }
@@ -54,7 +59,23 @@ gf_desktop_class_init (GfDesktopClass *self_class)
 static void
 gf_desktop_init (GfDesktop *self)
 {
+  gboolean draw_background;
+  gboolean show_icons;
+
   self->settings = g_settings_new ("org.gnome.gnome-flashback.desktop");
+
+  draw_background = g_settings_get_boolean (self->settings, "draw-background");
+  show_icons = g_settings_get_boolean (self->settings, "show-icons");
+
+  self->window = gf_desktop_window_new (draw_background, show_icons);
+
+  g_settings_bind (self->settings, "draw-background",
+                   self->window, "draw-background",
+                   G_SETTINGS_BIND_GET);
+
+  g_settings_bind (self->settings, "show-icons",
+                   self->window, "show-icons",
+                   G_SETTINGS_BIND_GET);
 }
 
 GfDesktop *
