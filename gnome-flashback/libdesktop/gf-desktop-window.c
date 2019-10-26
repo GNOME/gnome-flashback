@@ -18,12 +18,16 @@
 #include "config.h"
 #include "gf-desktop-window.h"
 
+#include "gf-icon-view.h"
+
 struct _GfDesktopWindow
 {
-  GtkWindow parent;
+  GtkWindow  parent;
 
-  gboolean  draw_background;
-  gboolean  show_icons;
+  gboolean   draw_background;
+
+  gboolean   show_icons;
+  GtkWidget *icon_view;
 };
 
 enum
@@ -48,6 +52,19 @@ draw_background_changed (GfDesktopWindow *self)
 static void
 show_icons_changed (GfDesktopWindow *self)
 {
+  if (self->show_icons)
+    {
+      g_assert (self->icon_view == NULL);
+      self->icon_view = gf_icon_view_new ();
+
+      gtk_container_add (GTK_CONTAINER (self), self->icon_view);
+      gtk_widget_show (self->icon_view);
+    }
+  else if (self->icon_view != NULL)
+    {
+      gtk_container_remove (GTK_CONTAINER (self), self->icon_view);
+      self->icon_view = NULL;
+    }
 }
 
 static void
