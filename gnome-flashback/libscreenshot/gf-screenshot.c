@@ -300,7 +300,7 @@ get_filename (const gchar *filename)
 
   path = g_get_user_special_dir (G_USER_DIRECTORY_PICTURES);
 
-  if (!g_file_test (path, G_FILE_TEST_EXISTS))
+  if (path == NULL || !g_file_test (path, G_FILE_TEST_EXISTS))
     {
       path = g_get_home_dir ();
 
