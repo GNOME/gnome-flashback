@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-10-19 00:14+0000\n"
-"PO-Revision-Date: 2019-10-20 12:44+0200\n"
+"POT-Creation-Date: 2019-10-26 09:53+0000\n"
+"PO-Revision-Date: 2019-10-27 15:52+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -312,6 +312,27 @@ msgid ""
 msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
 "GNOME będzie używany jako obserwator obszaru powiadamiania."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:5
+msgid "Draw desktop background"
+msgstr "Wyświetlanie tła pulpitu"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:6
+msgid "If set to true, then GNOME Flashback will draw the desktop background."
+msgstr ""
+"Jeśli jest ustawione na wartość „true”, to tradycyjne środowisko GNOME "
+"będzie wyświetlało tło pulpitu."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:11
+msgid "Show desktop icons"
+msgstr "Ikony na pulpicie"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:12
+msgid ""
+"If set to true, then GNOME Flashback will draw the icons on the desktop."
+msgstr ""
+"Jeśli jest ustawione na wartość „true”, to tradycyjne środowisko GNOME "
+"będzie wyświetlało ikony na pulpicie."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
 msgid "Fade the background on change"
