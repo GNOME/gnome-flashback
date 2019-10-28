@@ -188,6 +188,21 @@ gf_desktop_window_set_property (GObject      *object,
 }
 
 static void
+gf_desktop_window_realize (GtkWidget *widget)
+{
+  GdkScreen *screen;
+  GdkVisual *visual;
+
+  screen = gtk_widget_get_screen (widget);
+  visual = gdk_screen_get_rgba_visual (screen);
+
+  if (visual != NULL)
+    gtk_widget_set_visual (widget, visual);
+
+  GTK_WIDGET_CLASS (gf_desktop_window_parent_class)->realize (widget);
+}
+
+static void
 install_properties (GObjectClass *object_class)
 {
   window_properties[PROP_DRAW_BACKGROUND] =
@@ -223,12 +238,16 @@ static void
 gf_desktop_window_class_init (GfDesktopWindowClass *self_class)
 {
   GObjectClass *object_class;
+  GtkWidgetClass *widget_class;
 
   object_class = G_OBJECT_CLASS (self_class);
+  widget_class = GTK_WIDGET_CLASS (self_class);
 
   object_class->constructed = gf_desktop_window_constructed;
   object_class->dispose = gf_desktop_window_dispose;
   object_class->set_property = gf_desktop_window_set_property;
+
+  widget_class->realize = gf_desktop_window_realize;
 
   install_properties (object_class);
   install_signals ();
