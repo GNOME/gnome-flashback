@@ -5,6 +5,7 @@ noinst_LTLIBRARIES = \
 	$(NULL)
 
 libdesktop_la_CPPFLAGS = \
+	-DGNOME_DESKTOP_USE_UNSTABLE_API \
 	-I$(top_builddir)/gnome-flashback/libdesktop \
 	$(NULL)
 
