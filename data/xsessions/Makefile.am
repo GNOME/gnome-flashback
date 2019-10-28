@@ -1,9 +1,14 @@
 NULL =
 
 xsession_in_in_files = \
-	gnome-flashback-compiz.desktop.in.in \
 	gnome-flashback-metacity.desktop.in.in \
 	$(NULL)
+
+if WITH_COMPIZ_SESSION
+xsession_in_in_files += \
+	gnome-flashback-compiz.desktop.in.in \
+	$(NULL)
+endif
 
 xsessiondir = $(datadir)/xsessions
 xsession_in_files = $(xsession_in_in_files:.desktop.in.in=.desktop.in)
@@ -17,7 +22,8 @@ xsession_DATA = $(xsession_in_files:.desktop.in=.desktop)
 		-d $(top_srcdir)/po && mv $@-t $@
 
 EXTRA_DIST = \
-	$(xsession_in_in_files) \
+	gnome-flashback-compiz.desktop.in.in \
+	gnome-flashback-metacity.desktop.in.in \
 	$(NULL)
 
 CLEANFILES = \
