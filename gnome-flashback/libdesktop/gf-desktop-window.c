@@ -18,16 +18,18 @@
 #include "config.h"
 #include "gf-desktop-window.h"
 
+#include "gf-background.h"
 #include "gf-icon-view.h"
 
 struct _GfDesktopWindow
 {
-  GtkWindow  parent;
+  GtkWindow     parent;
 
-  gboolean   draw_background;
+  gboolean      draw_background;
+  GfBackground *background;
 
-  gboolean   show_icons;
-  GtkWidget *icon_view;
+  gboolean      show_icons;
+  GtkWidget    *icon_view;
 };
 
 enum
@@ -47,6 +49,15 @@ G_DEFINE_TYPE (GfDesktopWindow, gf_desktop_window, GTK_TYPE_WINDOW)
 static void
 draw_background_changed (GfDesktopWindow *self)
 {
+  if (self->draw_background)
+    {
+      g_assert (self->background == NULL);
+      self->background = gf_background_new (GTK_WIDGET (self));
+    }
+  else
+    {
+      g_clear_object (&self->background);
+    }
 }
 
 static void
@@ -109,6 +120,18 @@ gf_desktop_window_constructed (GObject *object)
 }
 
 static void
+gf_desktop_window_dispose (GObject *object)
+{
+  GfDesktopWindow *self;
+
+  self = GF_DESKTOP_WINDOW (object);
+
+  g_clear_object (&self->background);
+
+  G_OBJECT_CLASS (gf_desktop_window_parent_class)->dispose (object);
+}
+
+static void
 gf_desktop_window_set_property (GObject      *object,
                                 guint         property_id,
                                 const GValue *value,
@@ -166,6 +189,7 @@ gf_desktop_window_class_init (GfDesktopWindowClass *self_class)
   object_class = G_OBJECT_CLASS (self_class);
 
   object_class->constructed = gf_desktop_window_constructed;
+  object_class->dispose = gf_desktop_window_dispose;
   object_class->set_property = gf_desktop_window_set_property;
 
   install_properties (object_class);

@@ -15,6 +15,8 @@ libdesktop_la_CFLAGS = \
 	$(NULL)
 
 libdesktop_la_SOURCES = \
+	gf-background.c \
+	gf-background.h \
 	gf-desktop-window.c \
 	gf-desktop-window.h \
 	gf-desktop.c \
