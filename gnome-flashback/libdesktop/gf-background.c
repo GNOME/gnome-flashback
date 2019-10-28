@@ -36,6 +36,15 @@ enum
 
 static GParamSpec *background_properties[LAST_PROP] = { NULL };
 
+enum
+{
+  READY,
+
+  LAST_SIGNAL
+};
+
+static guint background_signals[LAST_SIGNAL] = { 0 };
+
 G_DEFINE_TYPE (GfBackground, gf_background, G_TYPE_OBJECT)
 
 static void
@@ -77,6 +86,14 @@ install_properties (GObjectClass *object_class)
 }
 
 static void
+install_signals (void)
+{
+  background_signals[READY] =
+    g_signal_new ("ready", GF_TYPE_BACKGROUND, G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+}
+
+static void
 gf_background_class_init (GfBackgroundClass *self_class)
 {
   GObjectClass *object_class;
@@ -86,6 +103,7 @@ gf_background_class_init (GfBackgroundClass *self_class)
   object_class->set_property = gf_background_set_property;
 
   install_properties (object_class);
+  install_signals ();
 }
 
 static void

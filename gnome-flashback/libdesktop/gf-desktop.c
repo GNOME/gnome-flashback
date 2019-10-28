@@ -34,6 +34,13 @@ struct _GfDesktop
 G_DEFINE_TYPE (GfDesktop, gf_desktop, G_TYPE_OBJECT)
 
 static void
+ready_cb (GfDesktopWindow *window,
+          GfDesktop       *self)
+{
+  gtk_widget_show (self->window);
+}
+
+static void
 gf_desktop_dispose (GObject *object)
 {
   GfDesktop *self;
@@ -76,6 +83,11 @@ gf_desktop_init (GfDesktop *self)
   g_settings_bind (self->settings, "show-icons",
                    self->window, "show-icons",
                    G_SETTINGS_BIND_GET);
+
+  if (!gf_desktop_window_is_ready (GF_DESKTOP_WINDOW (self->window)))
+    g_signal_connect (self->window, "ready", G_CALLBACK (ready_cb), self);
+  else
+    gtk_widget_show (self->window);
 }
 
 GfDesktop *

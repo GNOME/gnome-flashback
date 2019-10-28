@@ -30,6 +30,8 @@ struct _GfDesktopWindow
 
   gboolean      show_icons;
   GtkWidget    *icon_view;
+
+  gboolean      ready;
 };
 
 enum
@@ -44,7 +46,33 @@ enum
 
 static GParamSpec *window_properties[LAST_PROP] = { NULL };
 
+enum
+{
+  READY,
+
+  LAST_SIGNAL
+};
+
+static guint window_signals[LAST_SIGNAL] = { 0 };
+
 G_DEFINE_TYPE (GfDesktopWindow, gf_desktop_window, GTK_TYPE_WINDOW)
+
+static void
+emit_ready (GfDesktopWindow *self)
+{
+  if (self->ready)
+    return;
+
+  g_signal_emit (self, window_signals[READY], 0);
+  self->ready = TRUE;
+}
+
+static void
+ready_cb (GfBackground    *background,
+          GfDesktopWindow *self)
+{
+  emit_ready (self);
+}
 
 static void
 draw_background_changed (GfDesktopWindow *self)
@@ -53,6 +81,8 @@ draw_background_changed (GfDesktopWindow *self)
     {
       g_assert (self->background == NULL);
       self->background = gf_background_new (GTK_WIDGET (self));
+
+      g_signal_connect (self->background, "ready", G_CALLBACK (ready_cb), self);
     }
   else
     {
@@ -182,6 +212,14 @@ install_properties (GObjectClass *object_class)
 }
 
 static void
+install_signals (void)
+{
+  window_signals[READY] =
+    g_signal_new ("ready", GF_TYPE_DESKTOP_WINDOW, G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+}
+
+static void
 gf_desktop_window_class_init (GfDesktopWindowClass *self_class)
 {
   GObjectClass *object_class;
@@ -193,6 +231,7 @@ gf_desktop_window_class_init (GfDesktopWindowClass *self_class)
   object_class->set_property = gf_desktop_window_set_property;
 
   install_properties (object_class);
+  install_signals ();
 }
 
 static void
@@ -217,4 +256,10 @@ gf_desktop_window_new (gboolean draw_background,
                        "draw-background", draw_background,
                        "show-icons", show_icons,
                        NULL);
+}
+
+gboolean
+gf_desktop_window_is_ready (GfDesktopWindow *self)
+{
+  return self->ready;
 }
