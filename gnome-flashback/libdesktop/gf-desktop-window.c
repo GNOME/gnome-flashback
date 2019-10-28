@@ -93,13 +93,19 @@ static void
 gf_desktop_window_constructed (GObject *object)
 {
   GfDesktopWindow *self;
+  GParamSpecBoolean *spec;
 
   self = GF_DESKTOP_WINDOW (object);
 
   G_OBJECT_CLASS (gf_desktop_window_parent_class)->constructed (object);
 
-  draw_background_changed (self);
-  show_icons_changed (self);
+  spec = (GParamSpecBoolean *) window_properties[PROP_DRAW_BACKGROUND];
+  if (self->draw_background == spec->default_value)
+    draw_background_changed (self);
+
+  spec = (GParamSpecBoolean *) window_properties[PROP_SHOW_ICONS];
+  if (self->show_icons == spec->default_value)
+    show_icons_changed (self);
 }
 
 static void
@@ -168,8 +174,13 @@ gf_desktop_window_class_init (GfDesktopWindowClass *self_class)
 static void
 gf_desktop_window_init (GfDesktopWindow *self)
 {
-  self->draw_background = TRUE;
-  self->show_icons = TRUE;
+  GParamSpecBoolean *spec;
+
+  spec = (GParamSpecBoolean *) window_properties[PROP_DRAW_BACKGROUND];
+  self->draw_background = spec->default_value;
+
+  spec = (GParamSpecBoolean *) window_properties[PROP_SHOW_ICONS];
+  self->show_icons =  spec->default_value;
 }
 
 GtkWidget *
