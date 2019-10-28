@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-10-19 00:14+0000\n"
-"PO-Revision-Date: 2019-10-23 12:07+0200\n"
+"POT-Creation-Date: 2019-10-26 21:28+0000\n"
+"PO-Revision-Date: 2019-10-28 12:26+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -307,6 +307,33 @@ msgid ""
 msgstr ""
 "Si es cierto, la aplicación GNOME Flashback se usará como un vigilante del "
 "estado de las notificaciones."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:5
+#| msgid "Desktop background"
+msgid "Draw desktop background"
+msgstr "Dibujar el fondo del escritorio"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:6
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to draw the "
+#| "desktop background."
+msgid "If set to true, then GNOME Flashback will draw the desktop background."
+msgstr ""
+"Si es cierto, la aplicación GNOME Flashback dibujará el fondo del escritorio."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:11
+msgid "Show desktop icons"
+msgstr "Mostrar iconos del escritorio"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:12
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to draw the "
+#| "desktop background."
+msgid ""
+"If set to true, then GNOME Flashback will draw the icons on the desktop."
+msgstr ""
+"Si es cierto, la aplicación GNOME Flashback dibujará los iconos del "
+"escritorio."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
 msgid "Fade the background on change"
