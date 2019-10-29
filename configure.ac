@@ -158,11 +158,6 @@ PKG_CHECK_MODULES([DESKTOP], [
   gtk+-3.0 >= $GTK_REQUIRED
 ])
 
-PKG_CHECK_MODULES([DESKTOP_BACKGROUND], [
-  gtk+-3.0 >= $GTK_REQUIRED
-  gnome-desktop-3.0 >= $LIBGNOME_DESKTOP_REQUIRED
-])
-
 PKG_CHECK_MODULES([END_SESSION_DIALOG], [
   gio-unix-2.0 >= $GLIB_REQUIRED
   gtk+-3.0 >= $GTK_REQUIRED
@@ -359,7 +354,6 @@ AC_CONFIG_FILES([
   gnome-flashback/libcommon/Makefile
   gnome-flashback/libclipboard/Makefile
   gnome-flashback/libdesktop/Makefile
-  gnome-flashback/libdesktop-background/Makefile
   gnome-flashback/libend-session-dialog/Makefile
   gnome-flashback/libidle-monitor/Makefile
   gnome-flashback/libinput-settings/Makefile

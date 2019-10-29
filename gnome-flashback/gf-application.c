@@ -29,7 +29,6 @@
 #include "libbluetooth-applet/gf-bluetooth-applet.h"
 #include "libclipboard/gf-clipboard.h"
 #include "libdesktop/gf-desktop.h"
-#include "libdesktop-background/gf-desktop-background.h"
 #include "libend-session-dialog/gf-end-session-dialog.h"
 #include "libidle-monitor/flashback-idle-monitor.h"
 #include "libinput-settings/gf-input-settings.h"
@@ -65,7 +64,6 @@ struct _GfApplication
   GfBluetoothApplet       *bluetooth;
   GfClipboard             *clipboard;
   GfDesktop               *desktop;
-  GfDesktopBackground     *background;
   GfEndSessionDialog      *dialog;
   GfInputSettings         *input_settings;
   GfInputSources          *input_sources;
@@ -165,7 +163,6 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (audio_device_selection, "audio-device-selection", gf_audio_device_selection_new)
   SETTING_CHANGED (bluetooth, "bluetooth-applet", gf_bluetooth_applet_new)
   SETTING_CHANGED (desktop, "desktop", gf_desktop_new)
-  SETTING_CHANGED (background, "desktop-background", gf_desktop_background_new)
   SETTING_CHANGED (clipboard, "clipboard", gf_clipboard_new)
   SETTING_CHANGED (dialog, "end-session-dialog", gf_end_session_dialog_new)
   SETTING_CHANGED (input_settings, "input-settings", gf_input_settings_new)
@@ -213,7 +210,6 @@ gf_application_dispose (GObject *object)
   g_clear_object (&application->audio_device_selection);
   g_clear_object (&application->bluetooth);
   g_clear_object (&application->desktop);
-  g_clear_object (&application->background);
   g_clear_object (&application->clipboard);
   g_clear_object (&application->dialog);
   g_clear_object (&application->input_settings);

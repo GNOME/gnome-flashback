@@ -33,12 +33,6 @@
       <summary>Desktop</summary>
     </key>
 
-    <key name="desktop-background" type="b">
-      <default>true</default>
-      <summary>Desktop background</summary>
-      <description>If set to true, then GNOME Flashback application will be used to draw the desktop background.</description>
-    </key>
-
     <key name="end-session-dialog" type="b">
       <default>true</default>
       <summary>End session dialog</summary>
@@ -117,7 +111,6 @@
     </key>
 
     <child schema="org.gnome.gnome-flashback.desktop" name="desktop" />
-    <child schema="org.gnome.gnome-flashback.desktop-background" name="desktop-background" />
     <child schema="org.gnome.gnome-flashback.input-sources" name="input-sources" />
   </schema>
 </schemalist>
