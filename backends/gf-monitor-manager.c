@@ -766,6 +766,7 @@ create_monitor_config_from_variant (GfMonitorManager  *manager,
   GfMonitor *monitor;
   GfMonitorMode *monitor_mode;
   gboolean enable_underscanning;
+  gboolean set_underscanning;
   GfMonitorSpec *monitor_spec;
   GfMonitorModeSpec *monitor_mode_spec;
   GfMonitorConfig *monitor_config;
@@ -804,11 +805,24 @@ create_monitor_config_from_variant (GfMonitorManager  *manager,
     }
 
   enable_underscanning = FALSE;
-  g_variant_lookup (properties_variant, "underscanning", "b", &enable_underscanning);
+  set_underscanning = g_variant_lookup (properties_variant,
+                                        "underscanning", "b",
+                                        &enable_underscanning);
 
   g_variant_unref (properties_variant);
   g_free (connector);
   g_free (mode_id);
+
+  if (set_underscanning)
+    {
+      if (enable_underscanning && !gf_monitor_supports_underscanning (monitor))
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       "Underscanning requested but unsupported");
+
+          return NULL;
+        }
+    }
 
   monitor_spec = gf_monitor_spec_clone (gf_monitor_get_spec (monitor));
 
