@@ -26,10 +26,14 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (GfDesktopWindow, gf_desktop_window,
                       GF, DESKTOP_WINDOW, GtkWindow)
 
-GtkWidget *gf_desktop_window_new      (gboolean         draw_background,
-                                       gboolean         show_icons);
+GtkWidget *gf_desktop_window_new        (gboolean         draw_background,
+                                         gboolean         show_icons);
 
-gboolean   gf_desktop_window_is_ready (GfDesktopWindow *self);
+gboolean   gf_desktop_window_is_ready   (GfDesktopWindow *self);
+
+int        gf_desktop_window_get_width  (GfDesktopWindow *self);
+
+int        gf_desktop_window_get_height (GfDesktopWindow *self);
 
 G_END_DECLS
 

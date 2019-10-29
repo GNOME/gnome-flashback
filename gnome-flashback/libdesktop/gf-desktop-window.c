@@ -36,6 +36,11 @@ struct _GfDesktopWindow
   gboolean         show_icons;
   GtkWidget       *icon_view;
 
+  int              width;
+  int              height;
+
+  guint            move_resize_id;
+
   gboolean         ready;
 };
 
@@ -54,6 +59,7 @@ static GParamSpec *window_properties[LAST_PROP] = { NULL };
 enum
 {
   READY,
+  SIZE_CHANGED,
 
   LAST_SIGNAL
 };
@@ -243,6 +249,116 @@ set_show_icons (GfDesktopWindow *self,
 }
 
 static void
+move_resize (GfDesktopWindow *self)
+{
+  GtkWidget *widget;
+  GdkRectangle rect;
+  GdkDisplay *display;
+  int n_monitors;
+  int i;
+  GdkScreen *screen;
+
+  widget = GTK_WIDGET (self);
+
+  rect = (GdkRectangle) {};
+  display = gdk_display_get_default ();
+  n_monitors = gdk_display_get_n_monitors (display);
+
+  for (i = 0; i < n_monitors; i++)
+    {
+      GdkMonitor *monitor;
+      GdkRectangle geometry;
+
+      monitor = gdk_display_get_monitor (display, i);
+
+      gdk_monitor_get_geometry (monitor, &geometry);
+      gdk_rectangle_union (&rect, &geometry, &rect);
+    }
+
+  if (rect.width < 640)
+    rect.width = 640;
+
+  if (rect.height < 480)
+    rect.height = 480;
+
+  if (rect.width == self->width && rect.height == self->height)
+    return;
+
+  self->width = rect.width;
+  self->height = rect.height;
+
+  if (gtk_widget_get_realized (widget))
+    {
+      GdkWindow *window;
+
+      window = gtk_widget_get_window (widget);
+      gdk_window_move_resize (window, 0, 0, rect.width, rect.height);
+    }
+
+  g_signal_emit (self, window_signals[SIZE_CHANGED], 0);
+
+  screen = gtk_widget_get_screen (widget);
+
+  if (!self->draw_background && !gdk_screen_is_composited (screen))
+    {
+      g_clear_pointer (&self->surface, cairo_surface_destroy);
+      ensure_surface (self);
+    }
+}
+
+static gboolean
+move_resize_cb (gpointer user_data)
+{
+  GfDesktopWindow *self;
+
+  self = GF_DESKTOP_WINDOW (user_data);
+  self->move_resize_id = 0;
+
+  move_resize (self);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+queue_move_resize (GfDesktopWindow *self)
+{
+  if (self->move_resize_id != 0)
+    return;
+
+  self->move_resize_id = g_idle_add (move_resize_cb, self);
+  g_source_set_name_by_id (self->move_resize_id,
+                           "[gnome-flashback] move_resize_cb");
+}
+
+static void
+notify_geometry_cb (GdkMonitor      *monitor,
+                    GParamSpec      *pspec,
+                    GfDesktopWindow *self)
+{
+  queue_move_resize (self);
+}
+
+static void
+monitor_added_cb (GdkDisplay      *display,
+                  GdkMonitor      *monitor,
+                  GfDesktopWindow *self)
+{
+  g_signal_connect_object (monitor, "notify::geometry",
+                           G_CALLBACK (notify_geometry_cb),
+                           self, 0);
+
+  queue_move_resize (self);
+}
+
+static void
+monitor_removed_cb (GdkDisplay      *display,
+                    GdkMonitor      *monitor,
+                    GfDesktopWindow *self)
+{
+  queue_move_resize (self);
+}
+
+static void
 gf_desktop_window_constructed (GObject *object)
 {
   GfDesktopWindow *self;
@@ -282,6 +398,12 @@ gf_desktop_window_finalize (GObject *object)
 
   remove_event_filter (self);
   g_clear_pointer (&self->surface, cairo_surface_destroy);
+
+  if (self->move_resize_id != 0)
+    {
+      g_source_remove (self->move_resize_id);
+      self->move_resize_id = 0;
+    }
 
   G_OBJECT_CLASS (gf_desktop_window_parent_class)->finalize (object);
 }
@@ -332,8 +454,12 @@ gf_desktop_window_draw (GtkWidget *widget,
 static void
 gf_desktop_window_realize (GtkWidget *widget)
 {
+  GfDesktopWindow *self;
   GdkScreen *screen;
   GdkVisual *visual;
+  GdkWindow *window;
+
+  self = GF_DESKTOP_WINDOW (widget);
 
   screen = gtk_widget_get_screen (widget);
   visual = gdk_screen_get_rgba_visual (screen);
@@ -342,6 +468,9 @@ gf_desktop_window_realize (GtkWidget *widget)
     gtk_widget_set_visual (widget, visual);
 
   GTK_WIDGET_CLASS (gf_desktop_window_parent_class)->realize (widget);
+
+  window = gtk_widget_get_window (widget);
+  gdk_window_move_resize (window, 0, 0, self->width, self->height);
 }
 
 static void
@@ -374,6 +503,10 @@ install_signals (void)
   window_signals[READY] =
     g_signal_new ("ready", GF_TYPE_DESKTOP_WINDOW, G_SIGNAL_RUN_LAST,
                   0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+
+  window_signals[SIZE_CHANGED] =
+    g_signal_new ("size-changed", GF_TYPE_DESKTOP_WINDOW, G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 }
 
 static void
@@ -401,6 +534,9 @@ static void
 gf_desktop_window_init (GfDesktopWindow *self)
 {
   GParamSpecBoolean *spec;
+  GdkDisplay *display;
+  int n_monitors;
+  int i;
   GdkScreen *screen;
   GdkWindow *root;
   gint events;
@@ -411,6 +547,28 @@ gf_desktop_window_init (GfDesktopWindow *self)
   spec = (GParamSpecBoolean *) window_properties[PROP_SHOW_ICONS];
   self->show_icons =  spec->default_value;
 
+  display = gdk_display_get_default ();
+  n_monitors = gdk_display_get_n_monitors (display);
+
+  g_signal_connect_object (display, "monitor-added",
+                           G_CALLBACK (monitor_added_cb),
+                           self, 0);
+
+  g_signal_connect_object (display, "monitor-removed",
+                           G_CALLBACK (monitor_removed_cb),
+                           self, 0);
+
+  for (i = 0; i < n_monitors; i++)
+    {
+      GdkMonitor *monitor;
+
+      monitor = gdk_display_get_monitor (display, i);
+
+      g_signal_connect_object (monitor, "notify::geometry",
+                               G_CALLBACK (notify_geometry_cb),
+                               self, 0);
+    }
+
   screen = gtk_widget_get_screen (GTK_WIDGET (self));
   root = gdk_screen_get_root_window (screen);
   events = gdk_window_get_events (root);
@@ -420,6 +578,8 @@ gf_desktop_window_init (GfDesktopWindow *self)
   g_signal_connect_object (screen, "composited-changed",
                            G_CALLBACK (composited_changed_cb),
                            self, 0);
+
+  move_resize (self);
 }
 
 GtkWidget *
@@ -439,4 +599,16 @@ gboolean
 gf_desktop_window_is_ready (GfDesktopWindow *self)
 {
   return self->ready;
+}
+
+int
+gf_desktop_window_get_width (GfDesktopWindow *self)
+{
+  return self->width;
+}
+
+int
+gf_desktop_window_get_height (GfDesktopWindow *self)
+{
+  return self->height;
 }
