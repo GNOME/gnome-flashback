@@ -23,6 +23,9 @@ struct _GfBackground
   GObject    parent;
 
   GtkWidget *window;
+
+  GSettings *settings1;
+  GSettings *settings2;
 };
 
 enum
@@ -46,6 +49,32 @@ enum
 static guint background_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GfBackground, gf_background, G_TYPE_OBJECT)
+
+static void
+gf_background_constructed (GObject *object)
+{
+  GfBackground *self;
+
+  self = GF_BACKGROUND (object);
+
+  G_OBJECT_CLASS (gf_background_parent_class)->constructed (object);
+
+  self->settings1 = g_settings_new ("org.gnome.desktop.background");
+  self->settings2 = g_settings_new ("org.gnome.gnome-flashback.desktop.background");
+}
+
+static void
+gf_background_dispose (GObject *object)
+{
+  GfBackground *self;
+
+  self = GF_BACKGROUND (object);
+
+  g_clear_object (&self->settings1);
+  g_clear_object (&self->settings2);
+
+  G_OBJECT_CLASS (gf_background_parent_class)->dispose (object);
+}
 
 static void
 gf_background_set_property (GObject      *object,
@@ -100,6 +129,8 @@ gf_background_class_init (GfBackgroundClass *self_class)
 
   object_class = G_OBJECT_CLASS (self_class);
 
+  object_class->constructed = gf_background_constructed;
+  object_class->dispose = gf_background_dispose;
   object_class->set_property = gf_background_set_property;
 
   install_properties (object_class);

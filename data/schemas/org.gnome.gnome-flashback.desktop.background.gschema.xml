@@ -1,0 +1,9 @@
+<schemalist gettext-domain="gnome-flashback">
+  <schema id="org.gnome.gnome-flashback.desktop.background" path="/org/gnome/gnome-flashback/desktop/background/">
+    <key name="fade" type="b">
+      <default>true</default>
+      <summary>Fade the background on change</summary>
+      <description>If set to true, then fade effect will be used to change the desktop background.</description>
+    </key>
+  </schema>
+</schemalist>

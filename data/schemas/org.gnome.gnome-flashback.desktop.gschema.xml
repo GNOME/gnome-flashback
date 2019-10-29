@@ -11,5 +11,7 @@
       <summary>Show desktop icons</summary>
       <description>If set to true, then GNOME Flashback will draw the icons on the desktop.</description>
     </key>
+
+    <child schema="org.gnome.gnome-flashback.desktop.background" name="background" />
   </schema>
 </schemalist>

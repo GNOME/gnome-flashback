@@ -8,6 +8,7 @@ data/directories/X-GNOME-Flashback-Settings.directory.desktop.in
 data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in
 data/schemas/org.gnome.gnome-flashback.gschema.xml
 data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml
+data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml
 data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml
 data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml
 data/ui/gf-confirm-display-change-dialog.ui
