@@ -528,6 +528,8 @@ gf_desktop_window_class_init (GfDesktopWindowClass *self_class)
 
   install_properties (object_class);
   install_signals ();
+
+  gtk_widget_class_set_css_name (widget_class, "gf-desktop-window");
 }
 
 static void
