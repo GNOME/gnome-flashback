@@ -69,6 +69,25 @@ static guint window_signals[LAST_SIGNAL] = { 0 };
 G_DEFINE_TYPE (GfDesktopWindow, gf_desktop_window, GTK_TYPE_WINDOW)
 
 static void
+update_css_class (GfDesktopWindow *self)
+{
+  gboolean dark;
+  GtkStyleContext *context;
+
+  dark = FALSE;
+
+  if (self->background != NULL)
+    dark = gf_background_is_dark (self->background);
+
+  context = gtk_widget_get_style_context (GTK_WIDGET (self));
+
+  if (!dark)
+    gtk_style_context_remove_class (context, "dark");
+  else
+    gtk_style_context_add_class (context, "dark");
+}
+
+static void
 ensure_surface (GfDesktopWindow *self)
 {
   GtkWidget *widget;
@@ -80,6 +99,7 @@ ensure_surface (GfDesktopWindow *self)
 
   self->surface = gnome_bg_get_surface_from_root (screen);
   gtk_widget_queue_draw (widget);
+  update_css_class (self);
 }
 
 static GdkFilterReturn
@@ -178,6 +198,13 @@ ready_cb (GfBackground    *background,
 }
 
 static void
+changed_cb (GfBackground    *background,
+            GfDesktopWindow *self)
+{
+  update_css_class (self);
+}
+
+static void
 draw_background_changed (GfDesktopWindow *self)
 {
   if (self->draw_background)
@@ -189,6 +216,10 @@ draw_background_changed (GfDesktopWindow *self)
       self->background = gf_background_new (GTK_WIDGET (self));
 
       g_signal_connect (self->background, "ready", G_CALLBACK (ready_cb), self);
+
+      g_signal_connect (self->background, "changed",
+                        G_CALLBACK (changed_cb),
+                        self);
     }
   else
     {

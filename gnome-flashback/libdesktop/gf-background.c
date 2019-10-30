@@ -66,6 +66,7 @@ static GParamSpec *background_properties[LAST_PROP] = { NULL };
 enum
 {
   READY,
+  CHANGED,
 
   LAST_SIGNAL
 };
@@ -130,6 +131,8 @@ fade_cb (gpointer user_data)
   screen = gtk_widget_get_screen (self->window);
   gnome_bg_set_surface_as_root (screen, self->surface);
 
+  g_signal_emit (self, background_signals[CHANGED], 0);
+
   return G_SOURCE_REMOVE;
 }
 
@@ -179,6 +182,8 @@ change (GfBackground *self,
                                                TRUE);
 
       gnome_bg_set_surface_as_root (screen, self->surface);
+
+      g_signal_emit (self, background_signals[CHANGED], 0);
     }
 
   g_signal_emit (self, background_signals[READY], 0);
@@ -395,6 +400,10 @@ install_signals (void)
   background_signals[READY] =
     g_signal_new ("ready", GF_TYPE_BACKGROUND, G_SIGNAL_RUN_LAST,
                   0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+
+  background_signals[CHANGED] =
+    g_signal_new ("changed", GF_TYPE_BACKGROUND, G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 }
 
 static void
@@ -424,4 +433,16 @@ gf_background_new (GtkWidget *window)
   return g_object_new (GF_TYPE_BACKGROUND,
                        "window", window,
                        NULL);
+}
+
+gboolean
+gf_background_is_dark (GfBackground *self)
+{
+  int width;
+  int height;
+
+  width = gf_desktop_window_get_width (GF_DESKTOP_WINDOW (self->window));
+  height = gf_desktop_window_get_height (GF_DESKTOP_WINDOW (self->window));
+
+  return gnome_bg_is_dark (self->bg, width, height);
 }
