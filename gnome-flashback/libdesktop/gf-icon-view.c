@@ -20,10 +20,12 @@
 
 struct _GfIconView
 {
-  GtkFixed parent;
+  GtkEventBox  parent;
+
+  GtkWidget   *fixed;
 };
 
-G_DEFINE_TYPE (GfIconView, gf_icon_view, GTK_TYPE_FIXED)
+G_DEFINE_TYPE (GfIconView, gf_icon_view, GTK_TYPE_EVENT_BOX)
 
 static void
 gf_icon_view_class_init (GfIconViewClass *self_class)
@@ -33,6 +35,9 @@ gf_icon_view_class_init (GfIconViewClass *self_class)
 static void
 gf_icon_view_init (GfIconView *self)
 {
+  self->fixed = gtk_fixed_new ();
+  gtk_container_add (GTK_CONTAINER (self), self->fixed);
+  gtk_widget_show (self->fixed);
 }
 
 GtkWidget *
