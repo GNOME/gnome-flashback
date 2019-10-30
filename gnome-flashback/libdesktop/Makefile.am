@@ -24,6 +24,8 @@ libdesktop_la_SOURCES = \
 	gf-desktop.h \
 	gf-icon-view.c \
 	gf-icon-view.h \
+	gf-monitor-view.c \
+	gf-monitor-view.h \
 	$(NULL)
 
 libdesktop_la_LDFLAGS = \
