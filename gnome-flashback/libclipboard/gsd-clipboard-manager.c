@@ -252,7 +252,7 @@ static int
 find_content_target (TargetData *tdata,
                      void       *user_data)
 {
-        Atom target = *(Atom *) user_data;
+        Atom target = (Atom) user_data;
 
         return tdata->target == target;
 }
@@ -261,7 +261,7 @@ static int
 find_content_type (TargetData *tdata,
                    void       *user_data)
 {
-        Atom type = *(Atom *) user_data;
+        Atom type = (Atom) user_data;
 
         return tdata->type == type;
 }
