@@ -186,7 +186,9 @@ gf_icon_init (GfIcon *self)
 {
   GtkWidget *box;
   GtkLabel *label;
+#ifdef HAVE_PANGO144
   PangoAttrList *attrs;
+#endif
 
   box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_container_add (GTK_CONTAINER (self), box);
@@ -209,11 +211,13 @@ gf_icon_init (GfIcon *self)
   gtk_label_set_justify (label, GTK_JUSTIFY_CENTER);
   gtk_label_set_yalign (label, 0.0);
 
+#ifdef HAVE_PANGO144
   attrs = pango_attr_list_new ();
   pango_attr_list_insert (attrs, pango_attr_insert_hyphens_new (FALSE));
 
   gtk_label_set_attributes (label, attrs);
   pango_attr_list_unref (attrs);
+#endif
 }
 
 GtkWidget *

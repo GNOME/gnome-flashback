@@ -93,7 +93,6 @@ LIBGNOME_DESKTOP_REQUIRED=3.12.0
 CANBERRA_REQUIRED=0.13
 GLIB_REQUIRED=2.44.0
 GSETTINGS_DESKTOP_SCHEMAS_REQUIRED=3.31.0
-PANGO_REQUIRED=1.44.0
 POLKIT_AGENT_REQUIRED=0.97
 POLKIT_GOBJECT_REQUIRED=0.97
 IBUS_REQUIRED=1.5.2
@@ -157,7 +156,6 @@ PKG_CHECK_MODULES([DESKTOP], [
   gio-2.0 >= $GLIB_REQUIRED
   gnome-desktop-3.0 >= $LIBGNOME_DESKTOP_REQUIRED
   gtk+-3.0 >= $GTK_REQUIRED
-  pango >= $PANGO_REQUIRED
 ])
 
 PKG_CHECK_MODULES([END_SESSION_DIALOG], [
@@ -270,6 +268,14 @@ dnl Tell gvc submodule to not build introspection
 dnl **************************************************************************
 
 AM_CONDITIONAL([HAVE_INTROSPECTION], [false])
+
+dnl **************************************************************************
+dnl Check if we have Pango 1.44.0 or newer
+dnl **************************************************************************
+
+PKG_CHECK_EXISTS([pango >= 1.44.0],
+                 AC_DEFINE([HAVE_PANGO144], [1],
+                           [Define if Pango is 1.44.0 or newer]))
 
 dnl **************************************************************************
 dnl Check if we have XRandR 1.5 or newer
