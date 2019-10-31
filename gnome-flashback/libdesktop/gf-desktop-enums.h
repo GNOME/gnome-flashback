@@ -15,20 +15,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GF_MONITOR_VIEW_H
-#define GF_MONITOR_VIEW_H
+#ifndef GF_DESKTOP_ENUMS_H
+#define GF_DESKTOP_ENUMS_H
 
-#include <gtk/gtk.h>
+#include <glib.h>
 
 G_BEGIN_DECLS
 
-#define GF_TYPE_MONITOR_VIEW (gf_monitor_view_get_type ())
-G_DECLARE_FINAL_TYPE (GfMonitorView, gf_monitor_view, GF, MONITOR_VIEW, GtkFixed)
-
-GtkWidget  *gf_monitor_view_new         (GdkMonitor    *monitor,
-                                         guint          icon_size);
-
-GdkMonitor *gf_monitor_view_get_monitor (GfMonitorView *self);
+typedef enum
+{
+  GF_ICON_SIZE_16PX = 16,
+  GF_ICON_SIZE_22PX = 22,
+  GF_ICON_SIZE_24PX = 24,
+  GF_ICON_SIZE_32PX = 32,
+  GF_ICON_SIZE_48PX = 48,
+  GF_ICON_SIZE_64PX = 64,
+  GF_ICON_SIZE_72PX = 72,
+  GF_ICON_SIZE_96PX = 96,
+  GF_ICON_SIZE_128PX = 128
+} GfIconSize;
 
 G_END_DECLS
 

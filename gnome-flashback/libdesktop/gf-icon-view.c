@@ -18,11 +18,14 @@
 #include "config.h"
 #include "gf-icon-view.h"
 
+#include "gf-desktop-enum-types.h"
 #include "gf-monitor-view.h"
 
 struct _GfIconView
 {
   GtkEventBox  parent;
+
+  GSettings   *settings;
 
   GtkWidget   *fixed;
 };
@@ -71,18 +74,53 @@ workarea_cb (GdkMonitor *monitor,
   gtk_fixed_move (GTK_FIXED (self->fixed), view, workarea.x, workarea.y);
 }
 
+static gboolean
+enum_to_uint (GValue   *value,
+              GVariant *variant,
+              gpointer  user_data)
+{
+  const char *nick;
+  GEnumClass *enum_class;
+  GEnumValue *enum_value;
+
+  nick = g_variant_get_string (variant, NULL);
+
+  enum_class = g_type_class_ref (GF_TYPE_ICON_SIZE);
+  enum_value = g_enum_get_value_by_nick (enum_class, nick);
+  g_type_class_unref (enum_class);
+
+  if (enum_value != NULL)
+    {
+      g_value_set_uint (value, enum_value->value);
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
 static void
 create_monitor_view (GfIconView *self,
                      GdkMonitor *monitor)
 {
+  guint icon_size;
   GdkRectangle workarea;
   GtkWidget *view;
 
+  icon_size = g_settings_get_enum (self->settings, "icon-size");
+
   gdk_monitor_get_workarea (monitor, &workarea);
 
-  view = gf_monitor_view_new (monitor);
+  view = gf_monitor_view_new (monitor, icon_size);
   gtk_fixed_put (GTK_FIXED (self->fixed), view, workarea.x, workarea.y);
   gtk_widget_show (view);
+
+  g_settings_bind_with_mapping (self->settings, "icon-size",
+                                view, "icon-size",
+                                G_SETTINGS_BIND_GET,
+                                enum_to_uint,
+                                NULL,
+                                self,
+                                NULL);
 
   g_signal_connect_object (monitor, "notify::workarea",
                            G_CALLBACK (workarea_cb),
@@ -112,8 +150,25 @@ monitor_removed_cb (GdkDisplay *display,
 }
 
 static void
+gf_icon_view_dispose (GObject *object)
+{
+  GfIconView *self;
+
+  self = GF_ICON_VIEW (object);
+
+  g_clear_object (&self->settings);
+
+  G_OBJECT_CLASS (gf_icon_view_parent_class)->dispose (object);
+}
+
+static void
 gf_icon_view_class_init (GfIconViewClass *self_class)
 {
+  GObjectClass *object_class;
+
+  object_class = G_OBJECT_CLASS (self_class);
+
+  object_class->dispose = gf_icon_view_dispose;
 }
 
 static void
@@ -122,6 +177,8 @@ gf_icon_view_init (GfIconView *self)
   GdkDisplay *display;
   int n_monitors;
   int i;
+
+  self->settings = g_settings_new ("org.gnome.gnome-flashback.desktop.icons");
 
   self->fixed = gtk_fixed_new ();
   gtk_container_add (GTK_CONTAINER (self), self->fixed);

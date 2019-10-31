@@ -1,0 +1,9 @@
+<schemalist gettext-domain="gnome-flashback">
+  <schema id="org.gnome.gnome-flashback.desktop.icons" path="/org/gnome/gnome-flashback/desktop/icons/">
+    <key name="icon-size" enum="org.gnome.gnome-flashback.desktop.GfIconSize">
+      <default>"48px"</default>
+      <summary>Icon size</summary>
+      <description>The size of desktop icons.</description>
+    </key>
+  </schema>
+</schemalist>

@@ -13,5 +13,6 @@
     </key>
 
     <child schema="org.gnome.gnome-flashback.desktop.background" name="background" />
+    <child schema="org.gnome.gnome-flashback.desktop.icons" name="icons" />
   </schema>
 </schemalist>

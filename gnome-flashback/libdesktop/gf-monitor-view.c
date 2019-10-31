@@ -24,6 +24,8 @@ struct _GfMonitorView
 
   GdkMonitor *monitor;
 
+  guint       icon_size;
+
   int         width;
   int         height;
 };
@@ -34,12 +36,26 @@ enum
 
   PROP_MONITOR,
 
+  PROP_ICON_SIZE,
+
   LAST_PROP
 };
 
 static GParamSpec *view_properties[LAST_PROP] = { NULL };
 
 G_DEFINE_TYPE (GfMonitorView, gf_monitor_view, GTK_TYPE_FIXED)
+
+static void
+set_icon_size (GfMonitorView *self,
+               guint          icon_size)
+{
+  if (self->icon_size == icon_size)
+    return;
+
+  self->icon_size = icon_size;
+
+  gtk_widget_queue_resize (GTK_WIDGET (self));
+}
 
 static void
 workarea_cb (GdkMonitor    *monitor,
@@ -101,6 +117,10 @@ gf_monitor_view_set_property (GObject      *object,
         self->monitor = g_value_dup_object (value);
         break;
 
+      case PROP_ICON_SIZE:
+        set_icon_size (self, g_value_get_uint (value));
+        break;
+
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
         break;
@@ -151,6 +171,15 @@ install_properties (GObjectClass *object_class)
                          G_PARAM_WRITABLE |
                          G_PARAM_STATIC_STRINGS);
 
+  view_properties[PROP_ICON_SIZE] =
+    g_param_spec_uint ("icon-size",
+                       "icon-size",
+                       "icon-size",
+                       16, 128, 48,
+                       G_PARAM_CONSTRUCT |
+                       G_PARAM_WRITABLE |
+                       G_PARAM_STATIC_STRINGS);
+
   g_object_class_install_properties (object_class, LAST_PROP, view_properties);
 }
 
@@ -180,10 +209,12 @@ gf_monitor_view_init (GfMonitorView *self)
 }
 
 GtkWidget *
-gf_monitor_view_new (GdkMonitor *monitor)
+gf_monitor_view_new (GdkMonitor *monitor,
+                     guint       icon_size)
 {
   return g_object_new (GF_TYPE_MONITOR_VIEW,
                        "monitor", monitor,
+                       "icon-size", icon_size,
                        NULL);
 }
 
