@@ -993,6 +993,7 @@ gf_monitor_derive_current_mode (GfMonitor *monitor)
   GList *l;
 
   priv = gf_monitor_get_instance_private (monitor);
+  current_mode = NULL;
 
   for (l = priv->modes; l; l = l->next)
     {
