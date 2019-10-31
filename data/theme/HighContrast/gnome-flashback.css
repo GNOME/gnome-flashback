@@ -28,7 +28,7 @@ gf-popup-window.solid {
 
 #gf-candidate-popup gf-candidate-box:selected,
 #gf-candidate-popup gf-candidate-box:hover {
-  background-color: #4a90d9;
+  background-color: #000000;
   color: #ffffff;
   border-radius: 3px;
 }
@@ -61,4 +61,23 @@ gf-popup-window.solid {
 }
 
 #gf-bubble {
+}
+
+gf-icon {
+  margin: 2px;
+}
+
+gf-icon label {
+  border-radius: 3px;
+  color: #ffffff;
+  padding: 2px;
+}
+
+gf-icon:hover image {
+  -gtk-icon-effect: highlight;
+}
+
+gf-icon:selected label {
+  background: #000000;
+  color: #ffffff;
 }
