@@ -29,6 +29,8 @@ libdesktop_la_SOURCES = \
 	gf-icon.h \
 	gf-monitor-view.c \
 	gf-monitor-view.h \
+	gf-utils.c \
+	gf-utils.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 
