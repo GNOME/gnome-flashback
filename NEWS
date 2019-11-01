@@ -1,3 +1,10 @@
+Version 3.34.2
+==============
+- Fix shape region for screenshot select area. (#26)
+- Fix crash with external monitor. (#25)
+- Fix crash in clipboard manager.
+- Updated translations.
+
 Version 3.34.1
 ==============
 - Add clipboard manager. (#19)
