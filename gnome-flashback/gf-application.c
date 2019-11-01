@@ -279,8 +279,8 @@ gf_application_init (GfApplication *application)
   g_signal_connect (settings, "notify::gtk-theme-name",
                     G_CALLBACK (theme_changed), application);
 
-  settings_changed (application->settings, NULL, application);
   theme_changed (settings, NULL, application);
+  settings_changed (application->settings, NULL, application);
 
   application->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,
                                           "org.gnome.Shell",
