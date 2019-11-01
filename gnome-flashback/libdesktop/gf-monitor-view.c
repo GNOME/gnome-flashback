@@ -223,3 +223,9 @@ gf_monitor_view_get_monitor (GfMonitorView *self)
 {
   return self->monitor;
 }
+
+gboolean
+gf_monitor_view_is_primary (GfMonitorView *self)
+{
+  return gdk_monitor_is_primary (self->monitor);
+}

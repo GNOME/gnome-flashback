@@ -30,6 +30,8 @@ GtkWidget  *gf_monitor_view_new         (GdkMonitor    *monitor,
 
 GdkMonitor *gf_monitor_view_get_monitor (GfMonitorView *self);
 
+gboolean    gf_monitor_view_is_primary  (GfMonitorView *self);
+
 G_END_DECLS
 
 #endif
