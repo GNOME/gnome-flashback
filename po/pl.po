@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-10-26 09:53+0000\n"
-"PO-Revision-Date: 2019-10-27 15:52+0200\n"
+"POT-Creation-Date: 2019-10-31 21:43+0000\n"
+"PO-Revision-Date: 2019-11-03 12:38+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -153,22 +153,10 @@ msgid "Desktop"
 msgstr "Pulpit"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
-msgid "Desktop background"
-msgstr "Tło pulpitu"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
-msgid ""
-"If set to true, then GNOME Flashback application will be used to draw the "
-"desktop background."
-msgstr ""
-"Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
-"GNOME będzie używany do wyświetlania tła pulpitu."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "End session dialog"
 msgstr "Okno dialogowe kończenia sesji"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:45
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
@@ -176,11 +164,11 @@ msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
 "GNOME będzie używany do wyświetlania okna dialogowego kończenia sesji."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "Idle monitor"
 msgstr "Monitorowanie bezczynności"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:51
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:45
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
@@ -188,15 +176,15 @@ msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
 "GNOME będzie używany do monitorowania aktywności użytkownika."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
 msgid "Input settings"
 msgstr "Ustawienia wejść"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
 msgid "Keyboard layouts and input methods"
 msgstr "Układy klawiatury i metody wprowadzania"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -205,11 +193,11 @@ msgstr ""
 "GNOME będzie używany do zarządzania układami klawiatury i metodami "
 "wprowadzania."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid "Notification daemon"
 msgstr "Usługa powiadomień"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:68
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
@@ -217,22 +205,22 @@ msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
 "GNOME będzie używany do zarządzania powiadomieniami."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
 msgid "Authentication agent for polkit"
 msgstr "Agent uwierzytelniania dla mechanizmu polkit"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:74
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:68
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
 "Jest to ten sam agent uwierzytelniania, który był dostarczany przez pakiet "
 "PolicyKit-gnome."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
 msgid "Power applet"
 msgstr "Aplet zasilania"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:80
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:74
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
@@ -240,11 +228,11 @@ msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
 "GNOME będzie używany do wyświetlania apletu zasilania."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
 msgid "Screencasts"
 msgstr "Nagrywanie ekranu"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:86
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:80
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -252,11 +240,11 @@ msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
 "GNOME będzie używany do nagrywania ekranu."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 msgid "Screensaver"
 msgstr "Wygaszacz ekranu"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:92
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:86
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
@@ -264,11 +252,11 @@ msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
 "GNOME będzie używany jako wygaszacz ekranu."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
 msgid "Screenshots"
 msgstr "Zrzuty ekranu"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:98
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:92
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -276,22 +264,22 @@ msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
 "GNOME będzie używany do wykonywania zrzutów ekranu."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid "Shell"
 msgstr "Powłoka"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:104
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:98
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
 "GNOME będzie używany jako powłoka."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:109
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
 msgid "Sound applet"
 msgstr "Aplet dźwięku"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:110
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:104
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -301,11 +289,11 @@ msgstr ""
 "GNOME będzie używany do wyświetlania apletu dźwięku. Jest to ten sam aplet, "
 "który wcześniej był częścią Centrum sterowania GNOME."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:115
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:109
 msgid "Status Notifier Watcher"
 msgstr "Obserwator obszaru powiadamiania"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:116
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:110
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -334,17 +322,25 @@ msgstr ""
 "Jeśli jest ustawione na wartość „true”, to tradycyjne środowisko GNOME "
 "będzie wyświetlało ikony na pulpicie."
 
-#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:5
 msgid "Fade the background on change"
 msgstr "Efekt przejścia podczas zmiany tła"
 
-#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:6
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:6
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
 msgstr ""
 "Jeśli jest ustawione na wartość „true”, to efekt przejścia będzie używany do "
 "zmieniania tła pulpitu."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:5
+msgid "Icon size"
+msgstr "Rozmiar ikon"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:6
+msgid "The size of desktop icons."
+msgstr "Rozmiar ikon na pulpicie."
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
 msgid "The background color"
