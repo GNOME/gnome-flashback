@@ -103,14 +103,25 @@ create_monitor_view (GfIconView *self,
                      GdkMonitor *monitor)
 {
   guint icon_size;
+  guint extra_text_width;
+  guint column_spacing;
+  guint row_spacing;
   GdkRectangle workarea;
   GtkWidget *view;
 
   icon_size = g_settings_get_enum (self->settings, "icon-size");
+  extra_text_width = g_settings_get_uint (self->settings, "extra-text-width");
+  column_spacing = g_settings_get_uint (self->settings, "column-spacing");
+  row_spacing = g_settings_get_uint (self->settings, "row-spacing");
 
   gdk_monitor_get_workarea (monitor, &workarea);
 
-  view = gf_monitor_view_new (monitor, icon_size);
+  view = gf_monitor_view_new (monitor,
+                              icon_size,
+                              extra_text_width,
+                              column_spacing,
+                              row_spacing);
+
   gtk_fixed_put (GTK_FIXED (self->fixed), view, workarea.x, workarea.y);
   gtk_widget_show (view);
 
@@ -121,6 +132,18 @@ create_monitor_view (GfIconView *self,
                                 NULL,
                                 self,
                                 NULL);
+
+  g_settings_bind (self->settings, "extra-text-width",
+                   view, "extra-text-width",
+                   G_SETTINGS_BIND_GET);
+
+  g_settings_bind (self->settings, "column-spacing",
+                   view, "column-spacing",
+                   G_SETTINGS_BIND_GET);
+
+  g_settings_bind (self->settings, "row-spacing",
+                   view, "row-spacing",
+                   G_SETTINGS_BIND_GET);
 
   g_signal_connect_object (monitor, "notify::workarea",
                            G_CALLBACK (workarea_cb),

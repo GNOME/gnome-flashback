@@ -5,5 +5,26 @@
       <summary>Icon size</summary>
       <description>The size of desktop icons.</description>
     </key>
+
+    <key name="extra-text-width" type="u">
+      <default>48</default>
+      <range min='0' max='100'/>
+      <summary>Extra text width</summary>
+      <description>Extra width for icon text.</description>
+    </key>
+
+    <key name="column-spacing" type="u">
+      <default>10</default>
+      <range min='0' max='100'/>
+      <summary>Column spacing</summary>
+      <description>The amount of space between columns.</description>
+    </key>
+
+    <key name="row-spacing" type="u">
+      <default>2</default>
+      <range min='0' max='100'/>
+      <summary>Row spacing</summary>
+      <description>The amount of space between rows.</description>
+    </key>
   </schema>
 </schemalist>

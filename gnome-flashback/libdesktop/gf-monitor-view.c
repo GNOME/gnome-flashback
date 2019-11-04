@@ -25,6 +25,9 @@ struct _GfMonitorView
   GdkMonitor *monitor;
 
   guint       icon_size;
+  guint       extra_text_width;
+  guint       column_spacing;
+  guint       row_spacing;
 
   int         width;
   int         height;
@@ -37,6 +40,9 @@ enum
   PROP_MONITOR,
 
   PROP_ICON_SIZE,
+  PROP_EXTRA_TEXT_WIDTH,
+  PROP_COLUMN_SPACING,
+  PROP_ROW_SPACING,
 
   LAST_PROP
 };
@@ -53,6 +59,42 @@ set_icon_size (GfMonitorView *self,
     return;
 
   self->icon_size = icon_size;
+
+  gtk_widget_queue_resize (GTK_WIDGET (self));
+}
+
+static void
+set_extra_text_width (GfMonitorView *self,
+                      guint          extra_text_width)
+{
+  if (self->extra_text_width == extra_text_width)
+    return;
+
+  self->extra_text_width = extra_text_width;
+
+  gtk_widget_queue_resize (GTK_WIDGET (self));
+}
+
+static void
+set_column_spacing (GfMonitorView *self,
+                    guint          column_spacing)
+{
+  if (self->column_spacing == column_spacing)
+    return;
+
+  self->column_spacing = column_spacing;
+
+  gtk_widget_queue_resize (GTK_WIDGET (self));
+}
+
+static void
+set_row_spacing (GfMonitorView *self,
+                 guint          row_spacing)
+{
+  if (self->row_spacing == row_spacing)
+    return;
+
+  self->row_spacing = row_spacing;
 
   gtk_widget_queue_resize (GTK_WIDGET (self));
 }
@@ -101,6 +143,32 @@ gf_monitor_view_dispose (GObject *object)
 }
 
 static void
+gf_monitor_view_get_property (GObject    *object,
+                              guint       property_id,
+                              GValue     *value,
+                              GParamSpec *pspec)
+{
+  GfMonitorView *self;
+
+  self = GF_MONITOR_VIEW (object);
+
+  switch (property_id)
+    {
+      case PROP_ICON_SIZE:
+        g_value_set_uint (value, self->icon_size);
+        break;
+
+      case PROP_EXTRA_TEXT_WIDTH:
+        g_value_set_uint (value, self->extra_text_width);
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
+
+static void
 gf_monitor_view_set_property (GObject      *object,
                               guint         property_id,
                               const GValue *value,
@@ -119,6 +187,18 @@ gf_monitor_view_set_property (GObject      *object,
 
       case PROP_ICON_SIZE:
         set_icon_size (self, g_value_get_uint (value));
+        break;
+
+      case PROP_EXTRA_TEXT_WIDTH:
+        set_extra_text_width (self, g_value_get_uint (value));
+        break;
+
+      case PROP_COLUMN_SPACING:
+        set_column_spacing (self, g_value_get_uint (value));
+        break;
+
+      case PROP_ROW_SPACING:
+        set_row_spacing (self, g_value_get_uint (value));
         break;
 
       default:
@@ -177,6 +257,33 @@ install_properties (GObjectClass *object_class)
                        "icon-size",
                        16, 128, 48,
                        G_PARAM_CONSTRUCT |
+                       G_PARAM_READWRITE |
+                       G_PARAM_STATIC_STRINGS);
+
+  view_properties[PROP_EXTRA_TEXT_WIDTH] =
+    g_param_spec_uint ("extra-text-width",
+                       "extra-text-width",
+                       "extra-text-width",
+                       0, 100, 48,
+                       G_PARAM_CONSTRUCT |
+                       G_PARAM_READWRITE |
+                       G_PARAM_STATIC_STRINGS);
+
+  view_properties[PROP_COLUMN_SPACING] =
+    g_param_spec_uint ("column-spacing",
+                       "column-spacing",
+                       "column-spacing",
+                       0, 100, 10,
+                       G_PARAM_CONSTRUCT |
+                       G_PARAM_WRITABLE |
+                       G_PARAM_STATIC_STRINGS);
+
+  view_properties[PROP_ROW_SPACING] =
+    g_param_spec_uint ("row-spacing",
+                       "row-spacing",
+                       "row-spacing",
+                       0, 100, 10,
+                       G_PARAM_CONSTRUCT |
                        G_PARAM_WRITABLE |
                        G_PARAM_STATIC_STRINGS);
 
@@ -194,6 +301,7 @@ gf_monitor_view_class_init (GfMonitorViewClass *self_class)
 
   object_class->constructed = gf_monitor_view_constructed;
   object_class->dispose = gf_monitor_view_dispose;
+  object_class->get_property = gf_monitor_view_get_property;
   object_class->set_property = gf_monitor_view_set_property;
 
   widget_class->get_preferred_height = gf_monitor_view_get_preferred_height;
@@ -210,11 +318,17 @@ gf_monitor_view_init (GfMonitorView *self)
 
 GtkWidget *
 gf_monitor_view_new (GdkMonitor *monitor,
-                     guint       icon_size)
+                     guint       icon_size,
+                     guint       extra_text_width,
+                     guint       column_spacing,
+                     guint       row_spacing)
 {
   return g_object_new (GF_TYPE_MONITOR_VIEW,
                        "monitor", monitor,
                        "icon-size", icon_size,
+                       "extra-text-width", extra_text_width,
+                       "column-spacing", column_spacing,
+                       "row-spacing", row_spacing,
                        NULL);
 }
 

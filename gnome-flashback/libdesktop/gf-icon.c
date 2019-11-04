@@ -26,6 +26,7 @@ struct _GfIcon
   GFileInfo *info;
 
   guint      icon_size;
+  guint      extra_text_width;
 
   GtkWidget *image;
   GtkWidget *label;
@@ -41,6 +42,7 @@ enum
   PROP_INFO,
 
   PROP_ICON_SIZE,
+  PROP_EXTRA_TEXT_WIDTH,
 
   LAST_PROP
 };
@@ -122,10 +124,32 @@ gf_icon_set_property (GObject      *object,
         gtk_image_set_pixel_size (GTK_IMAGE (self->image), self->icon_size);
         break;
 
+      case PROP_EXTRA_TEXT_WIDTH:
+        self->extra_text_width = g_value_get_uint (value);
+        gtk_widget_queue_resize (GTK_WIDGET (self));
+        break;
+
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
         break;
     }
+}
+
+static void
+gf_icon_get_preferred_width (GtkWidget *widget,
+                             gint      *minimum_width,
+                             gint      *natural_width)
+{
+  GfIcon *self;
+
+  self = GF_ICON (widget);
+
+  GTK_WIDGET_CLASS (gf_icon_parent_class)->get_preferred_width (widget,
+                                                                minimum_width,
+                                                                natural_width);
+
+  *minimum_width += self->extra_text_width;
+  *natural_width += self->extra_text_width;
 }
 
 static void
@@ -160,6 +184,15 @@ install_properties (GObjectClass *object_class)
                        G_PARAM_WRITABLE |
                        G_PARAM_STATIC_STRINGS);
 
+  icon_properties[PROP_EXTRA_TEXT_WIDTH] =
+    g_param_spec_uint ("extra-text-width",
+                       "extra-text-width",
+                       "extra-text-width",
+                       0, 100, 48,
+                       G_PARAM_CONSTRUCT |
+                       G_PARAM_WRITABLE |
+                       G_PARAM_STATIC_STRINGS);
+
   g_object_class_install_properties (object_class, LAST_PROP, icon_properties);
 }
 
@@ -175,6 +208,8 @@ gf_icon_class_init (GfIconClass *self_class)
   object_class->constructed = gf_icon_constructed;
   object_class->dispose = gf_icon_dispose;
   object_class->set_property = gf_icon_set_property;
+
+  widget_class->get_preferred_width = gf_icon_get_preferred_width;
 
   install_properties (object_class);
 
