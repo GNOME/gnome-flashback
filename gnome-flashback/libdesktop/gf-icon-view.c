@@ -19,18 +19,135 @@
 #include "gf-icon-view.h"
 
 #include "gf-desktop-enum-types.h"
+#include "gf-icon.h"
 #include "gf-monitor-view.h"
+#include "gf-utils.h"
 
 struct _GfIconView
 {
-  GtkEventBox  parent;
+  GtkEventBox   parent;
 
-  GSettings   *settings;
+  GFile        *desktop;
 
-  GtkWidget   *fixed;
+  GSettings    *settings;
+
+  GtkWidget    *fixed;
+
+  GCancellable *cancellable;
+
+  GList        *icons;
 };
 
 G_DEFINE_TYPE (GfIconView, gf_icon_view, GTK_TYPE_EVENT_BOX)
+
+static void
+next_files_cb (GObject      *object,
+               GAsyncResult *res,
+               gpointer      user_data)
+{
+  GFileEnumerator *enumerator;
+  GList *files;
+  GError *error;
+  GfIconView *self;
+  GList *l;
+
+  enumerator = G_FILE_ENUMERATOR (object);
+
+  error = NULL;
+  files = g_file_enumerator_next_files_finish (enumerator, res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("%s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  self = GF_ICON_VIEW (user_data);
+
+  for (l = files; l != NULL; l = l->next)
+    {
+      GFileInfo *info;
+      GFile *file;
+      GtkWidget *icon;
+
+      info = l->data;
+      file = g_file_enumerator_get_child (enumerator, info);
+
+      icon = gf_icon_new (file, info);
+      g_object_unref (file);
+
+      g_settings_bind (self->settings, "icon-size",
+                       icon, "icon-size",
+                       G_SETTINGS_BIND_GET);
+
+      g_settings_bind (self->settings, "extra-text-width",
+                       icon, "extra-text-width",
+                       G_SETTINGS_BIND_GET);
+
+      self->icons = g_list_prepend (self->icons, g_object_ref_sink (icon));
+    }
+
+  self->icons = g_list_reverse (self->icons);
+  g_list_free_full (files, g_object_unref);
+}
+
+static void
+enumerate_children_cb (GObject      *object,
+                       GAsyncResult *res,
+                       gpointer      user_data)
+{
+  GFileEnumerator *enumerator;
+  GError *error;
+  GfIconView *self;
+
+  error = NULL;
+  enumerator = g_file_enumerate_children_finish (G_FILE (object), res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("%s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  self = GF_ICON_VIEW (user_data);
+
+  g_file_enumerator_next_files_async (enumerator,
+                                      G_MAXINT32,
+                                      G_PRIORITY_LOW,
+                                      self->cancellable,
+                                      next_files_cb,
+                                      user_data);
+
+  g_object_unref (enumerator);
+}
+
+static void
+enumerate_desktop (GfIconView *self)
+{
+  char *attributes;
+
+  attributes = gf_build_attributes_list (G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                         G_FILE_ATTRIBUTE_STANDARD_ICON,
+                                         NULL);
+
+  self->cancellable = g_cancellable_new ();
+
+  g_file_enumerate_children_async (self->desktop,
+                                   attributes,
+                                   G_FILE_QUERY_INFO_NONE,
+                                   G_PRIORITY_LOW,
+                                   self->cancellable,
+                                   enumerate_children_cb,
+                                   self);
+
+  g_free (attributes);
+}
 
 static GtkWidget *
 find_monitor_view_by_monitor (GfIconView *self,
@@ -151,7 +268,17 @@ gf_icon_view_dispose (GObject *object)
 
   self = GF_ICON_VIEW (object);
 
+  g_clear_object (&self->desktop);
   g_clear_object (&self->settings);
+
+  g_cancellable_cancel (self->cancellable);
+  g_clear_object (&self->cancellable);
+
+  if (self->icons != NULL)
+    {
+      g_list_free_full (self->icons, g_object_unref);
+      self->icons = NULL;
+    }
 
   G_OBJECT_CLASS (gf_icon_view_parent_class)->dispose (object);
 }
@@ -169,9 +296,13 @@ gf_icon_view_class_init (GfIconViewClass *self_class)
 static void
 gf_icon_view_init (GfIconView *self)
 {
+  const char *desktop_dir;
   GdkDisplay *display;
   int n_monitors;
   int i;
+
+  desktop_dir = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
+  self->desktop = g_file_new_for_path (desktop_dir);
 
   self->settings = g_settings_new ("org.gnome.gnome-flashback.desktop.icons");
 
@@ -197,6 +328,8 @@ gf_icon_view_init (GfIconView *self)
       monitor = gdk_display_get_monitor (display, i);
       create_monitor_view (self, monitor);
     }
+
+  enumerate_desktop (self);
 }
 
 GtkWidget *
