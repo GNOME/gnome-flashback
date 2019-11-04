@@ -18,6 +18,7 @@
 #include "config.h"
 #include "gf-monitor-view.h"
 
+#include "gf-desktop-enum-types.h"
 #include "gf-icon.h"
 #include "gf-utils.h"
 
@@ -29,7 +30,7 @@ struct _GfMonitorView
 
   gboolean    grid_points;
 
-  guint       icon_size;
+  GfIconSize  icon_size;
   guint       extra_text_width;
   guint       column_spacing;
   guint       row_spacing;
@@ -404,7 +405,7 @@ gf_monitor_view_get_property (GObject    *object,
         break;
 
       case PROP_ICON_SIZE:
-        g_value_set_uint (value, self->icon_size);
+        g_value_set_enum (value, self->icon_size);
         break;
 
       case PROP_EXTRA_TEXT_WIDTH:
@@ -440,7 +441,7 @@ gf_monitor_view_set_property (GObject      *object,
         break;
 
       case PROP_ICON_SIZE:
-        set_icon_size (self, g_value_get_uint (value));
+        set_icon_size (self, g_value_get_enum (value));
         break;
 
       case PROP_EXTRA_TEXT_WIDTH:
@@ -514,10 +515,11 @@ install_properties (GObjectClass *object_class)
                           G_PARAM_STATIC_STRINGS);
 
   view_properties[PROP_ICON_SIZE] =
-    g_param_spec_uint ("icon-size",
+    g_param_spec_enum ("icon-size",
                        "icon-size",
                        "icon-size",
-                       16, 128, 48,
+                       GF_TYPE_ICON_SIZE,
+                       GF_ICON_SIZE_48PX,
                        G_PARAM_CONSTRUCT |
                        G_PARAM_READWRITE |
                        G_PARAM_STATIC_STRINGS);
@@ -582,7 +584,7 @@ gf_monitor_view_init (GfMonitorView *self)
 
 GtkWidget *
 gf_monitor_view_new (GdkMonitor *monitor,
-                     guint       icon_size,
+                     GfIconSize  icon_size,
                      guint       extra_text_width,
                      guint       column_spacing,
                      guint       row_spacing)

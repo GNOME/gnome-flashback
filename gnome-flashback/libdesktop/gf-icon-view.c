@@ -74,35 +74,11 @@ workarea_cb (GdkMonitor *monitor,
   gtk_fixed_move (GTK_FIXED (self->fixed), view, workarea.x, workarea.y);
 }
 
-static gboolean
-enum_to_uint (GValue   *value,
-              GVariant *variant,
-              gpointer  user_data)
-{
-  const char *nick;
-  GEnumClass *enum_class;
-  GEnumValue *enum_value;
-
-  nick = g_variant_get_string (variant, NULL);
-
-  enum_class = g_type_class_ref (GF_TYPE_ICON_SIZE);
-  enum_value = g_enum_get_value_by_nick (enum_class, nick);
-  g_type_class_unref (enum_class);
-
-  if (enum_value != NULL)
-    {
-      g_value_set_uint (value, enum_value->value);
-      return TRUE;
-    }
-
-  return FALSE;
-}
-
 static void
 create_monitor_view (GfIconView *self,
                      GdkMonitor *monitor)
 {
-  guint icon_size;
+  GfIconSize icon_size;
   guint extra_text_width;
   guint column_spacing;
   guint row_spacing;
@@ -125,13 +101,9 @@ create_monitor_view (GfIconView *self,
   gtk_fixed_put (GTK_FIXED (self->fixed), view, workarea.x, workarea.y);
   gtk_widget_show (view);
 
-  g_settings_bind_with_mapping (self->settings, "icon-size",
-                                view, "icon-size",
-                                G_SETTINGS_BIND_GET,
-                                enum_to_uint,
-                                NULL,
-                                self,
-                                NULL);
+  g_settings_bind (self->settings, "icon-size",
+                   view, "icon-size",
+                   G_SETTINGS_BIND_GET);
 
   g_settings_bind (self->settings, "extra-text-width",
                    view, "extra-text-width",

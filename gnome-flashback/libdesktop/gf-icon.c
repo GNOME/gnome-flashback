@@ -18,20 +18,23 @@
 #include "config.h"
 #include "gf-icon.h"
 
+#include "gf-desktop-enums.h"
+#include "gf-desktop-enum-types.h"
+
 struct _GfIcon
 {
-  GtkButton  parent;
+  GtkButton   parent;
 
-  GFile     *file;
-  GFileInfo *info;
+  GFile      *file;
+  GFileInfo  *info;
 
-  guint      icon_size;
-  guint      extra_text_width;
+  GfIconSize  icon_size;
+  guint       extra_text_width;
 
-  GtkWidget *image;
-  GtkWidget *label;
+  GtkWidget  *image;
+  GtkWidget  *label;
 
-  gboolean   selected;
+  gboolean    selected;
 };
 
 enum
@@ -120,7 +123,7 @@ gf_icon_set_property (GObject      *object,
         break;
 
       case PROP_ICON_SIZE:
-        self->icon_size = g_value_get_uint (value);
+        self->icon_size = g_value_get_enum (value);
         gtk_image_set_pixel_size (GTK_IMAGE (self->image), self->icon_size);
         break;
 
@@ -176,10 +179,11 @@ install_properties (GObjectClass *object_class)
                          G_PARAM_STATIC_STRINGS);
 
   icon_properties[PROP_ICON_SIZE] =
-    g_param_spec_uint ("icon-size",
+    g_param_spec_enum ("icon-size",
                        "icon-size",
                        "icon-size",
-                       16, 128, 48,
+                       GF_TYPE_ICON_SIZE,
+                       GF_ICON_SIZE_48PX,
                        G_PARAM_CONSTRUCT |
                        G_PARAM_WRITABLE |
                        G_PARAM_STATIC_STRINGS);
