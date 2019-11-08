@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-11-03 11:39+0000\n"
-"PO-Revision-Date: 2019-11-05 15:07+0100\n"
+"POT-Creation-Date: 2019-11-05 16:36+0000\n"
+"PO-Revision-Date: 2019-11-08 12:30+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -333,9 +333,32 @@ msgid "Icon size"
 msgstr "Tamaño del icono"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:6
-#| msgid "Show desktop icons"
 msgid "The size of desktop icons."
 msgstr "El tamaño de los iconos del escritorio."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:12
+msgid "Extra text width"
+msgstr "Anchura de texto adicional"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:13
+msgid "Extra width for icon text."
+msgstr "Anchura adicional para el texto del icono."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:19
+msgid "Column spacing"
+msgstr "Espaciado de la columna"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:20
+msgid "The amount of space between columns."
+msgstr "La cantidad de espacio entre columnas."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:26
+msgid "Row spacing"
+msgstr "Espaciado de la fila"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:27
+msgid "The amount of space between rows."
+msgstr "La cantidad de espacio entre filas."
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
 msgid "The background color"
