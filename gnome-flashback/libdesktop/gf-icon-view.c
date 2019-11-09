@@ -23,11 +23,19 @@
 #include "gf-monitor-view.h"
 #include "gf-utils.h"
 
+typedef struct
+{
+  GtkWidget *icon;
+
+  GtkWidget *view;
+} GfIconInfo;
+
 struct _GfIconView
 {
   GtkEventBox   parent;
 
   GFile        *desktop;
+  GFileMonitor *monitor;
 
   GSettings    *settings;
 
@@ -41,6 +49,30 @@ struct _GfIconView
 };
 
 G_DEFINE_TYPE (GfIconView, gf_icon_view, GTK_TYPE_EVENT_BOX)
+
+static GfIconInfo *
+gf_icon_info_new (GtkWidget *icon)
+{
+  GfIconInfo *info;
+
+  info = g_new0 (GfIconInfo, 1);
+  info->icon = g_object_ref_sink (icon);
+
+  info->view = NULL;
+
+  return info;
+}
+
+static void
+gf_icon_info_free (gpointer data)
+{
+  GfIconInfo *info;
+
+  info = (GfIconInfo *) data;
+
+  g_clear_pointer (&info->icon, g_object_unref);
+  g_free (info);
+}
 
 static GList *
 get_monitor_views (GfIconView *self)
@@ -81,13 +113,23 @@ add_icons (GfIconView *self)
 
   for (l = self->icons; l != NULL; l = l->next)
     {
+      GfIconInfo *info;
+
+      info = (GfIconInfo *) l->data;
+
+      if (info->view != NULL)
+        continue;
+
       while (view != NULL)
         {
-          if (!gf_monitor_view_add_icon (GF_MONITOR_VIEW (view->data), l->data))
+          if (!gf_monitor_view_add_icon (GF_MONITOR_VIEW (view->data),
+                                         info->icon))
             {
               view = view->next;
               continue;
             }
+
+          info->view = view->data;
 
           break;
         }
@@ -125,17 +167,176 @@ add_icons_idle (GfIconView *self)
 }
 
 static void
+file_deleted (GfIconView *self,
+              GFile      *deleted_file)
+{
+  GList *l;
+
+  for (l = self->icons; l != NULL; l = l->next)
+    {
+      GfIconInfo *info;
+      GFile *file;
+
+      info = (GfIconInfo *) l->data;
+
+      file = gf_icon_get_file (GF_ICON (info->icon));
+
+      if (g_file_equal (file, deleted_file))
+        {
+          gf_monitor_view_remove_icon (GF_MONITOR_VIEW (info->view),
+                                       info->icon);
+
+          self->icons = g_list_remove_link (self->icons, l);
+          g_list_free_full (l, gf_icon_info_free);
+
+          break;
+        }
+    }
+}
+
+static void
+query_info_cb (GObject      *object,
+               GAsyncResult *res,
+               gpointer      user_data)
+{
+  GFile *file;
+  GFileInfo *file_info;
+  GError *error;
+  GfIconView *self;
+  GtkWidget *icon;
+
+  file = G_FILE (object);
+
+  error = NULL;
+  file_info = g_file_query_info_finish (file, res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("%s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  self = GF_ICON_VIEW (user_data);
+
+  icon = gf_icon_new (file, file_info);
+  g_object_unref (file_info);
+
+  g_settings_bind (self->settings, "icon-size",
+                   icon, "icon-size",
+                   G_SETTINGS_BIND_GET);
+
+  g_settings_bind (self->settings, "extra-text-width",
+                   icon, "extra-text-width",
+                   G_SETTINGS_BIND_GET);
+
+  self->icons = g_list_append (self->icons, gf_icon_info_new (icon));
+
+  add_icons (self);
+}
+
+static void
+file_created (GfIconView *self,
+              GFile      *created_file)
+{
+
+  char *attributes;
+
+  attributes = gf_build_attributes_list (G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                         G_FILE_ATTRIBUTE_STANDARD_ICON,
+                                         NULL);
+
+  g_file_query_info_async (created_file,
+                           attributes,
+                           G_FILE_QUERY_INFO_NONE,
+                           G_PRIORITY_LOW,
+                           self->cancellable,
+                           query_info_cb,
+                           self);
+
+  g_free (attributes);
+}
+
+static void
+desktop_changed_cb (GFileMonitor      *monitor,
+                    GFile             *file,
+                    GFile             *other_file,
+                    GFileMonitorEvent  event_type,
+                    GfIconView        *self)
+{
+  switch (event_type)
+    {
+      case G_FILE_MONITOR_EVENT_CHANGED:
+        break;
+
+      case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
+        break;
+
+      case G_FILE_MONITOR_EVENT_DELETED:
+        file_deleted (self, file);
+        break;
+
+      case G_FILE_MONITOR_EVENT_CREATED:
+        file_created (self, file);
+        break;
+
+      case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
+        break;
+
+      case G_FILE_MONITOR_EVENT_PRE_UNMOUNT:
+        break;
+
+      case G_FILE_MONITOR_EVENT_UNMOUNTED:
+        break;
+
+      case G_FILE_MONITOR_EVENT_MOVED:
+        break;
+
+      case G_FILE_MONITOR_EVENT_RENAMED:
+        break;
+
+      case G_FILE_MONITOR_EVENT_MOVED_IN:
+        break;
+
+      case G_FILE_MONITOR_EVENT_MOVED_OUT:
+        break;
+
+      default:
+        break;
+    }
+}
+
+static void
 view_foreach_cb (GtkWidget *widget,
                  gpointer   user_data)
 {
-  gtk_container_remove (GTK_CONTAINER (user_data), widget);
+  GfIconView *self;
+  GList *l;
+
+  self = GF_ICON_VIEW (user_data);
+
+  for (l = self->icons; l != NULL; l = l->next)
+    {
+      GfIconInfo *info;
+
+      info = (GfIconInfo *) l->data;
+
+      if (info->icon == widget)
+        {
+          gtk_container_remove (GTK_CONTAINER (info->view), widget);
+          info->view = NULL;
+          break;
+        }
+    }
 }
 
 static void
 size_changed_cb (GtkWidget  *view,
                  GfIconView *self)
 {
-  gtk_container_foreach (GTK_CONTAINER (view), view_foreach_cb, view);
+  gtk_container_foreach (GTK_CONTAINER (view), view_foreach_cb, self);
   add_icons_idle (self);
 }
 
@@ -186,7 +387,7 @@ next_files_cb (GObject      *object,
                        icon, "extra-text-width",
                        G_SETTINGS_BIND_GET);
 
-      self->icons = g_list_prepend (self->icons, g_object_ref_sink (icon));
+      self->icons = g_list_prepend (self->icons, gf_icon_info_new (icon));
     }
 
   self->icons = g_list_reverse (self->icons);
@@ -372,6 +573,7 @@ gf_icon_view_dispose (GObject *object)
   self = GF_ICON_VIEW (object);
 
   g_clear_object (&self->desktop);
+  g_clear_object (&self->monitor);
   g_clear_object (&self->settings);
 
   g_cancellable_cancel (self->cancellable);
@@ -379,7 +581,7 @@ gf_icon_view_dispose (GObject *object)
 
   if (self->icons != NULL)
     {
-      g_list_free_full (self->icons, g_object_unref);
+      g_list_free_full (self->icons, gf_icon_info_free);
       self->icons = NULL;
     }
 
@@ -417,12 +619,30 @@ static void
 gf_icon_view_init (GfIconView *self)
 {
   const char *desktop_dir;
+  GError *error;
   GdkDisplay *display;
   int n_monitors;
   int i;
 
   desktop_dir = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
   self->desktop = g_file_new_for_path (desktop_dir);
+
+  error = NULL;
+  self->monitor = g_file_monitor_directory (self->desktop,
+                                            G_FILE_MONITOR_WATCH_MOVES,
+                                            NULL,
+                                            &error);
+
+  if (error != NULL)
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+      return;
+    }
+
+  g_signal_connect (self->monitor, "changed",
+                    G_CALLBACK (desktop_changed_cb),
+                    self);
 
   self->settings = g_settings_new ("org.gnome.gnome-flashback.desktop.icons");
 

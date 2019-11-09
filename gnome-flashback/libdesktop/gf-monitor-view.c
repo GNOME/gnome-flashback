@@ -42,6 +42,9 @@ struct _GfMonitorView
   int         view_width;
   int         view_height;
 
+  int         icon_width;
+  int         icon_height;
+
   int         columns;
   int         rows;
 
@@ -232,6 +235,9 @@ calculate_grid_size (GfMonitorView *self)
 
       rows--;
     }
+
+  self->icon_width = icon_size.width;
+  self->icon_height = icon_size.height;
 
   self->columns = columns;
   self->rows = rows;
@@ -683,4 +689,36 @@ gf_monitor_view_add_icon (GfMonitorView *self,
   gtk_widget_show (icon);
 
   return TRUE;
+}
+
+void
+gf_monitor_view_remove_icon (GfMonitorView *self,
+                             GtkWidget     *icon)
+{
+  GtkAllocation allocation;
+  int column;
+  int row;
+
+  gtk_widget_get_allocation (icon, &allocation);
+  gtk_widget_translate_coordinates (icon, GTK_WIDGET (self),
+                                    0, 0, &allocation.x, &allocation.y);
+
+  for (column = 0; column < self->columns; column++)
+    {
+      for (row = 0; row < self->rows; row++)
+        {
+          GdkRectangle rect;
+
+          rect.x = self->offset_x + column * self->spacing_x;
+          rect.y = self->offset_y + row * self->spacing_y;
+          rect.width = self->icon_width;
+          rect.height = self->icon_height;
+
+          if (gdk_rectangle_intersect (&allocation, &rect, NULL))
+            self->grid[column * self->rows + row]--;
+        }
+    }
+
+  gtk_container_remove (GTK_CONTAINER (self), icon);
+  gtk_widget_hide (icon);
 }

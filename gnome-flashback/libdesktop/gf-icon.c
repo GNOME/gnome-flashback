@@ -279,3 +279,9 @@ gf_icon_set_selected (GfIcon   *self,
   self->selected = selected;
   update_state (self);
 }
+
+GFile *
+gf_icon_get_file (GfIcon *self)
+{
+  return self->file;
+}

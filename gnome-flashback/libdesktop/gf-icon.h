@@ -31,6 +31,8 @@ GtkWidget *gf_icon_new          (GFile     *file,
 void       gf_icon_set_selected (GfIcon    *self,
                                  gboolean   selected);
 
+GFile     *gf_icon_get_file     (GfIcon    *self);
+
 G_END_DECLS
 
 #endif

@@ -39,6 +39,9 @@ gboolean    gf_monitor_view_is_primary  (GfMonitorView *self);
 gboolean    gf_monitor_view_add_icon    (GfMonitorView *self,
                                          GtkWidget     *icon);
 
+void        gf_monitor_view_remove_icon (GfMonitorView *self,
+                                         GtkWidget     *icon);
+
 G_END_DECLS
 
 #endif
