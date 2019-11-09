@@ -36,9 +36,108 @@ struct _GfIconView
   GCancellable *cancellable;
 
   GList        *icons;
+
+  guint         add_icons_id;
 };
 
 G_DEFINE_TYPE (GfIconView, gf_icon_view, GTK_TYPE_EVENT_BOX)
+
+static GList *
+get_monitor_views (GfIconView *self)
+{
+  GList *views;
+  GList *children;
+  GList *l;
+
+  views = NULL;
+
+  children = gtk_container_get_children (GTK_CONTAINER (self->fixed));
+
+  for (l = children; l != NULL; l = l->next)
+    {
+      GfMonitorView *view;
+
+      view = GF_MONITOR_VIEW (l->data);
+
+      if (gf_monitor_view_is_primary (view))
+        views = g_list_prepend (views, view);
+      else
+        views = g_list_append (views, view);
+    }
+
+  g_list_free (children);
+  return views;
+}
+
+static void
+add_icons (GfIconView *self)
+{
+  GList *views;
+  GList *view;
+  GList *l;
+
+  views = get_monitor_views (self);
+  view = views;
+
+  for (l = self->icons; l != NULL; l = l->next)
+    {
+      while (view != NULL)
+        {
+          if (!gf_monitor_view_add_icon (GF_MONITOR_VIEW (view->data), l->data))
+            {
+              view = view->next;
+              continue;
+            }
+
+          break;
+        }
+
+      if (view == NULL)
+        break;
+    }
+
+  g_list_free (views);
+}
+
+static gboolean
+add_icons_cb (gpointer user_data)
+{
+  GfIconView *self;
+
+  self = GF_ICON_VIEW (user_data);
+
+  add_icons (self);
+  self->add_icons_id = 0;
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+add_icons_idle (GfIconView *self)
+{
+  if (self->add_icons_id != 0)
+    return;
+
+  self->add_icons_id = g_idle_add (add_icons_cb, self);
+
+  g_source_set_name_by_id (self->add_icons_id,
+                           "[gnome-flashback] add_icons_cb");
+}
+
+static void
+view_foreach_cb (GtkWidget *widget,
+                 gpointer   user_data)
+{
+  gtk_container_remove (GTK_CONTAINER (user_data), widget);
+}
+
+static void
+size_changed_cb (GtkWidget  *view,
+                 GfIconView *self)
+{
+  gtk_container_foreach (GTK_CONTAINER (view), view_foreach_cb, view);
+  add_icons_idle (self);
+}
 
 static void
 next_files_cb (GObject      *object,
@@ -92,6 +191,8 @@ next_files_cb (GObject      *object,
 
   self->icons = g_list_reverse (self->icons);
   g_list_free_full (files, g_object_unref);
+
+  add_icons (self);
 }
 
 static void
@@ -215,6 +316,8 @@ create_monitor_view (GfIconView *self,
                               column_spacing,
                               row_spacing);
 
+  g_signal_connect (view, "size-changed", G_CALLBACK (size_changed_cb), self);
+
   gtk_fixed_put (GTK_FIXED (self->fixed), view, workarea.x, workarea.y);
   gtk_widget_show (view);
 
@@ -284,6 +387,22 @@ gf_icon_view_dispose (GObject *object)
 }
 
 static void
+gf_icon_view_finalize (GObject *object)
+{
+  GfIconView *self;
+
+  self = GF_ICON_VIEW (object);
+
+  if (self->add_icons_id != 0)
+    {
+      g_source_remove (self->add_icons_id);
+      self->add_icons_id = 0;
+    }
+
+  G_OBJECT_CLASS (gf_icon_view_parent_class)->finalize (object);
+}
+
+static void
 gf_icon_view_class_init (GfIconViewClass *self_class)
 {
   GObjectClass *object_class;
@@ -291,6 +410,7 @@ gf_icon_view_class_init (GfIconViewClass *self_class)
   object_class = G_OBJECT_CLASS (self_class);
 
   object_class->dispose = gf_icon_view_dispose;
+  object_class->finalize = gf_icon_view_finalize;
 }
 
 static void

@@ -50,6 +50,8 @@ struct _GfMonitorView
 
   int         offset_x;
   int         offset_y;
+
+  int        *grid;
 };
 
 enum
@@ -70,7 +72,41 @@ enum
 
 static GParamSpec *view_properties[LAST_PROP] = { NULL };
 
+enum
+{
+  SIZE_CHANGED,
+
+  LAST_SIGNAL
+};
+
+static guint view_signals[LAST_SIGNAL] = { 0 };
+
 G_DEFINE_TYPE (GfMonitorView, gf_monitor_view, GTK_TYPE_FIXED)
+
+static gboolean
+find_free_grid_position (GfMonitorView *self,
+                         int           *column_out,
+                         int           *row_out)
+{
+  int column;
+  int row;
+
+  for (column = 0; column < self->columns; column++)
+    {
+      for (row = 0; row < self->rows; row++)
+        {
+          if (self->grid[column * self->rows + row] == 0)
+            {
+              *column_out = column;
+              *row_out = row;
+
+              return TRUE;
+            }
+        }
+    }
+
+  return FALSE;
+}
 
 static void
 icon_destroy_cb (GtkWidget *widget,
@@ -208,6 +244,11 @@ calculate_grid_size (GfMonitorView *self)
   self->offset_y = (self->view_height - rows * icon_size.height -
                     (rows - 1) * self->row_spacing) / 2;
 
+  g_clear_pointer (&self->grid, g_free);
+  self->grid = g_new0 (int, columns * rows);
+
+  g_signal_emit (self, view_signals[SIZE_CHANGED], 0);
+
   if (self->grid_points)
     gtk_widget_queue_draw (GTK_WIDGET (self));
 }
@@ -342,6 +383,8 @@ gf_monitor_view_finalize (GObject *object)
       g_source_remove (self->grid_size_id);
       self->grid_size_id = 0;
     }
+
+  g_clear_pointer (&self->grid, g_free);
 
   G_OBJECT_CLASS (gf_monitor_view_parent_class)->finalize (object);
 }
@@ -555,6 +598,14 @@ install_properties (GObjectClass *object_class)
 }
 
 static void
+install_signals (void)
+{
+  view_signals[SIZE_CHANGED] =
+    g_signal_new ("size-changed", GF_TYPE_MONITOR_VIEW, G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+}
+
+static void
 gf_monitor_view_class_init (GfMonitorViewClass *self_class)
 {
   GObjectClass *object_class;
@@ -575,6 +626,7 @@ gf_monitor_view_class_init (GfMonitorViewClass *self_class)
   widget_class->get_request_mode = gf_monitor_view_get_request_mode;
 
   install_properties (object_class);
+  install_signals ();
 }
 
 static void
@@ -608,4 +660,27 @@ gboolean
 gf_monitor_view_is_primary (GfMonitorView *self)
 {
   return gdk_monitor_is_primary (self->monitor);
+}
+
+gboolean
+gf_monitor_view_add_icon (GfMonitorView *self,
+                          GtkWidget     *icon)
+{
+  int column;
+  int row;
+  int x;
+  int y;
+
+  if (!find_free_grid_position (self, &column, &row))
+    return FALSE;
+
+  x = self->offset_x + column * self->spacing_x;
+  y = self->offset_y + row * self->spacing_y;
+
+  self->grid[column * self->rows + row] = 1;
+
+  gtk_fixed_put (GTK_FIXED (self), icon, x, y);
+  gtk_widget_show (icon);
+
+  return TRUE;
 }

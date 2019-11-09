@@ -36,6 +36,9 @@ GdkMonitor *gf_monitor_view_get_monitor (GfMonitorView *self);
 
 gboolean    gf_monitor_view_is_primary  (GfMonitorView *self);
 
+gboolean    gf_monitor_view_add_icon    (GfMonitorView *self,
+                                         GtkWidget     *icon);
+
 G_END_DECLS
 
 #endif
