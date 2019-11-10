@@ -80,6 +80,40 @@ update_state (GfIcon *self)
 }
 
 static void
+launch_default_for_uri_cb (GObject      *object,
+                           GAsyncResult *res,
+                           gpointer      user_data)
+{
+  GError *error;
+
+  error = NULL;
+  g_app_info_launch_default_for_uri_finish (res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("%s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+}
+
+static void
+icon_open (GfIcon *self)
+{
+  char *uri;
+
+  uri = g_file_get_uri (self->file);
+
+  g_app_info_launch_default_for_uri_async (uri, NULL, NULL,
+                                           launch_default_for_uri_cb,
+                                           NULL);
+
+  g_free (uri);
+}
+
+static void
 multi_press_pressed_cb (GtkGestureMultiPress *gesture,
                         gint                  n_press,
                         gdouble               x,
@@ -130,6 +164,9 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
         }
 
       gf_icon_set_selected (self, selected, flags);
+
+      if (n_press == 2)
+        icon_open (self);
     }
   else if (button == GDK_BUTTON_SECONDARY)
     {
