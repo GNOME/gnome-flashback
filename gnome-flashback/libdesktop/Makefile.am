@@ -45,6 +45,7 @@ libdesktop_la_LIBADD = \
 
 ENUM_TYPES = \
 	$(srcdir)/gf-desktop-enums.h \
+	$(srcdir)/gf-icon.h \
 	$(NULL)
 
 gf-desktop-enum-types.c: gf-desktop-enum-types.c.in gf-desktop-enum-types.h $(ENUM_TYPES)

@@ -25,6 +25,8 @@ struct _GfIcon
 {
   GtkButton   parent;
 
+  GtkGesture *multi_press;
+
   GFile      *file;
   GFileInfo  *info;
 
@@ -52,6 +54,15 @@ enum
 
 static GParamSpec *icon_properties[LAST_PROP] = { NULL };
 
+enum
+{
+  SELECTED,
+
+  LAST_SIGNAL
+};
+
+static guint icon_signals[LAST_SIGNAL] = { 0 };
+
 G_DEFINE_TYPE (GfIcon, gf_icon, GTK_TYPE_BUTTON)
 
 static void
@@ -66,6 +77,66 @@ update_state (GfIcon *self)
     state |= GTK_STATE_FLAG_SELECTED;
 
   gtk_widget_set_state_flags (GTK_WIDGET (self), state, TRUE);
+}
+
+static void
+multi_press_pressed_cb (GtkGestureMultiPress *gesture,
+                        gint                  n_press,
+                        gdouble               x,
+                        gdouble               y,
+                        GfIcon               *self)
+{
+  guint button;
+  GdkEventSequence *sequence;
+  const GdkEvent *event;
+  GfIconSelectedFlags flags;
+  GdkModifierType state;
+  gboolean control_pressed;
+  gboolean shift_pressed;
+
+  button = gtk_gesture_single_get_current_button (GTK_GESTURE_SINGLE (gesture));
+  sequence = gtk_gesture_single_get_current_sequence (GTK_GESTURE_SINGLE (gesture));
+  event = gtk_gesture_get_last_event (GTK_GESTURE (gesture), sequence);
+  flags = GF_ICON_SELECTED_NONE;
+
+  if (event == NULL)
+    return;
+
+  gdk_event_get_state (event, &state);
+
+  control_pressed = (state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK;
+  shift_pressed = (state & GDK_SHIFT_MASK) == GDK_SHIFT_MASK;
+
+  if (button == GDK_BUTTON_PRIMARY)
+    {
+      gboolean selected;
+
+      if (!control_pressed && !shift_pressed)
+        flags |= GF_ICON_SELECTED_CLEAR;
+
+      if (control_pressed || shift_pressed)
+        {
+          selected = !self->selected;
+
+          if (self->selected)
+            flags |= GF_ICON_SELECTED_REMOVE;
+          else
+            flags |= GF_ICON_SELECTED_ADD;
+        }
+      else
+        {
+          selected = TRUE;
+          flags |= GF_ICON_SELECTED_ADD;
+        }
+
+      gf_icon_set_selected (self, selected, flags);
+    }
+  else if (button == GDK_BUTTON_SECONDARY)
+    {
+    }
+  else if (button == GDK_BUTTON_MIDDLE)
+    {
+    }
 }
 
 static void
@@ -93,6 +164,8 @@ gf_icon_dispose (GObject *object)
   GfIcon *self;
 
   self = GF_ICON (object);
+
+  g_clear_object (&self->multi_press);
 
   g_clear_object (&self->file);
   g_clear_object (&self->info);
@@ -201,6 +274,15 @@ install_properties (GObjectClass *object_class)
 }
 
 static void
+install_signals (void)
+{
+  icon_signals[SELECTED] =
+    g_signal_new ("selected", GF_TYPE_ICON, G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 1,
+                  GF_TYPE_ICON_SELECTED_FLAGS);
+}
+
+static void
 gf_icon_class_init (GfIconClass *self_class)
 {
   GObjectClass *object_class;
@@ -216,6 +298,7 @@ gf_icon_class_init (GfIconClass *self_class)
   widget_class->get_preferred_width = gf_icon_get_preferred_width;
 
   install_properties (object_class);
+  install_signals ();
 
   gtk_widget_class_set_css_name (widget_class, "gf-icon");
 }
@@ -228,6 +311,14 @@ gf_icon_init (GfIcon *self)
 #ifdef HAVE_PANGO144
   PangoAttrList *attrs;
 #endif
+
+  self->multi_press = gtk_gesture_multi_press_new (GTK_WIDGET (self));
+
+  gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (self->multi_press), 0);
+
+  g_signal_connect (self->multi_press, "pressed",
+                    G_CALLBACK (multi_press_pressed_cb),
+                    self);
 
   box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_container_add (GTK_CONTAINER (self), box);
@@ -270,14 +361,17 @@ gf_icon_new (GFile     *file,
 }
 
 void
-gf_icon_set_selected (GfIcon   *self,
-                      gboolean  selected)
+gf_icon_set_selected (GfIcon              *self,
+                      gboolean             selected,
+                      GfIconSelectedFlags  flags)
 {
   if (self->selected == selected)
     return;
 
   self->selected = selected;
   update_state (self);
+
+  g_signal_emit (self, icon_signals[SELECTED], 0, flags);
 }
 
 GFile *

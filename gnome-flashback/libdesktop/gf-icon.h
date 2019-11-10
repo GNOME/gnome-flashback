@@ -22,16 +22,25 @@
 
 G_BEGIN_DECLS
 
+typedef enum
+{
+  GF_ICON_SELECTED_NONE = 0,
+  GF_ICON_SELECTED_CLEAR = (1 << 0),
+  GF_ICON_SELECTED_ADD = (1 << 1),
+  GF_ICON_SELECTED_REMOVE = (1 << 2)
+} GfIconSelectedFlags;
+
 #define GF_TYPE_ICON (gf_icon_get_type ())
 G_DECLARE_FINAL_TYPE (GfIcon, gf_icon, GF, ICON, GtkButton)
 
-GtkWidget *gf_icon_new          (GFile     *file,
-                                 GFileInfo *info);
+GtkWidget *gf_icon_new          (GFile               *file,
+                                 GFileInfo           *info);
 
-void       gf_icon_set_selected (GfIcon    *self,
-                                 gboolean   selected);
+void       gf_icon_set_selected (GfIcon              *self,
+                                 gboolean             selected,
+                                 GfIconSelectedFlags  flags);
 
-GFile     *gf_icon_get_file     (GfIcon    *self);
+GFile     *gf_icon_get_file     (GfIcon              *self);
 
 G_END_DECLS
 

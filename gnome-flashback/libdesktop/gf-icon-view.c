@@ -34,6 +34,8 @@ struct _GfIconView
 {
   GtkEventBox   parent;
 
+  GtkGesture   *multi_press;
+
   GFile        *desktop;
   GFileMonitor *monitor;
 
@@ -46,6 +48,8 @@ struct _GfIconView
   GList        *icons;
 
   guint         add_icons_id;
+
+  GList        *selected_icons;
 };
 
 G_DEFINE_TYPE (GfIconView, gf_icon_view, GTK_TYPE_EVENT_BOX)
@@ -186,12 +190,68 @@ file_deleted (GfIconView *self,
           gf_monitor_view_remove_icon (GF_MONITOR_VIEW (info->view),
                                        info->icon);
 
+          self->selected_icons = g_list_remove (self->selected_icons, l->data);
+
           self->icons = g_list_remove_link (self->icons, l);
           g_list_free_full (l, gf_icon_info_free);
 
           break;
         }
     }
+}
+
+static void
+unselect_cb (gpointer data,
+             gpointer user_data)
+{
+  gf_icon_set_selected (data, FALSE, GF_ICON_SELECTED_NONE);
+}
+
+static void
+unselect_icons (GfIconView *self)
+{
+  if (self->selected_icons == NULL)
+    return;
+
+  g_list_foreach (self->selected_icons, unselect_cb, NULL);
+  g_clear_pointer (&self->selected_icons, g_list_free);
+}
+
+static void
+icon_selected_cb (GfIcon              *icon,
+                  GfIconSelectedFlags  flags,
+                  GfIconView          *self)
+{
+  if ((flags & GF_ICON_SELECTED_CLEAR) == GF_ICON_SELECTED_CLEAR)
+    unselect_icons (self);
+
+  if ((flags & GF_ICON_SELECTED_ADD) == GF_ICON_SELECTED_ADD)
+    self->selected_icons = g_list_append (self->selected_icons, icon);
+
+  if ((flags & GF_ICON_SELECTED_REMOVE) == GF_ICON_SELECTED_REMOVE)
+    self->selected_icons = g_list_remove (self->selected_icons, icon);
+}
+
+static GfIconInfo *
+create_icon_info (GfIconView *self,
+                  GFile      *file,
+                  GFileInfo  *info)
+{
+  GtkWidget *icon;
+
+  icon = gf_icon_new (file, info);
+
+  g_signal_connect (icon, "selected", G_CALLBACK (icon_selected_cb), self);
+
+  g_settings_bind (self->settings, "icon-size",
+                   icon, "icon-size",
+                   G_SETTINGS_BIND_GET);
+
+  g_settings_bind (self->settings, "extra-text-width",
+                   icon, "extra-text-width",
+                   G_SETTINGS_BIND_GET);
+
+  return gf_icon_info_new (icon);
 }
 
 static void
@@ -203,7 +263,7 @@ query_info_cb (GObject      *object,
   GFileInfo *file_info;
   GError *error;
   GfIconView *self;
-  GtkWidget *icon;
+  GfIconInfo *icon_info;
 
   file = G_FILE (object);
 
@@ -221,18 +281,10 @@ query_info_cb (GObject      *object,
 
   self = GF_ICON_VIEW (user_data);
 
-  icon = gf_icon_new (file, file_info);
+  icon_info = create_icon_info (self, file, file_info);
   g_object_unref (file_info);
 
-  g_settings_bind (self->settings, "icon-size",
-                   icon, "icon-size",
-                   G_SETTINGS_BIND_GET);
-
-  g_settings_bind (self->settings, "extra-text-width",
-                   icon, "extra-text-width",
-                   G_SETTINGS_BIND_GET);
-
-  self->icons = g_list_append (self->icons, gf_icon_info_new (icon));
+  self->icons = g_list_append (self->icons, icon_info);
 
   add_icons (self);
 }
@@ -309,6 +361,34 @@ desktop_changed_cb (GFileMonitor      *monitor,
 }
 
 static void
+multi_press_pressed_cb (GtkGestureMultiPress *gesture,
+                        gint                  n_press,
+                        gdouble               x,
+                        gdouble               y,
+                        GfIconView           *self)
+{
+  guint button;
+  GdkEventSequence *sequence;
+  const GdkEvent *event;
+
+  button = gtk_gesture_single_get_current_button (GTK_GESTURE_SINGLE (gesture));
+  sequence = gtk_gesture_single_get_current_sequence (GTK_GESTURE_SINGLE (gesture));
+  event = gtk_gesture_get_last_event (GTK_GESTURE (gesture), sequence);
+
+  if (event == NULL)
+    return;
+
+  unselect_icons (self);
+
+  if (button == GDK_BUTTON_PRIMARY)
+    {
+    }
+  else if (button == GDK_BUTTON_SECONDARY)
+    {
+    }
+}
+
+static void
 view_foreach_cb (GtkWidget *widget,
                  gpointer   user_data)
 {
@@ -371,23 +451,15 @@ next_files_cb (GObject      *object,
     {
       GFileInfo *info;
       GFile *file;
-      GtkWidget *icon;
+      GfIconInfo *icon_info;
 
       info = l->data;
       file = g_file_enumerator_get_child (enumerator, info);
 
-      icon = gf_icon_new (file, info);
+      icon_info = create_icon_info (self, file, info);
       g_object_unref (file);
 
-      g_settings_bind (self->settings, "icon-size",
-                       icon, "icon-size",
-                       G_SETTINGS_BIND_GET);
-
-      g_settings_bind (self->settings, "extra-text-width",
-                       icon, "extra-text-width",
-                       G_SETTINGS_BIND_GET);
-
-      self->icons = g_list_prepend (self->icons, gf_icon_info_new (icon));
+      self->icons = g_list_prepend (self->icons, icon_info);
     }
 
   self->icons = g_list_reverse (self->icons);
@@ -572,6 +644,7 @@ gf_icon_view_dispose (GObject *object)
 
   self = GF_ICON_VIEW (object);
 
+  g_clear_object (&self->multi_press);
   g_clear_object (&self->desktop);
   g_clear_object (&self->monitor);
   g_clear_object (&self->settings);
@@ -584,6 +657,8 @@ gf_icon_view_dispose (GObject *object)
       g_list_free_full (self->icons, gf_icon_info_free);
       self->icons = NULL;
     }
+
+  g_clear_pointer (&self->selected_icons, g_list_free);
 
   G_OBJECT_CLASS (gf_icon_view_parent_class)->dispose (object);
 }
@@ -623,6 +698,14 @@ gf_icon_view_init (GfIconView *self)
   GdkDisplay *display;
   int n_monitors;
   int i;
+
+  self->multi_press = gtk_gesture_multi_press_new (GTK_WIDGET (self));
+
+  gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (self->multi_press), 0);
+
+  g_signal_connect (self->multi_press, "pressed",
+                    G_CALLBACK (multi_press_pressed_cb),
+                    self);
 
   desktop_dir = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
   self->desktop = g_file_new_for_path (desktop_dir);
