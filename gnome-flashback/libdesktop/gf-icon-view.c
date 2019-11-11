@@ -18,6 +18,8 @@
 #include "config.h"
 #include "gf-icon-view.h"
 
+#include <glib/gi18n.h>
+
 #include "gf-desktop-enum-types.h"
 #include "gf-icon.h"
 #include "gf-monitor-view.h"
@@ -372,6 +374,69 @@ desktop_changed_cb (GFileMonitor      *monitor,
 }
 
 static void
+open_terminal_cb (GtkMenuItem *item,
+                  GfIconView  *self)
+{
+  GError *error;
+
+  error = NULL;
+  if (!gf_launch_desktop_file ("org.gnome.Terminal.desktop", &error))
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+    }
+}
+
+static void
+change_background_cb (GtkMenuItem *item,
+                      GfIconView  *self)
+{
+  GError *error;
+
+  error = NULL;
+  if (!gf_launch_desktop_file ("gnome-background-panel.desktop", &error))
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+    }
+}
+
+static GtkWidget *
+create_popup_menu (GfIconView *self)
+{
+  GtkWidget *popup_menu;
+  GtkStyleContext *context;
+  GtkWidget *item;
+
+  popup_menu = gtk_menu_new ();
+
+  context = gtk_widget_get_style_context (popup_menu);
+  gtk_style_context_add_class (context, GTK_STYLE_CLASS_CONTEXT_MENU);
+
+  item = gtk_menu_item_new_with_label (_("Open Terminal"));
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+  gtk_widget_show (item);
+
+  g_signal_connect (item, "activate",
+                    G_CALLBACK (open_terminal_cb),
+                    self);
+
+  item = gtk_separator_menu_item_new ();
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+  gtk_widget_show (item);
+
+  item = gtk_menu_item_new_with_label (_("Change Background"));
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+  gtk_widget_show (item);
+
+  g_signal_connect (item, "activate",
+                    G_CALLBACK (change_background_cb),
+                    self);
+
+  return popup_menu;
+}
+
+static void
 multi_press_pressed_cb (GtkGestureMultiPress *gesture,
                         gint                  n_press,
                         gdouble               x,
@@ -389,13 +454,19 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
   if (event == NULL)
     return;
 
-  unselect_icons (self);
-
   if (button == GDK_BUTTON_PRIMARY)
     {
+      unselect_icons (self);
     }
   else if (button == GDK_BUTTON_SECONDARY)
     {
+      GtkWidget *popup_menu;
+
+      popup_menu = create_popup_menu (self);
+      g_object_ref_sink (popup_menu);
+
+      gtk_menu_popup_at_pointer (GTK_MENU (popup_menu), event);
+      g_object_unref (popup_menu);
     }
 }
 

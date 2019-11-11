@@ -18,6 +18,8 @@
 #include "config.h"
 #include "gf-icon.h"
 
+#include <glib/gi18n.h>
+
 #include "gf-desktop-enums.h"
 #include "gf-desktop-enum-types.h"
 #include "gf-utils.h"
@@ -99,6 +101,36 @@ icon_open (GfIcon *self)
 }
 
 static void
+open_cb (GtkMenuItem *item,
+         GfIcon      *self)
+{
+  icon_open (self);
+}
+
+static GtkWidget *
+create_popup_menu (GfIcon *self)
+{
+  GtkWidget *popup_menu;
+  GtkStyleContext *context;
+  GtkWidget *item;
+
+  popup_menu = gtk_menu_new ();
+
+  context = gtk_widget_get_style_context (popup_menu);
+  gtk_style_context_add_class (context, GTK_STYLE_CLASS_CONTEXT_MENU);
+
+  item = gtk_menu_item_new_with_label (_("Open"));
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+  gtk_widget_show (item);
+
+  g_signal_connect (item, "activate",
+                    G_CALLBACK (open_cb),
+                    self);
+
+  return popup_menu;
+}
+
+static void
 multi_press_pressed_cb (GtkGestureMultiPress *gesture,
                         gint                  n_press,
                         gdouble               x,
@@ -155,6 +187,20 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
     }
   else if (button == GDK_BUTTON_SECONDARY)
     {
+      GtkWidget *popup_menu;
+
+      if (!self->selected && !control_pressed)
+        flags |= GF_ICON_SELECTED_CLEAR;
+      flags |= GF_ICON_SELECTED_ADD;
+
+      gtk_gesture_set_state (GTK_GESTURE (gesture), GTK_EVENT_SEQUENCE_CLAIMED);
+      gf_icon_set_selected (self, TRUE, flags);
+
+      popup_menu = create_popup_menu (self);
+      g_object_ref_sink (popup_menu);
+
+      gtk_menu_popup_at_pointer (GTK_MENU (popup_menu), event);
+      g_object_unref (popup_menu);
     }
   else if (button == GDK_BUTTON_MIDDLE)
     {
