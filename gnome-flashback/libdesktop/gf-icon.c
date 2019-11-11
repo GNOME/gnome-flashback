@@ -382,6 +382,12 @@ gf_icon_new (GFile     *file,
                        NULL);
 }
 
+GFile *
+gf_icon_get_file (GfIcon *self)
+{
+  return self->file;
+}
+
 void
 gf_icon_set_selected (GfIcon              *self,
                       gboolean             selected,
@@ -396,8 +402,8 @@ gf_icon_set_selected (GfIcon              *self,
   g_signal_emit (self, icon_signals[SELECTED], 0, flags);
 }
 
-GFile *
-gf_icon_get_file (GfIcon *self)
+gboolean
+gf_icon_get_selected (GfIcon *self)
 {
-  return self->file;
+  return self->selected;
 }

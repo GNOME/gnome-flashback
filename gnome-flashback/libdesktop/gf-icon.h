@@ -36,11 +36,13 @@ G_DECLARE_FINAL_TYPE (GfIcon, gf_icon, GF, ICON, GtkButton)
 GtkWidget *gf_icon_new          (GFile               *file,
                                  GFileInfo           *info);
 
+GFile     *gf_icon_get_file     (GfIcon              *self);
+
 void       gf_icon_set_selected (GfIcon              *self,
                                  gboolean             selected,
                                  GfIconSelectedFlags  flags);
 
-GFile     *gf_icon_get_file     (GfIcon              *self);
+gboolean   gf_icon_get_selected (GfIcon              *self);
 
 G_END_DECLS
 
