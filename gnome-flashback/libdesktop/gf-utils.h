@@ -22,8 +22,14 @@
 
 G_BEGIN_DECLS
 
-char *gf_build_attributes_list (const char *first,
-                                ...);
+char     *gf_build_attributes_list (const char  *first,
+                                     ...);
+
+gboolean  gf_launch_desktop_file   (const char  *desktop_file,
+                                    GError     **error);
+
+gboolean  gf_launch_uri            (const char  *uri,
+                                    GError     **error);
 
 G_END_DECLS
 
