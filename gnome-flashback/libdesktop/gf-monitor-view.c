@@ -143,7 +143,7 @@ create_dummy_icon (GfMonitorView *self)
       return NULL;
     }
 
-  attributes = gf_build_attributes_list (G_FILE_ATTRIBUTE_STANDARD_NAME,
+  attributes = gf_build_attributes_list (G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
                                          G_FILE_ATTRIBUTE_STANDARD_ICON,
                                          NULL);
 
@@ -167,7 +167,7 @@ create_dummy_icon (GfMonitorView *self)
          "ever since the 1500s, when an unknown printer took a galley of "
          "type and scrambled it to make a type specimen book.";
 
-  g_file_info_set_name (info, name);
+  g_file_info_set_display_name (info, name);
 
   widget = gf_icon_new (file, info);
   g_object_unref (info);

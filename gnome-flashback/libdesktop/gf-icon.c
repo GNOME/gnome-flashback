@@ -176,7 +176,7 @@ gf_icon_constructed (GObject *object)
   gtk_image_set_from_gicon (GTK_IMAGE (self->image), icon, GTK_ICON_SIZE_DIALOG);
   gtk_image_set_pixel_size (GTK_IMAGE (self->image), self->icon_size);
 
-  name = g_file_info_get_name (self->info);
+  name = g_file_info_get_display_name (self->info);
   gtk_label_set_text (GTK_LABEL (self->label), name);
 }
 

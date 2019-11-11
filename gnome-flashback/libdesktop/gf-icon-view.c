@@ -57,7 +57,7 @@ G_DEFINE_TYPE (GfIconView, gf_icon_view, GTK_TYPE_EVENT_BOX)
 static char *
 get_required_attributes (void)
 {
-  return gf_build_attributes_list (G_FILE_ATTRIBUTE_STANDARD_NAME,
+  return gf_build_attributes_list (G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
                                    G_FILE_ATTRIBUTE_STANDARD_ICON,
                                    G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN,
                                    G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP,
