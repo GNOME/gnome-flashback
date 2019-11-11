@@ -29,6 +29,7 @@ build-ubuntu:
                       libpolkit-agent-1-dev
                       libpolkit-gobject-1-dev
                       libpulse-dev
+                      libsystemd-dev
                       libtool
                       libupower-glib-dev
                       libx11-dev
