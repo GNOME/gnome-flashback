@@ -150,7 +150,7 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
 
       gf_icon_set_selected (self, selected, flags);
 
-      if (n_press == 2)
+      if (!control_pressed && n_press == 2)
         icon_open (self);
     }
   else if (button == GDK_BUTTON_SECONDARY)
