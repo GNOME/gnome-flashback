@@ -388,6 +388,18 @@ gf_icon_get_file (GfIcon *self)
   return self->file;
 }
 
+gboolean
+gf_icon_is_hidden (GfIcon *self)
+{
+  gboolean hidden;
+  gboolean backup;
+
+  hidden = g_file_info_get_is_hidden (self->info);
+  backup = g_file_info_get_is_backup (self->info);
+
+  return hidden || backup;
+}
+
 void
 gf_icon_set_selected (GfIcon              *self,
                       gboolean             selected,

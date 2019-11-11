@@ -38,6 +38,8 @@ GtkWidget *gf_icon_new          (GFile               *file,
 
 GFile     *gf_icon_get_file     (GfIcon              *self);
 
+gboolean   gf_icon_is_hidden    (GfIcon              *self);
+
 void       gf_icon_set_selected (GfIcon              *self,
                                  gboolean             selected,
                                  GfIconSelectedFlags  flags);

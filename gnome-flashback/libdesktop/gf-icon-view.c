@@ -54,6 +54,16 @@ struct _GfIconView
 
 G_DEFINE_TYPE (GfIconView, gf_icon_view, GTK_TYPE_EVENT_BOX)
 
+static char *
+get_required_attributes (void)
+{
+  return gf_build_attributes_list (G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                   G_FILE_ATTRIBUTE_STANDARD_ICON,
+                                   G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN,
+                                   G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP,
+                                   NULL);
+}
+
 static GfIconInfo *
 gf_icon_info_new (GtkWidget *icon)
 {
@@ -120,6 +130,9 @@ add_icons (GfIconView *self)
       GfIconInfo *info;
 
       info = (GfIconInfo *) l->data;
+
+      if (gf_icon_is_hidden (GF_ICON (info->icon)))
+        continue;
 
       if (info->view != NULL)
         continue;
@@ -296,9 +309,7 @@ file_created (GfIconView *self,
 
   char *attributes;
 
-  attributes = gf_build_attributes_list (G_FILE_ATTRIBUTE_STANDARD_NAME,
-                                         G_FILE_ATTRIBUTE_STANDARD_ICON,
-                                         NULL);
+  attributes = get_required_attributes ();
 
   g_file_query_info_async (created_file,
                            attributes,
@@ -506,9 +517,7 @@ enumerate_desktop (GfIconView *self)
 {
   char *attributes;
 
-  attributes = gf_build_attributes_list (G_FILE_ATTRIBUTE_STANDARD_NAME,
-                                         G_FILE_ATTRIBUTE_STANDARD_ICON,
-                                         NULL);
+  attributes = get_required_attributes ();
 
   self->cancellable = g_cancellable_new ();
 
