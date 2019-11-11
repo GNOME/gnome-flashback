@@ -20,6 +20,7 @@
 
 #include "gf-desktop-enums.h"
 #include "gf-desktop-enum-types.h"
+#include "gf-utils.h"
 
 struct _GfIcon
 {
@@ -80,35 +81,19 @@ update_state (GfIcon *self)
 }
 
 static void
-launch_default_for_uri_cb (GObject      *object,
-                           GAsyncResult *res,
-                           gpointer      user_data)
-{
-  GError *error;
-
-  error = NULL;
-  g_app_info_launch_default_for_uri_finish (res, &error);
-
-  if (error != NULL)
-    {
-      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
-        g_warning ("%s", error->message);
-
-      g_error_free (error);
-      return;
-    }
-}
-
-static void
 icon_open (GfIcon *self)
 {
   char *uri;
+  GError *error;
 
   uri = g_file_get_uri (self->file);
 
-  g_app_info_launch_default_for_uri_async (uri, NULL, NULL,
-                                           launch_default_for_uri_cb,
-                                           NULL);
+  error = NULL;
+  if (!gf_launch_uri (uri, &error))
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+    }
 
   g_free (uri);
 }
