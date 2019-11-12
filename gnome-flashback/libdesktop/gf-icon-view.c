@@ -55,6 +55,7 @@ struct _GfIconView
 
   GList           *selected_icons;
 
+  GtkCssProvider  *rubberband_css;
   GtkStyleContext *rubberband_style;
   GdkRectangle     rubberband_rect;
   GList           *rubberband_icons;
@@ -970,6 +971,7 @@ gf_icon_view_dispose (GObject *object)
 
   g_clear_pointer (&self->selected_icons, g_list_free);
 
+  g_clear_object (&self->rubberband_css);
   g_clear_object (&self->rubberband_style);
   g_clear_pointer (&self->rubberband_icons, g_list_free);
 
@@ -998,10 +1000,14 @@ static void
 ensure_rubberband_style (GfIconView *self)
 {
   GtkWidgetPath *path;
+  GdkScreen *screen;
+  GtkStyleProvider *provider;
+  guint priority;
 
   if (self->rubberband_style != NULL)
     return;
 
+  self->rubberband_css = gtk_css_provider_new ();
   self->rubberband_style = gtk_style_context_new ();
 
   path = gtk_widget_path_new ();
@@ -1012,6 +1018,12 @@ ensure_rubberband_style (GfIconView *self)
 
   gtk_style_context_set_path (self->rubberband_style, path);
   gtk_widget_path_unref (path);
+
+  screen = gtk_widget_get_screen (GTK_WIDGET (self));
+  provider = GTK_STYLE_PROVIDER (self->rubberband_css);
+  priority = GTK_STYLE_PROVIDER_PRIORITY_APPLICATION;
+
+  gtk_style_context_add_provider_for_screen (screen, provider, priority);
 }
 
 static gboolean
@@ -1147,4 +1159,47 @@ GtkWidget *
 gf_icon_view_new (void)
 {
   return g_object_new (GF_TYPE_ICON_VIEW, NULL);
+}
+
+void
+gf_icon_view_set_representative_color (GfIconView *self,
+                                       GdkRGBA    *color)
+{
+  ensure_rubberband_style (self);
+
+  if (color != NULL)
+    {
+      double shade;
+      GdkRGBA background;
+      GdkRGBA border;
+      char *background_css;
+      char *border_css;
+      char *css;
+
+      shade = color->green < 0.5 ? 1.1 : 0.9;
+
+      background = *color;
+      background.alpha = 0.6;
+
+      border.red = color->red * shade;
+      border.green = color->green * shade;
+      border.blue = color->green * shade;
+      border.alpha = 1.0;
+
+      background_css = gdk_rgba_to_string (&background);
+      border_css = gdk_rgba_to_string (&border);
+
+      css = g_strdup_printf (".rubberband { background-color: %s; border: 1px solid %s; }",
+                             background_css, border_css);
+
+      g_free (background_css);
+      g_free (border_css);
+
+      gtk_css_provider_load_from_data (self->rubberband_css, css, -1, NULL);
+      g_free (css);
+    }
+  else
+    {
+      gtk_css_provider_load_from_data (self->rubberband_css, "", -1, NULL);
+    }
 }

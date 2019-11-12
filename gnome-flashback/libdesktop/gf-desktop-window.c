@@ -20,6 +20,7 @@
 
 #include <gdk/gdkx.h>
 #include <libgnome-desktop/gnome-bg.h>
+#include <X11/Xatom.h>
 
 #include "gf-background.h"
 #include "gf-icon-view.h"
@@ -67,6 +68,76 @@ enum
 static guint window_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GfDesktopWindow, gf_desktop_window, GTK_TYPE_WINDOW)
+
+static gboolean
+get_representative_color (GfDesktopWindow *self,
+                          GdkRGBA         *color)
+{
+  GdkDisplay *display;
+  Display *xdisplay;
+  Atom atom;
+  int status;
+  Atom actual_type;
+  int actual_format;
+  unsigned long n_items;
+  unsigned long bytes_after;
+  unsigned char *prop;
+
+  display = gtk_widget_get_display (GTK_WIDGET (self));
+  xdisplay = gdk_x11_display_get_xdisplay (display);
+
+  atom = XInternAtom (xdisplay, "_GNOME_BACKGROUND_REPRESENTATIVE_COLORS", True);
+  if (atom == None)
+    return FALSE;
+
+  gdk_x11_display_error_trap_push (display);
+
+  status = XGetWindowProperty (xdisplay,
+                               XDefaultRootWindow (xdisplay),
+                               atom,
+                               0,
+                               G_MAXLONG,
+                               False,
+                               XA_STRING,
+                               &actual_type,
+                               &actual_format,
+                               &n_items,
+                               &bytes_after,
+                               &prop);
+
+  gdk_x11_display_error_trap_pop_ignored (display);
+
+  if (status != Success)
+    return FALSE;
+
+  if (n_items == 0)
+    {
+      XFree (prop);
+      return FALSE;
+    }
+
+  gdk_rgba_parse (color, (const char *) prop);
+  XFree (prop);
+
+  return TRUE;
+}
+
+static void
+update_representative_color (GfDesktopWindow *self)
+{
+  GdkRGBA color;
+  GfIconView *icon_view;
+
+  icon_view = GF_ICON_VIEW (self->icon_view);
+
+  if (icon_view == NULL)
+    return;
+
+  if (get_representative_color (self, &color))
+    gf_icon_view_set_representative_color (icon_view, &color);
+  else
+    gf_icon_view_set_representative_color (icon_view, NULL);
+}
 
 static void
 update_css_class (GfDesktopWindow *self)
@@ -202,6 +273,7 @@ changed_cb (GfBackground    *background,
             GfDesktopWindow *self)
 {
   update_css_class (self);
+  update_representative_color (self);
 }
 
 static void
@@ -246,6 +318,8 @@ show_icons_changed (GfDesktopWindow *self)
     {
       g_assert (self->icon_view == NULL);
       self->icon_view = gf_icon_view_new ();
+
+      update_representative_color (self);
 
       gtk_container_add (GTK_CONTAINER (self), self->icon_view);
       gtk_widget_show (self->icon_view);

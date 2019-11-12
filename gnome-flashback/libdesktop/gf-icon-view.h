@@ -25,7 +25,10 @@ G_BEGIN_DECLS
 #define GF_TYPE_ICON_VIEW (gf_icon_view_get_type ())
 G_DECLARE_FINAL_TYPE (GfIconView, gf_icon_view, GF, ICON_VIEW, GtkEventBox)
 
-GtkWidget *gf_icon_view_new (void);
+GtkWidget *gf_icon_view_new                      (void);
+
+void       gf_icon_view_set_representative_color (GfIconView *self,
+                                                  GdkRGBA    *color);
 
 G_END_DECLS
 
