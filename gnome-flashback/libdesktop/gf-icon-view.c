@@ -34,24 +34,29 @@ typedef struct
 
 struct _GfIconView
 {
-  GtkEventBox   parent;
+  GtkEventBox      parent;
 
-  GtkGesture   *multi_press;
+  GtkGesture      *multi_press;
+  GtkGesture      *drag;
 
-  GFile        *desktop;
-  GFileMonitor *monitor;
+  GFile           *desktop;
+  GFileMonitor    *monitor;
 
-  GSettings    *settings;
+  GSettings       *settings;
 
-  GtkWidget    *fixed;
+  GtkWidget       *fixed;
 
-  GCancellable *cancellable;
+  GCancellable    *cancellable;
 
-  GList        *icons;
+  GList           *icons;
 
-  guint         add_icons_id;
+  guint            add_icons_id;
 
-  GList        *selected_icons;
+  GList           *selected_icons;
+
+  GtkStyleContext *rubberband_style;
+  GdkRectangle     rubberband_rect;
+  GList           *rubberband_icons;
 };
 
 G_DEFINE_TYPE (GfIconView, gf_icon_view, GTK_TYPE_EVENT_BOX)
@@ -206,6 +211,7 @@ file_deleted (GfIconView *self,
                                        info->icon);
 
           self->selected_icons = g_list_remove (self->selected_icons, l->data);
+          self->rubberband_icons = g_list_remove (self->rubberband_icons, l->data);
 
           self->icons = g_list_remove_link (self->icons, l);
           g_list_free_full (l, gf_icon_info_free);
@@ -456,11 +462,26 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
 
   if (button == GDK_BUTTON_PRIMARY)
     {
-      unselect_icons (self);
+      GdkModifierType state;
+      gboolean control_pressed;
+      gboolean shift_pressed;
+
+      gdk_event_get_state (event, &state);
+
+      control_pressed = (state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK;
+      shift_pressed = (state & GDK_SHIFT_MASK) == GDK_SHIFT_MASK;
+
+      if (!control_pressed && !shift_pressed)
+        {
+          g_clear_pointer (&self->rubberband_icons, g_list_free);
+          unselect_icons (self);
+        }
     }
   else if (button == GDK_BUTTON_SECONDARY)
     {
       GtkWidget *popup_menu;
+
+      unselect_icons (self);
 
       popup_menu = create_popup_menu (self);
       g_object_ref_sink (popup_menu);
@@ -468,6 +489,154 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
       gtk_menu_popup_at_pointer (GTK_MENU (popup_menu), event);
       g_object_unref (popup_menu);
     }
+}
+
+static void
+drag_begin_cb (GtkGestureDrag *gesture,
+               gdouble         start_x,
+               gdouble         start_y,
+               GfIconView     *self)
+{
+  self->rubberband_rect = (GdkRectangle) { 0 };
+
+  gtk_widget_queue_draw (GTK_WIDGET (self));
+}
+
+static void
+drag_end_cb (GtkGestureDrag *gesture,
+             gdouble         offset_x,
+             gdouble         offset_y,
+             GfIconView     *self)
+{
+
+  g_clear_pointer (&self->rubberband_icons, g_list_free);
+  gtk_widget_queue_draw (GTK_WIDGET (self));
+}
+
+static void
+drag_update_cb (GtkGestureDrag *gesture,
+                gdouble         offset_x,
+                gdouble         offset_y,
+                GfIconView     *self)
+{
+  double start_x;
+  double start_y;
+  GdkRectangle old_rect;
+
+  gtk_gesture_drag_get_start_point (GTK_GESTURE_DRAG (self->drag),
+                                    &start_x, &start_y);
+
+  old_rect = self->rubberband_rect;
+  self->rubberband_rect = (GdkRectangle) {
+    .x = start_x,
+    .y = start_y,
+    .width = ABS (offset_x),
+    .height = ABS (offset_y)
+  };
+
+  if (offset_x < 0)
+    self->rubberband_rect.x += offset_x;
+
+  if (offset_y < 0)
+    self->rubberband_rect.y += offset_y;
+
+  if ((self->rubberband_rect.x > old_rect.x ||
+       self->rubberband_rect.y > old_rect.y ||
+       self->rubberband_rect.width < old_rect.width ||
+       self->rubberband_rect.height < old_rect.height) &&
+      self->rubberband_icons != NULL)
+    {
+      GList *rubberband_icons;
+      GList *l;
+
+      rubberband_icons = g_list_copy (self->rubberband_icons);
+
+      for (l = rubberband_icons; l != NULL; l = l->next)
+        {
+          GfIcon *icon;
+          GtkAllocation allocation;
+
+          icon = l->data;
+
+          gtk_widget_get_allocation (GTK_WIDGET (icon), &allocation);
+
+          if (!gdk_rectangle_intersect (&self->rubberband_rect,
+                                        &allocation,
+                                        NULL))
+            {
+              if (gf_icon_get_selected (icon))
+                gf_icon_set_selected (icon, FALSE, GF_ICON_SELECTED_REMOVE);
+              else
+                gf_icon_set_selected (icon, TRUE, GF_ICON_SELECTED_ADD);
+
+              self->rubberband_icons = g_list_remove (self->rubberband_icons,
+                                                      icon);
+            }
+        }
+
+      g_list_free (rubberband_icons);
+    }
+
+  if (self->rubberband_rect.x < old_rect.x ||
+      self->rubberband_rect.y < old_rect.y ||
+      self->rubberband_rect.width > old_rect.width ||
+      self->rubberband_rect.height > old_rect.height)
+    {
+      GList *rubberband_icons;
+      GList *monitor_views;
+      GList *l;
+
+      rubberband_icons = NULL;
+      monitor_views = get_monitor_views (self);
+
+      for (l = monitor_views; l != NULL; l = l->next)
+        {
+          GfMonitorView *monitor_view;
+          GtkAllocation allocation;
+          GdkRectangle rect;
+
+          monitor_view = l->data;
+
+          gtk_widget_get_allocation (GTK_WIDGET (monitor_view), &allocation);
+
+          if (gdk_rectangle_intersect (&self->rubberband_rect,
+                                       &allocation,
+                                       &rect))
+            {
+              GList *icons;
+
+              icons = gf_monitor_view_get_icons (monitor_view, &rect);
+              rubberband_icons = g_list_concat (rubberband_icons, icons);
+            }
+        }
+
+      g_list_free (monitor_views);
+
+      if (rubberband_icons != NULL)
+        {
+          for (l = rubberband_icons; l != NULL; l = l->next)
+            {
+              GfIcon *icon;
+
+              icon = l->data;
+
+              if (g_list_find (self->rubberband_icons, icon) != NULL)
+                continue;
+
+              self->rubberband_icons = g_list_prepend (self->rubberband_icons,
+                                                       icon);
+
+              if (gf_icon_get_selected (icon))
+                gf_icon_set_selected (icon, FALSE, GF_ICON_SELECTED_REMOVE);
+              else
+                gf_icon_set_selected (icon, TRUE, GF_ICON_SELECTED_ADD);
+            }
+
+          g_list_free (rubberband_icons);
+        }
+    }
+
+  gtk_widget_queue_draw (GTK_WIDGET (self));
 }
 
 static void
@@ -725,6 +894,8 @@ gf_icon_view_dispose (GObject *object)
   self = GF_ICON_VIEW (object);
 
   g_clear_object (&self->multi_press);
+  g_clear_object (&self->drag);
+
   g_clear_object (&self->desktop);
   g_clear_object (&self->monitor);
   g_clear_object (&self->settings);
@@ -739,6 +910,9 @@ gf_icon_view_dispose (GObject *object)
     }
 
   g_clear_pointer (&self->selected_icons, g_list_free);
+
+  g_clear_object (&self->rubberband_style);
+  g_clear_pointer (&self->rubberband_icons, g_list_free);
 
   G_OBJECT_CLASS (gf_icon_view_parent_class)->dispose (object);
 }
@@ -760,14 +934,72 @@ gf_icon_view_finalize (GObject *object)
 }
 
 static void
+ensure_rubberband_style (GfIconView *self)
+{
+  GtkWidgetPath *path;
+
+  if (self->rubberband_style != NULL)
+    return;
+
+  self->rubberband_style = gtk_style_context_new ();
+
+  path = gtk_widget_path_new ();
+
+  gtk_widget_path_append_type (path, G_TYPE_NONE);
+  gtk_widget_path_iter_set_object_name (path, -1, "rubberband");
+  gtk_widget_path_iter_add_class (path, -1, GTK_STYLE_CLASS_RUBBERBAND);
+
+  gtk_style_context_set_path (self->rubberband_style, path);
+  gtk_widget_path_unref (path);
+}
+
+static gboolean
+gf_icon_view_draw (GtkWidget *widget,
+                   cairo_t   *cr)
+{
+  GfIconView *self;
+
+  self = GF_ICON_VIEW (widget);
+
+  GTK_WIDGET_CLASS (gf_icon_view_parent_class)->draw (widget, cr);
+
+  if (!gtk_gesture_is_recognized (GTK_GESTURE (self->drag)))
+    return TRUE;
+
+  ensure_rubberband_style (self);
+
+  cairo_save (cr);
+
+  gtk_render_background (self->rubberband_style, cr,
+                         self->rubberband_rect.x,
+                         self->rubberband_rect.y,
+                         self->rubberband_rect.width,
+                         self->rubberband_rect.height);
+
+  gtk_render_frame (self->rubberband_style, cr,
+                    self->rubberband_rect.x,
+                    self->rubberband_rect.y,
+                    self->rubberband_rect.width,
+                    self->rubberband_rect.height);
+
+  cairo_restore (cr);
+
+  return TRUE;
+}
+
+static void
 gf_icon_view_class_init (GfIconViewClass *self_class)
 {
   GObjectClass *object_class;
+  GtkWidgetClass *widget_class;
 
   object_class = G_OBJECT_CLASS (self_class);
+  widget_class = GTK_WIDGET_CLASS (self_class);
 
   object_class->dispose = gf_icon_view_dispose;
   object_class->finalize = gf_icon_view_finalize;
+
+  widget_class->draw = gf_icon_view_draw;
 }
 
 static void
@@ -780,11 +1012,24 @@ gf_icon_view_init (GfIconView *self)
   int i;
 
   self->multi_press = gtk_gesture_multi_press_new (GTK_WIDGET (self));
+  self->drag = gtk_gesture_drag_new (GTK_WIDGET (self));
 
   gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (self->multi_press), 0);
 
   g_signal_connect (self->multi_press, "pressed",
                     G_CALLBACK (multi_press_pressed_cb),
+                    self);
+
+  g_signal_connect (self->drag, "drag-begin",
+                    G_CALLBACK (drag_begin_cb),
+                    self);
+
+  g_signal_connect (self->drag, "drag-end",
+                    G_CALLBACK (drag_end_cb),
+                    self);
+
+  g_signal_connect (self->drag, "drag-update",
+                    G_CALLBACK (drag_update_cb),
                     self);
 
   desktop_dir = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);

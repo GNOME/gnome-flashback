@@ -722,3 +722,33 @@ gf_monitor_view_remove_icon (GfMonitorView *self,
   gtk_container_remove (GTK_CONTAINER (self), icon);
   gtk_widget_hide (icon);
 }
+
+GList *
+gf_monitor_view_get_icons (GfMonitorView *self,
+                           GdkRectangle  *rect)
+{
+  GList *icons;
+  GList *children;
+  GList *l;
+
+  icons = NULL;
+
+  children = gtk_container_get_children (GTK_CONTAINER (self));
+
+  for (l = children; l != NULL; l = l->next)
+    {
+      GtkWidget *icon;
+      GtkAllocation allocation;
+
+      icon = l->data;
+
+      gtk_widget_get_allocation (icon, &allocation);
+
+      if (gdk_rectangle_intersect (&allocation, rect, NULL))
+        icons = g_list_prepend (icons, icon);
+    }
+
+  g_list_free (children);
+
+  return icons;
+}

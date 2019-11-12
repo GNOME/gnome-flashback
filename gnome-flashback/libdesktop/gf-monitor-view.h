@@ -42,6 +42,9 @@ gboolean    gf_monitor_view_add_icon    (GfMonitorView *self,
 void        gf_monitor_view_remove_icon (GfMonitorView *self,
                                          GtkWidget     *icon);
 
+GList      *gf_monitor_view_get_icons   (GfMonitorView *self,
+                                         GdkRectangle  *rect);
+
 G_END_DECLS
 
 #endif
