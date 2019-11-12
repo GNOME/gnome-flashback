@@ -86,6 +86,8 @@ static guint view_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GfMonitorView, gf_monitor_view, GTK_TYPE_FIXED)
 
+static void recalculate_grid_size (GfMonitorView *self);
+
 static gboolean
 find_free_grid_position (GfMonitorView *self,
                          int           *column_out,
@@ -109,6 +111,13 @@ find_free_grid_position (GfMonitorView *self,
     }
 
   return FALSE;
+}
+
+static void
+icon_style_updated_cb (GtkWidget     *widget,
+                       GfMonitorView *self)
+{
+  recalculate_grid_size (self);
 }
 
 static void
@@ -172,6 +181,10 @@ create_dummy_icon (GfMonitorView *self)
   widget = gf_icon_new (file, info);
   g_object_unref (info);
 
+  g_object_ref_sink (widget);
+  gtk_widget_set_parent (widget, GTK_WIDGET (self));
+  gtk_widget_show (widget);
+
   g_object_bind_property (self, "icon-size",
                           widget, "icon-size",
                           G_BINDING_DEFAULT |
@@ -181,6 +194,10 @@ create_dummy_icon (GfMonitorView *self)
                           widget, "extra-text-width",
                           G_BINDING_DEFAULT |
                           G_BINDING_SYNC_CREATE);
+
+  g_signal_connect (widget, "style-updated",
+                    G_CALLBACK (icon_style_updated_cb),
+                    self);
 
   g_signal_connect (widget, "destroy",
                     G_CALLBACK (icon_destroy_cb),
@@ -197,12 +214,14 @@ calculate_grid_size (GfMonitorView *self)
   GtkRequisition icon_size;
   int columns;
   int rows;
+  int spacing_x;
+  int spacing_y;
+  int offset_x;
+  int offset_y;
+  gboolean changed;
 
   if (self->dummy_icon == NULL)
-    {
-      self->dummy_icon = create_dummy_icon (self);
-      gtk_widget_show (self->dummy_icon);
-    }
+    self->dummy_icon = create_dummy_icon (self);
 
   if (self->dummy_icon == NULL)
     return;
@@ -236,19 +255,39 @@ calculate_grid_size (GfMonitorView *self)
       rows--;
     }
 
+  spacing_x = icon_size.width + self->column_spacing;
+  spacing_y = icon_size.height + self->row_spacing;
+
+  offset_x = (self->view_width - columns * icon_size.width -
+              (columns - 1) * self->column_spacing) / 2;
+  offset_y = (self->view_height - rows * icon_size.height -
+              (rows - 1) * self->row_spacing) / 2;
+
+  changed = FALSE;
+  if (self->icon_width != icon_size.width ||
+      self->icon_height != icon_size.height ||
+      self->columns != columns ||
+      self->rows != rows ||
+      self->spacing_x != spacing_x ||
+      self->spacing_y != spacing_y ||
+      self->offset_x != offset_x ||
+      self->offset_y != offset_y)
+    changed = TRUE;
+
   self->icon_width = icon_size.width;
   self->icon_height = icon_size.height;
 
   self->columns = columns;
   self->rows = rows;
 
-  self->spacing_x = icon_size.width + self->column_spacing;
-  self->spacing_y = icon_size.height + self->row_spacing;
+  self->spacing_x = spacing_x;
+  self->spacing_y = spacing_y;
 
-  self->offset_x = (self->view_width - columns * icon_size.width -
-                    (columns - 1) * self->column_spacing) / 2;
-  self->offset_y = (self->view_height - rows * icon_size.height -
-                    (rows - 1) * self->row_spacing) / 2;
+  self->offset_x = offset_x;
+  self->offset_y = offset_y;
+
+  if (!changed)
+    return;
 
   g_clear_pointer (&self->grid, g_free);
   self->grid = g_new0 (int, columns * rows);
@@ -340,6 +379,7 @@ gf_monitor_view_dispose (GObject *object)
   self = GF_MONITOR_VIEW (object);
 
   g_clear_object (&self->monitor);
+  g_clear_object (&self->dummy_icon);
 
   G_OBJECT_CLASS (gf_monitor_view_parent_class)->dispose (object);
 }
@@ -350,8 +390,6 @@ gf_monitor_view_finalize (GObject *object)
   GfMonitorView *self;
 
   self = GF_MONITOR_VIEW (object);
-
-  g_clear_pointer (&self->dummy_icon, gtk_widget_destroy);
 
   if (self->grid_size_id != 0)
     {
