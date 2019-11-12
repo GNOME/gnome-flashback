@@ -18,6 +18,7 @@
 #include "config.h"
 #include "gf-icon-view.h"
 
+#include <gdk/gdkx.h>
 #include <glib/gi18n.h>
 
 #include "gf-desktop-enum-types.h"
@@ -798,20 +799,29 @@ find_monitor_view_by_monitor (GfIconView *self,
 }
 
 static void
-workarea_cb (GdkMonitor *monitor,
-             GParamSpec *pspec,
-             GfIconView *self)
+workarea_changed (GfIconView *self)
 {
-  GtkWidget *view;
-  GdkRectangle workarea;
+  GList *children;
+  GList *l;
 
-  view = find_monitor_view_by_monitor (self, monitor);
-  if (view == NULL)
-    return;
+  children = gtk_container_get_children (GTK_CONTAINER (self->fixed));
 
-  gdk_monitor_get_workarea (monitor, &workarea);
+  for (l = children; l != NULL; l = l->next)
+    {
+      GfMonitorView *view;
+      GdkMonitor *monitor;
+      GdkRectangle workarea;
 
-  gtk_fixed_move (GTK_FIXED (self->fixed), view, workarea.x, workarea.y);
+      view = GF_MONITOR_VIEW (l->data);
+
+      monitor = gf_monitor_view_get_monitor (view);
+      gdk_monitor_get_workarea (monitor, &workarea);
+
+      gf_monitor_view_set_size (view, workarea.width, workarea.height);
+      gtk_fixed_move (GTK_FIXED (self->fixed), l->data, workarea.x, workarea.y);
+    }
+
+  g_list_free (children);
 }
 
 static void
@@ -838,6 +848,10 @@ create_monitor_view (GfIconView *self,
                               column_spacing,
                               row_spacing);
 
+  gf_monitor_view_set_size (GF_MONITOR_VIEW (view),
+                            workarea.width,
+                            workarea.height);
+
   g_signal_connect (view, "size-changed", G_CALLBACK (size_changed_cb), self);
 
   gtk_fixed_put (GTK_FIXED (self->fixed), view, workarea.x, workarea.y);
@@ -858,10 +872,6 @@ create_monitor_view (GfIconView *self,
   g_settings_bind (self->settings, "row-spacing",
                    view, "row-spacing",
                    G_SETTINGS_BIND_GET);
-
-  g_signal_connect_object (monitor, "notify::workarea",
-                           G_CALLBACK (workarea_cb),
-                           self, 0);
 }
 
 static void
@@ -884,6 +894,55 @@ monitor_removed_cb (GdkDisplay *display,
     return;
 
   gtk_widget_destroy (view);
+}
+
+static GdkFilterReturn
+filter_func (GdkXEvent *xevent,
+             GdkEvent  *event,
+             gpointer   user_data)
+{
+  XEvent *x;
+  GdkAtom atom;
+
+  x = (XEvent *) xevent;
+
+  if (x->type != PropertyNotify)
+    return GDK_FILTER_CONTINUE;
+
+  atom = gdk_atom_intern_static_string ("_NET_WORKAREA");
+  if (x->xproperty.atom == gdk_x11_atom_to_xatom (atom))
+    workarea_changed (GF_ICON_VIEW (user_data));
+
+  return GDK_FILTER_CONTINUE;
+}
+
+static void
+remove_event_filter (GfIconView *self)
+{
+  GdkScreen *screen;
+  GdkWindow *root;
+
+  screen = gtk_widget_get_screen (GTK_WIDGET (self));
+  root = gdk_screen_get_root_window (screen);
+
+  gdk_window_remove_filter (root, filter_func, self);
+}
+
+static void
+add_event_filter (GfIconView *self)
+{
+  GdkScreen *screen;
+  GdkWindow *root;
+  GdkEventMask event_mask;
+
+  screen = gtk_widget_get_screen (GTK_WIDGET (self));
+  root = gdk_screen_get_root_window (screen);
+
+  event_mask = gdk_window_get_events (root);
+  event_mask |= GDK_PROPERTY_NOTIFY;
+
+  gdk_window_add_filter (root, filter_func, self);
+  gdk_window_set_events (root, event_mask);
 }
 
 static void
@@ -929,6 +988,8 @@ gf_icon_view_finalize (GObject *object)
       g_source_remove (self->add_icons_id);
       self->add_icons_id = 0;
     }
+
+  remove_event_filter (self);
 
   G_OBJECT_CLASS (gf_icon_view_parent_class)->finalize (object);
 }
@@ -1010,6 +1071,8 @@ gf_icon_view_init (GfIconView *self)
   GdkDisplay *display;
   int n_monitors;
   int i;
+
+  add_event_filter (self);
 
   self->multi_press = gtk_gesture_multi_press_new (GTK_WIDGET (self));
   self->drag = gtk_gesture_drag_new (GTK_WIDGET (self));

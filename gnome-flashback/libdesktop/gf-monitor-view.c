@@ -333,37 +333,6 @@ set_row_spacing (GfMonitorView *self,
 }
 
 static void
-workarea_cb (GdkMonitor    *monitor,
-             GParamSpec    *pspec,
-             GfMonitorView *self)
-{
-  GdkRectangle workarea;
-
-  gdk_monitor_get_workarea (monitor, &workarea);
-
-  self->view_width = workarea.width;
-  self->view_height = workarea.height;
-
-  recalculate_grid_size (self);
-}
-
-static void
-gf_monitor_view_constructed (GObject *object)
-{
-  GfMonitorView *self;
-
-  self = GF_MONITOR_VIEW (object);
-
-  G_OBJECT_CLASS (gf_monitor_view_parent_class)->constructed (object);
-
-  g_signal_connect_object (self->monitor, "notify::workarea",
-                           G_CALLBACK (workarea_cb),
-                           self, 0);
-
-  workarea_cb (self->monitor, NULL, self);
-}
-
-static void
 gf_monitor_view_dispose (GObject *object)
 {
   GfMonitorView *self;
@@ -620,7 +589,6 @@ gf_monitor_view_class_init (GfMonitorViewClass *self_class)
   object_class = G_OBJECT_CLASS (self_class);
   widget_class = GTK_WIDGET_CLASS (self_class);
 
-  object_class->constructed = gf_monitor_view_constructed;
   object_class->dispose = gf_monitor_view_dispose;
   object_class->finalize = gf_monitor_view_finalize;
   object_class->get_property = gf_monitor_view_get_property;
@@ -654,6 +622,21 @@ gf_monitor_view_new (GdkMonitor *monitor,
                        "column-spacing", column_spacing,
                        "row-spacing", row_spacing,
                        NULL);
+}
+
+void
+gf_monitor_view_set_size (GfMonitorView *self,
+                          int            width,
+                          int            height)
+{
+  if (self->view_width == width &&
+      self->view_height == height)
+    return;
+
+  self->view_width = width;
+  self->view_height = height;
+
+  recalculate_grid_size (self);
 }
 
 GdkMonitor *

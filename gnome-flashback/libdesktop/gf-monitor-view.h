@@ -32,6 +32,10 @@ GtkWidget  *gf_monitor_view_new         (GdkMonitor    *monitor,
                                          guint          column_spacing,
                                          guint          row_spacing);
 
+void        gf_monitor_view_set_size    (GfMonitorView *self,
+                                         int            width,
+                                         int            height);
+
 GdkMonitor *gf_monitor_view_get_monitor (GfMonitorView *self);
 
 gboolean    gf_monitor_view_is_primary  (GfMonitorView *self);
