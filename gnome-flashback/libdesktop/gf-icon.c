@@ -36,6 +36,8 @@ struct _GfIcon
   GfIconSize  icon_size;
   guint       extra_text_width;
 
+  char       *css_class;
+
   GtkWidget  *image;
   GtkWidget  *label;
 
@@ -208,6 +210,27 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
 }
 
 static void
+set_icon_size (GfIcon *self,
+               int     icon_size)
+{
+  GtkStyleContext *context;
+
+  self->icon_size = icon_size;
+  gtk_image_set_pixel_size (GTK_IMAGE (self->image), icon_size);
+
+  context = gtk_widget_get_style_context (GTK_WIDGET (self));
+
+  if (self->css_class != NULL)
+    {
+      gtk_style_context_remove_class (context, self->css_class);
+      g_clear_pointer (&self->css_class, g_free);
+    }
+
+  self->css_class = g_strdup_printf ("s%dpx", icon_size);
+  gtk_style_context_add_class (context, self->css_class);
+}
+
+static void
 gf_icon_constructed (GObject *object)
 {
   GfIcon *self;
@@ -242,6 +265,18 @@ gf_icon_dispose (GObject *object)
 }
 
 static void
+gf_icon_finalize (GObject *object)
+{
+  GfIcon *self;
+
+  self = GF_ICON (object);
+
+  g_clear_pointer (&self->css_class, g_free);
+
+  G_OBJECT_CLASS (gf_icon_parent_class)->finalize (object);
+}
+
+static void
 gf_icon_set_property (GObject      *object,
                       guint         property_id,
                       const GValue *value,
@@ -264,8 +299,7 @@ gf_icon_set_property (GObject      *object,
         break;
 
       case PROP_ICON_SIZE:
-        self->icon_size = g_value_get_enum (value);
-        gtk_image_set_pixel_size (GTK_IMAGE (self->image), self->icon_size);
+        set_icon_size (self, g_value_get_enum (value));
         break;
 
       case PROP_EXTRA_TEXT_WIDTH:
@@ -361,6 +395,7 @@ gf_icon_class_init (GfIconClass *self_class)
 
   object_class->constructed = gf_icon_constructed;
   object_class->dispose = gf_icon_dispose;
+  object_class->finalize = gf_icon_finalize;
   object_class->set_property = gf_icon_set_property;
 
   widget_class->get_preferred_width = gf_icon_get_preferred_width;
