@@ -61,6 +61,16 @@ struct _GfIconView
   GList           *rubberband_icons;
 };
 
+enum
+{
+  SELECT_ALL,
+  UNSELECT_ALL,
+
+  LAST_SIGNAL
+};
+
+static guint view_signals[LAST_SIGNAL] = { 0 };
+
 G_DEFINE_TYPE (GfIconView, gf_icon_view, GTK_TYPE_EVENT_BOX)
 
 static char *
@@ -947,6 +957,36 @@ add_event_filter (GfIconView *self)
 }
 
 static void
+select_cb (gpointer data,
+           gpointer user_data)
+{
+  GfIconInfo *info;
+  GfIcon *icon;
+
+  info = data;
+  icon = GF_ICON (info->icon);
+
+  if (gf_icon_get_selected (icon))
+    return;
+
+  gf_icon_set_selected (icon, TRUE, GF_ICON_SELECTED_ADD);
+}
+
+static void
+select_all_cb (GfIconView *self,
+               gpointer    user_data)
+{
+  g_list_foreach (self->icons, select_cb, NULL);
+}
+
+static void
+unselect_all_cb (GfIconView *self,
+                 gpointer    user_data)
+{
+  unselect_icons (self);
+}
+
+static void
 gf_icon_view_dispose (GObject *object)
 {
   GfIconView *self;
@@ -1061,10 +1101,39 @@ gf_icon_view_draw (GtkWidget *widget,
 }
 
 static void
+install_signals (void)
+{
+  view_signals[SELECT_ALL] =
+    g_signal_new ("select-all", GF_TYPE_ICON_VIEW,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+
+  view_signals[UNSELECT_ALL] =
+    g_signal_new ("unselect-all", GF_TYPE_ICON_VIEW,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+}
+
+static void
+add_bindings (GtkBindingSet *binding_set)
+{
+  GdkModifierType modifiers;
+
+  modifiers = GDK_CONTROL_MASK;
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_a, modifiers,
+                                "select-all", 0);
+
+  modifiers = GDK_CONTROL_MASK | GDK_SHIFT_MASK;
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_a, modifiers,
+                                "unselect-all", 0);
+}
+
+static void
 gf_icon_view_class_init (GfIconViewClass *self_class)
 {
   GObjectClass *object_class;
   GtkWidgetClass *widget_class;
+  GtkBindingSet *binding_set;
 
   object_class = G_OBJECT_CLASS (self_class);
   widget_class = GTK_WIDGET_CLASS (self_class);
@@ -1073,6 +1142,11 @@ gf_icon_view_class_init (GfIconViewClass *self_class)
   object_class->finalize = gf_icon_view_finalize;
 
   widget_class->draw = gf_icon_view_draw;
+
+  install_signals ();
+
+  binding_set = gtk_binding_set_by_class (widget_class);
+  add_bindings (binding_set);
 }
 
 static void
@@ -1083,6 +1157,9 @@ gf_icon_view_init (GfIconView *self)
   GdkDisplay *display;
   int n_monitors;
   int i;
+
+  g_signal_connect (self, "select-all", G_CALLBACK (select_all_cb), NULL);
+  g_signal_connect (self, "unselect-all", G_CALLBACK (unselect_all_cb), NULL);
 
   add_event_filter (self);
 
@@ -1158,7 +1235,9 @@ gf_icon_view_init (GfIconView *self)
 GtkWidget *
 gf_icon_view_new (void)
 {
-  return g_object_new (GF_TYPE_ICON_VIEW, NULL);
+  return g_object_new (GF_TYPE_ICON_VIEW,
+                       "can-focus", TRUE,
+                       NULL);
 }
 
 void
