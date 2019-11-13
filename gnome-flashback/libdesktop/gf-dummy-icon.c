@@ -21,18 +21,132 @@
 struct _GfDummyIcon
 {
   GfIcon parent;
+
+  guint  size_id;
+
+  int    width;
+  int    height;
 };
 
+enum
+{
+  SIZE_CHANGED,
+
+  LAST_SIGNAL
+};
+
+static guint icon_signals[LAST_SIGNAL] = { 0 };
+
 G_DEFINE_TYPE (GfDummyIcon, gf_dummy_icon, GF_TYPE_ICON)
+
+static gboolean
+size_cb (gpointer user_data)
+{
+  GfDummyIcon *self;
+  GtkRequisition icon_size;
+
+  self = GF_DUMMY_ICON (user_data);
+
+  gtk_widget_get_preferred_size (GTK_WIDGET (self), &icon_size, NULL);
+
+  if (self->width != icon_size.width ||
+      self->height != icon_size.height)
+    {
+      self->width = icon_size.width;
+      self->height = icon_size.height;
+
+      g_signal_emit (self, icon_signals[SIZE_CHANGED], 0);
+    }
+
+  self->size_id = 0;
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+recalculate_size (GfDummyIcon *self)
+{
+  if (self->size_id != 0)
+    return;
+
+  self->size_id = g_idle_add (size_cb, self);
+  g_source_set_name_by_id (self->size_id, "[gnome-flashback] size_cb");
+}
+
+static void
+icon_size_cb (GdkMonitor  *monitor,
+              GParamSpec  *pspec,
+              GfDummyIcon *self)
+{
+  recalculate_size (self);
+}
+
+static void
+extra_text_width_cb (GdkMonitor  *monitor,
+                     GParamSpec  *pspec,
+                     GfDummyIcon *self)
+{
+  recalculate_size (self);
+}
+
+static void
+gf_dummy_icon_dispose (GObject *object)
+{
+  GfDummyIcon *self;
+
+  self = GF_DUMMY_ICON (object);
+
+  if (self->size_id != 0)
+    {
+      g_source_remove (self->size_id);
+      self->size_id = 0;
+    }
+
+  G_OBJECT_CLASS (gf_dummy_icon_parent_class)->dispose (object);
+}
+
+static void
+gf_dummy_icon_style_updated (GtkWidget *widget)
+{
+  GTK_WIDGET_CLASS (gf_dummy_icon_parent_class)->style_updated (widget);
+  recalculate_size (GF_DUMMY_ICON (widget));
+}
+
+static void
+install_signals (void)
+{
+  icon_signals[SIZE_CHANGED] =
+    g_signal_new ("size-changed", GF_TYPE_DUMMY_ICON,
+                  G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+}
 
 static void
 gf_dummy_icon_class_init (GfDummyIconClass *self_class)
 {
+  GObjectClass *object_class;
+  GtkWidgetClass *widget_class;
+
+  object_class = G_OBJECT_CLASS (self_class);
+  widget_class = GTK_WIDGET_CLASS (self_class);
+
+  object_class->dispose = gf_dummy_icon_dispose;
+
+  widget_class->style_updated = gf_dummy_icon_style_updated;
+
+  install_signals ();
 }
 
 static void
 gf_dummy_icon_init (GfDummyIcon *self)
 {
+  g_signal_connect (self, "notify::icon-size",
+                    G_CALLBACK (icon_size_cb),
+                    self);
+
+  g_signal_connect (self, "notify::extra-text-width",
+                    G_CALLBACK (extra_text_width_cb),
+                    self);
 }
 
 GtkWidget *
@@ -67,4 +181,16 @@ gf_dummy_icon_new (void)
   g_object_unref (info);
 
   return widget;
+}
+
+int
+gf_dummy_icon_get_width (GfDummyIcon *self)
+{
+  return self->width;
+}
+
+int
+gf_dummy_icon_get_height (GfDummyIcon *self)
+{
+  return self->height;
 }

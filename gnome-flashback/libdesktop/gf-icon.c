@@ -314,6 +314,35 @@ gf_icon_finalize (GObject *object)
 }
 
 static void
+gf_icon_get_property (GObject    *object,
+                      guint       property_id,
+                      GValue     *value,
+                      GParamSpec *pspec)
+{
+
+  GfIcon *self;
+  GfIconPrivate *priv;
+
+  self = GF_ICON (object);
+  priv = gf_icon_get_instance_private (self);
+
+  switch (property_id)
+    {
+      case PROP_ICON_SIZE:
+        g_value_set_enum (value, priv->icon_size);
+        break;
+
+      case PROP_EXTRA_TEXT_WIDTH:
+        g_value_set_uint (value, priv->extra_text_width);
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
+
+static void
 gf_icon_set_property (GObject      *object,
                       guint         property_id,
                       const GValue *value,
@@ -401,7 +430,7 @@ install_properties (GObjectClass *object_class)
                        GF_TYPE_ICON_SIZE,
                        GF_ICON_SIZE_48PX,
                        G_PARAM_CONSTRUCT |
-                       G_PARAM_WRITABLE |
+                       G_PARAM_READWRITE |
                        G_PARAM_STATIC_STRINGS);
 
   icon_properties[PROP_EXTRA_TEXT_WIDTH] =
@@ -410,7 +439,7 @@ install_properties (GObjectClass *object_class)
                        "extra-text-width",
                        0, 100, 48,
                        G_PARAM_CONSTRUCT |
-                       G_PARAM_WRITABLE |
+                       G_PARAM_READWRITE |
                        G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class, LAST_PROP, icon_properties);
@@ -441,6 +470,7 @@ gf_icon_class_init (GfIconClass *self_class)
   object_class->constructed = gf_icon_constructed;
   object_class->dispose = gf_icon_dispose;
   object_class->finalize = gf_icon_finalize;
+  object_class->get_property = gf_icon_get_property;
   object_class->set_property = gf_icon_set_property;
 
   widget_class->get_preferred_width = gf_icon_get_preferred_width;

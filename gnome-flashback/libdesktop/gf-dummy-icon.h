@@ -25,7 +25,11 @@ G_BEGIN_DECLS
 #define GF_TYPE_DUMMY_ICON (gf_dummy_icon_get_type ())
 G_DECLARE_FINAL_TYPE (GfDummyIcon, gf_dummy_icon, GF, DUMMY_ICON, GfIcon)
 
-GtkWidget *gf_dummy_icon_new (void);
+GtkWidget *gf_dummy_icon_new        (void);
+
+int        gf_dummy_icon_get_width  (GfDummyIcon *self);
+
+int        gf_dummy_icon_get_height (GfDummyIcon *self);
 
 G_END_DECLS
 
