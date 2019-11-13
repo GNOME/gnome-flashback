@@ -173,7 +173,7 @@ setup_header_bar (GfCreateFolderDialog *self)
   gtk_widget_show (self->create_button);
 
   style = gtk_widget_get_style_context (self->create_button);
-  gtk_style_context_add_class (style, GTK_STYLE_CLASS_SUGGESTED_ACTION);
+  gtk_style_context_add_class (style, GTK_STYLE_CLASS_DEFAULT);
 
   gtk_widget_set_sensitive (self->create_button, FALSE);
 
