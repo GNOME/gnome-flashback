@@ -296,48 +296,6 @@ show_item_properties_cb (GObject      *object,
     }
 }
 
-static void
-icon_show_properties_cb (GfIcon     *icon,
-                         GfIconView *self)
-{
-  int n_uris;
-  char **uris;
-  GFile *file;
-  GList *l;
-  int i;
-
-  if (self->file_manager == NULL)
-    return;
-
-  n_uris = g_list_length (self->selected_icons);
-  uris = g_new0 (char *, n_uris + 1);
-
-  file = gf_icon_get_file (icon);
-  uris[0] = g_file_get_uri (file);
-
-  for (l = self->selected_icons, i = 1; l != NULL; l = l->next, i++)
-    {
-      GfIcon *other_icon;
-
-      other_icon = l->data;
-
-      if (other_icon == icon)
-        continue;
-
-      file = gf_icon_get_file (other_icon);
-      uris[i] = g_file_get_uri (file);
-    }
-
-  gf_file_manager_gen_call_show_item_properties (self->file_manager,
-                                                 (const char * const *) uris,
-                                                 "",
-                                                 self->cancellable,
-                                                 show_item_properties_cb,
-                                                 NULL);
-
-  g_strfreev (uris);
-}
-
 static GfIconInfo *
 create_icon_info (GfIconView *self,
                   GFile      *file,
@@ -349,10 +307,6 @@ create_icon_info (GfIconView *self,
 
   g_signal_connect (icon, "selected",
                     G_CALLBACK (icon_selected_cb),
-                    self);
-
-  g_signal_connect (icon, "show-properties",
-                    G_CALLBACK (icon_show_properties_cb),
                     self);
 
   g_settings_bind (self->settings, "icon-size",
@@ -1570,4 +1524,24 @@ gf_icon_view_set_representative_color (GfIconView *self,
     {
       gtk_css_provider_load_from_data (self->rubberband_css, "", -1, NULL);
     }
+}
+
+GList *
+gf_icon_view_get_selected_icons (GfIconView *self)
+{
+  return self->selected_icons;
+}
+
+void
+gf_icon_view_show_item_properties (GfIconView         *self,
+                                   const char * const *uris)
+{
+  if (self->file_manager == NULL)
+    return;
+
+  gf_file_manager_gen_call_show_item_properties (self->file_manager,
+                                                 uris, "",
+                                                 self->cancellable,
+                                                 show_item_properties_cb,
+                                                 NULL);
 }

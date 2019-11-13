@@ -63,8 +63,6 @@ enum
 {
   SELECTED,
 
-  SHOW_PROPERTIES,
-
   LAST_SIGNAL
 };
 
@@ -121,7 +119,42 @@ static void
 properties_cb (GtkMenuItem *item,
                GfIcon      *self)
 {
-  g_signal_emit (self, icon_signals[SHOW_PROPERTIES], 0);
+  GfIconPrivate *priv;
+  GList *selected_icons;
+  int n_uris;
+  char **uris;
+  GFile *file;
+  GList *l;
+  int i;
+
+  priv = gf_icon_get_instance_private (self);
+
+  selected_icons = gf_icon_view_get_selected_icons (priv->icon_view);
+  if (selected_icons == NULL)
+    return;
+
+  n_uris = g_list_length (selected_icons);
+  uris = g_new0 (char *, n_uris + 1);
+
+  file = gf_icon_get_file (self);
+  uris[0] = g_file_get_uri (file);
+
+  for (l = selected_icons, i = 1; l != NULL; l = l->next, i++)
+    {
+      GfIcon *icon;
+
+      icon = l->data;
+      if (icon == self)
+        continue;
+
+      file = gf_icon_get_file (icon);
+      uris[i] = g_file_get_uri (file);
+    }
+
+  gf_icon_view_show_item_properties (priv->icon_view,
+                                     (const char * const *) uris);
+
+  g_strfreev (uris);
 }
 
 static GtkWidget *
@@ -469,10 +502,6 @@ install_signals (void)
     g_signal_new ("selected", GF_TYPE_ICON, G_SIGNAL_RUN_LAST,
                   0, NULL, NULL, NULL, G_TYPE_NONE, 1,
                   GF_TYPE_ICON_SELECTED_FLAGS);
-
-  icon_signals[SHOW_PROPERTIES] =
-    g_signal_new ("show-properties", GF_TYPE_ICON, G_SIGNAL_RUN_LAST,
-                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 }
 
 static void
