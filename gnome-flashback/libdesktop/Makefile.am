@@ -25,6 +25,8 @@ libdesktop_la_SOURCES = \
 	gf-desktop-window.h \
 	gf-desktop.c \
 	gf-desktop.h \
+	gf-dummy-icon.c \
+	gf-dummy-icon.h \
 	gf-icon-view.c \
 	gf-icon-view.h \
 	gf-icon.c \

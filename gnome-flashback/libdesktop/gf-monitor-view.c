@@ -19,6 +19,7 @@
 #include "gf-monitor-view.h"
 
 #include "gf-desktop-enum-types.h"
+#include "gf-dummy-icon.h"
 #include "gf-icon.h"
 
 struct _GfMonitorView
@@ -122,30 +123,9 @@ icon_style_updated_cb (GtkWidget     *widget,
 static GtkWidget *
 create_dummy_icon (GfMonitorView *self)
 {
-  GFile *file;
-  GFileInfo *info;
-  GIcon *icon;
-  const char *name;
   GtkWidget *widget;
 
-  file = g_file_new_for_commandline_arg ("");
-  info = g_file_info_new ();
-
-  icon = g_icon_new_for_string ("text-x-generic", NULL);
-  g_file_info_set_icon (info, icon);
-  g_object_unref (icon);
-
-  name = "Lorem Ipsum is simply dummy text of the printing and typesetting "
-         "industry. Lorem Ipsum has been the industry's standard dummy text "
-         "ever since the 1500s, when an unknown printer took a galley of "
-         "type and scrambled it to make a type specimen book.";
-
-  g_file_info_set_display_name (info, name);
-
-  widget = gf_icon_new (file, info);
-
-  g_object_unref (file);
-  g_object_unref (info);
+  widget = gf_dummy_icon_new ();
 
   g_object_ref_sink (widget);
   gtk_widget_set_parent (widget, GTK_WIDGET (self));
