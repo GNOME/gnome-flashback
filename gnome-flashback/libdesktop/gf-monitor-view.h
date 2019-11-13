@@ -18,8 +18,7 @@
 #ifndef GF_MONITOR_VIEW_H
 #define GF_MONITOR_VIEW_H
 
-#include <gtk/gtk.h>
-#include "gf-desktop-enums.h"
+#include "gf-dummy-icon.h"
 
 G_BEGIN_DECLS
 
@@ -27,8 +26,7 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (GfMonitorView, gf_monitor_view, GF, MONITOR_VIEW, GtkFixed)
 
 GtkWidget  *gf_monitor_view_new         (GdkMonitor    *monitor,
-                                         GfIconSize     icon_size,
-                                         guint          extra_text_width,
+                                         GfDummyIcon   *dummy_icon,
                                          guint          column_spacing,
                                          guint          row_spacing);
 

@@ -23,6 +23,7 @@
 
 #include "gf-create-folder-dialog.h"
 #include "gf-desktop-enum-types.h"
+#include "gf-dummy-icon.h"
 #include "gf-file-manager-gen.h"
 #include "gf-icon.h"
 #include "gf-monitor-view.h"
@@ -49,6 +50,8 @@ struct _GfIconView
   GSettings        *settings;
 
   GtkWidget        *fixed;
+
+  GtkWidget        *dummy_icon;
 
   GCancellable     *cancellable;
 
@@ -1091,23 +1094,18 @@ static void
 create_monitor_view (GfIconView *self,
                      GdkMonitor *monitor)
 {
-  GfIconSize icon_size;
-  guint extra_text_width;
   guint column_spacing;
   guint row_spacing;
   GdkRectangle workarea;
   GtkWidget *view;
 
-  icon_size = g_settings_get_enum (self->settings, "icon-size");
-  extra_text_width = g_settings_get_uint (self->settings, "extra-text-width");
   column_spacing = g_settings_get_uint (self->settings, "column-spacing");
   row_spacing = g_settings_get_uint (self->settings, "row-spacing");
 
   gdk_monitor_get_workarea (monitor, &workarea);
 
   view = gf_monitor_view_new (monitor,
-                              icon_size,
-                              extra_text_width,
+                              GF_DUMMY_ICON (self->dummy_icon),
                               column_spacing,
                               row_spacing);
 
@@ -1119,14 +1117,6 @@ create_monitor_view (GfIconView *self,
 
   gtk_fixed_put (GTK_FIXED (self->fixed), view, workarea.x, workarea.y);
   gtk_widget_show (view);
-
-  g_settings_bind (self->settings, "icon-size",
-                   view, "icon-size",
-                   G_SETTINGS_BIND_GET);
-
-  g_settings_bind (self->settings, "extra-text-width",
-                   view, "extra-text-width",
-                   G_SETTINGS_BIND_GET);
 
   g_settings_bind (self->settings, "column-spacing",
                    view, "column-spacing",
@@ -1238,6 +1228,24 @@ unselect_all_cb (GfIconView *self,
   unselect_icons (self);
 }
 
+static GtkWidget *
+create_dummy_icon (GfIconView *self)
+{
+  GtkWidget *widget;
+
+  widget = gf_dummy_icon_new ();
+
+  g_settings_bind (self->settings, "icon-size",
+                   widget, "icon-size",
+                   G_SETTINGS_BIND_GET);
+
+  g_settings_bind (self->settings, "extra-text-width",
+                   widget, "extra-text-width",
+                   G_SETTINGS_BIND_GET);
+
+  return widget;
+}
+
 static void
 gf_icon_view_dispose (GObject *object)
 {
@@ -1281,6 +1289,8 @@ gf_icon_view_finalize (GObject *object)
   GfIconView *self;
 
   self = GF_ICON_VIEW (object);
+
+  g_clear_pointer (&self->dummy_icon, gtk_widget_unparent);
 
   if (self->add_icons_id != 0)
     {
@@ -1466,6 +1476,10 @@ gf_icon_view_init (GfIconView *self)
   self->fixed = gtk_fixed_new ();
   gtk_container_add (GTK_CONTAINER (self), self->fixed);
   gtk_widget_show (self->fixed);
+
+  self->dummy_icon = create_dummy_icon (self);
+  gtk_widget_set_parent (self->dummy_icon, GTK_WIDGET (self));
+  gtk_widget_show (self->dummy_icon);
 
   self->cancellable = g_cancellable_new ();
 

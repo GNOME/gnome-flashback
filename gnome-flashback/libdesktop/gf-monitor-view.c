@@ -24,37 +24,34 @@
 
 struct _GfMonitorView
 {
-  GtkFixed    parent;
+  GtkFixed     parent;
 
-  GdkMonitor *monitor;
+  GdkMonitor  *monitor;
 
-  gboolean    grid_points;
+  gboolean     grid_points;
 
-  GfIconSize  icon_size;
-  guint       extra_text_width;
-  guint       column_spacing;
-  guint       row_spacing;
+  GfDummyIcon *dummy_icon;
+  guint        column_spacing;
+  guint        row_spacing;
 
-  guint       grid_size_id;
+  guint        grid_size_id;
 
-  GtkWidget  *dummy_icon;
+  int          view_width;
+  int          view_height;
 
-  int         view_width;
-  int         view_height;
+  int          icon_width;
+  int          icon_height;
 
-  int         icon_width;
-  int         icon_height;
+  int          columns;
+  int          rows;
 
-  int         columns;
-  int         rows;
+  int          spacing_x;
+  int          spacing_y;
 
-  int         spacing_x;
-  int         spacing_y;
+  int          offset_x;
+  int          offset_y;
 
-  int         offset_x;
-  int         offset_y;
-
-  int        *grid;
+  int         *grid;
 };
 
 enum
@@ -65,8 +62,7 @@ enum
 
   PROP_GRID_POINTS,
 
-  PROP_ICON_SIZE,
-  PROP_EXTRA_TEXT_WIDTH,
+  PROP_DUMMY_ICON,
   PROP_COLUMN_SPACING,
   PROP_ROW_SPACING,
 
@@ -85,8 +81,6 @@ enum
 static guint view_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GfMonitorView, gf_monitor_view, GTK_TYPE_FIXED)
-
-static void recalculate_grid_size (GfMonitorView *self);
 
 static gboolean
 find_free_grid_position (GfMonitorView *self,
@@ -114,44 +108,10 @@ find_free_grid_position (GfMonitorView *self,
 }
 
 static void
-icon_style_updated_cb (GtkWidget     *widget,
-                       GfMonitorView *self)
-{
-  recalculate_grid_size (self);
-}
-
-static GtkWidget *
-create_dummy_icon (GfMonitorView *self)
-{
-  GtkWidget *widget;
-
-  widget = gf_dummy_icon_new ();
-
-  g_object_ref_sink (widget);
-  gtk_widget_set_parent (widget, GTK_WIDGET (self));
-  gtk_widget_show (widget);
-
-  g_object_bind_property (self, "icon-size",
-                          widget, "icon-size",
-                          G_BINDING_DEFAULT |
-                          G_BINDING_SYNC_CREATE);
-
-  g_object_bind_property (self, "extra-text-width",
-                          widget, "extra-text-width",
-                          G_BINDING_DEFAULT |
-                          G_BINDING_SYNC_CREATE);
-
-  g_signal_connect (widget, "style-updated",
-                    G_CALLBACK (icon_style_updated_cb),
-                    self);
-
-  return widget;
-}
-
-static void
 calculate_grid_size (GfMonitorView *self)
 {
-  GtkRequisition icon_size;
+  int icon_width;
+  int icon_height;
   int columns;
   int rows;
   int spacing_x;
@@ -160,23 +120,18 @@ calculate_grid_size (GfMonitorView *self)
   int offset_y;
   gboolean changed;
 
-  if (self->dummy_icon == NULL)
-    self->dummy_icon = create_dummy_icon (self);
+  icon_width = gf_dummy_icon_get_width (self->dummy_icon);
+  icon_height = gf_dummy_icon_get_height (self->dummy_icon);
 
-  if (self->dummy_icon == NULL)
-    return;
-
-  gtk_widget_get_preferred_size (self->dummy_icon, &icon_size, NULL);
-
-  columns = self->view_width / icon_size.width;
-  rows = self->view_height / icon_size.height;
+  columns = self->view_width / icon_width;
+  rows = self->view_height / icon_height;
 
   while (TRUE)
     {
       int spacing;
 
       spacing = (columns - 1) * self->column_spacing;
-      if (spacing + columns * icon_size.width <= self->view_width ||
+      if (spacing + columns * icon_width <= self->view_width ||
           columns == 1)
         break;
 
@@ -188,24 +143,24 @@ calculate_grid_size (GfMonitorView *self)
       int spacing;
 
       spacing = (rows - 1) * self->row_spacing;
-      if (spacing + rows * icon_size.height <= self->view_height ||
+      if (spacing + rows * icon_height <= self->view_height ||
           rows == 1)
         break;
 
       rows--;
     }
 
-  spacing_x = icon_size.width + self->column_spacing;
-  spacing_y = icon_size.height + self->row_spacing;
+  spacing_x = icon_width + self->column_spacing;
+  spacing_y = icon_height + self->row_spacing;
 
-  offset_x = (self->view_width - columns * icon_size.width -
+  offset_x = (self->view_width - columns * icon_width -
               (columns - 1) * self->column_spacing) / 2;
-  offset_y = (self->view_height - rows * icon_size.height -
+  offset_y = (self->view_height - rows * icon_height -
               (rows - 1) * self->row_spacing) / 2;
 
   changed = FALSE;
-  if (self->icon_width != icon_size.width ||
-      self->icon_height != icon_size.height ||
+  if (self->icon_width != icon_width ||
+      self->icon_height != icon_height ||
       self->columns != columns ||
       self->rows != rows ||
       self->spacing_x != spacing_x ||
@@ -214,8 +169,8 @@ calculate_grid_size (GfMonitorView *self)
       self->offset_y != offset_y)
     changed = TRUE;
 
-  self->icon_width = icon_size.width;
-  self->icon_height = icon_size.height;
+  self->icon_width = icon_width;
+  self->icon_height = icon_height;
 
   self->columns = columns;
   self->rows = rows;
@@ -264,30 +219,6 @@ recalculate_grid_size (GfMonitorView *self)
 }
 
 static void
-set_icon_size (GfMonitorView *self,
-               guint          icon_size)
-{
-  if (self->icon_size == icon_size)
-    return;
-
-  self->icon_size = icon_size;
-
-  recalculate_grid_size (self);
-}
-
-static void
-set_extra_text_width (GfMonitorView *self,
-                      guint          extra_text_width)
-{
-  if (self->extra_text_width == extra_text_width)
-    return;
-
-  self->extra_text_width = extra_text_width;
-
-  recalculate_grid_size (self);
-}
-
-static void
 set_column_spacing (GfMonitorView *self,
                     guint          column_spacing)
 {
@@ -312,6 +243,27 @@ set_row_spacing (GfMonitorView *self,
 }
 
 static void
+dummy_icon_size_changed_cb (GtkWidget     *widget,
+                            GfMonitorView *self)
+{
+  recalculate_grid_size (self);
+}
+
+static void
+gf_monitor_view_constructed (GObject *object)
+{
+  GfMonitorView *self;
+
+  self = GF_MONITOR_VIEW (object);
+
+  G_OBJECT_CLASS (gf_monitor_view_parent_class)->constructed (object);
+
+  g_signal_connect (self->dummy_icon, "size-changed",
+                    G_CALLBACK (dummy_icon_size_changed_cb),
+                    self);
+}
+
+static void
 gf_monitor_view_dispose (GObject *object)
 {
   GfMonitorView *self;
@@ -319,7 +271,6 @@ gf_monitor_view_dispose (GObject *object)
   self = GF_MONITOR_VIEW (object);
 
   g_clear_object (&self->monitor);
-  g_clear_object (&self->dummy_icon);
 
   G_OBJECT_CLASS (gf_monitor_view_parent_class)->dispose (object);
 }
@@ -400,14 +351,6 @@ gf_monitor_view_get_property (GObject    *object,
         g_value_set_boolean (value, self->grid_points);
         break;
 
-      case PROP_ICON_SIZE:
-        g_value_set_enum (value, self->icon_size);
-        break;
-
-      case PROP_EXTRA_TEXT_WIDTH:
-        g_value_set_uint (value, self->extra_text_width);
-        break;
-
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
         break;
@@ -436,12 +379,9 @@ gf_monitor_view_set_property (GObject      *object,
         gtk_widget_queue_draw (GTK_WIDGET (self));
         break;
 
-      case PROP_ICON_SIZE:
-        set_icon_size (self, g_value_get_enum (value));
-        break;
-
-      case PROP_EXTRA_TEXT_WIDTH:
-        set_extra_text_width (self, g_value_get_uint (value));
+      case PROP_DUMMY_ICON:
+        g_assert (self->dummy_icon == NULL);
+        self->dummy_icon = g_value_get_object (value);
         break;
 
       case PROP_COLUMN_SPACING:
@@ -510,24 +450,14 @@ install_properties (GObjectClass *object_class)
                           G_PARAM_READWRITE |
                           G_PARAM_STATIC_STRINGS);
 
-  view_properties[PROP_ICON_SIZE] =
-    g_param_spec_enum ("icon-size",
-                       "icon-size",
-                       "icon-size",
-                       GF_TYPE_ICON_SIZE,
-                       GF_ICON_SIZE_48PX,
-                       G_PARAM_CONSTRUCT |
-                       G_PARAM_READWRITE |
-                       G_PARAM_STATIC_STRINGS);
-
-  view_properties[PROP_EXTRA_TEXT_WIDTH] =
-    g_param_spec_uint ("extra-text-width",
-                       "extra-text-width",
-                       "extra-text-width",
-                       0, 100, 48,
-                       G_PARAM_CONSTRUCT |
-                       G_PARAM_READWRITE |
-                       G_PARAM_STATIC_STRINGS);
+  view_properties[PROP_DUMMY_ICON] =
+    g_param_spec_object ("dummy-icon",
+                         "dummy-icon",
+                         "dummy-icon",
+                         GF_TYPE_DUMMY_ICON,
+                         G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_WRITABLE |
+                         G_PARAM_STATIC_STRINGS);
 
   view_properties[PROP_COLUMN_SPACING] =
     g_param_spec_uint ("column-spacing",
@@ -567,6 +497,7 @@ gf_monitor_view_class_init (GfMonitorViewClass *self_class)
   object_class = G_OBJECT_CLASS (self_class);
   widget_class = GTK_WIDGET_CLASS (self_class);
 
+  object_class->constructed = gf_monitor_view_constructed;
   object_class->dispose = gf_monitor_view_dispose;
   object_class->finalize = gf_monitor_view_finalize;
   object_class->get_property = gf_monitor_view_get_property;
@@ -587,16 +518,14 @@ gf_monitor_view_init (GfMonitorView *self)
 }
 
 GtkWidget *
-gf_monitor_view_new (GdkMonitor *monitor,
-                     GfIconSize  icon_size,
-                     guint       extra_text_width,
-                     guint       column_spacing,
-                     guint       row_spacing)
+gf_monitor_view_new (GdkMonitor  *monitor,
+                     GfDummyIcon *dummy_icon,
+                     guint        column_spacing,
+                     guint        row_spacing)
 {
   return g_object_new (GF_TYPE_MONITOR_VIEW,
                        "monitor", monitor,
-                       "icon-size", icon_size,
-                       "extra-text-width", extra_text_width,
+                       "dummy-icon", dummy_icon,
                        "column-spacing", column_spacing,
                        "row-spacing", row_spacing,
                        NULL);
