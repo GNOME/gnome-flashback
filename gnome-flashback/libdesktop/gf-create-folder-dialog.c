@@ -43,23 +43,8 @@ static guint dialog_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GfCreateFolderDialog, gf_create_folder_dialog, GTK_TYPE_DIALOG)
 
-static void
-cancel_clicked_cb (GtkWidget            *widget,
-                   GfCreateFolderDialog *self)
-{
-  gtk_widget_destroy (GTK_WIDGET (self));
-}
-
-static void
-create_clicked_cb (GtkWidget            *widget,
-                   GfCreateFolderDialog *self)
-{
-  gtk_dialog_response (GTK_DIALOG (self), GTK_RESPONSE_ACCEPT);
-}
-
-static void
-name_changed_cb (GtkEditable          *editable,
-                 GfCreateFolderDialog *self)
+static gboolean
+is_valid (GfCreateFolderDialog *self)
 {
   GtkRevealer *revealer;
   const char *text;
@@ -125,13 +110,40 @@ name_changed_cb (GtkEditable          *editable,
 
   g_free (validate_error);
   g_free (folder_name);
+
+  return valid;
+}
+
+static void
+cancel_clicked_cb (GtkWidget            *widget,
+                   GfCreateFolderDialog *self)
+{
+  gtk_widget_destroy (GTK_WIDGET (self));
+}
+
+static void
+create_clicked_cb (GtkWidget            *widget,
+                   GfCreateFolderDialog *self)
+{
+  if (!is_valid (self))
+    return;
+
+  gtk_dialog_response (GTK_DIALOG (self), GTK_RESPONSE_ACCEPT);
+}
+
+static void
+name_changed_cb (GtkEditable          *editable,
+                 GfCreateFolderDialog *self)
+{
+  is_valid (self);
 }
 
 static void
 name_activate_cb (GtkWidget            *widget,
                   GfCreateFolderDialog *self)
 {
-  if (!gtk_widget_get_sensitive (self->create_button))
+  if (!gtk_widget_get_sensitive (self->create_button) ||
+      !is_valid (self))
     return;
 
   gtk_dialog_response (GTK_DIALOG (self), GTK_RESPONSE_ACCEPT);
