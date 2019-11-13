@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-11-05 16:36+0000\n"
-"PO-Revision-Date: 2019-11-08 12:30+0100\n"
+"POT-Creation-Date: 2019-11-13 03:19+0000\n"
+"PO-Revision-Date: 2019-11-13 12:59+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -529,6 +529,7 @@ msgid "Sound Settings"
 msgstr "Configuración de sonido"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:151
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
 msgid "Cancel"
 msgstr "Cancelar"
@@ -693,6 +694,57 @@ msgstr[1] "%d dispositivos conectados"
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
 msgid "Not Connected"
 msgstr "No conectado"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:87
+msgid "Folder names cannot contain “/”."
+msgstr "Los nombres de las carpetas no pueden contener «/»."
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:92
+msgid "A folder cannot be called “.”."
+msgstr "Una carpeta no se puede llamar «.»."
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:97
+msgid "A folder cannot be called “..”."
+msgstr "Una carpeta no se puede llamar «..»."
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:118
+msgid "Folders with “.” at the beginning of their name are hidden."
+msgstr "Las carpetas cuyo nombre empieza por «.» están ocultas."
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:149
+#: gnome-flashback/libdesktop/gf-icon-view.c:624
+#| msgid "Open Folder"
+msgid "New Folder"
+msgstr "Carpeta nueva"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:159
+msgid "Create"
+msgstr "Crear"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:187
+msgid "Folder name"
+msgstr "Nombre de la carpeta"
+
+#: gnome-flashback/libdesktop/gf-icon.c:133
+msgid "Open"
+msgstr "Abrir"
+
+#: gnome-flashback/libdesktop/gf-icon.c:145
+msgid "Properties"
+msgstr "Propiedades"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:487
+msgid "A folder with that name already exists."
+msgstr "Ya existe una carpeta con ese nombre."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:636
+#| msgid "The background color"
+msgid "Change Background"
+msgstr "Cambiar el fondo"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:648
+msgid "Open Terminal"
+msgstr "Abrir terminal"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
