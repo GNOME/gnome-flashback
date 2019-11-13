@@ -249,7 +249,7 @@ static void
 unselect_cb (gpointer data,
              gpointer user_data)
 {
-  gf_icon_set_selected (data, FALSE, GF_ICON_SELECTED_NONE);
+  gf_icon_set_selected (data, FALSE);
 }
 
 static void
@@ -263,17 +263,12 @@ unselect_icons (GfIconView *self)
 }
 
 static void
-icon_selected_cb (GfIcon              *icon,
-                  GfIconSelectedFlags  flags,
-                  GfIconView          *self)
+icon_selected_cb (GfIcon     *icon,
+                  GfIconView *self)
 {
-  if ((flags & GF_ICON_SELECTED_CLEAR) == GF_ICON_SELECTED_CLEAR)
-    unselect_icons (self);
-
-  if ((flags & GF_ICON_SELECTED_ADD) == GF_ICON_SELECTED_ADD)
+  if (gf_icon_get_selected (icon))
     self->selected_icons = g_list_append (self->selected_icons, icon);
-
-  if ((flags & GF_ICON_SELECTED_REMOVE) == GF_ICON_SELECTED_REMOVE)
+  else
     self->selected_icons = g_list_remove (self->selected_icons, icon);
 }
 
@@ -736,9 +731,9 @@ drag_update_cb (GtkGestureDrag *gesture,
                                         NULL))
             {
               if (gf_icon_get_selected (icon))
-                gf_icon_set_selected (icon, FALSE, GF_ICON_SELECTED_REMOVE);
+                gf_icon_set_selected (icon, FALSE);
               else
-                gf_icon_set_selected (icon, TRUE, GF_ICON_SELECTED_ADD);
+                gf_icon_set_selected (icon, TRUE);
 
               self->rubberband_icons = g_list_remove (self->rubberband_icons,
                                                       icon);
@@ -798,9 +793,9 @@ drag_update_cb (GtkGestureDrag *gesture,
                                                        icon);
 
               if (gf_icon_get_selected (icon))
-                gf_icon_set_selected (icon, FALSE, GF_ICON_SELECTED_REMOVE);
+                gf_icon_set_selected (icon, FALSE);
               else
-                gf_icon_set_selected (icon, TRUE, GF_ICON_SELECTED_ADD);
+                gf_icon_set_selected (icon, TRUE);
             }
 
           g_list_free (rubberband_icons);
@@ -1157,15 +1152,10 @@ select_cb (gpointer data,
            gpointer user_data)
 {
   GfIconInfo *info;
-  GfIcon *icon;
 
   info = data;
-  icon = GF_ICON (info->icon);
 
-  if (gf_icon_get_selected (icon))
-    return;
-
-  gf_icon_set_selected (icon, TRUE, GF_ICON_SELECTED_ADD);
+  gf_icon_set_selected (GF_ICON (info->icon), TRUE);
 }
 
 static void
@@ -1524,6 +1514,12 @@ gf_icon_view_set_representative_color (GfIconView *self,
     {
       gtk_css_provider_load_from_data (self->rubberband_css, "", -1, NULL);
     }
+}
+
+void
+gf_icon_view_clear_selection (GfIconView *self)
+{
+  unselect_icons (self);
 }
 
 GList *

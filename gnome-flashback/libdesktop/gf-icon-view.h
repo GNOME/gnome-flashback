@@ -30,6 +30,8 @@ GtkWidget *gf_icon_view_new                      (void);
 void       gf_icon_view_set_representative_color (GfIconView         *self,
                                                   GdkRGBA            *color);
 
+void       gf_icon_view_clear_selection          (GfIconView         *self);
+
 GList     *gf_icon_view_get_selected_icons       (GfIconView         *self);
 
 void       gf_icon_view_show_item_properties     (GfIconView         *self,

@@ -203,7 +203,6 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
   guint button;
   GdkEventSequence *sequence;
   const GdkEvent *event;
-  GfIconSelectedFlags flags;
   GdkModifierType state;
   gboolean control_pressed;
   gboolean shift_pressed;
@@ -213,7 +212,6 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
   button = gtk_gesture_single_get_current_button (GTK_GESTURE_SINGLE (gesture));
   sequence = gtk_gesture_single_get_current_sequence (GTK_GESTURE_SINGLE (gesture));
   event = gtk_gesture_get_last_event (GTK_GESTURE (gesture), sequence);
-  flags = GF_ICON_SELECTED_NONE;
 
   if (event == NULL)
     return;
@@ -225,27 +223,13 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
 
   if (button == GDK_BUTTON_PRIMARY)
     {
-      gboolean selected;
-
       if (!control_pressed && !shift_pressed)
-        flags |= GF_ICON_SELECTED_CLEAR;
+        gf_icon_view_clear_selection (priv->icon_view);
 
       if (control_pressed || shift_pressed)
-        {
-          selected = !priv->selected;
-
-          if (priv->selected)
-            flags |= GF_ICON_SELECTED_REMOVE;
-          else
-            flags |= GF_ICON_SELECTED_ADD;
-        }
+        gf_icon_set_selected (self, !priv->selected);
       else
-        {
-          selected = TRUE;
-          flags |= GF_ICON_SELECTED_ADD;
-        }
-
-      gf_icon_set_selected (self, selected, flags);
+        gf_icon_set_selected (self, TRUE);
 
       if (!control_pressed && n_press == 2)
         icon_open (self);
@@ -255,11 +239,10 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
       GtkWidget *popup_menu;
 
       if (!priv->selected && !control_pressed)
-        flags |= GF_ICON_SELECTED_CLEAR;
-      flags |= GF_ICON_SELECTED_ADD;
+        gf_icon_view_clear_selection (priv->icon_view);
 
       gtk_gesture_set_state (GTK_GESTURE (gesture), GTK_EVENT_SEQUENCE_CLAIMED);
-      gf_icon_set_selected (self, TRUE, flags);
+      gf_icon_set_selected (self, TRUE);
 
       popup_menu = create_popup_menu (self);
       g_object_ref_sink (popup_menu);
@@ -500,8 +483,7 @@ install_signals (void)
 {
   icon_signals[SELECTED] =
     g_signal_new ("selected", GF_TYPE_ICON, G_SIGNAL_RUN_LAST,
-                  0, NULL, NULL, NULL, G_TYPE_NONE, 1,
-                  GF_TYPE_ICON_SELECTED_FLAGS);
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 }
 
 static void
@@ -625,9 +607,8 @@ gf_icon_is_hidden (GfIcon *self)
 }
 
 void
-gf_icon_set_selected (GfIcon              *self,
-                      gboolean             selected,
-                      GfIconSelectedFlags  flags)
+gf_icon_set_selected (GfIcon   *self,
+                      gboolean  selected)
 {
   GfIconPrivate *priv;
 
@@ -639,7 +620,7 @@ gf_icon_set_selected (GfIcon              *self,
   priv->selected = selected;
   update_state (self);
 
-  g_signal_emit (self, icon_signals[SELECTED], 0, flags);
+  g_signal_emit (self, icon_signals[SELECTED], 0);
 }
 
 gboolean
