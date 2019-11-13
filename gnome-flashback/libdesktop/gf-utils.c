@@ -107,6 +107,13 @@ get_app_info_for_uri (const gchar  *uri,
 }
 
 gboolean
+gf_launch_app_info (GDesktopAppInfo  *app_info,
+                    GError          **error)
+{
+  return app_info_launch_uris (app_info, NULL, error);
+}
+
+gboolean
 gf_launch_desktop_file (const char  *desktop_file,
                         GError     **error)
 {

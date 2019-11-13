@@ -18,15 +18,19 @@
 #ifndef GF_UTILS_H
 #define GF_UTILS_H
 
+#include <gio/gdesktopappinfo.h>
 #include <glib.h>
 
 G_BEGIN_DECLS
 
-gboolean gf_launch_desktop_file (const char  *desktop_file,
-                                 GError     **error);
+gboolean gf_launch_app_info     (GDesktopAppInfo  *app_info,
+                                 GError          **error);
 
-gboolean gf_launch_uri          (const char  *uri,
-                                 GError     **error);
+gboolean gf_launch_desktop_file (const char       *desktop_file,
+                                 GError          **error);
+
+gboolean gf_launch_uri          (const char       *uri,
+                                 GError          **error);
 
 G_END_DECLS
 

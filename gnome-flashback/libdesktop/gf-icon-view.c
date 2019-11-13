@@ -109,6 +109,7 @@ get_required_attributes (void)
   return build_attributes_list (G_FILE_ATTRIBUTE_STANDARD_NAME,
                                 G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
                                 G_FILE_ATTRIBUTE_STANDARD_ICON,
+                                G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
                                 G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN,
                                 G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP,
                                 NULL);

@@ -18,6 +18,7 @@
 #include "config.h"
 #include "gf-icon.h"
 
+#include <gio/gdesktopappinfo.h>
 #include <glib/gi18n.h>
 
 #include "gf-desktop-enums.h"
@@ -26,21 +27,23 @@
 
 typedef struct
 {
-  GtkGesture *multi_press;
+  GtkGesture      *multi_press;
 
-  GfIconView *icon_view;
-  GFile      *file;
-  GFileInfo  *info;
+  GfIconView      *icon_view;
+  GFile           *file;
+  GFileInfo       *info;
 
-  GfIconSize  icon_size;
-  guint       extra_text_width;
+  GfIconSize       icon_size;
+  guint            extra_text_width;
 
-  char       *css_class;
+  char            *css_class;
 
-  GtkWidget  *image;
-  GtkWidget  *label;
+  GtkWidget       *image;
+  GtkWidget       *label;
 
-  gboolean    selected;
+  gboolean         selected;
+
+  GDesktopAppInfo *app_info;
 } GfIconPrivate;
 
 enum
@@ -91,14 +94,25 @@ static void
 icon_open (GfIcon *self)
 {
   GfIconPrivate *priv;
-  char *uri;
   GError *error;
+  char *uri;
 
   priv = gf_icon_get_instance_private (self);
+  error = NULL;
+
+  if (priv->app_info != NULL)
+    {
+      if (!gf_launch_app_info (priv->app_info, &error))
+        {
+          g_warning ("%s", error->message);
+          g_error_free (error);
+        }
+
+      return;
+    }
 
   uri = g_file_get_uri (priv->file);
 
-  error = NULL;
   if (!gf_launch_uri (uri, &error))
     {
       g_warning ("%s", error->message);
@@ -280,24 +294,67 @@ set_icon_size (GfIcon *self,
 }
 
 static void
+update_icon (GfIcon *self)
+{
+  GfIconPrivate *priv;
+  GIcon *icon;
+
+  priv = gf_icon_get_instance_private (self);
+
+  icon = NULL;
+  if (priv->app_info != NULL)
+    icon = g_app_info_get_icon (G_APP_INFO (priv->app_info));
+
+  if (icon == NULL)
+    icon = g_file_info_get_icon (priv->info);
+
+  gtk_image_set_from_gicon (GTK_IMAGE (priv->image), icon, GTK_ICON_SIZE_DIALOG);
+  gtk_image_set_pixel_size (GTK_IMAGE (priv->image), priv->icon_size);
+}
+
+static void
+update_text (GfIcon *self)
+{
+  GfIconPrivate *priv;
+  const char *name;
+
+  priv = gf_icon_get_instance_private (self);
+
+  name = NULL;
+  if (priv->app_info != NULL)
+    name = g_app_info_get_name (G_APP_INFO (priv->app_info));
+
+  if (name == NULL)
+    name = g_file_info_get_display_name (priv->info);
+
+  gtk_label_set_text (GTK_LABEL (priv->label), name);
+}
+
+static void
 gf_icon_constructed (GObject *object)
 {
   GfIcon *self;
   GfIconPrivate *priv;
-  GIcon *icon;
-  const char *name;
+  const char *content_type;
 
   self = GF_ICON (object);
   priv = gf_icon_get_instance_private (self);
 
   G_OBJECT_CLASS (gf_icon_parent_class)->constructed (object);
 
-  icon = g_file_info_get_icon (priv->info);
-  gtk_image_set_from_gicon (GTK_IMAGE (priv->image), icon, GTK_ICON_SIZE_DIALOG);
-  gtk_image_set_pixel_size (GTK_IMAGE (priv->image), priv->icon_size);
+  content_type = g_file_info_get_content_type (priv->info);
 
-  name = g_file_info_get_display_name (priv->info);
-  gtk_label_set_text (GTK_LABEL (priv->label), name);
+  if (g_strcmp0 (content_type, "application/x-desktop") == 0)
+    {
+      char *path;
+
+      path = g_file_get_path (priv->file);
+      priv->app_info = g_desktop_app_info_new_from_filename (path);
+      g_free (path);
+    }
+
+  update_icon (self);
+  update_text (self);
 }
 
 static void
@@ -313,6 +370,8 @@ gf_icon_dispose (GObject *object)
 
   g_clear_object (&priv->file);
   g_clear_object (&priv->info);
+
+  g_clear_object (&priv->app_info);
 
   G_OBJECT_CLASS (gf_icon_parent_class)->dispose (object);
 }
