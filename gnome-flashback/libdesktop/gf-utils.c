@@ -106,25 +106,6 @@ get_app_info_for_uri (const gchar  *uri,
   return app_info;
 }
 
-char *
-gf_build_attributes_list (const char *first,
-                          ...)
-{
-  GString *attributes;
-  va_list args;
-  const char *attribute;
-
-  attributes = g_string_new (first);
-  va_start (args, first);
-
-  while ((attribute = va_arg (args, const char *)) != NULL)
-    g_string_append_printf (attributes, ",%s", attribute);
-
-  va_end (args);
-
-  return g_string_free (attributes, FALSE);
-}
-
 gboolean
 gf_launch_desktop_file (const char  *desktop_file,
                         GError     **error)
