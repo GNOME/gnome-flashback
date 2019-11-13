@@ -469,6 +469,12 @@ gf_icon_get_file (GfIcon *self)
   return self->file;
 }
 
+const char *
+gf_icon_get_name (GfIcon *self)
+{
+  return g_file_info_get_name (self->info);
+}
+
 gboolean
 gf_icon_is_hidden (GfIcon *self)
 {

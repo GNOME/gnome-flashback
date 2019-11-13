@@ -18,6 +18,8 @@ libdesktop_la_CFLAGS = \
 libdesktop_la_SOURCES = \
 	gf-background.c \
 	gf-background.h \
+	gf-create-folder-dialog.c \
+	gf-create-folder-dialog.h \
 	gf-desktop-enums.h \
 	gf-desktop-window.c \
 	gf-desktop-window.h \

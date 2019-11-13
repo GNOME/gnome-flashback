@@ -33,18 +33,20 @@ typedef enum
 #define GF_TYPE_ICON (gf_icon_get_type ())
 G_DECLARE_FINAL_TYPE (GfIcon, gf_icon, GF, ICON, GtkButton)
 
-GtkWidget *gf_icon_new          (GFile               *file,
-                                 GFileInfo           *info);
+GtkWidget  *gf_icon_new          (GFile               *file,
+                                  GFileInfo           *info);
 
-GFile     *gf_icon_get_file     (GfIcon              *self);
+GFile      *gf_icon_get_file     (GfIcon              *self);
 
-gboolean   gf_icon_is_hidden    (GfIcon              *self);
+const char *gf_icon_get_name     (GfIcon              *self);
 
-void       gf_icon_set_selected (GfIcon              *self,
-                                 gboolean             selected,
-                                 GfIconSelectedFlags  flags);
+gboolean    gf_icon_is_hidden    (GfIcon              *self);
 
-gboolean   gf_icon_get_selected (GfIcon              *self);
+void        gf_icon_set_selected (GfIcon              *self,
+                                  gboolean             selected,
+                                  GfIconSelectedFlags  flags);
+
+gboolean    gf_icon_get_selected (GfIcon              *self);
 
 G_END_DECLS
 

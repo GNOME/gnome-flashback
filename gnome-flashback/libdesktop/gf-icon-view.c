@@ -21,9 +21,11 @@
 #include <gdk/gdkx.h>
 #include <glib/gi18n.h>
 
+#include "gf-create-folder-dialog.h"
 #include "gf-desktop-enum-types.h"
 #include "gf-icon.h"
 #include "gf-monitor-view.h"
+#include "gf-nautilus-gen.h"
 #include "gf-utils.h"
 
 typedef struct
@@ -59,6 +61,10 @@ struct _GfIconView
   GtkStyleContext *rubberband_style;
   GdkRectangle     rubberband_rect;
   GList           *rubberband_icons;
+
+  GfNautilusGen   *nautilus;
+
+  GtkWidget       *create_folder_dialog;
 };
 
 enum
@@ -76,7 +82,8 @@ G_DEFINE_TYPE (GfIconView, gf_icon_view, GTK_TYPE_EVENT_BOX)
 static char *
 get_required_attributes (void)
 {
-  return gf_build_attributes_list (G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
+  return gf_build_attributes_list (G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                   G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
                                    G_FILE_ATTRIBUTE_STANDARD_ICON,
                                    G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN,
                                    G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP,
@@ -391,18 +398,118 @@ desktop_changed_cb (GFileMonitor      *monitor,
     }
 }
 
+static char *
+create_folder_dialog_validate_cb (GfCreateFolderDialog *dialog,
+                                  const char           *folder_name,
+                                  GfIconView           *self)
+{
+  GList *l;
+
+  for (l = self->icons; l != NULL; l = l->next)
+    {
+      GfIconInfo *info;
+      const char *name;
+
+      info = l->data;
+
+      name = gf_icon_get_name (GF_ICON (info->icon));
+
+      if (g_strcmp0 (name, folder_name) == 0)
+        return g_strdup (_("A folder with that name already exists."));
+
+    }
+
+  return NULL;
+}
+
 static void
-open_terminal_cb (GtkMenuItem *item,
-                  GfIconView  *self)
+create_folder_cb (GObject      *object,
+                  GAsyncResult *res,
+                  gpointer      user_data)
 {
   GError *error;
 
   error = NULL;
-  if (!gf_launch_desktop_file ("org.gnome.Terminal.desktop", &error))
+  gf_nautilus_gen_call_create_folder_finish (GF_NAUTILUS_GEN (object),
+                                             res, &error);
+
+  if (error != NULL)
     {
-      g_warning ("%s", error->message);
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Error creating new folder: %s", error->message);
       g_error_free (error);
     }
+}
+
+static void
+create_folder_dialog_response_cb (GtkDialog  *dialog,
+                                  gint        response_id,
+                                  GfIconView *self)
+{
+  GfCreateFolderDialog *folder_dialog;
+  char *folder_name;
+  GFile *new_file;
+  char *uri;
+
+  if (response_id != GTK_RESPONSE_ACCEPT)
+    return;
+
+  folder_dialog = GF_CREATE_FOLDER_DIALOG (dialog);
+  folder_name = gf_create_folder_dialog_get_folder_name (folder_dialog);
+
+  new_file = g_file_get_child (self->desktop, folder_name);
+  g_free (folder_name);
+
+  uri = g_file_get_uri (new_file);
+  g_object_unref (new_file);
+
+  gf_nautilus_gen_call_create_folder (self->nautilus, uri,
+                                      self->cancellable,
+                                      create_folder_cb,
+                                      NULL);
+
+  gtk_widget_destroy (GTK_WIDGET (dialog));
+  g_free (uri);
+}
+
+static void
+create_folder_dialog_destroy_cb (GtkWidget   *widget,
+                                 GfIconView  *self)
+{
+  self->create_folder_dialog = NULL;
+}
+
+static void
+new_folder_cb (GtkMenuItem *item,
+               GfIconView  *self)
+{
+  GtkWidget *dialog;
+
+  if (self->nautilus == NULL)
+    return;
+
+  if (self->create_folder_dialog != NULL)
+    {
+      gtk_window_present (GTK_WINDOW (self->create_folder_dialog));
+      return;
+    }
+
+  dialog = gf_create_folder_dialog_new ();
+  self->create_folder_dialog = dialog;
+
+  g_signal_connect (dialog, "validate",
+                    G_CALLBACK (create_folder_dialog_validate_cb),
+                    self);
+
+  g_signal_connect (dialog, "response",
+                    G_CALLBACK (create_folder_dialog_response_cb),
+                    self);
+
+  g_signal_connect (dialog, "destroy",
+                    G_CALLBACK (create_folder_dialog_destroy_cb),
+                    self);
+
+  gtk_window_present (GTK_WINDOW (dialog));
 }
 
 static void
@@ -413,6 +520,20 @@ change_background_cb (GtkMenuItem *item,
 
   error = NULL;
   if (!gf_launch_desktop_file ("gnome-background-panel.desktop", &error))
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+    }
+}
+
+static void
+open_terminal_cb (GtkMenuItem *item,
+                  GfIconView  *self)
+{
+  GError *error;
+
+  error = NULL;
+  if (!gf_launch_desktop_file ("org.gnome.Terminal.desktop", &error))
     {
       g_warning ("%s", error->message);
       g_error_free (error);
@@ -431,12 +552,12 @@ create_popup_menu (GfIconView *self)
   context = gtk_widget_get_style_context (popup_menu);
   gtk_style_context_add_class (context, GTK_STYLE_CLASS_CONTEXT_MENU);
 
-  item = gtk_menu_item_new_with_label (_("Open Terminal"));
+  item = gtk_menu_item_new_with_label (_("New Folder"));
   gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
   gtk_widget_show (item);
 
   g_signal_connect (item, "activate",
-                    G_CALLBACK (open_terminal_cb),
+                    G_CALLBACK (new_folder_cb),
                     self);
 
   item = gtk_separator_menu_item_new ();
@@ -449,6 +570,18 @@ create_popup_menu (GfIconView *self)
 
   g_signal_connect (item, "activate",
                     G_CALLBACK (change_background_cb),
+                    self);
+
+  item = gtk_separator_menu_item_new ();
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+  gtk_widget_show (item);
+
+  item = gtk_menu_item_new_with_label (_("Open Terminal"));
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+  gtk_widget_show (item);
+
+  g_signal_connect (item, "activate",
+                    G_CALLBACK (open_terminal_cb),
                     self);
 
   return popup_menu;
@@ -771,8 +904,6 @@ enumerate_desktop (GfIconView *self)
 
   attributes = get_required_attributes ();
 
-  self->cancellable = g_cancellable_new ();
-
   g_file_enumerate_children_async (self->desktop,
                                    attributes,
                                    G_FILE_QUERY_INFO_NONE,
@@ -782,6 +913,32 @@ enumerate_desktop (GfIconView *self)
                                    self);
 
   g_free (attributes);
+}
+
+static void
+nautilus_ready_cb (GObject     *object,
+                   GAsyncResult *res,
+                   gpointer      user_data)
+
+{
+  GError *error;
+  GfNautilusGen *nautilus;
+  GfIconView *self;
+
+  error = NULL;
+  nautilus = gf_nautilus_gen_proxy_new_for_bus_finish (res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("%s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  self = GF_ICON_VIEW (user_data);
+  self->nautilus = nautilus;
 }
 
 static GtkWidget *
@@ -1015,6 +1172,10 @@ gf_icon_view_dispose (GObject *object)
   g_clear_object (&self->rubberband_style);
   g_clear_pointer (&self->rubberband_icons, g_list_free);
 
+  g_clear_object (&self->nautilus);
+
+  g_clear_pointer (&self->create_folder_dialog, gtk_widget_destroy);
+
   G_OBJECT_CLASS (gf_icon_view_parent_class)->dispose (object);
 }
 
@@ -1209,6 +1370,16 @@ gf_icon_view_init (GfIconView *self)
   self->fixed = gtk_fixed_new ();
   gtk_container_add (GTK_CONTAINER (self), self->fixed);
   gtk_widget_show (self->fixed);
+
+  self->cancellable = g_cancellable_new ();
+
+  gf_nautilus_gen_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+                                     G_DBUS_PROXY_FLAGS_NONE,
+                                     "org.gnome.Nautilus",
+                                     "/org/gnome/Nautilus",
+                                     self->cancellable,
+                                     nautilus_ready_cb,
+                                     self);
 
   display = gdk_display_get_default ();
   n_monitors = gdk_display_get_n_monitors (display);
