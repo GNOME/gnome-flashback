@@ -317,8 +317,8 @@ gf_monitor_view_draw (GtkWidget *widget,
               int x;
               int y;
 
-              x = self->offset_x + c * self->spacing_x + self->spacing_x / 2;
-              y = self->offset_y + r * self->spacing_y + self->spacing_y / 2;
+              x = self->offset_x + c * self->spacing_x + self->icon_width / 2;
+              y = self->offset_y + r * self->spacing_y + self->icon_height / 2;
 
               cairo_move_to (cr, x - 3, y);
               cairo_line_to (cr, x + 3, y);
