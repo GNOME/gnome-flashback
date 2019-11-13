@@ -63,6 +63,8 @@ enum
 {
   SELECTED,
 
+  SHOW_PROPERTIES,
+
   LAST_SIGNAL
 };
 
@@ -109,6 +111,13 @@ open_cb (GtkMenuItem *item,
   icon_open (self);
 }
 
+static void
+properties_cb (GtkMenuItem *item,
+               GfIcon      *self)
+{
+  g_signal_emit (self, icon_signals[SHOW_PROPERTIES], 0);
+}
+
 static GtkWidget *
 create_popup_menu (GfIcon *self)
 {
@@ -127,6 +136,18 @@ create_popup_menu (GfIcon *self)
 
   g_signal_connect (item, "activate",
                     G_CALLBACK (open_cb),
+                    self);
+
+  item = gtk_separator_menu_item_new ();
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+  gtk_widget_show (item);
+
+  item = gtk_menu_item_new_with_label (_("Properties"));
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+  gtk_widget_show (item);
+
+  g_signal_connect (item, "activate",
+                    G_CALLBACK (properties_cb),
                     self);
 
   return popup_menu;
@@ -382,6 +403,10 @@ install_signals (void)
     g_signal_new ("selected", GF_TYPE_ICON, G_SIGNAL_RUN_LAST,
                   0, NULL, NULL, NULL, G_TYPE_NONE, 1,
                   GF_TYPE_ICON_SELECTED_FLAGS);
+
+  icon_signals[SHOW_PROPERTIES] =
+    g_signal_new ("show-properties", GF_TYPE_ICON, G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 }
 
 static void

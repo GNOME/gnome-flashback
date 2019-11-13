@@ -23,6 +23,7 @@
 
 #include "gf-create-folder-dialog.h"
 #include "gf-desktop-enum-types.h"
+#include "gf-file-manager-gen.h"
 #include "gf-icon.h"
 #include "gf-monitor-view.h"
 #include "gf-nautilus-gen.h"
@@ -37,34 +38,35 @@ typedef struct
 
 struct _GfIconView
 {
-  GtkEventBox      parent;
+  GtkEventBox       parent;
 
-  GtkGesture      *multi_press;
-  GtkGesture      *drag;
+  GtkGesture       *multi_press;
+  GtkGesture       *drag;
 
-  GFile           *desktop;
-  GFileMonitor    *monitor;
+  GFile            *desktop;
+  GFileMonitor     *monitor;
 
-  GSettings       *settings;
+  GSettings        *settings;
 
-  GtkWidget       *fixed;
+  GtkWidget        *fixed;
 
-  GCancellable    *cancellable;
+  GCancellable     *cancellable;
 
-  GList           *icons;
+  GList            *icons;
 
-  guint            add_icons_id;
+  guint             add_icons_id;
 
-  GList           *selected_icons;
+  GList            *selected_icons;
 
-  GtkCssProvider  *rubberband_css;
-  GtkStyleContext *rubberband_style;
-  GdkRectangle     rubberband_rect;
-  GList           *rubberband_icons;
+  GtkCssProvider   *rubberband_css;
+  GtkStyleContext  *rubberband_style;
+  GdkRectangle      rubberband_rect;
+  GList            *rubberband_icons;
 
-  GfNautilusGen   *nautilus;
+  GfNautilusGen    *nautilus;
+  GfFileManagerGen *file_manager;
 
-  GtkWidget       *create_folder_dialog;
+  GtkWidget        *create_folder_dialog;
 };
 
 enum
@@ -272,6 +274,67 @@ icon_selected_cb (GfIcon              *icon,
     self->selected_icons = g_list_remove (self->selected_icons, icon);
 }
 
+static void
+show_item_properties_cb (GObject      *object,
+                         GAsyncResult *res,
+                         gpointer      user_data)
+{
+  GError *error;
+
+  error = NULL;
+  gf_file_manager_gen_call_show_item_properties_finish (GF_FILE_MANAGER_GEN (object),
+                                                        res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Error showing properties: %s", error->message);
+      g_error_free (error);
+    }
+}
+
+static void
+icon_show_properties_cb (GfIcon     *icon,
+                         GfIconView *self)
+{
+  int n_uris;
+  char **uris;
+  GFile *file;
+  GList *l;
+  int i;
+
+  if (self->file_manager == NULL)
+    return;
+
+  n_uris = g_list_length (self->selected_icons);
+  uris = g_new0 (char *, n_uris + 1);
+
+  file = gf_icon_get_file (icon);
+  uris[0] = g_file_get_uri (file);
+
+  for (l = self->selected_icons, i = 1; l != NULL; l = l->next, i++)
+    {
+      GfIcon *other_icon;
+
+      other_icon = l->data;
+
+      if (other_icon == icon)
+        continue;
+
+      file = gf_icon_get_file (other_icon);
+      uris[i] = g_file_get_uri (file);
+    }
+
+  gf_file_manager_gen_call_show_item_properties (self->file_manager,
+                                                 (const char * const *) uris,
+                                                 "",
+                                                 self->cancellable,
+                                                 show_item_properties_cb,
+                                                 NULL);
+
+  g_strfreev (uris);
+}
+
 static GfIconInfo *
 create_icon_info (GfIconView *self,
                   GFile      *file,
@@ -281,7 +344,13 @@ create_icon_info (GfIconView *self,
 
   icon = gf_icon_new (file, info);
 
-  g_signal_connect (icon, "selected", G_CALLBACK (icon_selected_cb), self);
+  g_signal_connect (icon, "selected",
+                    G_CALLBACK (icon_selected_cb),
+                    self);
+
+  g_signal_connect (icon, "show-properties",
+                    G_CALLBACK (icon_show_properties_cb),
+                    self);
 
   g_settings_bind (self->settings, "icon-size",
                    icon, "icon-size",
@@ -941,6 +1010,32 @@ nautilus_ready_cb (GObject     *object,
   self->nautilus = nautilus;
 }
 
+static void
+file_manager_ready_cb (GObject     *object,
+                       GAsyncResult *res,
+                       gpointer      user_data)
+
+{
+  GError *error;
+  GfFileManagerGen *file_manager;
+  GfIconView *self;
+
+  error = NULL;
+  file_manager = gf_file_manager_gen_proxy_new_for_bus_finish (res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("%s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  self = GF_ICON_VIEW (user_data);
+  self->file_manager = file_manager;
+}
+
 static GtkWidget *
 find_monitor_view_by_monitor (GfIconView *self,
                               GdkMonitor *monitor)
@@ -1173,6 +1268,7 @@ gf_icon_view_dispose (GObject *object)
   g_clear_pointer (&self->rubberband_icons, g_list_free);
 
   g_clear_object (&self->nautilus);
+  g_clear_object (&self->file_manager);
 
   g_clear_pointer (&self->create_folder_dialog, gtk_widget_destroy);
 
@@ -1374,12 +1470,20 @@ gf_icon_view_init (GfIconView *self)
   self->cancellable = g_cancellable_new ();
 
   gf_nautilus_gen_proxy_new_for_bus (G_BUS_TYPE_SESSION,
-                                     G_DBUS_PROXY_FLAGS_NONE,
+                                     G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION,
                                      "org.gnome.Nautilus",
                                      "/org/gnome/Nautilus",
                                      self->cancellable,
                                      nautilus_ready_cb,
                                      self);
+
+  gf_file_manager_gen_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+                                         G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION,
+                                         "org.freedesktop.FileManager1",
+                                         "/org/freedesktop/FileManager1",
+                                         self->cancellable,
+                                         file_manager_ready_cb,
+                                         self);
 
   display = gdk_display_get_default ();
   n_monitors = gdk_display_get_n_monitors (display);
