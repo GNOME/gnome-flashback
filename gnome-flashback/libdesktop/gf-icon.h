@@ -18,7 +18,7 @@
 #ifndef GF_ICON_H
 #define GF_ICON_H
 
-#include <gtk/gtk.h>
+#include "gf-icon-view.h"
 
 G_BEGIN_DECLS
 
@@ -38,7 +38,8 @@ struct _GfIconClass
   GtkButtonClass parent_class;
 };
 
-GtkWidget  *gf_icon_new          (GFile               *file,
+GtkWidget  *gf_icon_new          (GfIconView          *icon_view,
+                                  GFile               *file,
                                   GFileInfo           *info);
 
 GFile      *gf_icon_get_file     (GfIcon              *self);

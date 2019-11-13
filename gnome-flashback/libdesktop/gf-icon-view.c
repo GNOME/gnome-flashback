@@ -345,7 +345,7 @@ create_icon_info (GfIconView *self,
 {
   GtkWidget *icon;
 
-  icon = gf_icon_new (file, info);
+  icon = gf_icon_new (self, file, info);
 
   g_signal_connect (icon, "selected",
                     G_CALLBACK (icon_selected_cb),
@@ -1233,7 +1233,7 @@ create_dummy_icon (GfIconView *self)
 {
   GtkWidget *widget;
 
-  widget = gf_dummy_icon_new ();
+  widget = gf_dummy_icon_new (self);
 
   g_settings_bind (self->settings, "icon-size",
                    widget, "icon-size",

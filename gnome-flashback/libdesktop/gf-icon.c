@@ -28,6 +28,7 @@ typedef struct
 {
   GtkGesture *multi_press;
 
+  GfIconView *icon_view;
   GFile      *file;
   GFileInfo  *info;
 
@@ -46,6 +47,7 @@ enum
 {
   PROP_0,
 
+  PROP_ICON_VIEW,
   PROP_FILE,
   PROP_INFO,
 
@@ -356,6 +358,11 @@ gf_icon_set_property (GObject      *object,
 
   switch (property_id)
     {
+      case PROP_ICON_VIEW:
+        g_assert (priv->icon_view == NULL);
+        priv->icon_view = g_value_get_object (value);
+        break;
+
       case PROP_FILE:
         g_assert (priv->file == NULL);
         priv->file = g_value_dup_object (value);
@@ -403,6 +410,16 @@ gf_icon_get_preferred_width (GtkWidget *widget,
 static void
 install_properties (GObjectClass *object_class)
 {
+  icon_properties[PROP_ICON_VIEW] =
+    g_param_spec_object ("icon-view",
+                         "icon-view",
+                         "icon-view",
+                         GF_TYPE_ICON_VIEW,
+                         G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_WRITABLE |
+                         G_PARAM_EXPLICIT_NOTIFY |
+                         G_PARAM_STATIC_STRINGS);
+
   icon_properties[PROP_FILE] =
     g_param_spec_object ("file",
                          "file",
@@ -532,10 +549,12 @@ gf_icon_init (GfIcon *self)
 }
 
 GtkWidget *
-gf_icon_new (GFile     *file,
-             GFileInfo *info)
+gf_icon_new (GfIconView *icon_view,
+             GFile      *file,
+             GFileInfo  *info)
 {
   return g_object_new (GF_TYPE_ICON,
+                       "icon-view", icon_view,
                        "file", file,
                        "info", info,
                        NULL);

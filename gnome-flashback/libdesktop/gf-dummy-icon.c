@@ -150,7 +150,7 @@ gf_dummy_icon_init (GfDummyIcon *self)
 }
 
 GtkWidget *
-gf_dummy_icon_new (void)
+gf_dummy_icon_new (GfIconView *icon_view)
 {
   GFile *file;
   GFileInfo *info;
@@ -173,6 +173,7 @@ gf_dummy_icon_new (void)
   g_file_info_set_display_name (info, name);
 
   widget = g_object_new (GF_TYPE_DUMMY_ICON,
+                         "icon-view", icon_view,
                          "file", file,
                          "info", info,
                          NULL);
