@@ -24,10 +24,8 @@
 #include "gf-desktop-enum-types.h"
 #include "gf-utils.h"
 
-struct _GfIcon
+typedef struct
 {
-  GtkButton   parent;
-
   GtkGesture *multi_press;
 
   GFile      *file;
@@ -42,7 +40,7 @@ struct _GfIcon
   GtkWidget  *label;
 
   gboolean    selected;
-};
+} GfIconPrivate;
 
 enum
 {
@@ -70,17 +68,20 @@ enum
 
 static guint icon_signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (GfIcon, gf_icon, GTK_TYPE_BUTTON)
+G_DEFINE_TYPE_WITH_PRIVATE (GfIcon, gf_icon, GTK_TYPE_BUTTON)
 
 static void
 update_state (GfIcon *self)
 {
+  GfIconPrivate *priv;
   GtkStateFlags state;
+
+  priv = gf_icon_get_instance_private (self);
 
   state = gtk_widget_get_state_flags (GTK_WIDGET (self));
   state &= ~GTK_STATE_FLAG_SELECTED;
 
-  if (self->selected)
+  if (priv->selected)
     state |= GTK_STATE_FLAG_SELECTED;
 
   gtk_widget_set_state_flags (GTK_WIDGET (self), state, TRUE);
@@ -89,10 +90,13 @@ update_state (GfIcon *self)
 static void
 icon_open (GfIcon *self)
 {
+  GfIconPrivate *priv;
   char *uri;
   GError *error;
 
-  uri = g_file_get_uri (self->file);
+  priv = gf_icon_get_instance_private (self);
+
+  uri = g_file_get_uri (priv->file);
 
   error = NULL;
   if (!gf_launch_uri (uri, &error))
@@ -160,6 +164,7 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
                         gdouble               y,
                         GfIcon               *self)
 {
+  GfIconPrivate *priv;
   guint button;
   GdkEventSequence *sequence;
   const GdkEvent *event;
@@ -167,6 +172,8 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
   GdkModifierType state;
   gboolean control_pressed;
   gboolean shift_pressed;
+
+  priv = gf_icon_get_instance_private (self);
 
   button = gtk_gesture_single_get_current_button (GTK_GESTURE_SINGLE (gesture));
   sequence = gtk_gesture_single_get_current_sequence (GTK_GESTURE_SINGLE (gesture));
@@ -190,9 +197,9 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
 
       if (control_pressed || shift_pressed)
         {
-          selected = !self->selected;
+          selected = !priv->selected;
 
-          if (self->selected)
+          if (priv->selected)
             flags |= GF_ICON_SELECTED_REMOVE;
           else
             flags |= GF_ICON_SELECTED_ADD;
@@ -212,7 +219,7 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
     {
       GtkWidget *popup_menu;
 
-      if (!self->selected && !control_pressed)
+      if (!priv->selected && !control_pressed)
         flags |= GF_ICON_SELECTED_CLEAR;
       flags |= GF_ICON_SELECTED_ADD;
 
@@ -234,53 +241,60 @@ static void
 set_icon_size (GfIcon *self,
                int     icon_size)
 {
+  GfIconPrivate *priv;
   GtkStyleContext *context;
 
-  self->icon_size = icon_size;
-  gtk_image_set_pixel_size (GTK_IMAGE (self->image), icon_size);
+  priv = gf_icon_get_instance_private (self);
+
+  priv->icon_size = icon_size;
+  gtk_image_set_pixel_size (GTK_IMAGE (priv->image), icon_size);
 
   context = gtk_widget_get_style_context (GTK_WIDGET (self));
 
-  if (self->css_class != NULL)
+  if (priv->css_class != NULL)
     {
-      gtk_style_context_remove_class (context, self->css_class);
-      g_clear_pointer (&self->css_class, g_free);
+      gtk_style_context_remove_class (context, priv->css_class);
+      g_clear_pointer (&priv->css_class, g_free);
     }
 
-  self->css_class = g_strdup_printf ("s%dpx", icon_size);
-  gtk_style_context_add_class (context, self->css_class);
+  priv->css_class = g_strdup_printf ("s%dpx", icon_size);
+  gtk_style_context_add_class (context, priv->css_class);
 }
 
 static void
 gf_icon_constructed (GObject *object)
 {
   GfIcon *self;
+  GfIconPrivate *priv;
   GIcon *icon;
   const char *name;
 
   self = GF_ICON (object);
+  priv = gf_icon_get_instance_private (self);
 
   G_OBJECT_CLASS (gf_icon_parent_class)->constructed (object);
 
-  icon = g_file_info_get_icon (self->info);
-  gtk_image_set_from_gicon (GTK_IMAGE (self->image), icon, GTK_ICON_SIZE_DIALOG);
-  gtk_image_set_pixel_size (GTK_IMAGE (self->image), self->icon_size);
+  icon = g_file_info_get_icon (priv->info);
+  gtk_image_set_from_gicon (GTK_IMAGE (priv->image), icon, GTK_ICON_SIZE_DIALOG);
+  gtk_image_set_pixel_size (GTK_IMAGE (priv->image), priv->icon_size);
 
-  name = g_file_info_get_display_name (self->info);
-  gtk_label_set_text (GTK_LABEL (self->label), name);
+  name = g_file_info_get_display_name (priv->info);
+  gtk_label_set_text (GTK_LABEL (priv->label), name);
 }
 
 static void
 gf_icon_dispose (GObject *object)
 {
   GfIcon *self;
+  GfIconPrivate *priv;
 
   self = GF_ICON (object);
+  priv = gf_icon_get_instance_private (self);
 
-  g_clear_object (&self->multi_press);
+  g_clear_object (&priv->multi_press);
 
-  g_clear_object (&self->file);
-  g_clear_object (&self->info);
+  g_clear_object (&priv->file);
+  g_clear_object (&priv->info);
 
   G_OBJECT_CLASS (gf_icon_parent_class)->dispose (object);
 }
@@ -289,10 +303,12 @@ static void
 gf_icon_finalize (GObject *object)
 {
   GfIcon *self;
+  GfIconPrivate *priv;
 
   self = GF_ICON (object);
+  priv = gf_icon_get_instance_private (self);
 
-  g_clear_pointer (&self->css_class, g_free);
+  g_clear_pointer (&priv->css_class, g_free);
 
   G_OBJECT_CLASS (gf_icon_parent_class)->finalize (object);
 }
@@ -304,19 +320,21 @@ gf_icon_set_property (GObject      *object,
                       GParamSpec   *pspec)
 {
   GfIcon *self;
+  GfIconPrivate *priv;
 
   self = GF_ICON (object);
+  priv = gf_icon_get_instance_private (self);
 
   switch (property_id)
     {
       case PROP_FILE:
-        g_assert (self->file == NULL);
-        self->file = g_value_dup_object (value);
+        g_assert (priv->file == NULL);
+        priv->file = g_value_dup_object (value);
         break;
 
       case PROP_INFO:
-        g_assert (self->info == NULL);
-        self->info = g_value_dup_object (value);
+        g_assert (priv->info == NULL);
+        priv->info = g_value_dup_object (value);
         break;
 
       case PROP_ICON_SIZE:
@@ -324,7 +342,7 @@ gf_icon_set_property (GObject      *object,
         break;
 
       case PROP_EXTRA_TEXT_WIDTH:
-        self->extra_text_width = g_value_get_uint (value);
+        priv->extra_text_width = g_value_get_uint (value);
         gtk_widget_queue_resize (GTK_WIDGET (self));
         break;
 
@@ -340,15 +358,17 @@ gf_icon_get_preferred_width (GtkWidget *widget,
                              gint      *natural_width)
 {
   GfIcon *self;
+  GfIconPrivate *priv;
 
   self = GF_ICON (widget);
+  priv = gf_icon_get_instance_private (self);
 
   GTK_WIDGET_CLASS (gf_icon_parent_class)->get_preferred_width (widget,
                                                                 minimum_width,
                                                                 natural_width);
 
-  *minimum_width += self->extra_text_width;
-  *natural_width += self->extra_text_width;
+  *minimum_width += priv->extra_text_width;
+  *natural_width += priv->extra_text_width;
 }
 
 static void
@@ -434,17 +454,20 @@ gf_icon_class_init (GfIconClass *self_class)
 static void
 gf_icon_init (GfIcon *self)
 {
+  GfIconPrivate *priv;
   GtkWidget *box;
   GtkLabel *label;
 #ifdef HAVE_PANGO144
   PangoAttrList *attrs;
 #endif
 
-  self->multi_press = gtk_gesture_multi_press_new (GTK_WIDGET (self));
+  priv = gf_icon_get_instance_private (self);
 
-  gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (self->multi_press), 0);
+  priv->multi_press = gtk_gesture_multi_press_new (GTK_WIDGET (self));
 
-  g_signal_connect (self->multi_press, "pressed",
+  gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (priv->multi_press), 0);
+
+  g_signal_connect (priv->multi_press, "pressed",
                     G_CALLBACK (multi_press_pressed_cb),
                     self);
 
@@ -452,15 +475,15 @@ gf_icon_init (GfIcon *self)
   gtk_container_add (GTK_CONTAINER (self), box);
   gtk_widget_show (box);
 
-  self->image = gtk_image_new ();
-  gtk_box_pack_start (GTK_BOX (box), self->image, FALSE, FALSE, 0);
-  gtk_widget_show (self->image);
+  priv->image = gtk_image_new ();
+  gtk_box_pack_start (GTK_BOX (box), priv->image, FALSE, FALSE, 0);
+  gtk_widget_show (priv->image);
 
-  self->label = gtk_label_new (NULL);
-  gtk_box_pack_start (GTK_BOX (box), self->label, TRUE, TRUE, 0);
-  gtk_widget_show (self->label);
+  priv->label = gtk_label_new (NULL);
+  gtk_box_pack_start (GTK_BOX (box), priv->label, TRUE, TRUE, 0);
+  gtk_widget_show (priv->label);
 
-  label = GTK_LABEL (self->label);
+  label = GTK_LABEL (priv->label);
 
   gtk_label_set_lines (label, 2);
   gtk_label_set_line_wrap (label, TRUE);
@@ -491,23 +514,34 @@ gf_icon_new (GFile     *file,
 GFile *
 gf_icon_get_file (GfIcon *self)
 {
-  return self->file;
+  GfIconPrivate *priv;
+
+  priv = gf_icon_get_instance_private (self);
+
+  return priv->file;
 }
 
 const char *
 gf_icon_get_name (GfIcon *self)
 {
-  return g_file_info_get_name (self->info);
+  GfIconPrivate *priv;
+
+  priv = gf_icon_get_instance_private (self);
+
+  return g_file_info_get_name (priv->info);
 }
 
 gboolean
 gf_icon_is_hidden (GfIcon *self)
 {
+  GfIconPrivate *priv;
   gboolean hidden;
   gboolean backup;
 
-  hidden = g_file_info_get_is_hidden (self->info);
-  backup = g_file_info_get_is_backup (self->info);
+  priv = gf_icon_get_instance_private (self);
+
+  hidden = g_file_info_get_is_hidden (priv->info);
+  backup = g_file_info_get_is_backup (priv->info);
 
   return hidden || backup;
 }
@@ -517,10 +551,14 @@ gf_icon_set_selected (GfIcon              *self,
                       gboolean             selected,
                       GfIconSelectedFlags  flags)
 {
-  if (self->selected == selected)
+  GfIconPrivate *priv;
+
+  priv = gf_icon_get_instance_private (self);
+
+  if (priv->selected == selected)
     return;
 
-  self->selected = selected;
+  priv->selected = selected;
   update_state (self);
 
   g_signal_emit (self, icon_signals[SELECTED], 0, flags);
@@ -529,5 +567,9 @@ gf_icon_set_selected (GfIcon              *self,
 gboolean
 gf_icon_get_selected (GfIcon *self)
 {
-  return self->selected;
+  GfIconPrivate *priv;
+
+  priv = gf_icon_get_instance_private (self);
+
+  return priv->selected;
 }

@@ -31,7 +31,12 @@ typedef enum
 } GfIconSelectedFlags;
 
 #define GF_TYPE_ICON (gf_icon_get_type ())
-G_DECLARE_FINAL_TYPE (GfIcon, gf_icon, GF, ICON, GtkButton)
+G_DECLARE_DERIVABLE_TYPE (GfIcon, gf_icon, GF, ICON, GtkButton)
+
+struct _GfIconClass
+{
+  GtkButtonClass parent_class;
+};
 
 GtkWidget  *gf_icon_new          (GFile               *file,
                                   GFileInfo           *info);
