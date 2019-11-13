@@ -20,7 +20,6 @@
 
 #include "gf-desktop-enum-types.h"
 #include "gf-icon.h"
-#include "gf-utils.h"
 
 struct _GfMonitorView
 {
@@ -120,52 +119,17 @@ icon_style_updated_cb (GtkWidget     *widget,
   recalculate_grid_size (self);
 }
 
-static void
-icon_destroy_cb (GtkWidget *widget,
-                 GFile     *file)
-{
-  g_file_delete (file, NULL, NULL);
-  g_object_unref (file);
-}
-
 static GtkWidget *
 create_dummy_icon (GfMonitorView *self)
 {
-  GFileIOStream *iostream;
-  GError *error;
   GFile *file;
-  char *attributes;
   GFileInfo *info;
   GIcon *icon;
   const char *name;
   GtkWidget *widget;
 
-  iostream = NULL;
-  error = NULL;
-
-  file = g_file_new_tmp ("dummy-desktop-file-XXXXXX", &iostream, &error);
-
-  if (error != NULL)
-    {
-      g_warning ("%s", error->message);
-      g_error_free (error);
-      return NULL;
-    }
-
-  attributes = gf_build_attributes_list (G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
-                                         G_FILE_ATTRIBUTE_STANDARD_ICON,
-                                         NULL);
-
-  info = g_file_io_stream_query_info (iostream, attributes, NULL, &error);
-  g_object_unref (iostream);
-  g_free (attributes);
-
-  if (error != NULL)
-    {
-      g_warning ("%s", error->message);
-      g_error_free (error);
-      return NULL;
-    }
+  file = g_file_new_for_commandline_arg ("");
+  info = g_file_info_new ();
 
   icon = g_icon_new_for_string ("text-x-generic", NULL);
   g_file_info_set_icon (info, icon);
@@ -179,6 +143,8 @@ create_dummy_icon (GfMonitorView *self)
   g_file_info_set_display_name (info, name);
 
   widget = gf_icon_new (file, info);
+
+  g_object_unref (file);
   g_object_unref (info);
 
   g_object_ref_sink (widget);
@@ -198,12 +164,6 @@ create_dummy_icon (GfMonitorView *self)
   g_signal_connect (widget, "style-updated",
                     G_CALLBACK (icon_style_updated_cb),
                     self);
-
-  g_signal_connect (widget, "destroy",
-                    G_CALLBACK (icon_destroy_cb),
-                    g_object_ref (file));
-
-  g_object_unref (file);
 
   return widget;
 }
