@@ -249,19 +249,22 @@ file_deleted (GfIconView *self,
 
       file = gf_icon_get_file (GF_ICON (info->icon));
 
-      if (g_file_equal (file, deleted_file))
+      if (!g_file_equal (file, deleted_file))
+        continue;
+
+      if (info->view != NULL)
         {
-          gf_monitor_view_remove_icon (GF_MONITOR_VIEW (info->view),
-                                       info->icon);
+          gf_monitor_view_remove_icon (GF_MONITOR_VIEW (info->view), info->icon);
+          info->view = NULL;
 
           self->selected_icons = g_list_remove (self->selected_icons, l->data);
           self->rubberband_icons = g_list_remove (self->rubberband_icons, l->data);
-
-          self->icons = g_list_remove_link (self->icons, l);
-          g_list_free_full (l, gf_icon_info_free);
-
-          break;
         }
+
+      self->icons = g_list_remove_link (self->icons, l);
+      g_list_free_full (l, gf_icon_info_free);
+
+      break;
     }
 }
 
