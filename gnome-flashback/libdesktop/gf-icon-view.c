@@ -571,6 +571,20 @@ change_background_cb (GtkMenuItem *item,
 }
 
 static void
+display_settings_cb (GtkMenuItem *item,
+                     GfIconView  *self)
+{
+  GError *error;
+
+  error = NULL;
+  if (!gf_launch_desktop_file ("gnome-display-panel.desktop", &error))
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+    }
+}
+
+static void
 open_terminal_cb (GtkMenuItem *item,
                   GfIconView  *self)
 {
@@ -614,6 +628,14 @@ create_popup_menu (GfIconView *self)
 
   g_signal_connect (item, "activate",
                     G_CALLBACK (change_background_cb),
+                    self);
+
+  item = gtk_menu_item_new_with_label (_("Display Settings"));
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+  gtk_widget_show (item);
+
+  g_signal_connect (item, "activate",
+                    G_CALLBACK (display_settings_cb),
                     self);
 
   item = gtk_separator_menu_item_new ();
