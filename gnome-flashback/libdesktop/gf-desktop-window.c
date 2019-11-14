@@ -67,7 +67,11 @@ enum
 
 static guint window_signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (GfDesktopWindow, gf_desktop_window, GTK_TYPE_WINDOW)
+static void initable_iface_init (GInitableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (GfDesktopWindow, gf_desktop_window, GTK_TYPE_WINDOW,
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                initable_iface_init))
 
 static gboolean
 get_representative_color (GfDesktopWindow *self,
@@ -463,6 +467,54 @@ monitor_removed_cb (GdkDisplay      *display,
   queue_move_resize (self);
 }
 
+static gboolean
+gf_desktop_window_initable_init (GInitable     *initable,
+                                 GCancellable  *cancellable,
+                                 GError       **error)
+{
+  GtkWidget *widget;
+  GdkDisplay *display;
+  Display *xdisplay;
+  char *atom_name;
+  Atom atom;
+  GdkWindow *window;
+  Window xwindow;
+
+  widget = GTK_WIDGET (initable);
+
+  display = gtk_widget_get_display (widget);
+  xdisplay = gdk_x11_display_get_xdisplay (display);
+
+  atom_name = g_strdup_printf ("_NET_DESKTOP_MANAGER_S%d",
+                               XDefaultScreen (xdisplay));
+
+  atom = XInternAtom (xdisplay, atom_name, False);
+  g_free (atom_name);
+
+  if (XGetSelectionOwner (xdisplay, atom) != None)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Another desktop manager is running.");
+
+      return FALSE;
+    }
+
+  gtk_widget_realize (widget);
+
+  window = gtk_widget_get_window (widget);
+  xwindow = gdk_x11_window_get_xid (window);
+
+  XSetSelectionOwner (xdisplay, atom, xwindow, CurrentTime);
+
+  return TRUE;
+}
+
+static void
+initable_iface_init (GInitableIface *iface)
+{
+  iface->init = gf_desktop_window_initable_init;
+}
+
 static void
 gf_desktop_window_constructed (GObject *object)
 {
@@ -690,16 +742,27 @@ gf_desktop_window_init (GfDesktopWindow *self)
 }
 
 GtkWidget *
-gf_desktop_window_new (gboolean draw_background,
-                       gboolean show_icons)
+gf_desktop_window_new (gboolean   draw_background,
+                       gboolean   show_icons,
+                       GError   **error)
 {
-  return g_object_new (GF_TYPE_DESKTOP_WINDOW,
-                       "app-paintable", TRUE,
-                       "type", GTK_WINDOW_TOPLEVEL,
-                       "type-hint", GDK_WINDOW_TYPE_HINT_DESKTOP,
-                       "draw-background", draw_background,
-                       "show-icons", show_icons,
-                       NULL);
+  GtkWidget *window;
+
+  window = g_object_new (GF_TYPE_DESKTOP_WINDOW,
+                         "app-paintable", TRUE,
+                         "type", GTK_WINDOW_TOPLEVEL,
+                         "type-hint", GDK_WINDOW_TYPE_HINT_DESKTOP,
+                         "draw-background", draw_background,
+                         "show-icons", show_icons,
+                         NULL);
+
+  if (!g_initable_init (G_INITABLE (window), NULL, error))
+    {
+      gtk_widget_destroy (window);
+      return NULL;
+    }
+
+  return window;
 }
 
 gboolean

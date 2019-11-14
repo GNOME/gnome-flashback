@@ -68,13 +68,23 @@ gf_desktop_init (GfDesktop *self)
 {
   gboolean draw_background;
   gboolean show_icons;
+  GError *error;
 
   self->settings = g_settings_new ("org.gnome.gnome-flashback.desktop");
 
   draw_background = g_settings_get_boolean (self->settings, "draw-background");
   show_icons = g_settings_get_boolean (self->settings, "show-icons");
 
-  self->window = gf_desktop_window_new (draw_background, show_icons);
+  error = NULL;
+  self->window = gf_desktop_window_new (draw_background, show_icons, &error);
+
+  if (error != NULL)
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+
+      return;
+    }
 
   g_settings_bind (self->settings, "draw-background",
                    self->window, "draw-background",
