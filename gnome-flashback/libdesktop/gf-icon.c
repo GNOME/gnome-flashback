@@ -23,6 +23,7 @@
 
 #include "gf-desktop-enums.h"
 #include "gf-desktop-enum-types.h"
+#include "gf-trash-icon.h"
 #include "gf-utils.h"
 
 typedef struct
@@ -134,6 +135,17 @@ open_cb (GtkMenuItem *item,
 }
 
 static void
+empty_trash_cb (GtkMenuItem *item,
+                GfIcon      *self)
+{
+  GfIconPrivate *priv;
+
+  priv = gf_icon_get_instance_private (self);
+
+  gf_icon_view_empty_trash (priv->icon_view);
+}
+
+static void
 properties_cb (GtkMenuItem *item,
                GfIcon      *self)
 {
@@ -178,14 +190,22 @@ properties_cb (GtkMenuItem *item,
 static GtkWidget *
 create_popup_menu (GfIcon *self)
 {
+  GfIconPrivate *priv;
   GtkWidget *popup_menu;
   GtkStyleContext *context;
+  GList *selected_icons;
+  int n_selected_icons;
   GtkWidget *item;
+
+  priv = gf_icon_get_instance_private (self);
 
   popup_menu = gtk_menu_new ();
 
   context = gtk_widget_get_style_context (popup_menu);
   gtk_style_context_add_class (context, GTK_STYLE_CLASS_CONTEXT_MENU);
+
+  selected_icons = gf_icon_view_get_selected_icons (priv->icon_view);
+  n_selected_icons = g_list_length (selected_icons);
 
   item = gtk_menu_item_new_with_label (_("Open"));
   gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
@@ -194,6 +214,22 @@ create_popup_menu (GfIcon *self)
   g_signal_connect (item, "activate",
                     G_CALLBACK (open_cb),
                     self);
+
+  if (GF_IS_TRASH_ICON (self) &&
+      n_selected_icons == 1)
+    {
+      item = gtk_separator_menu_item_new ();
+      gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+      gtk_widget_show (item);
+
+      item = gtk_menu_item_new_with_label (_("Empty Trash"));
+      gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+      gtk_widget_show (item);
+
+      g_signal_connect (item, "activate",
+                        G_CALLBACK (empty_trash_cb),
+                        self);
+    }
 
   item = gtk_separator_menu_item_new ();
   gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);

@@ -39,6 +39,8 @@ GList     *gf_icon_view_get_selected_icons       (GfIconView         *self);
 void       gf_icon_view_show_item_properties     (GfIconView         *self,
                                                   const char * const *uris);
 
+void       gf_icon_view_empty_trash              (GfIconView         *self);
+
 G_END_DECLS
 
 #endif

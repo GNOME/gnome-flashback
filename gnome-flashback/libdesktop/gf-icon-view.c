@@ -467,6 +467,25 @@ show_item_properties_cb (GObject      *object,
     }
 }
 
+static void
+empty_trash_cb (GObject      *object,
+                GAsyncResult *res,
+                gpointer      user_data)
+{
+  GError *error;
+
+  error = NULL;
+  gf_nautilus_gen_call_empty_trash_finish (GF_NAUTILUS_GEN (object),
+                                           res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Error creating new folder: %s", error->message);
+      g_error_free (error);
+    }
+}
+
 static GfIconInfo *
 create_icon_info (GfIconView *self,
                   GtkWidget  *icon)
@@ -2278,4 +2297,16 @@ gf_icon_view_show_item_properties (GfIconView         *self,
                                                  self->cancellable,
                                                  show_item_properties_cb,
                                                  NULL);
+}
+
+void
+gf_icon_view_empty_trash (GfIconView  *self)
+{
+  if (self->nautilus == NULL)
+    return;
+
+  gf_nautilus_gen_call_empty_trash (self->nautilus,
+                                    self->cancellable,
+                                    empty_trash_cb,
+                                    NULL);
 }
