@@ -30,20 +30,28 @@ struct _GfIconClass
   GtkButtonClass parent_class;
 };
 
-GtkWidget  *gf_icon_new          (GfIconView *icon_view,
-                                  GFile      *file,
-                                  GFileInfo  *info);
+GtkWidget  *gf_icon_new               (GfIconView *icon_view,
+                                       GFile      *file,
+                                       GFileInfo  *info);
 
-GFile      *gf_icon_get_file     (GfIcon     *self);
+GFile      *gf_icon_get_file          (GfIcon     *self);
 
-const char *gf_icon_get_name     (GfIcon     *self);
+const char *gf_icon_get_name          (GfIcon     *self);
 
-gboolean    gf_icon_is_hidden    (GfIcon     *self);
+const char *gf_icon_get_name_collated (GfIcon     *self);
 
-void        gf_icon_set_selected (GfIcon     *self,
-                                  gboolean    selected);
+GFileType   gf_icon_get_file_type     (GfIcon     *self);
 
-gboolean    gf_icon_get_selected (GfIcon     *self);
+guint64     gf_icon_get_time_modified (GfIcon     *self);
+
+guint64     gf_icon_get_size          (GfIcon     *self);
+
+gboolean    gf_icon_is_hidden         (GfIcon     *self);
+
+void        gf_icon_set_selected      (GfIcon     *self,
+                                       gboolean    selected);
+
+gboolean    gf_icon_get_selected      (GfIcon     *self);
 
 G_END_DECLS
 

@@ -35,6 +35,24 @@ typedef enum
   GF_ICON_SIZE_128PX = 128
 } GfIconSize;
 
+typedef enum
+{
+  GF_PLACEMENT_AUTO_ARRANGE_ICONS,
+  GF_PLACEMENT_ALIGN_ICONS_TO_GRID,
+  GF_PLACEMENT_FREE,
+
+  GF_PLACEMENT_LAST /*< skip >*/
+} GfPlacement;
+
+typedef enum
+{
+  GF_SORT_BY_NAME,
+  GF_SORT_BY_DATE_MODIFIED,
+  GF_SORT_BY_SIZE,
+
+  GF_SORT_BY_LAST /*< skip >*/
+} GfSortBy;
+
 G_END_DECLS
 
 #endif

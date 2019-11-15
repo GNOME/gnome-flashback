@@ -6,6 +6,18 @@
       <description>The size of desktop icons.</description>
     </key>
 
+    <key name="placement" enum="org.gnome.gnome-flashback.desktop.GfPlacement">
+      <default>"auto-arrange-icons"</default>
+      <summary>Placement</summary>
+      <description>Can be one of "auto-arrange-icons", "align-icons-to-grid" or "free". It controls how icons are placed on desktop.</description>
+    </key>
+
+    <key name="sort-by" enum="org.gnome.gnome-flashback.desktop.GfSortBy">
+      <default>"name"</default>
+      <summary>Sort by</summary>
+      <description>Can be one of "name", "date-modified" or "size". It controls how icons are sorted in "auto-arrange-icons" placement.</description>
+    </key>
+
     <key name="extra-text-width" type="u">
       <default>48</default>
       <range min='0' max='100'/>

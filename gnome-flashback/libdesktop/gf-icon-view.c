@@ -23,6 +23,7 @@
 
 #include "gf-create-folder-dialog.h"
 #include "gf-desktop-enum-types.h"
+#include "gf-desktop-enums.h"
 #include "gf-dummy-icon.h"
 #include "gf-file-manager-gen.h"
 #include "gf-icon.h"
@@ -49,6 +50,9 @@ struct _GfIconView
 
   GSettings        *settings;
 
+  GfPlacement       placement;
+  GfSortBy          sort_by;
+
   GtkWidget        *fixed;
 
   GtkWidget        *dummy_icon;
@@ -56,8 +60,6 @@ struct _GfIconView
   GCancellable     *cancellable;
 
   GList            *icons;
-
-  guint             add_icons_id;
 
   GList            *selected_icons;
 
@@ -112,6 +114,9 @@ get_required_attributes (void)
                                 G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
                                 G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN,
                                 G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP,
+                                G_FILE_ATTRIBUTE_STANDARD_TYPE,
+                                G_FILE_ATTRIBUTE_STANDARD_SIZE,
+                                G_FILE_ATTRIBUTE_TIME_MODIFIED,
                                 NULL);
 }
 
@@ -209,29 +214,220 @@ add_icons (GfIconView *self)
   g_list_free (views);
 }
 
-static gboolean
-add_icons_cb (gpointer user_data)
+static int
+compare_directory (GfIcon     *a,
+                   GfIcon     *b,
+                   GfIconView *self)
+{
+  gboolean is_dir_a;
+  gboolean is_dir_b;
+
+  is_dir_a = gf_icon_get_file_type (a) == G_FILE_TYPE_DIRECTORY;
+  is_dir_b = gf_icon_get_file_type (b) == G_FILE_TYPE_DIRECTORY;
+
+  if (is_dir_a != is_dir_b)
+    return is_dir_a ? -1 : 1;
+
+  return 0;
+}
+
+static int
+compare_name (GfIcon     *a,
+              GfIcon     *b,
+              GfIconView *self)
+{
+  const char *name_a;
+  const char *name_b;
+
+  name_a = gf_icon_get_name_collated (a);
+  name_b = gf_icon_get_name_collated (b);
+
+  return g_strcmp0 (name_a, name_b);
+}
+
+static int
+compare_modified (GfIcon     *a,
+                  GfIcon     *b,
+                  GfIconView *self)
+{
+  guint64 modified_a;
+  guint64 modified_b;
+
+  modified_a = gf_icon_get_time_modified (a);
+  modified_b = gf_icon_get_time_modified (b);
+
+  if (modified_a < modified_b)
+    return -1;
+  else if (modified_a > modified_b)
+    return 1;
+
+  return 0;
+}
+
+static int
+compare_size (GfIcon     *a,
+              GfIcon     *b,
+              GfIconView *self)
+{
+  guint64 size_a;
+  guint64 size_b;
+
+  size_a = gf_icon_get_size (a);
+  size_b = gf_icon_get_size (b);
+
+  if (size_a < size_b)
+    return -1;
+  else if (size_a > size_b)
+    return 1;
+
+  return 0;
+}
+
+static int
+compare_name_func (gconstpointer a,
+                   gconstpointer b,
+                   gpointer      user_data)
 {
   GfIconView *self;
+  GfIconInfo *info_a;
+  GfIcon *icon_a;
+  GfIconInfo *info_b;
+  GfIcon *icon_b;
+  int result;
 
   self = GF_ICON_VIEW (user_data);
 
-  add_icons (self);
-  self->add_icons_id = 0;
+  info_a = (GfIconInfo *) a;
+  icon_a = GF_ICON (info_a->icon);
 
-  return G_SOURCE_REMOVE;
+  info_b = (GfIconInfo *) b;
+  icon_b = GF_ICON (info_b->icon);
+
+  result = compare_directory (icon_a, icon_b, self);
+
+  if (result == 0)
+    result = compare_name (icon_a, icon_b, self);
+
+  return result;
+}
+
+static int
+compare_modified_func (gconstpointer a,
+                       gconstpointer b,
+                       gpointer      user_data)
+{
+  GfIconView *self;
+  GfIconInfo *info_a;
+  GfIcon *icon_a;
+  GfIconInfo *info_b;
+  GfIcon *icon_b;
+  int result;
+
+  self = GF_ICON_VIEW (user_data);
+
+  info_a = (GfIconInfo *) a;
+  icon_a = GF_ICON (info_a->icon);
+
+  info_b = (GfIconInfo *) b;
+  icon_b = GF_ICON (info_b->icon);
+
+  result = compare_directory (icon_a, icon_b, self);
+
+  if (result == 0)
+    result = compare_modified (icon_a, icon_b, self);
+
+  return result;
+}
+
+static int
+compare_size_func (gconstpointer a,
+                   gconstpointer b,
+                   gpointer      user_data)
+{
+  GfIconView *self;
+  GfIconInfo *info_a;
+  GfIcon *icon_a;
+  GfIconInfo *info_b;
+  GfIcon *icon_b;
+  int result;
+
+  self = GF_ICON_VIEW (user_data);
+
+  info_a = (GfIconInfo *) a;
+  icon_a = GF_ICON (info_a->icon);
+
+  info_b = (GfIconInfo *) b;
+  icon_b = GF_ICON (info_b->icon);
+
+  result = compare_directory (icon_a, icon_b, self);
+
+  if (result == 0)
+    result = compare_size (icon_a, icon_b, self);
+
+  return result;
+}
+
+static gboolean
+sort_icons (GfIconView *self)
+{
+  GList *old_list;
+  gboolean changed;
+  GList *l1;
+  GList *l2;
+
+  old_list = g_list_copy (self->icons);
+
+  if (self->sort_by == GF_SORT_BY_NAME)
+    self->icons = g_list_sort_with_data (self->icons, compare_name_func, self);
+  else if (self->sort_by == GF_SORT_BY_DATE_MODIFIED)
+    self->icons = g_list_sort_with_data (self->icons, compare_modified_func, self);
+  else if (self->sort_by == GF_SORT_BY_SIZE)
+    self->icons = g_list_sort_with_data (self->icons, compare_size_func, self);
+
+  changed = FALSE;
+  for (l1 = self->icons, l2 = old_list;
+       l1 != NULL;
+       l1 = l1->next, l2 = l2->next)
+    {
+      if (l1->data == l2->data)
+        continue;
+
+      changed = TRUE;
+      break;
+    }
+
+  g_list_free (old_list);
+  return changed;
 }
 
 static void
-add_icons_idle (GfIconView *self)
+remove_and_readd_icons (GfIconView *self)
 {
-  if (self->add_icons_id != 0)
+  GList *l;
+
+  for (l = self->icons; l != NULL; l = l->next)
+    {
+      GfIconInfo *info;
+
+      info = (GfIconInfo *) l->data;
+
+      if (info->view == NULL)
+        continue;
+
+      gf_monitor_view_remove_icon (GF_MONITOR_VIEW (info->view), info->icon);
+      info->view = NULL;
+    }
+
+  add_icons (self);
+}
+
+static void
+resort_icons (GfIconView *self)
+{
+  if (!sort_icons (self))
     return;
 
-  self->add_icons_id = g_idle_add (add_icons_cb, self);
-
-  g_source_set_name_by_id (self->add_icons_id,
-                           "[gnome-flashback] add_icons_cb");
+  remove_and_readd_icons (self);
 }
 
 static void
@@ -263,6 +459,9 @@ file_deleted (GfIconView *self,
 
       self->icons = g_list_remove_link (self->icons, l);
       g_list_free_full (l, gf_icon_info_free);
+
+      if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+        remove_and_readd_icons (self);
 
       break;
     }
@@ -368,9 +567,12 @@ query_info_cb (GObject      *object,
   icon_info = create_icon_info (self, file, file_info);
   g_object_unref (file_info);
 
-  self->icons = g_list_append (self->icons, icon_info);
+  self->icons = g_list_prepend (self->icons, icon_info);
 
-  add_icons (self);
+  if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+    resort_icons (self);
+  else
+    add_icons (self);
 }
 
 static void
@@ -598,6 +800,231 @@ open_terminal_cb (GtkMenuItem *item,
     }
 }
 
+typedef struct
+{
+  GfIconView  *self;
+  GfPlacement  placement;
+} GfPlacementData;
+
+static void
+free_placement_data (gpointer  data,
+                     GClosure *closure)
+{
+  g_free (data);
+}
+
+static void
+placement_cb (GtkCheckMenuItem *item,
+              GfPlacementData  *data)
+{
+  if (!gtk_check_menu_item_get_active (item))
+    return;
+
+  g_settings_set_enum (data->self->settings, "placement", data->placement);
+}
+
+static const char *
+placement_to_string (GfPlacement placement)
+{
+  const char *string;
+
+  string = NULL;
+
+  switch (placement)
+    {
+      case GF_PLACEMENT_AUTO_ARRANGE_ICONS:
+        string = _("Auto arrange icons");
+        break;
+
+      case GF_PLACEMENT_ALIGN_ICONS_TO_GRID:
+        string = _("Align icons to grid");
+        break;
+
+      case GF_PLACEMENT_FREE:
+        string = _("Free");
+        break;
+
+      case GF_PLACEMENT_LAST:
+      default:
+        break;
+    }
+
+  g_assert (string != NULL);
+
+  return string;
+}
+
+static void
+append_placement_submenu (GfIconView *self,
+                          GtkWidget  *parent)
+{
+  GtkWidget *menu;
+  GtkStyleContext *context;
+  GSList *group;
+  GfPlacement i;
+
+  menu = gtk_menu_new ();
+  gtk_menu_item_set_submenu (GTK_MENU_ITEM (parent), menu);
+
+  context = gtk_widget_get_style_context (menu);
+  gtk_style_context_add_class (context, GTK_STYLE_CLASS_CONTEXT_MENU);
+
+  group = NULL;
+
+  for (i = 0; i < GF_PLACEMENT_LAST; i++)
+    {
+      const char *label;
+      GtkWidget *item;
+      GfPlacementData *data;
+
+      label = placement_to_string (i);
+
+      item = gtk_radio_menu_item_new_with_label (group, label);
+      group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (item));
+
+      if (i == self->placement)
+        gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), TRUE);
+
+      gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+      gtk_widget_show (item);
+
+      data = g_new0 (GfPlacementData, 1);
+
+      data->self = self;
+      data->placement = i;
+
+      g_signal_connect_data (item, "toggled",
+                             G_CALLBACK (placement_cb),
+                             data, free_placement_data,
+                             0);
+    }
+}
+
+typedef struct
+{
+  GfIconView *self;
+  GfSortBy    sort_by;
+} GfSortByData;
+
+static void
+free_sort_by_data (gpointer  data,
+                   GClosure *closure)
+{
+  g_free (data);
+}
+
+static void
+sort_by_toggled_cb (GtkCheckMenuItem *item,
+                    GfSortByData     *data)
+{
+  if (!gtk_check_menu_item_get_active (item))
+    return;
+
+  g_settings_set_enum (data->self->settings, "sort-by", data->sort_by);
+}
+
+static void
+sort_by_activate_cb (GtkMenuItem  *item,
+                     GfSortByData *data)
+{
+  g_settings_set_enum (data->self->settings, "sort-by", data->sort_by);
+  resort_icons (data->self);
+}
+
+static const char *
+sort_by_to_string (GfSortBy sort_by)
+{
+  const char *string;
+
+  string = NULL;
+
+  switch (sort_by)
+    {
+      case GF_SORT_BY_NAME:
+        string = _("Name");
+        break;
+
+      case GF_SORT_BY_DATE_MODIFIED:
+        string = _("Date modified");
+        break;
+
+      case GF_SORT_BY_SIZE:
+        string = _("Size");
+        break;
+
+      case GF_SORT_BY_LAST:
+      default:
+        break;
+    }
+
+  g_assert (string != NULL);
+
+  return string;
+}
+
+static void
+append_sort_by_submenu (GfIconView *self,
+                        GtkWidget  *parent)
+{
+  GtkWidget *menu;
+  GtkStyleContext *context;
+  GSList *group;
+  GfSortBy i;
+
+  menu = gtk_menu_new ();
+  gtk_menu_item_set_submenu (GTK_MENU_ITEM (parent), menu);
+
+  context = gtk_widget_get_style_context (menu);
+  gtk_style_context_add_class (context, GTK_STYLE_CLASS_CONTEXT_MENU);
+
+  group = NULL;
+
+  for (i = 0; i < GF_SORT_BY_LAST; i++)
+    {
+      const char *label;
+      GtkWidget *item;
+      GfSortByData *data;
+
+      label = sort_by_to_string (i);
+
+      if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+        {
+          item = gtk_radio_menu_item_new_with_label (group, label);
+          group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (item));
+
+          if (i == self->sort_by)
+            gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), TRUE);
+        }
+      else
+        {
+          item = gtk_menu_item_new_with_label (label);
+        }
+
+      gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+      gtk_widget_show (item);
+
+      data = g_new0 (GfSortByData, 1);
+
+      data->self = self;
+      data->sort_by = i;
+
+      if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+        {
+          g_signal_connect_data (item, "toggled",
+                                 G_CALLBACK (sort_by_toggled_cb),
+                                 data, free_sort_by_data,
+                                 0);
+        }
+      else
+        {
+          g_signal_connect_data (item, "activate",
+                                 G_CALLBACK (sort_by_activate_cb),
+                                 data, free_sort_by_data,
+                                 0);
+        }
+    }
+}
+
 static GtkWidget *
 create_popup_menu (GfIconView *self)
 {
@@ -617,6 +1044,22 @@ create_popup_menu (GfIconView *self)
   g_signal_connect (item, "activate",
                     G_CALLBACK (new_folder_cb),
                     self);
+
+  item = gtk_separator_menu_item_new ();
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+  gtk_widget_show (item);
+
+  item = gtk_menu_item_new_with_label (_("Placement"));
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+  gtk_widget_show (item);
+
+  append_placement_submenu (self, item);
+
+  item = gtk_menu_item_new_with_label (_("Sort by"));
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+  gtk_widget_show (item);
+
+  append_sort_by_submenu (self, item);
 
   item = gtk_separator_menu_item_new ();
   gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
@@ -879,7 +1322,7 @@ size_changed_cb (GtkWidget  *view,
                  GfIconView *self)
 {
   gtk_container_foreach (GTK_CONTAINER (view), view_foreach_cb, self);
-  add_icons_idle (self);
+  add_icons (self);
 }
 
 static void
@@ -924,8 +1367,10 @@ next_files_cb (GObject      *object,
       self->icons = g_list_prepend (self->icons, icon_info);
     }
 
-  self->icons = g_list_reverse (self->icons);
   g_list_free_full (files, g_object_unref);
+
+  if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+    sort_icons (self);
 
   add_icons (self);
 }
@@ -1103,6 +1548,9 @@ create_monitor_view (GfIconView *self,
                               column_spacing,
                               row_spacing);
 
+  gf_monitor_view_set_placement (GF_MONITOR_VIEW (view),
+                                 self->placement);
+
   gf_monitor_view_set_size (GF_MONITOR_VIEW (view),
                             workarea.width,
                             workarea.height);
@@ -1141,6 +1589,68 @@ monitor_removed_cb (GdkDisplay *display,
     return;
 
   gtk_widget_destroy (view);
+}
+
+static GfPlacement
+warn_if_placement_not_implemented (GfIconView  *self,
+                                   GfPlacement  placement)
+{
+  if (placement != GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+    {
+      g_warning ("Placement mode `%s` is not implemented!",
+                 placement_to_string (placement));
+
+      placement = GF_PLACEMENT_AUTO_ARRANGE_ICONS;
+      g_settings_set_enum (self->settings, "placement", placement);
+    }
+
+  return placement;
+}
+
+static void
+placement_changed_cb (GSettings  *settings,
+                      const char *key,
+                      GfIconView *self)
+{
+  GfPlacement placement;
+  GList *monitor_views;
+  GList *l;
+
+  placement = g_settings_get_enum (settings, key);
+  placement = warn_if_placement_not_implemented (self, placement);
+
+  if (self->placement == placement)
+    return;
+
+  self->placement = placement;
+
+  monitor_views = get_monitor_views (self);
+  for (l = monitor_views; l != NULL; l = l->next)
+    gf_monitor_view_set_placement (GF_MONITOR_VIEW (l->data), placement);
+  g_list_free (monitor_views);
+
+  if (placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+    resort_icons (self);
+  else if (placement == GF_PLACEMENT_ALIGN_ICONS_TO_GRID)
+    remove_and_readd_icons (self);
+}
+
+static void
+sort_by_changed_cb (GSettings  *settings,
+                    const char *key,
+                    GfIconView *self)
+{
+  GfSortBy sort_by;
+
+  sort_by = g_settings_get_enum (settings, key);
+
+  if (self->sort_by == sort_by)
+    return;
+
+  self->sort_by = sort_by;
+
+  if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+    resort_icons (self);
 }
 
 static GdkFilterReturn
@@ -1280,12 +1790,6 @@ gf_icon_view_finalize (GObject *object)
   self = GF_ICON_VIEW (object);
 
   g_clear_pointer (&self->dummy_icon, gtk_widget_unparent);
-
-  if (self->add_icons_id != 0)
-    {
-      g_source_remove (self->add_icons_id);
-      self->add_icons_id = 0;
-    }
 
   remove_event_filter (self);
 
@@ -1461,6 +1965,18 @@ gf_icon_view_init (GfIconView *self)
                     self);
 
   self->settings = g_settings_new ("org.gnome.gnome-flashback.desktop.icons");
+
+  g_signal_connect (self->settings, "changed::placement",
+                    G_CALLBACK (placement_changed_cb),
+                    self);
+
+  g_signal_connect (self->settings, "changed::sort-by",
+                    G_CALLBACK (sort_by_changed_cb),
+                    self);
+
+  self->placement = g_settings_get_enum (self->settings, "placement");
+  self->placement = warn_if_placement_not_implemented (self, self->placement);
+  self->sort_by = g_settings_get_enum (self->settings, "sort-by");
 
   self->fixed = gtk_fixed_new ();
   gtk_container_add (GTK_CONTAINER (self), self->fixed);

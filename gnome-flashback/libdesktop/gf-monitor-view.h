@@ -18,6 +18,7 @@
 #ifndef GF_MONITOR_VIEW_H
 #define GF_MONITOR_VIEW_H
 
+#include "gf-desktop-enums.h"
 #include "gf-dummy-icon.h"
 
 G_BEGIN_DECLS
@@ -25,27 +26,30 @@ G_BEGIN_DECLS
 #define GF_TYPE_MONITOR_VIEW (gf_monitor_view_get_type ())
 G_DECLARE_FINAL_TYPE (GfMonitorView, gf_monitor_view, GF, MONITOR_VIEW, GtkFixed)
 
-GtkWidget  *gf_monitor_view_new         (GdkMonitor    *monitor,
-                                         GfDummyIcon   *dummy_icon,
-                                         guint          column_spacing,
-                                         guint          row_spacing);
+GtkWidget  *gf_monitor_view_new           (GdkMonitor    *monitor,
+                                           GfDummyIcon   *dummy_icon,
+                                           guint          column_spacing,
+                                           guint          row_spacing);
 
-void        gf_monitor_view_set_size    (GfMonitorView *self,
-                                         int            width,
-                                         int            height);
+void        gf_monitor_view_set_placement (GfMonitorView *self,
+                                           GfPlacement    placement);
 
-GdkMonitor *gf_monitor_view_get_monitor (GfMonitorView *self);
+void        gf_monitor_view_set_size      (GfMonitorView *self,
+                                           int            width,
+                                           int            height);
 
-gboolean    gf_monitor_view_is_primary  (GfMonitorView *self);
+GdkMonitor *gf_monitor_view_get_monitor   (GfMonitorView *self);
 
-gboolean    gf_monitor_view_add_icon    (GfMonitorView *self,
-                                         GtkWidget     *icon);
+gboolean    gf_monitor_view_is_primary    (GfMonitorView *self);
 
-void        gf_monitor_view_remove_icon (GfMonitorView *self,
-                                         GtkWidget     *icon);
+gboolean    gf_monitor_view_add_icon      (GfMonitorView *self,
+                                           GtkWidget     *icon);
 
-GList      *gf_monitor_view_get_icons   (GfMonitorView *self,
-                                         GdkRectangle  *rect);
+void        gf_monitor_view_remove_icon   (GfMonitorView *self,
+                                           GtkWidget     *icon);
+
+GList      *gf_monitor_view_get_icons     (GfMonitorView *self,
+                                           GdkRectangle  *rect);
 
 G_END_DECLS
 

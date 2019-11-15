@@ -44,6 +44,8 @@ typedef struct
   gboolean         selected;
 
   GDesktopAppInfo *app_info;
+
+  char            *name_collated;
 } GfIconPrivate;
 
 enum
@@ -328,6 +330,9 @@ update_text (GfIcon *self)
     name = g_file_info_get_display_name (priv->info);
 
   gtk_label_set_text (GTK_LABEL (priv->label), name);
+
+  g_clear_pointer (&priv->name_collated, g_free);
+  priv->name_collated = g_utf8_collate_key_for_filename (name, -1);
 }
 
 static void
@@ -386,6 +391,7 @@ gf_icon_finalize (GObject *object)
   priv = gf_icon_get_instance_private (self);
 
   g_clear_pointer (&priv->css_class, g_free);
+  g_clear_pointer (&priv->name_collated, g_free);
 
   G_OBJECT_CLASS (gf_icon_parent_class)->finalize (object);
 }
@@ -648,6 +654,52 @@ gf_icon_get_name (GfIcon *self)
   priv = gf_icon_get_instance_private (self);
 
   return g_file_info_get_name (priv->info);
+}
+
+const char *
+gf_icon_get_name_collated (GfIcon *self)
+{
+  GfIconPrivate *priv;
+
+  priv = gf_icon_get_instance_private (self);
+
+  return priv->name_collated;
+}
+
+GFileType
+gf_icon_get_file_type (GfIcon *self)
+{
+  GfIconPrivate *priv;
+  const char *attribute;
+
+  priv = gf_icon_get_instance_private (self);
+  attribute = G_FILE_ATTRIBUTE_STANDARD_TYPE;
+
+  return g_file_info_get_attribute_uint32 (priv->info, attribute);
+}
+
+guint64
+gf_icon_get_time_modified (GfIcon *self)
+{
+  GfIconPrivate *priv;
+  const char *attribute;
+
+  priv = gf_icon_get_instance_private (self);
+  attribute = G_FILE_ATTRIBUTE_TIME_MODIFIED;
+
+  return g_file_info_get_attribute_uint64 (priv->info, attribute);
+}
+
+guint64
+gf_icon_get_size (GfIcon *self)
+{
+  GfIconPrivate *priv;
+  const char *attribute;
+
+  priv = gf_icon_get_instance_private (self);
+  attribute = G_FILE_ATTRIBUTE_STANDARD_SIZE;
+
+  return g_file_info_get_attribute_uint64 (priv->info, attribute);
 }
 
 gboolean

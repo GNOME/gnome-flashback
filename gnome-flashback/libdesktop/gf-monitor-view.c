@@ -34,6 +34,8 @@ struct _GfMonitorView
   guint        column_spacing;
   guint        row_spacing;
 
+  GfPlacement  placement;
+
   guint        grid_size_id;
 
   int          view_width;
@@ -529,6 +531,13 @@ gf_monitor_view_new (GdkMonitor  *monitor,
                        "column-spacing", column_spacing,
                        "row-spacing", row_spacing,
                        NULL);
+}
+
+void
+gf_monitor_view_set_placement (GfMonitorView *self,
+                               GfPlacement    placement)
+{
+  self->placement = placement;
 }
 
 void
