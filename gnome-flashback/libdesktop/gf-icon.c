@@ -27,6 +27,8 @@
 
 typedef struct
 {
+  GCancellable    *cancellable;
+
   GtkGesture      *multi_press;
 
   GfIconView      *icon_view;
@@ -336,18 +338,15 @@ update_text (GfIcon *self)
 }
 
 static void
-gf_icon_constructed (GObject *object)
+icon_refresh (GfIcon *self)
 {
-  GfIcon *self;
   GfIconPrivate *priv;
   const char *content_type;
 
-  self = GF_ICON (object);
   priv = gf_icon_get_instance_private (self);
-
-  G_OBJECT_CLASS (gf_icon_parent_class)->constructed (object);
-
   content_type = g_file_info_get_content_type (priv->info);
+
+  g_clear_object (&priv->app_info);
 
   if (g_strcmp0 (content_type, "application/x-desktop") == 0)
     {
@@ -363,6 +362,44 @@ gf_icon_constructed (GObject *object)
 }
 
 static void
+query_info_cb (GObject      *object,
+               GAsyncResult *res,
+               gpointer      user_data)
+{
+  GError *error;
+  GFileInfo *file_info;
+  GfIcon *self;
+  GfIconPrivate *priv;
+
+  error = NULL;
+  file_info = g_file_query_info_finish (G_FILE (object), res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("%s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  self = GF_ICON (user_data);
+  priv = gf_icon_get_instance_private (self);
+
+  g_clear_object (&priv->info);
+  priv->info = file_info;
+
+  icon_refresh (self);
+}
+
+static void
+gf_icon_constructed (GObject *object)
+{
+  G_OBJECT_CLASS (gf_icon_parent_class)->constructed (object);
+  icon_refresh (GF_ICON (object));
+}
+
+static void
 gf_icon_dispose (GObject *object)
 {
   GfIcon *self;
@@ -370,6 +407,9 @@ gf_icon_dispose (GObject *object)
 
   self = GF_ICON (object);
   priv = gf_icon_get_instance_private (self);
+
+  g_cancellable_cancel (priv->cancellable);
+  g_clear_object (&priv->cancellable);
 
   g_clear_object (&priv->multi_press);
 
@@ -586,6 +626,8 @@ gf_icon_init (GfIcon *self)
 
   priv = gf_icon_get_instance_private (self);
 
+  priv->cancellable = g_cancellable_new ();
+
   priv->multi_press = gtk_gesture_multi_press_new (GTK_WIDGET (self));
 
   gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (priv->multi_press), 0);
@@ -634,6 +676,31 @@ gf_icon_new (GfIconView *icon_view,
                        "file", file,
                        "info", info,
                        NULL);
+}
+
+void
+gf_icon_set_file (GfIcon *self,
+                  GFile  *file)
+{
+  GfIconPrivate *priv;
+  char *attributes;
+
+  priv = gf_icon_get_instance_private (self);
+
+  g_clear_object (&priv->file);
+  priv->file = g_object_ref (file);
+
+  attributes = gf_icon_view_get_file_attributes (priv->icon_view);
+
+  g_file_query_info_async (file,
+                           attributes,
+                           G_FILE_QUERY_INFO_NONE,
+                           G_PRIORITY_LOW,
+                           priv->cancellable,
+                           query_info_cb,
+                           self);
+
+  g_free (attributes);
 }
 
 GFile *

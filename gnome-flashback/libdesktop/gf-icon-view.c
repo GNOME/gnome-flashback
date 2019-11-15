@@ -422,43 +422,6 @@ resort_icons (GfIconView *self,
 }
 
 static void
-file_deleted (GfIconView *self,
-              GFile      *deleted_file)
-{
-  GList *l;
-
-  for (l = self->icons; l != NULL; l = l->next)
-    {
-      GfIconInfo *info;
-      GFile *file;
-
-      info = (GfIconInfo *) l->data;
-
-      file = gf_icon_get_file (GF_ICON (info->icon));
-
-      if (!g_file_equal (file, deleted_file))
-        continue;
-
-      if (info->view != NULL)
-        {
-          gf_monitor_view_remove_icon (GF_MONITOR_VIEW (info->view), info->icon);
-          info->view = NULL;
-
-          self->selected_icons = g_list_remove (self->selected_icons, l->data);
-          self->rubberband_icons = g_list_remove (self->rubberband_icons, l->data);
-        }
-
-      self->icons = g_list_remove_link (self->icons, l);
-      g_list_free_full (l, gf_icon_info_free);
-
-      if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
-        remove_and_readd_icons (self);
-
-      break;
-    }
-}
-
-static void
 unselect_cb (gpointer data,
              gpointer user_data)
 {
@@ -563,11 +526,62 @@ query_info_cb (GObject      *object,
     add_icons (self);
 }
 
+static GfIconInfo *
+find_icon_info_by_file (GfIconView *self,
+                        GFile      *file)
+{
+  GList *l;
+
+  for (l = self->icons; l != NULL; l = l->next)
+    {
+      GfIconInfo *info;
+      GFile *icon_file;
+
+      info = (GfIconInfo *) l->data;
+      icon_file = gf_icon_get_file (GF_ICON (info->icon));
+
+      if (g_file_equal (icon_file, file))
+        return info;
+    }
+
+  return NULL;
+}
+
+static void
+file_deleted (GfIconView *self,
+              GFile      *deleted_file)
+{
+  GfIconInfo *info;
+
+  info = find_icon_info_by_file (self, deleted_file);
+
+  if (info == NULL)
+    return;
+
+  if (info->view != NULL)
+    {
+      GtkWidget *icon;
+
+      icon = info->icon;
+
+      gf_monitor_view_remove_icon (GF_MONITOR_VIEW (info->view), icon);
+      info->view = NULL;
+
+      self->selected_icons = g_list_remove (self->selected_icons, icon);
+      self->rubberband_icons = g_list_remove (self->rubberband_icons, icon);
+    }
+
+  self->icons = g_list_remove (self->icons, info);
+  gf_icon_info_free (info);
+
+  if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+    remove_and_readd_icons (self);
+}
+
 static void
 file_created (GfIconView *self,
               GFile      *created_file)
 {
-
   char *attributes;
 
   attributes = gf_icon_view_get_file_attributes (self);
@@ -581,6 +595,21 @@ file_created (GfIconView *self,
                            self);
 
   g_free (attributes);
+}
+
+static void
+file_renamed (GfIconView *self,
+              GFile      *old_file,
+              GFile      *new_file)
+{
+  GfIconInfo *info;
+
+  info = find_icon_info_by_file (self, old_file);
+
+  if (info == NULL)
+    return;
+
+  gf_icon_set_file (GF_ICON (info->icon), new_file);
 }
 
 static void
@@ -619,6 +648,7 @@ desktop_changed_cb (GFileMonitor      *monitor,
         break;
 
       case G_FILE_MONITOR_EVENT_RENAMED:
+        file_renamed (self, file, other_file);
         break;
 
       case G_FILE_MONITOR_EVENT_MOVED_IN:
