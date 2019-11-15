@@ -20,6 +20,7 @@
 
 #include <gdk/gdkx.h>
 #include <libgnome-desktop/gnome-bg.h>
+#include <glib/gi18n.h>
 #include <X11/Xatom.h>
 
 #include "gf-background.h"
@@ -754,6 +755,7 @@ gf_desktop_window_new (gboolean   draw_background,
                          "type-hint", GDK_WINDOW_TYPE_HINT_DESKTOP,
                          "draw-background", draw_background,
                          "show-icons", show_icons,
+                         "title", _("Desktop"),
                          NULL);
 
   if (!g_initable_init (G_INITABLE (window), NULL, error))
