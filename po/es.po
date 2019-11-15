@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-11-13 03:19+0000\n"
-"PO-Revision-Date: 2019-11-13 12:59+0100\n"
+"POT-Creation-Date: 2019-11-15 02:10+0000\n"
+"PO-Revision-Date: 2019-11-15 13:08+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -336,29 +336,85 @@ msgstr "Tamaño del icono"
 msgid "The size of desktop icons."
 msgstr "El tamaño de los iconos del escritorio."
 
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
+#: gnome-flashback/libdesktop/gf-icon-view.c:1039
+msgid "Placement"
+msgstr "Posicionamiento"
+
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:12
+msgid ""
+"Can be one of \"auto-arrange-icons\", \"align-icons-to-grid\" or \"free\". "
+"It controls how icons are placed on desktop."
+msgstr ""
+"Puede ser \"auto-arrange-icons\", \"align-icons-to-grid\" o \"free\". "
+"Controla cómo se ordenan los iconos en el escritorio."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
+#: gnome-flashback/libdesktop/gf-icon-view.c:1045
+msgid "Sort by"
+msgstr "Ordenar por"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:18
+msgid ""
+"Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons "
+"are sorted in \"auto-arrange-icons\" placement."
+msgstr ""
+"Puede ser \"name\", \"date-modified\" o \"size\". controla cómo se ordenan "
+"los iconos con la opción \"auto-arrange-icons\"."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
 msgid "Extra text width"
 msgstr "Anchura de texto adicional"
 
-#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:13
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:25
 msgid "Extra width for icon text."
 msgstr "Anchura adicional para el texto del icono."
 
-#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:19
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:31
 msgid "Column spacing"
 msgstr "Espaciado de la columna"
 
-#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:20
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:32
 msgid "The amount of space between columns."
 msgstr "La cantidad de espacio entre columnas."
 
-#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:26
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:38
 msgid "Row spacing"
 msgstr "Espaciado de la fila"
 
-#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:27
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:39
 msgid "The amount of space between rows."
 msgstr "La cantidad de espacio entre filas."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:44
+#| msgid "Show desktop icons"
+msgid "Show home icon"
+msgstr "Mostrar icono de la carpeta personal"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:45
+#| msgid ""
+#| "If set to true, then fade effect will be used to change the desktop "
+#| "background."
+msgid ""
+"If this is set to true, an icon linking to the home folder will be put on "
+"the desktop."
+msgstr ""
+"Si es cierto, se colocará en el escritorio un icono que apunte a la carpeta "
+"personal."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:50
+#| msgid "Show desktop icons"
+msgid "Show trash icon"
+msgstr "Mostrar icono de la papelera"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:51
+#| msgid ""
+#| "If set to true, then GNOME Flashback will draw the icons on the desktop."
+msgid ""
+"If this is set to true, an icon linking to the trash will be put on the "
+"desktop."
+msgstr ""
+"Si es cierto, se colocará en el escritorio un icono que apunte a la papelera."
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
 msgid "The background color"
@@ -529,7 +585,7 @@ msgid "Sound Settings"
 msgstr "Configuración de sonido"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:151
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:163
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
 msgid "Cancel"
 msgstr "Cancelar"
@@ -695,54 +751,81 @@ msgstr[1] "%d dispositivos conectados"
 msgid "Not Connected"
 msgstr "No conectado"
 
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:87
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:72
 msgid "Folder names cannot contain “/”."
 msgstr "Los nombres de las carpetas no pueden contener «/»."
 
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:92
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:77
 msgid "A folder cannot be called “.”."
 msgstr "Una carpeta no se puede llamar «.»."
 
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:97
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:82
 msgid "A folder cannot be called “..”."
 msgstr "Una carpeta no se puede llamar «..»."
 
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:118
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:103
 msgid "Folders with “.” at the beginning of their name are hidden."
 msgstr "Las carpetas cuyo nombre empieza por «.» están ocultas."
 
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:149
-#: gnome-flashback/libdesktop/gf-icon-view.c:624
-#| msgid "Open Folder"
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:161
+#: gnome-flashback/libdesktop/gf-icon-view.c:1027
 msgid "New Folder"
 msgstr "Carpeta nueva"
 
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:159
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:171
 msgid "Create"
 msgstr "Crear"
 
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:187
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:199
 msgid "Folder name"
 msgstr "Nombre de la carpeta"
 
-#: gnome-flashback/libdesktop/gf-icon.c:133
+#: gnome-flashback/libdesktop/gf-icon.c:188
 msgid "Open"
 msgstr "Abrir"
 
-#: gnome-flashback/libdesktop/gf-icon.c:145
+#: gnome-flashback/libdesktop/gf-icon.c:200
 msgid "Properties"
 msgstr "Propiedades"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:487
+#: gnome-flashback/libdesktop/gf-icon-view.c:651
 msgid "A folder with that name already exists."
 msgstr "Ya existe una carpeta con ese nombre."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:636
-#| msgid "The background color"
+#: gnome-flashback/libdesktop/gf-icon-view.c:823
+msgid "Auto arrange icons"
+msgstr "Ordenar iconos automáticamente"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:827
+msgid "Align icons to grid"
+msgstr "Ajustar iconos a la cuadrícula"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:831
+msgid "Free"
+msgstr "Libre"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:931
+msgid "Name"
+msgstr "Nombre"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:935
+msgid "Date modified"
+msgstr "Fecha de modificación"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:939
+msgid "Size"
+msgstr "Tamaño"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1055
 msgid "Change Background"
 msgstr "Cambiar el fondo"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:648
+#: gnome-flashback/libdesktop/gf-icon-view.c:1063
+#| msgid "Sound Settings"
+msgid "Display Settings"
+msgstr "Configuración de pantalla"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1075
 msgid "Open Terminal"
 msgstr "Abrir terminal"
 
