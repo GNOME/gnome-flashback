@@ -219,11 +219,16 @@ create_popup_menu (GfIcon *self)
   if (GF_IS_TRASH_ICON (self) &&
       n_selected_icons == 1)
     {
+      gboolean is_empty;
+
       item = gtk_separator_menu_item_new ();
       gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
       gtk_widget_show (item);
 
+      is_empty = gf_trash_icon_is_empty (GF_TRASH_ICON (self));
+
       item = gtk_menu_item_new_with_label (_("Empty Trash"));
+      gtk_widget_set_sensitive (item, !is_empty);
       gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
       gtk_widget_show (item);
 

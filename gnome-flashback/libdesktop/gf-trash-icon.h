@@ -25,8 +25,10 @@ G_BEGIN_DECLS
 #define GF_TYPE_TRASH_ICON (gf_trash_icon_get_type ())
 G_DECLARE_FINAL_TYPE (GfTrashIcon, gf_trash_icon, GF, TRASH_ICON, GfIcon)
 
-GtkWidget *gf_trash_icon_new (GfIconView  *icon_view,
-                              GError     **error);
+GtkWidget *gf_trash_icon_new      (GfIconView   *icon_view,
+                                   GError      **error);
+
+gboolean   gf_trash_icon_is_empty (GfTrashIcon  *self);
 
 G_END_DECLS
 

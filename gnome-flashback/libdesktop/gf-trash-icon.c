@@ -25,9 +25,92 @@ struct _GfTrashIcon
   GCancellable *cancellable;
 
   GFileMonitor *monitor;
+
+  gboolean      empty;
 };
 
 G_DEFINE_TYPE (GfTrashIcon, gf_trash_icon, GF_TYPE_ICON)
+
+static void
+next_files_cb (GObject      *object,
+               GAsyncResult *res,
+               gpointer      user_data)
+{
+  GFileEnumerator *enumerator;
+  GList *files;
+  GError *error;
+  GfTrashIcon *self;
+
+  enumerator = G_FILE_ENUMERATOR (object);
+
+  error = NULL;
+  files = g_file_enumerator_next_files_finish (enumerator, res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("%s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  self = GF_TRASH_ICON (user_data);
+  self->empty = files == NULL;
+
+  g_list_free_full (files, g_object_unref);
+}
+
+static void
+enumerate_children_cb (GObject      *object,
+                       GAsyncResult *res,
+                       gpointer      user_data)
+{
+  GFileEnumerator *enumerator;
+  GError *error;
+  GfTrashIcon *self;
+
+  error = NULL;
+  enumerator = g_file_enumerate_children_finish (G_FILE (object), res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("%s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  self = GF_TRASH_ICON (user_data);
+  self->empty = TRUE;
+
+  g_file_enumerator_next_files_async (enumerator,
+                                      1,
+                                      G_PRIORITY_LOW,
+                                      self->cancellable,
+                                      next_files_cb,
+                                      user_data);
+
+  g_object_unref (enumerator);
+}
+
+static void
+check_if_empty (GfTrashIcon *self)
+{
+  g_cancellable_cancel (self->cancellable);
+  g_clear_object (&self->cancellable);
+
+  self->cancellable = g_cancellable_new ();
+
+  g_file_enumerate_children_async (gf_icon_get_file (GF_ICON (self)),
+                                   NULL,
+                                   G_FILE_QUERY_INFO_NONE,
+                                   G_PRIORITY_LOW,
+                                   self->cancellable,
+                                   enumerate_children_cb,
+                                   self);
+}
 
 static void
 trash_changed_cb (GFileMonitor      *monitor,
@@ -43,6 +126,7 @@ trash_changed_cb (GFileMonitor      *monitor,
       case G_FILE_MONITOR_EVENT_MOVED_IN:
       case G_FILE_MONITOR_EVENT_MOVED_OUT:
         gf_icon_update (GF_ICON (self));
+        check_if_empty (self);
         break;
 
       case G_FILE_MONITOR_EVENT_CHANGED:
@@ -83,6 +167,8 @@ gf_trash_icon_constructed (GObject *object)
   g_signal_connect (self->monitor, "changed",
                     G_CALLBACK (trash_changed_cb),
                     self);
+
+  check_if_empty (self);
 }
 
 static void
@@ -115,6 +201,7 @@ static void
 gf_trash_icon_init (GfTrashIcon *self)
 {
   self->cancellable = g_cancellable_new ();
+  self->empty = TRUE;
 }
 
 GtkWidget *
@@ -151,4 +238,10 @@ gf_trash_icon_new (GfIconView  *icon_view,
   g_object_unref (info);
 
   return widget;
+}
+
+gboolean
+gf_trash_icon_is_empty (GfTrashIcon *self)
+{
+  return self->empty;
 }
