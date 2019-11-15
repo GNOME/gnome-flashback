@@ -26,9 +26,11 @@
 #include "gf-desktop-enums.h"
 #include "gf-dummy-icon.h"
 #include "gf-file-manager-gen.h"
+#include "gf-home-icon.h"
 #include "gf-icon.h"
 #include "gf-monitor-view.h"
 #include "gf-nautilus-gen.h"
+#include "gf-trash-icon.h"
 #include "gf-utils.h"
 
 typedef struct
@@ -60,6 +62,9 @@ struct _GfIconView
   GCancellable     *cancellable;
 
   GList            *icons;
+
+  GfIconInfo       *home_info;
+  GfIconInfo       *trash_info;
 
   GList            *selected_icons;
 
@@ -103,21 +108,6 @@ build_attributes_list (const char *first,
   va_end (args);
 
   return g_string_free (attributes, FALSE);
-}
-
-static char *
-get_required_attributes (void)
-{
-  return build_attributes_list (G_FILE_ATTRIBUTE_STANDARD_NAME,
-                                G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
-                                G_FILE_ATTRIBUTE_STANDARD_ICON,
-                                G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-                                G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN,
-                                G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP,
-                                G_FILE_ATTRIBUTE_STANDARD_TYPE,
-                                G_FILE_ATTRIBUTE_STANDARD_SIZE,
-                                G_FILE_ATTRIBUTE_TIME_MODIFIED,
-                                NULL);
 }
 
 static GfIconInfo *
@@ -515,13 +505,8 @@ show_item_properties_cb (GObject      *object,
 
 static GfIconInfo *
 create_icon_info (GfIconView *self,
-                  GFile      *file,
-                  GFileInfo  *info)
+                  GtkWidget  *icon)
 {
-  GtkWidget *icon;
-
-  icon = gf_icon_new (self, file, info);
-
   g_signal_connect (icon, "selected",
                     G_CALLBACK (icon_selected_cb),
                     self);
@@ -546,6 +531,7 @@ query_info_cb (GObject      *object,
   GFileInfo *file_info;
   GError *error;
   GfIconView *self;
+  GtkWidget *icon;
   GfIconInfo *icon_info;
 
   file = G_FILE (object);
@@ -564,9 +550,10 @@ query_info_cb (GObject      *object,
 
   self = GF_ICON_VIEW (user_data);
 
-  icon_info = create_icon_info (self, file, file_info);
+  icon = gf_icon_new (self, file, file_info);
   g_object_unref (file_info);
 
+  icon_info = create_icon_info (self, icon);
   self->icons = g_list_prepend (self->icons, icon_info);
 
   if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
@@ -582,7 +569,7 @@ file_created (GfIconView *self,
 
   char *attributes;
 
-  attributes = get_required_attributes ();
+  attributes = gf_icon_view_get_file_attributes (self);
 
   g_file_query_info_async (created_file,
                            attributes,
@@ -1326,6 +1313,52 @@ size_changed_cb (GtkWidget  *view,
 }
 
 static void
+append_home_icon (GfIconView *self)
+{
+  GError *error;
+  GtkWidget *icon;
+
+  if (self->home_info != NULL)
+    return;
+
+  error = NULL;
+  icon = gf_home_icon_new (self, &error);
+
+  if (error != NULL)
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+      return;
+    }
+
+  self->home_info = create_icon_info (self, icon);
+  self->icons = g_list_prepend (self->icons, self->home_info);
+}
+
+static void
+append_trash_icon (GfIconView *self)
+{
+  GError *error;
+  GtkWidget *icon;
+
+  if (self->trash_info != NULL)
+    return;
+
+  error = NULL;
+  icon = gf_trash_icon_new (self, &error);
+
+  if (error != NULL)
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+      return;
+    }
+
+  self->trash_info = create_icon_info (self, icon);
+  self->icons = g_list_prepend (self->icons, self->trash_info);
+}
+
+static void
 next_files_cb (GObject      *object,
                GAsyncResult *res,
                gpointer      user_data)
@@ -1356,16 +1389,24 @@ next_files_cb (GObject      *object,
     {
       GFileInfo *info;
       GFile *file;
+      GtkWidget *icon;
       GfIconInfo *icon_info;
 
       info = l->data;
       file = g_file_enumerator_get_child (enumerator, info);
 
-      icon_info = create_icon_info (self, file, info);
+      icon = gf_icon_new (self, file, info);
       g_object_unref (file);
 
+      icon_info = create_icon_info (self, icon);
       self->icons = g_list_prepend (self->icons, icon_info);
     }
+
+  if (g_settings_get_boolean (self->settings, "show-home"))
+    append_home_icon (self);
+
+  if (g_settings_get_boolean (self->settings, "show-trash"))
+    append_trash_icon (self);
 
   g_list_free_full (files, g_object_unref);
 
@@ -1413,7 +1454,7 @@ enumerate_desktop (GfIconView *self)
 {
   char *attributes;
 
-  attributes = get_required_attributes ();
+  attributes = gf_icon_view_get_file_attributes (self);
 
   g_file_enumerate_children_async (self->desktop,
                                    attributes,
@@ -1651,6 +1692,86 @@ sort_by_changed_cb (GSettings  *settings,
 
   if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
     resort_icons (self);
+}
+
+static void
+show_home_changed_cb (GSettings  *settings,
+                      const char *key,
+                      GfIconView *self)
+{
+  if (g_settings_get_boolean (self->settings, key))
+    {
+      append_home_icon (self);
+
+      if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+        resort_icons (self);
+    }
+  else if (self->home_info != NULL)
+    {
+      GfIconInfo *info;
+
+      info = self->home_info;
+
+      if (info->view != NULL)
+        {
+          GtkWidget *icon;
+
+          icon = info->icon;
+
+          gf_monitor_view_remove_icon (GF_MONITOR_VIEW (info->view), icon);
+          info->view = NULL;
+
+          self->selected_icons = g_list_remove (self->selected_icons, icon);
+          self->rubberband_icons = g_list_remove (self->rubberband_icons, icon);
+        }
+
+      self->icons = g_list_remove (self->icons, self->home_info);
+      gf_icon_info_free (self->home_info);
+      self->home_info = NULL;
+
+      if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+        remove_and_readd_icons (self);
+    }
+}
+
+static void
+show_trash_changed_cb (GSettings  *settings,
+                       const char *key,
+                       GfIconView *self)
+{
+  if (g_settings_get_boolean (self->settings, key))
+    {
+      append_trash_icon (self);
+
+      if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+        resort_icons (self);
+    }
+  else if (self->trash_info != NULL)
+    {
+      GfIconInfo *info;
+
+      info = self->trash_info;
+
+      if (info->view != NULL)
+        {
+          GtkWidget *icon;
+
+          icon = info->icon;
+
+          gf_monitor_view_remove_icon (GF_MONITOR_VIEW (info->view), icon);
+          info->view = NULL;
+
+          self->selected_icons = g_list_remove (self->selected_icons, icon);
+          self->rubberband_icons = g_list_remove (self->rubberband_icons, icon);
+        }
+
+      self->icons = g_list_remove (self->icons, self->trash_info);
+      gf_icon_info_free (self->trash_info);
+      self->trash_info = NULL;
+
+      if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+        remove_and_readd_icons (self);
+    }
 }
 
 static GdkFilterReturn
@@ -1974,6 +2095,14 @@ gf_icon_view_init (GfIconView *self)
                     G_CALLBACK (sort_by_changed_cb),
                     self);
 
+  g_signal_connect (self->settings, "changed::show-home",
+                    G_CALLBACK (show_home_changed_cb),
+                    self);
+
+  g_signal_connect (self->settings, "changed::show-trash",
+                    G_CALLBACK (show_trash_changed_cb),
+                    self);
+
   self->placement = g_settings_get_enum (self->settings, "placement");
   self->placement = warn_if_placement_not_implemented (self, self->placement);
   self->sort_by = g_settings_get_enum (self->settings, "sort-by");
@@ -2032,6 +2161,21 @@ gf_icon_view_new (void)
   return g_object_new (GF_TYPE_ICON_VIEW,
                        "can-focus", TRUE,
                        NULL);
+}
+
+char *
+gf_icon_view_get_file_attributes (GfIconView *self)
+{
+  return build_attributes_list (G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME,
+                                G_FILE_ATTRIBUTE_STANDARD_ICON,
+                                G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                                G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN,
+                                G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP,
+                                G_FILE_ATTRIBUTE_STANDARD_TYPE,
+                                G_FILE_ATTRIBUTE_STANDARD_SIZE,
+                                G_FILE_ATTRIBUTE_TIME_MODIFIED,
+                                NULL);
 }
 
 void

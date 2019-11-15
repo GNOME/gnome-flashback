@@ -38,5 +38,17 @@
       <summary>Row spacing</summary>
       <description>The amount of space between rows.</description>
     </key>
+
+    <key type="b" name="show-home">
+      <default>true</default>
+      <summary>Show home icon</summary>
+      <description>If this is set to true, an icon linking to the home folder will be put on the desktop.</description>
+    </key>
+
+    <key type="b" name="show-trash">
+      <default>true</default>
+      <summary>Show trash icon</summary>
+      <description>If this is set to true, an icon linking to the trash will be put on the desktop.</description>
+    </key>
   </schema>
 </schemalist>

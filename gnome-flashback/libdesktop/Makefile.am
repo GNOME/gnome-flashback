@@ -27,6 +27,10 @@ libdesktop_la_SOURCES = \
 	gf-desktop.h \
 	gf-dummy-icon.c \
 	gf-dummy-icon.h \
+	gf-home-icon.c \
+	gf-home-icon.h \
+	gf-trash-icon.c \
+	gf-trash-icon.h \
 	gf-icon-view.c \
 	gf-icon-view.h \
 	gf-icon.c \

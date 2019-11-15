@@ -27,6 +27,8 @@ G_DECLARE_FINAL_TYPE (GfIconView, gf_icon_view, GF, ICON_VIEW, GtkEventBox)
 
 GtkWidget *gf_icon_view_new                      (void);
 
+char      *gf_icon_view_get_file_attributes      (GfIconView         *self);
+
 void       gf_icon_view_set_representative_color (GfIconView         *self,
                                                   GdkRGBA            *color);
 
