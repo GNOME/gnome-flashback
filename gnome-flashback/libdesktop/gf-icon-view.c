@@ -412,9 +412,10 @@ remove_and_readd_icons (GfIconView *self)
 }
 
 static void
-resort_icons (GfIconView *self)
+resort_icons (GfIconView *self,
+              gboolean    force)
 {
-  if (!sort_icons (self))
+  if (!sort_icons (self) && !force)
     return;
 
   remove_and_readd_icons (self);
@@ -557,7 +558,7 @@ query_info_cb (GObject      *object,
   self->icons = g_list_prepend (self->icons, icon_info);
 
   if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
-    resort_icons (self);
+    resort_icons (self, TRUE);
   else
     add_icons (self);
 }
@@ -917,7 +918,7 @@ sort_by_activate_cb (GtkMenuItem  *item,
                      GfSortByData *data)
 {
   g_settings_set_enum (data->self->settings, "sort-by", data->sort_by);
-  resort_icons (data->self);
+  resort_icons (data->self, FALSE);
 }
 
 static const char *
@@ -1673,7 +1674,7 @@ placement_changed_cb (GSettings  *settings,
   g_list_free (monitor_views);
 
   if (placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
-    resort_icons (self);
+    resort_icons (self, FALSE);
   else if (placement == GF_PLACEMENT_ALIGN_ICONS_TO_GRID)
     remove_and_readd_icons (self);
 }
@@ -1693,7 +1694,7 @@ sort_by_changed_cb (GSettings  *settings,
   self->sort_by = sort_by;
 
   if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
-    resort_icons (self);
+    resort_icons (self, FALSE);
 }
 
 static void
@@ -1706,7 +1707,7 @@ show_home_changed_cb (GSettings  *settings,
       append_home_icon (self);
 
       if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
-        resort_icons (self);
+        resort_icons (self, TRUE);
     }
   else if (self->home_info != NULL)
     {
@@ -1746,7 +1747,7 @@ show_trash_changed_cb (GSettings  *settings,
       append_trash_icon (self);
 
       if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
-        resort_icons (self);
+        resort_icons (self, TRUE);
     }
   else if (self->trash_info != NULL)
     {
