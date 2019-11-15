@@ -208,6 +208,7 @@ create_popup_menu (GfIcon *self)
   n_selected_icons = g_list_length (selected_icons);
 
   item = gtk_menu_item_new_with_label (_("Open"));
+  gtk_widget_set_sensitive (item, n_selected_icons == 1);
   gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
   gtk_widget_show (item);
 
