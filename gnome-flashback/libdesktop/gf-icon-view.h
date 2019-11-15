@@ -27,19 +27,28 @@ G_DECLARE_FINAL_TYPE (GfIconView, gf_icon_view, GF, ICON_VIEW, GtkEventBox)
 
 GtkWidget *gf_icon_view_new                      (void);
 
-char      *gf_icon_view_get_file_attributes      (GfIconView         *self);
+char      *gf_icon_view_get_file_attributes      (GfIconView          *self);
 
-void       gf_icon_view_set_representative_color (GfIconView         *self,
-                                                  GdkRGBA            *color);
+void       gf_icon_view_set_representative_color (GfIconView          *self,
+                                                  GdkRGBA             *color);
 
-void       gf_icon_view_clear_selection          (GfIconView         *self);
+void       gf_icon_view_clear_selection          (GfIconView          *self);
 
-GList     *gf_icon_view_get_selected_icons       (GfIconView         *self);
+GList     *gf_icon_view_get_selected_icons       (GfIconView          *self);
 
-void       gf_icon_view_show_item_properties     (GfIconView         *self,
-                                                  const char * const *uris);
+void       gf_icon_view_show_item_properties     (GfIconView          *self,
+                                                  const char * const  *uris);
 
-void       gf_icon_view_empty_trash              (GfIconView         *self);
+void       gf_icon_view_empty_trash              (GfIconView          *self);
+
+gboolean   gf_icon_view_validate_new_name        (GfIconView          *self,
+                                                  GFileType            file_type,
+                                                  const char          *new_name,
+                                                  char               **message);
+
+void       gf_icon_view_rename_file              (GfIconView          *self,
+                                                  const char          *uri,
+                                                  const char          *new_name);
 
 G_END_DECLS
 

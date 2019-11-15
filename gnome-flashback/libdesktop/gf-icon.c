@@ -23,6 +23,7 @@
 
 #include "gf-desktop-enums.h"
 #include "gf-desktop-enum-types.h"
+#include "gf-rename-popover.h"
 #include "gf-trash-icon.h"
 #include "gf-utils.h"
 
@@ -48,7 +49,10 @@ typedef struct
 
   GDesktopAppInfo *app_info;
 
+  char            *name;
   char            *name_collated;
+
+  GtkWidget       *popover;
 } GfIconPrivate;
 
 enum
@@ -128,10 +132,110 @@ icon_open (GfIcon *self)
 }
 
 static void
+rename_validate_cb (GfRenamePopover *popover,
+                    const char      *new_name,
+                    GfIcon          *self)
+{
+  GfIconPrivate *priv;
+  char *message;
+  gboolean valid;
+
+  priv = gf_icon_get_instance_private (self);
+
+  if (g_strcmp0 (new_name, gf_icon_get_name (self)) == 0)
+    {
+      gf_rename_popover_set_valid (popover, TRUE, "");
+      return;
+    }
+
+  message = NULL;
+  valid = gf_icon_view_validate_new_name (priv->icon_view,
+                                          gf_icon_get_file_type (self),
+                                          new_name,
+                                          &message);
+
+  gf_rename_popover_set_valid (popover, valid, message);
+  g_free (message);
+}
+
+static void
+rename_do_rename_cb (GfRenamePopover *popover,
+                     GfIcon          *self)
+{
+  GfIconPrivate *priv;
+  char *new_name;
+
+  priv = gf_icon_get_instance_private (self);
+  new_name = gf_rename_popover_get_name (popover);
+
+  if (g_strcmp0 (new_name, priv->name) != 0)
+    {
+      char *uri;
+
+      uri = g_file_get_uri (priv->file);
+      gf_icon_view_rename_file (priv->icon_view, uri, new_name);
+      g_free (uri);
+    }
+
+  gtk_popover_popdown (GTK_POPOVER (popover));
+  g_free (new_name);
+}
+
+static void
+rename_closed_cb (GtkPopover *popover,
+                  GfIcon     *self)
+{
+  gtk_widget_destroy (GTK_WIDGET (popover));
+}
+
+static void
+rename_destroy_cb (GtkWidget *widget,
+                   GfIcon    *self)
+{
+  GfIconPrivate *priv;
+
+  priv = gf_icon_get_instance_private (self);
+
+  priv->popover = NULL;
+}
+
+static void
 open_cb (GtkMenuItem *item,
          GfIcon      *self)
 {
   icon_open (self);
+}
+
+static void
+rename_cb (GtkMenuItem *item,
+           GfIcon      *self)
+{
+  GfIconPrivate *priv;
+
+  priv = gf_icon_get_instance_private (self);
+
+  g_assert (priv->popover == NULL);
+  priv->popover = gf_rename_popover_new (GTK_WIDGET (self),
+                                         gf_icon_get_file_type (self),
+                                         gf_icon_get_name (self));
+
+  g_signal_connect (priv->popover, "validate",
+                    G_CALLBACK (rename_validate_cb),
+                    self);
+
+  g_signal_connect (priv->popover, "do-rename",
+                    G_CALLBACK (rename_do_rename_cb),
+                    self);
+
+  g_signal_connect (priv->popover, "closed",
+                    G_CALLBACK (rename_closed_cb),
+                    self);
+
+  g_signal_connect (priv->popover, "destroy",
+                    G_CALLBACK (rename_destroy_cb),
+                    self);
+
+  gtk_popover_popup (GTK_POPOVER (priv->popover));
 }
 
 static void
@@ -215,6 +319,21 @@ create_popup_menu (GfIcon *self)
   g_signal_connect (item, "activate",
                     G_CALLBACK (open_cb),
                     self);
+
+  if (GF_ICON_GET_CLASS (self)->can_rename (GF_ICON (self)))
+    {
+      item = gtk_separator_menu_item_new ();
+      gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+      gtk_widget_show (item);
+
+      item = gtk_menu_item_new_with_label (_("Rename..."));
+      gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+      gtk_widget_show (item);
+
+      g_signal_connect (item, "activate",
+                        G_CALLBACK (rename_cb),
+                        self);
+    }
 
   if (GF_IS_TRASH_ICON (self) &&
       n_selected_icons == 1)
@@ -373,6 +492,7 @@ update_text (GfIcon *self)
   if (name == NULL)
     name = g_file_info_get_display_name (priv->info);
 
+  priv->name = g_strdup (name);
   gtk_label_set_text (GTK_LABEL (priv->label), name);
 
   g_clear_pointer (&priv->name_collated, g_free);
@@ -473,7 +593,11 @@ gf_icon_finalize (GObject *object)
   priv = gf_icon_get_instance_private (self);
 
   g_clear_pointer (&priv->css_class, g_free);
+
+  g_clear_pointer (&priv->name, g_free);
   g_clear_pointer (&priv->name_collated, g_free);
+
+  g_clear_pointer (&priv->popover, gtk_widget_destroy);
 
   G_OBJECT_CLASS (gf_icon_parent_class)->finalize (object);
 }
@@ -570,6 +694,12 @@ gf_icon_get_preferred_width (GtkWidget *widget,
   *natural_width += priv->extra_text_width;
 }
 
+static gboolean
+gf_icon_can_rename (GfIcon *self)
+{
+  return TRUE;
+}
+
 static void
 install_properties (GObjectClass *object_class)
 {
@@ -650,6 +780,8 @@ gf_icon_class_init (GfIconClass *self_class)
 
   widget_class->get_preferred_width = gf_icon_get_preferred_width;
 
+  self_class->can_rename = gf_icon_can_rename;
+
   install_properties (object_class);
   install_signals ();
 
@@ -727,6 +859,8 @@ gf_icon_set_file (GfIcon *self,
   GfIconPrivate *priv;
 
   priv = gf_icon_get_instance_private (self);
+
+  g_clear_pointer (&priv->popover, gtk_widget_destroy);
 
   g_clear_object (&priv->file);
   priv->file = g_object_ref (file);

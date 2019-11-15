@@ -15,24 +15,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GF_CREATE_FOLDER_DIALOG_H
-#define GF_CREATE_FOLDER_DIALOG_H
+#ifndef GF_RENAME_POPOVER_H
+#define GF_RENAME_POPOVER_H
 
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-#define GF_TYPE_CREATE_FOLDER_DIALOG (gf_create_folder_dialog_get_type ())
-G_DECLARE_FINAL_TYPE (GfCreateFolderDialog, gf_create_folder_dialog,
-                      GF, CREATE_FOLDER_DIALOG, GtkDialog)
+#define GF_TYPE_RENAME_POPOVER (gf_rename_popover_get_type ())
+G_DECLARE_FINAL_TYPE (GfRenamePopover, gf_rename_popover,
+                      GF, RENAME_POPOVER, GtkPopover)
 
-GtkWidget *gf_create_folder_dialog_new             (void);
+GtkWidget *gf_rename_popover_new       (GtkWidget       *relative_to,
+                                        GFileType        file_type,
+                                        const char      *name);
 
-void       gf_create_folder_dialog_set_valid       (GfCreateFolderDialog *self,
-                                                    gboolean              valid,
-                                                    const char           *message);
+void       gf_rename_popover_set_valid (GfRenamePopover *self,
+                                        gboolean         valid,
+                                        const char      *message);
 
-char      *gf_create_folder_dialog_get_folder_name (GfCreateFolderDialog *self);
+char      *gf_rename_popover_get_name  (GfRenamePopover *self);
 
 G_END_DECLS
 

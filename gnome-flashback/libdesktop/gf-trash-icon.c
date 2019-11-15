@@ -186,15 +186,25 @@ gf_trash_icon_dispose (GObject *object)
   G_OBJECT_CLASS (gf_trash_icon_parent_class)->dispose (object);
 }
 
+static gboolean
+gf_trash_icon_can_rename (GfIcon *icon)
+{
+  return FALSE;
+}
+
 static void
 gf_trash_icon_class_init (GfTrashIconClass *self_class)
 {
   GObjectClass *object_class;
+  GfIconClass *icon_class;
 
   object_class = G_OBJECT_CLASS (self_class);
+  icon_class = GF_ICON_CLASS (self_class);
 
   object_class->constructed = gf_trash_icon_constructed;
   object_class->dispose = gf_trash_icon_dispose;
+
+  icon_class->can_rename = gf_trash_icon_can_rename;
 }
 
 static void

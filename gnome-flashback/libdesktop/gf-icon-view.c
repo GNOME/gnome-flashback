@@ -486,6 +486,25 @@ empty_trash_cb (GObject      *object,
     }
 }
 
+static void
+rename_file_cb (GObject      *object,
+                GAsyncResult *res,
+                gpointer      user_data)
+{
+  GError *error;
+
+  error = NULL;
+  gf_nautilus_gen_call_rename_file_finish (GF_NAUTILUS_GEN (object),
+                                           res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Error renaming file: %s", error->message);
+      g_error_free (error);
+    }
+}
+
 static GfIconInfo *
 create_icon_info (GfIconView *self,
                   GtkWidget  *icon)
@@ -683,28 +702,22 @@ desktop_changed_cb (GFileMonitor      *monitor,
     }
 }
 
-static char *
+static void
 create_folder_dialog_validate_cb (GfCreateFolderDialog *dialog,
                                   const char           *folder_name,
                                   GfIconView           *self)
 {
-  GList *l;
+  char *message;
+  gboolean valid;
 
-  for (l = self->icons; l != NULL; l = l->next)
-    {
-      GfIconInfo *info;
-      const char *name;
+  message = NULL;
+  valid = gf_icon_view_validate_new_name (self,
+                                          G_FILE_TYPE_DIRECTORY,
+                                          folder_name,
+                                          &message);
 
-      info = l->data;
-
-      name = gf_icon_get_name (GF_ICON (info->icon));
-
-      if (g_strcmp0 (name, folder_name) == 0)
-        return g_strdup (_("A folder with that name already exists."));
-
-    }
-
-  return NULL;
+  gf_create_folder_dialog_set_valid (dialog, valid, message);
+  g_free (message);
 }
 
 static void
@@ -2308,5 +2321,90 @@ gf_icon_view_empty_trash (GfIconView  *self)
   gf_nautilus_gen_call_empty_trash (self->nautilus,
                                     self->cancellable,
                                     empty_trash_cb,
+                                    NULL);
+}
+
+gboolean
+gf_icon_view_validate_new_name (GfIconView  *self,
+                                GFileType    file_type,
+                                const char  *new_name,
+                                char       **message)
+{
+  gboolean is_dir;
+  char *text;
+  gboolean valid;
+  GList *l;
+
+  g_assert (message != NULL && *message == NULL);
+
+  is_dir = file_type == G_FILE_TYPE_DIRECTORY;
+  text = g_strstrip (g_strdup (new_name));
+  valid = TRUE;
+
+  if (*text == '\0')
+    {
+      valid = FALSE;
+    }
+  else if (g_strstr_len (text, -1, "/") != NULL)
+    {
+      valid = FALSE;
+      *message = g_strdup_printf (_("%s names cannot contain “/”."),
+                                  is_dir ? "Folder" : "File");
+    }
+  else if (g_strcmp0 (text, ".") == 0)
+    {
+      valid = FALSE;
+      *message = g_strdup_printf (_("A %s cannot be called “.”."),
+                                  is_dir ? "folder" : "file");
+    }
+  else if (g_strcmp0 (text, "..") == 0)
+    {
+      valid = FALSE;
+      *message = g_strdup_printf (_("A %s cannot be called “..”."),
+                                  is_dir ? "folder" : "file");
+    }
+
+  for (l = self->icons; l != NULL; l = l->next)
+    {
+      GfIconInfo *info;
+      const char *name;
+
+      info = l->data;
+
+      name = gf_icon_get_name (GF_ICON (info->icon));
+      if (g_strcmp0 (name, text) == 0)
+        {
+          valid = FALSE;
+          *message = g_strdup_printf (_("A %s with that name already exists."),
+                                      is_dir ? "folder" : "file");
+          break;
+        }
+    }
+
+  if (*message == NULL &&
+      g_str_has_prefix (text, "."))
+    {
+      *message = g_strdup_printf (_("%s with “.” at the beginning of their name are hidden."),
+                                  is_dir ? "Folders" : "Files");
+    }
+
+  g_free (text);
+
+  return valid;
+}
+
+void
+gf_icon_view_rename_file (GfIconView *self,
+                          const char *uri,
+                          const char *new_name)
+{
+  if (self->nautilus == NULL)
+    return;
+
+  gf_nautilus_gen_call_rename_file (self->nautilus,
+                                    uri,
+                                    new_name,
+                                    self->cancellable,
+                                    rename_file_cb,
                                     NULL);
 }

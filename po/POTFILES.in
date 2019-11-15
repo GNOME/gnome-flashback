@@ -25,6 +25,7 @@ gnome-flashback/libdesktop/gf-create-folder-dialog.c
 gnome-flashback/libdesktop/gf-desktop-window.c
 gnome-flashback/libdesktop/gf-icon.c
 gnome-flashback/libdesktop/gf-icon-view.c
+gnome-flashback/libdesktop/gf-rename-popover.c
 gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c
 gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui
 gnome-flashback/libinput-sources/gf-input-sources.c

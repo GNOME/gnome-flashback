@@ -28,6 +28,8 @@ G_DECLARE_DERIVABLE_TYPE (GfIcon, gf_icon, GF, ICON, GtkButton)
 struct _GfIconClass
 {
   GtkButtonClass parent_class;
+
+  gboolean (* can_rename) (GfIcon *self);
 };
 
 GtkWidget  *gf_icon_new               (GfIconView *icon_view,

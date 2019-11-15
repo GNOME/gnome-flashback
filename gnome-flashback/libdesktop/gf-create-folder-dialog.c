@@ -43,75 +43,13 @@ static guint dialog_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GfCreateFolderDialog, gf_create_folder_dialog, GTK_TYPE_DIALOG)
 
-static gboolean
-is_valid (GfCreateFolderDialog *self)
+static void
+validate (GfCreateFolderDialog *self)
 {
-  GtkRevealer *revealer;
   const char *text;
-  char *folder_name;
-  char *validate_error;
-  const char *error;
-  gboolean valid;
 
-  revealer = GTK_REVEALER (self->error_revealer);
   text = gtk_entry_get_text (GTK_ENTRY (self->name_entry));
-  folder_name = g_strdup (text);
-  error = NULL;
-  valid = TRUE;
-
-  folder_name = g_strstrip (folder_name);
-  validate_error = NULL;
-
-  if (*folder_name == '\0')
-    {
-      error = NULL;
-      valid = FALSE;
-    }
-  else if (g_strstr_len (folder_name, -1, "/") != NULL)
-    {
-      error = _("Folder names cannot contain “/”.");
-      valid = FALSE;
-    }
-  else if (g_strcmp0 (folder_name, ".") == 0)
-    {
-      error = _("A folder cannot be called “.”.");
-      valid = FALSE;
-    }
-  else if (g_strcmp0 (folder_name, "..") == 0)
-    {
-      error = _("A folder cannot be called “..”.");
-      valid = FALSE;
-    }
-
-  if (valid)
-    {
-      g_assert_true (error == NULL);
-
-      g_signal_emit (self, dialog_signals[VALIDATE], 0,
-                     folder_name, &validate_error);
-
-      if (validate_error != NULL)
-        {
-          error = validate_error;
-          valid = FALSE;
-        }
-    }
-
-  if (error == NULL &&
-      g_str_has_prefix (folder_name, "."))
-    {
-      error = _("Folders with “.” at the beginning of their name are hidden.");
-    }
-
-  gtk_label_set_text (GTK_LABEL (self->error_label), error);
-  gtk_revealer_set_reveal_child (revealer, error != NULL);
-
-  gtk_widget_set_sensitive (self->create_button, valid);
-
-  g_free (validate_error);
-  g_free (folder_name);
-
-  return valid;
+  g_signal_emit (self, dialog_signals[VALIDATE], 0, text);
 }
 
 static void
@@ -125,7 +63,9 @@ static void
 create_clicked_cb (GtkWidget            *widget,
                    GfCreateFolderDialog *self)
 {
-  if (!is_valid (self))
+  validate (self);
+
+  if (!gtk_widget_get_sensitive (self->create_button))
     return;
 
   gtk_dialog_response (GTK_DIALOG (self), GTK_RESPONSE_ACCEPT);
@@ -135,15 +75,16 @@ static void
 name_changed_cb (GtkEditable          *editable,
                  GfCreateFolderDialog *self)
 {
-  is_valid (self);
+  validate (self);
 }
 
 static void
 name_activate_cb (GtkWidget            *widget,
                   GfCreateFolderDialog *self)
 {
-  if (!gtk_widget_get_sensitive (self->create_button) ||
-      !is_valid (self))
+  validate (self);
+
+  if (!gtk_widget_get_sensitive (self->create_button))
     return;
 
   gtk_dialog_response (GTK_DIALOG (self), GTK_RESPONSE_ACCEPT);
@@ -229,9 +170,8 @@ install_signals (void)
   dialog_signals[VALIDATE] =
     g_signal_new ("validate", GF_TYPE_CREATE_FOLDER_DIALOG,
                   G_SIGNAL_RUN_LAST, 0,
-                  g_signal_accumulator_first_wins,
-                  NULL, NULL,
-                  G_TYPE_STRING, 1, G_TYPE_STRING);
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 1, G_TYPE_STRING);
 }
 
 static void
@@ -255,6 +195,21 @@ gf_create_folder_dialog_new (void)
                        "width-request", 450,
                        "resizable", FALSE,
                        NULL);
+}
+
+void
+gf_create_folder_dialog_set_valid (GfCreateFolderDialog *self,
+                                   gboolean              valid,
+                                   const char           *message)
+{
+  GtkRevealer *revealer;
+
+  revealer = GTK_REVEALER (self->error_revealer);
+
+  gtk_label_set_text (GTK_LABEL (self->error_label), message);
+  gtk_revealer_set_reveal_child (revealer, message != NULL);
+
+  gtk_widget_set_sensitive (self->create_button, valid);
 }
 
 char *

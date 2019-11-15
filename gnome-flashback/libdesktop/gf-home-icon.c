@@ -25,9 +25,20 @@ struct _GfHomeIcon
 
 G_DEFINE_TYPE (GfHomeIcon, gf_home_icon, GF_TYPE_ICON)
 
+static gboolean
+gf_home_icon_can_rename (GfIcon *icon)
+{
+  return FALSE;
+}
+
 static void
 gf_home_icon_class_init (GfHomeIconClass *self_class)
 {
+  GfIconClass *icon_class;
+
+  icon_class = GF_ICON_CLASS (self_class);
+
+  icon_class->can_rename = gf_home_icon_can_rename;
 }
 
 static void
