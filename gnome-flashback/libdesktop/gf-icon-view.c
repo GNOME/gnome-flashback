@@ -621,9 +621,11 @@ desktop_changed_cb (GFileMonitor      *monitor,
         break;
 
       case G_FILE_MONITOR_EVENT_MOVED_IN:
+        file_created (self, file);
         break;
 
       case G_FILE_MONITOR_EVENT_MOVED_OUT:
+        file_deleted (self, file);
         break;
 
       default:
