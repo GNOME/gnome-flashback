@@ -683,24 +683,13 @@ gf_icon_set_file (GfIcon *self,
                   GFile  *file)
 {
   GfIconPrivate *priv;
-  char *attributes;
 
   priv = gf_icon_get_instance_private (self);
 
   g_clear_object (&priv->file);
   priv->file = g_object_ref (file);
 
-  attributes = gf_icon_view_get_file_attributes (priv->icon_view);
-
-  g_file_query_info_async (file,
-                           attributes,
-                           G_FILE_QUERY_INFO_NONE,
-                           G_PRIORITY_LOW,
-                           priv->cancellable,
-                           query_info_cb,
-                           self);
-
-  g_free (attributes);
+  gf_icon_update (self);
 }
 
 GFile *
@@ -809,4 +798,29 @@ gf_icon_get_selected (GfIcon *self)
   priv = gf_icon_get_instance_private (self);
 
   return priv->selected;
+}
+
+void
+gf_icon_update (GfIcon *self)
+{
+  GfIconPrivate *priv;
+  char *attributes;
+
+  priv = gf_icon_get_instance_private (self);
+  attributes = gf_icon_view_get_file_attributes (priv->icon_view);
+
+  g_cancellable_cancel (priv->cancellable);
+  g_clear_object (&priv->cancellable);
+
+  priv->cancellable = g_cancellable_new ();
+
+  g_file_query_info_async (priv->file,
+                           attributes,
+                           G_FILE_QUERY_INFO_NONE,
+                           G_PRIORITY_LOW,
+                           priv->cancellable,
+                           query_info_cb,
+                           self);
+
+  g_free (attributes);
 }
