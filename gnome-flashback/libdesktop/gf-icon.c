@@ -100,38 +100,6 @@ update_state (GfIcon *self)
 }
 
 static void
-icon_open (GfIcon *self)
-{
-  GfIconPrivate *priv;
-  GError *error;
-  char *uri;
-
-  priv = gf_icon_get_instance_private (self);
-  error = NULL;
-
-  if (priv->app_info != NULL)
-    {
-      if (!gf_launch_app_info (priv->app_info, &error))
-        {
-          g_warning ("%s", error->message);
-          g_error_free (error);
-        }
-
-      return;
-    }
-
-  uri = g_file_get_uri (priv->file);
-
-  if (!gf_launch_uri (uri, &error))
-    {
-      g_warning ("%s", error->message);
-      g_error_free (error);
-    }
-
-  g_free (uri);
-}
-
-static void
 rename_validate_cb (GfRenamePopover *popover,
                     const char      *new_name,
                     GfIcon          *self)
@@ -203,7 +171,7 @@ static void
 open_cb (GtkMenuItem *item,
          GfIcon      *self)
 {
-  icon_open (self);
+  gf_icon_open (self);
 }
 
 static void
@@ -411,7 +379,7 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
         gf_icon_set_selected (self, TRUE);
 
       if (!control_pressed && n_press == 2)
-        icon_open (self);
+        gf_icon_open (self);
     }
   else if (button == GDK_BUTTON_SECONDARY)
     {
@@ -974,6 +942,38 @@ gf_icon_get_selected (GfIcon *self)
   priv = gf_icon_get_instance_private (self);
 
   return priv->selected;
+}
+
+void
+gf_icon_open (GfIcon *self)
+{
+  GfIconPrivate *priv;
+  GError *error;
+  char *uri;
+
+  priv = gf_icon_get_instance_private (self);
+  error = NULL;
+
+  if (priv->app_info != NULL)
+    {
+      if (!gf_launch_app_info (priv->app_info, &error))
+        {
+          g_warning ("%s", error->message);
+          g_error_free (error);
+        }
+
+      return;
+    }
+
+  uri = g_file_get_uri (priv->file);
+
+  if (!gf_launch_uri (uri, &error))
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+    }
+
+  g_free (uri);
 }
 
 void

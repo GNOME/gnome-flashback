@@ -58,6 +58,8 @@ void        gf_icon_set_selected      (GfIcon     *self,
 
 gboolean    gf_icon_get_selected      (GfIcon     *self);
 
+void        gf_icon_open              (GfIcon     *self);
+
 void        gf_icon_update            (GfIcon     *self);
 
 G_END_DECLS

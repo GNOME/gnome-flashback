@@ -84,6 +84,8 @@ enum
   SELECT_ALL,
   UNSELECT_ALL,
 
+  ACTIVATE,
+
   LAST_SIGNAL
 };
 
@@ -1913,6 +1915,19 @@ unselect_all_cb (GfIconView *self,
   unselect_icons (self);
 }
 
+static void
+activate_cb (GfIconView *self,
+             gpointer    user_data)
+{
+  GList *l;
+
+  if (self->selected_icons == NULL)
+    return;
+
+  for (l = self->selected_icons; l != NULL; l = l->next)
+    gf_icon_open (GF_ICON (l->data));
+}
+
 static GtkWidget *
 create_dummy_icon (GfIconView *self)
 {
@@ -2058,6 +2073,11 @@ install_signals (void)
     g_signal_new ("unselect-all", GF_TYPE_ICON_VIEW,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+
+  view_signals[ACTIVATE] =
+    g_signal_new ("activate", GF_TYPE_ICON_VIEW,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 }
 
 static void
@@ -2072,6 +2092,18 @@ add_bindings (GtkBindingSet *binding_set)
   modifiers = GDK_CONTROL_MASK | GDK_SHIFT_MASK;
   gtk_binding_entry_add_signal (binding_set, GDK_KEY_a, modifiers,
                                 "unselect-all", 0);
+
+  modifiers = 0;
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_Return, modifiers,
+                                "activate", 0);
+
+  modifiers = 0;
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_ISO_Enter, modifiers,
+                                "activate", 0);
+
+  modifiers = 0;
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_KP_Enter, modifiers,
+                                "activate", 0);
 }
 
 static void
@@ -2106,6 +2138,7 @@ gf_icon_view_init (GfIconView *self)
 
   g_signal_connect (self, "select-all", G_CALLBACK (select_all_cb), NULL);
   g_signal_connect (self, "unselect-all", G_CALLBACK (unselect_all_cb), NULL);
+  g_signal_connect (self, "activate", G_CALLBACK (activate_cb), NULL);
 
   add_event_filter (self);
 
