@@ -2061,6 +2061,33 @@ gf_icon_view_draw (GtkWidget *widget,
   return TRUE;
 }
 
+static gboolean
+gf_icon_view_popup_menu (GtkWidget *widget)
+{
+  GfIconView *self;
+
+  self = GF_ICON_VIEW (widget);
+
+  if (self->selected_icons == NULL)
+    {
+      GtkWidget *popup_menu;
+
+      popup_menu = create_popup_menu (self);
+      g_object_ref_sink (popup_menu);
+
+      gtk_menu_popup_at_pointer (GTK_MENU (popup_menu), NULL);
+      g_object_unref (popup_menu);
+
+      return TRUE;
+    }
+  else
+    {
+      gf_icon_popup_menu (GF_ICON (self->selected_icons->data));
+    }
+
+  return FALSE;
+}
+
 static void
 install_signals (void)
 {
@@ -2120,6 +2147,7 @@ gf_icon_view_class_init (GfIconViewClass *self_class)
   object_class->finalize = gf_icon_view_finalize;
 
   widget_class->draw = gf_icon_view_draw;
+  widget_class->popup_menu = gf_icon_view_popup_menu;
 
   install_signals ();
 

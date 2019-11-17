@@ -383,19 +383,13 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
     }
   else if (button == GDK_BUTTON_SECONDARY)
     {
-      GtkWidget *popup_menu;
-
       if (!priv->selected && !control_pressed)
         gf_icon_view_clear_selection (priv->icon_view);
 
       gtk_gesture_set_state (GTK_GESTURE (gesture), GTK_EVENT_SEQUENCE_CLAIMED);
       gf_icon_set_selected (self, TRUE);
 
-      popup_menu = create_popup_menu (self);
-      g_object_ref_sink (popup_menu);
-
-      gtk_menu_popup_at_pointer (GTK_MENU (popup_menu), event);
-      g_object_unref (popup_menu);
+      gf_icon_popup_menu (self);
     }
   else if (button == GDK_BUTTON_MIDDLE)
     {
@@ -974,6 +968,18 @@ gf_icon_open (GfIcon *self)
     }
 
   g_free (uri);
+}
+
+void
+gf_icon_popup_menu (GfIcon *self)
+{
+  GtkWidget *popup_menu;
+
+  popup_menu = create_popup_menu (self);
+  g_object_ref_sink (popup_menu);
+
+  gtk_menu_popup_at_pointer (GTK_MENU (popup_menu), NULL);
+  g_object_unref (popup_menu);
 }
 
 void
