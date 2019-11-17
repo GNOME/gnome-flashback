@@ -368,6 +368,8 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
   control_pressed = (state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK;
   shift_pressed = (state & GDK_SHIFT_MASK) == GDK_SHIFT_MASK;
 
+  gtk_widget_grab_focus (GTK_WIDGET (priv->icon_view));
+
   if (button == GDK_BUTTON_PRIMARY)
     {
       if (!control_pressed && !shift_pressed)
@@ -771,6 +773,8 @@ gf_icon_init (GfIcon *self)
   g_signal_connect (priv->multi_press, "pressed",
                     G_CALLBACK (multi_press_pressed_cb),
                     self);
+
+  gtk_widget_set_focus_on_click (GTK_WIDGET (self), FALSE);
 
   box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_container_add (GTK_CONTAINER (self), box);

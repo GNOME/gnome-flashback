@@ -77,6 +77,9 @@ struct _GfIconView
   GfFileManagerGen *file_manager;
 
   GtkWidget        *create_folder_dialog;
+
+  GfIcon           *last_selected_icon;
+  GfIcon           *extend_from_icon;
 };
 
 enum
@@ -85,6 +88,9 @@ enum
   UNSELECT_ALL,
 
   ACTIVATE,
+  TOGGLE,
+
+  MOVE,
 
   LAST_SIGNAL
 };
@@ -451,6 +457,23 @@ icon_selected_cb (GfIcon     *icon,
 }
 
 static void
+icon_has_focus_cb (GtkWidget  *widget,
+                   GParamSpec *pspec,
+                   GfIconView *self)
+{
+  if (gtk_widget_has_focus (widget))
+    self->last_selected_icon = GF_ICON (widget);
+}
+
+static void
+icon_clicked_cb (GtkWidget  *widget,
+                 GfIconView *self)
+{
+  self->last_selected_icon = GF_ICON (widget);
+  self->extend_from_icon = NULL;
+}
+
+static void
 show_item_properties_cb (GObject      *object,
                          GAsyncResult *res,
                          gpointer      user_data)
@@ -513,6 +536,14 @@ create_icon_info (GfIconView *self,
 {
   g_signal_connect (icon, "selected",
                     G_CALLBACK (icon_selected_cb),
+                    self);
+
+  g_signal_connect (icon, "notify::has-focus",
+                    G_CALLBACK (icon_has_focus_cb),
+                    self);
+
+  g_signal_connect (icon, "clicked",
+                    G_CALLBACK (icon_clicked_cb),
                     self);
 
   g_settings_bind (self->settings, "icon-size",
@@ -588,6 +619,30 @@ find_icon_info_by_file (GfIconView *self,
 }
 
 static void
+remove_icon_from_view (GfIconView *self,
+                       GfIconInfo *info)
+{
+  GfIcon *icon;
+
+  if (info->view == NULL)
+    return;
+
+  icon = GF_ICON (info->icon);
+
+  gf_monitor_view_remove_icon (GF_MONITOR_VIEW (info->view), GTK_WIDGET (icon));
+  info->view = NULL;
+
+  self->selected_icons = g_list_remove (self->selected_icons, icon);
+  self->rubberband_icons = g_list_remove (self->rubberband_icons, icon);
+
+  if (icon == self->last_selected_icon)
+    self->last_selected_icon = NULL;
+
+  if (icon == self->extend_from_icon)
+    self->extend_from_icon = NULL;
+}
+
+static void
 file_deleted (GfIconView *self,
               GFile      *deleted_file)
 {
@@ -598,18 +653,7 @@ file_deleted (GfIconView *self,
   if (info == NULL)
     return;
 
-  if (info->view != NULL)
-    {
-      GtkWidget *icon;
-
-      icon = info->icon;
-
-      gf_monitor_view_remove_icon (GF_MONITOR_VIEW (info->view), icon);
-      info->view = NULL;
-
-      self->selected_icons = g_list_remove (self->selected_icons, icon);
-      self->rubberband_icons = g_list_remove (self->rubberband_icons, icon);
-    }
+  remove_icon_from_view (self, info);
 
   self->icons = g_list_remove (self->icons, info);
   gf_icon_info_free (info);
@@ -1167,6 +1211,9 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
 
   if (event == NULL)
     return;
+
+  if (!gtk_widget_has_focus (GTK_WIDGET (self)))
+    gtk_widget_grab_focus (GTK_WIDGET (self));
 
   if (button == GDK_BUTTON_PRIMARY)
     {
@@ -1775,22 +1822,7 @@ show_home_changed_cb (GSettings  *settings,
     }
   else if (self->home_info != NULL)
     {
-      GfIconInfo *info;
-
-      info = self->home_info;
-
-      if (info->view != NULL)
-        {
-          GtkWidget *icon;
-
-          icon = info->icon;
-
-          gf_monitor_view_remove_icon (GF_MONITOR_VIEW (info->view), icon);
-          info->view = NULL;
-
-          self->selected_icons = g_list_remove (self->selected_icons, icon);
-          self->rubberband_icons = g_list_remove (self->rubberband_icons, icon);
-        }
+      remove_icon_from_view (self, self->home_info);
 
       self->icons = g_list_remove (self->icons, self->home_info);
       gf_icon_info_free (self->home_info);
@@ -1815,22 +1847,7 @@ show_trash_changed_cb (GSettings  *settings,
     }
   else if (self->trash_info != NULL)
     {
-      GfIconInfo *info;
-
-      info = self->trash_info;
-
-      if (info->view != NULL)
-        {
-          GtkWidget *icon;
-
-          icon = info->icon;
-
-          gf_monitor_view_remove_icon (GF_MONITOR_VIEW (info->view), icon);
-          info->view = NULL;
-
-          self->selected_icons = g_list_remove (self->selected_icons, icon);
-          self->rubberband_icons = g_list_remove (self->rubberband_icons, icon);
-        }
+      remove_icon_from_view (self, self->trash_info);
 
       self->icons = g_list_remove (self->icons, self->trash_info);
       gf_icon_info_free (self->trash_info);
@@ -1926,6 +1943,315 @@ activate_cb (GfIconView *self,
 
   for (l = self->selected_icons; l != NULL; l = l->next)
     gf_icon_open (GF_ICON (l->data));
+}
+
+static void
+toggle_cb (GfIconView *self,
+           gpointer    user_data)
+{
+  if (self->last_selected_icon == NULL)
+    return;
+
+  if (gf_icon_get_selected (self->last_selected_icon))
+    gf_icon_set_selected (self->last_selected_icon, FALSE);
+  else
+    gf_icon_set_selected (self->last_selected_icon, TRUE);
+}
+
+static GfMonitorView *
+find_monitor_view_up (GfIconView   *self,
+                      GList        *views,
+                      GdkRectangle *current)
+{
+  GList *l;
+
+  for (l = views; l != NULL; l = l->next)
+    {
+      GfMonitorView *view;
+      GdkMonitor *monitor;
+      GdkRectangle geometry;
+
+      view = GF_MONITOR_VIEW (l->data);
+      monitor = gf_monitor_view_get_monitor (view);
+
+      gdk_monitor_get_geometry (monitor, &geometry);
+
+      if (current->y == geometry.y + geometry.height)
+        return view;
+    }
+
+  return NULL;
+}
+
+static GfMonitorView *
+find_monitor_view_down (GfIconView   *self,
+                        GList        *views,
+                        GdkRectangle *current)
+{
+  GList *l;
+
+  for (l = views; l != NULL; l = l->next)
+    {
+      GfMonitorView *view;
+      GdkMonitor *monitor;
+      GdkRectangle geometry;
+
+      view = GF_MONITOR_VIEW (l->data);
+      monitor = gf_monitor_view_get_monitor (view);
+
+      gdk_monitor_get_geometry (monitor, &geometry);
+
+      if (current->y + current->height == geometry.y)
+        return view;
+    }
+
+  return NULL;
+}
+
+static GfMonitorView *
+find_monitor_view_left (GfIconView   *self,
+                        GList        *views,
+                        GdkRectangle *current)
+{
+  GList *l;
+
+  for (l = views; l != NULL; l = l->next)
+    {
+      GfMonitorView *view;
+      GdkMonitor *monitor;
+      GdkRectangle geometry;
+
+      view = GF_MONITOR_VIEW (l->data);
+      monitor = gf_monitor_view_get_monitor (view);
+
+      gdk_monitor_get_geometry (monitor, &geometry);
+
+      if (current->x == geometry.x + geometry.width)
+        return view;
+    }
+
+  return NULL;
+}
+
+static GfMonitorView *
+find_monitor_view_right (GfIconView   *self,
+                         GList        *views,
+                         GdkRectangle *current)
+{
+  GList *l;
+
+  for (l = views; l != NULL; l = l->next)
+    {
+      GfMonitorView *view;
+      GdkMonitor *monitor;
+      GdkRectangle geometry;
+
+      view = GF_MONITOR_VIEW (l->data);
+      monitor = gf_monitor_view_get_monitor (view);
+
+      gdk_monitor_get_geometry (monitor, &geometry);
+
+      if (current->x + current->width == geometry.x)
+        return view;
+    }
+
+  return NULL;
+}
+
+static GfMonitorView *
+find_next_view (GfIconView       *self,
+                GfMonitorView    *next_to,
+                GtkDirectionType  direction)
+{
+  GList *views;
+  GList *children;
+  GList *l;
+  GdkMonitor *monitor;
+  GdkRectangle geometry;
+  GfMonitorView *next_view;
+
+  views = NULL;
+
+  children = gtk_container_get_children (GTK_CONTAINER (self->fixed));
+  for (l = children; l != NULL; l = l->next)
+    {
+      GfMonitorView *view;
+
+      view = GF_MONITOR_VIEW (l->data);
+      if (view == next_to)
+        continue;
+
+      views = g_list_prepend (views, view);
+    }
+
+  g_list_free (children);
+
+  if (views == NULL)
+    return NULL;
+
+  monitor = gf_monitor_view_get_monitor (next_to);
+  gdk_monitor_get_geometry (monitor, &geometry);
+
+  next_view = NULL;
+
+  switch (direction)
+    {
+      case GTK_DIR_UP:
+        next_view = find_monitor_view_up (self, views, &geometry);
+        break;
+
+      case GTK_DIR_DOWN:
+        next_view = find_monitor_view_down (self, views, &geometry);
+        break;
+
+      case GTK_DIR_LEFT:
+        next_view = find_monitor_view_left (self, views, &geometry);
+        break;
+
+      case GTK_DIR_RIGHT:
+        next_view = find_monitor_view_right (self, views, &geometry);
+        break;
+
+      case GTK_DIR_TAB_FORWARD:
+      case GTK_DIR_TAB_BACKWARD:
+      default:
+        break;
+    }
+
+  g_list_free (views);
+
+  return next_view;
+}
+
+static void
+move_cb (GfIconView       *self,
+         GtkDirectionType  direction,
+         gpointer          user_data)
+{
+  GdkModifierType state;
+  gboolean extend;
+  gboolean modify;
+  GfMonitorView *view;
+  GfIcon *next_icon;
+
+  extend = FALSE;
+  modify = FALSE;
+
+  if (self->icons == NULL)
+    return;
+
+  if (gtk_get_current_event_state (&state))
+    {
+      GdkModifierType extend_mod_mask;
+      GdkModifierType modify_mod_mask;
+
+      extend_mod_mask =
+        gtk_widget_get_modifier_mask (GTK_WIDGET (self),
+                                      GDK_MODIFIER_INTENT_EXTEND_SELECTION);
+      modify_mod_mask =
+        gtk_widget_get_modifier_mask (GTK_WIDGET (self),
+                                      GDK_MODIFIER_INTENT_MODIFY_SELECTION);
+
+      if ((state & extend_mod_mask) == extend_mod_mask)
+        extend = TRUE;
+
+      if ((state & modify_mod_mask) == modify_mod_mask)
+        modify = TRUE;
+    }
+
+  if (self->last_selected_icon != NULL)
+    {
+      GList *l;
+
+      for (l = self->icons; l != NULL; l = l->next)
+        {
+          GfIconInfo *info;
+
+          info = (GfIconInfo *) l->data;
+
+          if (GF_ICON (info->icon) == self->last_selected_icon)
+            {
+              view = GF_MONITOR_VIEW (info->view);
+              break;
+            }
+        }
+    }
+  else
+    {
+      GList *children;
+      GList *l;
+
+      children = gtk_container_get_children (GTK_CONTAINER (self->fixed));
+
+      for (l = children; l != NULL; l = l->next)
+        {
+          GfMonitorView *tmp;
+
+          tmp = GF_MONITOR_VIEW (l->data);
+
+          if (gf_monitor_view_is_primary (tmp))
+            {
+              view = tmp;
+              break;
+            }
+        }
+
+      g_list_free (children);
+    }
+
+  g_assert (view != NULL);
+
+  do
+    {
+      next_icon = gf_monitor_view_find_next_icon (view,
+                                                  self->last_selected_icon,
+                                                  direction);
+
+      if (next_icon == NULL)
+        view = find_next_view (self, view, direction);
+    }
+  while (next_icon == NULL && view != NULL);
+
+  if (next_icon == NULL)
+    {
+      gtk_widget_error_bell (GTK_WIDGET (self));
+      return;
+    }
+
+  if (!modify)
+    unselect_icons (self);
+
+  if (extend)
+    {
+      GdkRectangle rect1;
+      GdkRectangle rect2;
+      GdkRectangle area;
+      GList *children;
+      GList *l;
+
+      if (self->extend_from_icon == NULL)
+         self->extend_from_icon = self->last_selected_icon;
+
+      gtk_widget_get_allocation (GTK_WIDGET (self->extend_from_icon), &rect1);
+      gtk_widget_get_allocation (GTK_WIDGET (next_icon), &rect2);
+
+      gdk_rectangle_union (&rect1, &rect2, &area);
+
+      children = gtk_container_get_children (GTK_CONTAINER (self->fixed));
+
+      for (l = children; l != NULL; l = l->next)
+        gf_monitor_view_select_icons (GF_MONITOR_VIEW (l->data), &area);
+
+      g_list_free (children);
+    }
+
+  if (!extend && !modify)
+    {
+      self->extend_from_icon = NULL;
+      gf_icon_set_selected (next_icon, TRUE);
+    }
+
+  gtk_widget_grab_focus (GTK_WIDGET (next_icon));
 }
 
 static GtkWidget *
@@ -2105,6 +2431,36 @@ install_signals (void)
     g_signal_new ("activate", GF_TYPE_ICON_VIEW,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+
+  view_signals[TOGGLE] =
+    g_signal_new ("toggle", GF_TYPE_ICON_VIEW,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+
+  view_signals[MOVE] =
+    g_signal_new ("move", GF_TYPE_ICON_VIEW,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 1,
+                  GTK_TYPE_DIRECTION_TYPE);
+}
+
+static void
+add_move_binding (GtkBindingSet    *binding_set,
+                  guint             keyval,
+                  GdkModifierType   modifiers,
+                  GtkDirectionType  direction)
+{
+  gtk_binding_entry_add_signal (binding_set, keyval, modifiers,
+                                "move", 1,
+                                GTK_TYPE_DIRECTION_TYPE, direction);
+
+  gtk_binding_entry_add_signal (binding_set, keyval, GDK_SHIFT_MASK,
+                                "move", 1,
+                                GTK_TYPE_DIRECTION_TYPE, direction);
+
+  gtk_binding_entry_add_signal (binding_set, keyval, GDK_CONTROL_MASK,
+                                "move", 1,
+                                GTK_TYPE_DIRECTION_TYPE, direction);
 }
 
 static void
@@ -2112,13 +2468,19 @@ add_bindings (GtkBindingSet *binding_set)
 {
   GdkModifierType modifiers;
 
+  /* Select all */
+
   modifiers = GDK_CONTROL_MASK;
   gtk_binding_entry_add_signal (binding_set, GDK_KEY_a, modifiers,
                                 "select-all", 0);
 
+  /* Unselect all */
+
   modifiers = GDK_CONTROL_MASK | GDK_SHIFT_MASK;
   gtk_binding_entry_add_signal (binding_set, GDK_KEY_a, modifiers,
                                 "unselect-all", 0);
+
+  /* Activate */
 
   modifiers = 0;
   gtk_binding_entry_add_signal (binding_set, GDK_KEY_Return, modifiers,
@@ -2131,6 +2493,42 @@ add_bindings (GtkBindingSet *binding_set)
   modifiers = 0;
   gtk_binding_entry_add_signal (binding_set, GDK_KEY_KP_Enter, modifiers,
                                 "activate", 0);
+
+  /* Toggle */
+
+  modifiers = GDK_CONTROL_MASK;
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_space, modifiers,
+                                "toggle", 0);
+
+  modifiers = GDK_CONTROL_MASK;
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_KP_Space, modifiers,
+                                "toggle", 0);
+
+  /* Move */
+
+  modifiers = 0;
+  add_move_binding (binding_set, GDK_KEY_Up, modifiers, GTK_DIR_UP);
+
+  modifiers = 0;
+  add_move_binding (binding_set, GDK_KEY_KP_Up, modifiers, GTK_DIR_UP);
+
+  modifiers = 0;
+  add_move_binding (binding_set, GDK_KEY_Down, modifiers, GTK_DIR_DOWN);
+
+  modifiers = 0;
+  add_move_binding (binding_set, GDK_KEY_KP_Down, modifiers, GTK_DIR_DOWN);
+
+  modifiers = 0;
+  add_move_binding (binding_set, GDK_KEY_Left, modifiers, GTK_DIR_LEFT);
+
+  modifiers = 0;
+  add_move_binding (binding_set, GDK_KEY_KP_Left, modifiers, GTK_DIR_LEFT);
+
+  modifiers = 0;
+  add_move_binding (binding_set, GDK_KEY_Right, modifiers, GTK_DIR_RIGHT);
+
+  modifiers = 0;
+  add_move_binding (binding_set, GDK_KEY_KP_Right, modifiers, GTK_DIR_RIGHT);
 }
 
 static void
@@ -2167,6 +2565,8 @@ gf_icon_view_init (GfIconView *self)
   g_signal_connect (self, "select-all", G_CALLBACK (select_all_cb), NULL);
   g_signal_connect (self, "unselect-all", G_CALLBACK (unselect_all_cb), NULL);
   g_signal_connect (self, "activate", G_CALLBACK (activate_cb), NULL);
+  g_signal_connect (self, "toggle", G_CALLBACK (toggle_cb), NULL);
+  g_signal_connect (self, "move", G_CALLBACK (move_cb), NULL);
 
   add_event_filter (self);
 
