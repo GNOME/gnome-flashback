@@ -53,7 +53,7 @@ struct _GfMonitorView
   int          offset_x;
   int          offset_y;
 
-  int         *grid;
+  GHashTable  *grid;
 };
 
 enum
@@ -84,6 +84,204 @@ static guint view_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GfMonitorView, gf_monitor_view, GTK_TYPE_FIXED)
 
+static GfIcon *
+find_first_icon (GfMonitorView *self)
+{
+  int column;
+  int row;
+
+  for (column = 0; column < self->columns; column++)
+    {
+      for (row = 0; row < self->rows; row++)
+        {
+          gpointer key;
+          GPtrArray *array;
+
+          key = GINT_TO_POINTER (column * self->rows + row);
+          array = g_hash_table_lookup (self->grid, key);
+
+          if (array == NULL || array->len == 0)
+            continue;
+
+          return array->pdata[0];
+        }
+    }
+
+  return NULL;
+}
+
+static gboolean
+find_icon_grid_position (GfMonitorView *self,
+                         GfIcon        *icon,
+                         int           *column_out,
+                         int           *row_out)
+{
+  int column;
+  int row;
+
+  for (column = 0; column < self->columns; column++)
+    {
+      for (row = 0; row < self->rows; row++)
+        {
+          gpointer key;
+          GPtrArray *array;
+
+          key = GINT_TO_POINTER (column * self->rows + row);
+          array = g_hash_table_lookup (self->grid, key);
+
+          if (array == NULL || array->len == 0)
+            continue;
+
+          if (g_ptr_array_find (array, icon, NULL))
+            {
+              *column_out = column;
+              *row_out = row;
+
+              return TRUE;
+            }
+        }
+    }
+
+  return FALSE;
+}
+
+static GfIcon *
+find_icon_up (GfMonitorView *self,
+              int            start_column,
+              int            start_row)
+{
+  int row;
+
+  for (row = start_row - 1; row >= 0; row--)
+    {
+      gpointer key;
+      GPtrArray *array;
+
+      key = GINT_TO_POINTER (start_column * self->rows + row);
+      array = g_hash_table_lookup (self->grid, key);
+
+      if (array == NULL || array->len == 0)
+        continue;
+
+      return array->pdata[0];
+    }
+
+  return NULL;
+}
+
+static GfIcon *
+find_icon_down (GfMonitorView *self,
+                int            start_column,
+                int            start_row)
+{
+  int row;
+
+  for (row = start_row + 1; row < self->rows; row++)
+    {
+      gpointer key;
+      GPtrArray *array;
+
+      key = GINT_TO_POINTER (start_column * self->rows + row);
+      array = g_hash_table_lookup (self->grid, key);
+
+      if (array == NULL || array->len == 0)
+        continue;
+
+      return array->pdata[0];
+    }
+
+  return NULL;
+}
+
+static GfIcon *
+find_icon_left (GfMonitorView *self,
+                int            start_column,
+                int            start_row)
+{
+  int column;
+
+  for (column = start_column - 1; column >= 0; column--)
+    {
+      gpointer key;
+      GPtrArray *array;
+
+      key = GINT_TO_POINTER (column * self->rows + start_row);
+      array = g_hash_table_lookup (self->grid, key);
+
+      if (array == NULL || array->len == 0)
+        continue;
+
+      return array->pdata[0];
+    }
+
+  return NULL;
+}
+
+static GfIcon *
+find_icon_right (GfMonitorView *self,
+                 int            start_column,
+                 int            start_row)
+{
+  int column;
+
+  for (column = start_column + 1; column < self->columns; column++)
+    {
+      gpointer key;
+      GPtrArray *array;
+
+      key = GINT_TO_POINTER (column * self->rows + start_row);
+      array = g_hash_table_lookup (self->grid, key);
+
+      if (array == NULL || array->len == 0)
+        continue;
+
+      return array->pdata[0];
+    }
+
+  return NULL;
+}
+
+static GfIcon *
+find_next_icon (GfMonitorView    *self,
+                GfIcon           *next_to,
+                GtkDirectionType  direction)
+{
+  int column;
+  int row;
+  GfIcon *next_icon;
+
+  if (!find_icon_grid_position (self, next_to, &column, &row))
+    return NULL;
+
+  next_icon = NULL;
+
+  switch (direction)
+    {
+      case GTK_DIR_UP:
+        next_icon = find_icon_up (self, column, row);
+        break;
+
+      case GTK_DIR_DOWN:
+        next_icon = find_icon_down (self, column, row);
+        break;
+
+      case GTK_DIR_LEFT:
+        next_icon = find_icon_left (self, column, row);
+        break;
+
+      case GTK_DIR_RIGHT:
+        next_icon = find_icon_right (self, column, row);
+        break;
+
+      case GTK_DIR_TAB_FORWARD:
+      case GTK_DIR_TAB_BACKWARD:
+      default:
+        break;
+    }
+
+  return next_icon;
+}
+
 static gboolean
 find_free_grid_position (GfMonitorView *self,
                          int           *column_out,
@@ -96,7 +294,13 @@ find_free_grid_position (GfMonitorView *self,
     {
       for (row = 0; row < self->rows; row++)
         {
-          if (self->grid[column * self->rows + row] == 0)
+          gpointer key;
+          GPtrArray *array;
+
+          key = GINT_TO_POINTER (column * self->rows + row);
+          array = g_hash_table_lookup (self->grid, key);
+
+          if (array == NULL || array->len == 0)
             {
               *column_out = column;
               *row_out = row;
@@ -186,8 +390,7 @@ calculate_grid_size (GfMonitorView *self)
   if (!changed)
     return;
 
-  g_clear_pointer (&self->grid, g_free);
-  self->grid = g_new0 (int, columns * rows);
+  g_hash_table_remove_all (self->grid);
 
   g_signal_emit (self, view_signals[SIZE_CHANGED], 0);
 
@@ -290,7 +493,7 @@ gf_monitor_view_finalize (GObject *object)
       self->grid_size_id = 0;
     }
 
-  g_clear_pointer (&self->grid, g_free);
+  g_clear_pointer (&self->grid, g_hash_table_destroy);
 
   G_OBJECT_CLASS (gf_monitor_view_parent_class)->finalize (object);
 }
@@ -517,6 +720,8 @@ gf_monitor_view_class_init (GfMonitorViewClass *self_class)
 static void
 gf_monitor_view_init (GfMonitorView *self)
 {
+  self->grid = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL,
+                                      (GDestroyNotify) g_ptr_array_unref);
 }
 
 GtkWidget *
@@ -573,16 +778,27 @@ gf_monitor_view_add_icon (GfMonitorView *self,
 {
   int column;
   int row;
+  gpointer key;
+  GPtrArray *array;
   int x;
   int y;
 
   if (!find_free_grid_position (self, &column, &row))
     return FALSE;
 
+  key = GINT_TO_POINTER (column * self->rows + row);
+  array = g_hash_table_lookup (self->grid, key);
+
+  if (array == NULL)
+    {
+      array = g_ptr_array_new ();
+      g_hash_table_insert (self->grid, key, array);
+    }
+
+  g_ptr_array_add (array, icon);
+
   x = self->offset_x + column * self->spacing_x;
   y = self->offset_y + row * self->spacing_y;
-
-  self->grid[column * self->rows + row] = 1;
 
   gtk_fixed_put (GTK_FIXED (self), icon, x, y);
   gtk_widget_show (icon);
@@ -594,27 +810,23 @@ void
 gf_monitor_view_remove_icon (GfMonitorView *self,
                              GtkWidget     *icon)
 {
-  GtkAllocation allocation;
   int column;
   int row;
-
-  gtk_widget_get_allocation (icon, &allocation);
-  gtk_widget_translate_coordinates (icon, GTK_WIDGET (self),
-                                    0, 0, &allocation.x, &allocation.y);
 
   for (column = 0; column < self->columns; column++)
     {
       for (row = 0; row < self->rows; row++)
         {
-          GdkRectangle rect;
+          gpointer key;
+          GPtrArray *array;
 
-          rect.x = self->offset_x + column * self->spacing_x;
-          rect.y = self->offset_y + row * self->spacing_y;
-          rect.width = self->icon_width;
-          rect.height = self->icon_height;
+          key = GINT_TO_POINTER (column * self->rows + row);
+          array = g_hash_table_lookup (self->grid, key);
 
-          if (gdk_rectangle_intersect (&allocation, &rect, NULL))
-            self->grid[column * self->rows + row]--;
+          if (array == NULL || array->len == 0)
+            continue;
+
+          g_ptr_array_remove (array, icon);
         }
     }
 
@@ -650,4 +862,15 @@ gf_monitor_view_get_icons (GfMonitorView *self,
   g_list_free (children);
 
   return icons;
+}
+
+GfIcon *
+gf_monitor_view_find_next_icon (GfMonitorView    *self,
+                                GfIcon           *next_to,
+                                GtkDirectionType  direction)
+{
+  if (next_to == NULL)
+    return find_first_icon (self);
+
+  return find_next_icon (self, next_to, direction);
 }
