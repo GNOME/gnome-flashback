@@ -241,7 +241,7 @@ properties_cb (GtkMenuItem *item,
   file = gf_icon_get_file (self);
   uris[0] = g_file_get_uri (file);
 
-  for (l = selected_icons, i = 1; l != NULL; l = l->next, i++)
+  for (l = selected_icons, i = 1; l != NULL; l = l->next)
     {
       GfIcon *icon;
 
@@ -250,7 +250,7 @@ properties_cb (GtkMenuItem *item,
         continue;
 
       file = gf_icon_get_file (icon);
-      uris[i] = g_file_get_uri (file);
+      uris[i++] = g_file_get_uri (file);
     }
 
   gf_icon_view_show_item_properties (priv->icon_view,
