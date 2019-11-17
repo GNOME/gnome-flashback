@@ -55,6 +55,9 @@ GfIcon     *gf_monitor_view_find_next_icon (GfMonitorView    *self,
                                             GfIcon           *next_to,
                                             GtkDirectionType  direction);
 
+void        gf_monitor_view_select_icons   (GfMonitorView    *self,
+                                            GdkRectangle     *rect);
+
 G_END_DECLS
 
 #endif

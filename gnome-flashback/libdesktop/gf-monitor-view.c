@@ -874,3 +874,28 @@ gf_monitor_view_find_next_icon (GfMonitorView    *self,
 
   return find_next_icon (self, next_to, direction);
 }
+
+void
+gf_monitor_view_select_icons (GfMonitorView *self,
+                              GdkRectangle  *rect)
+{
+  GList *children;
+  GList *l;
+
+  children = gtk_container_get_children (GTK_CONTAINER (self));
+
+  for (l = children; l != NULL; l = l->next)
+    {
+      GtkWidget *icon;
+      GtkAllocation allocation;
+
+      icon = l->data;
+
+      gtk_widget_get_allocation (icon, &allocation);
+
+      if (gdk_rectangle_intersect (&allocation, rect, NULL))
+        gf_icon_set_selected (GF_ICON (icon), TRUE);
+    }
+
+  g_list_free (children);
+}
