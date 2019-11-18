@@ -427,17 +427,18 @@ update_icon (GfIcon *self)
 {
   GfIconPrivate *priv;
   GIcon *icon;
+  GtkIconSize size;
 
   priv = gf_icon_get_instance_private (self);
 
-  icon = NULL;
-  if (priv->app_info != NULL)
-    icon = g_app_info_get_icon (G_APP_INFO (priv->app_info));
+  icon = GF_ICON_GET_CLASS (self)->get_icon (self);
+  size = GTK_ICON_SIZE_DIALOG;
 
-  if (icon == NULL)
-    icon = g_file_info_get_icon (priv->info);
+  if (icon != NULL)
+    gtk_image_set_from_gicon (GTK_IMAGE (priv->image), icon, size);
+  else
+    gtk_image_set_from_icon_name (GTK_IMAGE (priv->image), "image-missing", size);
 
-  gtk_image_set_from_gicon (GTK_IMAGE (priv->image), icon, GTK_ICON_SIZE_DIALOG);
   gtk_image_set_pixel_size (GTK_IMAGE (priv->image), priv->icon_size);
 }
 
@@ -658,6 +659,24 @@ gf_icon_get_preferred_width (GtkWidget *widget,
   *natural_width += priv->extra_text_width;
 }
 
+static GIcon *
+gf_icon_get_icon (GfIcon *self)
+{
+  GfIconPrivate *priv;
+  GIcon *icon;
+
+  priv = gf_icon_get_instance_private (self);
+  icon = NULL;
+
+  if (priv->app_info != NULL)
+    icon = g_app_info_get_icon (G_APP_INFO (priv->app_info));
+
+  if (icon == NULL)
+    icon = g_file_info_get_icon (priv->info);
+
+  return icon;
+}
+
 static gboolean
 gf_icon_can_rename (GfIcon *self)
 {
@@ -744,6 +763,7 @@ gf_icon_class_init (GfIconClass *self_class)
 
   widget_class->get_preferred_width = gf_icon_get_preferred_width;
 
+  self_class->get_icon = gf_icon_get_icon;
   self_class->can_rename = gf_icon_can_rename;
 
   install_properties (object_class);
@@ -842,6 +862,16 @@ gf_icon_get_file (GfIcon *self)
   priv = gf_icon_get_instance_private (self);
 
   return priv->file;
+}
+
+GFileInfo *
+gf_icon_get_file_info (GfIcon *self)
+{
+  GfIconPrivate *priv;
+
+  priv = gf_icon_get_instance_private (self);
+
+  return priv->info;
 }
 
 const char *

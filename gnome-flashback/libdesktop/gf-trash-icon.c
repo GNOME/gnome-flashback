@@ -186,6 +186,16 @@ gf_trash_icon_dispose (GObject *object)
   G_OBJECT_CLASS (gf_trash_icon_parent_class)->dispose (object);
 }
 
+static GIcon *
+gf_trash_icon_get_icon (GfIcon *icon)
+{
+  GFileInfo *info;
+
+  info = gf_icon_get_file_info (icon);
+
+  return g_file_info_get_icon (info);
+}
+
 static gboolean
 gf_trash_icon_can_rename (GfIcon *icon)
 {
@@ -204,6 +214,7 @@ gf_trash_icon_class_init (GfTrashIconClass *self_class)
   object_class->constructed = gf_trash_icon_constructed;
   object_class->dispose = gf_trash_icon_dispose;
 
+  icon_class->get_icon = gf_trash_icon_get_icon;
   icon_class->can_rename = gf_trash_icon_can_rename;
 }
 

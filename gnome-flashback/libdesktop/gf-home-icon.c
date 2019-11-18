@@ -25,6 +25,16 @@ struct _GfHomeIcon
 
 G_DEFINE_TYPE (GfHomeIcon, gf_home_icon, GF_TYPE_ICON)
 
+static GIcon *
+gf_home_icon_get_icon (GfIcon *icon)
+{
+  GFileInfo *info;
+
+  info = gf_icon_get_file_info (icon);
+
+  return g_file_info_get_icon (info);
+}
+
 static gboolean
 gf_home_icon_can_rename (GfIcon *icon)
 {
@@ -38,6 +48,7 @@ gf_home_icon_class_init (GfHomeIconClass *self_class)
 
   icon_class = GF_ICON_CLASS (self_class);
 
+  icon_class->get_icon = gf_home_icon_get_icon;
   icon_class->can_rename = gf_home_icon_can_rename;
 }
 

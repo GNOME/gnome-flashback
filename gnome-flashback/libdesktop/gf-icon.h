@@ -29,7 +29,9 @@ struct _GfIconClass
 {
   GtkButtonClass parent_class;
 
-  gboolean (* can_rename) (GfIcon *self);
+  GIcon    * (* get_icon)   (GfIcon *self);
+
+  gboolean   (* can_rename) (GfIcon *self);
 };
 
 GtkWidget  *gf_icon_new               (GfIconView *icon_view,
@@ -40,6 +42,8 @@ void        gf_icon_set_file          (GfIcon     *self,
                                        GFile      *file);
 
 GFile      *gf_icon_get_file          (GfIcon     *self);
+
+GFileInfo  *gf_icon_get_file_info     (GfIcon     *self);
 
 const char *gf_icon_get_name          (GfIcon     *self);
 
