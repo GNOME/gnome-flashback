@@ -416,7 +416,11 @@ get_thumbnail_surface (GfIcon *self)
   int height;
   int size;
   cairo_surface_t *thumbnail_surface;
+  double x_scale;
+  double y_scale;
   cairo_t *cr;
+  double x;
+  double y;
 
   priv = gf_icon_get_instance_private (self);
 
@@ -464,9 +468,15 @@ get_thumbnail_surface (GfIcon *self)
                                                           size,
                                                           size);
 
+  cairo_surface_get_device_scale (surface, &x_scale, &y_scale);
+  cairo_surface_set_device_scale (thumbnail_surface, x_scale, y_scale);
+
+  x = (size - width) / scale;
+  y = (size - height) / scale;
+
   cr = cairo_create (thumbnail_surface);
 
-  cairo_set_source_surface (cr, surface, size - width, size - height);
+  cairo_set_source_surface (cr, surface, x, y);
   cairo_surface_destroy (surface);
 
   cairo_paint (cr);
