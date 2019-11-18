@@ -187,11 +187,13 @@ gf_trash_icon_dispose (GObject *object)
 }
 
 static GIcon *
-gf_trash_icon_get_icon (GfIcon *icon)
+gf_trash_icon_get_icon (GfIcon   *icon,
+                        gboolean *is_thumbnail)
 {
   GFileInfo *info;
 
   info = gf_icon_get_file_info (icon);
+  *is_thumbnail = FALSE;
 
   return g_file_info_get_icon (info);
 }

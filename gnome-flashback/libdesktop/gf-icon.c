@@ -402,40 +402,106 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
     }
 }
 
-static void
-set_icon_size (GfIcon *self,
-               int     icon_size)
+static cairo_surface_t *
+get_thumbnail_surface (GfIcon *self)
 {
   GfIconPrivate *priv;
-  GtkStyleContext *context;
+  GtkIconTheme *icon_theme;
+  GtkIconInfo *icon_info;
+  int scale;
+  GtkIconLookupFlags lookup_flags;
+  GError *error;
+  cairo_surface_t *surface;
+  int width;
+  int height;
+  int size;
+  cairo_surface_t *thumbnail_surface;
+  cairo_t *cr;
 
   priv = gf_icon_get_instance_private (self);
 
-  priv->icon_size = icon_size;
-  gtk_image_set_pixel_size (GTK_IMAGE (priv->image), icon_size);
+  if (priv->thumbnail == NULL)
+    return NULL;
 
-  context = gtk_widget_get_style_context (GTK_WIDGET (self));
+  icon_theme = gtk_icon_theme_get_default ();
+  scale = gtk_widget_get_scale_factor (GTK_WIDGET (self));
+  lookup_flags = GTK_ICON_LOOKUP_FORCE_SIZE;
 
-  if (priv->css_class != NULL)
+  icon_info = gtk_icon_theme_lookup_by_gicon_for_scale (icon_theme,
+                                                        priv->thumbnail,
+                                                        priv->icon_size,
+                                                        scale,
+                                                        lookup_flags);
+
+  if (icon_info == NULL)
+    return NULL;
+
+  error = NULL;
+  surface = gtk_icon_info_load_surface (icon_info, NULL, &error);
+  g_object_unref (icon_info);
+
+  if (error != NULL)
     {
-      gtk_style_context_remove_class (context, priv->css_class);
-      g_clear_pointer (&priv->css_class, g_free);
+      g_warning ("%s", error->message);
+      g_error_free (error);
     }
 
-  priv->css_class = g_strdup_printf ("s%dpx", icon_size);
-  gtk_style_context_add_class (context, priv->css_class);
+  if (surface == NULL)
+    return NULL;
+
+  if (cairo_surface_get_type (surface) != CAIRO_SURFACE_TYPE_IMAGE)
+    {
+      cairo_surface_destroy (surface);
+      return NULL;
+    }
+
+  width = cairo_image_surface_get_width (surface);
+  height = cairo_image_surface_get_height (surface);
+  size = MAX (width, height);
+
+  thumbnail_surface = cairo_surface_create_similar_image (surface,
+                                                          CAIRO_FORMAT_ARGB32,
+                                                          size,
+                                                          size);
+
+  cr = cairo_create (thumbnail_surface);
+
+  cairo_set_source_surface (cr, surface, size - width, size - height);
+  cairo_surface_destroy (surface);
+
+  cairo_paint (cr);
+  cairo_destroy (cr);
+
+  return thumbnail_surface;
 }
 
 static void
 update_icon (GfIcon *self)
 {
   GfIconPrivate *priv;
+  gboolean is_thumbnail;
   GIcon *icon;
   GtkIconSize size;
 
   priv = gf_icon_get_instance_private (self);
 
-  icon = GF_ICON_GET_CLASS (self)->get_icon (self);
+  is_thumbnail = FALSE;
+  icon = GF_ICON_GET_CLASS (self)->get_icon (self, &is_thumbnail);
+
+  if (is_thumbnail)
+    {
+      cairo_surface_t *surface;
+
+      surface = get_thumbnail_surface (self);
+
+      if (surface != NULL)
+        {
+          gtk_image_set_from_surface (GTK_IMAGE (priv->image), surface);
+          cairo_surface_destroy (surface);
+          return;
+        }
+    }
+
   size = GTK_ICON_SIZE_DIALOG;
 
   if (icon != NULL)
@@ -599,6 +665,30 @@ query_info_cb (GObject      *object,
 }
 
 static void
+set_icon_size (GfIcon *self,
+               int     icon_size)
+{
+  GfIconPrivate *priv;
+  GtkStyleContext *context;
+
+  priv = gf_icon_get_instance_private (self);
+  priv->icon_size = icon_size;
+
+  context = gtk_widget_get_style_context (GTK_WIDGET (self));
+
+  if (priv->css_class != NULL)
+    {
+      gtk_style_context_remove_class (context, priv->css_class);
+      g_clear_pointer (&priv->css_class, g_free);
+    }
+
+  priv->css_class = g_strdup_printf ("s%dpx", icon_size);
+  gtk_style_context_add_class (context, priv->css_class);
+
+  update_icon (self);
+}
+
+static void
 gf_icon_constructed (GObject *object)
 {
   G_OBJECT_CLASS (gf_icon_parent_class)->constructed (object);
@@ -744,7 +834,8 @@ gf_icon_get_preferred_width (GtkWidget *widget,
 }
 
 static GIcon *
-gf_icon_get_icon (GfIcon *self)
+gf_icon_get_icon (GfIcon   *self,
+                  gboolean *is_thumbnail)
 {
   GfIconPrivate *priv;
   GIcon *icon;
@@ -753,7 +844,10 @@ gf_icon_get_icon (GfIcon *self)
   icon = NULL;
 
   if (priv->thumbnail != NULL)
-    return priv->thumbnail;
+    {
+      *is_thumbnail = TRUE;
+      return priv->thumbnail;
+    }
 
   if (priv->app_info != NULL)
     icon = g_app_info_get_icon (G_APP_INFO (priv->app_info));

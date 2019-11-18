@@ -26,11 +26,13 @@ struct _GfHomeIcon
 G_DEFINE_TYPE (GfHomeIcon, gf_home_icon, GF_TYPE_ICON)
 
 static GIcon *
-gf_home_icon_get_icon (GfIcon *icon)
+gf_home_icon_get_icon (GfIcon   *icon,
+                       gboolean *is_thumbnail)
 {
   GFileInfo *info;
 
   info = gf_icon_get_file_info (icon);
+  *is_thumbnail = FALSE;
 
   return g_file_info_get_icon (info);
 }

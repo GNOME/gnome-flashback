@@ -29,9 +29,10 @@ struct _GfIconClass
 {
   GtkButtonClass parent_class;
 
-  GIcon    * (* get_icon)   (GfIcon *self);
+  GIcon    * (* get_icon)   (GfIcon   *self,
+                             gboolean *is_thumbnail);
 
-  gboolean   (* can_rename) (GfIcon *self);
+  gboolean   (* can_rename) (GfIcon   *self);
 };
 
 GtkWidget  *gf_icon_new               (GfIconView *icon_view,
