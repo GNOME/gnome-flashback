@@ -877,6 +877,13 @@ gf_icon_get_text (GfIcon *self)
 static gboolean
 gf_icon_can_rename (GfIcon *self)
 {
+  GfIconPrivate *priv;
+
+  priv = gf_icon_get_instance_private (self);
+
+  if (priv->app_info != NULL)
+    return FALSE;
+
   return TRUE;
 }
 
