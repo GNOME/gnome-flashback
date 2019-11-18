@@ -2820,21 +2820,30 @@ gf_icon_view_validate_new_name (GfIconView  *self,
     }
   else if (g_strstr_len (text, -1, "/") != NULL)
     {
+      if (is_dir)
+        *message = g_strdup (_("Folder names cannot contain “/”."));
+      else
+        *message = g_strdup (_("File names cannot contain “/”."));
+
       valid = FALSE;
-      *message = g_strdup_printf (_("%s names cannot contain “/”."),
-                                  is_dir ? "Folder" : "File");
     }
   else if (g_strcmp0 (text, ".") == 0)
     {
+      if (is_dir)
+        *message = g_strdup (_("A folder cannot be called “.”."));
+      else
+        *message = g_strdup (_("A file cannot be called “.”."));
+
       valid = FALSE;
-      *message = g_strdup_printf (_("A %s cannot be called “.”."),
-                                  is_dir ? "folder" : "file");
     }
   else if (g_strcmp0 (text, "..") == 0)
     {
+      if (is_dir)
+        *message = g_strdup (_("A folder cannot be called “..”."));
+      else
+        *message = g_strdup (_("A file cannot be called “..”."));
+
       valid = FALSE;
-      *message = g_strdup_printf (_("A %s cannot be called “..”."),
-                                  is_dir ? "folder" : "file");
     }
 
   for (l = self->icons; l != NULL; l = l->next)
@@ -2847,9 +2856,12 @@ gf_icon_view_validate_new_name (GfIconView  *self,
       name = gf_icon_get_name (GF_ICON (info->icon));
       if (g_strcmp0 (name, text) == 0)
         {
+          if (is_dir)
+            *message = g_strdup (_("A folder with that name already exists."));
+          else
+            *message = g_strdup (_("A file with that name already exists."));
+
           valid = FALSE;
-          *message = g_strdup_printf (_("A %s with that name already exists."),
-                                      is_dir ? "folder" : "file");
           break;
         }
     }
@@ -2857,8 +2869,10 @@ gf_icon_view_validate_new_name (GfIconView  *self,
   if (*message == NULL &&
       g_str_has_prefix (text, "."))
     {
-      *message = g_strdup_printf (_("%s with “.” at the beginning of their name are hidden."),
-                                  is_dir ? "Folders" : "Files");
+      if (is_dir)
+        *message = g_strdup (_("Folders with “.” at the beginning of their name are hidden."));
+      else
+        *message = g_strdup (_("Files with “.” at the beginning of their name are hidden."));
     }
 
   g_free (text);
