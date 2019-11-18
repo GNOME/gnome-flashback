@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-11-15 02:10+0000\n"
-"PO-Revision-Date: 2019-11-15 13:08+0100\n"
+"POT-Creation-Date: 2019-11-18 12:06+0000\n"
+"PO-Revision-Date: 2019-11-18 15:03+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -150,6 +150,7 @@ msgid "Clipboard"
 msgstr "Portapapeles"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
+#: gnome-flashback/libdesktop/gf-desktop-window.c:758
 msgid "Desktop"
 msgstr "Escritorio"
 
@@ -337,7 +338,7 @@ msgid "The size of desktop icons."
 msgstr "El tamaño de los iconos del escritorio."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
-#: gnome-flashback/libdesktop/gf-icon-view.c:1039
+#: gnome-flashback/libdesktop/gf-icon-view.c:1152
 msgid "Placement"
 msgstr "Posicionamiento"
 
@@ -350,7 +351,7 @@ msgstr ""
 "Controla cómo se ordenan los iconos en el escritorio."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
-#: gnome-flashback/libdesktop/gf-icon-view.c:1045
+#: gnome-flashback/libdesktop/gf-icon-view.c:1158
 msgid "Sort by"
 msgstr "Ordenar por"
 
@@ -387,14 +388,10 @@ msgid "The amount of space between rows."
 msgstr "La cantidad de espacio entre filas."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:44
-#| msgid "Show desktop icons"
 msgid "Show home icon"
 msgstr "Mostrar icono de la carpeta personal"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:45
-#| msgid ""
-#| "If set to true, then fade effect will be used to change the desktop "
-#| "background."
 msgid ""
 "If this is set to true, an icon linking to the home folder will be put on "
 "the desktop."
@@ -403,13 +400,10 @@ msgstr ""
 "personal."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:50
-#| msgid "Show desktop icons"
 msgid "Show trash icon"
 msgstr "Mostrar icono de la papelera"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:51
-#| msgid ""
-#| "If set to true, then GNOME Flashback will draw the icons on the desktop."
 msgid ""
 "If this is set to true, an icon linking to the trash will be put on the "
 "desktop."
@@ -585,7 +579,7 @@ msgid "Sound Settings"
 msgstr "Configuración de sonido"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:163
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:104
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
 msgid "Cancel"
 msgstr "Cancelar"
@@ -751,83 +745,117 @@ msgstr[1] "%d dispositivos conectados"
 msgid "Not Connected"
 msgstr "No conectado"
 
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:72
-msgid "Folder names cannot contain “/”."
-msgstr "Los nombres de las carpetas no pueden contener «/»."
-
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:77
-msgid "A folder cannot be called “.”."
-msgstr "Una carpeta no se puede llamar «.»."
-
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:82
-msgid "A folder cannot be called “..”."
-msgstr "Una carpeta no se puede llamar «..»."
-
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:103
-msgid "Folders with “.” at the beginning of their name are hidden."
-msgstr "Las carpetas cuyo nombre empieza por «.» están ocultas."
-
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:161
-#: gnome-flashback/libdesktop/gf-icon-view.c:1027
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
+#: gnome-flashback/libdesktop/gf-icon-view.c:1140
 msgid "New Folder"
 msgstr "Carpeta nueva"
 
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:171
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:112
 msgid "Create"
 msgstr "Crear"
 
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:199
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:140
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
 msgid "Folder name"
 msgstr "Nombre de la carpeta"
 
-#: gnome-flashback/libdesktop/gf-icon.c:188
+#: gnome-flashback/libdesktop/gf-home-icon.c:45
+msgid "Home"
+msgstr "Carpeta personal"
+
+#: gnome-flashback/libdesktop/gf-icon.c:286
 msgid "Open"
 msgstr "Abrir"
 
-#: gnome-flashback/libdesktop/gf-icon.c:200
+#: gnome-flashback/libdesktop/gf-icon.c:301
+msgid "Rename..."
+msgstr "Renombrar…"
+
+#: gnome-flashback/libdesktop/gf-icon.c:321
+#| msgid "Empty"
+msgid "Empty Trash"
+msgstr "Vaciar la papelera"
+
+#: gnome-flashback/libdesktop/gf-icon.c:335
 msgid "Properties"
 msgstr "Propiedades"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:651
-msgid "A folder with that name already exists."
-msgstr "Ya existe una carpeta con ese nombre."
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:823
+#: gnome-flashback/libdesktop/gf-icon-view.c:936
 msgid "Auto arrange icons"
 msgstr "Ordenar iconos automáticamente"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:827
+#: gnome-flashback/libdesktop/gf-icon-view.c:940
 msgid "Align icons to grid"
 msgstr "Ajustar iconos a la cuadrícula"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:831
+#: gnome-flashback/libdesktop/gf-icon-view.c:944
+#| msgid "Free"
+msgctxt "Free placement of icons"
 msgid "Free"
 msgstr "Libre"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:931
+#: gnome-flashback/libdesktop/gf-icon-view.c:1044
 msgid "Name"
 msgstr "Nombre"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:935
+#: gnome-flashback/libdesktop/gf-icon-view.c:1048
 msgid "Date modified"
 msgstr "Fecha de modificación"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:939
+#: gnome-flashback/libdesktop/gf-icon-view.c:1052
 msgid "Size"
 msgstr "Tamaño"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1055
+#: gnome-flashback/libdesktop/gf-icon-view.c:1168
 msgid "Change Background"
 msgstr "Cambiar el fondo"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1063
-#| msgid "Sound Settings"
+#: gnome-flashback/libdesktop/gf-icon-view.c:1176
 msgid "Display Settings"
 msgstr "Configuración de pantalla"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1075
+#: gnome-flashback/libdesktop/gf-icon-view.c:1188
 msgid "Open Terminal"
 msgstr "Abrir terminal"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2824
+#, fuzzy, c-format
+#| msgid "Folder names cannot contain “/”."
+msgid "%s names cannot contain “/”."
+msgstr "Los nombres de las carpetas no pueden contener «/»."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2830
+#, fuzzy, c-format
+#| msgid "A folder cannot be called “.”."
+msgid "A %s cannot be called “.”."
+msgstr "Una carpeta no se puede llamar «.»."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2836
+#, fuzzy, c-format
+#| msgid "A folder cannot be called “..”."
+msgid "A %s cannot be called “..”."
+msgstr "Una carpeta no se puede llamar «..»."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2851
+#, fuzzy, c-format
+#| msgid "A folder with that name already exists."
+msgid "A %s with that name already exists."
+msgstr "Ya existe una carpeta con ese nombre."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2860
+#, fuzzy, c-format
+#| msgid "Folders with “.” at the beginning of their name are hidden."
+msgid "%s with “.” at the beginning of their name are hidden."
+msgstr "Las carpetas cuyo nombre empieza por «.» están ocultas."
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+#| msgid "Folder name"
+msgid "File name"
+msgstr "Nombre de archivo"
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:254
+msgid "Rename"
+msgstr "Renombrar"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
