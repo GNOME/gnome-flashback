@@ -18,6 +18,8 @@
 #include "config.h"
 #include "gf-home-icon.h"
 
+#include <glib/gi18n.h>
+
 struct _GfHomeIcon
 {
   GfIcon parent;
@@ -37,6 +39,12 @@ gf_home_icon_get_icon (GfIcon   *icon,
   return g_file_info_get_icon (info);
 }
 
+static const char *
+gf_home_icon_get_text (GfIcon *icon)
+{
+  return _("Home");
+}
+
 static gboolean
 gf_home_icon_can_rename (GfIcon *icon)
 {
@@ -51,6 +59,7 @@ gf_home_icon_class_init (GfHomeIconClass *self_class)
   icon_class = GF_ICON_CLASS (self_class);
 
   icon_class->get_icon = gf_home_icon_get_icon;
+  icon_class->get_text = gf_home_icon_get_text;
   icon_class->can_rename = gf_home_icon_can_rename;
 }
 

@@ -520,12 +520,7 @@ update_text (GfIcon *self)
 
   priv = gf_icon_get_instance_private (self);
 
-  name = NULL;
-  if (priv->app_info != NULL)
-    name = g_app_info_get_name (G_APP_INFO (priv->app_info));
-
-  if (name == NULL)
-    name = g_file_info_get_display_name (priv->info);
+  name = GF_ICON_GET_CLASS (self)->get_text (self);
 
   priv->name = g_strdup (name);
   gtk_label_set_text (GTK_LABEL (priv->label), name);
@@ -861,6 +856,24 @@ gf_icon_get_icon (GfIcon   *self,
   return icon;
 }
 
+static const char *
+gf_icon_get_text (GfIcon *self)
+{
+  GfIconPrivate *priv;
+  const char *name;
+
+  priv = gf_icon_get_instance_private (self);
+
+  name = NULL;
+  if (priv->app_info != NULL)
+    name = g_app_info_get_name (G_APP_INFO (priv->app_info));
+
+  if (name == NULL)
+    name = g_file_info_get_display_name (priv->info);
+
+  return name;
+}
+
 static gboolean
 gf_icon_can_rename (GfIcon *self)
 {
@@ -948,6 +961,7 @@ gf_icon_class_init (GfIconClass *self_class)
   widget_class->get_preferred_width = gf_icon_get_preferred_width;
 
   self_class->get_icon = gf_icon_get_icon;
+  self_class->get_text = gf_icon_get_text;
   self_class->can_rename = gf_icon_can_rename;
 
   install_properties (object_class);

@@ -23,6 +23,7 @@ gnome-flashback/libautomount-manager/gsd-autorun.c
 gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c
 gnome-flashback/libdesktop/gf-create-folder-dialog.c
 gnome-flashback/libdesktop/gf-desktop-window.c
+gnome-flashback/libdesktop/gf-home-icon.c
 gnome-flashback/libdesktop/gf-icon.c
 gnome-flashback/libdesktop/gf-icon-view.c
 gnome-flashback/libdesktop/gf-rename-popover.c
