@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-11-18 12:06+0000\n"
-"PO-Revision-Date: 2019-11-18 15:03+0100\n"
+"POT-Creation-Date: 2019-11-18 14:06+0000\n"
+"PO-Revision-Date: 2019-11-18 15:07+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -772,7 +772,6 @@ msgid "Rename..."
 msgstr "Renombrar…"
 
 #: gnome-flashback/libdesktop/gf-icon.c:321
-#| msgid "Empty"
 msgid "Empty Trash"
 msgstr "Vaciar la papelera"
 
@@ -789,7 +788,6 @@ msgid "Align icons to grid"
 msgstr "Ajustar iconos a la cuadrícula"
 
 #: gnome-flashback/libdesktop/gf-icon-view.c:944
-#| msgid "Free"
 msgctxt "Free placement of icons"
 msgid "Free"
 msgstr "Libre"
@@ -819,37 +817,56 @@ msgid "Open Terminal"
 msgstr "Abrir terminal"
 
 #: gnome-flashback/libdesktop/gf-icon-view.c:2824
-#, fuzzy, c-format
 #| msgid "Folder names cannot contain “/”."
-msgid "%s names cannot contain “/”."
+msgid "Folder names cannot contain “/”."
 msgstr "Los nombres de las carpetas no pueden contener «/»."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2830
-#, fuzzy, c-format
+#: gnome-flashback/libdesktop/gf-icon-view.c:2826
+#| msgid "Folder names cannot contain “/”."
+msgid "File names cannot contain “/”."
+msgstr "Los nombres de los archivos no pueden contener «/»."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2833
 #| msgid "A folder cannot be called “.”."
-msgid "A %s cannot be called “.”."
+msgid "A folder cannot be called “.”."
 msgstr "Una carpeta no se puede llamar «.»."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2836
-#, fuzzy, c-format
+#: gnome-flashback/libdesktop/gf-icon-view.c:2835
+#| msgid "A folder cannot be called “.”."
+msgid "A file cannot be called “.”."
+msgstr "Un archivo no se puede llamar «.»."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2842
 #| msgid "A folder cannot be called “..”."
-msgid "A %s cannot be called “..”."
+msgid "A folder cannot be called “..”."
 msgstr "Una carpeta no se puede llamar «..»."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2851
-#, fuzzy, c-format
-#| msgid "A folder with that name already exists."
-msgid "A %s with that name already exists."
-msgstr "Ya existe una carpeta con ese nombre."
+#: gnome-flashback/libdesktop/gf-icon-view.c:2844
+#| msgid "A folder cannot be called “..”."
+msgid "A file cannot be called “..”."
+msgstr "Un archivo no se puede llamar «..»."
 
 #: gnome-flashback/libdesktop/gf-icon-view.c:2860
-#, fuzzy, c-format
+#| msgid "A folder with that name already exists."
+msgid "A folder with that name already exists."
+msgstr "Ya existe una carpeta con ese nombre."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2862
+#| msgid "A folder with that name already exists."
+msgid "A file with that name already exists."
+msgstr "Ya existe un archivo con ese nombre."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2873
 #| msgid "Folders with “.” at the beginning of their name are hidden."
-msgid "%s with “.” at the beginning of their name are hidden."
+msgid "Folders with “.” at the beginning of their name are hidden."
 msgstr "Las carpetas cuyo nombre empieza por «.» están ocultas."
 
+#: gnome-flashback/libdesktop/gf-icon-view.c:2875
+#| msgid "Folders with “.” at the beginning of their name are hidden."
+msgid "Files with “.” at the beginning of their name are hidden."
+msgstr "Los archivos cuyo nombre empieza por «.» están ocultas."
+
 #: gnome-flashback/libdesktop/gf-rename-popover.c:117
-#| msgid "Folder name"
 msgid "File name"
 msgstr "Nombre de archivo"
 
