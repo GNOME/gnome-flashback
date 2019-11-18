@@ -30,6 +30,7 @@
 typedef struct
 {
   GCancellable    *cancellable;
+  GCancellable    *thumbnail_cancellable;
 
   GtkGesture      *multi_press;
 
@@ -53,6 +54,9 @@ typedef struct
   char            *name_collated;
 
   GtkWidget       *popover;
+
+  gboolean         thumbnail_error;
+  GIcon           *thumbnail;
 } GfIconPrivate;
 
 enum
@@ -465,6 +469,78 @@ update_text (GfIcon *self)
 }
 
 static void
+thumbnail_ready_cb (GObject      *object,
+                    GAsyncResult *res,
+                    gpointer      user_data)
+{
+  GError *error;
+  GIcon *icon;
+  GfIcon *self;
+  GfIconPrivate *priv;
+
+  error = NULL;
+  icon = gf_thumbnail_factory_load_finish (GF_THUMBNAIL_FACTORY (object),
+                                           res, &error);
+
+  if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+    {
+      g_error_free (error);
+      return;
+    }
+
+  self = GF_ICON (user_data);
+  priv = gf_icon_get_instance_private (self);
+
+  if (error != NULL)
+    {
+      priv->thumbnail_error = TRUE;
+
+      g_error_free (error);
+      return;
+    }
+
+  g_assert (priv->thumbnail == NULL);
+
+  priv->thumbnail_error = FALSE;
+  priv->thumbnail = icon;
+
+  update_icon (self);
+}
+
+static void
+load_thumbnail (GfIcon *self)
+{
+  GfIconPrivate *priv;
+  GfThumbnailFactory *factory;
+  char *uri;
+  const char *content_type;
+  guint64 time_modified;
+
+  priv = gf_icon_get_instance_private (self);
+
+  factory = gf_icon_view_get_thumbnail_factory (priv->icon_view);
+
+  uri = g_file_get_uri (priv->file);
+  content_type = g_file_info_get_content_type (priv->info);
+  time_modified = gf_icon_get_time_modified (self);
+
+  g_cancellable_cancel (priv->thumbnail_cancellable);
+  g_clear_object (&priv->thumbnail_cancellable);
+
+  priv->thumbnail_cancellable = g_cancellable_new ();
+
+  gf_thumbnail_factory_load_async (factory,
+                                   uri,
+                                   content_type,
+                                   time_modified,
+                                   priv->thumbnail_cancellable,
+                                   thumbnail_ready_cb,
+                                   self);
+
+  g_free (uri);
+}
+
+static void
 icon_refresh (GfIcon *self)
 {
   GfIconPrivate *priv;
@@ -474,6 +550,9 @@ icon_refresh (GfIcon *self)
   content_type = g_file_info_get_content_type (priv->info);
 
   g_clear_object (&priv->app_info);
+
+  priv->thumbnail_error = FALSE;
+  g_clear_object (&priv->thumbnail);
 
   if (g_strcmp0 (content_type, "application/x-desktop") == 0)
     {
@@ -538,12 +617,17 @@ gf_icon_dispose (GObject *object)
   g_cancellable_cancel (priv->cancellable);
   g_clear_object (&priv->cancellable);
 
+  g_cancellable_cancel (priv->thumbnail_cancellable);
+  g_clear_object (&priv->thumbnail_cancellable);
+
   g_clear_object (&priv->multi_press);
 
   g_clear_object (&priv->file);
   g_clear_object (&priv->info);
 
   g_clear_object (&priv->app_info);
+
+  g_clear_object (&priv->thumbnail);
 
   G_OBJECT_CLASS (gf_icon_parent_class)->dispose (object);
 }
@@ -668,11 +752,17 @@ gf_icon_get_icon (GfIcon *self)
   priv = gf_icon_get_instance_private (self);
   icon = NULL;
 
+  if (priv->thumbnail != NULL)
+    return priv->thumbnail;
+
   if (priv->app_info != NULL)
     icon = g_app_info_get_icon (G_APP_INFO (priv->app_info));
 
   if (icon == NULL)
-    icon = g_file_info_get_icon (priv->info);
+    {
+      icon = g_file_info_get_icon (priv->info);
+      load_thumbnail (self);
+    }
 
   return icon;
 }
