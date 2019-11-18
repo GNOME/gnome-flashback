@@ -941,7 +941,7 @@ placement_to_string (GfPlacement placement)
         break;
 
       case GF_PLACEMENT_FREE:
-        string = _("Free");
+        string = C_("Free placement of icons", "Free");
         break;
 
       case GF_PLACEMENT_LAST:
