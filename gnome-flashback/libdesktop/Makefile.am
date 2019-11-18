@@ -39,6 +39,8 @@ libdesktop_la_SOURCES = \
 	gf-monitor-view.h \
 	gf-rename-popover.c \
 	gf-rename-popover.h \
+	gf-thumbnail-factory.c \
+	gf-thumbnail-factory.h \
 	gf-utils.c \
 	gf-utils.h \
 	$(BUILT_SOURCES) \

@@ -42,44 +42,46 @@ typedef struct
 
 struct _GfIconView
 {
-  GtkEventBox       parent;
+  GtkEventBox         parent;
 
-  GtkGesture       *multi_press;
-  GtkGesture       *drag;
+  GfThumbnailFactory *thumbnail_factory;
 
-  GFile            *desktop;
-  GFileMonitor     *monitor;
+  GtkGesture         *multi_press;
+  GtkGesture         *drag;
 
-  GSettings        *settings;
+  GFile              *desktop;
+  GFileMonitor       *monitor;
 
-  GfPlacement       placement;
-  GfSortBy          sort_by;
+  GSettings          *settings;
 
-  GtkWidget        *fixed;
+  GfPlacement         placement;
+  GfSortBy            sort_by;
 
-  GtkWidget        *dummy_icon;
+  GtkWidget          *fixed;
 
-  GCancellable     *cancellable;
+  GtkWidget          *dummy_icon;
 
-  GList            *icons;
+  GCancellable       *cancellable;
 
-  GfIconInfo       *home_info;
-  GfIconInfo       *trash_info;
+  GList              *icons;
 
-  GList            *selected_icons;
+  GfIconInfo         *home_info;
+  GfIconInfo         *trash_info;
 
-  GtkCssProvider   *rubberband_css;
-  GtkStyleContext  *rubberband_style;
-  GdkRectangle      rubberband_rect;
-  GList            *rubberband_icons;
+  GList              *selected_icons;
 
-  GfNautilusGen    *nautilus;
-  GfFileManagerGen *file_manager;
+  GtkCssProvider     *rubberband_css;
+  GtkStyleContext    *rubberband_style;
+  GdkRectangle        rubberband_rect;
+  GList              *rubberband_icons;
 
-  GtkWidget        *create_folder_dialog;
+  GfNautilusGen      *nautilus;
+  GfFileManagerGen   *file_manager;
 
-  GfIcon           *last_selected_icon;
-  GfIcon           *extend_from_icon;
+  GtkWidget          *create_folder_dialog;
+
+  GfIcon             *last_selected_icon;
+  GfIcon             *extend_from_icon;
 };
 
 enum
@@ -2279,6 +2281,8 @@ gf_icon_view_dispose (GObject *object)
 
   self = GF_ICON_VIEW (object);
 
+  g_clear_object (&self->thumbnail_factory);
+
   g_clear_object (&self->multi_press);
   g_clear_object (&self->drag);
 
@@ -2570,6 +2574,8 @@ gf_icon_view_init (GfIconView *self)
 
   add_event_filter (self);
 
+  self->thumbnail_factory = gf_thumbnail_factory_new ();
+
   self->multi_press = gtk_gesture_multi_press_new (GTK_WIDGET (self));
   self->drag = gtk_gesture_drag_new (GTK_WIDGET (self));
 
@@ -2687,6 +2693,12 @@ gf_icon_view_new (void)
   return g_object_new (GF_TYPE_ICON_VIEW,
                        "can-focus", TRUE,
                        NULL);
+}
+
+GfThumbnailFactory *
+gf_icon_view_get_thumbnail_factory (GfIconView *self)
+{
+  return self->thumbnail_factory;
 }
 
 char *

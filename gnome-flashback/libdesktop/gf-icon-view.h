@@ -19,36 +19,39 @@
 #define GF_ICON_VIEW_H
 
 #include <gtk/gtk.h>
+#include "gf-thumbnail-factory.h"
 
 G_BEGIN_DECLS
 
 #define GF_TYPE_ICON_VIEW (gf_icon_view_get_type ())
 G_DECLARE_FINAL_TYPE (GfIconView, gf_icon_view, GF, ICON_VIEW, GtkEventBox)
 
-GtkWidget *gf_icon_view_new                      (void);
+GtkWidget          *gf_icon_view_new                      (void);
 
-char      *gf_icon_view_get_file_attributes      (GfIconView          *self);
+GfThumbnailFactory *gf_icon_view_get_thumbnail_factory    (GfIconView          *self);
 
-void       gf_icon_view_set_representative_color (GfIconView          *self,
-                                                  GdkRGBA             *color);
+char               *gf_icon_view_get_file_attributes      (GfIconView          *self);
 
-void       gf_icon_view_clear_selection          (GfIconView          *self);
+void                gf_icon_view_set_representative_color (GfIconView          *self,
+                                                           GdkRGBA             *color);
 
-GList     *gf_icon_view_get_selected_icons       (GfIconView          *self);
+void                gf_icon_view_clear_selection          (GfIconView          *self);
 
-void       gf_icon_view_show_item_properties     (GfIconView          *self,
-                                                  const char * const  *uris);
+GList              *gf_icon_view_get_selected_icons       (GfIconView          *self);
 
-void       gf_icon_view_empty_trash              (GfIconView          *self);
+void                gf_icon_view_show_item_properties     (GfIconView          *self,
+                                                           const char * const  *uris);
 
-gboolean   gf_icon_view_validate_new_name        (GfIconView          *self,
-                                                  GFileType            file_type,
-                                                  const char          *new_name,
-                                                  char               **message);
+void                gf_icon_view_empty_trash              (GfIconView          *self);
 
-void       gf_icon_view_rename_file              (GfIconView          *self,
-                                                  const char          *uri,
-                                                  const char          *new_name);
+gboolean            gf_icon_view_validate_new_name        (GfIconView          *self,
+                                                           GFileType            file_type,
+                                                           const char          *new_name,
+                                                           char               **message);
+
+void                gf_icon_view_rename_file              (GfIconView          *self,
+                                                           const char          *uri,
+                                                           const char          *new_name);
 
 G_END_DECLS
 
