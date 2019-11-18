@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-11-05 16:36+0000\n"
-"PO-Revision-Date: 2019-11-10 13:13+0100\n"
+"POT-Creation-Date: 2019-11-18 13:58+0000\n"
+"PO-Revision-Date: 2019-11-18 16:08+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -149,6 +149,7 @@ msgid "Clipboard"
 msgstr "Schowek"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
+#: gnome-flashback/libdesktop/gf-desktop-window.c:758
 msgid "Desktop"
 msgstr "Pulpit"
 
@@ -342,29 +343,81 @@ msgstr "Rozmiar ikon"
 msgid "The size of desktop icons."
 msgstr "Rozmiar ikon na pulpicie."
 
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
+#: gnome-flashback/libdesktop/gf-icon-view.c:1152
+msgid "Placement"
+msgstr "Rozmieszczenie"
+
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:12
+msgid ""
+"Can be one of \"auto-arrange-icons\", \"align-icons-to-grid\" or \"free\". "
+"It controls how icons are placed on desktop."
+msgstr ""
+"Może wynosić „auto-arrange-icons” (automatyczne porządkowanie ikon), „align-"
+"icons-to-grid” (wyrównywanie ikon do siatki) lub „free” (rozmieszczenie "
+"przez użytkownika). Steruje sposobem rozmieszczania ikon na pulpicie."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
+#: gnome-flashback/libdesktop/gf-icon-view.c:1158
+msgid "Sort by"
+msgstr "Porządkowanie"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:18
+msgid ""
+"Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons "
+"are sorted in \"auto-arrange-icons\" placement."
+msgstr ""
+"Może wynosić „name” (nazwa), „date-modified” (data modyfikacji) lub "
+"„size” (rozmiar). Steruje sposobem porządkowania ikon w rozmieszczeniu „auto-"
+"arrange-icons”."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
 msgid "Extra text width"
 msgstr "Dodatkowa szerokość tekstu"
 
-#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:13
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:25
 msgid "Extra width for icon text."
 msgstr "Dodatkowa szerokość dla tekstu ikon."
 
-#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:19
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:31
 msgid "Column spacing"
 msgstr "Odstępy między kolumnami"
 
-#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:20
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:32
 msgid "The amount of space between columns."
 msgstr "Ilość miejsca między kolumnami."
 
-#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:26
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:38
 msgid "Row spacing"
 msgstr "Odstępy między rzędami"
 
-#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:27
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:39
 msgid "The amount of space between rows."
 msgstr "Ilość miejsca między rzędami."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:44
+msgid "Show home icon"
+msgstr "Ikona katalogu domowego"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:45
+msgid ""
+"If this is set to true, an icon linking to the home folder will be put on "
+"the desktop."
+msgstr ""
+"Jeśli jest ustawione na wartość „true”, to na pulpicie będzie umieszczona "
+"ikona katalogu domowego."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:50
+msgid "Show trash icon"
+msgstr "Ikona kosza"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:51
+msgid ""
+"If this is set to true, an icon linking to the trash will be put on the "
+"desktop."
+msgstr ""
+"Jeśli jest ustawione na wartość „true”, to na pulpicie będzie umieszczona "
+"ikona kosza."
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
 msgid "The background color"
@@ -538,6 +591,7 @@ msgid "Sound Settings"
 msgstr "Ustawienia dźwięku"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:104
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
 msgid "Cancel"
 msgstr "Anuluj"
@@ -704,6 +758,125 @@ msgstr[2] "%d połączonych urządzeń"
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
 msgid "Not Connected"
 msgstr "Nie połączono"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
+#: gnome-flashback/libdesktop/gf-icon-view.c:1140
+msgid "New Folder"
+msgstr "Nowy katalog"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:112
+msgid "Create"
+msgstr "Utwórz"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:140
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "Folder name"
+msgstr "Nazwa katalogu"
+
+#: gnome-flashback/libdesktop/gf-home-icon.c:45
+msgid "Home"
+msgstr "Katalog domowy"
+
+#: gnome-flashback/libdesktop/gf-icon.c:286
+msgid "Open"
+msgstr "Otwórz"
+
+#: gnome-flashback/libdesktop/gf-icon.c:301
+msgid "Rename..."
+msgstr "Zmień nazwę…"
+
+#: gnome-flashback/libdesktop/gf-icon.c:321
+msgid "Empty Trash"
+msgstr "Opróżnij kosz"
+
+#: gnome-flashback/libdesktop/gf-icon.c:335
+msgid "Properties"
+msgstr "Właściwości"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:936
+msgid "Auto arrange icons"
+msgstr "Automatyczne porządkowanie ikon"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:940
+msgid "Align icons to grid"
+msgstr "Wyrównywanie ikon do siatki"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:944
+msgctxt "Free placement of icons"
+msgid "Free"
+msgstr "Użytkownika"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1044
+msgid "Name"
+msgstr "Nazwa"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1048
+msgid "Date modified"
+msgstr "Data modyfikacji"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1052
+msgid "Size"
+msgstr "Rozmiar"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1168
+msgid "Change Background"
+msgstr "Zmień tło"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1176
+msgid "Display Settings"
+msgstr "Ustawienia ekranu"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1188
+msgid "Open Terminal"
+msgstr "Otwórz terminal"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2824
+msgid "Folder names cannot contain “/”."
+msgstr "Nazwy katalogów nie mogą zawierać znaku „/”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2826
+msgid "File names cannot contain “/”."
+msgstr "Nazwy plików nie mogą zawierać znaku „/”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2833
+msgid "A folder cannot be called “.”."
+msgstr "Katalog nie może mieć nazwy „.”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2835
+msgid "A file cannot be called “.”."
+msgstr "Plik nie może mieć nazwy „.”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2842
+msgid "A folder cannot be called “..”."
+msgstr "Katalog nie może mieć nazwy „..”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2844
+msgid "A file cannot be called “..”."
+msgstr "Plik nie może mieć nazwy „..”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2860
+msgid "A folder with that name already exists."
+msgstr "Katalog o tej nazwie już istnieje."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2862
+msgid "A file with that name already exists."
+msgstr "Plik o tej nazwie już istnieje."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2873
+msgid "Folders with “.” at the beginning of their name are hidden."
+msgstr "Katalogi z „.” na początku nazwy są ukryte."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2875
+msgid "Files with “.” at the beginning of their name are hidden."
+msgstr "Pliki z „.” na początku nazwy są ukryte."
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "File name"
+msgstr "Nazwa pliku"
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:254
+msgid "Rename"
+msgstr "Zmień nazwę"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
