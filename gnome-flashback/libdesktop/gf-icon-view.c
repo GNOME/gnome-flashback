@@ -90,6 +90,8 @@ enum
   UNSELECT_ALL,
 
   ACTIVATE,
+  DELETE,
+
   TOGGLE,
 
   MOVE,
@@ -1928,6 +1930,31 @@ add_event_filter (GfIconView *self)
   gdk_window_set_events (root, event_mask);
 }
 
+static char **
+get_selected_uris (GfIconView *self)
+{
+  int n_uris;
+  char **uris;
+  GList *l;
+  int i;
+
+  if (self->selected_icons == NULL)
+    return NULL;
+
+  n_uris = g_list_length (self->selected_icons);
+  uris = g_new0 (char *, n_uris + 1);
+
+  for (l = self->selected_icons, i = 0; l != NULL; l = l->next)
+    {
+      GFile *file;
+
+      file = gf_icon_get_file (GF_ICON (l->data));
+      uris[i++] = g_file_get_uri (file);
+    }
+
+  return uris;
+}
+
 static void
 select_cb (gpointer data,
            gpointer user_data)
@@ -1964,6 +1991,38 @@ activate_cb (GfIconView *self,
 
   for (l = self->selected_icons; l != NULL; l = l->next)
     gf_icon_open (GF_ICON (l->data));
+}
+
+static void
+delete_cb (GfIconView *self,
+           gpointer    user_data)
+{
+  gboolean can_delete;
+  GList *l;
+  char **uris;
+
+  if (self->selected_icons == NULL)
+    return;
+
+  can_delete = TRUE;
+  for (l = self->selected_icons; l != NULL; l = l->next)
+    {
+      if (!GF_ICON_GET_CLASS (l->data)->can_delete (GF_ICON (l->data)))
+        {
+          can_delete = FALSE;
+          break;
+        }
+    }
+
+  if (!can_delete)
+    return;
+
+  uris = get_selected_uris (self);
+  if (uris == NULL)
+    return;
+
+  gf_icon_view_move_to_trash (self, (const char * const *) uris);
+  g_strfreev (uris);
 }
 
 static void
@@ -2455,6 +2514,12 @@ install_signals (void)
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 
+
+  view_signals[DELETE] =
+    g_signal_new ("delete", GF_TYPE_ICON_VIEW,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+
   view_signals[TOGGLE] =
     g_signal_new ("toggle", GF_TYPE_ICON_VIEW,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
@@ -2516,6 +2581,16 @@ add_bindings (GtkBindingSet *binding_set)
   modifiers = 0;
   gtk_binding_entry_add_signal (binding_set, GDK_KEY_KP_Enter, modifiers,
                                 "activate", 0);
+
+  /* Delete */
+
+  modifiers = 0;
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_Delete, modifiers,
+                                "delete", 0);
+
+  modifiers = 0;
+  gtk_binding_entry_add_signal (binding_set, GDK_KEY_KP_Delete, modifiers,
+                                "delete", 0);
 
   /* Toggle */
 
@@ -2588,6 +2663,7 @@ gf_icon_view_init (GfIconView *self)
   g_signal_connect (self, "select-all", G_CALLBACK (select_all_cb), NULL);
   g_signal_connect (self, "unselect-all", G_CALLBACK (unselect_all_cb), NULL);
   g_signal_connect (self, "activate", G_CALLBACK (activate_cb), NULL);
+  g_signal_connect (self, "delete", G_CALLBACK (delete_cb), NULL);
   g_signal_connect (self, "toggle", G_CALLBACK (toggle_cb), NULL);
   g_signal_connect (self, "move", G_CALLBACK (move_cb), NULL);
 
