@@ -199,6 +199,12 @@ gf_trash_icon_get_icon (GfIcon   *icon,
 }
 
 static gboolean
+gf_trash_icon_can_delete (GfIcon *icon)
+{
+  return FALSE;
+}
+
+static gboolean
 gf_trash_icon_can_rename (GfIcon *icon)
 {
   return FALSE;
@@ -217,6 +223,7 @@ gf_trash_icon_class_init (GfTrashIconClass *self_class)
   object_class->dispose = gf_trash_icon_dispose;
 
   icon_class->get_icon = gf_trash_icon_get_icon;
+  icon_class->can_delete = gf_trash_icon_can_delete;
   icon_class->can_rename = gf_trash_icon_can_rename;
 }
 

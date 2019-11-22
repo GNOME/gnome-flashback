@@ -514,6 +514,25 @@ empty_trash_cb (GObject      *object,
 }
 
 static void
+trash_files_cb (GObject      *object,
+                GAsyncResult *res,
+                gpointer      user_data)
+{
+  GError *error;
+
+  error = NULL;
+  gf_nautilus_gen_call_trash_files_finish (GF_NAUTILUS_GEN (object),
+                                           res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Error moving files to trash: %s", error->message);
+      g_error_free (error);
+    }
+}
+
+static void
 rename_file_cb (GObject      *object,
                 GAsyncResult *res,
                 gpointer      user_data)
@@ -2878,6 +2897,20 @@ gf_icon_view_validate_new_name (GfIconView  *self,
   g_free (text);
 
   return valid;
+}
+
+void
+gf_icon_view_move_to_trash (GfIconView         *self,
+                            const char * const *uris)
+{
+  if (self->nautilus == NULL)
+    return;
+
+  gf_nautilus_gen_call_trash_files (self->nautilus,
+                                    uris,
+                                    self->cancellable,
+                                    trash_files_cb,
+                                    NULL);
 }
 
 void

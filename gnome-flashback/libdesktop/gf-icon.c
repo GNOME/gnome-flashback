@@ -103,6 +103,44 @@ update_state (GfIcon *self)
   gtk_widget_set_state_flags (GTK_WIDGET (self), state, TRUE);
 }
 
+static char **
+get_selected_uris (GfIcon *self)
+{
+  GfIconPrivate *priv;
+  GList *selected_icons;
+  int n_uris;
+  char **uris;
+  GFile *file;
+  GList *l;
+  int i;
+
+  priv = gf_icon_get_instance_private (self);
+
+  selected_icons = gf_icon_view_get_selected_icons (priv->icon_view);
+  if (selected_icons == NULL)
+    return NULL;
+
+  n_uris = g_list_length (selected_icons);
+  uris = g_new0 (char *, n_uris + 1);
+
+  file = gf_icon_get_file (self);
+  uris[0] = g_file_get_uri (file);
+
+  for (l = selected_icons, i = 1; l != NULL; l = l->next)
+    {
+      GfIcon *icon;
+
+      icon = l->data;
+      if (icon == self)
+        continue;
+
+      file = gf_icon_get_file (icon);
+      uris[i++] = g_file_get_uri (file);
+    }
+
+  return uris;
+}
+
 static void
 rename_validate_cb (GfRenamePopover *popover,
                     const char      *new_name,
@@ -179,6 +217,23 @@ open_cb (GtkMenuItem *item,
 }
 
 static void
+move_to_trash_cb (GtkMenuItem *item,
+                  GfIcon      *self)
+{
+  GfIconPrivate *priv;
+  char **uris;
+
+  priv = gf_icon_get_instance_private (self);
+
+  uris = get_selected_uris (self);
+  if (uris == NULL)
+    return;
+
+  gf_icon_view_move_to_trash (priv->icon_view, (const char * const *) uris);
+  g_strfreev (uris);
+}
+
+static void
 rename_cb (GtkMenuItem *item,
            GfIcon      *self)
 {
@@ -226,36 +281,13 @@ properties_cb (GtkMenuItem *item,
                GfIcon      *self)
 {
   GfIconPrivate *priv;
-  GList *selected_icons;
-  int n_uris;
   char **uris;
-  GFile *file;
-  GList *l;
-  int i;
 
   priv = gf_icon_get_instance_private (self);
 
-  selected_icons = gf_icon_view_get_selected_icons (priv->icon_view);
-  if (selected_icons == NULL)
+  uris = get_selected_uris (self);
+  if (uris == NULL)
     return;
-
-  n_uris = g_list_length (selected_icons);
-  uris = g_new0 (char *, n_uris + 1);
-
-  file = gf_icon_get_file (self);
-  uris[0] = g_file_get_uri (file);
-
-  for (l = selected_icons, i = 1; l != NULL; l = l->next)
-    {
-      GfIcon *icon;
-
-      icon = l->data;
-      if (icon == self)
-        continue;
-
-      file = gf_icon_get_file (icon);
-      uris[i++] = g_file_get_uri (file);
-    }
 
   gf_icon_view_show_item_properties (priv->icon_view,
                                      (const char * const *) uris);
@@ -272,6 +304,9 @@ create_popup_menu (GfIcon *self)
   GList *selected_icons;
   int n_selected_icons;
   GtkWidget *item;
+  gboolean show_delete;
+  gboolean disable_delete;
+  GList *l;
 
   priv = gf_icon_get_instance_private (self);
 
@@ -291,6 +326,40 @@ create_popup_menu (GfIcon *self)
   g_signal_connect (item, "activate",
                     G_CALLBACK (open_cb),
                     self);
+
+  show_delete = FALSE;
+  disable_delete = FALSE;
+
+  if (n_selected_icons == 1 &&
+      GF_ICON_GET_CLASS (self)->can_delete (GF_ICON (self)))
+    show_delete = TRUE;
+
+  if (n_selected_icons > 1)
+    {
+      for (l = selected_icons; l != NULL; l = l->next)
+        {
+          if (GF_ICON_GET_CLASS (l->data)->can_delete (GF_ICON (l->data)))
+            show_delete = TRUE;
+          else
+            disable_delete = TRUE;
+        }
+    }
+
+  if (show_delete)
+    {
+      item = gtk_separator_menu_item_new ();
+      gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+      gtk_widget_show (item);
+
+      item = gtk_menu_item_new_with_label (_("Move to Trash"));
+      gtk_widget_set_sensitive (item, !disable_delete);
+      gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
+      gtk_widget_show (item);
+
+      g_signal_connect (item, "activate",
+                        G_CALLBACK (move_to_trash_cb),
+                        self);
+    }
 
   if (GF_ICON_GET_CLASS (self)->can_rename (GF_ICON (self)))
     {
@@ -885,6 +954,12 @@ gf_icon_get_text (GfIcon *self)
 }
 
 static gboolean
+gf_icon_can_delete (GfIcon *self)
+{
+  return TRUE;
+}
+
+static gboolean
 gf_icon_can_rename (GfIcon *self)
 {
   GfIconPrivate *priv;
@@ -979,6 +1054,7 @@ gf_icon_class_init (GfIconClass *self_class)
 
   self_class->get_icon = gf_icon_get_icon;
   self_class->get_text = gf_icon_get_text;
+  self_class->can_delete = gf_icon_can_delete;
   self_class->can_rename = gf_icon_can_rename;
 
   install_properties (object_class);

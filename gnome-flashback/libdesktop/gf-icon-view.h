@@ -49,6 +49,9 @@ gboolean            gf_icon_view_validate_new_name        (GfIconView          *
                                                            const char          *new_name,
                                                            char               **message);
 
+void                gf_icon_view_move_to_trash            (GfIconView          *self,
+                                                           const char * const  *uris);
+
 void                gf_icon_view_rename_file              (GfIconView          *self,
                                                            const char          *uri,
                                                            const char          *new_name);

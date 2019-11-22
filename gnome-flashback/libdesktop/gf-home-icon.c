@@ -46,6 +46,12 @@ gf_home_icon_get_text (GfIcon *icon)
 }
 
 static gboolean
+gf_home_icon_can_delete (GfIcon *icon)
+{
+  return FALSE;
+}
+
+static gboolean
 gf_home_icon_can_rename (GfIcon *icon)
 {
   return FALSE;
@@ -60,6 +66,7 @@ gf_home_icon_class_init (GfHomeIconClass *self_class)
 
   icon_class->get_icon = gf_home_icon_get_icon;
   icon_class->get_text = gf_home_icon_get_text;
+  icon_class->can_delete = gf_home_icon_can_delete;
   icon_class->can_rename = gf_home_icon_can_rename;
 }
 

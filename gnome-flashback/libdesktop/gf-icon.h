@@ -34,6 +34,8 @@ struct _GfIconClass
 
   const char * (* get_text)   (GfIcon   *self);
 
+  gboolean     (* can_delete) (GfIcon   *self);
+
   gboolean     (* can_rename) (GfIcon   *self);
 };
 
