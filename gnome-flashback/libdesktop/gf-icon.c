@@ -304,6 +304,7 @@ create_popup_menu (GfIcon *self)
   GList *selected_icons;
   int n_selected_icons;
   GtkWidget *item;
+  GtkWidget *label;
   gboolean show_delete;
   gboolean disable_delete;
   GList *l;
@@ -322,6 +323,9 @@ create_popup_menu (GfIcon *self)
   gtk_widget_set_sensitive (item, n_selected_icons == 1);
   gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
   gtk_widget_show (item);
+
+  label = gtk_bin_get_child (GTK_BIN (item));
+  gtk_accel_label_set_accel (GTK_ACCEL_LABEL (label), GDK_KEY_Return, 0);
 
   g_signal_connect (item, "activate",
                     G_CALLBACK (open_cb),
@@ -355,6 +359,9 @@ create_popup_menu (GfIcon *self)
       gtk_widget_set_sensitive (item, !disable_delete);
       gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
       gtk_widget_show (item);
+
+      label = gtk_bin_get_child (GTK_BIN (item));
+      gtk_accel_label_set_accel (GTK_ACCEL_LABEL (label), GDK_KEY_Delete, 0);
 
       g_signal_connect (item, "activate",
                         G_CALLBACK (move_to_trash_cb),
