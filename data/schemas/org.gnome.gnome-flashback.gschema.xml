@@ -74,6 +74,11 @@
       <description>If set to true, then GNOME Flashback application will be used to show a power applet.</description>
     </key>
 
+    <key name="root-background" type="b">
+      <default>false</default>
+      <summary>Root background</summary>
+    </key>
+
     <key name="screencast" type="b">
       <default>true</default>
       <summary>Screencasts</summary>
