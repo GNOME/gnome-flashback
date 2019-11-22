@@ -1286,7 +1286,6 @@ drag_end_cb (GtkGestureDrag *gesture,
              gdouble         offset_y,
              GfIconView     *self)
 {
-
   g_clear_pointer (&self->rubberband_icons, g_list_free);
   gtk_widget_queue_draw (GTK_WIDGET (self));
 }
