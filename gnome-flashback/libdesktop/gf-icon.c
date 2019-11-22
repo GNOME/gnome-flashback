@@ -361,7 +361,8 @@ create_popup_menu (GfIcon *self)
                         self);
     }
 
-  if (GF_ICON_GET_CLASS (self)->can_rename (GF_ICON (self)))
+  if (GF_ICON_GET_CLASS (self)->can_rename (GF_ICON (self)) &&
+      n_selected_icons == 1)
     {
       item = gtk_separator_menu_item_new ();
       gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
