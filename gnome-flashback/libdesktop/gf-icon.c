@@ -47,6 +47,7 @@ typedef struct
   GtkWidget       *label;
 
   gboolean         selected;
+  gboolean         did_select;
 
   GDesktopAppInfo *app_info;
 
@@ -453,13 +454,11 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
 
   if (button == GDK_BUTTON_PRIMARY)
     {
-      if (!control_pressed && !shift_pressed)
+      if (!priv->selected && !control_pressed && !shift_pressed)
         gf_icon_view_clear_selection (priv->icon_view);
 
-      if (control_pressed || shift_pressed)
-        gf_icon_set_selected (self, !priv->selected);
-      else
-        gf_icon_set_selected (self, TRUE);
+      priv->did_select = !priv->selected;
+      gf_icon_set_selected (self, TRUE);
 
       if (!control_pressed && n_press == 2)
         gf_icon_open (self);
@@ -476,6 +475,53 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
     }
   else if (button == GDK_BUTTON_MIDDLE)
     {
+    }
+}
+
+static void
+multi_press_released_cb (GtkGestureMultiPress *gesture,
+                         gint                  n_press,
+                         gdouble               x,
+                         gdouble               y,
+                         GfIcon               *self)
+{
+  GfIconPrivate *priv;
+  guint button;
+  GdkEventSequence *sequence;
+  const GdkEvent *event;
+  GdkModifierType state;
+  gboolean control_pressed;
+  gboolean shift_pressed;
+
+  priv = gf_icon_get_instance_private (self);
+
+  button = gtk_gesture_single_get_current_button (GTK_GESTURE_SINGLE (gesture));
+  sequence = gtk_gesture_single_get_current_sequence (GTK_GESTURE_SINGLE (gesture));
+  event = gtk_gesture_get_last_event (GTK_GESTURE (gesture), sequence);
+
+  if (event == NULL)
+    return;
+
+  gdk_event_get_state (event, &state);
+
+  control_pressed = (state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK;
+  shift_pressed = (state & GDK_SHIFT_MASK) == GDK_SHIFT_MASK;
+
+  if (button == GDK_BUTTON_PRIMARY)
+    {
+      if (!control_pressed && !shift_pressed)
+        {
+          gboolean was_selected;
+
+          was_selected = priv->selected;
+
+          gf_icon_view_clear_selection (priv->icon_view);
+          gf_icon_set_selected (self, was_selected);
+        }
+      else if (control_pressed && !priv->did_select)
+        {
+          gf_icon_set_selected (self, FALSE);
+        }
     }
 }
 
@@ -1091,6 +1137,10 @@ gf_icon_init (GfIcon *self)
 
   g_signal_connect (priv->multi_press, "pressed",
                     G_CALLBACK (multi_press_pressed_cb),
+                    self);
+
+  g_signal_connect (priv->multi_press, "released",
+                    G_CALLBACK (multi_press_released_cb),
                     self);
 
   gtk_widget_set_focus_on_click (GTK_WIDGET (self), FALSE);
