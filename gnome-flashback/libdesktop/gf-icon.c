@@ -34,6 +34,9 @@ typedef struct
 
   GtkGesture      *multi_press;
 
+  double           press_x;
+  double           press_y;
+
   GfIconView      *icon_view;
   GFile           *file;
   GFileInfo       *info;
@@ -140,6 +143,243 @@ get_selected_uris (GfIcon *self)
     }
 
   return uris;
+}
+
+static double
+get_nautilus_scale (void)
+{
+  GSettingsSchemaSource *source;
+  GSettingsSchema *schema;
+  GSettings *settings;
+  int zoom_level;
+  double size;
+
+  source = g_settings_schema_source_get_default ();
+  schema = g_settings_schema_source_lookup (source,
+                                            "org.gnome.nautilus.icon-view",
+                                            FALSE);
+
+  if (schema == NULL)
+    return 1.0;
+
+  g_settings_schema_unref  (schema);
+  settings = g_settings_new ("org.gnome.nautilus.icon-view");
+
+  zoom_level = g_settings_get_enum (settings, "default-zoom-level");
+  g_object_unref (settings);
+
+  if (zoom_level == 0)
+    size = 48.0;
+  else if (zoom_level == 1)
+    size = 64.0;
+  else if (zoom_level == 2)
+    size = 96.0;
+  else if (zoom_level == 3)
+    size = 128.0;
+  else if (zoom_level == 4)
+    size = 256.0;
+  else
+    size = 64.0;
+
+  return size / 64.0;
+}
+
+static GString *
+get_gnome_icon_list (GfIcon *self)
+{
+  GfIconPrivate *priv;
+  GString *icon_list;
+  GList *selected_icons;
+  double scale;
+  GList *l;
+
+  priv = gf_icon_get_instance_private (self);
+
+  icon_list = g_string_new (NULL);
+  selected_icons = gf_icon_view_get_selected_icons (priv->icon_view);
+
+  if (selected_icons == NULL)
+    return icon_list;
+
+  scale = 1.0 / get_nautilus_scale ();
+
+  for (l = selected_icons; l != NULL; l = l->next)
+    {
+      GfIcon *icon;
+      GfIconPrivate *icon_priv;
+      GFile *file;
+      char *uri;
+      GtkAllocation allocation;
+
+      icon = l->data;
+      icon_priv = gf_icon_get_instance_private (icon);
+
+      file = gf_icon_get_file (icon);
+      uri = g_file_get_uri (file);
+
+      gtk_widget_get_allocation (GTK_WIDGET (icon_priv->image), &allocation);
+      gtk_widget_translate_coordinates (GTK_WIDGET (icon_priv->image),
+                                        GTK_WIDGET (self),
+                                        -priv->press_x,
+                                        -priv->press_y,
+                                        &allocation.x,
+                                        &allocation.y);
+
+      allocation.x *= scale;
+      allocation.y *= scale;
+      allocation.width *= scale;
+      allocation.height *= scale;
+
+      g_string_append_printf (icon_list,
+                              "%s\r%d:%d:%hu:%hu\r\n",
+                              uri,
+                              allocation.x,
+                              allocation.y,
+                              allocation.width,
+                              allocation.height);
+
+      g_free (uri);
+    }
+
+  return icon_list;
+}
+
+static void
+drag_begin_cb (GtkWidget      *widget,
+               GdkDragContext *context,
+               GfIcon         *self)
+{
+  GfIconPrivate *priv;
+  gint scale;
+  GtkAllocation allocation;
+  cairo_surface_t *icon;
+  cairo_t *cr;
+
+  priv = gf_icon_get_instance_private (self);
+
+  scale = gtk_widget_get_scale_factor (widget);
+  gtk_widget_get_allocation (widget, &allocation);
+
+  icon = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                     allocation.width * scale,
+                                     allocation.height * scale);
+
+  cairo_surface_set_device_scale (icon, scale, scale);
+
+  cr = cairo_create (icon);
+  gtk_widget_draw (widget, cr);
+  cairo_destroy (cr);
+
+  gtk_drag_set_icon_surface (context, icon);
+  cairo_surface_destroy (icon);
+
+  gdk_drag_context_set_hotspot (context, priv->press_x, priv->press_y);
+}
+
+static void
+drag_data_delete_cb (GtkWidget      *widget,
+                     GdkDragContext *context,
+                     GfIcon         *self)
+{
+}
+
+static void
+drag_data_get_cb (GtkWidget        *widget,
+                  GdkDragContext   *context,
+                  GtkSelectionData *data,
+                  guint             info,
+                  guint             time,
+                  GfIcon           *self)
+{
+  if (info == 100)
+    {
+      gtk_selection_data_set (data,
+                              gtk_selection_data_get_target (data),
+                              32,
+                              (const guchar *) &widget,
+                              sizeof (gpointer));
+    }
+  else if (info == 200)
+    {
+      GString *icon_list;
+
+      icon_list = get_gnome_icon_list (self);
+
+      gtk_selection_data_set (data,
+                              gtk_selection_data_get_target (data),
+                              8,
+                              (const guchar *) icon_list->str,
+                              icon_list->len);
+
+      g_string_free (icon_list, TRUE);
+    }
+  else if (info == 300)
+    {
+      char **uris;
+
+      uris = get_selected_uris (self);
+      gtk_selection_data_set_uris (data, uris);
+      g_free (uris);
+    }
+}
+
+static void
+drag_end_cb (GtkWidget      *widget,
+             GdkDragContext *context,
+             GfIcon         *self)
+{
+}
+
+static gboolean
+drag_failed_cb (GtkWidget      *widget,
+                GdkDragContext *context,
+                GtkDragResult   result,
+                GfIcon         *self)
+{
+  return FALSE;
+}
+
+static void
+setup_drag_source (GfIcon *self)
+{
+  GdkModifierType modifiers;
+  GdkDragAction actions;
+  GtkTargetList *target_list;
+  GdkAtom target;
+
+  modifiers = GDK_BUTTON1_MASK | GDK_BUTTON2_MASK;
+  actions = GDK_ACTION_COPY | GDK_ACTION_MOVE;
+
+  gtk_drag_source_set (GTK_WIDGET (self), modifiers, NULL, 0, actions);
+
+  target_list = gtk_target_list_new (NULL, 0);
+
+  target = gdk_atom_intern_static_string ("x-gnome-flashback/icon-list");
+  gtk_target_list_add (target_list, target, GTK_TARGET_SAME_APP, 100);
+
+  target = gdk_atom_intern_static_string ("x-special/gnome-icon-list");
+  gtk_target_list_add (target_list, target, 0, 200);
+
+  target = gdk_atom_intern_static_string ("text/uri-list");
+  gtk_target_list_add (target_list, target, 0, 300);
+
+  gtk_drag_source_set_target_list (GTK_WIDGET (self), target_list);
+  gtk_target_list_unref (target_list);
+
+  g_signal_connect (self, "drag-begin",
+                    G_CALLBACK (drag_begin_cb), self);
+
+  g_signal_connect (self, "drag-data-delete",
+                    G_CALLBACK (drag_data_delete_cb), self);
+
+  g_signal_connect (self, "drag-data-get",
+                    G_CALLBACK (drag_data_get_cb), self);
+
+  g_signal_connect (self, "drag-end",
+                    G_CALLBACK (drag_end_cb), self);
+
+  g_signal_connect (self, "drag-failed",
+                    G_CALLBACK (drag_failed_cb), self);
 }
 
 static void
@@ -437,6 +677,9 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
   gboolean shift_pressed;
 
   priv = gf_icon_get_instance_private (self);
+
+  priv->press_x = x;
+  priv->press_y = y;
 
   button = gtk_gesture_single_get_current_button (GTK_GESTURE_SINGLE (gesture));
   sequence = gtk_gesture_single_get_current_sequence (GTK_GESTURE_SINGLE (gesture));
@@ -1151,11 +1394,14 @@ gf_icon_init (GfIcon *self)
 
   gtk_widget_set_focus_on_click (GTK_WIDGET (self), FALSE);
 
+  setup_drag_source (self);
+
   box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_container_add (GTK_CONTAINER (self), box);
   gtk_widget_show (box);
 
   priv->image = gtk_image_new ();
+  gtk_widget_set_halign (priv->image, GTK_ALIGN_CENTER);
   gtk_box_pack_start (GTK_BOX (box), priv->image, FALSE, FALSE, 0);
   gtk_widget_show (priv->image);
 
