@@ -465,7 +465,7 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
     }
   else if (button == GDK_BUTTON_SECONDARY)
     {
-      if (!priv->selected && !control_pressed)
+      if (!priv->selected && !control_pressed && !shift_pressed)
         gf_icon_view_clear_selection (priv->icon_view);
 
       gtk_gesture_set_state (GTK_GESTURE (gesture), GTK_EVENT_SEQUENCE_CLAIMED);
@@ -475,6 +475,11 @@ multi_press_pressed_cb (GtkGestureMultiPress *gesture,
     }
   else if (button == GDK_BUTTON_MIDDLE)
     {
+      if (!priv->selected && !control_pressed && !shift_pressed)
+        gf_icon_view_clear_selection (priv->icon_view);
+
+      priv->did_select = !priv->selected;
+      gf_icon_set_selected (self, TRUE);
     }
 }
 
@@ -507,7 +512,8 @@ multi_press_released_cb (GtkGestureMultiPress *gesture,
   control_pressed = (state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK;
   shift_pressed = (state & GDK_SHIFT_MASK) == GDK_SHIFT_MASK;
 
-  if (button == GDK_BUTTON_PRIMARY)
+  if (button == GDK_BUTTON_PRIMARY ||
+      button == GDK_BUTTON_MIDDLE)
     {
       if (!control_pressed && !shift_pressed)
         {
