@@ -163,3 +163,42 @@ gf_launch_uri (const char  *uri,
 
   return launched;
 }
+
+double
+gf_get_nautilus_scale (void)
+{
+  GSettingsSchemaSource *source;
+  GSettingsSchema *schema;
+  GSettings *settings;
+  int zoom_level;
+  double size;
+
+  source = g_settings_schema_source_get_default ();
+  schema = g_settings_schema_source_lookup (source,
+                                            "org.gnome.nautilus.icon-view",
+                                            FALSE);
+
+  if (schema == NULL)
+    return 1.0;
+
+  g_settings_schema_unref  (schema);
+  settings = g_settings_new ("org.gnome.nautilus.icon-view");
+
+  zoom_level = g_settings_get_enum (settings, "default-zoom-level");
+  g_object_unref (settings);
+
+  if (zoom_level == 0)
+    size = 48.0;
+  else if (zoom_level == 1)
+    size = 64.0;
+  else if (zoom_level == 2)
+    size = 96.0;
+  else if (zoom_level == 3)
+    size = 128.0;
+  else if (zoom_level == 4)
+    size = 256.0;
+  else
+    size = 64.0;
+
+  return size / 64.0;
+}

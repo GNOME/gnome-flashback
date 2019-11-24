@@ -32,6 +32,8 @@ gboolean gf_launch_desktop_file (const char       *desktop_file,
 gboolean gf_launch_uri          (const char       *uri,
                                  GError          **error);
 
+double   gf_get_nautilus_scale  (void);
+
 G_END_DECLS
 
 #endif
