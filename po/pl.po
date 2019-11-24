@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-11-18 13:58+0000\n"
-"PO-Revision-Date: 2019-11-18 16:08+0100\n"
+"POT-Creation-Date: 2019-11-22 23:11+0000\n"
+"PO-Revision-Date: 2019-11-24 12:45+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -230,10 +230,14 @@ msgstr ""
 "GNOME będzie używany do wyświetlania apletu zasilania."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
+msgid "Root background"
+msgstr "Główne tło"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
 msgid "Screencasts"
 msgstr "Nagrywanie ekranu"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:80
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -241,11 +245,11 @@ msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
 "GNOME będzie używany do nagrywania ekranu."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid "Screensaver"
 msgstr "Wygaszacz ekranu"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:86
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
@@ -253,11 +257,11 @@ msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
 "GNOME będzie używany jako wygaszacz ekranu."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
 msgid "Screenshots"
 msgstr "Zrzuty ekranu"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:92
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -265,22 +269,22 @@ msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
 "GNOME będzie używany do wykonywania zrzutów ekranu."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:102
 msgid "Shell"
 msgstr "Powłoka"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:98
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr ""
 "Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
 "GNOME będzie używany jako powłoka."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
 msgid "Sound applet"
 msgstr "Aplet dźwięku"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:104
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:109
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -290,11 +294,11 @@ msgstr ""
 "GNOME będzie używany do wyświetlania apletu dźwięku. Jest to ten sam aplet, "
 "który wcześniej był częścią Centrum sterowania GNOME."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:109
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
 msgid "Status Notifier Watcher"
 msgstr "Obserwator obszaru powiadamiania"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:110
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:115
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -344,7 +348,7 @@ msgid "The size of desktop icons."
 msgstr "Rozmiar ikon na pulpicie."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
-#: gnome-flashback/libdesktop/gf-icon-view.c:1152
+#: gnome-flashback/libdesktop/gf-icon-view.c:1173
 msgid "Placement"
 msgstr "Rozmieszczenie"
 
@@ -358,7 +362,7 @@ msgstr ""
 "przez użytkownika). Steruje sposobem rozmieszczania ikon na pulpicie."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
-#: gnome-flashback/libdesktop/gf-icon-view.c:1158
+#: gnome-flashback/libdesktop/gf-icon-view.c:1179
 msgid "Sort by"
 msgstr "Porządkowanie"
 
@@ -760,7 +764,7 @@ msgid "Not Connected"
 msgstr "Nie połączono"
 
 #: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
-#: gnome-flashback/libdesktop/gf-icon-view.c:1140
+#: gnome-flashback/libdesktop/gf-icon-view.c:1161
 msgid "New Folder"
 msgstr "Nowy katalog"
 
@@ -777,96 +781,100 @@ msgstr "Nazwa katalogu"
 msgid "Home"
 msgstr "Katalog domowy"
 
-#: gnome-flashback/libdesktop/gf-icon.c:286
+#: gnome-flashback/libdesktop/gf-icon.c:322
 msgid "Open"
 msgstr "Otwórz"
 
-#: gnome-flashback/libdesktop/gf-icon.c:301
+#: gnome-flashback/libdesktop/gf-icon.c:358
+msgid "Move to Trash"
+msgstr "Przenieś do kosza"
+
+#: gnome-flashback/libdesktop/gf-icon.c:378
 msgid "Rename..."
 msgstr "Zmień nazwę…"
 
-#: gnome-flashback/libdesktop/gf-icon.c:321
+#: gnome-flashback/libdesktop/gf-icon.c:398
 msgid "Empty Trash"
 msgstr "Opróżnij kosz"
 
-#: gnome-flashback/libdesktop/gf-icon.c:335
+#: gnome-flashback/libdesktop/gf-icon.c:412
 msgid "Properties"
 msgstr "Właściwości"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:936
+#: gnome-flashback/libdesktop/gf-icon-view.c:957
 msgid "Auto arrange icons"
 msgstr "Automatyczne porządkowanie ikon"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:940
+#: gnome-flashback/libdesktop/gf-icon-view.c:961
 msgid "Align icons to grid"
 msgstr "Wyrównywanie ikon do siatki"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:944
+#: gnome-flashback/libdesktop/gf-icon-view.c:965
 msgctxt "Free placement of icons"
 msgid "Free"
 msgstr "Użytkownika"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1044
+#: gnome-flashback/libdesktop/gf-icon-view.c:1065
 msgid "Name"
 msgstr "Nazwa"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1048
+#: gnome-flashback/libdesktop/gf-icon-view.c:1069
 msgid "Date modified"
 msgstr "Data modyfikacji"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1052
+#: gnome-flashback/libdesktop/gf-icon-view.c:1073
 msgid "Size"
 msgstr "Rozmiar"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1168
+#: gnome-flashback/libdesktop/gf-icon-view.c:1189
 msgid "Change Background"
 msgstr "Zmień tło"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1176
+#: gnome-flashback/libdesktop/gf-icon-view.c:1197
 msgid "Display Settings"
 msgstr "Ustawienia ekranu"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1188
+#: gnome-flashback/libdesktop/gf-icon-view.c:1209
 msgid "Open Terminal"
 msgstr "Otwórz terminal"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2824
+#: gnome-flashback/libdesktop/gf-icon-view.c:2919
 msgid "Folder names cannot contain “/”."
 msgstr "Nazwy katalogów nie mogą zawierać znaku „/”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2826
+#: gnome-flashback/libdesktop/gf-icon-view.c:2921
 msgid "File names cannot contain “/”."
 msgstr "Nazwy plików nie mogą zawierać znaku „/”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2833
+#: gnome-flashback/libdesktop/gf-icon-view.c:2928
 msgid "A folder cannot be called “.”."
 msgstr "Katalog nie może mieć nazwy „.”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2835
+#: gnome-flashback/libdesktop/gf-icon-view.c:2930
 msgid "A file cannot be called “.”."
 msgstr "Plik nie może mieć nazwy „.”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2842
+#: gnome-flashback/libdesktop/gf-icon-view.c:2937
 msgid "A folder cannot be called “..”."
 msgstr "Katalog nie może mieć nazwy „..”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2844
+#: gnome-flashback/libdesktop/gf-icon-view.c:2939
 msgid "A file cannot be called “..”."
 msgstr "Plik nie może mieć nazwy „..”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2860
+#: gnome-flashback/libdesktop/gf-icon-view.c:2955
 msgid "A folder with that name already exists."
 msgstr "Katalog o tej nazwie już istnieje."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2862
+#: gnome-flashback/libdesktop/gf-icon-view.c:2957
 msgid "A file with that name already exists."
 msgstr "Plik o tej nazwie już istnieje."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2873
+#: gnome-flashback/libdesktop/gf-icon-view.c:2968
 msgid "Folders with “.” at the beginning of their name are hidden."
 msgstr "Katalogi z „.” na początku nazwy są ukryte."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2875
+#: gnome-flashback/libdesktop/gf-icon-view.c:2970
 msgid "Files with “.” at the beginning of their name are hidden."
 msgstr "Pliki z „.” na początku nazwy są ukryte."
 
