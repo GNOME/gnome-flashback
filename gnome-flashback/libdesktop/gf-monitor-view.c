@@ -21,6 +21,7 @@
 #include "gf-desktop-enum-types.h"
 #include "gf-dummy-icon.h"
 #include "gf-icon.h"
+#include "gf-utils.h"
 
 struct _GfMonitorView
 {
@@ -56,6 +57,8 @@ struct _GfMonitorView
   int          offset_y;
 
   GHashTable  *grid;
+
+  gboolean     drop_pending;
 };
 
 enum
@@ -315,6 +318,301 @@ find_free_grid_position (GfMonitorView *self,
     }
 
   return FALSE;
+}
+
+static void
+add_drag_rectangles_from_icon_list (GfMonitorView *self,
+                                    GfIcon        *drag_icon,
+                                    GPtrArray     *rectangles)
+{
+  GList *selected_icons;
+  GList *l;
+
+  selected_icons = gf_icon_view_get_selected_icons (self->icon_view);
+  if (selected_icons == NULL)
+    return;
+
+  for (l = selected_icons; l != NULL; l = l->next)
+    {
+      GfIcon *icon;
+      GtkWidget *image;
+      double press_x;
+      double press_y;
+      GdkRectangle *rectangle;
+
+      icon = l->data;
+
+      image = gf_icon_get_image (icon);
+      gf_icon_get_press (drag_icon, &press_x, &press_y);
+
+      rectangle = g_new0 (GdkRectangle, 1);
+      g_ptr_array_add (rectangles, rectangle);
+
+      gtk_widget_get_allocation (image, rectangle);
+      gtk_widget_translate_coordinates (image,
+                                        GTK_WIDGET (drag_icon),
+                                        -press_x,
+                                        -press_y,
+                                        &rectangle->x,
+                                        &rectangle->y);
+    }
+}
+
+static void
+add_drag_rectangles_from_gnome_icon_list (GfMonitorView *self,
+                                          const guchar  *gnome_icon_list,
+                                          GPtrArray     *rectangles)
+{
+  char **list;
+  double scale;
+  int i;
+
+  list = g_strsplit ((const char *) gnome_icon_list, "\r\n", -1);
+  if (list == NULL)
+    return;
+
+  scale = 1.0 / gf_get_nautilus_scale ();
+
+  for (i = 0; list[i] != NULL; i++)
+    {
+      int x;
+      int y;
+      unsigned short int width;
+      unsigned short int height;
+      GdkRectangle *rectangle;
+
+      if (sscanf (list[i], "%*s\r%d:%d:%hu:%hu", &x, &y, &width, &height) != 4)
+        continue;
+
+      rectangle = g_new0 (GdkRectangle, 1);
+      g_ptr_array_add (rectangles, rectangle);
+
+      rectangle->x = x / scale;
+      rectangle->y = y / scale;
+      rectangle->width = width / scale;
+      rectangle->height = height / scale;
+    }
+
+  g_strfreev (list);
+}
+
+static void
+drag_data_received_cb (GtkWidget        *widget,
+                       GdkDragContext   *context,
+                       gint              x,
+                       gint              y,
+                       GtkSelectionData *data,
+                       guint             info,
+                       guint             time,
+                       GfMonitorView    *self)
+{
+
+  if (data == NULL || gtk_selection_data_get_length (data) == 0)
+    {
+      gtk_drag_finish (context, FALSE, FALSE, time);
+      return;
+    }
+
+  if (self->drop_pending)
+    {
+      GdkWindow *window;
+      GdkDevice *device;
+      GdkModifierType mask;
+      GdkDragAction action;
+      GPtrArray *drag_rectangles;
+
+      window = gdk_drag_context_get_dest_window (context);
+      device = gdk_drag_context_get_device (context);
+
+      gdk_window_get_device_position (window, device, NULL, NULL, &mask);
+
+      action = 0;
+      drag_rectangles = g_ptr_array_new_with_free_func (g_free);
+
+      if (info == 100)
+        {
+          GfIcon *icon;
+
+          icon = *(gpointer *) gtk_selection_data_get_data (data);
+          add_drag_rectangles_from_icon_list (self, icon, drag_rectangles);
+
+          if (mask & GDK_CONTROL_MASK)
+            action = GDK_ACTION_COPY;
+          else
+            action = GDK_ACTION_MOVE;
+        }
+      else if (info == 200)
+        {
+          const guchar *selection_data;
+
+          selection_data = gtk_selection_data_get_data (data);
+          add_drag_rectangles_from_gnome_icon_list (self,
+                                                    selection_data,
+                                                    drag_rectangles);
+
+          if (mask & GDK_CONTROL_MASK)
+            action = GDK_ACTION_COPY;
+          else
+            action = GDK_ACTION_MOVE;
+        }
+      else if (info == 300)
+        {
+          action = GDK_ACTION_COPY;
+        }
+
+      gdk_drag_status (context, action, time);
+
+      gf_icon_view_set_drag_rectangles (self->icon_view, drag_rectangles);
+      g_ptr_array_unref (drag_rectangles);
+    }
+  else
+    {
+      gboolean success;
+      gboolean delete;
+      GdkDragAction action;
+
+      success = FALSE;
+      delete = FALSE;
+
+      action = gdk_drag_context_get_selected_action (context);
+
+      if (info == 100)
+        {
+          if (action == GDK_ACTION_MOVE &&
+              self->placement != GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+            {
+            }
+          else if (action == GDK_ACTION_COPY)
+            {
+            }
+        }
+      else if (info == 200)
+        {
+          if (action == GDK_ACTION_MOVE)
+            {
+            }
+          else if (action == GDK_ACTION_COPY)
+            {
+            }
+        }
+      else if (info == 300)
+        {
+          if (action == GDK_ACTION_COPY)
+            {
+            }
+        }
+
+      gtk_drag_finish (context, success, delete, time);
+    }
+}
+
+static gboolean
+drag_drop_cb (GtkWidget      *widget,
+              GdkDragContext *context,
+              gint            x,
+              gint            y,
+              guint           time,
+              GfMonitorView  *self)
+{
+  GtkTargetList *target_list;
+  GList *list_targets;
+  GList *l;
+
+  target_list = gtk_drag_dest_get_target_list (widget);
+  list_targets = gdk_drag_context_list_targets (context);
+
+  for (l = list_targets; l != NULL; l = l->next)
+    {
+      GdkAtom atom;
+
+      atom = GDK_POINTER_TO_ATOM (l->data);
+
+      if (gtk_target_list_find (target_list, atom, NULL))
+        {
+          self->drop_pending = FALSE;
+          gtk_drag_get_data (widget, context, atom, time);
+
+          return TRUE;
+        }
+    }
+
+  gtk_drag_finish (context, FALSE, FALSE, time);
+
+  return TRUE;
+}
+
+static void
+drag_leave_cb (GtkWidget      *widget,
+               GdkDragContext *context,
+               guint           time,
+               GfMonitorView  *self)
+{
+  gf_icon_view_set_drag_rectangles (self->icon_view, NULL);
+}
+
+static gboolean
+drag_motion_cb (GtkWidget      *widget,
+                GdkDragContext *context,
+                gint            x,
+                gint            y,
+                guint           time,
+                GfMonitorView  *self)
+{
+  GdkAtom target;
+
+  target = gtk_drag_dest_find_target (widget, context, NULL);
+
+  if (target == GDK_NONE ||
+      gdk_drag_context_get_suggested_action (context) == 0)
+    {
+      gdk_drag_status (context, 0, time);
+      return TRUE;
+    }
+
+  self->drop_pending = TRUE;
+  gtk_drag_get_data (widget, context, target, time);
+
+  return TRUE;
+}
+
+static void
+setup_drop_destination (GfMonitorView *self)
+{
+  GdkDragAction actions;
+  GtkDestDefaults defaults;
+  GtkTargetList *target_list;
+  GdkAtom target;
+
+  actions = GDK_ACTION_COPY | GDK_ACTION_MOVE;
+  defaults = 0;
+
+  gtk_drag_dest_set (GTK_WIDGET (self), 0, NULL, defaults, actions);
+
+  target_list = gtk_target_list_new (NULL, 0);
+
+  target = gdk_atom_intern_static_string ("x-gnome-flashback/icon-list");
+  gtk_target_list_add (target_list, target, GTK_TARGET_SAME_APP, 100);
+
+  target = gdk_atom_intern_static_string ("x-special/gnome-icon-list");
+  gtk_target_list_add (target_list, target, 0, 200);
+
+  target = gdk_atom_intern_static_string ("text/uri-list");
+  gtk_target_list_add (target_list, target, 0, 300);
+
+  gtk_drag_dest_set_target_list (GTK_WIDGET (self), target_list);
+  gtk_target_list_unref (target_list);
+
+  g_signal_connect (self, "drag-data-received",
+                    G_CALLBACK (drag_data_received_cb), self);
+
+  g_signal_connect (self, "drag-drop",
+                    G_CALLBACK (drag_drop_cb), self);
+
+  g_signal_connect (self, "drag-leave",
+                    G_CALLBACK (drag_leave_cb), self);
+
+  g_signal_connect (self, "drag-motion",
+                    G_CALLBACK (drag_motion_cb), self);
 }
 
 static void
@@ -740,6 +1038,8 @@ gf_monitor_view_init (GfMonitorView *self)
 {
   self->grid = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL,
                                       (GDestroyNotify) g_ptr_array_unref);
+
+  setup_drop_destination (self);
 }
 
 GtkWidget *
