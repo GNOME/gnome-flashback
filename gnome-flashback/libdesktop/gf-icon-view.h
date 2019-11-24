@@ -35,6 +35,9 @@ char               *gf_icon_view_get_file_attributes      (GfIconView          *
 void                gf_icon_view_set_representative_color (GfIconView          *self,
                                                            GdkRGBA             *color);
 
+void                gf_icon_view_set_drag_rectangles      (GfIconView          *self,
+                                                           GPtrArray           *rectangles);
+
 void                gf_icon_view_clear_selection          (GfIconView          *self);
 
 GList              *gf_icon_view_get_selected_icons       (GfIconView          *self);

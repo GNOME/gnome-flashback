@@ -82,6 +82,8 @@ struct _GfIconView
 
   GfIcon             *last_selected_icon;
   GfIcon             *extend_from_icon;
+
+  GPtrArray          *drag_rectagles;
 };
 
 enum
@@ -2388,6 +2390,8 @@ gf_icon_view_dispose (GObject *object)
 
   g_clear_pointer (&self->create_folder_dialog, gtk_widget_destroy);
 
+  g_clear_pointer (&self->drag_rectagles, g_ptr_array_unref);
+
   G_OBJECT_CLASS (gf_icon_view_parent_class)->dispose (object);
 }
 
@@ -2445,26 +2449,69 @@ gf_icon_view_draw (GtkWidget *widget,
 
   GTK_WIDGET_CLASS (gf_icon_view_parent_class)->draw (widget, cr);
 
-  if (!gtk_gesture_is_recognized (GTK_GESTURE (self->drag)))
-    return TRUE;
+  if (self->drag_rectagles != NULL &&
+      self->drag_rectagles->len > 1)
+    {
+      GdkDisplay *display;
+      GdkSeat *seat;
+      int x;
+      int y;
+      guint i;
 
-  ensure_rubberband_style (self);
+      display = gtk_widget_get_display (widget);
+      seat = gdk_display_get_default_seat (display);
 
-  cairo_save (cr);
+      gdk_window_get_device_position (gtk_widget_get_window (widget),
+                                      gdk_seat_get_pointer (seat),
+                                      &x,
+                                      &y,
+                                      NULL);
 
-  gtk_render_background (self->rubberband_style, cr,
-                         self->rubberband_rect.x,
-                         self->rubberband_rect.y,
-                         self->rubberband_rect.width,
-                         self->rubberband_rect.height);
+      ensure_rubberband_style (self);
 
-  gtk_render_frame (self->rubberband_style, cr,
-                    self->rubberband_rect.x,
-                    self->rubberband_rect.y,
-                    self->rubberband_rect.width,
-                    self->rubberband_rect.height);
+      cairo_save (cr);
 
-  cairo_restore (cr);
+      for (i = 0; i < self->drag_rectagles->len; i++)
+        {
+          GdkRectangle *rect;
+
+          rect = g_ptr_array_index (self->drag_rectagles, i);
+
+          gtk_render_background (self->rubberband_style, cr,
+                                 x + rect->x,
+                                 y + rect->y,
+                                 rect->width,
+                                 rect->height);
+
+          gtk_render_frame (self->rubberband_style, cr,
+                            x + rect->x,
+                            y + rect->y,
+                            rect->width,
+                            rect->height);
+        }
+
+      cairo_restore (cr);
+    }
+  else if (gtk_gesture_is_recognized (GTK_GESTURE (self->drag)))
+    {
+      ensure_rubberband_style (self);
+
+      cairo_save (cr);
+
+      gtk_render_background (self->rubberband_style, cr,
+                             self->rubberband_rect.x,
+                             self->rubberband_rect.y,
+                             self->rubberband_rect.width,
+                             self->rubberband_rect.height);
+
+      gtk_render_frame (self->rubberband_style, cr,
+                        self->rubberband_rect.x,
+                        self->rubberband_rect.y,
+                        self->rubberband_rect.width,
+                        self->rubberband_rect.height);
+
+      cairo_restore (cr);
+    }
 
   return TRUE;
 }
@@ -2852,6 +2899,18 @@ gf_icon_view_set_representative_color (GfIconView *self,
     {
       gtk_css_provider_load_from_data (self->rubberband_css, "", -1, NULL);
     }
+}
+
+void
+gf_icon_view_set_drag_rectangles (GfIconView *self,
+                                  GPtrArray  *rectangles)
+{
+  g_clear_pointer (&self->drag_rectagles, g_ptr_array_unref);
+
+  if (rectangles != NULL)
+    self->drag_rectagles = g_ptr_array_ref (rectangles);
+
+  gtk_widget_queue_draw (GTK_WIDGET (self));
 }
 
 void
