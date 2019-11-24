@@ -19,6 +19,7 @@
 #include "gf-desktop-window.h"
 
 #include <gdk/gdkx.h>
+#include <libcommon/gf-background-utils.h>
 #include <libgnome-desktop/gnome-bg.h>
 #include <glib/gi18n.h>
 #include <X11/Xatom.h>
@@ -167,13 +168,13 @@ static void
 ensure_surface (GfDesktopWindow *self)
 {
   GtkWidget *widget;
-  GdkScreen *screen;
+  GdkDisplay *display;
 
   widget = GTK_WIDGET (self);
 
-  screen = gtk_widget_get_screen (widget);
+  display = gtk_widget_get_display (widget);
 
-  self->surface = gnome_bg_get_surface_from_root (screen);
+  self->surface = gf_background_surface_get_from_root (display);
   gtk_widget_queue_draw (widget);
   update_css_class (self);
 }

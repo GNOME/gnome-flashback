@@ -18,6 +18,7 @@
 #include "config.h"
 #include "gf-background.h"
 
+#include <libcommon/gf-background-utils.h>
 #include <libgnome-desktop/gnome-bg.h>
 
 #include "gf-desktop-window.h"
@@ -96,7 +97,7 @@ fade_cb (gpointer user_data)
   FadeData *fade;
   double current_time;
   double percent_done;
-  GdkScreen *screen;
+  GdkDisplay *display;
 
   self = GF_BACKGROUND (user_data);
   fade = self->fade_data;
@@ -128,8 +129,8 @@ fade_cb (gpointer user_data)
 
   g_clear_pointer (&self->fade_data, free_fade_data);
 
-  screen = gtk_widget_get_screen (self->window);
-  gnome_bg_set_surface_as_root (screen, self->surface);
+  display = gtk_widget_get_display (self->window);
+  gf_background_surface_set_as_root (display, self->surface);
 
   g_signal_emit (self, background_signals[CHANGED], 0);
 
@@ -140,11 +141,13 @@ static void
 change (GfBackground *self,
         gboolean      fade)
 {
+  GdkDisplay *display;
   GdkScreen *screen;
   GdkWindow *root;
   int width;
   int height;
 
+  display = gtk_widget_get_display (self->window);
   screen = gtk_widget_get_screen (self->window);
   root = gdk_screen_get_root_window (screen);
 
@@ -163,9 +166,13 @@ change (GfBackground *self,
       if (self->surface != NULL)
         data->start = cairo_surface_reference (self->surface);
       else
-        data->start = gnome_bg_get_surface_from_root (screen);
+        data->start = gf_background_surface_get_from_root (display);
 
-      data->end = gnome_bg_create_surface (self->bg, root, width, height, TRUE);
+      data->end = gf_background_surface_create (display,
+                                                self->bg,
+                                                root,
+                                                width,
+                                                height);
 
       data->start_time = g_get_real_time () / (double) G_USEC_PER_SEC;
       data->total_duration = .75;
@@ -177,13 +184,13 @@ change (GfBackground *self,
   else
     {
       g_clear_pointer (&self->surface, cairo_surface_destroy);
-      self->surface = gnome_bg_create_surface (self->bg,
-                                               root,
-                                               width,
-                                               height,
-                                               TRUE);
+      self->surface = gf_background_surface_create (display,
+                                                    self->bg,
+                                                    root,
+                                                    width,
+                                                    height);
 
-      gnome_bg_set_surface_as_root (screen, self->surface);
+      gf_background_surface_set_as_root (display, self->surface);
 
       g_signal_emit (self, background_signals[CHANGED], 0);
     }

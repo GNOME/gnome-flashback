@@ -19,6 +19,7 @@
 #include "gf-root-background.h"
 
 #include <gtk/gtk.h>
+#include <libcommon/gf-background-utils.h>
 #include <libgnome-desktop/gnome-bg.h>
 
 struct _GfRootBackground
@@ -41,20 +42,26 @@ G_DEFINE_TYPE (GfRootBackground, gf_root_background, G_TYPE_OBJECT)
 static void
 set_background (GfRootBackground *self)
 {
+  GdkDisplay *display;
   GdkScreen *screen;
   GdkWindow *root;
   gint width;
   gint height;
   cairo_surface_t *surface;
 
-  screen = gdk_screen_get_default ();
+  display = gdk_display_get_default ();
+  screen = gdk_display_get_default_screen (display);
   root = gdk_screen_get_root_window (screen);
   width = gdk_window_get_width (root);
   height = gdk_window_get_height (root);
 
-  surface = gnome_bg_create_surface (self->bg, root, width, height, TRUE);
+  surface = gf_background_surface_create (display,
+                                          self->bg,
+                                          root,
+                                          width,
+                                          height);
 
-  gnome_bg_set_surface_as_root (screen, surface);
+  gf_background_surface_set_as_root (display, surface);
   cairo_surface_destroy (surface);
 }
 

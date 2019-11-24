@@ -5,8 +5,12 @@ noinst_LTLIBRARIES = \
 	$(NULL)
 
 libdesktop_la_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"desktop\" \
+	-DG_LOG_USE_STRUCTURED=1 \
 	-DGNOME_DESKTOP_USE_UNSTABLE_API \
+	-I$(top_builddir)/gnome-flashback/libcommon \
 	-I$(top_builddir)/gnome-flashback/libdesktop \
+	-I$(top_srcdir)/gnome-flashback \
 	$(NULL)
 
 libdesktop_la_CFLAGS = \
@@ -52,6 +56,7 @@ libdesktop_la_LDFLAGS = \
 	$(NULL)
 
 libdesktop_la_LIBADD = \
+	$(top_builddir)/gnome-flashback/libcommon/libcommon.la \
 	$(DESKTOP_LIBS) \
 	$(NULL)
 
