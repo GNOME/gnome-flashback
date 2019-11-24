@@ -43,6 +43,8 @@ GtkWidget  *gf_icon_new               (GfIconView *icon_view,
                                        GFile      *file,
                                        GFileInfo  *info);
 
+GtkWidget  *gf_icon_get_image         (GfIcon     *self);
+
 void        gf_icon_set_file          (GfIcon     *self,
                                        GFile      *file);
 

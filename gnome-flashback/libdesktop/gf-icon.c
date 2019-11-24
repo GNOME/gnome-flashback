@@ -206,19 +206,19 @@ get_gnome_icon_list (GfIcon *self)
   for (l = selected_icons; l != NULL; l = l->next)
     {
       GfIcon *icon;
-      GfIconPrivate *icon_priv;
+      GtkWidget *image;
       GFile *file;
       char *uri;
       GtkAllocation allocation;
 
       icon = l->data;
-      icon_priv = gf_icon_get_instance_private (icon);
 
+      image = gf_icon_get_image (icon);
       file = gf_icon_get_file (icon);
       uri = g_file_get_uri (file);
 
-      gtk_widget_get_allocation (GTK_WIDGET (icon_priv->image), &allocation);
-      gtk_widget_translate_coordinates (GTK_WIDGET (icon_priv->image),
+      gtk_widget_get_allocation (image, &allocation);
+      gtk_widget_translate_coordinates (image,
                                         GTK_WIDGET (self),
                                         -priv->press_x,
                                         -priv->press_y,
@@ -1437,6 +1437,16 @@ gf_icon_new (GfIconView *icon_view,
                        "file", file,
                        "info", info,
                        NULL);
+}
+
+GtkWidget *
+gf_icon_get_image (GfIcon *self)
+{
+  GfIconPrivate *priv;
+
+  priv = gf_icon_get_instance_private (self);
+
+  return priv->image;
 }
 
 void
