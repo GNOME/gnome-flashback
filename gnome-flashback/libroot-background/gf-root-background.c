@@ -40,6 +40,34 @@ struct _GfRootBackground
 G_DEFINE_TYPE (GfRootBackground, gf_root_background, G_TYPE_OBJECT)
 
 static void
+get_display_size (GdkDisplay *display,
+                  int        *width,
+                  int        *height)
+{
+  GdkRectangle rect;
+  int n_monitors;
+  int i;
+
+  rect = (GdkRectangle) {};
+  display = gdk_display_get_default ();
+  n_monitors = gdk_display_get_n_monitors (display);
+
+  for (i = 0; i < n_monitors; i++)
+    {
+      GdkMonitor *monitor;
+      GdkRectangle geometry;
+
+      monitor = gdk_display_get_monitor (display, i);
+
+      gdk_monitor_get_geometry (monitor, &geometry);
+      gdk_rectangle_union (&rect, &geometry, &rect);
+    }
+
+  *width = rect.width;
+  *height = rect.height;
+}
+
+static void
 set_background (GfRootBackground *self)
 {
   GdkDisplay *display;
@@ -52,8 +80,8 @@ set_background (GfRootBackground *self)
   display = gdk_display_get_default ();
   screen = gdk_display_get_default_screen (display);
   root = gdk_screen_get_root_window (screen);
-  width = gdk_window_get_width (root);
-  height = gdk_window_get_height (root);
+
+  get_display_size (display, &width, &height);
 
   surface = gf_background_surface_create (display,
                                           self->bg,
