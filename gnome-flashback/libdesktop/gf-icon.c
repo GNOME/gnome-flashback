@@ -1450,6 +1450,19 @@ gf_icon_get_image (GfIcon *self)
 }
 
 void
+gf_icon_get_press (GfIcon *self,
+                   double *x,
+                   double *y)
+{
+  GfIconPrivate *priv;
+
+  priv = gf_icon_get_instance_private (self);
+
+  *x = priv->press_x;
+  *y = priv->press_y;
+}
+
+void
 gf_icon_set_file (GfIcon *self,
                   GFile  *file)
 {
