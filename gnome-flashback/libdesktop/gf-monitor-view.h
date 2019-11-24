@@ -27,6 +27,7 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (GfMonitorView, gf_monitor_view, GF, MONITOR_VIEW, GtkFixed)
 
 GtkWidget  *gf_monitor_view_new            (GdkMonitor       *monitor,
+                                            GfIconView       *icon_view,
                                             GfDummyIcon      *dummy_icon,
                                             guint             column_spacing,
                                             guint             row_spacing);

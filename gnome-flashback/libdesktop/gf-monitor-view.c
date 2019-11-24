@@ -30,6 +30,8 @@ struct _GfMonitorView
 
   gboolean     grid_points;
 
+  GfIconView  *icon_view;
+
   GfDummyIcon *dummy_icon;
   guint        column_spacing;
   guint        row_spacing;
@@ -63,6 +65,8 @@ enum
   PROP_MONITOR,
 
   PROP_GRID_POINTS,
+
+  PROP_ICON_VIEW,
 
   PROP_DUMMY_ICON,
   PROP_COLUMN_SPACING,
@@ -584,6 +588,11 @@ gf_monitor_view_set_property (GObject      *object,
         gtk_widget_queue_draw (GTK_WIDGET (self));
         break;
 
+      case PROP_ICON_VIEW:
+        g_assert (self->icon_view == NULL);
+        self->icon_view = g_value_get_object (value);
+        break;
+
       case PROP_DUMMY_ICON:
         g_assert (self->dummy_icon == NULL);
         self->dummy_icon = g_value_get_object (value);
@@ -654,6 +663,15 @@ install_properties (GObjectClass *object_class)
                           FALSE,
                           G_PARAM_READWRITE |
                           G_PARAM_STATIC_STRINGS);
+
+  view_properties[PROP_ICON_VIEW] =
+    g_param_spec_object ("icon-view",
+                         "icon-view",
+                         "icon-view",
+                         GF_TYPE_ICON_VIEW,
+                         G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_WRITABLE |
+                         G_PARAM_STATIC_STRINGS);
 
   view_properties[PROP_DUMMY_ICON] =
     g_param_spec_object ("dummy-icon",
@@ -726,12 +744,14 @@ gf_monitor_view_init (GfMonitorView *self)
 
 GtkWidget *
 gf_monitor_view_new (GdkMonitor  *monitor,
+                     GfIconView  *icon_view,
                      GfDummyIcon *dummy_icon,
                      guint        column_spacing,
                      guint        row_spacing)
 {
   return g_object_new (GF_TYPE_MONITOR_VIEW,
                        "monitor", monitor,
+                       "icon-view", icon_view,
                        "dummy-icon", dummy_icon,
                        "column-spacing", column_spacing,
                        "row-spacing", row_spacing,

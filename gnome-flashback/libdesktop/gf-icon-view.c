@@ -1721,6 +1721,7 @@ create_monitor_view (GfIconView *self,
   gdk_monitor_get_workarea (monitor, &workarea);
 
   view = gf_monitor_view_new (monitor,
+                              self,
                               GF_DUMMY_ICON (self->dummy_icon),
                               column_spacing,
                               row_spacing);
