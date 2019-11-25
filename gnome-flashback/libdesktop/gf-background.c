@@ -166,7 +166,9 @@ change (GfBackground *self,
       if (self->surface != NULL)
         data->start = cairo_surface_reference (self->surface);
       else
-        data->start = gf_background_surface_get_from_root (display);
+        data->start = gf_background_surface_get_from_root (display,
+                                                           width,
+                                                           height);
 
       data->end = gf_background_surface_create (display,
                                                 self->bg,

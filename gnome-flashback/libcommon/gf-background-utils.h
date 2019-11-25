@@ -28,7 +28,9 @@ cairo_surface_t *gf_background_surface_create        (GdkDisplay      *display,
                                                       int              width,
                                                       int              height);
 
-cairo_surface_t *gf_background_surface_get_from_root (GdkDisplay      *display);
+cairo_surface_t *gf_background_surface_get_from_root (GdkDisplay      *display,
+                                                      int              width,
+                                                      int              height);
 
 void             gf_background_surface_set_as_root   (GdkDisplay      *display,
                                                       cairo_surface_t *surface);

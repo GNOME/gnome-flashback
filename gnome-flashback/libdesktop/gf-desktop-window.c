@@ -174,7 +174,10 @@ ensure_surface (GfDesktopWindow *self)
 
   display = gtk_widget_get_display (widget);
 
-  self->surface = gf_background_surface_get_from_root (display);
+  self->surface = gf_background_surface_get_from_root (display,
+                                                       self->width,
+                                                       self->height);
+
   gtk_widget_queue_draw (widget);
   update_css_class (self);
 }
