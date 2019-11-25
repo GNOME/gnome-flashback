@@ -151,6 +151,8 @@ change (GfBackground *self,
   width = gf_desktop_window_get_width (GF_DESKTOP_WINDOW (self->window));
   height = gf_desktop_window_get_height (GF_DESKTOP_WINDOW (self->window));
 
+  g_clear_pointer (&self->fade_data, free_fade_data);
+
   if (fade)
     {
       FadeData *data;
