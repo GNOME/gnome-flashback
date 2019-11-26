@@ -446,14 +446,8 @@ gf_background_new (GtkWidget *window)
                        NULL);
 }
 
-gboolean
-gf_background_is_dark (GfBackground *self)
+GdkRGBA *
+gf_background_get_average_color (GfBackground *self)
 {
-  int width;
-  int height;
-
-  width = gf_desktop_window_get_width (GF_DESKTOP_WINDOW (self->window));
-  height = gf_desktop_window_get_height (GF_DESKTOP_WINDOW (self->window));
-
-  return gnome_bg_is_dark (self->bg, width, height);
+  return gf_background_surface_get_average_color (self->surface);
 }

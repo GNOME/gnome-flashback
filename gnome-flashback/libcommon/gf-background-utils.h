@@ -22,18 +22,20 @@
 
 G_BEGIN_DECLS
 
-cairo_surface_t *gf_background_surface_create        (GdkDisplay      *display,
-                                                      GnomeBG         *bg,
-                                                      GdkWindow       *window,
-                                                      int              width,
-                                                      int              height);
+cairo_surface_t *gf_background_surface_create            (GdkDisplay      *display,
+                                                          GnomeBG         *bg,
+                                                          GdkWindow       *window,
+                                                          int              width,
+                                                          int              height);
 
-cairo_surface_t *gf_background_surface_get_from_root (GdkDisplay      *display,
-                                                      int              width,
-                                                      int              height);
+cairo_surface_t *gf_background_surface_get_from_root     (GdkDisplay      *display,
+                                                          int              width,
+                                                          int              height);
 
-void             gf_background_surface_set_as_root   (GdkDisplay      *display,
-                                                      cairo_surface_t *surface);
+void             gf_background_surface_set_as_root       (GdkDisplay      *display,
+                                                          cairo_surface_t *surface);
+
+GdkRGBA         *gf_background_surface_get_average_color (cairo_surface_t *surface);
 
 G_END_DECLS
 

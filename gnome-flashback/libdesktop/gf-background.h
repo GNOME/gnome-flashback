@@ -25,9 +25,9 @@ G_BEGIN_DECLS
 #define GF_TYPE_BACKGROUND (gf_background_get_type ())
 G_DECLARE_FINAL_TYPE (GfBackground, gf_background, GF, BACKGROUND, GObject)
 
-GfBackground *gf_background_new     (GtkWidget    *window);
+GfBackground *gf_background_new               (GtkWidget    *window);
 
-gboolean      gf_background_is_dark (GfBackground *self);
+GdkRGBA      *gf_background_get_average_color (GfBackground *self);
 
 G_END_DECLS
 

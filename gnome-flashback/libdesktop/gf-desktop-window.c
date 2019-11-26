@@ -45,6 +45,8 @@ struct _GfDesktopWindow
   guint            move_resize_id;
 
   gboolean         ready;
+
+  GdkRGBA         *representative_color;
 };
 
 enum
@@ -128,40 +130,73 @@ get_representative_color (GfDesktopWindow *self,
   return TRUE;
 }
 
-static void
-update_representative_color (GfDesktopWindow *self)
+static gboolean
+color_is_dark (GdkRGBA *color)
 {
-  GdkRGBA color;
-  GfIconView *icon_view;
+  double relative_luminance;
 
-  icon_view = GF_ICON_VIEW (self->icon_view);
+  /* CCIR 601 */
+  relative_luminance = 0.299 * color->red +
+                       0.587 * color->green +
+                       0.114 * color->blue;
 
-  if (icon_view == NULL)
-    return;
-
-  if (get_representative_color (self, &color))
-    gf_icon_view_set_representative_color (icon_view, &color);
-  else
-    gf_icon_view_set_representative_color (icon_view, NULL);
+  return relative_luminance < 0.5;
 }
 
 static void
 update_css_class (GfDesktopWindow *self)
 {
-  gboolean dark;
   GtkStyleContext *context;
-
-  dark = FALSE;
-
-  if (self->background != NULL)
-    dark = gf_background_is_dark (self->background);
 
   context = gtk_widget_get_style_context (GTK_WIDGET (self));
 
-  if (!dark)
-    gtk_style_context_remove_class (context, "dark");
+  if (self->representative_color != NULL)
+    {
+      if (color_is_dark (self->representative_color))
+        {
+          gtk_style_context_remove_class (context, "light");
+          gtk_style_context_add_class (context, "dark");
+        }
+      else
+        {
+          gtk_style_context_remove_class (context, "dark");
+          gtk_style_context_add_class (context, "light");
+        }
+    }
   else
-    gtk_style_context_add_class (context, "dark");
+    {
+      gtk_style_context_remove_class (context, "dark");
+      gtk_style_context_remove_class (context, "light");
+    }
+}
+
+static void
+update_representative_color (GfDesktopWindow *self)
+{
+  g_clear_pointer (&self->representative_color, gdk_rgba_free);
+
+  if (self->background != NULL)
+    {
+      GdkRGBA *color;
+
+      color = gf_background_get_average_color (self->background);
+      self->representative_color = gdk_rgba_copy (color);
+    }
+  else
+    {
+      GdkRGBA color;
+
+      if (get_representative_color (self, &color))
+        self->representative_color = gdk_rgba_copy (&color);
+    }
+
+  if (self->icon_view != NULL)
+    {
+      gf_icon_view_set_representative_color (GF_ICON_VIEW (self->icon_view),
+                                             self->representative_color);
+    }
+
+  update_css_class (self);
 }
 
 static void
@@ -179,7 +214,6 @@ ensure_surface (GfDesktopWindow *self)
                                                        self->height);
 
   gtk_widget_queue_draw (widget);
-  update_css_class (self);
 }
 
 static GdkFilterReturn
@@ -188,23 +222,43 @@ filter_func (GdkXEvent *xevent,
              gpointer   user_data)
 {
   XEvent *x;
-  GdkAtom atom;
   GfDesktopWindow *self;
+  GdkDisplay *display;
+  Display *xdisplay;
+  Atom pixmap_atom;
+  Atom color_atom;
 
   x = (XEvent *) xevent;
 
   if (x->type != PropertyNotify)
     return GDK_FILTER_CONTINUE;
 
-  atom = gdk_atom_intern_static_string ("_XROOTPMAP_ID");
-
-  if (x->xproperty.atom != gdk_x11_atom_to_xatom (atom))
-    return GDK_FILTER_CONTINUE;
-
   self = GF_DESKTOP_WINDOW (user_data);
 
-  g_clear_pointer (&self->surface, cairo_surface_destroy);
-  ensure_surface (self);
+  display = gtk_widget_get_display (GTK_WIDGET (self));
+  xdisplay = gdk_x11_display_get_xdisplay (display);
+
+  pixmap_atom = XInternAtom (xdisplay, "_XROOTPMAP_ID", False);
+  color_atom = XInternAtom (xdisplay,
+                            "_GNOME_BACKGROUND_REPRESENTATIVE_COLORS",
+                            False);
+
+  if (x->xproperty.atom == pixmap_atom)
+    {
+      GdkScreen *screen;
+
+      screen = gtk_widget_get_screen (GTK_WIDGET (self));
+
+      if (!gdk_screen_is_composited (screen))
+        {
+          g_clear_pointer (&self->surface, cairo_surface_destroy);
+          ensure_surface (self);
+        }
+    }
+  else if (x->xproperty.atom != color_atom)
+    {
+      update_representative_color (self);
+    }
 
   return GDK_FILTER_CONTINUE;
 }
@@ -249,15 +303,9 @@ composited_changed_cb (GdkScreen       *screen,
     return;
 
   if (gdk_screen_is_composited (screen))
-    {
-      remove_event_filter (self);
-      g_clear_pointer (&self->surface, cairo_surface_destroy);
-    }
+    g_clear_pointer (&self->surface, cairo_surface_destroy);
   else
-    {
-      add_event_filter (self);
-      ensure_surface (self);
-    }
+    ensure_surface (self);
 }
 
 static void
@@ -281,7 +329,6 @@ static void
 changed_cb (GfBackground    *background,
             GfDesktopWindow *self)
 {
-  update_css_class (self);
   update_representative_color (self);
 }
 
@@ -310,11 +357,11 @@ draw_background_changed (GfDesktopWindow *self)
 
       screen = gtk_widget_get_screen (GTK_WIDGET (self));
 
+      add_event_filter (self);
+      update_representative_color (self);
+
       if (!gdk_screen_is_composited (screen))
-        {
-          add_event_filter (self);
-          ensure_surface (self);
-        }
+        ensure_surface (self);
 
       emit_ready (self);
     }
@@ -328,7 +375,11 @@ show_icons_changed (GfDesktopWindow *self)
       g_assert (self->icon_view == NULL);
       self->icon_view = gf_icon_view_new ();
 
-      update_representative_color (self);
+      if (self->representative_color != NULL)
+        {
+          gf_icon_view_set_representative_color (GF_ICON_VIEW (self->icon_view),
+                                                 self->representative_color);
+        }
 
       gtk_container_add (GTK_CONTAINER (self), self->icon_view);
       gtk_widget_show (self->icon_view);
@@ -560,6 +611,8 @@ gf_desktop_window_finalize (GObject *object)
 
   remove_event_filter (self);
   g_clear_pointer (&self->surface, cairo_surface_destroy);
+
+  g_clear_pointer (&self->representative_color, gdk_rgba_free);
 
   if (self->move_resize_id != 0)
     {
