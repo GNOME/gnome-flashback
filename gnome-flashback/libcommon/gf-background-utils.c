@@ -112,6 +112,34 @@ destroy_color (void *data)
   gdk_rgba_free (data);
 }
 
+static gboolean
+is_valid_pixmap (GdkDisplay *display,
+                 Pixmap      pixmap)
+{
+  Display *xdisplay;
+  Window root_return;
+  int x_return;
+  int y_return;
+  unsigned int width_return;
+  unsigned int height_return;
+  unsigned int border_width_return;
+  unsigned int depth_return;
+  Status status;
+
+  xdisplay = gdk_x11_display_get_xdisplay (display);
+
+  gdk_x11_display_error_trap_push (display);
+
+  status = XGetGeometry (xdisplay, pixmap, &root_return,
+                         &x_return, &y_return, &width_return, &height_return,
+                         &border_width_return, &depth_return);
+
+  if (gdk_x11_display_error_trap_pop (display) != 0 || status == 0)
+    return FALSE;
+
+  return TRUE;
+}
+
 static Pixmap
 get_root_pixmap (GdkDisplay *display)
 {
@@ -155,6 +183,9 @@ get_root_pixmap (GdkDisplay *display)
 
   pixmap = *(Pixmap *) prop;
   XFree (prop);
+
+  if (!is_valid_pixmap (display, pixmap))
+    return None;
 
   return pixmap;
 }
@@ -293,7 +324,6 @@ gf_background_surface_get_from_root (GdkDisplay *display,
 {
   Display *xdisplay;
   Pixmap root_pixmap;
-  Visual *xvisual;
   GdkScreen *screen;
   GdkWindow *root;
   int scale;
@@ -303,19 +333,27 @@ gf_background_surface_get_from_root (GdkDisplay *display,
   xdisplay = gdk_x11_display_get_xdisplay (display);
 
   root_pixmap = get_root_pixmap (display);
-  xvisual = DefaultVisual (xdisplay, DefaultScreen (xdisplay));
 
   screen = gdk_display_get_default_screen (display);
   root = gdk_screen_get_root_window (screen);
   scale = gdk_window_get_scale_factor (root);
 
-  pixmap_surface = cairo_xlib_surface_create (xdisplay,
-                                              root_pixmap,
-                                              xvisual,
-                                              width * scale,
-                                              height * scale);
-
+  pixmap_surface = NULL;
   surface = NULL;
+
+  if (root_pixmap != None)
+    {
+      Visual *xvisual;
+
+      xvisual = DefaultVisual (xdisplay, DefaultScreen (xdisplay));
+
+      pixmap_surface = cairo_xlib_surface_create (xdisplay,
+                                                  root_pixmap,
+                                                  xvisual,
+                                                  width * scale,
+                                                  height * scale);
+    }
+
   if (pixmap_surface != NULL)
     {
       cairo_t *cr;
