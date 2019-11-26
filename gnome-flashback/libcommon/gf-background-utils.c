@@ -190,6 +190,58 @@ get_root_pixmap (GdkDisplay *display)
   return pixmap;
 }
 
+static Pixmap
+get_persistent_pixmap (cairo_surface_t *surface)
+{
+  Display *xdisplay;
+  int width;
+  int height;
+  int depth;
+  Pixmap persistent_pixmap;
+  Visual *xvisual;
+  cairo_surface_t *pixmap_surface;
+  cairo_t *cr;
+
+  xdisplay = XOpenDisplay (NULL);
+  if (xdisplay == NULL)
+    return None;
+
+  width = cairo_xlib_surface_get_width (surface);
+  height = cairo_xlib_surface_get_height (surface);
+
+  /* Desktop background pixmap should be created from
+   * dummy X client since most applications will try to
+   * kill it with XKillClient later when changing pixmap
+   */
+  XSetCloseDownMode (xdisplay, RetainPermanent);
+
+  depth = DefaultDepth (xdisplay, DefaultScreen (xdisplay));
+  persistent_pixmap = XCreatePixmap (xdisplay,
+                                     XDefaultRootWindow (xdisplay),
+                                     width,
+                                     height,
+                                     depth);
+
+  xvisual = DefaultVisual (xdisplay, DefaultScreen (xdisplay));
+
+  pixmap_surface = cairo_xlib_surface_create (xdisplay,
+                                              persistent_pixmap,
+                                              xvisual,
+                                              width,
+                                              height);
+
+  cr = cairo_create (pixmap_surface);
+  cairo_set_source_surface (cr, surface, 0, 0);
+  cairo_paint (cr);
+
+  cairo_destroy (cr);
+  cairo_surface_destroy (pixmap_surface);
+
+  XCloseDisplay (xdisplay);
+
+  return persistent_pixmap;
+}
+
 static void
 set_root_pixmap (GdkDisplay *display,
                  Pixmap      pixmap)
@@ -304,11 +356,54 @@ gf_background_surface_create (GdkDisplay *display,
                               int         height)
 {
   cairo_surface_t *surface;
+  cairo_t *cr;
   GdkRGBA color;
+  int n_monitors;
+  int i;
 
-  surface = gnome_bg_create_surface (bg, window, width, height, TRUE);
+  surface = gdk_window_create_similar_surface (window,
+                                               CAIRO_CONTENT_COLOR,
+                                               width,
+                                               height);
 
-  get_average_color (surface, &color);
+  cr = cairo_create (surface);
+
+  n_monitors = gdk_display_get_n_monitors (display);
+
+  for (i = 0; i < n_monitors; i++)
+    {
+      GdkMonitor *monitor;
+      GdkRectangle geometry;
+      cairo_surface_t *monitor_surface;
+      GdkRGBA monitor_color;
+
+      monitor = gdk_display_get_monitor (display, i);
+      gdk_monitor_get_geometry (monitor, &geometry);
+
+      monitor_surface = gnome_bg_create_surface (bg,
+                                                 window,
+                                                 geometry.width,
+                                                 geometry.height,
+                                                 FALSE);
+
+      cairo_set_source_surface (cr, monitor_surface, geometry.x, geometry.y);
+      cairo_paint (cr);
+
+      get_average_color (monitor_surface, &monitor_color);
+      cairo_surface_destroy (monitor_surface);
+
+      color.red += monitor_color.red;
+      color.green += monitor_color.green;
+      color.blue += monitor_color.blue;
+    }
+
+  cairo_destroy (cr);
+
+  color.red /= n_monitors;
+  color.green /= n_monitors;
+  color.blue /= n_monitors;
+  color.alpha = 1.0;
+
   cairo_surface_set_user_data (surface,
                                &average_color_key,
                                gdk_rgba_copy (&color),
@@ -398,7 +493,7 @@ gf_background_surface_set_as_root (GdkDisplay      *display,
 
   xdisplay = gdk_x11_display_get_xdisplay (display);
 
-  pixmap = cairo_xlib_surface_get_drawable (surface);
+  pixmap = get_persistent_pixmap (surface);
   color = cairo_surface_get_user_data (surface, &average_color_key);
 
   gdk_x11_display_grab (display);
