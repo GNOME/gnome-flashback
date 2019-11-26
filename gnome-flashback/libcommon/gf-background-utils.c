@@ -22,8 +22,98 @@
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
 
+static const cairo_user_data_key_t average_color_key;
+
+static cairo_surface_t *
+get_surface_as_image_surface (cairo_surface_t *surface)
+{
+  cairo_surface_t *image;
+  cairo_t *cr;
+
+  if (cairo_surface_get_type (surface) == CAIRO_SURFACE_TYPE_IMAGE)
+    return cairo_surface_reference (surface);
+
+  image = cairo_image_surface_create (CAIRO_FORMAT_RGB24,
+                                      cairo_xlib_surface_get_width (surface),
+                                      cairo_xlib_surface_get_height (surface));
+
+  cr = cairo_create (image);
+
+  cairo_set_source_surface (cr, surface, 0, 0);
+  cairo_paint (cr);
+
+  cairo_destroy (cr);
+
+  return image;
+}
+
+static void
+get_average_color (cairo_surface_t *surface,
+                   GdkRGBA         *color)
+{
+  cairo_surface_t *image;
+  unsigned char *data;
+  int width;
+  int height;
+  int stride;
+  guint64 red_total;
+  guint64 green_total;
+  guint64 blue_total;
+  guint64 pixels_total;
+  int row;
+  int column;
+
+  image = get_surface_as_image_surface (surface);
+
+  data = cairo_image_surface_get_data (image);
+  width = cairo_image_surface_get_width (image);
+  height = cairo_image_surface_get_height (image);
+  stride = cairo_image_surface_get_stride (image);
+
+  red_total = 0;
+  green_total = 0;
+  blue_total = 0;
+  pixels_total = width * height;
+
+  for (row = 0; row < height; row++)
+    {
+      unsigned char *p;
+
+      p = data + (row * stride);
+
+      for (column = 0; column < width; column++)
+        {
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+          blue_total += *p++;
+          green_total += *p++;
+          red_total += *p++;
+          p++;
+#else
+          p++;
+          red_total += *p++;
+          green_total += *p++;
+          blue_total += *p++;
+#endif
+        }
+    }
+
+  cairo_surface_destroy (image);
+
+  pixels_total *= 0xff;
+  color->red = (double) red_total / pixels_total;
+  color->green = (double) green_total / pixels_total;
+  color->blue = (double) blue_total / pixels_total;
+  color->alpha = 1.0;
+}
+
+static void
+destroy_color (void *data)
+{
+  gdk_rgba_free (data);
+}
+
 static Pixmap
-get_xrootpmap_id (GdkDisplay *display)
+get_root_pixmap (GdkDisplay *display)
 {
   Display *xdisplay;
   Atom xrootpmap_id_atom;
@@ -36,9 +126,8 @@ get_xrootpmap_id (GdkDisplay *display)
   Pixmap pixmap;
 
   xdisplay = gdk_x11_display_get_xdisplay (display);
-  xrootpmap_id_atom = XInternAtom (xdisplay, "_XROOTPMAP_ID", False);
 
-  gdk_x11_display_error_trap_push (display);
+  xrootpmap_id_atom = XInternAtom (xdisplay, "_XROOTPMAP_ID", False);
 
   result = XGetWindowProperty (xdisplay,
                                XDefaultRootWindow (xdisplay),
@@ -52,8 +141,6 @@ get_xrootpmap_id (GdkDisplay *display)
                                &n_items,
                                &bytes_after,
                                &prop);
-
-  gdk_x11_display_error_trap_pop_ignored (display);
 
   if (result != Success ||
       actual_type != XA_PIXMAP ||
@@ -72,6 +159,112 @@ get_xrootpmap_id (GdkDisplay *display)
   return pixmap;
 }
 
+static void
+set_root_pixmap (GdkDisplay *display,
+                 Pixmap      pixmap)
+{
+  Display *xdisplay;
+  Atom esetroot_pmap_id_atom;
+  Atom xrootpmap_id_atom;
+  int result;
+  Atom actual_type;
+  int actual_format;
+  unsigned long n_items;
+  unsigned long bytes_after;
+  unsigned char *prop;
+
+  xdisplay = gdk_x11_display_get_xdisplay (display);
+
+  esetroot_pmap_id_atom = XInternAtom (xdisplay, "ESETROOT_PMAP_ID", False);
+  xrootpmap_id_atom = XInternAtom (xdisplay, "_XROOTPMAP_ID", False);
+
+  result = XGetWindowProperty (xdisplay,
+                               XDefaultRootWindow (xdisplay),
+                               esetroot_pmap_id_atom,
+                               0l,
+                               1l,
+                               False,
+                               XA_PIXMAP,
+                               &actual_type,
+                               &actual_format,
+                               &n_items,
+                               &bytes_after,
+                               &prop);
+
+  if (prop != NULL)
+    {
+      if (result == Success &&
+          actual_type == XA_PIXMAP &&
+          actual_format == 32 &&
+          n_items == 1)
+        {
+          gdk_x11_display_error_trap_push (display);
+
+          XKillClient (xdisplay, *(Pixmap *) prop);
+
+          gdk_x11_display_error_trap_pop_ignored (display);
+        }
+
+      XFree (prop);
+    }
+
+  XChangeProperty (xdisplay,
+                   XDefaultRootWindow (xdisplay),
+                   esetroot_pmap_id_atom,
+                   XA_PIXMAP,
+                   32,
+                   PropModeReplace,
+                   (guchar *) &pixmap,
+                   1);
+
+  XChangeProperty (xdisplay,
+                   XDefaultRootWindow (xdisplay),
+                   xrootpmap_id_atom,
+                   XA_PIXMAP,
+                   32,
+                   PropModeReplace,
+                   (guchar *) &pixmap,
+                   1);
+}
+
+static void
+set_average_color (GdkDisplay *display,
+                   GdkRGBA    *color)
+{
+  Display *xdisplay;
+  Atom representative_colors_atom;
+
+  xdisplay = gdk_x11_display_get_xdisplay (display);
+
+  representative_colors_atom = XInternAtom (xdisplay,
+                                            "_GNOME_BACKGROUND_REPRESENTATIVE_COLORS",
+                                            False);
+
+  if (color != NULL)
+    {
+      gchar *string;
+
+      string = gdk_rgba_to_string (color);
+
+      XChangeProperty (xdisplay,
+                       XDefaultRootWindow (xdisplay),
+                       representative_colors_atom,
+                       XA_STRING,
+                       8,
+                       PropModeReplace,
+                       (guchar *) string,
+                       strlen (string) + 1);
+
+      g_free (string);
+    }
+  else
+    {
+      XDeleteProperty (xdisplay,
+                       XDefaultRootWindow (xdisplay),
+                       representative_colors_atom);
+    }
+}
+
 cairo_surface_t *
 gf_background_surface_create (GdkDisplay *display,
                               GnomeBG    *bg,
@@ -79,7 +272,18 @@ gf_background_surface_create (GdkDisplay *display,
                               int         width,
                               int         height)
 {
-  return gnome_bg_create_surface (bg, window, width, height, TRUE);
+  cairo_surface_t *surface;
+  GdkRGBA color;
+
+  surface = gnome_bg_create_surface (bg, window, width, height, TRUE);
+
+  get_average_color (surface, &color);
+  cairo_surface_set_user_data (surface,
+                               &average_color_key,
+                               gdk_rgba_copy (&color),
+                               destroy_color);
+
+  return surface;
 }
 
 cairo_surface_t *
@@ -98,7 +302,7 @@ gf_background_surface_get_from_root (GdkDisplay *display,
 
   xdisplay = gdk_x11_display_get_xdisplay (display);
 
-  root_pixmap = get_xrootpmap_id (display);
+  root_pixmap = get_root_pixmap (display);
   xvisual = DefaultVisual (xdisplay, DefaultScreen (xdisplay));
 
   screen = gdk_display_get_default_screen (display);
@@ -150,9 +354,23 @@ void
 gf_background_surface_set_as_root (GdkDisplay      *display,
                                    cairo_surface_t *surface)
 {
-  GdkScreen *screen;
+  Display *xdisplay;
+  Pixmap pixmap;
+  GdkRGBA *color;
 
-  screen = gdk_display_get_default_screen (display);
+  xdisplay = gdk_x11_display_get_xdisplay (display);
 
-  gnome_bg_set_surface_as_root (screen, surface);
+  pixmap = cairo_xlib_surface_get_drawable (surface);
+  color = cairo_surface_get_user_data (surface, &average_color_key);
+
+  gdk_x11_display_grab (display);
+
+  set_root_pixmap (display, pixmap);
+  set_average_color (display, color);
+
+  XSetWindowBackgroundPixmap (xdisplay, XDefaultRootWindow (xdisplay), pixmap);
+  XClearWindow (xdisplay, XDefaultRootWindow (xdisplay));
+  XFlush (xdisplay);
+
+  gdk_x11_display_ungrab (display);
 }
