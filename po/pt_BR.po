@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-09-01 21:48+0000\n"
-"PO-Revision-Date: 2019-09-08 15:57-0300\n"
+"POT-Creation-Date: 2019-11-26 19:11+0000\n"
+"PO-Revision-Date: 2019-11-29 05:12-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -37,6 +37,9 @@ msgstr "Tela desconhecida"
 
 #: backends/gf-monitor.c:176
 #, c-format
+#| msgctxt ""
+#| "This is a monitor vendor name, followed by a size in inches, like 'Dell "
+#| "15“'"
 #| msgid "%s %s"
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
@@ -45,7 +48,6 @@ msgstr "%s %s"
 
 #: backends/gf-monitor.c:190
 #, c-format
-#| msgid "%s %s"
 msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
 "inches could not be calculated, e.g. Dell U2414H"
@@ -149,22 +151,19 @@ msgstr ""
 "Bluetooth."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:28
-msgid "Desktop background"
-msgstr "Plano de fundo da área de trabalho"
+msgid "Clipboard"
+msgstr "Área de transferência"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
-msgid ""
-"If set to true, then GNOME Flashback application will be used to draw the "
-"desktop background."
-msgstr ""
-"Se ligado, o aplicativo GNOME Flashback será usado para desenhar o plano de "
-"fundo da área de trabalho."
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
+#: gnome-flashback/libdesktop/gf-desktop-window.c:815
+msgid "Desktop"
+msgstr "Área de trabalho"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:34
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "End session dialog"
 msgstr "Diálogo de finalização de sessão"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
@@ -172,11 +171,11 @@ msgstr ""
 "Se ligado, o aplicativo GNOME Flashback será usado para mostrar o diálogo de "
 "finalização da sessão."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:40
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "Idle monitor"
 msgstr "Monitor ocioso"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:45
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
@@ -184,15 +183,15 @@ msgstr ""
 "Se ligado, o aplicativo GNOME Flashback será usado para o monitoramento das "
 "atividades do usuário."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
 msgid "Input settings"
 msgstr "Configurações de entrada"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:51
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
 msgid "Keyboard layouts and input methods"
 msgstr "Layouts de teclado e métodos de entrada"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -200,11 +199,11 @@ msgstr ""
 "Se ligado, o aplicativo GNOME Flashback será usado para gerenciar layouts de "
 "teclado e métodos de entrada."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:57
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid "Notification daemon"
 msgstr "Daemon de notificação"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
@@ -212,21 +211,21 @@ msgstr ""
 "Se definido como verdadeiro, o aplicativo GNOME Flashback será usado para "
 "gerenciar notificações."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:63
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
 msgid "Authentication agent for polkit"
 msgstr "Agente de autenticação para polkit"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:68
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
 "Este é o mesmo agente de autenticação que era fornecido pelo PolicyKit-gnome."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:69
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
 msgid "Power applet"
 msgstr "Miniaplicativo de energia"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:74
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
@@ -234,11 +233,15 @@ msgstr ""
 "Se ligado, o aplicativo GNOME Flashback será usado para mostrar um "
 "miniaplicativo de energia."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:75
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
+msgid "Root background"
+msgstr "Plano de fundo do root"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
 msgid "Screencasts"
 msgstr "Sequência de telas"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -246,11 +249,11 @@ msgstr ""
 "Se ligado, o aplicativo GNOME Flashback será usado para gravar a sequência "
 "de telas."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:81
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid "Screensaver"
 msgstr "Protetor de tela"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
@@ -258,31 +261,31 @@ msgstr ""
 "Se definido como verdadeiro, o aplicativo GNOME Flashback será usado como um "
 "protetor de tela."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:87
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
 msgid "Screenshots"
 msgstr "Capturas de tela"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
 msgstr ""
 "Se ligado, o aplicativo GNOME Flashback será usado para capturar telas."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:93
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:102
 msgid "Shell"
 msgstr "Shell"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr "Se ligado, o aplicativo GNOME Flashback será usado como um shell."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:99
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
 msgid "Sound applet"
 msgstr "Miniaplicativo de som"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:109
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -292,11 +295,11 @@ msgstr ""
 "miniaplicativo de som. Esse é o mesmo miniaplicativo de som que costumava "
 "fazer parte do Centro de controle do GNOME."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:105
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
 msgid "Status Notifier Watcher"
 msgstr "Monitor do notificador de status"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:115
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -304,17 +307,120 @@ msgstr ""
 "Se definido como verdadeiro, o aplicativo GNOME Flashback será usado como "
 "monitor do notificador de status."
 
-#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:5
+msgid "Draw desktop background"
+msgstr "Desenhar plano de fundo da área de trabalho"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:6
+msgid "If set to true, then GNOME Flashback will draw the desktop background."
+msgstr ""
+"Se definido como verdadeiro, o GNOME Flashback vai desenhar o plano de fundo "
+"da área de trabalho."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:11
+msgid "Show desktop icons"
+msgstr "Mostrar ícones da área de trabalho"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:12
+msgid ""
+"If set to true, then GNOME Flashback will draw the icons on the desktop."
+msgstr ""
+"Se definido como verdadeiro, o GNOME Flashback vai desenhar os ícones na "
+"área de trabalho."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:5
 msgid "Fade the background on change"
 msgstr "Esmaecer o fundo de tela ao alterar"
 
-#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:6
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:6
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
 msgstr ""
 "Se ligado, um efeito de esmaecimento será usado para alterar o plano de "
 "fundo da área de trabalho."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:5
+msgid "Icon size"
+msgstr "Tamanho do ícone"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:6
+msgid "The size of desktop icons."
+msgstr "O tamanho dos ícones da área de trabalho."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
+#: gnome-flashback/libdesktop/gf-icon-view.c:1175
+msgid "Placement"
+msgstr "Posicionamento"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:12
+msgid ""
+"Can be one of \"auto-arrange-icons\", \"align-icons-to-grid\" or \"free\". "
+"It controls how icons are placed on desktop."
+msgstr ""
+"Pode ser um entre ”auto-arrange-icons“, ”align-icons-to-grid“ ou ”free“. "
+"Isso controla como ícones são posicionados na área de trabalho."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
+#: gnome-flashback/libdesktop/gf-icon-view.c:1181
+msgid "Sort by"
+msgstr "Ordenar por"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:18
+msgid ""
+"Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons "
+"are sorted in \"auto-arrange-icons\" placement."
+msgstr ""
+"Pode ser um entre ”name“, ”date-modified“ ou ”size“. Isso controla como os "
+"ícones são ordenados no posicionamento ”auto-arrange-icons“."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
+msgid "Extra text width"
+msgstr "Largura de texto extra"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:25
+msgid "Extra width for icon text."
+msgstr "Largura extra para texto de ícones."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:31
+msgid "Column spacing"
+msgstr "Espaçamento entre colunas"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:32
+msgid "The amount of space between columns."
+msgstr "A quantidade de espaço entre colunas."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:38
+msgid "Row spacing"
+msgstr "Espaçamento entre linhas"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:39
+msgid "The amount of space between rows."
+msgstr "A quantidade de espaço entre linhas."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:44
+msgid "Show home icon"
+msgstr "Mostrar ícone do home"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:45
+msgid ""
+"If this is set to true, an icon linking to the home folder will be put on "
+"the desktop."
+msgstr ""
+"Se definido como verdadeiro, um ícone vinculado à pasta pessoal (home) será "
+"colocado na área de trabalho."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:50
+msgid "Show trash icon"
+msgstr "Mostrar ícone da lixeira"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:51
+msgid ""
+"If this is set to true, an icon linking to the trash will be put on the "
+"desktop."
+msgstr ""
+"Se definido como verdadeiro, um ícone vinculado à lixeira será colocado na "
+"área de trabalho."
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
 msgid "The background color"
@@ -484,6 +590,7 @@ msgid "Sound Settings"
 msgstr "Configurações de som"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:104
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
 msgid "Cancel"
 msgstr "Cancelar"
@@ -649,6 +756,129 @@ msgstr[1] "%d dispositivos conectados"
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
 msgid "Not Connected"
 msgstr "Não conectado"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
+#: gnome-flashback/libdesktop/gf-icon-view.c:1163
+msgid "New Folder"
+msgstr "Nova pasta"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:112
+msgid "Create"
+msgstr "Criar"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:140
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "Folder name"
+msgstr "Nome da pasta"
+
+#: gnome-flashback/libdesktop/gf-home-icon.c:45
+msgid "Home"
+msgstr "Pasta pessoal"
+
+#: gnome-flashback/libdesktop/gf-icon.c:524
+msgid "Open"
+msgstr "Abrir"
+
+#: gnome-flashback/libdesktop/gf-icon.c:560
+msgid "Move to Trash"
+msgstr "Mover para lixeira"
+
+#: gnome-flashback/libdesktop/gf-icon.c:580
+msgid "Rename..."
+msgstr "Renomear..."
+
+#: gnome-flashback/libdesktop/gf-icon.c:600
+msgid "Empty Trash"
+msgstr "Esvaziar lixeira"
+
+#: gnome-flashback/libdesktop/gf-icon.c:614
+msgid "Properties"
+msgstr "Propriedades"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:959
+msgid "Auto arrange icons"
+msgstr "Organizar ícones automaticamente"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:963
+msgid "Align icons to grid"
+msgstr "Alinhar ícones à grade"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:967
+msgctxt "Free placement of icons"
+msgid "Free"
+msgstr "Livre"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1067
+msgid "Name"
+msgstr "Nome"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1071
+msgid "Date modified"
+msgstr "Data da modificação"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1075
+msgid "Size"
+msgstr "Tamanho"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1191
+msgid "Change Background"
+msgstr "Alterar plano de fundo"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1199
+msgid "Display Settings"
+msgstr "Configurações da tela"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1211
+msgid "Open Terminal"
+msgstr "Abrir terminal"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2978
+msgid "Folder names cannot contain “/”."
+msgstr "Nomes de pastas não podem conter “/”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2980
+msgid "File names cannot contain “/”."
+msgstr "Nomes de arquivos não podem conter “/”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2987
+msgid "A folder cannot be called “.”."
+msgstr "Uma pasta não pode ser chamada “.”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2989
+msgid "A file cannot be called “.”."
+msgstr "Um arquivo não pode ser chamado “.”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2996
+msgid "A folder cannot be called “..”."
+msgstr "Uma pasta não pode ser chamada “..”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2998
+msgid "A file cannot be called “..”."
+msgstr "Um arquivo não pode ser chamado “..”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3014
+msgid "A folder with that name already exists."
+msgstr "Uma pasta com esse nome já existe."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3016
+msgid "A file with that name already exists."
+msgstr "Um arquivo com esse nome já existe."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3027
+msgid "Folders with “.” at the beginning of their name are hidden."
+msgstr "Pastas com “.” no início do nome são ocultas."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3029
+msgid "Files with “.” at the beginning of their name are hidden."
+msgstr "Arquivos com “.” no início do nome são ocultos"
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "File name"
+msgstr "Nome de arquivo"
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:254
+msgid "Rename"
+msgstr "Renomear"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
@@ -1033,7 +1263,7 @@ msgstr "Mudo"
 #~ "Se vazio, o gnome-flashback forçará Gtk/DecorationLayout ao valor "
 #~ "definido por esta configuração. Defina com um valor vazio se você deseja "
 #~ "usar gnome-settings-daemon definições no plug-in xsettings para a "
-#~ "propriedade \"Gtk/DecorationLayout\"."
+#~ "propriedade ”Gtk/DecorationLayout“."
 
 #~ msgid "Display configuration"
 #~ msgstr "Configuração de exibição"
