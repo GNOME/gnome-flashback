@@ -24,6 +24,7 @@ libcommon_la_SOURCES = \
 	gf-keybindings.h \
 	gf-popup-window.c \
 	gf-popup-window.h \
+	$(BUILT_SOURCES) \
 	$(NULL)
 
 libcommon_la_LDFLAGS = \
@@ -33,6 +34,32 @@ libcommon_la_LDFLAGS = \
 
 libcommon_la_LIBADD = \
 	$(COMMON_LIBS) \
+	$(NULL)
+
+ENUM_TYPES = \
+	$(srcdir)/gf-keybindings.h \
+	$(NULL)
+
+gf-common-enum-types.c: gf-common-enum-types.c.in gf-common-enum-types.h $(ENUM_TYPES)
+	$(AM_V_GEN) $(GLIB_MKENUMS) --template $(srcdir)/gf-common-enum-types.c.in $(ENUM_TYPES) > \
+		gf-common-enum-types.c.tmp && mv gf-common-enum-types.c.tmp gf-common-enum-types.c
+
+gf-common-enum-types.h: gf-common-enum-types.h.in $(ENUM_TYPES)
+	$(AM_V_GEN) $(GLIB_MKENUMS) --template $(srcdir)/gf-common-enum-types.h.in $(ENUM_TYPES) > \
+		gf-common-enum-types.h.tmp && mv gf-common-enum-types.h.tmp gf-common-enum-types.h
+
+BUILT_SOURCES = \
+	gf-common-enum-types.c \
+	gf-common-enum-types.h \
+	$(NULL)
+
+EXTRA_DIST = \
+	gf-common-enum-types.c.in \
+	gf-common-enum-types.h.in \
+	$(NULL)
+
+CLEANFILES = \
+	$(BUILT_SOURCES) \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk

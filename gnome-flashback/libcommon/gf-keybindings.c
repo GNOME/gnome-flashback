@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 - 2015 Alberts Muktupāvels
+ * Copyright (C) 2014 - 2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,13 +16,14 @@
  */
 
 #include "config.h"
+#include "gf-keybindings.h"
 
 #include <gtk/gtk.h>
 #include <gtk/gtkx.h>
 #include <X11/Xlib.h>
 #include <X11/XKBlib.h>
 
-#include "gf-keybindings.h"
+#include "gf-common-enum-types.h"
 
 #define DESKTOP_INPUT_SOURCES_SCHEMA "org.gnome.desktop.input-sources"
 
@@ -580,7 +581,9 @@ process_iso_next_group (GfKeybindings *keybindings,
 
           g_signal_emit (keybindings,
                          signals[SIGNAL_MODIFIERS_ACCELERATOR_ACTIVATED],
-                         0, &freeze);
+                         0,
+                         GF_KEYBINDING_ISO_NEXT_GROUP,
+                         &freeze);
 
           if (!freeze)
             XUngrabKeyboard (keybindings->xdisplay, event->xkey.time);
@@ -839,7 +842,7 @@ gf_keybindings_class_init (GfKeybindingsClass *keybindings_class)
     g_signal_new ("modifiers-accelerator-activated",
                   G_TYPE_FROM_CLASS (keybindings_class), G_SIGNAL_RUN_LAST,
                   0, g_signal_accumulator_first_wins, NULL, NULL,
-                  G_TYPE_BOOLEAN, 0);
+                  G_TYPE_BOOLEAN, 1, GF_TYPE_KEYBINDING_TYPE);
 
   properties[PROP_ISO_NEXT_GROUP] =
     g_param_spec_boolean ("iso-next-group", "iso-next-group", "iso-next-group",

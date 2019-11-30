@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 - 2015 Alberts Muktupāvels
+ * Copyright (C) 2014 - 2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +19,14 @@
 #define GF_KEYBINDINGS_H
 
 #include <glib-object.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
+
+typedef enum
+{
+  GF_KEYBINDING_ISO_NEXT_GROUP
+} GfKeybindingType;
 
 #define GF_TYPE_KEYBINDINGS gf_keybindings_get_type ()
 G_DECLARE_FINAL_TYPE (GfKeybindings, gf_keybindings, GF, KEYBINDINGS, GObject)

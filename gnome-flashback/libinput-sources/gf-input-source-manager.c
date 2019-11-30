@@ -511,14 +511,13 @@ fade_finished_cb (GfInputSourcePopup *popup,
 }
 
 static gboolean
-modifiers_accelerator_activated_cb (GfKeybindings *keybindings,
-                                    gpointer       user_data)
+modifiers_accelerator_activated_cb (GfKeybindings    *keybindings,
+                                    GfKeybindingType  keybinding_type,
+                                    gpointer          user_data)
 {
   GfInputSourceManager *manager;
   guint size;
-  GfInputSource *source;
   GList *keys;
-  guint next_index;
 
   manager = GF_INPUT_SOURCE_MANAGER (user_data);
 
@@ -529,22 +528,30 @@ modifiers_accelerator_activated_cb (GfKeybindings *keybindings,
       return TRUE;
     }
 
-  source = manager->current_source;
-  if (source == NULL)
-    source = (GfInputSource *) g_hash_table_lookup (manager->input_sources,
-                                                    GUINT_TO_POINTER (0));
-
   keys = g_hash_table_get_keys (manager->input_sources);
   keys = g_list_sort (keys, compare_indexes);
 
-  next_index = gf_input_source_get_index (source ) + 1;
-  if (next_index > GPOINTER_TO_UINT (g_list_nth_data (keys, size - 1)))
-    next_index = 0;
+  if (keybinding_type == GF_KEYBINDING_ISO_NEXT_GROUP)
+    {
+      GfInputSource *current_source;
+      GfInputSource *next_source;
+      guint next_index;
 
-  source = (GfInputSource *) g_hash_table_lookup (manager->input_sources,
-                                                  GUINT_TO_POINTER (next_index));
+      current_source = manager->current_source;
+      if (current_source == NULL)
+        current_source = g_hash_table_lookup (manager->input_sources,
+                                              GUINT_TO_POINTER (0));
 
-  gf_input_source_activate (source, TRUE);
+      next_index = gf_input_source_get_index (current_source ) + 1;
+      if (next_index > GPOINTER_TO_UINT (g_list_nth_data (keys, size - 1)))
+        next_index = 0;
+
+      next_source = g_hash_table_lookup (manager->input_sources,
+                                         GUINT_TO_POINTER (next_index));
+
+      gf_input_source_activate (next_source, TRUE);
+    }
+
   g_list_free (keys);
 
   return TRUE;
