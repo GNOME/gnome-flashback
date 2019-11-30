@@ -53,15 +53,17 @@ struct _GfKeybindings
 
 typedef struct
 {
-  gchar           *name;
+  GfKeybindingType  type;
 
-  guint            keyval;
-  GdkModifierType  modifiers;
+  gchar            *name;
 
-  guint            keycode;
-  guint            mask;
+  guint             keyval;
+  GdkModifierType   modifiers;
 
-  guint            action;
+  guint             keycode;
+  guint             mask;
+
+  guint             action;
 } Keybinding;
 
 enum
@@ -208,6 +210,7 @@ keybinding_new (const gchar     *name,
   Keybinding *keybinding;
 
   keybinding = g_new0 (Keybinding, 1);
+  keybinding->type = GF_KEYBINDING_NONE;
 
   keybinding->name = g_strdup (name);
 
@@ -218,6 +221,51 @@ keybinding_new (const gchar     *name,
   keybinding->mask = mask;
 
   keybinding->action = action;
+
+  return keybinding;
+}
+
+static Keybinding *
+iso_next_group_keybinding_new (guint keycode,
+                               guint mask)
+{
+  Keybinding *keybinding;
+
+  keybinding = g_new0 (Keybinding, 1);
+  keybinding->type = GF_KEYBINDING_ISO_NEXT_GROUP;
+
+  keybinding->keycode = keycode;
+  keybinding->mask = mask;
+
+  return keybinding;
+}
+
+static Keybinding *
+iso_first_group_keybinding_new (guint keycode,
+                                guint mask)
+{
+  Keybinding *keybinding;
+
+  keybinding = g_new0 (Keybinding, 1);
+  keybinding->type = GF_KEYBINDING_ISO_FIRST_GROUP;
+
+  keybinding->keycode = keycode;
+  keybinding->mask = mask;
+
+  return keybinding;
+}
+
+static Keybinding *
+iso_last_group_keybinding_new (guint keycode,
+                               guint mask)
+{
+  Keybinding *keybinding;
+
+  keybinding = g_new0 (Keybinding, 1);
+  keybinding->type = GF_KEYBINDING_ISO_LAST_GROUP;
+
+  keybinding->keycode = keycode;
+  keybinding->mask = mask;
 
   return keybinding;
 }
@@ -310,9 +358,6 @@ reload_iso_group_keybindings (GfKeybindings *keybindings)
   if (keybindings->iso_group == NULL)
     return;
 
-  n_keycodes = get_keycodes_for_keysym (keybindings, XK_ISO_Next_Group,
-                                        &keycodes);
-
   if (g_strcmp0 (keybindings->iso_group, "toggle") == 0 ||
       g_strcmp0 (keybindings->iso_group, "lalt_toggle") == 0 ||
       g_strcmp0 (keybindings->iso_group, "lwin_toggle") == 0 ||
@@ -325,89 +370,147 @@ reload_iso_group_keybindings (GfKeybindings *keybindings)
       g_strcmp0 (keybindings->iso_group, "menu_toggle") == 0 ||
       g_strcmp0 (keybindings->iso_group, "caps_toggle") == 0)
     {
+      n_keycodes = get_keycodes_for_keysym (keybindings, XK_ISO_Next_Group,
+                                            &keycodes);
+
       for (i = 0; i < n_keycodes; i++)
         {
           Keybinding *keybinding;
 
-          keybinding = keybinding_new (NULL, 0, 0, keycodes[i], 0, 0);
+          keybinding = iso_next_group_keybinding_new (keycodes[i], 0);
           g_hash_table_insert (keybindings->iso_group_keybindings,
                                GINT_TO_POINTER (i), keybinding);
         }
+
+      g_free (keycodes);
     }
   else if (g_strcmp0 (keybindings->iso_group, "shift_caps_toggle") == 0 ||
            g_strcmp0 (keybindings->iso_group, "shifts_toggle") == 0)
     {
+      n_keycodes = get_keycodes_for_keysym (keybindings, XK_ISO_Next_Group,
+                                            &keycodes);
+
       for (i = 0; i < n_keycodes; i++)
         {
           Keybinding *keybinding;
 
-          keybinding = keybinding_new (NULL, 0, 0, keycodes[i], ShiftMask, 0);
+          keybinding = iso_next_group_keybinding_new (keycodes[i], ShiftMask);
           g_hash_table_insert (keybindings->iso_group_keybindings,
                                GINT_TO_POINTER (i), keybinding);
         }
+
+      g_free (keycodes);
     }
   else if (g_strcmp0 (keybindings->iso_group, "alt_caps_toggle") == 0 ||
            g_strcmp0 (keybindings->iso_group, "alt_space_toggle") == 0)
     {
+      n_keycodes = get_keycodes_for_keysym (keybindings, XK_ISO_Next_Group,
+                                            &keycodes);
+
       for (i = 0; i < n_keycodes; i++)
         {
           Keybinding *keybinding;
 
-          keybinding = keybinding_new (NULL, 0, 0, keycodes[i], Mod1Mask, 0);
+          keybinding = iso_next_group_keybinding_new (keycodes[i], Mod1Mask);
           g_hash_table_insert (keybindings->iso_group_keybindings,
                                GINT_TO_POINTER (i), keybinding);
         }
+
+      g_free (keycodes);
     }
   else if (g_strcmp0 (keybindings->iso_group, "ctrl_shift_toggle") == 0 ||
            g_strcmp0 (keybindings->iso_group, "lctrl_lshift_toggle") == 0 ||
            g_strcmp0 (keybindings->iso_group, "rctrl_rshift_toggle") == 0)
     {
+      n_keycodes = get_keycodes_for_keysym (keybindings, XK_ISO_Next_Group,
+                                            &keycodes);
+
       for (i = 0; i < n_keycodes; i++)
         {
           Keybinding *keybinding;
 
-          keybinding = keybinding_new (NULL, 0, 0, keycodes[i], ShiftMask, 0);
+          keybinding = iso_next_group_keybinding_new (keycodes[i], ShiftMask);
           g_hash_table_insert (keybindings->iso_group_keybindings,
                                GINT_TO_POINTER (i), keybinding);
 
-          keybinding = keybinding_new (NULL, 0, 0, keycodes[i], ControlMask, 0);
+          keybinding = iso_next_group_keybinding_new (keycodes[i], ControlMask);
           g_hash_table_insert (keybindings->iso_group_keybindings,
                                GINT_TO_POINTER (i + n_keycodes), keybinding);
         }
+
+      g_free (keycodes);
     }
   else if (g_strcmp0 (keybindings->iso_group, "ctrl_alt_toggle") == 0)
     {
+      n_keycodes = get_keycodes_for_keysym (keybindings, XK_ISO_Next_Group,
+                                            &keycodes);
+
       for (i = 0; i < n_keycodes; i++)
         {
           Keybinding *keybinding;
 
-          keybinding = keybinding_new (NULL, 0, 0, keycodes[i], Mod1Mask, 0);
+          keybinding = iso_next_group_keybinding_new (keycodes[i], Mod1Mask);
           g_hash_table_insert (keybindings->iso_group_keybindings,
                                GINT_TO_POINTER (i), keybinding);
 
-          keybinding = keybinding_new (NULL, 0, 0, keycodes[i], ControlMask, 0);
+          keybinding = iso_next_group_keybinding_new (keycodes[i], ControlMask);
           g_hash_table_insert (keybindings->iso_group_keybindings,
                                GINT_TO_POINTER (i + n_keycodes), keybinding);
         }
+
+      g_free (keycodes);
     }
   else if (g_strcmp0 (keybindings->iso_group, "alt_shift_toggle") == 0 ||
            g_strcmp0 (keybindings->iso_group, "lalt_lshift_toggle") == 0)
     {
+      n_keycodes = get_keycodes_for_keysym (keybindings, XK_ISO_Next_Group,
+                                            &keycodes);
+
       for (i = 0; i < n_keycodes; i++)
         {
           Keybinding *keybinding;
 
-          keybinding = keybinding_new (NULL, 0, 0, keycodes[i], Mod1Mask, 0);
+          keybinding = iso_next_group_keybinding_new (keycodes[i], Mod1Mask);
           g_hash_table_insert (keybindings->iso_group_keybindings,
                                GINT_TO_POINTER (i), keybinding);
 
-          keybinding = keybinding_new (NULL, 0, 0, keycodes[i], ShiftMask, 0);
+          keybinding = iso_next_group_keybinding_new (keycodes[i], ShiftMask);
           g_hash_table_insert (keybindings->iso_group_keybindings,
                                GINT_TO_POINTER (i + n_keycodes), keybinding);
         }
-    }
 
-  g_free (keycodes);
+      g_free (keycodes);
+    }
+  /* Caps Lock to first layout; Shift+Caps Lock to last layout */
+  else if (g_strcmp0 (keybindings->iso_group, "shift_caps_switch") == 0)
+    {
+      n_keycodes = get_keycodes_for_keysym (keybindings, XK_ISO_First_Group,
+                                            &keycodes);
+
+      for (i = 0; i < n_keycodes; i++)
+        {
+          Keybinding *keybinding;
+
+          keybinding = iso_first_group_keybinding_new (keycodes[i], 0);
+          g_hash_table_insert (keybindings->iso_group_keybindings,
+                               GINT_TO_POINTER (i), keybinding);
+        }
+
+      g_free (keycodes);
+      n_keycodes = get_keycodes_for_keysym (keybindings, XK_ISO_Last_Group,
+                                            &keycodes);
+
+      for (i = 0; i < n_keycodes; i++)
+        {
+          Keybinding *keybinding;
+
+          keybinding = iso_last_group_keybinding_new (keycodes[i], ShiftMask);
+          g_hash_table_insert (keybindings->iso_group_keybindings,
+                               GINT_TO_POINTER (i + n_keycodes), keybinding);
+        }
+
+      g_free (keycodes);
+    }
 }
 
 static void
@@ -568,7 +671,7 @@ process_iso_group (GfKeybindings *keybindings,
           g_signal_emit (keybindings,
                          signals[SIGNAL_MODIFIERS_ACCELERATOR_ACTIVATED],
                          0,
-                         GF_KEYBINDING_ISO_NEXT_GROUP,
+                         keybinding->type,
                          &freeze);
 
           if (!freeze)
