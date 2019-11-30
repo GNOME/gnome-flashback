@@ -551,6 +551,24 @@ modifiers_accelerator_activated_cb (GfKeybindings    *keybindings,
 
       gf_input_source_activate (next_source, TRUE);
     }
+  else if (keybinding_type == GF_KEYBINDING_ISO_FIRST_GROUP)
+    {
+      GfInputSource *first_source;
+
+      first_source = g_hash_table_lookup (manager->input_sources,
+                                          GUINT_TO_POINTER (0));
+
+      gf_input_source_activate (first_source, TRUE);
+    }
+  else if (keybinding_type == GF_KEYBINDING_ISO_LAST_GROUP)
+    {
+      GfInputSource *last_source;
+
+      last_source = g_hash_table_lookup (manager->input_sources,
+                                         g_list_nth_data (keys, size - 1));
+
+      gf_input_source_activate (last_source, TRUE);
+    }
 
   g_list_free (keys);
 
