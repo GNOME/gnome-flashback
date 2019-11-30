@@ -31,19 +31,22 @@ typedef enum
 #define GF_TYPE_KEYBINDINGS gf_keybindings_get_type ()
 G_DECLARE_FINAL_TYPE (GfKeybindings, gf_keybindings, GF, KEYBINDINGS, GObject)
 
-GfKeybindings   *gf_keybindings_new           (gboolean       iso_next_group);
+GfKeybindings   *gf_keybindings_new            (void);
 
-guint            gf_keybindings_grab          (GfKeybindings *keybindings,
-                                               const gchar   *accelerator);
+void             gf_keybindings_grab_iso_group (GfKeybindings *keybindings,
+                                                const gchar   *iso_group);
 
-gboolean         gf_keybindings_ungrab        (GfKeybindings *keybindings,
-                                               guint          action);
+guint            gf_keybindings_grab           (GfKeybindings *keybindings,
+                                                const gchar   *accelerator);
 
-guint            gf_keybindings_get_keyval    (GfKeybindings *keybindings,
-                                               guint          action);
+gboolean         gf_keybindings_ungrab         (GfKeybindings *keybindings,
+                                                guint          action);
 
-GdkModifierType  gf_keybindings_get_modifiers (GfKeybindings *keybindings,
-                                               guint          action);
+guint            gf_keybindings_get_keyval     (GfKeybindings *keybindings,
+                                                guint          action);
+
+GdkModifierType  gf_keybindings_get_modifiers  (GfKeybindings *keybindings,
+                                                guint          action);
 
 G_END_DECLS
 

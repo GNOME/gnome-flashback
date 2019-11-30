@@ -595,11 +595,34 @@ accelerator_activated_cb (GfKeybindings *keybindings,
   gtk_widget_show (manager->popup);
 }
 
+static char *
+get_iso_group_from_xkb_options (gchar **xkb_options)
+{
+  gchar **p;
+  char *option;
+
+  option = NULL;
+
+  for (p = xkb_options; p && *p; ++p)
+    {
+      if (!g_str_has_prefix (*p, "grp:"))
+        continue;
+
+      option = g_strdup (*p + 4);
+      break;
+    }
+
+  return option;
+}
+
 static void
 keybindings_init (GfInputSourceManager *manager)
 {
+  gchar **options;
+  char *iso_group;
+
   manager->wm_keybindings = g_settings_new (DESKTOP_WM_KEYBINDINGS_SCHEMA);
-  manager->keybindings = gf_keybindings_new (TRUE);
+  manager->keybindings = gf_keybindings_new ();
 
   g_signal_connect (manager->wm_keybindings,
                     "changed::" KEY_SWITCH_INPUT_SOURCE,
@@ -610,6 +633,13 @@ keybindings_init (GfInputSourceManager *manager)
                     "changed::" KEY_SWITCH_INPUT_SOURCE_BACKWARD,
                     G_CALLBACK (switch_input_backward_changed_cb),
                     manager);
+
+  options = gf_input_source_settings_get_xkb_options (manager->settings);
+  iso_group = get_iso_group_from_xkb_options (options);
+  g_strfreev (options);
+
+  gf_keybindings_grab_iso_group (manager->keybindings, iso_group);
+  g_free (iso_group);
 
   g_signal_connect (manager->keybindings, "accelerator-activated",
                     G_CALLBACK (accelerator_activated_cb), manager);
@@ -1191,10 +1221,15 @@ xkb_options_changed_cb (GfInputSourceSettings *settings,
 {
   GfInputSourceManager *manager;
   gchar **options;
+  char *iso_group;
 
   manager = GF_INPUT_SOURCE_MANAGER (user_data);
 
   options = gf_input_source_settings_get_xkb_options (manager->settings);
+
+  iso_group = get_iso_group_from_xkb_options (options);
+  gf_keybindings_grab_iso_group (manager->keybindings, iso_group);
+  g_free (iso_group);
 
   gf_keyboard_manager_set_xkb_options (manager->keyboard_manager, options);
   g_strfreev (options);
@@ -1569,8 +1604,8 @@ gf_input_source_manager_init (GfInputSourceManager *manager)
 {
   manager->keyboard_manager = gf_keyboard_manager_new ();
 
-  keybindings_init (manager);
   input_source_settings_init (manager);
+  keybindings_init (manager);
 }
 
 GfInputSourceManager *
