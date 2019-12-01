@@ -95,6 +95,7 @@ static GfSupportedTheme supported_themes[] =
     { "Adwaita", "Adwaita", NULL, TRUE },
     { "Adwaita-dark", "Adwaita", "dark", FALSE },
     { "HighContrast", "HighContrast", NULL, FALSE },
+    { "HighContrastInverse", "HighContrast", "inverse", FALSE },
     { NULL, NULL, FALSE, FALSE }
   };
 
