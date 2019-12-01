@@ -2544,6 +2544,25 @@ gf_icon_view_popup_menu (GtkWidget *widget)
 }
 
 static void
+gf_icon_view_forall (GtkContainer *container,
+                     gboolean      include_internals,
+                     GtkCallback   callback,
+                     gpointer      callback_data)
+{
+  GfIconView *self;
+
+  self = GF_ICON_VIEW (container);
+
+  GTK_CONTAINER_CLASS (gf_icon_view_parent_class)->forall (container,
+                                                           include_internals,
+                                                           callback,
+                                                           callback_data);
+
+  if (include_internals)
+    (* callback) (self->dummy_icon, callback_data);
+}
+
+static void
 install_signals (void)
 {
   view_signals[SELECT_ALL] =
@@ -2681,16 +2700,20 @@ gf_icon_view_class_init (GfIconViewClass *self_class)
 {
   GObjectClass *object_class;
   GtkWidgetClass *widget_class;
+  GtkContainerClass *container_class;
   GtkBindingSet *binding_set;
 
   object_class = G_OBJECT_CLASS (self_class);
   widget_class = GTK_WIDGET_CLASS (self_class);
+  container_class = GTK_CONTAINER_CLASS (self_class);
 
   object_class->dispose = gf_icon_view_dispose;
   object_class->finalize = gf_icon_view_finalize;
 
   widget_class->draw = gf_icon_view_draw;
   widget_class->popup_menu = gf_icon_view_popup_menu;
+
+  container_class->forall = gf_icon_view_forall;
 
   install_signals ();
 
