@@ -1,3 +1,15 @@
+Version 3.35.1
+==============
+- Remove desktop-background module.
+- Add root-background module, disabled by default.
+- Add new desktop module for icons and background. (#7)
+- Install compiz configuration. (!16)
+- Add support for shift_caps_switch XKB option. (#24)
+- Fix shape region for screenshot select area. (#26)
+- Fix crash with external monitor. (#25)
+- Fix crash in clipboard manager.
+- Updated translations.
+
 Version 3.34.1
 ==============
 - Add clipboard manager. (#19)
