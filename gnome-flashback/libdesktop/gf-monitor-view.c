@@ -616,8 +616,23 @@ setup_drop_destination (GfMonitorView *self)
 }
 
 static void
+get_padding (GtkWidget *widget,
+             GtkBorder *border)
+{
+  GtkStyleContext *style;
+  GtkStateFlags state;
+  style = gtk_widget_get_style_context (widget);
+  state = gtk_style_context_get_state (style);
+
+  gtk_style_context_get_padding (style, state, border);
+}
+
+static void
 calculate_grid_size (GfMonitorView *self)
 {
+  GtkBorder padding;
+  int view_width;
+  int view_height;
   int icon_width;
   int icon_height;
   int columns;
@@ -628,18 +643,23 @@ calculate_grid_size (GfMonitorView *self)
   int offset_y;
   gboolean changed;
 
+  get_padding (GTK_WIDGET (self), &padding);
+
+  view_width = self->view_width - padding.left - padding.right;
+  view_height = self->view_height - padding.top - padding.bottom;
+
   icon_width = gf_dummy_icon_get_width (self->dummy_icon);
   icon_height = gf_dummy_icon_get_height (self->dummy_icon);
 
-  columns = self->view_width / icon_width;
-  rows = self->view_height / icon_height;
+  columns = view_width / icon_width;
+  rows = view_height / icon_height;
 
   while (TRUE)
     {
       int spacing;
 
       spacing = (columns - 1) * self->column_spacing;
-      if (spacing + columns * icon_width <= self->view_width ||
+      if (spacing + columns * icon_width <= view_width ||
           columns == 1)
         break;
 
@@ -651,7 +671,7 @@ calculate_grid_size (GfMonitorView *self)
       int spacing;
 
       spacing = (rows - 1) * self->row_spacing;
-      if (spacing + rows * icon_height <= self->view_height ||
+      if (spacing + rows * icon_height <= view_height ||
           rows == 1)
         break;
 
@@ -661,10 +681,13 @@ calculate_grid_size (GfMonitorView *self)
   spacing_x = icon_width + self->column_spacing;
   spacing_y = icon_height + self->row_spacing;
 
-  offset_x = (self->view_width - columns * icon_width -
+  offset_x = (view_width - columns * icon_width -
               (columns - 1) * self->column_spacing) / 2;
-  offset_y = (self->view_height - rows * icon_height -
+  offset_y = (view_height - rows * icon_height -
               (rows - 1) * self->row_spacing) / 2;
+
+  offset_x += padding.left;
+  offset_y += padding.top;
 
   changed = FALSE;
   if (self->icon_width != icon_width ||
@@ -1031,6 +1054,8 @@ gf_monitor_view_class_init (GfMonitorViewClass *self_class)
 
   install_properties (object_class);
   install_signals ();
+
+  gtk_widget_class_set_css_name (widget_class, "gf-monitor-view");
 }
 
 static void
