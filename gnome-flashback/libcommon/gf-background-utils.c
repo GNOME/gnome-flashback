@@ -200,6 +200,8 @@ get_persistent_pixmap (cairo_surface_t *surface)
   Pixmap persistent_pixmap;
   Visual *xvisual;
   cairo_surface_t *pixmap_surface;
+  double x_scale;
+  double y_scale;
   cairo_t *cr;
 
   xdisplay = XOpenDisplay (NULL);
@@ -229,6 +231,9 @@ get_persistent_pixmap (cairo_surface_t *surface)
                                               xvisual,
                                               width,
                                               height);
+
+  cairo_surface_get_device_scale (surface, &x_scale, &y_scale);
+  cairo_surface_set_device_scale (pixmap_surface, x_scale, y_scale);
 
   cr = cairo_create (pixmap_surface);
   cairo_set_source_surface (cr, surface, 0, 0);
