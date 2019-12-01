@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2017 Alberts Muktupāvels
+ * Copyright (C) 2014-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,6 +82,62 @@ struct _GfApplication
 
 G_DEFINE_TYPE (GfApplication, gf_application, G_TYPE_OBJECT)
 
+typedef struct
+{
+  const char *name;
+  const char *dir;
+  const char *variant;
+  gboolean    has_dark_variant;
+} GfSupportedTheme;
+
+static GfSupportedTheme supported_themes[] =
+  {
+    { "Adwaita", "Adwaita", NULL, TRUE },
+    { "Adwaita-dark", "Adwaita", "dark", FALSE },
+    { "HighContrast", "HighContrast", NULL, FALSE },
+    { NULL, NULL, FALSE, FALSE }
+  };
+
+static char *
+get_theme_resource (GfSupportedTheme *theme,
+                    gboolean          prefer_dark)
+{
+  char *filename;
+  const char *resource_base;
+  char *resource;
+
+  if (theme->variant != NULL)
+    filename = g_strdup_printf ("gnome-flashback-%s.css", theme->variant);
+  else if (theme->has_dark_variant && prefer_dark)
+    filename = g_strdup ("gnome-flashback-dark.css");
+  else
+    filename = g_strdup ("gnome-flashback.css");
+
+  resource_base = "/org/gnome/gnome-flashback/theme";
+  resource = g_strdup_printf ("%s/%s/%s", resource_base, theme->dir, filename);
+  g_free (filename);
+
+  return resource;
+}
+
+static gboolean
+is_theme_supported (const char        *theme_name,
+                    GfSupportedTheme **theme)
+{
+  int i;
+
+  for (i = 0; supported_themes[i].name != NULL; i++)
+    {
+      if (g_strcmp0 (supported_themes[i].name, theme_name) == 0)
+        {
+          *theme = &supported_themes[i];
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
 static void
 theme_changed (GtkSettings *settings,
                GParamSpec  *pspec,
@@ -90,9 +146,10 @@ theme_changed (GtkSettings *settings,
   GfApplication *application;
   GdkScreen *screen;
   gchar *theme_name;
-  gboolean dark_theme;
-  guint priority;
+  gboolean prefer_dark;
+  GfSupportedTheme *theme;
   gchar *resource;
+  guint priority;
   GtkCssProvider *css;
 
   application = GF_APPLICATION (user_data);
@@ -106,20 +163,18 @@ theme_changed (GtkSettings *settings,
 
   g_object_get (settings,
                 "gtk-theme-name", &theme_name,
-                "gtk-application-prefer-dark-theme", &dark_theme,
+                "gtk-application-prefer-dark-theme", &prefer_dark,
                 NULL);
 
-  if (g_strcmp0 (theme_name, "Adwaita") != 0 &&
-      g_strcmp0 (theme_name, "HighContrast") != 0)
+  if (is_theme_supported (theme_name, &theme))
     {
-      priority = GTK_STYLE_PROVIDER_PRIORITY_FALLBACK;
-      resource = g_strdup ("/org/gnome/gnome-flashback/theme/fallback.css");
+      resource = get_theme_resource (theme, prefer_dark);
+      priority = GTK_STYLE_PROVIDER_PRIORITY_APPLICATION;
     }
   else
     {
-      priority = GTK_STYLE_PROVIDER_PRIORITY_APPLICATION;
-      resource = g_strdup_printf ("/org/gnome/gnome-flashback/theme/%s/gnome-flashback%s.css",
-                                  theme_name, dark_theme ? "-dark" : "");
+      resource = g_strdup ("/org/gnome/gnome-flashback/theme/fallback.css");
+      priority = GTK_STYLE_PROVIDER_PRIORITY_FALLBACK;
     }
 
   css = gtk_css_provider_new ();
