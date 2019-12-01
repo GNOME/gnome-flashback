@@ -5,6 +5,8 @@
     <file alias="Adwaita/gnome-flashback-dark.css">../data/theme/Adwaita/gnome-flashback-dark.css</file>
     <file alias="HighContrast/gnome-flashback.css">../data/theme/HighContrast/gnome-flashback.css</file>
     <file alias="HighContrast/gnome-flashback-dark.css">../data/theme/HighContrast/gnome-flashback-dark.css</file>
+    <file alias="common.css">../data/theme/common.css</file>
+    <file alias="fallback.css">../data/theme/fallback.css</file>
   </gresource>
   <gresource prefix="/org/gnome/gnome-flashback/ui">
     <file alias="gf-confirm-display-change-dialog.ui" compressed="true">../data/ui/gf-confirm-display-change-dialog.ui</file>

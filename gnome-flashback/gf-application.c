@@ -104,22 +104,23 @@ theme_changed (GtkSettings *settings,
       g_clear_object (&application->provider);
     }
 
-  g_object_get (settings, "gtk-theme-name", &theme_name, NULL);
+  g_object_get (settings,
+                "gtk-theme-name", &theme_name,
+                "gtk-application-prefer-dark-theme", &dark_theme,
+                NULL);
 
   if (g_strcmp0 (theme_name, "Adwaita") != 0 &&
       g_strcmp0 (theme_name, "HighContrast") != 0)
     {
-      g_free (theme_name);
-      return;
+      priority = GTK_STYLE_PROVIDER_PRIORITY_FALLBACK;
+      resource = g_strdup ("/org/gnome/gnome-flashback/theme/fallback.css");
     }
-
-  g_object_get (settings,
-                "gtk-application-prefer-dark-theme", &dark_theme,
-                NULL);
-
-  priority = GTK_STYLE_PROVIDER_PRIORITY_APPLICATION;
-  resource = g_strdup_printf ("/org/gnome/gnome-flashback/theme/%s/gnome-flashback%s.css",
-                              theme_name, dark_theme ? "-dark" : "");
+  else
+    {
+      priority = GTK_STYLE_PROVIDER_PRIORITY_APPLICATION;
+      resource = g_strdup_printf ("/org/gnome/gnome-flashback/theme/%s/gnome-flashback%s.css",
+                                  theme_name, dark_theme ? "-dark" : "");
+    }
 
   css = gtk_css_provider_new ();
   application->provider =  GTK_STYLE_PROVIDER (css);
