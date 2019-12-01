@@ -396,6 +396,94 @@ add_drag_rectangles_from_gnome_icon_list (GfMonitorView *self,
   g_strfreev (list);
 }
 
+static char **
+get_uris_from_icon_list (GfMonitorView *self,
+                         GfIcon        *drag_icon)
+{
+  GPtrArray *uris;
+  GList *selected_icons;
+  GList *l;
+
+  uris = g_ptr_array_new ();
+  selected_icons = gf_icon_view_get_selected_icons (self->icon_view);
+
+  for (l = selected_icons; l != NULL; l = l->next)
+    {
+      GFile *file;
+
+      file = gf_icon_get_file (GF_ICON (l->data));
+      g_ptr_array_add (uris, g_file_get_uri (file));
+    }
+
+  g_ptr_array_add (uris, NULL);
+
+  return (char **) g_ptr_array_free (uris, FALSE);
+}
+
+static char **
+get_uris_from_gnome_icon_list (GfMonitorView *self,
+                               const guchar  *gnome_icon_list)
+{
+  GPtrArray *uris;
+  char **list;
+
+  uris = g_ptr_array_new ();
+  list = g_strsplit ((const char *) gnome_icon_list, "\r\n", -1);
+
+  if (list != NULL)
+    {
+      int i;
+
+      for (i = 0; list[i] != NULL; i++)
+        {
+          char **parts;
+
+          parts = g_strsplit (list[i], "\r", -1);
+          if (parts == NULL)
+            continue;
+
+          g_ptr_array_add (uris, g_strdup (parts[0]));
+          g_strfreev (parts);
+        }
+
+      g_strfreev (list);
+    }
+
+  g_ptr_array_add (uris, NULL);
+
+  return (char **) g_ptr_array_free (uris, FALSE);
+}
+
+static void
+copy_to_desktop (GfMonitorView  *self,
+                 char          **uris)
+{
+  char *desktop_uri;
+
+  desktop_uri = gf_icon_view_get_desktop_uri (self->icon_view);
+
+  gf_icon_view_copy_uris (self->icon_view,
+                          (const char * const *) uris,
+                          desktop_uri);
+
+  g_free (desktop_uri);
+}
+
+static void
+move_to_desktop (GfMonitorView  *self,
+                 char          **uris)
+{
+  char *desktop_uri;
+
+  desktop_uri = gf_icon_view_get_desktop_uri (self->icon_view);
+
+  gf_icon_view_move_uris (self->icon_view,
+                          (const char * const *) uris,
+                          desktop_uri);
+
+  g_free (desktop_uri);
+}
+
 static void
 drag_data_received_cb (GtkWidget        *widget,
                        GdkDragContext   *context,
@@ -478,27 +566,80 @@ drag_data_received_cb (GtkWidget        *widget,
 
       if (info == 100)
         {
+          GfIcon *icon;
+
+          icon = *(gpointer *) gtk_selection_data_get_data (data);
+
           if (action == GDK_ACTION_MOVE &&
               self->placement != GF_PLACEMENT_AUTO_ARRANGE_ICONS)
             {
             }
           else if (action == GDK_ACTION_COPY)
             {
+              if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+                {
+                  char **uris;
+
+                  uris = get_uris_from_icon_list (self, icon);
+
+                  copy_to_desktop (self, uris);
+                  g_strfreev (uris);
+
+                  success = TRUE;
+                }
             }
         }
       else if (info == 200)
         {
+          const guchar *selection_data;
+
+          selection_data = gtk_selection_data_get_data (data);
+
           if (action == GDK_ACTION_MOVE)
             {
+              if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+                {
+                  char **uris;
+
+                  uris = get_uris_from_gnome_icon_list (self, selection_data);
+
+                  move_to_desktop (self, uris);
+                  g_strfreev (uris);
+
+                  success = TRUE;
+                  delete = TRUE;
+                }
             }
           else if (action == GDK_ACTION_COPY)
             {
+              if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+                {
+                  char **uris;
+
+                  uris = get_uris_from_gnome_icon_list (self, selection_data);
+
+                  copy_to_desktop (self, uris);
+                  g_strfreev (uris);
+
+                  success = TRUE;
+                }
             }
         }
       else if (info == 300)
         {
           if (action == GDK_ACTION_COPY)
             {
+              if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+                {
+                  char **uris;
+
+                  uris = gtk_selection_data_get_uris (data);
+
+                  copy_to_desktop (self, uris);
+                  g_strfreev (uris);
+
+                  success = TRUE;
+                }
             }
         }
 

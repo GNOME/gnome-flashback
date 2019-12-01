@@ -555,6 +555,44 @@ rename_file_cb (GObject      *object,
     }
 }
 
+static void
+copy_uris_cb (GObject      *object,
+              GAsyncResult *res,
+              gpointer      user_data)
+{
+  GError *error;
+
+  error = NULL;
+  gf_nautilus_gen_call_copy_uris_finish (GF_NAUTILUS_GEN (object),
+                                         res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Error copying uris: %s", error->message);
+      g_error_free (error);
+    }
+}
+
+static void
+move_uris_cb (GObject      *object,
+              GAsyncResult *res,
+              gpointer      user_data)
+{
+  GError *error;
+
+  error = NULL;
+  gf_nautilus_gen_call_move_uris_finish (GF_NAUTILUS_GEN (object),
+                                         res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Error moving uris: %s", error->message);
+      g_error_free (error);
+    }
+}
+
 static GfIconInfo *
 create_icon_info (GfIconView *self,
                   GtkWidget  *icon)
@@ -2881,6 +2919,12 @@ gf_icon_view_get_file_attributes (GfIconView *self)
                                 NULL);
 }
 
+char *
+gf_icon_view_get_desktop_uri (GfIconView *self)
+{
+  return g_file_get_uri (self->desktop);
+}
+
 void
 gf_icon_view_set_representative_color (GfIconView *self,
                                        GdkRGBA    *color)
@@ -3085,4 +3129,36 @@ gf_icon_view_rename_file (GfIconView *self,
                                     self->cancellable,
                                     rename_file_cb,
                                     NULL);
+}
+
+void
+gf_icon_view_copy_uris (GfIconView         *self,
+                        const char * const *uris,
+                        const char         *destination)
+{
+  if (self->nautilus == NULL)
+    return;
+
+  gf_nautilus_gen_call_copy_uris (self->nautilus,
+                                  uris,
+                                  destination,
+                                  self->cancellable,
+                                  copy_uris_cb,
+                                  NULL);
+}
+
+void
+gf_icon_view_move_uris (GfIconView         *self,
+                        const char * const *uris,
+                        const char         *destination)
+{
+  if (self->nautilus == NULL)
+    return;
+
+  gf_nautilus_gen_call_move_uris (self->nautilus,
+                                  uris,
+                                  destination,
+                                  self->cancellable,
+                                  move_uris_cb,
+                                  NULL);
 }

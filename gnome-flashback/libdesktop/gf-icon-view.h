@@ -32,6 +32,8 @@ GfThumbnailFactory *gf_icon_view_get_thumbnail_factory    (GfIconView          *
 
 char               *gf_icon_view_get_file_attributes      (GfIconView          *self);
 
+char               *gf_icon_view_get_desktop_uri          (GfIconView          *self);
+
 void                gf_icon_view_set_representative_color (GfIconView          *self,
                                                            GdkRGBA             *color);
 
@@ -58,6 +60,14 @@ void                gf_icon_view_move_to_trash            (GfIconView          *
 void                gf_icon_view_rename_file              (GfIconView          *self,
                                                            const char          *uri,
                                                            const char          *new_name);
+
+void                gf_icon_view_copy_uris                (GfIconView          *self,
+                                                           const char * const  *uris,
+                                                           const char          *destination);
+
+void                gf_icon_view_move_uris                (GfIconView          *self,
+                                                           const char * const  *uris,
+                                                           const char          *destination);
 
 G_END_DECLS
 
