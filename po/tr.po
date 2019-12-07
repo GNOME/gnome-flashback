@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-08-22 15:48+0000\n"
-"PO-Revision-Date: 2019-08-24 17:48+0300\n"
+"POT-Creation-Date: 2019-11-22 23:11+0000\n"
+"PO-Revision-Date: 2019-12-07 14:48+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -72,7 +72,7 @@ msgstr "nm-device-wireless"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:4
 msgid "Screensaver (GNOME Flashback)"
-msgstr "Ekran Koruyucu (GNOME Flashback)"
+msgstr "Ekran koruyucu (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-screensaver.desktop.in:5
 msgid "Launch screensaver and locker program"
@@ -153,22 +153,19 @@ msgstr ""
 "göstermek için kullanılacaktır."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:28
-msgid "Desktop background"
-msgstr "Masaüstü arka planı"
+msgid "Clipboard"
+msgstr "Pano"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
-msgid ""
-"If set to true, then GNOME Flashback application will be used to draw the "
-"desktop background."
-msgstr ""
-"Doğru olarak seçilirse, GNOME Flashback uygulaması  masaüstü arkaplanını "
-"çizmek için kullanılacaktır."
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
+#: gnome-flashback/libdesktop/gf-desktop-window.c:758
+msgid "Desktop"
+msgstr "Masaüstü"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:34
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "End session dialog"
 msgstr "Son oturum iletişim kutusu"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
@@ -176,11 +173,11 @@ msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması son oturum iletişim "
 "kutusunu göstermek için kullanılacaktır."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:40
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "Idle monitor"
 msgstr "Ekran boşta"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:45
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
@@ -188,15 +185,15 @@ msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması kullanıcı etkinliği "
 "izlemek için kullanılacaktır."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
 msgid "Input settings"
 msgstr "Giriş ayarları"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:51
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
 msgid "Keyboard layouts and input methods"
 msgstr "Klavye düzenleri ve giriş yöntemleri"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -204,11 +201,11 @@ msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması klavye düzenlerini ve "
 "giriş yöntemlerini yönetmek için kullanılacaktır."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:57
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid "Notification daemon"
 msgstr "Bildirim yönetimi"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
@@ -216,20 +213,20 @@ msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması bildirimleri yönetmek "
 "için kullanılacaktır."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:63
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
 msgid "Authentication agent for polkit"
 msgstr "Polkit için kimlik doğrulama aracısı"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:68
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr "PolicyKit-Gnome tarafından sağlanan aynı kimlik doğrulama aracıdır."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:69
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
 msgid "Power applet"
 msgstr "Güç uygulaması"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:74
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
@@ -237,11 +234,16 @@ msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması, bir güç uygulamasını "
 "göstermek için kullanılacaktır."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:75
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
+#| msgid "Desktop background"
+msgid "Root background"
+msgstr "Kök arka planı"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
 msgid "Screencasts"
 msgstr "Ekran paylaşımı"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -249,11 +251,11 @@ msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması ekranı kaydetmek için "
 "kullanılacaktır."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:81
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid "Screensaver"
 msgstr "Ekran koruyucu"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
@@ -261,11 +263,11 @@ msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması, ekran koruyucu olarak "
 "kullanılacaktır."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:87
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
 msgid "Screenshots"
 msgstr "Ekran alıntısı"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -273,22 +275,22 @@ msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması, ekran görüntülerini "
 "almak için kullanılacaktır."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:93
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:102
 msgid "Shell"
 msgstr "Kabuk"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması Kabuk olarak "
 "kullanılacaktır."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:99
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
 msgid "Sound applet"
 msgstr "Ses uygulaması"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:109
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -298,11 +300,11 @@ msgstr ""
 "göstermek için kullanılacaktır. Bu GNOME kontrol merkezinin bir parçası "
 "olarak kullanılan aynı ses uygulamasıdır."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:105
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
 msgid "Status Notifier Watcher"
 msgstr "Durum Bildirimi İzleyici"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:115
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -310,17 +312,129 @@ msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması Durum Bildirimi "
 "İzleyicisi olarak kullanılacaktır."
 
-#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:5
+#| msgid "Desktop background"
+msgid "Draw desktop background"
+msgstr "Masaüstü arka planı çiz"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:6
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to draw the "
+#| "desktop background."
+msgid "If set to true, then GNOME Flashback will draw the desktop background."
+msgstr "Doğru olarak seçilirse, GNOME Flashback masaüstü arka planını çizecek."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:11
+msgid "Show desktop icons"
+msgstr "Masaüstü simgelerini göster"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:12
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to draw the "
+#| "desktop background."
+msgid ""
+"If set to true, then GNOME Flashback will draw the icons on the desktop."
+msgstr ""
+"Doğru olarak seçilirse, GNOME Flashback masaüstündeki simgeleri çizecek."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:5
 msgid "Fade the background on change"
 msgstr "Arka plan değiştiğinde soldur"
 
-#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:6
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:6
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
 msgstr ""
 "Doğru olarak seçilirse, masaüstü arka planını değiştirmek için soldurma "
 "efekti kullanılacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:5
+msgid "Icon size"
+msgstr "Simge boyutu"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:6
+msgid "The size of desktop icons."
+msgstr "Masaüstü simgelerinin boyutu."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
+#: gnome-flashback/libdesktop/gf-icon-view.c:1173
+msgid "Placement"
+msgstr "Yerleşim"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:12
+msgid ""
+"Can be one of \"auto-arrange-icons\", \"align-icons-to-grid\" or \"free\". "
+"It controls how icons are placed on desktop."
+msgstr ""
+"Şunlardan biri olabilir: \"auto-arrange-icons\" (simgeleri kendiliğinden "
+"düzenle), \"align-icons-to-grid\" (simgeleri ızgaraya hizala) veya \"free"
+"\" (serbest). Simgelerin masaüstünde nasıl yerleşeceğini denetler."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
+#: gnome-flashback/libdesktop/gf-icon-view.c:1179
+msgid "Sort by"
+msgstr "Şuna göre sırala"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:18
+msgid ""
+"Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons "
+"are sorted in \"auto-arrange-icons\" placement."
+msgstr ""
+"Şunlardan biri olabilir: \"name\" (ad), \"date-modified\" (değiştirilme "
+"tarihi) veya \"size\" (boyut). \"auto-arrange-icons\" (simgeleri "
+"kendiliğinden düzenle) yerleşiminde simgelerin nasıl sıralanacağını denetler."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
+msgid "Extra text width"
+msgstr "Ekstra metin genişliği"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:25
+msgid "Extra width for icon text."
+msgstr "Simge metni için ekstra genişlik."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:31
+msgid "Column spacing"
+msgstr "Sütun boşluğu"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:32
+msgid "The amount of space between columns."
+msgstr "Sütunlar arası boşluğun miktarı."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:38
+msgid "Row spacing"
+msgstr "Satır boşluğu"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:39
+msgid "The amount of space between rows."
+msgstr "Satırlar arası boşluğun miktarı."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:44
+msgid "Show home icon"
+msgstr "Ev simgesini göster"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:45
+#| msgid ""
+#| "If set to true, then fade effect will be used to change the desktop "
+#| "background."
+msgid ""
+"If this is set to true, an icon linking to the home folder will be put on "
+"the desktop."
+msgstr ""
+"Eğer doğru olarak ayarlanırsa ev klasörüne bağlanan bir simge masaüstüne "
+"koyulacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:50
+msgid "Show trash icon"
+msgstr "Çöp simgesini göster"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:51
+msgid ""
+"If this is set to true, an icon linking to the trash will be put on the "
+"desktop."
+msgstr ""
+"Eğer doğru olarak ayarlanırsa çöpe bağlanan bir simge masaüstüne "
+"koyulacaktır."
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
 msgid "The background color"
@@ -487,6 +601,7 @@ msgid "Sound Settings"
 msgstr "Ses Ayarları"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:104
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
 msgid "Cancel"
 msgstr "İptal"
@@ -529,47 +644,47 @@ msgstr "%p bağı kaldırılamıyor"
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:709
 msgid "You have just inserted an Audio CD."
-msgstr "Az önce bir Audio CD eklediniz."
+msgstr "Az önce Ses CD'si eklediniz."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:711
 msgid "You have just inserted an Audio DVD."
-msgstr "Az önce bir Audio DVD eklediniz."
+msgstr "Az önce Ses DVD'si eklediniz."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:713
 msgid "You have just inserted a Video DVD."
-msgstr "Az önce bir Video DVD'si taktınız."
+msgstr "Az önce Video DVD'si taktınız."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:715
 msgid "You have just inserted a Video CD."
-msgstr "Az önce bir Video CD'si taktınız."
+msgstr "Az önce Video CD'si taktınız."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:717
 msgid "You have just inserted a Super Video CD."
-msgstr "Az önce bir Super Video CD taktınız."
+msgstr "Az önce Super Video CD taktınız."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:719
 msgid "You have just inserted a blank CD."
-msgstr "Az önce boş bir CD taktınız."
+msgstr "Az önce boş CD taktınız."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:721
 msgid "You have just inserted a blank DVD."
-msgstr "Az önce boş bir DVD taktınız."
+msgstr "Az önce boş DVD taktınız."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:723
 msgid "You have just inserted a blank Blu-Ray disc."
-msgstr "Az önce boş bir Blu-Ray disk taktınız."
+msgstr "Az önce boş Blu-Ray disk taktınız."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:725
 msgid "You have just inserted a blank HD DVD."
-msgstr "Az önce boş bir HD DVD taktınız."
+msgstr "Az önce boş HD DVD taktınız."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:727
 msgid "You have just inserted a Photo CD."
-msgstr "Bir Fotoğraf CD'si takıldı."
+msgstr "Az önce Fotoğraf CD'si taktınız."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:729
 msgid "You have just inserted a Picture CD."
-msgstr "Bir Resim CD'si takıldı."
+msgstr "Az önce Resim CD'si taktınız."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:731
 msgid "You have just inserted a medium with digital photos."
@@ -577,7 +692,7 @@ msgstr "Az önce dijital fotoğraflı bir ortam yerleştirdiniz."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:733
 msgid "You have just inserted a digital audio player."
-msgstr "Az önce bir dijital ses oynatıcı taktınız."
+msgstr "Az önce dijital ses oynatıcı taktınız."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:735
 msgid ""
@@ -649,6 +764,133 @@ msgstr[0] "%d Bağlı Aygıt"
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
 msgid "Not Connected"
 msgstr "Bağlı Değil"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
+#: gnome-flashback/libdesktop/gf-icon-view.c:1161
+#| msgid "Open Folder"
+msgid "New Folder"
+msgstr "Yeni Klasör"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:112
+msgid "Create"
+msgstr "Oluştur"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:140
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "Folder name"
+msgstr "Klasör adı"
+
+#: gnome-flashback/libdesktop/gf-home-icon.c:45
+msgid "Home"
+msgstr "Ev"
+
+#: gnome-flashback/libdesktop/gf-icon.c:322
+msgid "Open"
+msgstr "Aç"
+
+#: gnome-flashback/libdesktop/gf-icon.c:358
+msgid "Move to Trash"
+msgstr "Çöpe taşı"
+
+#: gnome-flashback/libdesktop/gf-icon.c:378
+msgid "Rename..."
+msgstr "Yeniden adlandır..."
+
+#: gnome-flashback/libdesktop/gf-icon.c:398
+#| msgid "Empty"
+msgid "Empty Trash"
+msgstr "Çöpü Boşalt"
+
+#: gnome-flashback/libdesktop/gf-icon.c:412
+msgid "Properties"
+msgstr "Özellikler"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:957
+msgid "Auto arrange icons"
+msgstr "Simgeleri kendiliğinden düzenle"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:961
+msgid "Align icons to grid"
+msgstr "Simgeleri ızgaraya hizala"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:965
+msgctxt "Free placement of icons"
+msgid "Free"
+msgstr "Serbest"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1065
+msgid "Name"
+msgstr "Ad"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1069
+msgid "Date modified"
+msgstr "Değiştirilme tarihi"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1073
+msgid "Size"
+msgstr "Boyut"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1189
+#| msgid "The background color"
+msgid "Change Background"
+msgstr "Arka Planı Değiştir"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1197
+#| msgid "Sound Settings"
+msgid "Display Settings"
+msgstr "Ekran Ayarları"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1209
+msgid "Open Terminal"
+msgstr "Uçbirim aç"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2919
+msgid "Folder names cannot contain “/”."
+msgstr "Klasör adları “/” içeremez."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2921
+msgid "File names cannot contain “/”."
+msgstr "Dosya adları “/” içeremez."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2928
+msgid "A folder cannot be called “.”."
+msgstr "Klasör “.” olarak adlandırılamaz."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2930
+msgid "A file cannot be called “.”."
+msgstr "Dosya “.” olarak adlandırılamaz."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2937
+msgid "A folder cannot be called “..”."
+msgstr "Klasör “..” olarak adlandırılamaz."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2939
+msgid "A file cannot be called “..”."
+msgstr "Dosya “..” olarak adlandırılamaz."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2955
+msgid "A folder with that name already exists."
+msgstr "Bu adda klasör zaten var."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2957
+msgid "A file with that name already exists."
+msgstr "Bu adda dosya zaten var."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2968
+msgid "Folders with “.” at the beginning of their name are hidden."
+msgstr "Adının başında “.” olan klasörler gizlidir."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:2970
+msgid "Files with “.” at the beginning of their name are hidden."
+msgstr "Adının başında “.” olan dosyalar gizlidir."
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "File name"
+msgstr "Dosya adı"
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:254
+msgid "Rename"
+msgstr "Yeniden adlandır"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
@@ -853,7 +1095,7 @@ msgstr "Eylem:"
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:603
 #, c-format
 msgid "Click to edit %s"
-msgstr "Düzenlemek için tıkla %s"
+msgstr "%s düzenlemek için tıkla"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:611
 msgid "Vendor:"
@@ -862,7 +1104,7 @@ msgstr "Sağlayıcı:"
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:614
 #, c-format
 msgid "Click to open %s"
-msgstr "Açmak için tıkla %s"
+msgstr "%s açmak için tıkla"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:8
 msgid "Authenticate"
@@ -886,7 +1128,7 @@ msgstr "Güç Ayarları"
 
 #: gnome-flashback/libpower-applet/gf-power-applet.c:182
 msgid "Fully Charged"
-msgstr "Şarj Oldu"
+msgstr "Tümüyle Şarj Oldu"
 
 #: gnome-flashback/libpower-applet/gf-power-applet.c:184
 msgid "Empty"
