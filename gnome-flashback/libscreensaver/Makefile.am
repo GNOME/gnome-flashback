@@ -28,6 +28,8 @@ libscreensaver_la_SOURCES = \
 	gf-prefs.h \
 	gf-screensaver.c \
 	gf-screensaver.h \
+	gf-screensaver-utils.c \
+	gf-screensaver-utils.h \
 	gf-watcher.c \
 	gf-watcher.h \
 	$(BUILT_SOURCES) \
