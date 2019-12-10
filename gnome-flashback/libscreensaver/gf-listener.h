@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2004-2006 William Jon McCann
- * Copyright (C) 2016 Alberts Muktupāvels
+ * Copyright (C) 2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,20 +30,15 @@ G_BEGIN_DECLS
 #define GF_TYPE_LISTENER gf_listener_get_type ()
 G_DECLARE_FINAL_TYPE (GfListener, gf_listener, GF, LISTENER, GObject)
 
-GfListener *gf_listener_new         (void);
+GfListener *gf_listener_new              (void);
 
-void        gf_listener_set_enabled (GfListener *listener,
-                                     gboolean    enabled);
+gboolean    gf_listener_set_active       (GfListener *listener,
+                                          gboolean    active);
 
-gboolean    gf_listener_get_enabled (GfListener *listener);
+gboolean    gf_listener_get_active       (GfListener *listener);
 
-gboolean    gf_listener_set_active  (GfListener *listener,
-                                     gboolean    active);
-
-gboolean    gf_listener_get_active  (GfListener *listener);
-
-gboolean    gf_listener_set_idle    (GfListener *listener,
-                                     gboolean    idle);
+gboolean    gf_listener_set_session_idle (GfListener *listener,
+                                          gboolean    session_idle);
 
 G_END_DECLS
 

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2004-2006 William Jon McCann
- * Copyright (C) 2016 Alberts Muktupāvels
+ * Copyright (C) 2016-2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,13 +21,15 @@
  */
 
 #include "config.h"
+#include "gf-listener.h"
 
+#include <gio/gunixfdlist.h>
 #include <time.h>
 
-#include "gf-listener.h"
 #include "gf-login-manager-gen.h"
 #include "gf-login-session-gen.h"
 #include "gf-screensaver-gen.h"
+#include "gf-screensaver-utils.h"
 
 #define SCREENSAVER_DBUS_NAME "org.gnome.ScreenSaver"
 #define SCREENSAVER_DBUS_PATH "/org/gnome/ScreenSaver"
@@ -47,13 +49,13 @@ struct _GfListener
   GfLoginSessionGen *login_session;
   GfLoginManagerGen *login_manager;
 
-  gboolean           enabled;
-
   gboolean           active;
   time_t             active_start;
 
-  gboolean           idle;
-  time_t             idle_start;
+  gboolean           session_idle;
+  time_t             session_idle_start;
+
+  int                inhibit_lock_fd;
 };
 
 enum
@@ -67,24 +69,93 @@ enum
   LAST_SIGNAL
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static guint listener_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GfListener, gf_listener, G_TYPE_OBJECT)
 
 static void
-set_idle_internal (GfListener *listener,
-                   gboolean    idle)
+release_inhibit_lock (GfListener *self)
 {
-  listener->idle = idle;
+  if (self->inhibit_lock_fd < 0)
+    return;
 
-  if (idle)
+  g_debug ("Releasing systemd inhibit lock");
+
+  close (self->inhibit_lock_fd);
+  self->inhibit_lock_fd = -1;
+}
+
+static void
+inhibit_cb (GObject      *object,
+            GAsyncResult *res,
+            gpointer      user_data)
+{
+  GVariant *pipe_fd;
+  GUnixFDList *fd_list;
+  GError *error;
+  GfListener *self;
+  int index;
+
+  error = NULL;
+  pipe_fd = NULL;
+
+  gf_login_manager_gen_call_inhibit_finish (GF_LOGIN_MANAGER_GEN (object),
+                                            &pipe_fd, &fd_list, res, &error);
+
+  if (error != NULL)
     {
-      listener->idle_start = time (NULL);
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("%s", error->message);
+
+      g_error_free (error);
+      return;
     }
+
+  self = GF_LISTENER (user_data);
+
+  index = g_variant_get_handle (pipe_fd);
+  g_variant_unref (pipe_fd);
+
+  self->inhibit_lock_fd = g_unix_fd_list_get (fd_list, index, &error);
+  g_object_unref (fd_list);
+
+  if (error != NULL)
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+    }
+
+  g_debug ("Inhibit lock fd: %d", self->inhibit_lock_fd);
+}
+
+static void
+take_inhibit_lock (GfListener *self)
+{
+  if (self->inhibit_lock_fd >= 0)
+    return;
+
+  g_debug ("Taking systemd inhibit lock");
+  gf_login_manager_gen_call_inhibit (self->login_manager,
+                                     "sleep",
+                                     "GNOME Flashback",
+                                     "GNOME Flashback needs to lock the screen",
+                                     "delay",
+                                     NULL,
+                                     NULL,
+                                     inhibit_cb,
+                                     self);
+}
+
+static void
+set_session_idle_internal (GfListener *listener,
+                           gboolean    session_idle)
+{
+  listener->session_idle = session_idle;
+
+  if (session_idle)
+    listener->session_idle_start = time (NULL);
   else
-    {
-      listener->idle_start = 0;
-    }
+    listener->session_idle_start = 0;
 }
 
 static gboolean
@@ -142,7 +213,7 @@ handle_lock_cb (GfScreensaverGen      *object,
                 GDBusMethodInvocation *invocation,
                 GfListener            *listener)
 {
-  g_signal_emit (listener, signals[LOCK], 0);
+  g_signal_emit (listener, listener_signals[LOCK], 0);
   gf_screensaver_gen_complete_lock (object, invocation);
 
   return TRUE;
@@ -169,9 +240,8 @@ handle_show_message_cb (GfScreensaverGen      *object,
                         GfListener            *listener)
 {
   if (listener->active)
-    {
-      g_signal_emit (listener, signals[SHOW_MESSAGE], 0, summary, body, icon);
-    }
+    g_signal_emit (listener, listener_signals[SHOW_MESSAGE], 0,
+                   summary, body, icon);
 
   gf_screensaver_gen_complete_show_message (object, invocation);
 
@@ -183,7 +253,7 @@ handle_simulate_user_activity_cb (GfScreensaverGen      *object,
                                   GDBusMethodInvocation *invocation,
                                   GfListener            *listener)
 {
-  g_signal_emit (listener, signals[SIMULATE_USER_ACTIVITY], 0);
+  g_signal_emit (listener, listener_signals[SIMULATE_USER_ACTIVITY], 0);
   gf_screensaver_gen_complete_simulate_user_activity (object, invocation);
 
   return TRUE;
@@ -239,29 +309,27 @@ name_lost_handler (GDBusConnection *connection,
 
 static void
 lock_cb (GfLoginSessionGen *login_session,
-         GfListener        *listener)
+         GfListener        *self)
 {
-  g_debug ("Systemd requested session lock");
-  g_signal_emit (listener, signals[LOCK], 0);
+  g_debug ("systemd requested session lock");
+  g_signal_emit (self, listener_signals[LOCK], 0);
 }
 
 static void
 unlock_cb (GfLoginSessionGen *login_session,
-           GfListener        *listener)
+           GfListener        *self)
 {
-  g_debug ("Systemd requested session unlock");
-  gf_listener_set_active (listener, FALSE);
+  g_debug ("systemd requested session unlock");
+  gf_listener_set_active (self, FALSE);
 }
 
 static void
 notify_active_cb (GfLoginSessionGen *login_session,
                   GParamSpec        *pspec,
-                  GfListener        *listener)
+                  GfListener        *self)
 {
   if (gf_login_session_gen_get_active (login_session))
-    {
-      g_signal_emit (listener, signals[SIMULATE_USER_ACTIVITY], 0);
-    }
+    g_signal_emit (self, listener_signals[SIMULATE_USER_ACTIVITY], 0);
 }
 
 static void
@@ -269,37 +337,49 @@ login_session_ready_cb (GObject      *object,
                         GAsyncResult *res,
                         gpointer      user_data)
 {
-  GfListener *listener;
   GError *error;
-
-  listener = GF_LISTENER (user_data);
+  GfLoginSessionGen *login_session;
+  GfListener *self;
 
   error = NULL;
-  listener->login_session = gf_login_session_gen_proxy_new_for_bus_finish (res, &error);
+  login_session = gf_login_session_gen_proxy_new_for_bus_finish (res, &error);
 
-  if (!listener->login_session)
+  if (error != NULL)
     {
-      g_warning ("%s", error->message);
-      g_error_free (error);
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("%s", error->message);
 
+      g_error_free (error);
       return;
     }
 
-  g_signal_connect (listener->login_session, "lock",
-                    G_CALLBACK (lock_cb), listener);
-  g_signal_connect (listener->login_session, "unlock",
-                    G_CALLBACK (unlock_cb), listener);
+  self = GF_LISTENER (user_data);
+  self->login_session = login_session;
 
-  g_signal_connect (listener->login_session, "notify::active",
-                    G_CALLBACK (notify_active_cb), listener);
+  g_signal_connect (self->login_session, "lock",
+                    G_CALLBACK (lock_cb), self);
+  g_signal_connect (self->login_session, "unlock",
+                    G_CALLBACK (unlock_cb), self);
+
+  g_signal_connect (self->login_session, "notify::active",
+                    G_CALLBACK (notify_active_cb), self);
 }
 
 static void
 prepare_for_sleep_cb (GfLoginManagerGen *login_manager,
-                      GfListener        *listener)
+                      gboolean           start,
+                      GfListener        *self)
 {
-  g_debug ("A system suspend has been requested");
-  g_signal_emit (listener, signals[LOCK], 0);
+  if (start)
+    {
+      g_debug ("A system suspend has been requested");
+      g_signal_emit (self, listener_signals[LOCK], 0);
+      release_inhibit_lock (self);
+    }
+  else
+    {
+      take_inhibit_lock (self);
+    }
 }
 
 static void
@@ -307,24 +387,29 @@ login_manager_ready_cb (GObject      *object,
                         GAsyncResult *res,
                         gpointer      user_data)
 {
-  GfListener *listener;
   GError *error;
-
-  listener = GF_LISTENER (user_data);
+  GfLoginManagerGen *login_manager;
+  GfListener *self;
 
   error = NULL;
-  listener->login_manager = gf_login_manager_gen_proxy_new_for_bus_finish (res, &error);
+  login_manager = gf_login_manager_gen_proxy_new_for_bus_finish (res, &error);
 
-  if (!listener->login_manager)
+  if (error != NULL)
     {
-      g_warning ("%s", error->message);
-      g_error_free (error);
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("%s", error->message);
 
+      g_error_free (error);
       return;
     }
 
-  g_signal_connect (listener->login_manager, "prepare-for-sleep",
-                    G_CALLBACK (prepare_for_sleep_cb), listener);
+  self = GF_LISTENER (user_data);
+  self->login_manager = login_manager;
+
+  take_inhibit_lock (self);
+
+  g_signal_connect (self->login_manager, "prepare-for-sleep",
+                    G_CALLBACK (prepare_for_sleep_cb), self);
 }
 
 static void
@@ -333,17 +418,20 @@ name_appeared_handler (GDBusConnection *connection,
                        const gchar     *name_owner,
                        gpointer         user_data)
 {
-  const gchar *xdg_session_id;
+  char *session_id;
   gchar *path;
 
-  xdg_session_id = g_getenv ("XDG_SESSION_ID");
-  if (!xdg_session_id || xdg_session_id[0] == '\0')
+  session_id = NULL;
+  if (!gf_find_systemd_session (&session_id))
     {
-      g_warning ("XDG_SESSION_ID environment variable is not set");
+      g_debug ("Couldn't determine our own session id");
       return;
     }
 
-  path = g_strdup_printf ("%s/%s", LOGIN_SESSION_DBUS_PATH, xdg_session_id);
+  g_debug ("Session id: %s", session_id);
+
+  path = g_strdup_printf ("%s/%s", LOGIN_SESSION_DBUS_PATH, session_id);
+  g_free (session_id);
 
   gf_login_session_gen_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
                                           G_DBUS_PROXY_FLAGS_NONE,
@@ -365,44 +453,48 @@ name_vanished_handler (GDBusConnection *connection,
                        const gchar     *name,
                        gpointer         user_data)
 {
-  GfListener *listener;
+  GfListener *self;
 
-  listener = GF_LISTENER (user_data);
+  self = GF_LISTENER (user_data);
 
-  g_clear_object (&listener->login_session);
-  g_clear_object (&listener->login_manager);
+  release_inhibit_lock (self);
+
+  g_clear_object (&self->login_session);
+  g_clear_object (&self->login_manager);
 }
 
 static void
 gf_listener_dispose (GObject *object)
 {
-  GfListener *listener;
+  GfListener *self;
   GDBusInterfaceSkeleton *skeleton;
 
-  listener = GF_LISTENER (object);
+  self = GF_LISTENER (object);
 
-  if (listener->screensaver_id)
+  if (self->screensaver_id)
     {
-      g_bus_unown_name (listener->screensaver_id);
-      listener->screensaver_id = 0;
+      g_bus_unown_name (self->screensaver_id);
+      self->screensaver_id = 0;
     }
 
-  if (listener->login_id)
+  if (self->login_id)
     {
-      g_bus_unwatch_name (listener->login_id);
-      listener->login_id = 0;
+      g_bus_unwatch_name (self->login_id);
+      self->login_id = 0;
     }
 
-  if (listener->screensaver)
+  if (self->screensaver)
     {
-      skeleton = G_DBUS_INTERFACE_SKELETON (listener->screensaver);
+      skeleton = G_DBUS_INTERFACE_SKELETON (self->screensaver);
 
       g_dbus_interface_skeleton_unexport (skeleton);
-      g_clear_object (&listener->screensaver);
+      g_clear_object (&self->screensaver);
     }
 
-  g_clear_object (&listener->login_session);
-  g_clear_object (&listener->login_manager);
+  release_inhibit_lock (self);
+
+  g_clear_object (&self->login_session);
+  g_clear_object (&self->login_manager);
 
   G_OBJECT_CLASS (gf_listener_parent_class)->dispose (object);
 }
@@ -410,20 +502,20 @@ gf_listener_dispose (GObject *object)
 static void
 install_signals (GObjectClass *object_class)
 {
-  signals[LOCK] =
+  listener_signals[LOCK] =
     g_signal_new ("lock", GF_TYPE_LISTENER, G_SIGNAL_RUN_LAST, 0, NULL,
                   NULL, NULL, G_TYPE_NONE, 0);
 
-  signals[SHOW_MESSAGE] =
+  listener_signals[SHOW_MESSAGE] =
     g_signal_new ("show-message", GF_TYPE_LISTENER, G_SIGNAL_RUN_LAST, 0,
                   NULL, NULL, NULL, G_TYPE_NONE, 3, G_TYPE_STRING,
                   G_TYPE_STRING, G_TYPE_STRING);
 
-  signals[SIMULATE_USER_ACTIVITY] =
+  listener_signals[SIMULATE_USER_ACTIVITY] =
     g_signal_new ("simulate-user-activity", GF_TYPE_LISTENER,
                   G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 
-  signals[ACTIVE_CHANGED] =
+  listener_signals[ACTIVE_CHANGED] =
     g_signal_new ("active-changed", GF_TYPE_LISTENER, G_SIGNAL_RUN_LAST,
                   0, NULL, NULL, NULL, G_TYPE_BOOLEAN, 1, G_TYPE_BOOLEAN);
 }
@@ -441,24 +533,27 @@ gf_listener_class_init (GfListenerClass *listener_class)
 }
 
 static void
-gf_listener_init (GfListener *listener)
+gf_listener_init (GfListener *self)
 {
-  listener->screensaver = gf_screensaver_gen_skeleton_new ();
-  listener->screensaver_id = g_bus_own_name (G_BUS_TYPE_SESSION,
-                                             SCREENSAVER_DBUS_NAME,
-                                             G_BUS_NAME_OWNER_FLAGS_NONE,
-                                             bus_acquired_handler, NULL,
-                                             name_lost_handler,
-                                             listener, NULL);
+  self->screensaver = gf_screensaver_gen_skeleton_new ();
+  self->screensaver_id = g_bus_own_name (G_BUS_TYPE_SESSION,
+                                         SCREENSAVER_DBUS_NAME,
+                                         G_BUS_NAME_OWNER_FLAGS_NONE,
+                                         bus_acquired_handler, NULL,
+                                         name_lost_handler,
+                                         self, NULL);
 
+  self->inhibit_lock_fd = -1;
+
+  /* check if logind is running */
   if (access("/run/systemd/seats/", F_OK) >= 0)
     {
-      listener->login_id = g_bus_watch_name (G_BUS_TYPE_SYSTEM,
-                                             LOGIN_DBUS_NAME,
-                                             G_BUS_NAME_WATCHER_FLAGS_NONE,
-                                             name_appeared_handler,
-                                             name_vanished_handler,
-                                             listener, NULL);
+      self->login_id = g_bus_watch_name (G_BUS_TYPE_SYSTEM,
+                                         LOGIN_DBUS_NAME,
+                                         G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                         name_appeared_handler,
+                                         name_vanished_handler,
+                                         self, NULL);
     }
 }
 
@@ -466,19 +561,6 @@ GfListener *
 gf_listener_new (void)
 {
   return g_object_new (GF_TYPE_LISTENER, NULL);
-}
-
-void
-gf_listener_set_enabled (GfListener *listener,
-                         gboolean    enabled)
-{
-  listener->enabled = enabled;
-}
-
-gboolean
-gf_listener_get_enabled (GfListener *listener)
-{
-  return listener->enabled;
 }
 
 gboolean
@@ -498,7 +580,8 @@ gf_listener_set_active (GfListener *listener,
   g_debug ("Setting active state: %s", active ? "active" : "inactive");
 
   handled = FALSE;
-  g_signal_emit (listener, signals[ACTIVE_CHANGED], 0, active, &handled);
+  g_signal_emit (listener, listener_signals[ACTIVE_CHANGED], 0,
+                 active, &handled);
 
   if (!handled)
     {
@@ -507,9 +590,7 @@ gf_listener_set_active (GfListener *listener,
 
       /* clear the idle state */
       if (active)
-        {
-          set_idle_internal (listener, FALSE);
-        }
+        set_session_idle_internal (listener, FALSE);
 
       return FALSE;
     }
@@ -517,19 +598,13 @@ gf_listener_set_active (GfListener *listener,
   listener->active = active;
 
   /* if idle not in sync with active, change it */
-  if (listener->idle != active)
-    {
-      set_idle_internal (listener, active);
-    }
+  if (listener->session_idle != active)
+    set_session_idle_internal (listener, active);
 
   if (active)
-    {
-      listener->active_start = time (NULL);
-    }
+    listener->active_start = time (NULL);
   else
-    {
-      listener->active_start = 0;
-    }
+    listener->active_start = 0;
 
   g_debug ("Sending the ActiveChanged(%s) signal on the session bus",
            active ? "TRUE" : "FALSE");
@@ -548,29 +623,29 @@ gf_listener_set_active (GfListener *listener,
 gboolean
 gf_listener_get_active (GfListener *listener)
 {
-  return listener->enabled;
+  return listener->active;
 }
 
 gboolean
-gf_listener_set_idle (GfListener *listener,
-                      gboolean    idle)
+gf_listener_set_session_idle (GfListener *listener,
+                              gboolean    session_idle)
 {
   gboolean activated;
 
-  if (listener->idle == idle)
+  if (listener->session_idle == session_idle)
     {
-      g_debug ("Trying to set idle state when already: %s",
-               idle ? "idle" : "not idle");
+      g_debug ("Trying to set session idle state when already: %s",
+               session_idle ? "idle" : "not idle");
 
       return FALSE;
     }
 
-  g_debug ("Setting idle state: %s", idle ? "idle" : "not idle");
+  g_debug ("Setting session idle state: %s", session_idle ? "idle" : "not idle");
 
-  listener->idle = idle;
+  listener->session_idle = session_idle;
   activated = TRUE;
 
-  if (listener->enabled && listener->idle)
+  if (listener->session_idle)
     {
       g_debug ("Trying to activate");
       activated = gf_listener_set_active (listener, TRUE);
@@ -579,12 +654,12 @@ gf_listener_set_idle (GfListener *listener,
   /* if activation fails then don't set idle */
   if (activated)
     {
-      set_idle_internal (listener, idle);
+      set_session_idle_internal (listener, session_idle);
     }
   else
     {
       g_debug ("Idle activation failed");
-      listener->idle = !idle;
+      listener->session_idle = !session_idle;
     }
 
   return activated;
