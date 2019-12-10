@@ -39,42 +39,26 @@ libscreensaver_la_LIBADD = \
 
 gf-login-manager-gen.h:
 gf-login-manager-gen.c: org.freedesktop.login1.Manager.xml
-	$(AM_V_GEN) $(GDBUS_CODEGEN) \
-		--interface-prefix org.freedesktop.login1.Manager. \
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
 		--generate-c-code gf-login-manager-gen \
-		--c-namespace Gf \
-		--annotate "org.freedesktop.login1.Manager" \
-		           "org.gtk.GDBus.C.Name" LoginManagerGen \
 		$(srcdir)/org.freedesktop.login1.Manager.xml
 
 gf-login-session-gen.h:
 gf-login-session-gen.c: org.freedesktop.login1.Session.xml
-	$(AM_V_GEN) $(GDBUS_CODEGEN) \
-		--interface-prefix org.freedesktop.login1.Session. \
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
 		--generate-c-code gf-login-session-gen \
-		--c-namespace Gf \
-		--annotate "org.freedesktop.login1.Session" \
-		           "org.gtk.GDBus.C.Name" LoginSessionGen \
 		$(srcdir)/org.freedesktop.login1.Session.xml
 
 gf-screensaver-gen.h:
 gf-screensaver-gen.c: org.gnome.ScreenSaver.xml
-	$(AM_V_GEN) $(GDBUS_CODEGEN) \
-		--interface-prefix org.gnome.ScreenSaver. \
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
 		--generate-c-code gf-screensaver-gen \
-		--c-namespace Gf \
-		--annotate "org.gnome.ScreenSaver" \
-		           "org.gtk.GDBus.C.Name" ScreensaverGen \
 		$(srcdir)/org.gnome.ScreenSaver.xml
 
 gf-sm-presence-gen.h:
 gf-sm-presence-gen.c: org.gnome.SessionManager.Presence.xml
-	$(AM_V_GEN) $(GDBUS_CODEGEN) \
-		--interface-prefix org.gnome.SessionManager.Presence. \
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
 		--generate-c-code gf-sm-presence-gen \
-		--c-namespace Gf \
-		--annotate "org.gnome.SessionManager.Presence" \
-		           "org.gtk.GDBus.C.Name" SmPresenceGen \
 		$(srcdir)/org.gnome.SessionManager.Presence.xml
 
 BUILT_SOURCES = \

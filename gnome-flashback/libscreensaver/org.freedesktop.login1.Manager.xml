@@ -3,6 +3,7 @@
 "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
   <interface name="org.freedesktop.login1.Manager">
+    <annotation name="org.gtk.GDBus.C.Name" value="LoginManagerGen" />
 
     <signal name="PrepareForSleep">
       <arg type="b" direction="out" />

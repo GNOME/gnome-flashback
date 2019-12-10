@@ -3,6 +3,7 @@
 "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
   <interface name="org.gnome.ScreenSaver">
+    <annotation name="org.gtk.GDBus.C.Name" value="ScreensaverGen" />
 
     <method name="Lock">
     </method>
