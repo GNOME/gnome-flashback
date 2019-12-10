@@ -17,6 +17,8 @@ libscreensaver_la_CFLAGS = \
 	$(NULL)
 
 libscreensaver_la_SOURCES = \
+	gf-info-bar.c \
+	gf-info-bar.h \
 	gf-listener.c \
 	gf-listener.h \
 	gf-prefs.c \
