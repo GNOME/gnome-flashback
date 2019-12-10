@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2004-2006 William Jon McCann
  * Copyright (C) 2008 Red Hat, Inc.
- * Copyright (C) 2016 Alberts Muktupāvels
+ * Copyright (C) 2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,10 +38,7 @@ struct _GfWatcher
   guint            presence_id;
   GfSmPresenceGen *presence;
 
-  gboolean         enabled;
   gboolean         active;
-
-  gchar           *status_message;
 
   gboolean         idle;
   gboolean         idle_notice;
@@ -54,8 +51,6 @@ enum
 {
   IDLE_CHANGED,
   IDLE_NOTICE_CHANGED,
-
-  STATUS_MESSAGE_CHANGED,
 
   LAST_SIGNAL
 };
@@ -152,9 +147,7 @@ set_session_idle (GfWatcher *watcher,
   gboolean handled;
 
   if (watcher->idle == idle)
-    {
-      return FALSE;
-    }
+    return FALSE;
 
   handled = FALSE;
   g_signal_emit (watcher, signals[IDLE_CHANGED], 0, idle, &handled);
@@ -179,9 +172,7 @@ set_session_idle_notice (GfWatcher *watcher,
   gboolean handled;
 
   if (watcher->idle_notice == idle_notice)
-    {
-      return;
-    }
+    return;
 
   handled = FALSE;
   g_signal_emit (watcher, signals[IDLE_NOTICE_CHANGED], 0,
@@ -221,9 +212,9 @@ idle_cb (gpointer user_data)
 
 static void
 status_changed_cb (GfSmPresenceGen *presence,
+                   guint            status,
                    GfWatcher       *watcher)
 {
-  guint status;
   gboolean idle;
 
   if (!watcher->active)
@@ -232,7 +223,6 @@ status_changed_cb (GfSmPresenceGen *presence,
       return;
     }
 
-  status = gf_sm_presence_gen_get_status (presence);
   idle = (status == 3);
 
   if (!idle && !watcher->idle_notice)
@@ -253,6 +243,7 @@ status_changed_cb (GfSmPresenceGen *presence,
 
       /* time before idle signal to send notice signal */
       watcher->idle_id = g_timeout_add_seconds (10, idle_cb, watcher);
+      g_source_set_name_by_id (watcher->idle_id, "[gnome-flashback] idle_cb");
     }
   else
     {
@@ -262,24 +253,13 @@ status_changed_cb (GfSmPresenceGen *presence,
 }
 
 static void
-status_text_changed_cb (GfSmPresenceGen *presence,
-                        GfWatcher       *watcher)
-{
-  const gchar *text;
-
-  text = gf_sm_presence_gen_get_status_text (presence);
-
-  g_free (watcher->status_message);
-  watcher->status_message = g_strdup (text);
-}
-
-static void
 presence_ready_cb (GObject      *object,
                    GAsyncResult *res,
                    gpointer      user_data)
 {
   GfWatcher *watcher;
   GError *error;
+  guint status;
 
   watcher = GF_WATCHER (user_data);
 
@@ -296,11 +276,9 @@ presence_ready_cb (GObject      *object,
 
   g_signal_connect (watcher->presence, "status-changed",
                     G_CALLBACK (status_changed_cb), watcher);
-  g_signal_connect (watcher->presence, "status-text-changed",
-                    G_CALLBACK (status_text_changed_cb), watcher);
 
-  status_changed_cb (watcher->presence, watcher);
-  status_text_changed_cb (watcher->presence, watcher);
+  status = gf_sm_presence_gen_get_status (watcher->presence);
+  status_changed_cb (watcher->presence, status, watcher);
 }
 
 static void
@@ -335,9 +313,7 @@ set_active_internal (GfWatcher *watcher,
                      gboolean   active)
 {
   if (watcher->active == active)
-    {
-      return;
-    }
+    return;
 
   watcher->idle = FALSE;
   watcher->idle_notice = FALSE;
@@ -375,18 +351,6 @@ gf_watcher_dispose (GObject *object)
 }
 
 static void
-gf_watcher_finalize (GObject *object)
-{
-  GfWatcher *watcher;
-
-  watcher = GF_WATCHER (object);
-
-  g_free (watcher->status_message);
-
-  G_OBJECT_CLASS (gf_watcher_parent_class)->finalize (object);
-}
-
-static void
 install_signals (GObjectClass *object_class)
 {
   signals[IDLE_CHANGED] =
@@ -398,11 +362,6 @@ install_signals (GObjectClass *object_class)
     g_signal_new ("idle-notice-changed", GF_TYPE_WATCHER,
                   G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL,
                   G_TYPE_BOOLEAN, 1, G_TYPE_BOOLEAN);
-
-  signals[STATUS_MESSAGE_CHANGED] =
-    g_signal_new ("status-message-changed", GF_TYPE_WATCHER,
-                  G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL,
-                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -413,7 +372,6 @@ gf_watcher_class_init (GfWatcherClass *watcher_class)
   object_class = G_OBJECT_CLASS (watcher_class);
 
   object_class->dispose = gf_watcher_dispose;
-  object_class->finalize = gf_watcher_finalize;
 
   install_signals (object_class);
 }
@@ -421,8 +379,6 @@ gf_watcher_class_init (GfWatcherClass *watcher_class)
 static void
 gf_watcher_init (GfWatcher *watcher)
 {
-  watcher->enabled = TRUE;
-
   watcher->presence_id = g_bus_watch_name (G_BUS_TYPE_SESSION,
                                            SESSION_MANAGER_DBUS_NAME,
                                            G_BUS_NAME_WATCHER_FLAGS_NONE,
@@ -434,6 +390,7 @@ gf_watcher_init (GfWatcher *watcher)
    * not, to try and clean up anything that has gone wrong.
    */
   watcher->watchdog_id = g_timeout_add_seconds (600, watchdog_cb, watcher);
+  g_source_set_name_by_id (watcher->watchdog_id, "[gnome-flashback] watchdog_cb");
 }
 
 GfWatcher *
@@ -442,30 +399,7 @@ gf_watcher_new (void)
   return g_object_new (GF_TYPE_WATCHER, NULL);
 }
 
-void
-gf_watcher_set_enabled (GfWatcher *watcher,
-                        gboolean   enabled)
-{
-  if (watcher->enabled == enabled)
-    {
-      return;
-    }
-
-  watcher->enabled = enabled;
-
-  if (!enabled && watcher->active)
-    {
-      set_active_internal (watcher, FALSE);
-    }
-}
-
 gboolean
-gf_watcher_get_enabled (GfWatcher *watcher)
-{
-  return watcher->enabled;
-}
-
-void
 gf_watcher_set_active (GfWatcher *watcher,
                        gboolean   active)
 {
@@ -476,26 +410,16 @@ gf_watcher_set_active (GfWatcher *watcher,
       g_debug ("Idle detection is already %s",
                active ? "active" : "inactive");
 
-      return;
-    }
-
-  if (!watcher->enabled)
-    {
-      g_debug ("Idle detection is disabled, cannot activate");
-      return;
+      return FALSE;
     }
 
   set_active_internal (watcher, active);
+
+  return TRUE;
 }
 
 gboolean
 gf_watcher_get_active (GfWatcher *watcher)
 {
   return watcher->active;
-}
-
-const gchar *
-gf_watcher_get_status_message (GfWatcher *watcher)
-{
-  return watcher->status_message;
 }

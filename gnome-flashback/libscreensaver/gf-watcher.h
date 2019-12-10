@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2004-2005 William Jon McCann
- * Copyright (C) 2016 Alberts Muktupāvels
+ * Copyright (C) 2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,19 +30,12 @@ G_BEGIN_DECLS
 #define GF_TYPE_WATCHER gf_watcher_get_type ()
 G_DECLARE_FINAL_TYPE (GfWatcher, gf_watcher, GF, WATCHER, GObject)
 
-GfWatcher   *gf_watcher_new                (void);
+GfWatcher *gf_watcher_new        (void);
 
-void         gf_watcher_set_enabled        (GfWatcher *watcher,
-                                            gboolean   enabled);
+gboolean   gf_watcher_set_active (GfWatcher *watcher,
+                                  gboolean   active);
 
-gboolean     gf_watcher_get_enabled        (GfWatcher *watcher);
-
-void         gf_watcher_set_active         (GfWatcher *watcher,
-                                            gboolean   active);
-
-gboolean     gf_watcher_get_active         (GfWatcher *watcher);
-
-const gchar *gf_watcher_get_status_message (GfWatcher *watcher);
+gboolean   gf_watcher_get_active (GfWatcher *watcher);
 
 G_END_DECLS
 

@@ -7,14 +7,8 @@
 
     <property name="status" type="u" access="readwrite" />
 
-    <property name="status-text" type="s" access="readwrite" />
-
     <signal name="StatusChanged">
       <arg name="status" type="u" direction="in" />
-    </signal>
-
-    <signal name="StatusTextChanged">
-      <arg name="status_text" type="s" direction="in" />
     </signal>
 
   </interface>
