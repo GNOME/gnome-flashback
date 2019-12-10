@@ -19,10 +19,10 @@ libscreensaver_la_CFLAGS = \
 libscreensaver_la_SOURCES = \
 	gf-listener.c \
 	gf-listener.h \
+	gf-prefs.c \
+	gf-prefs.h \
 	gf-screensaver.c \
 	gf-screensaver.h \
-	gf-settings.c \
-	gf-settings.h \
 	gf-watcher.c \
 	gf-watcher.h \
 	$(BUILT_SOURCES) \
