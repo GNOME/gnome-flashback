@@ -7,6 +7,7 @@ noinst_LTLIBRARIES = \
 libscreensaver_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"screensaver\" \
 	-DG_LOG_USE_STRUCTURED=1 \
+	-DGNOME_DESKTOP_USE_UNSTABLE_API \
 	-I$(top_builddir)/gnome-flashback/libscreensaver \
 	$(NULL)
 
@@ -21,6 +22,8 @@ libscreensaver_la_SOURCES = \
 	gf-info-bar.h \
 	gf-listener.c \
 	gf-listener.h \
+	gf-panel.c \
+	gf-panel.h \
 	gf-prefs.c \
 	gf-prefs.h \
 	gf-screensaver.c \
