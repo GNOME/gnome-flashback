@@ -42,6 +42,17 @@ libscreensaver_la_LIBADD = \
 	$(SCREENSAVER_LIBS) \
 	$(NULL)
 
+ENUM_TYPES = \
+	$(NULL)
+
+gf-screensaver-enum-types.c: gf-screensaver-enum-types.c.in gf-screensaver-enum-types.h $(ENUM_TYPES)
+	$(AM_V_GEN) $(GLIB_MKENUMS) --template $(srcdir)/gf-screensaver-enum-types.c.in $(ENUM_TYPES) > \
+		gf-screensaver-enum-types.c.tmp && mv gf-screensaver-enum-types.c.tmp gf-screensaver-enum-types.c
+
+gf-screensaver-enum-types.h: gf-screensaver-enum-types.h.in $(ENUM_TYPES)
+	$(AM_V_GEN) $(GLIB_MKENUMS) --template $(srcdir)/gf-screensaver-enum-types.h.in $(ENUM_TYPES) > \
+		gf-screensaver-enum-types.h.tmp && mv gf-screensaver-enum-types.h.tmp gf-screensaver-enum-types.h
+
 gf-accounts-gen.h:
 gf-accounts-gen.c: org.freedesktop.Accounts.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
@@ -103,6 +114,8 @@ BUILT_SOURCES = \
 	gf-login-seat-gen.h \
 	gf-login-session-gen.c \
 	gf-login-session-gen.h \
+	gf-screensaver-enum-types.c \
+	gf-screensaver-enum-types.h \
 	gf-screensaver-gen.c \
 	gf-screensaver-gen.h \
 	gf-sm-presence-gen.c \
@@ -110,6 +123,8 @@ BUILT_SOURCES = \
 	$(NULL)
 
 EXTRA_DIST = \
+	gf-screensaver-enum-types.c.in \
+	gf-screensaver-enum-types.h.in \
 	org.freedesktop.Accounts.xml \
 	org.freedesktop.Accounts.User.xml \
 	org.freedesktop.DisplayManager.Seat.xml \
