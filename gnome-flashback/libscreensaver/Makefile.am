@@ -47,7 +47,7 @@ libscreensaver_la_LIBADD = \
 	$(NULL)
 
 ENUM_TYPES = \
-	gf-auth.h \
+	$(srcdir)/gf-auth.h \
 	$(NULL)
 
 gf-screensaver-enum-types.c: gf-screensaver-enum-types.c.in gf-screensaver-enum-types.h $(ENUM_TYPES)
