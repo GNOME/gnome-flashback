@@ -334,6 +334,13 @@ AS_IF([test "x$with_compiz_session" != "xno"], [
 AM_CONDITIONAL(WITH_COMPIZ_SESSION, [test "x$found_compiz" = "xyes"])
 
 dnl **************************************************************************
+dnl PAM
+dnl **************************************************************************
+
+AC_CHECK_HEADERS([security/pam_appl.h])
+AC_SEARCH_LIBS([pam_start], [pam])
+
+dnl **************************************************************************
 dnl Process .in files
 dnl **************************************************************************
 

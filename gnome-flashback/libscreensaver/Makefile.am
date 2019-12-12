@@ -18,6 +18,8 @@ libscreensaver_la_CFLAGS = \
 	$(NULL)
 
 libscreensaver_la_SOURCES = \
+	gf-auth.c \
+	gf-auth.h \
 	gf-info-bar.c \
 	gf-info-bar.h \
 	gf-listener.c \
@@ -45,6 +47,7 @@ libscreensaver_la_LIBADD = \
 	$(NULL)
 
 ENUM_TYPES = \
+	gf-auth.h \
 	$(NULL)
 
 gf-screensaver-enum-types.c: gf-screensaver-enum-types.c.in gf-screensaver-enum-types.h $(ENUM_TYPES)
