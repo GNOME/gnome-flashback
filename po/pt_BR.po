@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-11-26 19:11+0000\n"
-"PO-Revision-Date: 2019-11-29 05:12-0300\n"
+"POT-Creation-Date: 2019-12-12 20:06+0000\n"
+"PO-Revision-Date: 2019-12-14 09:19-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -37,10 +37,6 @@ msgstr "Tela desconhecida"
 
 #: backends/gf-monitor.c:176
 #, c-format
-#| msgctxt ""
-#| "This is a monitor vendor name, followed by a size in inches, like 'Dell "
-#| "15“'"
-#| msgid "%s %s"
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
@@ -349,7 +345,7 @@ msgid "The size of desktop icons."
 msgstr "O tamanho dos ícones da área de trabalho."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
-#: gnome-flashback/libdesktop/gf-icon-view.c:1175
+#: gnome-flashback/libdesktop/gf-icon-view.c:1213
 msgid "Placement"
 msgstr "Posicionamento"
 
@@ -362,7 +358,7 @@ msgstr ""
 "Isso controla como ícones são posicionados na área de trabalho."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
-#: gnome-flashback/libdesktop/gf-icon-view.c:1181
+#: gnome-flashback/libdesktop/gf-icon-view.c:1219
 msgid "Sort by"
 msgstr "Ordenar por"
 
@@ -758,7 +754,7 @@ msgid "Not Connected"
 msgstr "Não conectado"
 
 #: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
-#: gnome-flashback/libdesktop/gf-icon-view.c:1163
+#: gnome-flashback/libdesktop/gf-icon-view.c:1201
 msgid "New Folder"
 msgstr "Nova pasta"
 
@@ -795,80 +791,80 @@ msgstr "Esvaziar lixeira"
 msgid "Properties"
 msgstr "Propriedades"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:959
+#: gnome-flashback/libdesktop/gf-icon-view.c:997
 msgid "Auto arrange icons"
 msgstr "Organizar ícones automaticamente"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:963
+#: gnome-flashback/libdesktop/gf-icon-view.c:1001
 msgid "Align icons to grid"
 msgstr "Alinhar ícones à grade"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:967
+#: gnome-flashback/libdesktop/gf-icon-view.c:1005
 msgctxt "Free placement of icons"
 msgid "Free"
 msgstr "Livre"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1067
+#: gnome-flashback/libdesktop/gf-icon-view.c:1105
 msgid "Name"
 msgstr "Nome"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1071
+#: gnome-flashback/libdesktop/gf-icon-view.c:1109
 msgid "Date modified"
 msgstr "Data da modificação"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1075
+#: gnome-flashback/libdesktop/gf-icon-view.c:1113
 msgid "Size"
 msgstr "Tamanho"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1191
+#: gnome-flashback/libdesktop/gf-icon-view.c:1229
 msgid "Change Background"
 msgstr "Alterar plano de fundo"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1199
+#: gnome-flashback/libdesktop/gf-icon-view.c:1237
 msgid "Display Settings"
 msgstr "Configurações da tela"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1211
+#: gnome-flashback/libdesktop/gf-icon-view.c:1249
 msgid "Open Terminal"
 msgstr "Abrir terminal"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2978
+#: gnome-flashback/libdesktop/gf-icon-view.c:3045
 msgid "Folder names cannot contain “/”."
 msgstr "Nomes de pastas não podem conter “/”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2980
+#: gnome-flashback/libdesktop/gf-icon-view.c:3047
 msgid "File names cannot contain “/”."
 msgstr "Nomes de arquivos não podem conter “/”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2987
+#: gnome-flashback/libdesktop/gf-icon-view.c:3054
 msgid "A folder cannot be called “.”."
 msgstr "Uma pasta não pode ser chamada “.”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2989
+#: gnome-flashback/libdesktop/gf-icon-view.c:3056
 msgid "A file cannot be called “.”."
 msgstr "Um arquivo não pode ser chamado “.”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2996
+#: gnome-flashback/libdesktop/gf-icon-view.c:3063
 msgid "A folder cannot be called “..”."
 msgstr "Uma pasta não pode ser chamada “..”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:2998
+#: gnome-flashback/libdesktop/gf-icon-view.c:3065
 msgid "A file cannot be called “..”."
 msgstr "Um arquivo não pode ser chamado “..”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3014
+#: gnome-flashback/libdesktop/gf-icon-view.c:3081
 msgid "A folder with that name already exists."
 msgstr "Uma pasta com esse nome já existe."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3016
+#: gnome-flashback/libdesktop/gf-icon-view.c:3083
 msgid "A file with that name already exists."
 msgstr "Um arquivo com esse nome já existe."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3027
+#: gnome-flashback/libdesktop/gf-icon-view.c:3094
 msgid "Folders with “.” at the beginning of their name are hidden."
 msgstr "Pastas com “.” no início do nome são ocultas."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3029
+#: gnome-flashback/libdesktop/gf-icon-view.c:3096
 msgid "Files with “.” at the beginning of their name are hidden."
 msgstr "Arquivos com “.” no início do nome são ocultos"
 
@@ -1155,6 +1151,14 @@ msgstr "UPS"
 #: gnome-flashback/libpower-applet/gf-power-applet.c:230
 msgid "Battery"
 msgstr "Bateria"
+
+#: gnome-flashback/libscreensaver/gf-auth.c:424
+msgid "Your account was given a time limit that has now passed."
+msgstr "Sua conta recebeu um limite de tempo que já passou."
+
+#: gnome-flashback/libscreensaver/gf-auth.c:428
+msgid "Sorry, that didn’t work. Please try again."
+msgstr "Desculpe, isso não funcionou. Por favor, tente novamente."
 
 #: gnome-flashback/libsound-applet/gf-sound-applet.c:268
 msgid "Output"
