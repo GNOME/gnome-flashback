@@ -20,14 +20,14 @@
 #include "config.h"
 #include "gf-a11y-keyboard.h"
 
-#include "gf-notifications-gen.h"
-
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 #include <glib/gi18n.h>
 
 #include <X11/XKBlib.h>
 #include <X11/extensions/XKBstr.h>
+
+#include "dbus/gf-fd-notifications-gen.h"
 
 #define KEYBOARD_A11Y_SCHEMA "org.gnome.desktop.a11y.keyboard"
 
@@ -43,21 +43,21 @@
 
 struct _GfA11yKeyboard
 {
-  GObject             parent;
+  GObject               parent;
 
-  guint               start_idle_id;
-  int                 xkbEventBase;
-  guint               device_added_id;
-  gboolean            stickykeys_shortcut_val;
-  gboolean            slowkeys_shortcut_val;
+  guint                 start_idle_id;
+  int                   xkbEventBase;
+  guint                 device_added_id;
+  gboolean              stickykeys_shortcut_val;
+  gboolean              slowkeys_shortcut_val;
 
-  XkbDescRec         *desc;
+  XkbDescRec           *desc;
 
-  GSettings          *settings;
+  GSettings            *settings;
 
-  GfNotificationsGen *notifications;
-  guint               slowkeys_id;
-  guint               stickykeys_id;
+  GfFdNotificationsGen *notifications;
+  guint                 slowkeys_id;
+  guint                 stickykeys_id;
 };
 
 G_DEFINE_TYPE (GfA11yKeyboard, gf_a11y_keyboard, G_TYPE_OBJECT)
@@ -259,8 +259,8 @@ slowkeys_notify_cb (GObject      *source_object,
   GfA11yKeyboard *a11y_keyboard;
 
   error = NULL;
-  gf_notifications_gen_call_notify_finish (GF_NOTIFICATIONS_GEN (source_object),
-                                           &id, res, &error);
+  gf_fd_notifications_gen_call_notify_finish (GF_FD_NOTIFICATIONS_GEN (source_object),
+                                              &id, res, &error);
 
   if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
     {
@@ -309,18 +309,18 @@ ax_slowkeys_warning_post_bubble (GfA11yKeyboard *a11y_keyboard,
   g_variant_builder_add (&hints, "{sv}", "urgency",
                          g_variant_new_byte (0x02 /* critical */));
 
-  gf_notifications_gen_call_notify (a11y_keyboard->notifications,
-                                    _("Universal Access"),
-                                    0,
-                                    icon,
-                                    title,
-                                    message,
-                                    actions,
-                                    g_variant_builder_end (&hints),
-                                    0,
-                                    NULL,
-                                    slowkeys_notify_cb,
-                                    a11y_keyboard);
+  gf_fd_notifications_gen_call_notify (a11y_keyboard->notifications,
+                                       _("Universal Access"),
+                                       0,
+                                       icon,
+                                       title,
+                                       message,
+                                       actions,
+                                       g_variant_builder_end (&hints),
+                                       0,
+                                       NULL,
+                                       slowkeys_notify_cb,
+                                       a11y_keyboard);
 
   g_free (actions);
 }
@@ -343,8 +343,8 @@ stickykeys_notify_cb (GObject      *source_object,
   GfA11yKeyboard *a11y_keyboard;
 
   error = NULL;
-  gf_notifications_gen_call_notify_finish (GF_NOTIFICATIONS_GEN (source_object),
-                                           &id, res, &error);
+  gf_fd_notifications_gen_call_notify_finish (GF_FD_NOTIFICATIONS_GEN (source_object),
+                                              &id, res, &error);
 
   if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
     {
@@ -396,18 +396,18 @@ ax_stickykeys_warning_post_bubble (GfA11yKeyboard *a11y_keyboard,
   g_variant_builder_add (&hints, "{sv}", "urgency",
                          g_variant_new_byte (0x02 /* critical */));
 
-  gf_notifications_gen_call_notify (a11y_keyboard->notifications,
-                                    _("Universal Access"),
-                                    0,
-                                    icon,
-                                    title,
-                                    message,
-                                    actions,
-                                    g_variant_builder_end (&hints),
-                                    0,
-                                    NULL,
-                                    stickykeys_notify_cb,
-                                    a11y_keyboard);
+  gf_fd_notifications_gen_call_notify (a11y_keyboard->notifications,
+                                       _("Universal Access"),
+                                       0,
+                                       icon,
+                                       title,
+                                       message,
+                                       actions,
+                                       g_variant_builder_end (&hints),
+                                       0,
+                                       NULL,
+                                       stickykeys_notify_cb,
+                                       a11y_keyboard);
 
   g_free (actions);
 }
@@ -753,10 +753,10 @@ ax_response_callback (GfA11yKeyboard *a11y_keyboard,
 }
 
 static void
-action_invoked_cb (GfNotificationsGen *notifications,
-                   guint               id,
-                   const gchar        *action_key,
-                   GfA11yKeyboard     *a11y_keyboard)
+action_invoked_cb (GfFdNotificationsGen *notifications,
+                   guint                 id,
+                   const gchar          *action_key,
+                   GfA11yKeyboard       *a11y_keyboard)
 {
   if (id == a11y_keyboard->slowkeys_id)
     {
@@ -775,10 +775,10 @@ action_invoked_cb (GfNotificationsGen *notifications,
 }
 
 static void
-notification_closed_cb (GfNotificationsGen *notifications,
-                        guint               id,
-                        guint               reason,
-                        GfA11yKeyboard     *a11y_keyboard)
+notification_closed_cb (GfFdNotificationsGen *notifications,
+                        guint                 id,
+                        guint                 reason,
+                        GfA11yKeyboard       *a11y_keyboard)
 {
   if (id == a11y_keyboard->slowkeys_id)
     a11y_keyboard->slowkeys_id = 0;
@@ -792,11 +792,11 @@ notifications_proxy_ready_cb (GObject      *source_object,
                               gpointer      user_data)
 {
   GError *error;
-  GfNotificationsGen *notifications;
+  GfFdNotificationsGen *notifications;
   GfA11yKeyboard *a11y_keyboard;
 
   error = NULL;
-  notifications = gf_notifications_gen_proxy_new_for_bus_finish (res, &error);
+  notifications = gf_fd_notifications_gen_proxy_new_for_bus_finish (res, &error);
 
   if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
     {
@@ -890,17 +890,17 @@ gf_a11y_keyboard_finalize (GObject *object)
 
   if (a11y_keyboard->slowkeys_id != 0)
     {
-      gf_notifications_gen_call_close_notification (a11y_keyboard->notifications,
-                                                    a11y_keyboard->slowkeys_id,
-                                                    NULL, NULL, NULL);
+      gf_fd_notifications_gen_call_close_notification (a11y_keyboard->notifications,
+                                                       a11y_keyboard->slowkeys_id,
+                                                       NULL, NULL, NULL);
       a11y_keyboard->slowkeys_id = 0;
     }
 
   if (a11y_keyboard->stickykeys_id != 0)
     {
-      gf_notifications_gen_call_close_notification (a11y_keyboard->notifications,
-                                                    a11y_keyboard->stickykeys_id,
-                                                    NULL, NULL, NULL);
+      gf_fd_notifications_gen_call_close_notification (a11y_keyboard->notifications,
+                                                       a11y_keyboard->stickykeys_id,
+                                                       NULL, NULL, NULL);
       a11y_keyboard->stickykeys_id = 0;
     }
 
@@ -925,13 +925,13 @@ gf_a11y_keyboard_init (GfA11yKeyboard *a11y_keyboard)
   a11y_keyboard->start_idle_id = g_idle_add (start_a11y_keyboard_idle_cb, a11y_keyboard);
   g_source_set_name_by_id (a11y_keyboard->start_idle_id, "[gnome-flashback] start_a11y_keyboard_idle_cb");
 
-  gf_notifications_gen_proxy_new_for_bus (G_BUS_TYPE_SESSION,
-                                          G_DBUS_PROXY_FLAGS_NONE,
-                                          "org.freedesktop.Notifications",
-                                          "/org/freedesktop/Notifications",
-                                          NULL,
-                                          notifications_proxy_ready_cb,
-                                          a11y_keyboard);
+  gf_fd_notifications_gen_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+                                             G_DBUS_PROXY_FLAGS_NONE,
+                                             "org.freedesktop.Notifications",
+                                             "/org/freedesktop/Notifications",
+                                             NULL,
+                                             notifications_proxy_ready_cb,
+                                             a11y_keyboard);
 }
 
 GfA11yKeyboard *
