@@ -16,26 +16,26 @@
  */
 
 #include "config.h"
+#include "gf-power-applet.h"
 
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <libupower-glib/upower.h>
 #include <math.h>
 
-#include "gf-power-applet.h"
-#include "gf-upower-device.h"
+#include "dbus/gf-upower-device-gen.h"
 
 #define UPOWER_DBUS_NAME "org.freedesktop.UPower"
 #define UPOWER_DEVICE_DBUS_PATH "/org/freedesktop/UPower/devices/DisplayDevice"
 
 struct _GfPowerApplet
 {
-  GObject         parent;
+  GObject            parent;
 
-  gint            bus_name_id;
+  gint               bus_name_id;
 
-  GtkStatusIcon  *status_icon;
-  GfUPowerDevice *device;
+  GtkStatusIcon     *status_icon;
+  GfUPowerDeviceGen *device;
 };
 
 G_DEFINE_TYPE (GfPowerApplet, gf_power_applet, G_TYPE_OBJECT)
@@ -150,7 +150,7 @@ get_icon_name (GfPowerApplet *applet)
   gchar *icon_name;
   gchar *symbolic;
 
-  icon_name = g_strdup (gf_upower_device_get_icon_name (applet->device));
+  icon_name = g_strdup (gf_upower_device_gen_get_icon_name (applet->device));
 
   if (icon_name == NULL || icon_name[0] == '\0')
     {
@@ -176,16 +176,16 @@ get_tooltip_text (GfPowerApplet *applet)
   gdouble hours;
   gdouble percentage;
 
-  state = gf_upower_device_get_state (applet->device);
+  state = gf_upower_device_gen_get_state (applet->device);
 
   if (state == UP_DEVICE_STATE_FULLY_CHARGED)
     return g_strdup (_("Fully Charged"));
   else if (state == UP_DEVICE_STATE_EMPTY)
     return g_strdup (_("Empty"));
   else if (state == UP_DEVICE_STATE_CHARGING)
-    seconds = gf_upower_device_get_time_to_full (applet->device);
+    seconds = gf_upower_device_gen_get_time_to_full (applet->device);
   else if (state == UP_DEVICE_STATE_DISCHARGING)
-    seconds = gf_upower_device_get_time_to_empty (applet->device);
+    seconds = gf_upower_device_gen_get_time_to_empty (applet->device);
   else if (state == UP_DEVICE_STATE_PENDING_CHARGE)
     return g_strdup (_("Not Charging"));
   else
@@ -198,7 +198,7 @@ get_tooltip_text (GfPowerApplet *applet)
 
   minutes = fmod (time, 60);
   hours = floor (time / 60);
-  percentage = gf_upower_device_get_percentage (applet->device);
+  percentage = gf_upower_device_gen_get_percentage (applet->device);
 
   if (state == UP_DEVICE_STATE_DISCHARGING)
     {
@@ -222,7 +222,7 @@ get_title (GfPowerApplet *applet)
 {
   UpDeviceKind type;
 
-  type = gf_upower_device_get_type_ (applet->device);
+  type = gf_upower_device_gen_get_type_ (applet->device);
 
   if (type == UP_DEVICE_KIND_UPS)
     return _("UPS");
@@ -259,7 +259,7 @@ gf_power_applet_sync (GfPowerApplet *applet)
   title = get_title (applet);
   gtk_status_icon_set_title (applet->status_icon, title);
 
-  is_present = gf_upower_device_get_is_present (applet->device);
+  is_present = gf_upower_device_gen_get_is_present (applet->device);
   gtk_status_icon_set_visible (applet->status_icon, is_present);
 
   G_GNUC_END_IGNORE_DEPRECATIONS
@@ -289,7 +289,7 @@ device_proxy_ready_cb (GObject      *source_object,
   applet = GF_POWER_APPLET (user_data);
 
   error = NULL;
-  applet->device = gf_upower_device_proxy_new_for_bus_finish (res, &error);
+  applet->device = gf_upower_device_gen_proxy_new_for_bus_finish (res, &error);
 
   if (error != NULL)
     {
@@ -311,13 +311,13 @@ name_appeared_handler (GDBusConnection *connection,
                        const gchar     *name_owner,
                        gpointer         user_data)
 {
-  gf_upower_device_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
-                                      G_DBUS_PROXY_FLAGS_NONE,
-                                      UPOWER_DBUS_NAME,
-                                      UPOWER_DEVICE_DBUS_PATH,
-                                      NULL,
-                                      device_proxy_ready_cb,
-                                      user_data);
+  gf_upower_device_gen_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
+                                          G_DBUS_PROXY_FLAGS_NONE,
+                                          UPOWER_DBUS_NAME,
+                                          UPOWER_DEVICE_DBUS_PATH,
+                                          NULL,
+                                          device_proxy_ready_cb,
+                                          user_data);
 }
 
 static void
