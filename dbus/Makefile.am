@@ -39,6 +39,12 @@ gf-accounts-user-gen.c: org.freedesktop.Accounts.User.xml
 		--generate-c-code gf-accounts-user-gen \
 		$(srcdir)/org.freedesktop.Accounts.User.xml
 
+gf-audio-device-selection-gen.h:
+gf-audio-device-selection-gen.c: org.gnome.Shell.AudioDeviceSelection.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-audio-device-selection-gen \
+		$(srcdir)/org.gnome.Shell.AudioDeviceSelection.xml
+
 gf-dm-seat-gen.h:
 gf-dm-seat-gen.c: org.freedesktop.DisplayManager.Seat.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
@@ -146,6 +152,8 @@ BUILT_SOURCES = \
 	gf-accounts-gen.h \
 	gf-accounts-user-gen.c \
 	gf-accounts-user-gen.h \
+	gf-audio-device-selection-gen.c \
+	gf-audio-device-selection-gen.h \
 	gf-dm-seat-gen.c \
 	gf-dm-seat-gen.h \
 	gf-fd-application-gen.c \
@@ -197,6 +205,7 @@ EXTRA_DIST = \
 	org.gnome.Nautilus.FileOperations.xml \
 	org.gnome.ScreenSaver.xml \
 	org.gnome.SessionManager.Presence.xml \
+	org.gnome.Shell.AudioDeviceSelection.xml \
 	org.gnome.Shell.Screencast.xml \
 	org.gnome.Shell.Screenshot.xml \
 	org.gnome.Shell.xml \

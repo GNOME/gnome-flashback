@@ -7,7 +7,8 @@ noinst_LTLIBRARIES = \
 libaudio_device_selection_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"audio-device-selection\" \
 	-DG_LOG_USE_STRUCTURED=1 \
-	-I$(top_builddir)/gnome-flashback/libaudio-device-selection \
+	-I$(top_srcdir) \
+	$(AM_CPPFLAGS) \
 	$(NULL)
 
 libaudio_device_selection_la_CFLAGS = \
@@ -21,7 +22,6 @@ libaudio_device_selection_la_SOURCES = \
 	gf-audio-device-selection.h \
 	gf-audio-device-selection-dialog.c \
 	gf-audio-device-selection-dialog.h \
-	$(BUILT_SOURCES) \
 	$(NULL)
 
 libaudio_device_selection_la_LDFLAGS = \
@@ -30,30 +30,8 @@ libaudio_device_selection_la_LDFLAGS = \
 	$(NULL)
 
 libaudio_device_selection_la_LIBADD = \
+	$(top_builddir)/dbus/libdbus.la \
 	$(AUDIO_DEVICE_SELECTION_LIBS) \
-	$(NULL)
-
-gf-audio-device-selection-gen.h:
-gf-audio-device-selection-gen.c: org.gnome.Shell.AudioDeviceSelection.xml
-	$(AM_V_GEN) $(GDBUS_CODEGEN) \
-		--interface-prefix org.gnome.Shell.AudioDeviceSelection. \
-		--generate-c-code gf-audio-device-selection-gen \
-		--c-namespace Gf \
-		--annotate "org.gnome.Shell.AudioDeviceSelection" \
-		           "org.gtk.GDBus.C.Name" AudioDeviceSelectionGen \
-		$(srcdir)/org.gnome.Shell.AudioDeviceSelection.xml
-
-BUILT_SOURCES = \
-	gf-audio-device-selection-gen.c \
-	gf-audio-device-selection-gen.h \
-	$(NULL)
-
-EXTRA_DIST = \
-	org.gnome.Shell.AudioDeviceSelection.xml \
-	$(NULL)
-
-CLEANFILES = \
-	$(BUILT_SOURCES) \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk
