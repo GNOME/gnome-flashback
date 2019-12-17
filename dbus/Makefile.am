@@ -87,6 +87,12 @@ gf-sm-presence-gen.c: org.gnome.SessionManager.Presence.xml
 		--generate-c-code gf-sm-presence-gen \
 		$(srcdir)/org.gnome.SessionManager.Presence.xml
 
+gf-sn-watcher-v0-gen.h:
+gf-sn-watcher-v0-gen.c: org.kde.StatusNotifierWatcher.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-sn-watcher-v0-gen \
+		$(srcdir)/org.kde.StatusNotifierWatcher.xml
+
 BUILT_SOURCES = \
 	gf-accounts-gen.c \
 	gf-accounts-gen.h \
@@ -108,6 +114,8 @@ BUILT_SOURCES = \
 	gf-screensaver-gen.h \
 	gf-sm-presence-gen.c \
 	gf-sm-presence-gen.h \
+	gf-sn-watcher-v0-gen.c \
+	gf-sn-watcher-v0-gen.h \
 	$(NULL)
 
 EXTRA_DIST = \
@@ -121,6 +129,7 @@ EXTRA_DIST = \
 	org.gnome.Nautilus.FileOperations.xml \
 	org.gnome.ScreenSaver.xml \
 	org.gnome.SessionManager.Presence.xml \
+	org.kde.StatusNotifierWatcher.xml \
 	$(NULL)
 
 CLEANFILES = \
