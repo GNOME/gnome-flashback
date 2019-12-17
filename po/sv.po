@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-10-19 09:07+0000\n"
-"PO-Revision-Date: 2019-10-23 22:44+0200\n"
+"POT-Creation-Date: 2019-12-12 20:06+0000\n"
+"PO-Revision-Date: 2019-12-16 21:06+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -148,22 +148,15 @@ msgid "Clipboard"
 msgstr "Urklipp"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
-msgid "Desktop background"
-msgstr "Skrivbordsbakgrund"
+#: gnome-flashback/libdesktop/gf-desktop-window.c:815
+msgid "Desktop"
+msgstr "Skrivbord"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:34
-msgid ""
-"If set to true, then GNOME Flashback application will be used to draw the "
-"desktop background."
-msgstr ""
-"Om satt till true (sant) kommer programmet GNOME Flashback att användas för "
-"att rita ut skrivbordsbakgrunden."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "End session dialog"
 msgstr "Dialog för att avsluta session"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:40
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
@@ -171,11 +164,11 @@ msgstr ""
 "Om satt till true (sant) kommer programmet GNOME Flashback att användas för "
 "att avsluta sessionsdialogen."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:45
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "Idle monitor"
 msgstr "Inaktivitetsövervakare"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:45
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
@@ -183,15 +176,15 @@ msgstr ""
 "Om satt till true (sant) kommer programmet GNOME Flashback att användas för "
 "övervakning av användaraktivitet."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:51
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
 msgid "Input settings"
 msgstr "Inmatningsinställningar"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
 msgid "Keyboard layouts and input methods"
 msgstr "Tangentbordslayout och inmatningsmetoder"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:57
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -199,11 +192,11 @@ msgstr ""
 "Om satt till true (sant) kommer programmet GNOME Flashback att användas för "
 "att hantera tangentbordslayouter och inmatningsmetoder."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid "Notification daemon"
 msgstr "Aviseringsdemon"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:63
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
@@ -211,21 +204,21 @@ msgstr ""
 "Om satt till true (sant) kommer programmet GNOME Flashback att användas för "
 "att hantera aviseringar."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:68
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
 msgid "Authentication agent for polkit"
 msgstr "Auktoriseringsagent för polkit"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:69
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:68
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
 "Det här är samma auktoriseringsagent som tillhandahölls av PolicyKit-gnome."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:74
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
 msgid "Power applet"
 msgstr "Strömminiprogram"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:75
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:74
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "power applet."
@@ -233,11 +226,17 @@ msgstr ""
 "Om satt till true (sant) kommer programmet GNOME Flashback att användas för "
 "att visa ett strömminiprogram."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:80
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
+#, fuzzy
+#| msgid "Desktop background"
+msgid "Root background"
+msgstr "Skrivbordsbakgrund"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
 msgid "Screencasts"
 msgstr "Skärmsändningar"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:81
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -245,11 +244,11 @@ msgstr ""
 "Om satt till true (sant) kommer programmet GNOME Flashback att användas för "
 "att spela in skärmen."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:86
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid "Screensaver"
 msgstr "Skärmsläckare"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:87
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
@@ -257,11 +256,11 @@ msgstr ""
 "Om satt till true (sant) kommer programmet GNOME Flashback att användas som "
 "en skärmsläckare."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:92
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
 msgid "Screenshots"
 msgstr "Skärmbilder"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:93
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -269,22 +268,22 @@ msgstr ""
 "Om satt till true (sant) kommer programmet GNOME Flashback att användas för "
 "att ta skärmbilder."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:98
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:102
 msgid "Shell"
 msgstr "Skal"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:99
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr ""
 "Om satt till true (sant) kommer programmet GNOME Flashback att användas som "
 "ett skal."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:104
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:108
 msgid "Sound applet"
 msgstr "Ljudminiprogram"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:105
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:109
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show a "
 "sound applet. This is the same sound applet that used to be a part of GNOME "
@@ -294,11 +293,11 @@ msgstr ""
 "att visa ett ljudminiprogram. Det är samma ljudminiprogram som brukade vara "
 "en del av GNOME Kontrollpanel."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:110
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:114
 msgid "Status Notifier Watcher"
 msgstr "Bevakare för statusaviserare"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:111
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:115
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -306,17 +305,120 @@ msgstr ""
 "Om satt till true (sant) kommer programmet GNOME Flashback att användas som "
 "en bevakare för statusaviseringar."
 
-#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:5
+msgid "Draw desktop background"
+msgstr "Rita ut skrivbordsbakgrund"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:6
+msgid "If set to true, then GNOME Flashback will draw the desktop background."
+msgstr ""
+"Om satt till true (sant) kommer GNOME Flashback att rita ut "
+"skrivbordsbakgrunden."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:11
+msgid "Show desktop icons"
+msgstr "Visa skrivbordsikoner"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:12
+msgid ""
+"If set to true, then GNOME Flashback will draw the icons on the desktop."
+msgstr ""
+"Om satt till true (sant) kommer GNOME Flashback att rita ut ikonerna på "
+"skrivbordet."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:5
 msgid "Fade the background on change"
 msgstr "Tona bakgrunden vid bakgrundsbyte"
 
-#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:6
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:6
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
 msgstr ""
 "Om satt till true (sant) kommer en toningseffekt användas vid byte av "
 "skrivbordsbakgrund."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:5
+msgid "Icon size"
+msgstr "Ikonstorlek"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:6
+msgid "The size of desktop icons."
+msgstr "Storleken för skrivbordsikoner."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
+#: gnome-flashback/libdesktop/gf-icon-view.c:1213
+msgid "Placement"
+msgstr "Placering"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:12
+msgid ""
+"Can be one of \"auto-arrange-icons\", \"align-icons-to-grid\" or \"free\". "
+"It controls how icons are placed on desktop."
+msgstr ""
+"Kan vara en av ”auto-arrange-icons”, ”align-icons-to-grid” eller ”free”. Det "
+"styr hur ikoner placeras på skrivbordet."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
+#: gnome-flashback/libdesktop/gf-icon-view.c:1219
+msgid "Sort by"
+msgstr "Sortera efter"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:18
+msgid ""
+"Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons "
+"are sorted in \"auto-arrange-icons\" placement."
+msgstr ""
+"Kan vara en av ”name”, ”date-modified” eller ”size”. Det styr hur ikoner "
+"sorteras vid placeringen ”auto-arrange-icons”."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
+msgid "Extra text width"
+msgstr "Extra textbredd"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:25
+msgid "Extra width for icon text."
+msgstr "Extra bredd för ikontext."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:31
+msgid "Column spacing"
+msgstr "Kolumnavstånd"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:32
+msgid "The amount of space between columns."
+msgstr "Mängden utrymme mellan kolumner."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:38
+msgid "Row spacing"
+msgstr "Radavstånd"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:39
+msgid "The amount of space between rows."
+msgstr "Mängden utrymme mellan rader."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:44
+msgid "Show home icon"
+msgstr "Visa hemikon"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:45
+msgid ""
+"If this is set to true, an icon linking to the home folder will be put on "
+"the desktop."
+msgstr ""
+"Om detta är satt till true (sant), kommer en ikon som länkar till hemmappen "
+"att placeras på skrivbordet."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:50
+msgid "Show trash icon"
+msgstr "Visa papperskorgsikon"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:51
+msgid ""
+"If this is set to true, an icon linking to the trash will be put on the "
+"desktop."
+msgstr ""
+"Om detta är satt till true (sant), kommer en ikon som länkar till "
+"papperskorgen att placeras på skrivbordet."
 
 #: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
 msgid "The background color"
@@ -485,6 +587,7 @@ msgid "Sound Settings"
 msgstr "Ljudinställningar"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:104
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
 msgid "Cancel"
 msgstr "Avbryt"
@@ -650,6 +753,130 @@ msgstr[1] "%d anslutna enheter"
 #: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
 msgid "Not Connected"
 msgstr "Ej ansluten"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
+#: gnome-flashback/libdesktop/gf-icon-view.c:1201
+msgid "New Folder"
+msgstr "Ny mapp"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:112
+msgid "Create"
+msgstr "Skapa"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:140
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "Folder name"
+msgstr "Mappnamn"
+
+#: gnome-flashback/libdesktop/gf-home-icon.c:45
+msgid "Home"
+msgstr "Hem"
+
+#: gnome-flashback/libdesktop/gf-icon.c:524
+msgid "Open"
+msgstr "Öppna"
+
+#: gnome-flashback/libdesktop/gf-icon.c:560
+msgid "Move to Trash"
+msgstr "Flytta till papperskorgen"
+
+#: gnome-flashback/libdesktop/gf-icon.c:580
+msgid "Rename..."
+msgstr "Byt namn…"
+
+#: gnome-flashback/libdesktop/gf-icon.c:600
+msgid "Empty Trash"
+msgstr "Töm papperskorgen"
+
+#: gnome-flashback/libdesktop/gf-icon.c:614
+msgid "Properties"
+msgstr "Egenskaper"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:997
+msgid "Auto arrange icons"
+msgstr "Ordna ikoner automatiskt"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1001
+msgid "Align icons to grid"
+msgstr "Justera ikoner till rutnät"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1005
+msgctxt "Free placement of icons"
+msgid "Free"
+msgstr "Fri"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1105
+msgid "Name"
+msgstr "Namn"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1109
+msgid "Date modified"
+msgstr "Ändringsdatum"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1113
+msgid "Size"
+msgstr "Storlek"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1229
+msgid "Change Background"
+msgstr "Ändra bakgrund"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1237
+#, fuzzy
+msgid "Display Settings"
+msgstr "Visningsinställningar"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1249
+msgid "Open Terminal"
+msgstr "Öppna terminal"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3045
+msgid "Folder names cannot contain “/”."
+msgstr "Mappnamn kan inte innehålla ”/”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3047
+msgid "File names cannot contain “/”."
+msgstr "Filnamn kan inte innehålla ”/”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3054
+msgid "A folder cannot be called “.”."
+msgstr "En mapp kan inte kallas ”.”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3056
+msgid "A file cannot be called “.”."
+msgstr "En fil kan inte kallas ”.”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3063
+msgid "A folder cannot be called “..”."
+msgstr "En mapp kan inte kallas ”..”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3065
+msgid "A file cannot be called “..”."
+msgstr "En fil kan inte kallas ”..”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3081
+msgid "A folder with that name already exists."
+msgstr "Det finns redan en mapp med det namnet."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3083
+msgid "A file with that name already exists."
+msgstr "Det finns redan en fil med det namnet."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3094
+msgid "Folders with “.” at the beginning of their name are hidden."
+msgstr "Mappar med ”.” i början på sitt namn är dolda."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3096
+msgid "Files with “.” at the beginning of their name are hidden."
+msgstr "Filer med ”.” i början på sitt namn är dolda."
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "File name"
+msgstr "Filnamn"
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:254
+msgid "Rename"
+msgstr "Byt namn"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
@@ -927,6 +1154,14 @@ msgstr "UPS"
 #: gnome-flashback/libpower-applet/gf-power-applet.c:230
 msgid "Battery"
 msgstr "Batteri"
+
+#: gnome-flashback/libscreensaver/gf-auth.c:424
+msgid "Your account was given a time limit that has now passed."
+msgstr "Ditt konto gavs en tidsgräns som nu har passerats."
+
+#: gnome-flashback/libscreensaver/gf-auth.c:428
+msgid "Sorry, that didn’t work. Please try again."
+msgstr "Tyvärr, det fungerade inte. Försök igen."
 
 #: gnome-flashback/libsound-applet/gf-sound-applet.c:268
 msgid "Output"
