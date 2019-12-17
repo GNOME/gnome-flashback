@@ -129,6 +129,12 @@ gf-screenshot-gen.c: org.gnome.Shell.Screenshot.xml
 		--generate-c-code gf-screenshot-gen \
 		$(srcdir)/org.gnome.Shell.Screenshot.xml
 
+gf-sd-rfkill-gen.h:
+gf-sd-rfkill-gen.c: org.gnome.SettingsDaemon.Rfkill.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-sd-rfkill-gen \
+		$(srcdir)/org.gnome.SettingsDaemon.Rfkill.xml
+
 gf-shell-gen.h:
 gf-shell-gen.c: org.gnome.Shell.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
@@ -182,6 +188,8 @@ BUILT_SOURCES = \
 	gf-screensaver-gen.h \
 	gf-screenshot-gen.c \
 	gf-screenshot-gen.h \
+	gf-sd-rfkill-gen.c \
+	gf-sd-rfkill-gen.h \
 	gf-shell-gen.c \
 	gf-shell-gen.h \
 	gf-sm-presence-gen.c \
@@ -205,6 +213,7 @@ EXTRA_DIST = \
 	org.gnome.Nautilus.FileOperations.xml \
 	org.gnome.ScreenSaver.xml \
 	org.gnome.SessionManager.Presence.xml \
+	org.gnome.SettingsDaemon.Rfkill.xml \
 	org.gnome.Shell.AudioDeviceSelection.xml \
 	org.gnome.Shell.Screencast.xml \
 	org.gnome.Shell.Screenshot.xml \
