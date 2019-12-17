@@ -81,6 +81,12 @@ gf-screensaver-gen.c: org.gnome.ScreenSaver.xml
 		--generate-c-code gf-screensaver-gen \
 		$(srcdir)/org.gnome.ScreenSaver.xml
 
+gf-screenshot-gen.h:
+gf-screenshot-gen.c: org.gnome.Shell.Screenshot.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-screenshot-gen \
+		$(srcdir)/org.gnome.Shell.Screenshot.xml
+
 gf-shell-gen.h:
 gf-shell-gen.c: org.gnome.Shell.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
@@ -118,6 +124,8 @@ BUILT_SOURCES = \
 	gf-nautilus-gen.h \
 	gf-screensaver-gen.c \
 	gf-screensaver-gen.h \
+	gf-screenshot-gen.c \
+	gf-screenshot-gen.h \
 	gf-shell-gen.c \
 	gf-shell-gen.h \
 	gf-sm-presence-gen.c \
@@ -137,6 +145,7 @@ EXTRA_DIST = \
 	org.gnome.Nautilus.FileOperations.xml \
 	org.gnome.ScreenSaver.xml \
 	org.gnome.SessionManager.Presence.xml \
+	org.gnome.Shell.Screenshot.xml \
 	org.gnome.Shell.xml \
 	org.kde.StatusNotifierWatcher.xml \
 	$(NULL)
