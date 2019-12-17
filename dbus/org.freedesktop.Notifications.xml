@@ -3,6 +3,7 @@
 "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
   <interface name="org.freedesktop.Notifications">
+    <annotation name="org.gtk.GDBus.C.Name" value="FdNotificationsGen" />
 
     <method name="CloseNotification">
       <arg type="u" name="id" direction="in" />

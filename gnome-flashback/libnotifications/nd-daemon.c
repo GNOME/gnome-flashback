@@ -19,12 +19,12 @@
  */
 
 #include "config.h"
+#include "nd-daemon.h"
 
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-#include "nd-daemon.h"
-#include "gf-fd-notifications-gen.h"
+#include "dbus/gf-fd-notifications-gen.h"
 #include "nd-notification.h"
 #include "nd-queue.h"
 

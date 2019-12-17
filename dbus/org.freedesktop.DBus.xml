@@ -3,6 +3,7 @@
 "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
   <interface name="org.freedesktop.DBus">
+    <annotation name="org.gtk.GDBus.C.Name" value="FdDBusGen" />
 
     <method name="GetConnectionUnixProcessID">
       <arg type="s" direction="in" />

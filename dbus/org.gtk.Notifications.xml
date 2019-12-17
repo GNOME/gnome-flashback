@@ -2,16 +2,18 @@
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
 "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
-  <interface name="org.freedesktop.Application">
+  <interface name="org.gtk.Notifications">
+    <annotation name="org.gtk.GDBus.C.Name" value="GtkNotificationsGen" />
 
-    <method name="Activate">
+    <method name="AddNotification">
+      <arg type="s" direction="in" />
+      <arg type="s" direction="in" />
       <arg type="a{sv}" direction="in" />
     </method>
 
-    <method name="ActivateAction">
+    <method name="RemoveNotification">
       <arg type="s" direction="in" />
-      <arg type="av" direction="in" />
-      <arg type="a{sv}" direction="in" />
+      <arg type="s" direction="in" />
     </method>
 
   </interface>
