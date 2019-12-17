@@ -1,7 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
   <interface name="org.gnome.SettingsDaemon.Rfkill">
-
-    <annotation name="org.gtk.GDBus.C.Name" value="SdRfkill" />
+    <annotation name="org.gtk.GDBus.C.Name" value="SdRfkillGen" />
 
     <property name="AirplaneMode" type="b" access="readwrite" />
     <property name="HardwareAirplaneMode" type="b" access="read" />

@@ -16,13 +16,13 @@
  */
 
 #include "config.h"
+#include "gf-bluetooth-applet.h"
 
 #include <bluetooth-client.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-#include "gf-bluetooth-applet.h"
-#include "gf-sd-rfkill.h"
+#include "dbus/gf-sd-rfkill-gen.h"
 
 #define GSM_DBUS_NAME "org.gnome.SettingsDaemon.Rfkill"
 #define GSM_DBUS_PATH "/org/gnome/SettingsDaemon/Rfkill"
@@ -34,7 +34,7 @@ struct _GfBluetoothApplet
   gint             bus_name_id;
 
   GtkStatusIcon   *status_icon;
-  GfSdRfkill      *rfkill;
+  GfSdRfkillGen   *rfkill;
   BluetoothClient *client;
   GtkTreeModel    *model;
 };
@@ -52,7 +52,7 @@ turn_off_cb (GtkMenuItem *item,
   if (applet->rfkill == NULL)
     return;
 
-  gf_sd_rfkill_set_bluetooth_airplane_mode (applet->rfkill, TRUE);
+  gf_sd_rfkill_gen_set_bluetooth_airplane_mode (applet->rfkill, TRUE);
 }
 
 static void
@@ -99,7 +99,7 @@ turn_on_cb (GtkMenuItem *item,
   if (applet->rfkill == NULL)
     return;
 
-  gf_sd_rfkill_set_bluetooth_airplane_mode (applet->rfkill, FALSE);
+  gf_sd_rfkill_gen_set_bluetooth_airplane_mode (applet->rfkill, FALSE);
 }
 
 static void
@@ -153,7 +153,7 @@ popup_menu_cb (GtkStatusIcon *status_icon,
 
   airplane_mode = FALSE;
   if (applet->rfkill != NULL)
-    airplane_mode = gf_sd_rfkill_get_bluetooth_airplane_mode (applet->rfkill);
+    airplane_mode = gf_sd_rfkill_gen_get_bluetooth_airplane_mode (applet->rfkill);
 
   if (!airplane_mode)
     {
@@ -264,7 +264,7 @@ gf_bluetooth_applet_sync (GfBluetoothApplet *applet)
 
   airplane_mode = FALSE;
   if (applet->rfkill != NULL)
-    airplane_mode = gf_sd_rfkill_get_bluetooth_airplane_mode (applet->rfkill);
+    airplane_mode = gf_sd_rfkill_gen_get_bluetooth_airplane_mode (applet->rfkill);
 
   if (!airplane_mode)
     {
@@ -332,7 +332,7 @@ rfkill_proxy_ready_cb (GObject      *source_object,
   applet = GF_BLUETOOTH_APPLET (user_data);
 
   error = NULL;
-  applet->rfkill = gf_sd_rfkill_proxy_new_for_bus_finish (res, &error);
+  applet->rfkill = gf_sd_rfkill_gen_proxy_new_for_bus_finish (res, &error);
 
   if (error != NULL)
     {
@@ -392,9 +392,13 @@ name_appeared_handler (GDBusConnection *connection,
                        const gchar     *name_owner,
                        gpointer         user_data)
 {
-  gf_sd_rfkill_proxy_new_for_bus (G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE,
-                                  GSM_DBUS_NAME, GSM_DBUS_PATH, NULL,
-                                  rfkill_proxy_ready_cb, user_data);
+  gf_sd_rfkill_gen_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+                                      G_DBUS_PROXY_FLAGS_NONE,
+                                      GSM_DBUS_NAME,
+                                      GSM_DBUS_PATH,
+                                      NULL,
+                                      rfkill_proxy_ready_cb,
+                                      user_data);
 }
 
 static void
