@@ -21,15 +21,15 @@
 #include <gdk/gdkx.h>
 #include <glib/gi18n.h>
 
+#include "dbus/gf-file-manager-gen.h"
+#include "dbus/gf-nautilus-gen.h"
 #include "gf-create-folder-dialog.h"
 #include "gf-desktop-enum-types.h"
 #include "gf-desktop-enums.h"
 #include "gf-dummy-icon.h"
-#include "gf-file-manager-gen.h"
 #include "gf-home-icon.h"
 #include "gf-icon.h"
 #include "gf-monitor-view.h"
-#include "gf-nautilus-gen.h"
 #include "gf-trash-icon.h"
 #include "gf-utils.h"
 

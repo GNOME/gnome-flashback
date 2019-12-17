@@ -2,6 +2,7 @@ NULL =
 
 SUBDIRS = \
 	data \
+	dbus \
 	backends \
 	gnome-flashback \
 	po \

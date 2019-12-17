@@ -99,6 +99,11 @@ IBUS_REQUIRED=1.5.2
 UPOWER_GLIB_REQUIRED=0.99.0
 XRANDR_REQUIRED=1.5.0
 
+PKG_CHECK_MODULES([DBUS], [
+  gio-2.0 >= $GLIB_REQUIRED
+  gio-unix-2.0 >= $GLIB_REQUIRED
+])
+
 PKG_CHECK_MODULES([BACKENDS], [
   gio-2.0 >= $GLIB_REQUIRED
   gio-unix-2.0 >= $GLIB_REQUIRED
@@ -363,6 +368,8 @@ AC_CONFIG_FILES([
   data/theme/HighContrast/Makefile
   data/ui/Makefile
   data/xsessions/Makefile
+
+  dbus/Makefile
 
   gnome-flashback/Makefile
   gnome-flashback/liba11y-keyboard/Makefile
