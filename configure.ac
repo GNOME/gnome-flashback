@@ -310,6 +310,34 @@ AM_CONDITIONAL([ENABLE_SYSTEMD_SESSION], [test "x$enable_systemd_session" = "xye
 AC_SUBST([HIDDEN_UNDER_SYSTEMD])
 
 dnl **************************************************************************
+dnl System indicators
+dnl **************************************************************************
+
+AC_ARG_WITH([system-indicators],
+            [AS_HELP_STRING([--with-system-indicators], [build with System indicators])],
+            [with_system_indicators="$withval"], [with_system_indicators="auto"])
+
+AS_IF([test "x$with_system_indicators" != "xno"], [
+  PKG_CHECK_EXISTS([libgnome-panel],
+                   [found_libgnome_panel="yes"], [found_libgnome_panel="no"])
+
+  AS_IF([test "x$found_libgnome_panel" = "xyes"], [
+    GNOME_PANEL_MODULES_DIR=`$PKG_CONFIG --variable=modulesdir libgnome-panel`
+    AC_SUBST([GNOME_PANEL_MODULES_DIR], [$GNOME_PANEL_MODULES_DIR])
+
+    PKG_CHECK_MODULES([SYSTEM_INDICATORS], [
+      libgnome-panel
+    ])
+  ], [
+    AS_IF([test "x$with_system_indicators" = "xyes"], [
+      AC_MSG_ERROR([System indicators requested but libgnome-panel not found])
+    ])
+  ])
+], [found_libgnome_panel=no])
+
+AM_CONDITIONAL(WITH_SYSTEM_INDICATORS, [test "x$found_libgnome_panel" = "xyes"])
+
+dnl **************************************************************************
 dnl Compiz session
 dnl **************************************************************************
 
@@ -395,6 +423,8 @@ AC_CONFIG_FILES([
   gnome-flashback/libsound-applet/gvc/Makefile
   gnome-flashback/libstatus-notifier-watcher/Makefile
 
+  system-indicators/Makefile
+
   po/Makefile.in
 ])
 
@@ -419,5 +449,6 @@ echo "  libdir ......................: ${libdir}"
 echo "  sysconfdir ..................: ${sysconfdir}"
 echo "  libexecdir ..................: ${libexecdir}"
 echo ""
+echo "  System indicators ...........: ${found_libgnome_panel}"
 echo "  Compiz session ..............: ${found_compiz}"
 echo ""

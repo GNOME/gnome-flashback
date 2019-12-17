@@ -5,6 +5,7 @@ SUBDIRS = \
 	dbus \
 	backends \
 	gnome-flashback \
+	system-indicators \
 	po \
 	$(NULL)
 
