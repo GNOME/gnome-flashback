@@ -18,8 +18,8 @@
 #include "config.h"
 #include "gf-user-image.h"
 
-#include "gf-accounts-gen.h"
-#include "gf-accounts-user-gen.h"
+#include "dbus/gf-accounts-gen.h"
+#include "dbus/gf-accounts-user-gen.h"
 
 struct _GfUserImage
 {

@@ -25,7 +25,7 @@
 
 #include <gdk/gdkx.h>
 
-#include "gf-sm-presence-gen.h"
+#include "dbus/gf-sm-presence-gen.h"
 #include "gf-watcher.h"
 
 #define SESSION_MANAGER_DBUS_NAME "org.gnome.SessionManager"

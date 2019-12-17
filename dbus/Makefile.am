@@ -27,11 +27,47 @@ libdbus_la_LIBADD = \
 	$(DBUS_LIBS) \
 	$(NULL)
 
+gf-accounts-gen.h:
+gf-accounts-gen.c: org.freedesktop.Accounts.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-accounts-gen \
+		$(srcdir)/org.freedesktop.Accounts.xml
+
+gf-accounts-user-gen.h:
+gf-accounts-user-gen.c: org.freedesktop.Accounts.User.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-accounts-user-gen \
+		$(srcdir)/org.freedesktop.Accounts.User.xml
+
+gf-dm-seat-gen.h:
+gf-dm-seat-gen.c: org.freedesktop.DisplayManager.Seat.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-dm-seat-gen \
+		$(srcdir)/org.freedesktop.DisplayManager.Seat.xml
+
 gf-file-manager-gen.h:
 gf-file-manager-gen.c: org.freedesktop.FileManager1.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
 		--generate-c-code gf-file-manager-gen \
 		$(srcdir)/org.freedesktop.FileManager1.xml
+
+gf-login-manager-gen.h:
+gf-login-manager-gen.c: org.freedesktop.login1.Manager.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-login-manager-gen \
+		$(srcdir)/org.freedesktop.login1.Manager.xml
+
+gf-login-seat-gen.h:
+gf-login-seat-gen.c: org.freedesktop.login1.Seat.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-login-seat-gen \
+		$(srcdir)/org.freedesktop.login1.Seat.xml
+
+gf-login-session-gen.h:
+gf-login-session-gen.c: org.freedesktop.login1.Session.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-login-session-gen \
+		$(srcdir)/org.freedesktop.login1.Session.xml
 
 gf-nautilus-gen.h:
 gf-nautilus-gen.c: org.gnome.Nautilus.FileOperations.xml
@@ -39,16 +75,52 @@ gf-nautilus-gen.c: org.gnome.Nautilus.FileOperations.xml
 		--generate-c-code gf-nautilus-gen \
 		$(srcdir)/org.gnome.Nautilus.FileOperations.xml
 
+gf-screensaver-gen.h:
+gf-screensaver-gen.c: org.gnome.ScreenSaver.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-screensaver-gen \
+		$(srcdir)/org.gnome.ScreenSaver.xml
+
+gf-sm-presence-gen.h:
+gf-sm-presence-gen.c: org.gnome.SessionManager.Presence.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-sm-presence-gen \
+		$(srcdir)/org.gnome.SessionManager.Presence.xml
+
 BUILT_SOURCES = \
+	gf-accounts-gen.c \
+	gf-accounts-gen.h \
+	gf-accounts-user-gen.c \
+	gf-accounts-user-gen.h \
+	gf-dm-seat-gen.c \
+	gf-dm-seat-gen.h \
 	gf-file-manager-gen.c \
 	gf-file-manager-gen.h \
+	gf-login-manager-gen.c \
+	gf-login-manager-gen.h \
+	gf-login-seat-gen.c \
+	gf-login-seat-gen.h \
+	gf-login-session-gen.c \
+	gf-login-session-gen.h \
 	gf-nautilus-gen.c \
 	gf-nautilus-gen.h \
+	gf-screensaver-gen.c \
+	gf-screensaver-gen.h \
+	gf-sm-presence-gen.c \
+	gf-sm-presence-gen.h \
 	$(NULL)
 
 EXTRA_DIST = \
+	org.freedesktop.Accounts.xml \
+	org.freedesktop.Accounts.User.xml \
+	org.freedesktop.DisplayManager.Seat.xml \
 	org.freedesktop.FileManager1.xml \
+	org.freedesktop.login1.Manager.xml \
+	org.freedesktop.login1.Seat.xml \
+	org.freedesktop.login1.Session.xml \
 	org.gnome.Nautilus.FileOperations.xml \
+	org.gnome.ScreenSaver.xml \
+	org.gnome.SessionManager.Presence.xml \
 	$(NULL)
 
 CLEANFILES = \

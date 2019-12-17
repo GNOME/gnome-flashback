@@ -26,9 +26,9 @@
 #include <gio/gunixfdlist.h>
 #include <time.h>
 
-#include "gf-login-manager-gen.h"
-#include "gf-login-session-gen.h"
-#include "gf-screensaver-gen.h"
+#include "dbus/gf-login-manager-gen.h"
+#include "dbus/gf-login-session-gen.h"
+#include "dbus/gf-screensaver-gen.h"
 #include "gf-screensaver-utils.h"
 
 #define SCREENSAVER_DBUS_NAME "org.gnome.ScreenSaver"
