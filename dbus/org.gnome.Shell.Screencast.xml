@@ -1,15 +1,9 @@
-<!DOCTYPE node PUBLIC
-'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN'
-'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd'>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
-
-  <!--
-      org.gnome.Shell.Screencast:
-      @short_description: Screencast interface
-
-      The interface used to record screen contents.
-  -->
   <interface name="org.gnome.Shell.Screencast">
+    <annotation name="org.gtk.GDBus.C.Name" value="ScreencastGen" />
 
     <!--
         Screencast:

@@ -16,11 +16,11 @@
  */
 
 #include "config.h"
+#include "gf-screencast.h"
 
 #include <gtk/gtk.h>
 
-#include "gf-dbus-screencast.h"
-#include "gf-screencast.h"
+#include "dbus/gf-screencast-gen.h"
 
 #define SCREENCAST_DBUS_NAME "org.gnome.Shell.Screencast"
 #define SCREENCAST_DBUS_PATH "/org/gnome/Shell/Screencast"
@@ -36,21 +36,21 @@ struct _GfScreencast
 G_DEFINE_TYPE (GfScreencast, gf_screencast, G_TYPE_OBJECT)
 
 static gboolean
-handle_screencast (GfDBusScreencast      *dbus_screencast,
+handle_screencast (GfScreencastGen       *screencast_gen,
                    GDBusMethodInvocation *invocation,
                    const gchar           *file_template,
                    GVariant              *options,
                    gpointer               user_data)
 {
   g_warning ("screencast: screencast");
-  gf_dbus_screencast_complete_screencast (dbus_screencast, invocation,
-                                          FALSE, "");
+  gf_screencast_gen_complete_screencast (screencast_gen, invocation,
+                                         FALSE, "");
 
   return TRUE;
 }
 
 static gboolean
-handle_screencast_area (GfDBusScreencast      *dbus_screencast,
+handle_screencast_area (GfScreencastGen       *screencast_gen,
                         GDBusMethodInvocation *invocation,
                         gint                   x,
                         gint                   y,
@@ -61,20 +61,19 @@ handle_screencast_area (GfDBusScreencast      *dbus_screencast,
                         gpointer               user_data)
 {
   g_warning ("screencast: screencast-area");
-  gf_dbus_screencast_complete_screencast_area (dbus_screencast, invocation,
-                                               FALSE, "");
+  gf_screencast_gen_complete_screencast_area (screencast_gen, invocation,
+                                              FALSE, "");
 
   return TRUE;
 }
 
 static gboolean
-handle_stop_screencast (GfDBusScreencast      *dbus_screencast,
+handle_stop_screencast (GfScreencastGen       *screencast_gen,
                         GDBusMethodInvocation *invocation,
                         gpointer               user_data)
 {
   g_warning ("screencast: stop-screencast");
-  gf_dbus_screencast_complete_stop_screencast (dbus_screencast, invocation,
-                                               TRUE);
+  gf_screencast_gen_complete_stop_screencast (screencast_gen, invocation, TRUE);
 
   return TRUE;
 }
@@ -86,11 +85,11 @@ name_appeared_handler (GDBusConnection *connection,
                        gpointer         user_data)
 {
   GfScreencast *screencast;
-  GfDBusScreencast *skeleton;
+  GfScreencastGen *skeleton;
   GError *error;
 
   screencast = GF_SCREENCAST (user_data);
-  skeleton = gf_dbus_screencast_skeleton_new ();
+  skeleton = gf_screencast_gen_skeleton_new ();
 
   g_signal_connect (skeleton, "handle-screencast",
                     G_CALLBACK (handle_screencast), screencast);
