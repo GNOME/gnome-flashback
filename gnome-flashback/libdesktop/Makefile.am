@@ -11,6 +11,7 @@ libdesktop_la_CPPFLAGS = \
 	-I$(top_builddir)/gnome-flashback/libcommon \
 	-I$(top_builddir)/gnome-flashback/libdesktop \
 	-I$(top_srcdir)/gnome-flashback \
+	-I$(top_srcdir) \
 	$(NULL)
 
 libdesktop_la_CFLAGS = \
@@ -56,6 +57,7 @@ libdesktop_la_LDFLAGS = \
 	$(NULL)
 
 libdesktop_la_LIBADD = \
+	$(top_builddir)/dbus/libdbus.la \
 	$(top_builddir)/gnome-flashback/libcommon/libcommon.la \
 	$(DESKTOP_LIBS) \
 	$(NULL)
@@ -72,32 +74,14 @@ gf-desktop-enum-types.h: gf-desktop-enum-types.h.in $(ENUM_TYPES)
 	$(AM_V_GEN) $(GLIB_MKENUMS) --template $(srcdir)/gf-desktop-enum-types.h.in $(ENUM_TYPES) > \
 		gf-desktop-enum-types.h.tmp && mv gf-desktop-enum-types.h.tmp gf-desktop-enum-types.h
 
-gf-file-manager-gen.h:
-gf-file-manager-gen.c: org.freedesktop.FileManager1.xml
-	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
-		--generate-c-code gf-file-manager-gen \
-		$(srcdir)/org.freedesktop.FileManager1.xml
-
-gf-nautilus-gen.h:
-gf-nautilus-gen.c: org.gnome.Nautilus.FileOperations.xml
-	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
-		--generate-c-code gf-nautilus-gen \
-		$(srcdir)/org.gnome.Nautilus.FileOperations.xml
-
 BUILT_SOURCES = \
 	gf-desktop-enum-types.c \
 	gf-desktop-enum-types.h \
-	gf-file-manager-gen.c \
-	gf-file-manager-gen.h \
-	gf-nautilus-gen.c \
-	gf-nautilus-gen.h \
 	$(NULL)
 
 EXTRA_DIST = \
 	gf-desktop-enum-types.c.in \
 	gf-desktop-enum-types.h.in \
-	org.freedesktop.FileManager1.xml \
-	org.gnome.Nautilus.FileOperations.xml \
 	$(NULL)
 
 CLEANFILES = \
