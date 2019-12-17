@@ -18,7 +18,7 @@
 #ifndef GF_SN_WATCHER_V0_H
 #define GF_SN_WATCHER_V0_H
 
-#include "gf-sn-watcher-v0-gen.h"
+#include "dbus/gf-sn-watcher-v0-gen.h"
 
 G_BEGIN_DECLS
 
