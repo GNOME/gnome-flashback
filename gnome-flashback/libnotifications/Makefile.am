@@ -7,9 +7,9 @@ noinst_LTLIBRARIES = \
 libnotifications_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"notifications\" \
 	-DG_LOG_USE_STRUCTURED=1 \
-	-I$(srcdir)/../../gnome-flashback \
-	-I$(top_builddir)/gnome-flashback \
-	-I$(top_builddir)/gnome-flashback/libnotifications \
+	-I$(top_srcdir)/gnome-flashback \
+	-I$(top_srcdir) \
+	$(AM_CPPFLAGS) \
 	$(NULL)
 
 libnotifications_la_CFLAGS = \
@@ -33,7 +33,6 @@ libnotifications_la_SOURCES = \
 	nd-queue.h \
 	nd-stack.c \
 	nd-stack.h \
-	$(BUILT_SOURCES) \
 	$(NULL)
 
 libnotifications_la_LDFLAGS = \
@@ -42,70 +41,9 @@ libnotifications_la_LDFLAGS = \
 	$(NULL)
 
 libnotifications_la_LIBADD = \
+	$(top_builddir)/dbus/libdbus.la \
 	$(top_builddir)/gnome-flashback/libcommon/libcommon.la \
 	$(NOTIFICATIONS_LIBS) \
-	$(NULL)
-
-gf-fd-application-gen.h:
-gf-fd-application-gen.c: org.freedesktop.Application.xml
-	$(AM_V_GEN) $(GDBUS_CODEGEN) \
-		--interface-prefix org.freedesktop.Application \
-		--generate-c-code gf-fd-application-gen \
-		--c-namespace Gf \
-		--annotate "org.freedesktop.Application" \
-		           "org.gtk.GDBus.C.Name" FdApplicationGen \
-		$(srcdir)/org.freedesktop.Application.xml
-
-gf-fd-dbus-gen.h:
-gf-fd-dbus-gen.c: org.freedesktop.DBus.xml
-	$(AM_V_GEN) $(GDBUS_CODEGEN) \
-		--interface-prefix org.freedesktop.DBus \
-		--generate-c-code gf-fd-dbus-gen \
-		--c-namespace Gf \
-		--annotate "org.freedesktop.DBus" \
-		           "org.gtk.GDBus.C.Name" FdDBusGen \
-		$(srcdir)/org.freedesktop.DBus.xml
-
-gf-fd-notifications-gen.h:
-gf-fd-notifications-gen.c: org.freedesktop.Notifications.xml
-	$(AM_V_GEN) $(GDBUS_CODEGEN) \
-		--interface-prefix org.freedesktop.Notifications \
-		--generate-c-code gf-fd-notifications-gen \
-		--c-namespace Gf \
-		--annotate "org.freedesktop.Notifications" \
-		           "org.gtk.GDBus.C.Name" FdNotificationsGen \
-		$(srcdir)/org.freedesktop.Notifications.xml
-
-gf-gtk-notifications-gen.h:
-gf-gtk-notifications-gen.c: org.gtk.Notifications.xml
-	$(AM_V_GEN) $(GDBUS_CODEGEN) \
-		--interface-prefix org.gtk.Notifications \
-		--generate-c-code gf-gtk-notifications-gen \
-		--c-namespace Gf \
-		--annotate "org.gtk.Notifications" \
-		           "org.gtk.GDBus.C.Name" GtkNotificationsGen \
-		$(srcdir)/org.gtk.Notifications.xml
-
-BUILT_SOURCES = \
-	gf-fd-application-gen.c \
-	gf-fd-application-gen.h \
-	gf-fd-dbus-gen.c \
-	gf-fd-dbus-gen.h \
-	gf-fd-notifications-gen.c \
-	gf-fd-notifications-gen.h \
-	gf-gtk-notifications-gen.c \
-	gf-gtk-notifications-gen.h \
-	$(NULL)
-
-EXTRA_DIST = \
-	org.freedesktop.Application.xml \
-	org.freedesktop.DBus.xml \
-	org.freedesktop.Notifications.xml \
-	org.gtk.Notifications.xml \
-	$(NULL)
-
-CLEANFILES = \
-	$(BUILT_SOURCES) \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk

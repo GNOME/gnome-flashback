@@ -45,11 +45,35 @@ gf-dm-seat-gen.c: org.freedesktop.DisplayManager.Seat.xml
 		--generate-c-code gf-dm-seat-gen \
 		$(srcdir)/org.freedesktop.DisplayManager.Seat.xml
 
+gf-fd-application-gen.h:
+gf-fd-application-gen.c: org.freedesktop.Application.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-fd-application-gen \
+		$(srcdir)/org.freedesktop.Application.xml
+
+gf-fd-dbus-gen.h:
+gf-fd-dbus-gen.c: org.freedesktop.DBus.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-fd-dbus-gen \
+		$(srcdir)/org.freedesktop.DBus.xml
+
+gf-fd-notifications-gen.h:
+gf-fd-notifications-gen.c: org.freedesktop.Notifications.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-fd-notifications-gen \
+		$(srcdir)/org.freedesktop.Notifications.xml
+
 gf-file-manager-gen.h:
 gf-file-manager-gen.c: org.freedesktop.FileManager1.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
 		--generate-c-code gf-file-manager-gen \
 		$(srcdir)/org.freedesktop.FileManager1.xml
+
+gf-gtk-notifications-gen.h:
+gf-gtk-notifications-gen.c: org.gtk.Notifications.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-gtk-notifications-gen \
+		$(srcdir)/org.gtk.Notifications.xml
 
 gf-login-manager-gen.h:
 gf-login-manager-gen.c: org.freedesktop.login1.Manager.xml
@@ -124,8 +148,16 @@ BUILT_SOURCES = \
 	gf-accounts-user-gen.h \
 	gf-dm-seat-gen.c \
 	gf-dm-seat-gen.h \
+	gf-fd-application-gen.c \
+	gf-fd-application-gen.h \
+	gf-fd-dbus-gen.c \
+	gf-fd-dbus-gen.h \
+	gf-fd-notifications-gen.c \
+	gf-fd-notifications-gen.h \
 	gf-file-manager-gen.c \
 	gf-file-manager-gen.h \
+	gf-gtk-notifications-gen.c \
+	gf-gtk-notifications-gen.h \
 	gf-login-manager-gen.c \
 	gf-login-manager-gen.h \
 	gf-login-seat-gen.c \
@@ -153,11 +185,14 @@ BUILT_SOURCES = \
 EXTRA_DIST = \
 	org.freedesktop.Accounts.xml \
 	org.freedesktop.Accounts.User.xml \
+	org.freedesktop.Application.xml \
+	org.freedesktop.DBus.xml \
 	org.freedesktop.DisplayManager.Seat.xml \
 	org.freedesktop.FileManager1.xml \
 	org.freedesktop.login1.Manager.xml \
 	org.freedesktop.login1.Seat.xml \
 	org.freedesktop.login1.Session.xml \
+	org.freedesktop.Notifications.xml \
 	org.freedesktop.UPower.Device.xml \
 	org.gnome.Nautilus.FileOperations.xml \
 	org.gnome.ScreenSaver.xml \
@@ -165,6 +200,7 @@ EXTRA_DIST = \
 	org.gnome.Shell.Screencast.xml \
 	org.gnome.Shell.Screenshot.xml \
 	org.gnome.Shell.xml \
+	org.gtk.Notifications.xml \
 	org.kde.StatusNotifierWatcher.xml \
 	$(NULL)
 
