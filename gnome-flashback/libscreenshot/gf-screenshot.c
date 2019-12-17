@@ -20,6 +20,7 @@
  */
 
 #include "config.h"
+#include "gf-screenshot.h"
 
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
@@ -27,31 +28,30 @@
 #include <X11/extensions/Xfixes.h>
 #include <X11/Xatom.h>
 
-#include "gf-dbus-screenshot.h"
+#include "dbus/gf-screenshot-gen.h"
 #include "gf-flashspot.h"
-#include "gf-screenshot.h"
 #include "gf-select-area.h"
 
 #define SCREENSHOT_DBUS_NAME "org.gnome.Shell.Screenshot"
 #define SCREENSHOT_DBUS_PATH "/org/gnome/Shell/Screenshot"
 
-typedef void (*GfInvocationCallback) (GfDBusScreenshot      *dbus_screenshot,
+typedef void (*GfInvocationCallback) (GfScreenshotGen       *screenshot_gen,
                                       GDBusMethodInvocation *invocation,
                                       gboolean               result,
                                       const gchar           *filename);
 
 struct _GfScreenshot
 {
-  GObject           parent;
+  GObject          parent;
 
-  GfDBusScreenshot *dbus_screenshot;
-  gint              bus_name;
+  GfScreenshotGen *screenshot_gen;
+  gint             bus_name;
 
-  GHashTable       *senders;
+  GHashTable      *senders;
 
-  GSettings        *lockdown;
+  GSettings       *lockdown;
 
-  GDateTime        *datetime;
+  GDateTime       *datetime;
 };
 
 typedef struct
@@ -1122,7 +1122,7 @@ take_screenshot (GfScreenshot          *screenshot,
 
   if (g_hash_table_lookup (screenshot->senders, sender) != NULL || disabled)
     {
-      callback (screenshot->dbus_screenshot, invocation, FALSE, "");
+      callback (screenshot->screenshot_gen, invocation, FALSE, "");
       return;
     }
 
@@ -1162,7 +1162,7 @@ take_screenshot (GfScreenshot          *screenshot,
       remove_sender (screenshot, sender);
     }
 
-  callback (screenshot->dbus_screenshot, invocation,
+  callback (screenshot->screenshot_gen, invocation,
             result, filename_out ? filename_out : "");
 
   g_free (filename_out);
@@ -1186,54 +1186,47 @@ check_area (gint x,
 }
 
 static gboolean
-handle_screenshot (GfDBusScreenshot      *dbus_screenshot,
+handle_screenshot (GfScreenshotGen       *screenshot_gen,
                    GDBusMethodInvocation *invocation,
                    gboolean               include_cursor,
                    gboolean               flash,
                    const gchar           *filename,
-                   gpointer               user_data)
+                   GfScreenshot          *screenshot)
 {
-  GfScreenshot *screenshot;
   gint scale;
   gint width;
   gint height;
-
-  screenshot = GF_SCREENSHOT (user_data);
 
   scale = get_window_scaling_factor ();
   get_screen_size (&width, &height, scale);
 
   take_screenshot (screenshot, invocation, SCREENSHOT_SCREEN,
                    FALSE, include_cursor, 0, 0, width, height,
-                   gf_dbus_screenshot_complete_screenshot,
+                   gf_screenshot_gen_complete_screenshot,
                    flash, filename);
 
   return TRUE;
 }
 
 static gboolean
-handle_screenshot_window (GfDBusScreenshot      *dbus_screenshot,
+handle_screenshot_window (GfScreenshotGen       *screenshot_gen,
                           GDBusMethodInvocation *invocation,
                           gboolean               include_frame,
                           gboolean               include_cursor,
                           gboolean               flash,
                           const gchar           *filename,
-                          gpointer               user_data)
+                          GfScreenshot          *screenshot)
 {
-  GfScreenshot *screenshot;
-
-  screenshot = GF_SCREENSHOT (user_data);
-
   take_screenshot (screenshot, invocation, SCREENSHOT_WINDOW,
                    include_frame, include_cursor, 0, 0, 0, 0,
-                   gf_dbus_screenshot_complete_screenshot_window,
+                   gf_screenshot_gen_complete_screenshot_window,
                    flash, filename);
 
   return TRUE;
 }
 
 static gboolean
-handle_screenshot_area (GfDBusScreenshot      *dbus_screenshot,
+handle_screenshot_area (GfScreenshotGen       *screenshot_gen,
                         GDBusMethodInvocation *invocation,
                         gint                   x,
                         gint                   y,
@@ -1241,12 +1234,8 @@ handle_screenshot_area (GfDBusScreenshot      *dbus_screenshot,
                         gint                   height,
                         gboolean               flash,
                         const gchar           *filename,
-                        gpointer               user_data)
+                        GfScreenshot          *screenshot)
 {
-  GfScreenshot *screenshot;
-
-  screenshot = GF_SCREENSHOT (user_data);
-
   if (!check_area (x, y, width, height))
     {
       g_dbus_method_invocation_return_error (invocation, G_IO_ERROR,
@@ -1258,14 +1247,14 @@ handle_screenshot_area (GfDBusScreenshot      *dbus_screenshot,
 
   take_screenshot (screenshot, invocation, SCREENSHOT_AREA,
                    FALSE, FALSE, x, y, width, height,
-                   gf_dbus_screenshot_complete_screenshot_area,
+                   gf_screenshot_gen_complete_screenshot_area,
                    flash, filename);
 
   return TRUE;
 }
 
 static gboolean
-handle_flash_area (GfDBusScreenshot      *dbus_screenshot,
+handle_flash_area (GfScreenshotGen       *screenshot_gen,
                    GDBusMethodInvocation *invocation,
                    gint                   x,
                    gint                   y,
@@ -1288,13 +1277,13 @@ handle_flash_area (GfDBusScreenshot      *dbus_screenshot,
   gf_flashspot_fire (flashspot, x, y, width, height);
   g_object_unref (flashspot);
 
-  gf_dbus_screenshot_complete_flash_area (dbus_screenshot, invocation);
+  gf_screenshot_gen_complete_flash_area (screenshot_gen, invocation);
 
   return TRUE;
 }
 
 static gboolean
-handle_select_area (GfDBusScreenshot      *dbus_screenshot,
+handle_select_area (GfScreenshotGen       *screenshot_gen,
                     GDBusMethodInvocation *invocation,
                     gpointer               user_data)
 {
@@ -1322,8 +1311,8 @@ handle_select_area (GfDBusScreenshot      *dbus_screenshot,
        */
       g_usleep (G_USEC_PER_SEC / 5);
 
-      gf_dbus_screenshot_complete_select_area (dbus_screenshot, invocation,
-                                               x, y, width, height);
+      gf_screenshot_gen_complete_select_area (screenshot_gen, invocation,
+                                              x, y, width, height);
     }
   else
     {
@@ -1341,25 +1330,25 @@ bus_acquired_handler (GDBusConnection *connection,
                       gpointer         user_data)
 {
   GfScreenshot *screenshot;
-  GfDBusScreenshot *dbus_screenshot;
+  GfScreenshotGen *screenshot_gen;
   GDBusInterfaceSkeleton *skeleton;
   GError *error;
   gboolean exported;
 
   screenshot = GF_SCREENSHOT (user_data);
 
-  dbus_screenshot = screenshot->dbus_screenshot;
-  skeleton = G_DBUS_INTERFACE_SKELETON (dbus_screenshot);
+  screenshot_gen = screenshot->screenshot_gen;
+  skeleton = G_DBUS_INTERFACE_SKELETON (screenshot_gen);
 
-  g_signal_connect (dbus_screenshot, "handle-screenshot",
+  g_signal_connect (screenshot_gen, "handle-screenshot",
                     G_CALLBACK (handle_screenshot), screenshot);
-  g_signal_connect (dbus_screenshot, "handle-screenshot-window",
+  g_signal_connect (screenshot_gen, "handle-screenshot-window",
                     G_CALLBACK (handle_screenshot_window), screenshot);
-  g_signal_connect (dbus_screenshot, "handle-screenshot-area",
+  g_signal_connect (screenshot_gen, "handle-screenshot-area",
                     G_CALLBACK (handle_screenshot_area), screenshot);
-  g_signal_connect (dbus_screenshot, "handle-flash-area",
+  g_signal_connect (screenshot_gen, "handle-flash-area",
                     G_CALLBACK (handle_flash_area), screenshot);
-  g_signal_connect (dbus_screenshot, "handle-select-area",
+  g_signal_connect (screenshot_gen, "handle-select-area",
                     G_CALLBACK (handle_select_area), screenshot);
 
   error = NULL;
@@ -1389,12 +1378,12 @@ gf_screenshot_dispose (GObject *object)
       screenshot->bus_name = 0;
     }
 
-  if (screenshot->dbus_screenshot)
+  if (screenshot->screenshot_gen)
     {
-      skeleton = G_DBUS_INTERFACE_SKELETON (screenshot->dbus_screenshot);
+      skeleton = G_DBUS_INTERFACE_SKELETON (screenshot->screenshot_gen);
 
       g_dbus_interface_skeleton_unexport (skeleton);
-      g_clear_object (&screenshot->dbus_screenshot);
+      g_clear_object (&screenshot->screenshot_gen);
     }
 
   if (screenshot->senders)
@@ -1423,7 +1412,7 @@ gf_screenshot_class_init (GfScreenshotClass *screenshot_class)
 static void
 gf_screenshot_init (GfScreenshot *screenshot)
 {
-  screenshot->dbus_screenshot = gf_dbus_screenshot_skeleton_new ();
+  screenshot->screenshot_gen = gf_screenshot_gen_skeleton_new ();
 
   screenshot->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,
                                          SCREENSHOT_DBUS_NAME,
