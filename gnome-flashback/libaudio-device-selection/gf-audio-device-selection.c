@@ -16,10 +16,10 @@
  */
 
 #include "config.h"
-
 #include "gf-audio-device-selection.h"
+
+#include "dbus/gf-audio-device-selection-gen.h"
 #include "gf-audio-device-selection-dialog.h"
-#include "gf-audio-device-selection-gen.h"
 
 #define AUDIO_DEVICE_SELECTION_DBUS_NAME "org.gnome.Shell.AudioDeviceSelection"
 #define AUDIO_DEVICE_SELECTION_DBUS_PATH "/org/gnome/Shell/AudioDeviceSelection"
