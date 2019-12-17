@@ -322,6 +322,9 @@ AS_IF([test "x$with_system_indicators" != "xno"], [
                    [found_libgnome_panel="yes"], [found_libgnome_panel="no"])
 
   AS_IF([test "x$found_libgnome_panel" = "xyes"], [
+    GNOME_PANEL_LAYOUTS_DIR=`$PKG_CONFIG --variable=layoutsdir libgnome-panel`
+    AC_SUBST([GNOME_PANEL_LAYOUTS_DIR], [$GNOME_PANEL_LAYOUTS_DIR])
+
     GNOME_PANEL_MODULES_DIR=`$PKG_CONFIG --variable=modulesdir libgnome-panel`
     AC_SUBST([GNOME_PANEL_MODULES_DIR], [$GNOME_PANEL_MODULES_DIR])
 
@@ -387,6 +390,7 @@ AC_CONFIG_FILES([
   data/autostart/Makefile
   data/compizconfig/Makefile
   data/directories/Makefile
+  data/gnome-panel/Makefile
   data/menus/Makefile
   data/schemas/Makefile
   data/sessions/Makefile

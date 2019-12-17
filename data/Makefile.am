@@ -5,6 +5,7 @@ SUBDIRS = \
 	autostart \
 	compizconfig \
 	directories \
+	gnome-panel \
 	menus \
 	schemas \
 	sessions \
