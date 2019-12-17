@@ -16,11 +16,11 @@
  */
 
 #include "config.h"
+#include "gf-end-session-dialog.h"
 
 #include <gtk/gtk.h>
 
-#include "dbus-end-session-dialog.h"
-#include "gf-end-session-dialog.h"
+#include "dbus/gf-end-session-dialog-gen.h"
 #include "gf-inhibit-dialog.h"
 
 struct _GfEndSessionDialog
@@ -36,14 +36,12 @@ struct _GfEndSessionDialog
 G_DEFINE_TYPE (GfEndSessionDialog, gf_end_session_dialog, G_TYPE_OBJECT)
 
 static void
-inhibit_dialog_response (GfInhibitDialog *dialog,
-                         guint            response_id,
-                         gpointer         user_data)
+inhibit_dialog_response (GfInhibitDialog       *dialog,
+                         guint                  response_id,
+                         GfEndSessionDialogGen *object)
 {
-  DBusEndSessionDialog *object;
   gint action;
 
-  object = DBUS_END_SESSION_DIALOG (user_data);
   g_object_get (dialog, "action", &action, NULL);
 
   switch (response_id)
@@ -53,17 +51,17 @@ inhibit_dialog_response (GfInhibitDialog *dialog,
 
       case GF_RESPONSE_ACCEPT:
         if (action == GF_LOGOUT_ACTION_LOGOUT)
-          dbus_end_session_dialog_emit_confirmed_logout (object);
+          gf_end_session_dialog_gen_emit_confirmed_logout (object);
         else if (action == GF_LOGOUT_ACTION_SHUTDOWN)
-          dbus_end_session_dialog_emit_confirmed_shutdown (object);
+          gf_end_session_dialog_gen_emit_confirmed_shutdown (object);
         else if (action == GF_LOGOUT_ACTION_REBOOT)
-          dbus_end_session_dialog_emit_confirmed_reboot (object);
+          gf_end_session_dialog_gen_emit_confirmed_reboot (object);
         else if (action == GF_LOGOUT_ACTION_HIBERNATE)
-          dbus_end_session_dialog_emit_confirmed_hibernate (object);
+          gf_end_session_dialog_gen_emit_confirmed_hibernate (object);
         else if (action == GF_LOGOUT_ACTION_SUSPEND)
-          dbus_end_session_dialog_emit_confirmed_suspend (object);
+          gf_end_session_dialog_gen_emit_confirmed_suspend (object);
         else if (action == GF_LOGOUT_ACTION_HYBRID_SLEEP)
-          dbus_end_session_dialog_emit_confirmed_hybrid_sleep (object);
+          gf_end_session_dialog_gen_emit_confirmed_hybrid_sleep (object);
         else
           g_assert_not_reached ();
         break;
@@ -77,41 +75,30 @@ inhibit_dialog_response (GfInhibitDialog *dialog,
 }
 
 static void
-inhibit_dialog_close (GfInhibitDialog *dialog,
-                      gpointer         user_data)
+inhibit_dialog_close (GfInhibitDialog       *dialog,
+                      GfEndSessionDialogGen *object)
 {
-  DBusEndSessionDialog *object;
-
-  object = DBUS_END_SESSION_DIALOG (user_data);
-
-  dbus_end_session_dialog_emit_canceled (object);
-  dbus_end_session_dialog_emit_closed (object);
+  gf_end_session_dialog_gen_emit_canceled (object);
+  gf_end_session_dialog_gen_emit_closed (object);
 }
 
 static void
-closed (DBusEndSessionDialog *object,
-        gpointer              user_data)
+closed (GfEndSessionDialogGen *object,
+        GfEndSessionDialog    *dialog)
 {
-  GfEndSessionDialog *dialog;
-
-  dialog = GF_END_SESSION_DIALOG (user_data);
-
   dialog->dialog = NULL;
 }
 
 static gboolean
-handle_open (DBusEndSessionDialog  *object,
+handle_open (GfEndSessionDialogGen *object,
              GDBusMethodInvocation *invocation,
              guint                  type,
              guint                  timestamp,
              guint                  seconds_to_stay_open,
              const gchar *const    *inhibitor_object_paths,
-             gpointer               user_data)
+             GfEndSessionDialog    *dialog)
 {
-  GfEndSessionDialog *dialog;
   GfInhibitDialog *inhibit_dialog;
-
-  dialog = GF_END_SESSION_DIALOG (user_data);
 
   if (dialog->dialog != NULL)
     {
@@ -122,7 +109,7 @@ handle_open (DBusEndSessionDialog  *object,
                     NULL);
 
       gf_inhibit_dialog_present (inhibit_dialog, timestamp);
-      dbus_end_session_dialog_complete_open (object, invocation);
+      gf_end_session_dialog_gen_complete_open (object, invocation);
 
       return TRUE;
     }
@@ -143,7 +130,7 @@ handle_open (DBusEndSessionDialog  *object,
                     G_CALLBACK (closed), dialog);
 
   gf_inhibit_dialog_present (inhibit_dialog, timestamp);
-  dbus_end_session_dialog_complete_open (object, invocation);
+  gf_end_session_dialog_gen_complete_open (object, invocation);
 
   return TRUE;
 }
@@ -155,11 +142,11 @@ name_appeared_handler (GDBusConnection *connection,
                        gpointer         user_data)
 {
   GfEndSessionDialog *dialog;
-  DBusEndSessionDialog *skeleton;
+  GfEndSessionDialogGen *skeleton;
   GError *error;
 
   dialog = GF_END_SESSION_DIALOG (user_data);
-  skeleton = dbus_end_session_dialog_skeleton_new ();
+  skeleton = gf_end_session_dialog_gen_skeleton_new ();
 
   dialog->iface = G_DBUS_INTERFACE_SKELETON (skeleton);
 

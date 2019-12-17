@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
-<node xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
   <interface name="org.gnome.SessionManager.EndSessionDialog">
+    <annotation name="org.gtk.GDBus.C.Name" value="EndSessionDialogGen" />
+
     <method name="Open">
       <arg type="u" name="type" direction="in">
         <doc:doc>
@@ -45,6 +48,7 @@
         </doc:summary>
       </doc:doc>
     </method>
+
     <signal name="ConfirmedLogout" />
     <signal name="ConfirmedReboot" />
     <signal name="ConfirmedShutdown" />
@@ -53,5 +57,6 @@
     <signal name="ConfirmedHybridSleep" />
     <signal name="Canceled" />
     <signal name="Closed" />
+
   </interface>
 </node>

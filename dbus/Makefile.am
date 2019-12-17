@@ -51,6 +51,12 @@ gf-dm-seat-gen.c: org.freedesktop.DisplayManager.Seat.xml
 		--generate-c-code gf-dm-seat-gen \
 		$(srcdir)/org.freedesktop.DisplayManager.Seat.xml
 
+gf-end-session-dialog-gen.h:
+gf-end-session-dialog-gen.c: org.gnome.SessionManager.EndSessionDialog.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-end-session-dialog-gen \
+		$(srcdir)/org.gnome.SessionManager.EndSessionDialog.xml
+
 gf-fd-application-gen.h:
 gf-fd-application-gen.c: org.freedesktop.Application.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
@@ -162,6 +168,8 @@ BUILT_SOURCES = \
 	gf-audio-device-selection-gen.h \
 	gf-dm-seat-gen.c \
 	gf-dm-seat-gen.h \
+	gf-end-session-dialog-gen.c \
+	gf-end-session-dialog-gen.h \
 	gf-fd-application-gen.c \
 	gf-fd-application-gen.h \
 	gf-fd-dbus-gen.c \
@@ -212,6 +220,7 @@ EXTRA_DIST = \
 	org.freedesktop.UPower.Device.xml \
 	org.gnome.Nautilus.FileOperations.xml \
 	org.gnome.ScreenSaver.xml \
+	org.gnome.SessionManager.EndSessionDialog.xml \
 	org.gnome.SessionManager.Presence.xml \
 	org.gnome.SettingsDaemon.Rfkill.xml \
 	org.gnome.Shell.AudioDeviceSelection.xml \
