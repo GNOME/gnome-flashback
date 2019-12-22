@@ -18,9 +18,13 @@
 #include "config.h"
 #include "si-applet.h"
 
+#include "si-menu-bar.h"
+
 struct _SiApplet
 {
-  GpApplet parent;
+  GpApplet   parent;
+
+  GtkWidget *menu_bar;
 };
 
 G_DEFINE_TYPE (SiApplet, si_applet, GP_TYPE_APPLET)
@@ -28,6 +32,23 @@ G_DEFINE_TYPE (SiApplet, si_applet, GP_TYPE_APPLET)
 static void
 setup_applet (SiApplet *self)
 {
+  self->menu_bar = si_menu_bar_new ();
+  gtk_container_add (GTK_CONTAINER (self), self->menu_bar);
+  gtk_widget_show (self->menu_bar);
+
+  g_object_bind_property (self,
+                          "enable-tooltips",
+                          self->menu_bar,
+                          "enable-tooltips",
+                          G_BINDING_DEFAULT |
+                          G_BINDING_SYNC_CREATE);
+
+  g_object_bind_property (self,
+                          "position",
+                          self->menu_bar,
+                          "position",
+                          G_BINDING_DEFAULT |
+                          G_BINDING_SYNC_CREATE);
 }
 
 static void
