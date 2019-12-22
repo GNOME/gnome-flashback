@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="org.gnome.Flashback.InputSources">
+    <annotation name="org.gtk.GDBus.C.Name" value="InputSourcesGen" />
+
+    <method name="GetInputSources">
+      <arg type="a(ussb)" name="input_sources" direction="out" />
+      <arg type="a{sv}" name="current_source" direction="out" />
+    </method>
+
+    <method name="Activate">
+      <arg type="u" name="index" direction="in" />
+    </method>
+
+    <method name="ActivateProperty">
+      <arg type="s" name="key" direction="in" />
+    </method>
+
+    <signal name="Changed" />
+
+  </interface>
+</node>

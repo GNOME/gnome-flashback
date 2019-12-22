@@ -87,6 +87,12 @@ gf-gtk-notifications-gen.c: org.gtk.Notifications.xml
 		--generate-c-code gf-gtk-notifications-gen \
 		$(srcdir)/org.gtk.Notifications.xml
 
+gf-input-sources-gen.h:
+gf-input-sources-gen.c: org.gnome.Flashback.InputSources.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-input-sources-gen \
+		$(srcdir)/org.gnome.Flashback.InputSources.xml
+
 gf-login-manager-gen.h:
 gf-login-manager-gen.c: org.freedesktop.login1.Manager.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
@@ -180,6 +186,8 @@ BUILT_SOURCES = \
 	gf-file-manager-gen.h \
 	gf-gtk-notifications-gen.c \
 	gf-gtk-notifications-gen.h \
+	gf-input-sources-gen.c \
+	gf-input-sources-gen.h \
 	gf-login-manager-gen.c \
 	gf-login-manager-gen.h \
 	gf-login-seat-gen.c \
@@ -218,6 +226,7 @@ EXTRA_DIST = \
 	org.freedesktop.login1.Session.xml \
 	org.freedesktop.Notifications.xml \
 	org.freedesktop.UPower.Device.xml \
+	org.gnome.Flashback.InputSources.xml \
 	org.gnome.Nautilus.FileOperations.xml \
 	org.gnome.ScreenSaver.xml \
 	org.gnome.SessionManager.EndSessionDialog.xml \
