@@ -116,6 +116,5 @@
     </key>
 
     <child schema="org.gnome.gnome-flashback.desktop" name="desktop" />
-    <child schema="org.gnome.gnome-flashback.input-sources" name="input-sources" />
   </schema>
 </schemalist>
