@@ -1,0 +1,31 @@
+<schemalist gettext-domain="gnome-flashback">
+  <schema id="org.gnome.gnome-flashback.system-indicators.input-source">
+
+    <key name="generate-symbolic-icon" type="b">
+      <default>true</default>
+      <summary>Generate symbolic icon</summary>
+    </key>
+
+    <key name="icon-bg-color" type="s">
+      <default>'#FFFFFF'</default>
+      <summary>Icon background color</summary>
+    </key>
+
+    <key name="icon-fg-color" type="s">
+      <default>'#000000'</default>
+      <summary>Icon foreground color</summary>
+    </key>
+
+    <key name="icon-font-family" type="s">
+      <default>'Cantarell'</default>
+      <summary>Icon font family</summary>
+    </key>
+
+    <key name="icon-font-weight" type="i">
+      <range min="100" max="1000"/>
+      <default>600</default>
+      <summary>Icon font weight</summary>
+    </key>
+
+  </schema>
+</schemalist>

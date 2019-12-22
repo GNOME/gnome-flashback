@@ -11,6 +11,7 @@ data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml
 data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml
 data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml
 data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml
+data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml
 data/ui/gf-confirm-display-change-dialog.ui
 data/xsessions/gnome-flashback-compiz.desktop.in.in
 data/xsessions/gnome-flashback-metacity.desktop.in.in
@@ -44,4 +45,5 @@ gnome-flashback/libsound-applet/gf-sound-applet.c
 gnome-flashback/libsound-applet/gvc-channel-bar.c
 gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c
 gnome-flashback/libsound-applet/gvc-stream-status-icon.c
+system-indicators/si-input-source.c
 system-indicators/si-module.c

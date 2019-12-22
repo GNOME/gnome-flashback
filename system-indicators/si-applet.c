@@ -18,13 +18,16 @@
 #include "config.h"
 #include "si-applet.h"
 
+#include "si-input-source.h"
 #include "si-menu-bar.h"
 
 struct _SiApplet
 {
-  GpApplet   parent;
+  GpApplet     parent;
 
-  GtkWidget *menu_bar;
+  GtkWidget   *menu_bar;
+
+  SiIndicator *input_source;
 };
 
 G_DEFINE_TYPE (SiApplet, si_applet, GP_TYPE_APPLET)
@@ -32,6 +35,8 @@ G_DEFINE_TYPE (SiApplet, si_applet, GP_TYPE_APPLET)
 static void
 setup_applet (SiApplet *self)
 {
+  GtkWidget *item;
+
   self->menu_bar = si_menu_bar_new ();
   gtk_container_add (GTK_CONTAINER (self), self->menu_bar);
   gtk_widget_show (self->menu_bar);
@@ -49,6 +54,11 @@ setup_applet (SiApplet *self)
                           "position",
                           G_BINDING_DEFAULT |
                           G_BINDING_SYNC_CREATE);
+
+  self->input_source = si_input_source_new (GP_APPLET (self));
+
+  item = si_indicator_get_menu_item (self->input_source);
+  gtk_menu_shell_append (GTK_MENU_SHELL (self->menu_bar), item);
 }
 
 static void
@@ -59,6 +69,18 @@ si_applet_constructed (GObject *object)
 }
 
 static void
+si_applet_dispose (GObject *object)
+{
+  SiApplet *self;
+
+  self = SI_APPLET (object);
+
+  g_clear_object (&self->input_source);
+
+  G_OBJECT_CLASS (si_applet_parent_class)->dispose (object);
+}
+
+static void
 si_applet_class_init (SiAppletClass *self_class)
 {
   GObjectClass *object_class;
@@ -66,6 +88,7 @@ si_applet_class_init (SiAppletClass *self_class)
   object_class = G_OBJECT_CLASS (self_class);
 
   object_class->constructed = si_applet_constructed;
+  object_class->dispose = si_applet_dispose;
 }
 
 static void

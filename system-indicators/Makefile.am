@@ -8,6 +8,7 @@ system_indicators_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"system-indicators\" \
 	-DG_LOG_USE_STRUCTURED=1 \
 	-DLOCALE_DIR=\"$(localedir)\" \
+	-I$(top_srcdir) \
 	$(AM_CPPFLAGS) \
 	$(NULL)
 
@@ -22,12 +23,15 @@ system_indicators_la_SOURCES = \
 	si-applet.h \
 	si-indicator.c \
 	si-indicator.h \
+	si-input-source.c \
+	si-input-source.h \
 	si-menu-bar.c \
 	si-menu-bar.h \
 	si-module.c \
 	$(NULL)
 
 system_indicators_la_LIBADD = \
+	$(top_builddir)/dbus/libdbus.la \
 	$(SYSTEM_INDICATORS_LIBS) \
 	$(NULL)
 
