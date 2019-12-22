@@ -20,6 +20,8 @@ system_indicators_la_CFLAGS = \
 system_indicators_la_SOURCES = \
 	si-applet.c \
 	si-applet.h \
+	si-indicator.c \
+	si-indicator.h \
 	si-menu-bar.c \
 	si-menu-bar.h \
 	si-module.c \
