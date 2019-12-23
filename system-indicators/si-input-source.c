@@ -412,6 +412,9 @@ update_icon (SiInputSource *self)
 {
   gboolean use_ibus_icon;
 
+  if (self->icon_text == NULL && self->icon_file == NULL)
+    return;
+
   use_ibus_icon = g_settings_get_boolean (self->settings,
                                           "use-ibus-icon-if-available");
 
