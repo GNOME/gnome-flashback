@@ -40,7 +40,6 @@ struct _GfInputSources
   GfInputSourceManager *input_source_manager;
 
   GfInputSource        *current_source;
-  GtkStatusIcon        *status_icon;
 };
 
 G_DEFINE_TYPE (GfInputSources, gf_input_sources, G_TYPE_OBJECT)
