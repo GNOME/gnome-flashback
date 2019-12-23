@@ -37,6 +37,8 @@ struct _GfInputSource
   gchar         *xkb_id;
 
   IBusPropList  *prop_list;
+
+  char          *icon_file;
 };
 
 enum
@@ -198,6 +200,7 @@ gf_input_source_finalize (GObject *object)
   g_free (source->display_name);
   g_free (source->short_name);
   g_free (source->xkb_id);
+  g_free (source->icon_file);
 
   G_OBJECT_CLASS (gf_input_source_parent_class)->finalize (object);
 }
@@ -367,4 +370,18 @@ gf_input_source_set_properties (GfInputSource *source,
 
   if (prop_list != NULL)
     source->prop_list = g_object_ref (prop_list);
+}
+
+const char *
+gf_input_source_get_icon_file (GfInputSource *self)
+{
+  return self->icon_file;
+}
+
+void
+gf_input_source_set_icon_file (GfInputSource *self,
+                               const char    *icon_file)
+{
+  g_clear_pointer (&self->icon_file, g_free);
+  self->icon_file = g_strdup (icon_file);
 }

@@ -42,6 +42,7 @@ struct _SiInputSource
   GfInputSourcesGen *input_sources;
 
   char              *icon_text;
+  char              *icon_file;
 };
 
 G_DEFINE_TYPE (SiInputSource, si_input_source, SI_TYPE_INDICATOR)
@@ -406,12 +407,24 @@ get_icon_name (SiInputSource *self)
 static void
 update_icon (SiInputSource *self)
 {
-  char *icon_name;
+  gboolean use_ibus_icon;
 
-  icon_name = get_icon_name (self);
+  use_ibus_icon = g_settings_get_boolean (self->settings,
+                                          "use-ibus-icon-if-available");
 
-  si_indicator_set_icon_name (SI_INDICATOR (self), icon_name);
-  g_free (icon_name);
+  if (use_ibus_icon && self->icon_file != NULL)
+    {
+      si_indicator_set_icon_filename (SI_INDICATOR (self), self->icon_file);
+    }
+  else
+    {
+      char *icon_name;
+
+      icon_name = get_icon_name (self);
+
+      si_indicator_set_icon_name (SI_INDICATOR (self), icon_name);
+      g_free (icon_name);
+    }
 }
 
 static void
@@ -420,6 +433,7 @@ update_indicator_icon (SiInputSource *self,
 {
   GVariantDict dict;
   const char *icon_text;
+  const char *icon_file;
   const char *tooltip;
   GtkWidget *item;
 
@@ -428,19 +442,22 @@ update_indicator_icon (SiInputSource *self,
   if (!g_variant_dict_lookup (&dict, "icon-text", "&s", &icon_text))
     icon_text = NULL;
 
+  if (!g_variant_dict_lookup (&dict, "icon-file", "&s", &icon_file))
+    icon_file = NULL;
+
   if (!g_variant_dict_lookup (&dict, "tooltip", "&s", &tooltip))
     tooltip = NULL;
 
-  if (g_strcmp0 (self->icon_text, icon_text) != 0)
-    {
-      g_clear_pointer (&self->icon_text, g_free);
-      self->icon_text = g_strdup (icon_text);
+  g_clear_pointer (&self->icon_text, g_free);
+  self->icon_text = g_strdup (icon_text);
 
-      update_icon (self);
-    }
+  g_clear_pointer (&self->icon_file, g_free);
+  self->icon_file = g_strdup (icon_file);
 
   item = si_indicator_get_menu_item (SI_INDICATOR (self));
   gtk_widget_set_tooltip_text (item , tooltip);
+
+  update_icon (self);
 }
 
 static void
@@ -1064,6 +1081,7 @@ si_input_source_finalize (GObject *object)
 
   g_clear_pointer (&self->icon_theme_path, g_free);
   g_clear_pointer (&self->icon_text, g_free);
+  g_clear_pointer (&self->icon_file, g_free);
 
   G_OBJECT_CLASS (si_input_source_parent_class)->finalize (object);
 }

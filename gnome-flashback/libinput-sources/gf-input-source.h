@@ -57,4 +57,9 @@ IBusPropList  *gf_input_source_get_properties   (GfInputSource *source);
 void           gf_input_source_set_properties   (GfInputSource *source,
                                                  IBusPropList  *prop_list);
 
+const char    *gf_input_source_get_icon_file    (GfInputSource *self);
+
+void           gf_input_source_set_icon_file    (GfInputSource *self,
+                                                 const char    *icon_file);
+
 #endif

@@ -6,6 +6,11 @@
       <summary>Generate symbolic icon</summary>
     </key>
 
+    <key name="use-ibus-icon-if-available" type="b">
+      <default>false</default>
+      <summary>Use IBus icon if available</summary>
+    </key>
+
     <key name="icon-bg-color" type="s">
       <default>'#FFFFFF'</default>
       <summary>Icon background color</summary>

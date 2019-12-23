@@ -46,6 +46,8 @@ struct _SourceInfo
 
   gchar *display_name;
   gchar *short_name;
+
+  char  *icon_file;
 };
 
 typedef struct
@@ -422,6 +424,7 @@ source_info_free (gpointer data)
   g_free (info->id);
   g_free (info->display_name);
   g_free (info->short_name);
+  g_free (info->icon_file);
 
   g_free (info);
 }
@@ -746,6 +749,7 @@ get_source_info_list (GfInputSourceManager *manager)
           const gchar *language;
           const gchar *longname;
           const gchar *textdomain;
+          const char *icon;
           gchar *display_name;
           gchar *short_name;
 
@@ -762,6 +766,7 @@ get_source_info_list (GfInputSourceManager *manager)
           language = ibus_get_language_name (language_code);
           longname = ibus_engine_desc_get_longname (engine_desc);
           textdomain = ibus_engine_desc_get_textdomain (engine_desc);
+          icon = ibus_engine_desc_get_icon (engine_desc);
 
           if (*textdomain != '\0' && *longname != '\0')
             longname = g_dgettext (textdomain, longname);
@@ -770,6 +775,7 @@ get_source_info_list (GfInputSourceManager *manager)
           short_name = make_engine_short_name (engine_desc);
 
           info = source_info_new (type, id, display_name, short_name);
+          info->icon_file = g_strdup (icon);
 
           g_free (display_name);
           g_free (short_name);
@@ -1192,6 +1198,8 @@ sources_changed_cb (GfInputSourceSettings *settings,
       source = gf_input_source_new (manager->ibus_manager, info->type,
                                     info->id, info->display_name,
                                     info->short_name, position);
+
+      gf_input_source_set_icon_file (source, info->icon_file);
 
       g_signal_connect (source, "activate",
                         G_CALLBACK (activate_cb), manager);
