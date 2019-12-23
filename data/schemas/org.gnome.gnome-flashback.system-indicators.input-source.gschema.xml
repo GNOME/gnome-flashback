@@ -1,11 +1,5 @@
 <schemalist gettext-domain="gnome-flashback">
   <schema id="org.gnome.gnome-flashback.system-indicators.input-source">
-
-    <key name="generate-symbolic-icon" type="b">
-      <default>true</default>
-      <summary>Generate symbolic icon</summary>
-    </key>
-
     <key name="use-ibus-icon-if-available" type="b">
       <default>false</default>
       <summary>Use IBus icon if available</summary>

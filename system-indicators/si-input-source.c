@@ -364,20 +364,23 @@ generate_icon_name (const char *text,
 static gchar *
 get_icon_name (SiInputSource *self)
 {
-  gboolean symbolic;
   char *font_family;
   int font_weight;
   int font_size;
   char *bg_color;
   char *fg_color;
+  GpApplet *applet;
+  gboolean symbolic;
   char *icon_name;
 
-  symbolic = g_settings_get_boolean (self->settings, "generate-symbolic-icon");
   font_family = g_settings_get_string (self->settings, "icon-font-family");
   font_weight = g_settings_get_int (self->settings, "icon-font-weight");
   font_size = 8;
   bg_color = g_settings_get_string (self->settings, "icon-bg-color");
   fg_color = g_settings_get_string (self->settings, "icon-fg-color");
+
+  applet = si_indicator_get_applet (SI_INDICATOR (self));
+  symbolic = gp_applet_get_prefer_symbolic_icons (applet);
 
   icon_name = generate_icon_name (self->icon_text,
                                   font_family,
@@ -464,6 +467,14 @@ static void
 settings_changed_cb (GSettings     *settings,
                      const char    *key,
                      SiInputSource *self)
+{
+  update_icon (self);
+}
+
+static void
+prefer_symbolic_icons_cb (GObject       *object,
+                          GParamSpec    *pspec,
+                          SiInputSource *self)
 {
   update_icon (self);
 }
@@ -1046,6 +1057,11 @@ si_input_source_constructed (GObject *object)
   g_signal_connect (self->settings,
                     "changed",
                     G_CALLBACK (settings_changed_cb),
+                    self);
+
+  g_signal_connect (applet,
+                    "notify::prefer-symbolic-icons",
+                    G_CALLBACK (prefer_symbolic_icons_cb),
                     self);
 }
 
