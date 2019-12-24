@@ -617,12 +617,12 @@ property_activate_cb (GtkMenuItem   *item,
 {
   const char *key;
 
-  g_cancellable_cancel (self->cancellable);
-
-  g_object_unref (self->cancellable);
-  self->cancellable = g_cancellable_new ();
-
   key = g_object_get_data (G_OBJECT (item), "key");
+
+  g_cancellable_cancel (self->cancellable);
+  g_clear_object (&self->cancellable);
+
+  self->cancellable = g_cancellable_new ();
 
   gf_input_sources_gen_call_activate_property (self->input_sources,
                                                key,
@@ -957,8 +957,8 @@ changed_cb (GfInputSourcesGen *input_sources,
             SiInputSource     *self)
 {
   g_cancellable_cancel (self->cancellable);
+  g_clear_object (&self->cancellable);
 
-  g_object_unref (self->cancellable);
   self->cancellable = g_cancellable_new ();
 
   gf_input_sources_gen_call_get_input_sources (self->input_sources,
@@ -1009,6 +1009,9 @@ name_appeared_handler_cb (GDBusConnection *connection,
   SiInputSource *self;
 
   self = SI_INPUT_SOURCE (user_data);
+
+  g_cancellable_cancel (self->cancellable);
+  g_clear_object (&self->cancellable);
 
   self->cancellable = g_cancellable_new ();
 
