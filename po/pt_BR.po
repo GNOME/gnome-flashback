@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-12-12 20:06+0000\n"
-"PO-Revision-Date: 2019-12-14 09:19-0300\n"
+"POT-Creation-Date: 2019-12-23 12:52+0000\n"
+"PO-Revision-Date: 2019-12-24 08:48-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -418,25 +418,29 @@ msgstr ""
 "Se definido como verdadeiro, um ícone vinculado à lixeira será colocado na "
 "área de trabalho."
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
-msgid "The background color"
-msgstr "A cor do plano de fundo"
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml:5
+msgid "Use IBus icon if available"
+msgstr "Usar ícone do IBus se disponível"
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:13
-msgid "The foreground color"
-msgstr "A cor de primeiro plano"
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml:10
+#| msgid "The background color"
+msgid "Icon background color"
+msgstr "A cor de plano de fundo do ícone"
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:18
-msgid "The font family"
-msgstr "A família da fonte"
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml:15
+#| msgid "The foreground color"
+msgid "Icon foreground color"
+msgstr "A cor de primeiro plano do ícone"
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:24
-msgid "The font weight"
-msgstr "O peso da fonte"
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml:20
+#| msgid "The font family"
+msgid "Icon font family"
+msgstr "A família da fonte do ícone"
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
-msgid "Symbolic"
-msgstr "Simbólico"
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml:26
+#| msgid "The font weight"
+msgid "Icon font weight"
+msgstr "O peso da fonte do ícone"
 
 #: data/ui/gf-confirm-display-change-dialog.ui:57
 msgid "Do you want to keep these display settings?"
@@ -980,14 +984,6 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Bloquear tela"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:801
-msgid "Show Keyboard Layout"
-msgstr "Mostrar disposição do teclado"
-
-#: gnome-flashback/libinput-sources/gf-input-sources.c:867
-msgid "Keyboard"
-msgstr "Teclado"
-
 #: gnome-flashback/libnotifications/gf-bubble.c:619
 #: gnome-flashback/libnotifications/gf-bubble.c:623
 #: gnome-flashback/libnotifications/nd-notification-box.c:321
@@ -1226,6 +1222,25 @@ msgstr "Preferências de _som"
 #: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:425
 msgid "Muted"
 msgstr "Mudo"
+
+#: system-indicators/si-input-source.c:851
+msgid "Show Keyboard Layout"
+msgstr "Mostrar disposição do teclado"
+
+#: system-indicators/si-module.c:33
+#| msgid "System Sounds"
+msgid "System Indicators"
+msgstr "Indicadores do sistema"
+
+#: system-indicators/si-module.c:34
+msgid "This applet contains system indicators"
+msgstr "Esse miniaplicativo contém indicadores do sistema"
+
+#~ msgid "Symbolic"
+#~ msgstr "Simbólico"
+
+#~ msgid "Keyboard"
+#~ msgstr "Teclado"
 
 #~ msgid "GNOME Flashback Initialization"
 #~ msgstr "Inicialização do GNOME Flashback"
