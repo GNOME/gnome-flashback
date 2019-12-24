@@ -46,3 +46,4 @@ gnome-flashback/libsound-applet/gvc-stream-status-icon.c
 system-indicators/si-bluetooth.c
 system-indicators/si-input-source.c
 system-indicators/si-module.c
+system-indicators/si-power.c

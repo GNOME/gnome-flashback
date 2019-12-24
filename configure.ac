@@ -326,6 +326,7 @@ AS_IF([test "x$with_system_indicators" != "xno"], [
       gio-unix-2.0 >= $GLIB_REQUIRED
       gnome-bluetooth-1.0
       libgnome-panel
+      upower-glib
     ])
   ], [
     AS_IF([test "x$with_system_indicators" = "xyes"], [

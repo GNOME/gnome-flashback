@@ -21,6 +21,7 @@
 #include "si-bluetooth.h"
 #include "si-input-source.h"
 #include "si-menu-bar.h"
+#include "si-power.h"
 
 struct _SiApplet
 {
@@ -30,9 +31,21 @@ struct _SiApplet
 
   SiIndicator *bluetooth;
   SiIndicator *input_source;
+  SiIndicator *power;
 };
 
 G_DEFINE_TYPE (SiApplet, si_applet, GP_TYPE_APPLET)
+
+static void
+append_power (SiApplet *self)
+{
+  GtkWidget *item;
+
+  self->power = si_power_new (GP_APPLET (self));
+
+  item = si_indicator_get_menu_item (self->power);
+  gtk_menu_shell_append (GTK_MENU_SHELL (self->menu_bar), item);
+}
 
 static void
 append_bluetooth (SiApplet *self)
@@ -79,6 +92,7 @@ setup_applet (SiApplet *self)
 
   append_input_source (self);
   append_bluetooth (self);
+  append_power (self);
 }
 
 static void
@@ -97,6 +111,7 @@ si_applet_dispose (GObject *object)
 
   g_clear_object (&self->bluetooth);
   g_clear_object (&self->input_source);
+  g_clear_object (&self->power);
 
   G_OBJECT_CLASS (si_applet_parent_class)->dispose (object);
 }

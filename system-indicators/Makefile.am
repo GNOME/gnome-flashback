@@ -30,6 +30,8 @@ system_indicators_la_SOURCES = \
 	si-menu-bar.c \
 	si-menu-bar.h \
 	si-module.c \
+	si-power.c \
+	si-power.h \
 	$(NULL)
 
 system_indicators_la_LIBADD = \
