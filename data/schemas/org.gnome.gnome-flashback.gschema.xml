@@ -62,12 +62,6 @@
       <description>This is the same authentication agent that was provided by PolicyKit-gnome.</description>
     </key>
 
-    <key name="power-applet" type="b">
-      <default>true</default>
-      <summary>Power applet</summary>
-      <description>If set to true, then GNOME Flashback application will be used to show a power applet.</description>
-    </key>
-
     <key name="root-background" type="b">
       <default>false</default>
       <summary>Root background</summary>

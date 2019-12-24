@@ -208,12 +208,6 @@ PKG_CHECK_MODULES([POLKIT], [
   polkit-gobject-1 >= $POLKIT_GOBJECT_REQUIRED
 ])
 
-PKG_CHECK_MODULES([POWER_APPLET], [
-  gio-unix-2.0 >= $GLIB_REQUIRED
-  gtk+-3.0 >= $GTK_REQUIRED
-  upower-glib
-])
-
 PKG_CHECK_MODULES([ROOT_BACKGROUND], [
   gtk+-3.0 >= $GTK_REQUIRED
   gnome-desktop-3.0 >= $LIBGNOME_DESKTOP_REQUIRED
@@ -413,7 +407,6 @@ AC_CONFIG_FILES([
   gnome-flashback/libinput-sources/Makefile
   gnome-flashback/libnotifications/Makefile
   gnome-flashback/libpolkit/Makefile
-  gnome-flashback/libpower-applet/Makefile
   gnome-flashback/libroot-background/Makefile
   gnome-flashback/libscreencast/Makefile
   gnome-flashback/libscreensaver/Makefile
