@@ -18,6 +18,7 @@
 #include "config.h"
 #include "si-applet.h"
 
+#include "si-bluetooth.h"
 #include "si-input-source.h"
 #include "si-menu-bar.h"
 
@@ -27,16 +28,37 @@ struct _SiApplet
 
   GtkWidget   *menu_bar;
 
+  SiIndicator *bluetooth;
   SiIndicator *input_source;
 };
 
 G_DEFINE_TYPE (SiApplet, si_applet, GP_TYPE_APPLET)
 
 static void
-setup_applet (SiApplet *self)
+append_bluetooth (SiApplet *self)
 {
   GtkWidget *item;
 
+  self->bluetooth = si_bluetooth_new (GP_APPLET (self));
+
+  item = si_indicator_get_menu_item (self->bluetooth);
+  gtk_menu_shell_append (GTK_MENU_SHELL (self->menu_bar), item);
+}
+
+static void
+append_input_source (SiApplet *self)
+{
+  GtkWidget *item;
+
+  self->input_source = si_input_source_new (GP_APPLET (self));
+
+  item = si_indicator_get_menu_item (self->input_source);
+  gtk_menu_shell_append (GTK_MENU_SHELL (self->menu_bar), item);
+}
+
+static void
+setup_applet (SiApplet *self)
+{
   self->menu_bar = si_menu_bar_new ();
   gtk_container_add (GTK_CONTAINER (self), self->menu_bar);
   gtk_widget_show (self->menu_bar);
@@ -55,10 +77,8 @@ setup_applet (SiApplet *self)
                           G_BINDING_DEFAULT |
                           G_BINDING_SYNC_CREATE);
 
-  self->input_source = si_input_source_new (GP_APPLET (self));
-
-  item = si_indicator_get_menu_item (self->input_source);
-  gtk_menu_shell_append (GTK_MENU_SHELL (self->menu_bar), item);
+  append_input_source (self);
+  append_bluetooth (self);
 }
 
 static void
@@ -75,6 +95,7 @@ si_applet_dispose (GObject *object)
 
   self = SI_APPLET (object);
 
+  g_clear_object (&self->bluetooth);
   g_clear_object (&self->input_source);
 
   G_OBJECT_CLASS (si_applet_parent_class)->dispose (object);

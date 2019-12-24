@@ -21,6 +21,8 @@ system_indicators_la_CFLAGS = \
 system_indicators_la_SOURCES = \
 	si-applet.c \
 	si-applet.h \
+	si-bluetooth.c \
+	si-bluetooth.h \
 	si-indicator.c \
 	si-indicator.h \
 	si-input-source.c \
