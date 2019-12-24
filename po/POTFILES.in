@@ -20,7 +20,6 @@ gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c
 gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c
 gnome-flashback/libautomount-manager/gsd-automount-manager.c
 gnome-flashback/libautomount-manager/gsd-autorun.c
-gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c
 gnome-flashback/libdesktop/gf-create-folder-dialog.c
 gnome-flashback/libdesktop/gf-desktop-window.c
 gnome-flashback/libdesktop/gf-home-icon.c

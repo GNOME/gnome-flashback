@@ -4,7 +4,6 @@ SUBDIRS = \
 	liba11y-keyboard \
 	libaudio-device-selection \
 	libautomount-manager \
-	libbluetooth-applet \
 	libcommon \
 	libclipboard \
 	libdesktop \
@@ -65,7 +64,6 @@ gnome_flashback_LDADD = \
 	$(top_builddir)/gnome-flashback/liba11y-keyboard/liba11y-keyboard.la \
 	$(top_builddir)/gnome-flashback/libaudio-device-selection/libaudio-device-selection.la \
 	$(top_builddir)/gnome-flashback/libautomount-manager/libautomount-manager.la \
-	$(top_builddir)/gnome-flashback/libbluetooth-applet/libbluetooth-applet.la \
 	$(top_builddir)/gnome-flashback/libclipboard/libclipboard.la \
 	$(top_builddir)/gnome-flashback/libdesktop/libdesktop.la \
 	$(top_builddir)/gnome-flashback/libend-session-dialog/libend-session-dialog.la \

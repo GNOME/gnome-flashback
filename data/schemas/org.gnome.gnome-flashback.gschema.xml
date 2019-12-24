@@ -17,12 +17,6 @@
       <description>If set to true, then GNOME Flashback application will be used to automount removable media.</description>
     </key>
 
-    <key name="bluetooth-applet" type="b">
-      <default>true</default>
-      <summary>Bluetooth applet</summary>
-      <description>If set to true, then GNOME Flashback application will be used to show a Bluetooth applet.</description>
-    </key>
-
     <key name="clipboard" type="b">
       <default>true</default>
       <summary>Clipboard</summary>

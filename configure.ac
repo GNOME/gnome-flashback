@@ -139,12 +139,6 @@ PKG_CHECK_MODULES([AUTOMOUNT_MANAGER], [
   gsettings-desktop-schemas >= $GSETTINGS_DESKTOP_SCHEMAS_REQUIRED
 ])
 
-PKG_CHECK_MODULES([BLUETOOTH_APPLET], [
-  gio-unix-2.0 >= $GLIB_REQUIRED
-  gtk+-3.0 >= $GTK_REQUIRED
-  gnome-bluetooth-1.0
-])
-
 PKG_CHECK_MODULES([CLIPBOARD], [
   glib-2.0 >= $GLIB_REQUIRED
   gtk+-3.0 >= $GTK_REQUIRED
@@ -409,7 +403,6 @@ AC_CONFIG_FILES([
   gnome-flashback/liba11y-keyboard/Makefile
   gnome-flashback/libaudio-device-selection/Makefile
   gnome-flashback/libautomount-manager/Makefile
-  gnome-flashback/libbluetooth-applet/Makefile
   gnome-flashback/libcommon/Makefile
   gnome-flashback/libclipboard/Makefile
   gnome-flashback/libdesktop/Makefile
