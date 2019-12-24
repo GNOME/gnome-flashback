@@ -444,14 +444,12 @@ get_default_adapter (SiBluetooth *self)
   while (valid)
     {
       gboolean is_default;
-      gboolean is_powered;
 
       gtk_tree_model_get (self->model, &iter,
                           BLUETOOTH_COLUMN_DEFAULT, &is_default,
-                          BLUETOOTH_COLUMN_POWERED, &is_powered,
                           -1);
 
-      if (is_default && is_powered)
+      if (is_default)
         return gtk_tree_iter_copy (&iter);
 
       valid = gtk_tree_model_iter_next (self->model , &iter);
