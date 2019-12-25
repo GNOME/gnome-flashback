@@ -1,9 +1,5 @@
 NULL =
 
-SUBDIRS = \
-	gvc \
-	$(NULL)
-
 noinst_LTLIBRARIES = \
 	libsound-applet.la \
 	$(NULL)
@@ -11,9 +7,7 @@ noinst_LTLIBRARIES = \
 libsound_applet_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"sound-applet\" \
 	-DG_LOG_USE_STRUCTURED=1 \
-	-I$(top_builddir)/gnome-flashback/libsound-applet \
-	-I$(top_srcdir) \
-	-I$(srcdir)/gvc \
+	-I$(top_srcdir)/gvc/gvc \
 	$(NULL)
 
 libsound_applet_la_CFLAGS = \
@@ -37,7 +31,7 @@ libsound_applet_la_LDFLAGS = \
 	$(NULL)
 
 libsound_applet_la_LIBADD = \
-	$(top_builddir)/gnome-flashback/libsound-applet/gvc/libgvc.la \
+	$(top_builddir)/gvc/gvc/libgvc.la \
 	$(SOUND_APPLET_LIBS) \
 	$(LIBM) \
 	$(NULL)

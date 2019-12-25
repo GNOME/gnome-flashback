@@ -413,8 +413,10 @@ AC_CONFIG_FILES([
   gnome-flashback/libscreenshot/Makefile
   gnome-flashback/libshell/Makefile
   gnome-flashback/libsound-applet/Makefile
-  gnome-flashback/libsound-applet/gvc/Makefile
   gnome-flashback/libstatus-notifier-watcher/Makefile
+
+  gvc/Makefile
+  gvc/gvc/Makefile
 
   system-indicators/Makefile
 

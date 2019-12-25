@@ -4,6 +4,7 @@ SUBDIRS = \
 	data \
 	dbus \
 	backends \
+	gvc \
 	gnome-flashback \
 	system-indicators \
 	po \
