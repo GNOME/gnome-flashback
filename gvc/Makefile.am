@@ -4,10 +4,6 @@ noinst_LTLIBRARIES = \
 	libgvc.la \
 	$(NULL)
 
-noinst_PROGRAMS = \
-	test-audio-device-selection \
-	$(NULL)
-
 libgvc_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"gvc\" \
 	-DG_LOG_USE_STRUCTURED=1 \
@@ -58,6 +54,19 @@ libgvc_la_LIBADD = \
 	$(GVC_LIBS) \
 	$(NULL)
 
+if HAVE_ALSA
+libgvc_la_CFLAGS += \
+	$(ALSA_CFLAGS) \
+	$(NULL)
+
+libgvc_la_LIBADD += \
+	$(ALSA_LIBS) \
+	$(NULL)
+
+noinst_PROGRAMS = \
+	test-audio-device-selection \
+	$(NULL)
+
 test_audio_device_selection_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"gvc\" \
 	-DG_LOG_USE_STRUCTURED=1 \
@@ -65,6 +74,7 @@ test_audio_device_selection_CPPFLAGS = \
 	$(NULL)
 
 test_audio_device_selection_CFLAGS = \
+	$(ALSA_CFLAGS) \
 	$(GVC_CFLAGS) \
 	$(AM_CFLAGS) \
 	$(NULL)
@@ -80,8 +90,10 @@ test_audio_device_selection_LDFLAGS = \
 
 test_audio_device_selection_LDADD = \
 	libgvc.la \
+	$(ALSA_LIBS) \
 	$(GVC_LIBS) \
 	$(NULL)
+endif
 
 ENUM_TYPES = \
 	gvc/gvc-mixer-stream.h \

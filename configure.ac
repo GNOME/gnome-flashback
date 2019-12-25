@@ -242,13 +242,6 @@ PKG_CHECK_MODULES([SHELL], [
   gnome-desktop-3.0 >= $LIBGNOME_DESKTOP_REQUIRED
 ])
 
-PKG_CHECK_MODULES([GVC], [
-  gio-2.0
-  gobject-2.0
-  libpulse
-  libpulse-mainloop-glib
-])
-
 PKG_CHECK_MODULES([SOUND_APPLET], [
   gtk+-3.0 >= $GTK_REQUIRED
   libcanberra-gtk3 >= $CANBERRA_REQUIRED
@@ -259,6 +252,26 @@ PKG_CHECK_MODULES([STATUS_NOTIFIER_WATCHER], [
   glib-2.0 >= $GLIB_REQUIRED
   gio-unix-2.0 >= $GLIB_REQUIRED
 ])
+
+dnl **************************************************************************
+dnl libgnome-volume-control
+dnl **************************************************************************
+
+PKG_CHECK_MODULES([GVC], [
+  gio-2.0
+  gobject-2.0
+  libpulse
+  libpulse-mainloop-glib
+])
+
+PKG_CHECK_EXISTS([alsa], [found_alsa="yes"], [found_alsa="no"])
+
+AS_IF([test "x$found_alsa" = "xyes"], [
+  AC_DEFINE([HAVE_ALSA], [1], [Define to 1 if alsa is available])
+  PKG_CHECK_MODULES([ALSA], [alsa])
+])
+
+AM_CONDITIONAL(HAVE_ALSA, [test "x$found_alsa" = "xyes"])
 
 dnl **************************************************************************
 dnl Define XKB base directory

@@ -17,6 +17,7 @@ build-ubuntu:
                       gettext
                       git
                       gsettings-desktop-schemas-dev
+                      libasound2-dev
                       libcanberra-gtk3-dev
                       libdbus-glib-1-dev
                       libgdk-pixbuf2.0-dev
