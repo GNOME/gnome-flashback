@@ -47,19 +47,8 @@ GType           gvc_channel_bar_get_type           (void);
 
 GtkWidget      *gvc_channel_bar_new                (GvcMixerControl *mixer_control);
 
-void            gvc_channel_bar_set_icon_name      (GvcChannelBar   *bar,
-                                                    const char      *icon_name);
-
-void            gvc_channel_bar_set_low_icon_name  (GvcChannelBar   *bar,
-                                                    const char      *icon_name);
-
-void            gvc_channel_bar_set_high_icon_name (GvcChannelBar   *bar,
-                                                    const char      *icon_name);
-
 void            gvc_channel_bar_set_orientation    (GvcChannelBar   *bar,
                                                     GtkOrientation   orientation);
-
-GtkOrientation  gvc_channel_bar_get_orientation    (GvcChannelBar   *bar);
 
 GtkAdjustment  *gvc_channel_bar_get_adjustment     (GvcChannelBar   *bar);
 

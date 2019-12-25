@@ -49,9 +49,6 @@ struct GvcChannelBarPrivate
         GtkAdjustment   *adjustment;
         GtkAdjustment   *zero_adjustment;
         gboolean         is_muted;
-        char            *icon_name;
-        char            *low_icon_name;
-        char            *high_icon_name;
         gboolean         click_lock;
         gboolean         is_amplified;
         guint32          base_volume;
@@ -64,8 +61,6 @@ enum
         PROP_ORIENTATION,
         PROP_IS_MUTED,
 };
-
-static void     gvc_channel_bar_finalize      (GObject            *object);
 
 static gboolean on_scale_button_press_event   (GtkWidget      *widget,
                                                GdkEventButton *event,
@@ -150,20 +145,6 @@ _scale_box_new (GvcChannelBar *bar)
 }
 
 static void
-update_image (GvcChannelBar *bar)
-{
-        gtk_image_set_from_icon_name (GTK_IMAGE (bar->priv->image),
-                                      bar->priv->icon_name,
-                                      GTK_ICON_SIZE_DIALOG);
-
-        if (bar->priv->icon_name != NULL) {
-                gtk_widget_show (bar->priv->image);
-        } else {
-                gtk_widget_hide (bar->priv->image);
-        }
-}
-
-static void
 update_layout (GvcChannelBar *bar)
 {
         GtkWidget *box;
@@ -203,47 +184,6 @@ update_layout (GvcChannelBar *bar)
         g_object_unref (bar->priv->high_image);
 
         gtk_widget_show_all (frame);
-}
-
-void
-gvc_channel_bar_set_icon_name (GvcChannelBar  *bar,
-                               const char     *name)
-{
-        g_return_if_fail (GVC_IS_CHANNEL_BAR (bar));
-
-        g_free (bar->priv->icon_name);
-        bar->priv->icon_name = g_strdup (name);
-        update_image (bar);
-}
-
-void
-gvc_channel_bar_set_low_icon_name   (GvcChannelBar *bar,
-                                     const char    *name)
-{
-        g_return_if_fail (GVC_IS_CHANNEL_BAR (bar));
-
-        if (name != NULL && strcmp (bar->priv->low_icon_name, name) != 0) {
-                g_free (bar->priv->low_icon_name);
-                bar->priv->low_icon_name = g_strdup (name);
-                gtk_image_set_from_icon_name (GTK_IMAGE (bar->priv->low_image),
-                                              bar->priv->low_icon_name,
-                                              GTK_ICON_SIZE_MENU);
-        }
-}
-
-void
-gvc_channel_bar_set_high_icon_name  (GvcChannelBar *bar,
-                                     const char    *name)
-{
-        g_return_if_fail (GVC_IS_CHANNEL_BAR (bar));
-
-        if (name != NULL && strcmp (bar->priv->high_icon_name, name) != 0) {
-                g_free (bar->priv->high_icon_name);
-                bar->priv->high_icon_name = g_strdup (name);
-                gtk_image_set_from_icon_name (GTK_IMAGE (bar->priv->high_image),
-                                              bar->priv->high_icon_name,
-                                              GTK_ICON_SIZE_MENU);
-        }
 }
 
 void
@@ -587,8 +527,6 @@ gvc_channel_bar_constructed (GObject *object)
         vol_max_normal = gvc_mixer_control_get_vol_max_norm (bar->priv->mixer_control);
 
         bar->priv->base_volume = vol_max_normal;
-        bar->priv->low_icon_name = g_strdup ("audio-volume-low");
-        bar->priv->high_icon_name = g_strdup ("audio-volume-high");
 
         bar->priv->orientation = GTK_ORIENTATION_VERTICAL;
         bar->priv->adjustment = GTK_ADJUSTMENT (gtk_adjustment_new (0.0,
@@ -658,7 +596,6 @@ gvc_channel_bar_class_init (GvcChannelBarClass *klass)
 
         object_class->constructed = gvc_channel_bar_constructed;
         object_class->dispose = gvc_channel_bar_dispose;
-        object_class->finalize = gvc_channel_bar_finalize;
         object_class->set_property = gvc_channel_bar_set_property;
         object_class->get_property = gvc_channel_bar_get_property;
 
@@ -691,25 +628,6 @@ static void
 gvc_channel_bar_init (GvcChannelBar *bar)
 {
         bar->priv = gvc_channel_bar_get_instance_private (bar);
-}
-
-static void
-gvc_channel_bar_finalize (GObject *object)
-{
-        GvcChannelBar *channel_bar;
-
-        g_return_if_fail (object != NULL);
-        g_return_if_fail (GVC_IS_CHANNEL_BAR (object));
-
-        channel_bar = GVC_CHANNEL_BAR (object);
-
-        g_return_if_fail (channel_bar->priv != NULL);
-
-        g_free (channel_bar->priv->icon_name);
-        g_free (channel_bar->priv->low_icon_name);
-        g_free (channel_bar->priv->high_icon_name);
-
-        G_OBJECT_CLASS (gvc_channel_bar_parent_class)->finalize (object);
 }
 
 GtkWidget *
