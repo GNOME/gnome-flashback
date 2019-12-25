@@ -45,7 +45,7 @@ dnl **************************************************************************
 dnl Initialize automake
 dnl **************************************************************************
 
-AM_INIT_AUTOMAKE([1.13 no-dist-gzip dist-xz tar-ustar -Wno-portability])
+AM_INIT_AUTOMAKE([1.13 no-dist-gzip dist-xz subdir-objects tar-ustar -Wno-portability])
 AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 
@@ -243,6 +243,7 @@ PKG_CHECK_MODULES([SHELL], [
 ])
 
 PKG_CHECK_MODULES([GVC], [
+  gio-2.0
   gobject-2.0
   libpulse
   libpulse-mainloop-glib
@@ -266,12 +267,6 @@ dnl **************************************************************************
 AC_DEFINE_UNQUOTED([XKB_BASE],
                    ["`$PKG_CONFIG --variable xkb_base xkeyboard-config`"],
                    [Define XKB base directory])
-
-dnl **************************************************************************
-dnl Tell gvc submodule to not build introspection
-dnl **************************************************************************
-
-AM_CONDITIONAL([HAVE_INTROSPECTION], [false])
 
 dnl **************************************************************************
 dnl Check if we have Pango 1.44.0 or newer
@@ -416,7 +411,6 @@ AC_CONFIG_FILES([
   gnome-flashback/libstatus-notifier-watcher/Makefile
 
   gvc/Makefile
-  gvc/gvc/Makefile
 
   system-indicators/Makefile
 

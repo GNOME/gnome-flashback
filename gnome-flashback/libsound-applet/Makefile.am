@@ -31,7 +31,7 @@ libsound_applet_la_LDFLAGS = \
 	$(NULL)
 
 libsound_applet_la_LIBADD = \
-	$(top_builddir)/gvc/gvc/libgvc.la \
+	$(top_builddir)/gvc/libgvc.la \
 	$(SOUND_APPLET_LIBS) \
 	$(LIBM) \
 	$(NULL)
