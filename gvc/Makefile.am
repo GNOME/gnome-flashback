@@ -11,6 +11,7 @@ noinst_PROGRAMS = \
 libgvc_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"gvc\" \
 	-DG_LOG_USE_STRUCTURED=1 \
+	-I$(top_builddir)/gvc \
 	-I$(top_srcdir)/gvc/gvc \
 	$(NULL)
 
@@ -45,6 +46,7 @@ libgvc_la_SOURCES = \
 	gvc/gvc-mixer-ui-device.c \
 	gvc/gvc-mixer-ui-device.h \
 	gvc/gvc-pulseaudio-fake.h \
+	$(BUILT_SOURCES) \
 	$(NULL)
 
 libgvc_la_LDFLAGS = \
@@ -79,6 +81,32 @@ test_audio_device_selection_LDFLAGS = \
 test_audio_device_selection_LDADD = \
 	libgvc.la \
 	$(GVC_LIBS) \
+	$(NULL)
+
+ENUM_TYPES = \
+	gvc/gvc-mixer-stream.h \
+	$(NULL)
+
+gvc-enum-types.c: gvc-enum-types.c.in gvc-enum-types.h $(ENUM_TYPES)
+	$(AM_V_GEN) $(GLIB_MKENUMS) --template $(srcdir)/gvc-enum-types.c.in $(ENUM_TYPES) > \
+		gvc-enum-types.c.tmp && mv gvc-enum-types.c.tmp gvc-enum-types.c
+
+gvc-enum-types.h: gvc-enum-types.h.in $(ENUM_TYPES)
+	$(AM_V_GEN) $(GLIB_MKENUMS) --template $(srcdir)/gvc-enum-types.h.in $(ENUM_TYPES) > \
+		gvc-enum-types.h.tmp && mv gvc-enum-types.h.tmp gvc-enum-types.h
+
+BUILT_SOURCES = \
+	gvc-enum-types.c \
+	gvc-enum-types.h \
+	$(NULL)
+
+EXTRA_DIST = \
+	gvc-enum-types.c.in \
+	gvc-enum-types.h.in \
+	$(NULL)
+
+CLEANFILES = \
+	$(BUILT_SOURCES) \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk
