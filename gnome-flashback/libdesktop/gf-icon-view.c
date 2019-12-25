@@ -92,7 +92,8 @@ enum
   UNSELECT_ALL,
 
   ACTIVATE,
-  DELETE,
+
+  TRASH,
 
   TOGGLE,
 
@@ -2034,8 +2035,8 @@ activate_cb (GfIconView *self,
 }
 
 static void
-delete_cb (GfIconView *self,
-           gpointer    user_data)
+trash_cb (GfIconView *self,
+          gpointer    user_data)
 {
   gboolean can_delete;
   GList *l;
@@ -2618,9 +2619,8 @@ install_signals (void)
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 
-
-  view_signals[DELETE] =
-    g_signal_new ("delete", GF_TYPE_ICON_VIEW,
+  view_signals[TRASH] =
+    g_signal_new ("trash", GF_TYPE_ICON_VIEW,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 
@@ -2686,15 +2686,15 @@ add_bindings (GtkBindingSet *binding_set)
   gtk_binding_entry_add_signal (binding_set, GDK_KEY_KP_Enter, modifiers,
                                 "activate", 0);
 
-  /* Delete */
+  /* Trash */
 
   modifiers = 0;
   gtk_binding_entry_add_signal (binding_set, GDK_KEY_Delete, modifiers,
-                                "delete", 0);
+                                "trash", 0);
 
   modifiers = 0;
   gtk_binding_entry_add_signal (binding_set, GDK_KEY_KP_Delete, modifiers,
-                                "delete", 0);
+                                "trash", 0);
 
   /* Toggle */
 
@@ -2771,7 +2771,7 @@ gf_icon_view_init (GfIconView *self)
   g_signal_connect (self, "select-all", G_CALLBACK (select_all_cb), NULL);
   g_signal_connect (self, "unselect-all", G_CALLBACK (unselect_all_cb), NULL);
   g_signal_connect (self, "activate", G_CALLBACK (activate_cb), NULL);
-  g_signal_connect (self, "delete", G_CALLBACK (delete_cb), NULL);
+  g_signal_connect (self, "trash", G_CALLBACK (trash_cb), NULL);
   g_signal_connect (self, "toggle", G_CALLBACK (toggle_cb), NULL);
   g_signal_connect (self, "move", G_CALLBACK (move_cb), NULL);
 
