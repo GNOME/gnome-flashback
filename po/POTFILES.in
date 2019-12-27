@@ -43,6 +43,7 @@ gnome-flashback/libsound-applet/gvc-channel-bar.c
 gnome-flashback/libsound-applet/gvc-stream-status-icon.c
 gvc/gvc/gvc-mixer-control.c
 system-indicators/si-bluetooth.c
+system-indicators/si-desktop-menu-item.c
 system-indicators/si-input-source.c
 system-indicators/si-module.c
 system-indicators/si-power.c

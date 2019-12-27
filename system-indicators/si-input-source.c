@@ -24,6 +24,7 @@
 #include <utime.h>
 
 #include "dbus/gf-input-sources-gen.h"
+#include "si-desktop-menu-item.h"
 
 struct _SiInputSource
 {
@@ -853,6 +854,12 @@ append_show_layout_item (SiInputSource *self,
   gtk_widget_show (item);
 
   g_signal_connect (item, "activate", G_CALLBACK (show_layout_cb), self);
+
+  item = si_desktop_menu_item_new (_("Region & Language Settings"),
+                                   "gnome-region-panel.desktop");
+
+  gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), item);
+  gtk_widget_show (item);
 
   if (layout != NULL && *layout != '\0')
     {

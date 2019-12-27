@@ -19,10 +19,10 @@
 #include "si-bluetooth.h"
 
 #include <bluetooth-client.h>
-#include <gio/gdesktopappinfo.h>
 #include <glib/gi18n.h>
 
 #include "dbus/gf-sd-rfkill-gen.h"
+#include "si-desktop-menu-item.h"
 
 struct _SiBluetooth
 {
@@ -76,30 +76,6 @@ turn_off_cb (GtkMenuItem *item,
 }
 
 static void
-send_files_cb (GtkMenuItem *item,
-               gpointer     user_data)
-{
-  GDesktopAppInfo *info;
-  GError *error;
-
-  info = g_desktop_app_info_new ("bluetooth-sendto.desktop");
-
-  if (info == NULL)
-    return;
-
-  error = NULL;
-  g_app_info_launch (G_APP_INFO (info), NULL, NULL, &error);
-
-  if (error != NULL)
-    {
-      g_warning ("Failed to start Bluetooth Transfer - %s", error->message);
-      g_error_free (error);
-    }
-
-  g_clear_object (&info);
-}
-
-static void
 append_main_items (SiBluetooth *self)
 {
   GtkWidget *item;
@@ -112,11 +88,11 @@ append_main_items (SiBluetooth *self)
 
       g_signal_connect (item, "activate", G_CALLBACK (turn_off_cb), self);
 
-      item = gtk_menu_item_new_with_label (_("Send Files"));
+      item = si_desktop_menu_item_new (_("Send Files"),
+                                       "bluetooth-sendto.desktop");
+
       gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), item);
       gtk_widget_show (item);
-
-      g_signal_connect (item, "activate", G_CALLBACK (send_files_cb), NULL);
     }
   else
     {
@@ -194,37 +170,6 @@ connect_cb (GtkMenuItem *item,
                                     self->cancellable,
                                     connect_done_cb,
                                     self);
-}
-
-static void
-activate_settings_cb (GtkMenuItem *item,
-                      const char  *desktop_id)
-{
-  GDesktopAppInfo *info;
-  GError *error;
-
-  info = g_desktop_app_info_new (desktop_id);
-
-  if (info == NULL)
-    return;
-
-  error = NULL;
-  g_app_info_launch (G_APP_INFO (info), NULL, NULL, &error);
-
-  if (error != NULL)
-    {
-      g_warning ("%s", error->message);
-      g_error_free (error);
-    }
-
-  g_clear_object (&info);
-}
-
-static void
-free_desktop_id (gpointer  data,
-                 GClosure *closure)
-{
-  g_free (data);
 }
 
 static void
@@ -308,44 +253,29 @@ append_devices (SiBluetooth *self,
       switch (type)
         {
           case BLUETOOTH_TYPE_KEYBOARD:
-            item = gtk_menu_item_new_with_label (_("Keyboard Settings"));
+            item = si_desktop_menu_item_new (_("Keyboard Settings"),
+                                             "gnome-keyboard-panel.desktop");
+
             gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
             gtk_widget_show (item);
-
-            g_signal_connect_data (item,
-                                   "activate",
-                                   G_CALLBACK (activate_settings_cb),
-                                   g_strdup ("gnome-kayboard-panel.desktop"),
-                                   free_desktop_id,
-                                   0);
             break;
 
           case BLUETOOTH_TYPE_MOUSE:
-            item = gtk_menu_item_new_with_label (_("Mouse & Touchpad Settings"));
+            item = si_desktop_menu_item_new (_("Mouse & Touchpad Settings"),
+                                             "gnome-mouse-panel.desktop");
+
             gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
             gtk_widget_show (item);
-
-            g_signal_connect_data (item,
-                                   "activate",
-                                   G_CALLBACK (activate_settings_cb),
-                                   g_strdup ("gnome-mouse-panel.desktop"),
-                                   free_desktop_id,
-                                   0);
             break;
 
           case BLUETOOTH_TYPE_HEADSET:
           case BLUETOOTH_TYPE_HEADPHONES:
           case BLUETOOTH_TYPE_OTHER_AUDIO:
-            item = gtk_menu_item_new_with_label (_("Sound Settings"));
+            item = si_desktop_menu_item_new (_("Sound Settings"),
+                                             "gnome-sound-panel.desktop");
+
             gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
             gtk_widget_show (item);
-
-            g_signal_connect_data (item,
-                                   "activate",
-                                   G_CALLBACK (activate_settings_cb),
-                                   g_strdup ("gnome-sound-panel.desktop"),
-                                   free_desktop_id,
-                                   0);
             break;
 
           case BLUETOOTH_TYPE_ANY:
@@ -395,16 +325,11 @@ update_indicator_menu (SiBluetooth *self,
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), separator);
   gtk_widget_show (separator);
 
-  item = gtk_menu_item_new_with_label (_("Bluetooth Settings"));
+  item = si_desktop_menu_item_new (_("Bluetooth Settings"),
+                                   "gnome-bluetooth-panel.desktop");
+
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), item);
   gtk_widget_show (item);
-
-  g_signal_connect_data (item,
-                         "activate",
-                         G_CALLBACK (activate_settings_cb),
-                         g_strdup ("gnome-bluetooth-panel.desktop"),
-                         free_desktop_id,
-                         0);
 }
 
 static void

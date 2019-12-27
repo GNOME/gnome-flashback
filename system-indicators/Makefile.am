@@ -23,6 +23,8 @@ system_indicators_la_SOURCES = \
 	si-applet.h \
 	si-bluetooth.c \
 	si-bluetooth.h \
+	si-desktop-menu-item.c \
+	si-desktop-menu-item.h \
 	si-indicator.c \
 	si-indicator.h \
 	si-input-source.c \

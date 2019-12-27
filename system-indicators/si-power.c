@@ -19,11 +19,11 @@
 #include "si-power.h"
 
 #include <glib/gi18n.h>
-#include <gio/gdesktopappinfo.h>
 #include <libupower-glib/upower.h>
 #include <math.h>
 
 #include "dbus/gf-upower-device-gen.h"
+#include "si-desktop-menu-item.h"
 
 struct _SiPower
 {
@@ -39,37 +39,6 @@ struct _SiPower
 };
 
 G_DEFINE_TYPE (SiPower, si_power, SI_TYPE_INDICATOR)
-
-static void
-activate_desktop_cb (GtkMenuItem *item,
-                     const char  *desktop_id)
-{
-  GDesktopAppInfo *info;
-  GError *error;
-
-  info = g_desktop_app_info_new (desktop_id);
-
-  if (info == NULL)
-    return;
-
-  error = NULL;
-  g_app_info_launch (G_APP_INFO (info), NULL, NULL, &error);
-
-  if (error != NULL)
-    {
-      g_warning ("%s", error->message);
-      g_error_free (error);
-    }
-
-  g_clear_object (&info);
-}
-
-static void
-free_desktop_id (gpointer  data,
-                 GClosure *closure)
-{
-  g_free (data);
-}
 
 static void
 remove_item_cb (GtkWidget *widget,
@@ -159,33 +128,21 @@ update_indicator_menu (SiPower *self)
   label = g_strdup_printf ("%s: %s", type_text, state_text);
   g_free (state_text);
 
-  item = gtk_menu_item_new_with_label (label);
+  item = si_desktop_menu_item_new (label, "org.gnome.PowerStats.desktop");
   g_free (label);
 
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), item);
   gtk_widget_show (item);
 
-  g_signal_connect_data (item,
-                         "activate",
-                         G_CALLBACK (activate_desktop_cb),
-                         g_strdup ("org.gnome.PowerStats.desktop"),
-                         free_desktop_id,
-                         0);
-
   separator = gtk_separator_menu_item_new ();
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), separator);
   gtk_widget_show (separator);
 
-  item = gtk_menu_item_new_with_label (_("Power Settings"));
+  item = si_desktop_menu_item_new (_("Power Settings"),
+                                   "gnome-power-panel.desktop");
+
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), item);
   gtk_widget_show (item);
-
-  g_signal_connect_data (item,
-                         "activate",
-                         G_CALLBACK (activate_desktop_cb),
-                         g_strdup ("gnome-power-panel.desktop"),
-                         free_desktop_id,
-                         0);
 }
 
 static void
