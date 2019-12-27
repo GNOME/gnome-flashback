@@ -47,3 +47,4 @@ system-indicators/si-desktop-menu-item.c
 system-indicators/si-input-source.c
 system-indicators/si-module.c
 system-indicators/si-power.c
+system-indicators/si-volume.c

@@ -18,23 +18,49 @@
 #include "config.h"
 #include "si-applet.h"
 
+#include "gvc-mixer-control.h"
 #include "si-bluetooth.h"
 #include "si-input-source.h"
 #include "si-menu-bar.h"
 #include "si-power.h"
+#include "si-volume.h"
 
 struct _SiApplet
 {
-  GpApplet     parent;
+  GpApplet         parent;
 
-  GtkWidget   *menu_bar;
+  GtkWidget       *menu_bar;
 
-  SiIndicator *bluetooth;
-  SiIndicator *input_source;
-  SiIndicator *power;
+  GvcMixerControl *mixer_control;
+
+  SiIndicator     *bluetooth;
+  SiIndicator     *input_source;
+  SiIndicator     *power;
+  SiIndicator     *volume_input;
+  SiIndicator     *volume_output;
 };
 
 G_DEFINE_TYPE (SiApplet, si_applet, GP_TYPE_APPLET)
+
+static void
+append_volume (SiApplet *self)
+{
+  GtkWidget *item;
+
+  self->volume_input = si_volume_new (GP_APPLET (self),
+                                      self->mixer_control,
+                                      TRUE);
+
+  item = si_indicator_get_menu_item (self->volume_input);
+  gtk_menu_shell_append (GTK_MENU_SHELL (self->menu_bar), item);
+
+  self->volume_output = si_volume_new (GP_APPLET (self),
+                                       self->mixer_control,
+                                       FALSE);
+
+  item = si_indicator_get_menu_item (self->volume_output);
+  gtk_menu_shell_append (GTK_MENU_SHELL (self->menu_bar), item);
+}
 
 static void
 append_power (SiApplet *self)
@@ -90,7 +116,11 @@ setup_applet (SiApplet *self)
                           G_BINDING_DEFAULT |
                           G_BINDING_SYNC_CREATE);
 
+  self->mixer_control = gvc_mixer_control_new ("GNOME Flashback Volume Control");
+  gvc_mixer_control_open (self->mixer_control);
+
   append_input_source (self);
+  append_volume (self);
   append_bluetooth (self);
   append_power (self);
 }
@@ -109,9 +139,13 @@ si_applet_dispose (GObject *object)
 
   self = SI_APPLET (object);
 
+  g_clear_object (&self->mixer_control);
+
   g_clear_object (&self->bluetooth);
   g_clear_object (&self->input_source);
   g_clear_object (&self->power);
+  g_clear_object (&self->volume_input);
+  g_clear_object (&self->volume_output);
 
   G_OBJECT_CLASS (si_applet_parent_class)->dispose (object);
 }

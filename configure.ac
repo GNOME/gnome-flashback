@@ -327,6 +327,7 @@ AS_IF([test "x$with_system_indicators" != "xno"], [
     PKG_CHECK_MODULES([SYSTEM_INDICATORS], [
       gio-unix-2.0 >= $GLIB_REQUIRED
       gnome-bluetooth-1.0
+      libcanberra-gtk3 >= $CANBERRA_REQUIRED
       libgnome-panel
       upower-glib
     ])

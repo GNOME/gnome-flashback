@@ -8,6 +8,7 @@ system_indicators_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"system-indicators\" \
 	-DG_LOG_USE_STRUCTURED=1 \
 	-DLOCALE_DIR=\"$(localedir)\" \
+	-I$(top_srcdir)/gvc/gvc \
 	-I$(top_srcdir) \
 	$(AM_CPPFLAGS) \
 	$(NULL)
@@ -34,10 +35,13 @@ system_indicators_la_SOURCES = \
 	si-module.c \
 	si-power.c \
 	si-power.h \
+	si-volume.c \
+	si-volume.h \
 	$(NULL)
 
 system_indicators_la_LIBADD = \
 	$(top_builddir)/dbus/libdbus.la \
+	$(top_builddir)/gvc/libgvc.la \
 	$(SYSTEM_INDICATORS_LIBS) \
 	$(NULL)
 
