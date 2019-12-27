@@ -644,6 +644,9 @@ get_has_headphones (SiVolume *self)
       g_strcmp0 (form_factor, "headphone") == 0)
     return TRUE;
 
+  if (gvc_mixer_stream_get_ports (self->stream) == NULL)
+    return FALSE;
+
   port = gvc_mixer_stream_get_port (self->stream);
 
   if (port != NULL && g_strstr_len (port->port, -1, "headphone") != NULL)
