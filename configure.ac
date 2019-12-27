@@ -242,12 +242,6 @@ PKG_CHECK_MODULES([SHELL], [
   gnome-desktop-3.0 >= $LIBGNOME_DESKTOP_REQUIRED
 ])
 
-PKG_CHECK_MODULES([SOUND_APPLET], [
-  gtk+-3.0 >= $GTK_REQUIRED
-  libcanberra-gtk3 >= $CANBERRA_REQUIRED
-  glib-2.0 >= $GLIB_REQUIRED
-])
-
 PKG_CHECK_MODULES([STATUS_NOTIFIER_WATCHER], [
   glib-2.0 >= $GLIB_REQUIRED
   gio-unix-2.0 >= $GLIB_REQUIRED
@@ -421,7 +415,6 @@ AC_CONFIG_FILES([
   gnome-flashback/libscreensaver/Makefile
   gnome-flashback/libscreenshot/Makefile
   gnome-flashback/libshell/Makefile
-  gnome-flashback/libsound-applet/Makefile
   gnome-flashback/libstatus-notifier-watcher/Makefile
 
   gvc/Makefile

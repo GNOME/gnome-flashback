@@ -38,9 +38,6 @@ gnome-flashback/libpolkit/flashback-listener.c
 gnome-flashback/libpolkit/flashback-polkit-dialog.c
 gnome-flashback/libpolkit/flashback-polkit-dialog.ui
 gnome-flashback/libscreensaver/gf-auth.c
-gnome-flashback/libsound-applet/gf-sound-applet.c
-gnome-flashback/libsound-applet/gvc-channel-bar.c
-gnome-flashback/libsound-applet/gvc-stream-status-icon.c
 gvc/gvc/gvc-mixer-control.c
 system-indicators/si-bluetooth.c
 system-indicators/si-desktop-menu-item.c

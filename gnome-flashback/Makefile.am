@@ -18,7 +18,6 @@ SUBDIRS = \
 	libscreensaver \
 	libscreenshot \
 	libshell \
-	libsound-applet \
 	libstatus-notifier-watcher \
 	$(NULL)
 
@@ -76,7 +75,6 @@ gnome_flashback_LDADD = \
 	$(top_builddir)/gnome-flashback/libscreensaver/libscreensaver.la \
 	$(top_builddir)/gnome-flashback/libscreenshot/libscreenshot.la \
 	$(top_builddir)/gnome-flashback/libshell/libshell.la \
-	$(top_builddir)/gnome-flashback/libsound-applet/libsound-applet.la \
 	$(top_builddir)/gnome-flashback/libstatus-notifier-watcher/libstatus-notifier-watcher.la \
 	$(NULL)
 
