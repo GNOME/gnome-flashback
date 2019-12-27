@@ -1,11 +1,6 @@
-gf-screensaver-panel {
-  font-weight: bold;
-  padding: 4px 10px;
-  background: #000000;
-  color: #cccccc;
-}
+@import url("resource:///org/gnome/gnome-flashback/theme/common.css");
 
-gf-screensaver-panel image,
-gf-screensaver-panel label {
-  color: #cccccc;
+#gf-input-source-popup #gf-input-source:selected {
+  background-color: #cccccc;
+  color: #ffffff;
 }

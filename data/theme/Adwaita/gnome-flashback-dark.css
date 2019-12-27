@@ -4,57 +4,21 @@ gf-popup-window {
   background-color: #393f3f;
   color: #eeeeec;
   border: 1px solid rgba(28, 31, 31, 0.9);
-  border-radius: 10px;
 }
 
 gf-popup-window.solid {
   border: 1px solid #1f2222;
-  border-radius: 0px;
-}
-
-#gf-candidate-popup {
-  border-radius: 3px;
-}
-
-#gf-candidate-popup.solid {
-  border-radius: 0px;
-}
-
-#gf-candidate-popup gf-candidate-box label {
-  padding: 4px 6px;
-}
-
-#gf-candidate-popup gf-candidate-box label:last-child {
-  padding-left: 0px;
 }
 
 #gf-candidate-popup gf-candidate-box:selected,
 #gf-candidate-popup gf-candidate-box:hover {
   background-color: #215d9c;
   color: #ffffff;
-  border-radius: 3px;
-}
-
-#gf-input-source-popup {
-}
-
-#gf-input-source-popup #gf-input-source {
-  min-width: 120px;
-  min-height: 120px;
-  font-size: 22px;
 }
 
 #gf-input-source-popup #gf-input-source:selected {
   background-color: #215d9c;
   color: #ffffff;
-  border-radius: 6px;
-}
-
-#gf-label-window {
-  font-size: 40px;
-}
-
-#gf-osd-window {
 }
 
 #gf-osd-window levelbar block.overdrive {
@@ -62,21 +26,8 @@ gf-popup-window.solid {
   border-color: #e01b24;
 }
 
-#gf-bubble {
-}
-
-gf-icon {
-  margin: 2px;
-}
-
 gf-icon label {
-  border-radius: 3px;
   color: #ffffff;
-  padding: 2px;
-}
-
-gf-icon:hover image {
-  -gtk-icon-effect: highlight;
 }
 
 gf-icon:selected label {
