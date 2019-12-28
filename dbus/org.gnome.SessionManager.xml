@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="org.gnome.SessionManager">
+    <annotation name="org.gtk.GDBus.C.Name" value="SessionManagerGen" />
+
+    <method name="Setenv">
+      <arg name="variable" direction="in" type="s" />
+      <arg name="value" direction="in" type="s" />
+    </method>
+
+    <method name="RegisterClient">
+      <arg name="app_id" direction="in" type="s" />
+      <arg name="client_startup_id" direction="in" type="s" />
+      <arg name="client_id" direction="out" type="o" />
+    </method>
+
+    <method name="UnregisterClient">
+      <arg name="client_id" direction="in" type="o" />
+    </method>
+
+    <method name="IsSessionRunning">
+      <arg name="running" direction="out" type="b" />
+    </method>
+
+  </interface>
+</node>

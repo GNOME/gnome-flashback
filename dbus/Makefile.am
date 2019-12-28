@@ -147,11 +147,23 @@ gf-sd-rfkill-gen.c: org.gnome.SettingsDaemon.Rfkill.xml
 		--generate-c-code gf-sd-rfkill-gen \
 		$(srcdir)/org.gnome.SettingsDaemon.Rfkill.xml
 
+gf-session-manager-gen.h:
+gf-session-manager-gen.c: org.gnome.SessionManager.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-session-manager-gen \
+		$(srcdir)/org.gnome.SessionManager.xml
+
 gf-shell-gen.h:
 gf-shell-gen.c: org.gnome.Shell.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
 		--generate-c-code gf-shell-gen \
 		$(srcdir)/org.gnome.Shell.xml
+
+gf-sm-client-private-gen.h:
+gf-sm-client-private-gen.c: org.gnome.SessionManager.ClientPrivate.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-sm-client-private-gen \
+		$(srcdir)/org.gnome.SessionManager.ClientPrivate.xml
 
 gf-sm-presence-gen.h:
 gf-sm-presence-gen.c: org.gnome.SessionManager.Presence.xml
@@ -206,8 +218,12 @@ BUILT_SOURCES = \
 	gf-screenshot-gen.h \
 	gf-sd-rfkill-gen.c \
 	gf-sd-rfkill-gen.h \
+	gf-session-manager-gen.c \
+	gf-session-manager-gen.h \
 	gf-shell-gen.c \
 	gf-shell-gen.h \
+	gf-sm-client-private-gen.c \
+	gf-sm-client-private-gen.h \
 	gf-sm-presence-gen.c \
 	gf-sm-presence-gen.h \
 	gf-sn-watcher-v0-gen.c \
@@ -229,8 +245,10 @@ EXTRA_DIST = \
 	org.gnome.Flashback.InputSources.xml \
 	org.gnome.Nautilus.FileOperations.xml \
 	org.gnome.ScreenSaver.xml \
+	org.gnome.SessionManager.ClientPrivate.xml \
 	org.gnome.SessionManager.EndSessionDialog.xml \
 	org.gnome.SessionManager.Presence.xml \
+	org.gnome.SessionManager.xml \
 	org.gnome.SettingsDaemon.Rfkill.xml \
 	org.gnome.Shell.AudioDeviceSelection.xml \
 	org.gnome.Shell.Screencast.xml \
