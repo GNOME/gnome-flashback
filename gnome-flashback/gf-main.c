@@ -28,18 +28,11 @@
 static GMainLoop *loop = NULL;
 static GfApplication *application = NULL;
 
-static gboolean debug = FALSE;
 static gboolean replace = FALSE;
 static gboolean version = FALSE;
 
 static GOptionEntry entries[] =
 {
-  {
-    "debug", 0, G_OPTION_FLAG_NONE,
-    G_OPTION_ARG_NONE, &debug,
-    N_("Enable debugging code"),
-    NULL
-  },
   {
     "replace", 'r', G_OPTION_FLAG_NONE,
     G_OPTION_ARG_NONE, &replace,
@@ -81,9 +74,6 @@ parse_arguments (int    *argc,
 
       return FALSE;
     }
-
-  if (debug)
-    g_setenv ("G_MESSAGES_DEBUG", "all", FALSE);
 
   g_option_context_free (context);
 
