@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-12-24 23:21+0000\n"
-"PO-Revision-Date: 2019-12-25 16:45+0100\n"
+"POT-Creation-Date: 2019-12-27 19:44+0000\n"
+"PO-Revision-Date: 2019-12-28 16:25+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -257,24 +257,10 @@ msgstr ""
 "GNOME będzie używany jako powłoka."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
-msgid "Sound applet"
-msgstr "Aplet dźwięku"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
-msgid ""
-"If set to true, then GNOME Flashback application will be used to show a "
-"sound applet. This is the same sound applet that used to be a part of GNOME "
-"Control Center."
-msgstr ""
-"Jeśli jest ustawione na wartość „true”, to program tradycyjnego środowiska "
-"GNOME będzie używany do wyświetlania apletu dźwięku. Jest to ten sam aplet, "
-"który wcześniej był częścią Centrum sterowania GNOME."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:102
 msgid "Status Notifier Watcher"
 msgstr "Obserwator obszaru powiadamiania"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:103
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -324,7 +310,7 @@ msgid "The size of desktop icons."
 msgstr "Rozmiar ikon na pulpicie."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
-#: gnome-flashback/libdesktop/gf-icon-view.c:1213
+#: gnome-flashback/libdesktop/gf-icon-view.c:1215
 msgid "Placement"
 msgstr "Rozmieszczenie"
 
@@ -338,7 +324,7 @@ msgstr ""
 "przez użytkownika). Steruje sposobem rozmieszczania ikon na pulpicie."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
-#: gnome-flashback/libdesktop/gf-icon-view.c:1219
+#: gnome-flashback/libdesktop/gf-icon-view.c:1221
 msgid "Sort by"
 msgstr "Porządkowanie"
 
@@ -493,13 +479,13 @@ msgstr ""
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: system-indicators/si-bluetooth.c:109
+#: system-indicators/si-bluetooth.c:85
 msgid "Turn Off"
 msgstr "Wyłącz"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: system-indicators/si-bluetooth.c:123
+#: system-indicators/si-bluetooth.c:99
 msgid "Turn On"
 msgstr "Włącz"
 
@@ -557,7 +543,6 @@ msgid "Microphone"
 msgstr "Mikrofon"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:261
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
 msgstr "Uruchomienie preferencji dźwięku się nie powiodło: %s"
@@ -567,7 +552,7 @@ msgid "What kind of device did you plug in?"
 msgstr "Jakiego rodzaju urządzenie podłączono?"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
-#: system-indicators/si-bluetooth.c:339
+#: system-indicators/si-bluetooth.c:274 system-indicators/si-volume.c:441
 msgid "Sound Settings"
 msgstr "Ustawienia dźwięku"
 
@@ -713,7 +698,7 @@ msgid "_Unmount"
 msgstr "Od_montuj"
 
 #: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
-#: gnome-flashback/libdesktop/gf-icon-view.c:1201
+#: gnome-flashback/libdesktop/gf-icon-view.c:1203
 msgid "New Folder"
 msgstr "Nowy katalog"
 
@@ -750,80 +735,80 @@ msgstr "Opróżnij kosz"
 msgid "Properties"
 msgstr "Właściwości"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:997
+#: gnome-flashback/libdesktop/gf-icon-view.c:999
 msgid "Auto arrange icons"
 msgstr "Automatyczne porządkowanie ikon"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1001
+#: gnome-flashback/libdesktop/gf-icon-view.c:1003
 msgid "Align icons to grid"
 msgstr "Wyrównywanie ikon do siatki"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1005
+#: gnome-flashback/libdesktop/gf-icon-view.c:1007
 msgctxt "Free placement of icons"
 msgid "Free"
 msgstr "Użytkownika"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1105
+#: gnome-flashback/libdesktop/gf-icon-view.c:1107
 msgid "Name"
 msgstr "Nazwa"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1109
+#: gnome-flashback/libdesktop/gf-icon-view.c:1111
 msgid "Date modified"
 msgstr "Data modyfikacji"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1113
+#: gnome-flashback/libdesktop/gf-icon-view.c:1115
 msgid "Size"
 msgstr "Rozmiar"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1229
+#: gnome-flashback/libdesktop/gf-icon-view.c:1231
 msgid "Change Background"
 msgstr "Zmień tło"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1237
+#: gnome-flashback/libdesktop/gf-icon-view.c:1239
 msgid "Display Settings"
 msgstr "Ustawienia ekranu"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1249
+#: gnome-flashback/libdesktop/gf-icon-view.c:1251
 msgid "Open Terminal"
 msgstr "Otwórz terminal"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3045
+#: gnome-flashback/libdesktop/gf-icon-view.c:3068
 msgid "Folder names cannot contain “/”."
 msgstr "Nazwy katalogów nie mogą zawierać znaku „/”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3047
+#: gnome-flashback/libdesktop/gf-icon-view.c:3070
 msgid "File names cannot contain “/”."
 msgstr "Nazwy plików nie mogą zawierać znaku „/”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3054
+#: gnome-flashback/libdesktop/gf-icon-view.c:3077
 msgid "A folder cannot be called “.”."
 msgstr "Katalog nie może mieć nazwy „.”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3056
+#: gnome-flashback/libdesktop/gf-icon-view.c:3079
 msgid "A file cannot be called “.”."
 msgstr "Plik nie może mieć nazwy „.”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3063
+#: gnome-flashback/libdesktop/gf-icon-view.c:3086
 msgid "A folder cannot be called “..”."
 msgstr "Katalog nie może mieć nazwy „..”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3065
+#: gnome-flashback/libdesktop/gf-icon-view.c:3088
 msgid "A file cannot be called “..”."
 msgstr "Plik nie może mieć nazwy „..”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3081
+#: gnome-flashback/libdesktop/gf-icon-view.c:3104
 msgid "A folder with that name already exists."
 msgstr "Katalog o tej nazwie już istnieje."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3083
+#: gnome-flashback/libdesktop/gf-icon-view.c:3106
 msgid "A file with that name already exists."
 msgstr "Plik o tej nazwie już istnieje."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3094
+#: gnome-flashback/libdesktop/gf-icon-view.c:3117
 msgid "Folders with “.” at the beginning of their name are hidden."
 msgstr "Katalogi z „.” na początku nazwy są ukryte."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3096
+#: gnome-flashback/libdesktop/gf-icon-view.c:3119
 msgid "Files with “.” at the beginning of their name are hidden."
 msgstr "Pliki z „.” na początku nazwy są ukryte."
 
@@ -1078,42 +1063,15 @@ msgstr "Konto ma nadane ograniczenie czasowe, które właśnie minęło."
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "To nie zadziałało. Proszę spróbować ponownie."
 
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:268
-msgid "Output"
-msgstr "Wyjście"
-
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:271
-msgid "Sound Output Volume"
-msgstr "Głośność wyjścia dźwięku"
-
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:278
-msgid "Input"
-msgstr "Wejście"
-
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:281
-msgid "Microphone Volume"
-msgstr "Głośność mikrofonu"
-
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:494
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:503
-msgctxt "volume"
-msgid "100%"
-msgstr "100%"
-
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:498
-msgctxt "volume"
-msgid "Unamplified"
-msgstr "Bez wzmocnienia"
-
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1876
+#: gvc/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
 msgstr "Wyłączone"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
+#: gvc/gvc/gvc-mixer-control.c:1899
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1123,7 +1081,7 @@ msgstr[2] "%u wyjść"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1893
+#: gvc/gvc/gvc-mixer-control.c:1909
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -1131,47 +1089,35 @@ msgstr[0] "%u wejście"
 msgstr[1] "%u wejścia"
 msgstr[2] "%u wejść"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2750
+#: gvc/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Dźwięki systemu"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:286
-msgid "_Mute"
-msgstr "_Wycisz"
-
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:295
-msgid "_Sound Preferences"
-msgstr "Preferencje _dźwięku"
-
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:425
-msgid "Muted"
-msgstr "Wyciszone"
-
-#: system-indicators/si-bluetooth.c:115
+#: system-indicators/si-bluetooth.c:91
 msgid "Send Files"
 msgstr "Wyślij pliki"
 
-#: system-indicators/si-bluetooth.c:283
+#: system-indicators/si-bluetooth.c:228
 msgid "Disconnect"
 msgstr "Rozłącz"
 
-#: system-indicators/si-bluetooth.c:296
+#: system-indicators/si-bluetooth.c:241
 msgid "Connect"
 msgstr "Połącz"
 
-#: system-indicators/si-bluetooth.c:311
+#: system-indicators/si-bluetooth.c:256
 msgid "Keyboard Settings"
 msgstr "Ustawienia klawiatury"
 
-#: system-indicators/si-bluetooth.c:324
+#: system-indicators/si-bluetooth.c:264
 msgid "Mouse & Touchpad Settings"
 msgstr "Ustawienia myszy i panelu dotykowego"
 
-#: system-indicators/si-bluetooth.c:398
+#: system-indicators/si-bluetooth.c:328
 msgid "Bluetooth Settings"
 msgstr "Ustawienia Bluetooth"
 
-#: system-indicators/si-bluetooth.c:523
+#: system-indicators/si-bluetooth.c:448
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
@@ -1179,13 +1125,27 @@ msgstr[0] "%d połączone urządzenie"
 msgstr[1] "%d połączone urządzenia"
 msgstr[2] "%d połączonych urządzeń"
 
-#: system-indicators/si-bluetooth.c:530
+#: system-indicators/si-bluetooth.c:455
 msgid "Not Connected"
 msgstr "Nie połączono"
 
-#: system-indicators/si-input-source.c:851
+#: system-indicators/si-desktop-menu-item.c:80
+#, c-format
+msgid "Desktop file “%s” is missing!"
+msgstr "Nie można odnaleźć pliku .desktop „%s”."
+
+#: system-indicators/si-desktop-menu-item.c:95
+#, c-format
+msgid "Failed to start “%s”: %s"
+msgstr "Uruchomienie „%s” się nie powiodło: %s"
+
+#: system-indicators/si-input-source.c:852
 msgid "Show Keyboard Layout"
 msgstr "Wyświetl układ klawiatury"
+
+#: system-indicators/si-input-source.c:858
+msgid "Region & Language Settings"
+msgstr "Ustawienia regionu i języka"
 
 #: system-indicators/si-module.c:33
 msgid "System Indicators"
@@ -1195,42 +1155,62 @@ msgstr "Wskaźniki systemowe"
 msgid "This applet contains system indicators"
 msgstr "Ten aplet zawiera wskaźniki systemowe"
 
-#: system-indicators/si-power.c:89
+#: system-indicators/si-power.c:58
 msgid "UPS"
 msgstr "UPS"
 
-#: system-indicators/si-power.c:91
+#: system-indicators/si-power.c:60
 msgid "Battery"
 msgstr "Akumulator"
 
-#: system-indicators/si-power.c:107
+#: system-indicators/si-power.c:76
 msgid "Fully Charged"
 msgstr "Naładowane"
 
-#: system-indicators/si-power.c:109
+#: system-indicators/si-power.c:78
 msgid "Empty"
 msgstr "Puste"
 
-#: system-indicators/si-power.c:115
+#: system-indicators/si-power.c:84
 msgid "Not Charging"
 msgstr "Nie jest ładowane"
 
-#: system-indicators/si-power.c:117 system-indicators/si-power.c:122
+#: system-indicators/si-power.c:86 system-indicators/si-power.c:91
 msgid "Estimating..."
 msgstr "Obliczanie…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: system-indicators/si-power.c:131
+#: system-indicators/si-power.c:100
 #, c-format
 msgid "%.0f:%02.0f Remaining (%.0f%%)"
 msgstr "Pozostało: %.0f∶%02.0f (%.0f%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: system-indicators/si-power.c:138
+#: system-indicators/si-power.c:107
 #, c-format
 msgid "%.0f:%02.0f Until Full (%.0f%%)"
 msgstr "Do naładowania: %.0f∶%02.0f (%.0f%%)"
 
-#: system-indicators/si-power.c:179
+#: system-indicators/si-power.c:141
 msgid "Power Settings"
 msgstr "Ustawienia zasilania"
+
+#: system-indicators/si-volume.c:245
+msgid "Volume changed"
+msgstr "Zmieniono głośność"
+
+#: system-indicators/si-volume.c:266
+msgid "Mute"
+msgstr "Wycisz"
+
+#: system-indicators/si-volume.c:518
+msgid "Input"
+msgstr "Wejście"
+
+#: system-indicators/si-volume.c:518
+msgid "Output"
+msgstr "Wyjście"
+
+#: system-indicators/si-volume.c:529
+msgid "Muted"
+msgstr "Wyciszone"
