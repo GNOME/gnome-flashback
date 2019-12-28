@@ -6,5 +6,5 @@ OnlyShowIn=GNOME-Flashback;
 NoDisplay=true
 X-GNOME-Autostart-Phase=Initialization
 X-GNOME-Autostart-Notify=true
-X-GNOME-AutoRestart=true
+X-GNOME-AutoRestart=false
 X-GNOME-HiddenUnderSystemd=@hidden_under_systemd@
