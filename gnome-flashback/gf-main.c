@@ -145,7 +145,7 @@ main (int argc, char *argv[])
     {
       g_print (PACKAGE_STRING "\n");
 
-      return EXIT_FAILURE;
+      return EXIT_SUCCESS;
     }
 
   loop = g_main_loop_new (NULL, FALSE);
