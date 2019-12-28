@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 - 2015 Alberts Muktupāvels
+ * Copyright (C) 2014 - 2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,200 +16,328 @@
  */
 
 #include "config.h"
-
-#include <gio/gio.h>
-
 #include "gf-session.h"
 
-#define GF_DBUS_NAME "org.gnome.Flashback"
-
-#define GSM_DBUS_NAME  "org.gnome.SessionManager"
-#define GSM_DBUS_PATH  "/org/gnome/SessionManager"
-#define GSM_DBUS_IFACE "org.gnome.SessionManager"
-
-#define GSM_CLIENT_PRIVATE_DBUS_IFACE "org.gnome.SessionManager.ClientPrivate"
+#include "dbus/gf-session-manager-gen.h"
+#include "dbus/gf-sm-client-private-gen.h"
 
 struct _GfSession
 {
-  GObject                 parent;
+  GObject               parent;
 
-  GfSessionReadyCallback  ready_cb;
-  GfSessionEndCallback    end_cb;
-  gpointer                user_data;
+  gboolean              replace;
+  char                 *startup_id;
 
-  gulong                  name_id;
+  guint                 name_id;
+  gboolean              name_acquired;
 
-  GDBusProxy             *manager_proxy;
+  GCancellable         *cancellable;
 
-  gchar                  *object_path;
-  GDBusProxy             *client_proxy;
+  GfSessionManagerGen  *session_manager;
+
+  char                 *client_id;
+  GfSmClientPrivateGen *client_private;
 };
+
+enum
+{
+  PROP_0,
+
+  PROP_REPLACE,
+  PROP_STARTUP_ID,
+
+  LAST_PROP
+};
+
+static GParamSpec *session_properties[LAST_PROP] = { NULL };
+
+enum
+{
+  NAME_LOST,
+
+  SESSION_READY,
+  END_SESSION,
+
+  LAST_SIGNAL
+};
+
+static guint session_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GfSession, gf_session, G_TYPE_OBJECT)
 
-static gboolean
-is_session_running (GfSession *self)
+static void
+respond_to_end_session (GfSession *self)
+{
+  gf_sm_client_private_gen_call_end_session_response (self->client_private,
+                                                      TRUE,
+                                                      "",
+                                                      self->cancellable,
+                                                      NULL,
+                                                      NULL);
+}
+
+static void
+end_session_cb (GfSmClientPrivateGen *object,
+                guint                 flags,
+                GfSession            *self)
+{
+  respond_to_end_session (self);
+}
+
+static void
+query_end_session_cb (GfSmClientPrivateGen *object,
+                      guint                 flags,
+                      GfSession            *self)
+{
+  respond_to_end_session (self);
+}
+
+static void
+stop_cb (GfSmClientPrivateGen *object,
+         GfSession            *self)
+{
+  g_signal_emit (self, session_signals[END_SESSION], 0);
+}
+
+static void
+client_private_ready_cb (GObject      *source_object,
+                         GAsyncResult *res,
+                         gpointer      user_data)
 {
   GError *error;
-  GVariant *variant;
-  gboolean is_session_running;
+  GfSmClientPrivateGen *client_private;
+  GfSession *self;
 
   error = NULL;
-  variant = g_dbus_proxy_call_sync (self->manager_proxy,
-                                    "IsSessionRunning", NULL,
-                                    G_DBUS_CALL_FLAGS_NONE,
-                                    -1, NULL, &error);
+  client_private = gf_sm_client_private_gen_proxy_new_for_bus_finish (res,
+                                                                      &error);
 
   if (error != NULL)
     {
-      g_warning ("Failed to check if the session has entered the Running phase: %s",
-                 error->message);
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Failed to get a client private proxy: %s", error->message);
+
       g_error_free (error);
-
-      return FALSE;
+      return;
     }
 
-  g_variant_get_child (variant, 0, "b", &is_session_running, NULL);
-  g_variant_unref (variant);
+  self = GF_SESSION (user_data);
+  self->client_private = client_private;
 
-  return is_session_running;
+  g_signal_connect (self->client_private,
+                    "end-session",
+                    G_CALLBACK (end_session_cb),
+                    self);
+
+  g_signal_connect (self->client_private,
+                    "query-end-session",
+                    G_CALLBACK (query_end_session_cb),
+                    self);
+
+  g_signal_connect (self->client_private,
+                    "stop",
+                    G_CALLBACK (stop_cb),
+                    self);
 }
 
 static void
-respond_to_end_session (GDBusProxy *proxy)
+register_client_cb (GObject      *source_object,
+                    GAsyncResult *res,
+                    gpointer      user_data)
 {
-  GVariant *parameters;
+  GError *error;
+  char *client_id;
+  GfSession *self;
 
-  parameters = g_variant_new ("(bs)", TRUE, "");
+  error = NULL;
+  gf_session_manager_gen_call_register_client_finish (GF_SESSION_MANAGER_GEN (source_object),
+                                                      &client_id,
+                                                      res,
+                                                      &error);
 
-  g_dbus_proxy_call (proxy,
-                     "EndSessionResponse", parameters,
-                     G_DBUS_CALL_FLAGS_NONE,
-                     -1, NULL, NULL, NULL);
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Failed to register client: %s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  self = GF_SESSION (user_data);
+  self->client_id = client_id;
+
+  gf_sm_client_private_gen_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+                                              G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES,
+                                              "org.gnome.SessionManager",
+                                              self->client_id,
+                                              self->cancellable,
+                                              client_private_ready_cb,
+                                              self);
 }
 
 static void
-g_signal_cb (GDBusProxy *proxy,
-             gchar      *sender_name,
-             gchar      *signal_name,
-             GVariant   *parameters,
-             gpointer    user_data)
+setenv_cb (GObject      *source_object,
+           GAsyncResult *res,
+           gpointer      user_data)
 {
-  GfSession *session;
+  GError *error;
 
-  session = GF_SESSION (user_data);
+  error = NULL;
+  gf_session_manager_gen_call_setenv_finish (GF_SESSION_MANAGER_GEN (source_object),
+                                             res,
+                                             &error);
 
-  if (g_strcmp0 (signal_name, "QueryEndSession") == 0)
+  if (error != NULL)
     {
-      respond_to_end_session (proxy);
-    }
-  else if (g_strcmp0 (signal_name, "EndSession") == 0)
-    {
-      respond_to_end_session (proxy);
-    }
-  else if (g_strcmp0 (signal_name, "Stop") == 0)
-    {
-      if (session->end_cb != NULL)
-        session->end_cb (session, session->user_data);
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Failed to set the environment: %s", error->message);
+
+      g_error_free (error);
+      return;
     }
 }
 
 static void
-client_proxy_ready_cb (GObject      *source_object,
+is_session_running_cb (GObject      *source_object,
                        GAsyncResult *res,
                        gpointer      user_data)
 {
-  GfSession *session;
   GError *error;
-
-  session = GF_SESSION (user_data);
+  gboolean is_session_running;
+  GfSession *self;
 
   error = NULL;
-  session->client_proxy = g_dbus_proxy_new_for_bus_finish (res, &error);
+  gf_session_manager_gen_call_is_session_running_finish (GF_SESSION_MANAGER_GEN (source_object),
+                                                         &is_session_running,
+                                                         res,
+                                                         &error);
 
   if (error != NULL)
     {
-      g_warning ("Failed to get a client proxy: %s", error->message);
-      g_error_free (error);
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        {
+          g_warning ("Failed to check if session has entered the Running phase: %s",
+                     error->message);
+        }
 
+      g_error_free (error);
       return;
     }
 
-  g_signal_connect (session->client_proxy, "g-signal",
-                    G_CALLBACK (g_signal_cb), session);
+  self = GF_SESSION (user_data);
+
+  g_signal_emit (self, session_signals[SESSION_READY], 0, is_session_running);
 }
 
 static void
-manager_proxy_ready_cb (GObject      *source_object,
-                        GAsyncResult *res,
-                        gpointer      user_data)
+session_manager_ready_cb (GObject      *source_object,
+                          GAsyncResult *res,
+                          gpointer      user_data)
 {
-  GfSession *session;
   GError *error;
-
-  session = GF_SESSION (user_data);
+  GfSessionManagerGen *session_manager;
+  GfSession *self;
 
   error = NULL;
-  session->manager_proxy = g_dbus_proxy_new_for_bus_finish (res, &error);
+  session_manager = gf_session_manager_gen_proxy_new_for_bus_finish (res,
+                                                                     &error);
 
   if (error != NULL)
     {
-      g_warning ("Failed to get session manager proxy: %s", error->message);
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Failed to get session manager proxy: %s", error->message);
+
       g_error_free (error);
-
-      if (session->end_cb != NULL)
-        session->end_cb (session, session->user_data);
-
       return;
     }
 
-  if (session->ready_cb != NULL)
-    session->ready_cb (session, session->user_data);
+  self = GF_SESSION (user_data);
+  self->session_manager = session_manager;
+
+  gf_session_manager_gen_call_is_session_running (self->session_manager,
+                                                  self->cancellable,
+                                                  is_session_running_cb,
+                                                  self);
 }
 
 static void
 name_acquired_cb (GDBusConnection *connection,
-                  const gchar     *name,
+                  const char      *name,
                   gpointer         user_data)
 {
+  GfSession *self;
   GDBusProxyFlags flags;
+
+  self = GF_SESSION (user_data);
+  self->name_acquired = TRUE;
 
   flags = G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
           G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS;
 
-  g_dbus_proxy_new_for_bus (G_BUS_TYPE_SESSION, flags, NULL,
-                            GSM_DBUS_NAME, GSM_DBUS_PATH, GSM_DBUS_IFACE,
-                            NULL, manager_proxy_ready_cb, user_data);
+  gf_session_manager_gen_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+                                            flags,
+                                            "org.gnome.SessionManager",
+                                            "/org/gnome/SessionManager",
+                                            self->cancellable,
+                                            session_manager_ready_cb,
+                                            self);
 }
 
 static void
 name_lost_cb (GDBusConnection *connection,
-              const gchar     *name,
+              const char      *name,
               gpointer         user_data)
 {
-  GfSession *session;
+  GfSession *self;
 
-  session = GF_SESSION (user_data);
+  self = GF_SESSION (user_data);
 
-  if (session->end_cb != NULL)
-    session->end_cb (session, session->user_data);
+  g_signal_emit (self, session_signals[NAME_LOST], 0, self->name_acquired);
+}
+
+static void
+gf_session_constructed (GObject *object)
+{
+  GfSession *self;
+  GBusNameOwnerFlags flags;
+
+  self = GF_SESSION (object);
+
+  G_OBJECT_CLASS (gf_session_parent_class)->constructed (object);
+
+  flags = G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT;
+  if (self->replace)
+    flags |= G_BUS_NAME_OWNER_FLAGS_REPLACE;
+
+  self->name_id = g_bus_own_name (G_BUS_TYPE_SESSION,
+                                  "org.gnome.Flashback",
+                                  flags,
+                                  NULL,
+                                  name_acquired_cb,
+                                  name_lost_cb,
+                                  self,
+                                  NULL);
 }
 
 static void
 gf_session_dispose (GObject *object)
 {
-  GfSession *session;
+  GfSession *self;
 
-  session = GF_SESSION (object);
+  self = GF_SESSION (object);
 
-  if (session->name_id > 0)
+  if (self->name_id != 0)
     {
-      g_bus_unown_name (session->name_id);
-      session->name_id = 0;
+      g_bus_unown_name (self->name_id);
+      self->name_id = 0;
     }
 
-  g_clear_object (&session->manager_proxy);
-  g_clear_object (&session->client_proxy);
+  g_cancellable_cancel (self->cancellable);
+  g_clear_object (&self->cancellable);
+
+  g_clear_object (&self->session_manager);
+  g_clear_object (&self->client_private);
 
   G_OBJECT_CLASS (gf_session_parent_class)->dispose (object);
 }
@@ -217,166 +345,159 @@ gf_session_dispose (GObject *object)
 static void
 gf_session_finalize (GObject *object)
 {
-  GfSession *session;
+  GfSession *self;
 
-  session = GF_SESSION (object);
+  self = GF_SESSION (object);
 
-  g_free (session->object_path);
+  g_clear_pointer (&self->startup_id, g_free);
+  g_clear_pointer (&self->client_id, g_free);
 
   G_OBJECT_CLASS (gf_session_parent_class)->finalize (object);
 }
 
 static void
-gf_session_class_init (GfSessionClass *session_class)
+gf_session_set_property (GObject      *object,
+                         guint         property_id,
+                         const GValue *value,
+                         GParamSpec   *pspec)
 {
-  GObjectClass *object_class;
+  GfSession *self;
 
-  object_class = G_OBJECT_CLASS (session_class);
+  self = GF_SESSION (object);
 
-  object_class->dispose = gf_session_dispose;
-  object_class->finalize = gf_session_finalize;
+  switch (property_id)
+    {
+      case PROP_REPLACE:
+        self->replace = g_value_get_boolean (value);
+        break;
+
+      case PROP_STARTUP_ID:
+        self->startup_id = g_value_dup_string (value);
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
 }
 
 static void
-gf_session_init (GfSession *session)
+install_properties (GObjectClass *object_class)
 {
+  session_properties[PROP_REPLACE] =
+    g_param_spec_boolean ("replace",
+                          "replace",
+                          "replace",
+                          FALSE,
+                          G_PARAM_CONSTRUCT_ONLY |
+                          G_PARAM_WRITABLE |
+                          G_PARAM_STATIC_STRINGS);
+
+  session_properties[PROP_STARTUP_ID] =
+    g_param_spec_string ("startup-id",
+                         "startup-id",
+                         "startup-id",
+                         "",
+                         G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_WRITABLE |
+                         G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (object_class,
+                                     LAST_PROP,
+                                     session_properties);
 }
 
-/**
- * gf_session_new:
- * @replace: %TRUE to replace current session
- * @ready_cb:
- * @end_cb:
- * @user_data: user data
- *
- * Creates a new #GfSession.
- *
- * Returns: (transfer full): a newly created #GfSession.
- */
+static void
+install_signals (void)
+{
+  session_signals[NAME_LOST] =
+    g_signal_new ("name-lost",
+                  GF_TYPE_SESSION,
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL,
+                  NULL,
+                  NULL,
+                  G_TYPE_NONE,
+                  1,
+                  G_TYPE_BOOLEAN);
+
+  session_signals[SESSION_READY] =
+    g_signal_new ("session-ready",
+                  GF_TYPE_SESSION,
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL,
+                  NULL,
+                  NULL,
+                  G_TYPE_NONE,
+                  1,
+                  G_TYPE_BOOLEAN);
+
+  session_signals[END_SESSION] =
+    g_signal_new ("end-session",
+                  GF_TYPE_SESSION,
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL,
+                  NULL,
+                  NULL,
+                  G_TYPE_NONE,
+                  0);
+}
+
+static void
+gf_session_class_init (GfSessionClass *self_class)
+{
+  GObjectClass *object_class;
+
+  object_class = G_OBJECT_CLASS (self_class);
+
+  object_class->constructed = gf_session_constructed;
+  object_class->dispose = gf_session_dispose;
+  object_class->finalize = gf_session_finalize;
+  object_class->set_property = gf_session_set_property;
+
+  install_properties (object_class);
+  install_signals ();
+}
+
+static void
+gf_session_init (GfSession *self)
+{
+  self->cancellable = g_cancellable_new ();
+}
+
 GfSession *
-gf_session_new (gboolean                replace,
-                GfSessionReadyCallback  ready_cb,
-                GfSessionEndCallback    end_cb,
-                gpointer                user_data)
+gf_session_new (gboolean    replace,
+                const char *startup_id)
 {
-  GfSession *session;
-  GBusNameOwnerFlags flags;
-
-  session = g_object_new (GF_TYPE_SESSION, NULL);
-
-  session->ready_cb = ready_cb;
-  session->end_cb = end_cb;
-  session->user_data = user_data;
-
-  flags = G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT;
-  if (replace)
-    flags |= G_BUS_NAME_OWNER_FLAGS_REPLACE;
-
-  session->name_id = g_bus_own_name (G_BUS_TYPE_SESSION, GF_DBUS_NAME, flags,
-                                     NULL, name_acquired_cb, name_lost_cb,
-                                     session, NULL);
-
-  return session;
+  return g_object_new (GF_TYPE_SESSION,
+                       "replace", replace,
+                       "startup-id", startup_id,
+                       NULL);
 }
 
-/**
- * gf_session_set_environment:
- * @session: a #GfSession
- * @name: the variable name
- * @value: the value
- *
- * Set environment variable to specified value. May only be used during the
- * Session Manager Initialization phase. If session has entered Running phase
- * this function does nothing.
- */
 void
-gf_session_set_environment (GfSession   *session,
-                            const gchar *name,
-                            const gchar *value)
+gf_session_set_environment (GfSession  *self,
+                            const char *name,
+                            const char *value)
 {
-  GVariant *parameters;
-  GError *error;
-  GVariant *variant;
-
-  if (is_session_running (session))
-    return;
-
-  parameters = g_variant_new ("(ss)", name, value);
-
-  error = NULL;
-  variant = g_dbus_proxy_call_sync (session->manager_proxy,
-                                    "Setenv", parameters,
-                                    G_DBUS_CALL_FLAGS_NONE,
-                                    -1, NULL, &error);
-
-  if (error != NULL)
-    {
-      g_warning ("Failed to set the environment: %s", error->message);
-      g_error_free (error);
-      return;
-    }
-
-  g_variant_unref (variant);
+  gf_session_manager_gen_call_setenv (self->session_manager,
+                                      name,
+                                      value,
+                                      self->cancellable,
+                                      setenv_cb,
+                                      self);
 }
 
-/**
- * gf_session_register:
- * @session: a #GfSession
- *
- * Register as a Session Management client.
- *
- * Returns: %TRUE if we have registered as client, %FALSE otherwise.
- */
-gboolean
-gf_session_register (GfSession *session)
+void
+gf_session_register (GfSession *self)
 {
-  const gchar *app_id;
-  const gchar *autostart_id;
-  gchar *client_startup_id;
-  GVariant *parameters;
-  GError *error;
-  GVariant *variant;
-  GDBusProxyFlags flags;
-
-  app_id = "gnome-flashback";
-  autostart_id = g_getenv ("DESKTOP_AUTOSTART_ID");
-
-  if (autostart_id != NULL)
-    {
-      client_startup_id = g_strdup (autostart_id);
-      g_unsetenv ("DESKTOP_AUTOSTART_ID");
-    }
-  else
-    {
-      client_startup_id = g_strdup ("");
-    }
-
-  parameters = g_variant_new ("(ss)", app_id, client_startup_id);
-  g_free (client_startup_id);
-
-  error = NULL;
-  variant = g_dbus_proxy_call_sync (session->manager_proxy,
-                                    "RegisterClient", parameters,
-                                    G_DBUS_CALL_FLAGS_NONE,
-                                    -1, NULL, &error);
-
-  if (error != NULL)
-    {
-      g_warning ("Failed to register client: %s", error->message);
-      g_error_free (error);
-
-      return FALSE;
-    }
-
-  g_variant_get (variant, "(o)", &session->object_path);
-  g_variant_unref (variant);
-
-  flags = G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES;
-
-  g_dbus_proxy_new_for_bus (G_BUS_TYPE_SESSION, flags, NULL,
-                            GSM_DBUS_NAME, session->object_path,
-                            GSM_CLIENT_PRIVATE_DBUS_IFACE,
-                            NULL, client_proxy_ready_cb, session);
-
-  return TRUE;
+  gf_session_manager_gen_call_register_client (self->session_manager,
+                                               "gnome-flashback",
+                                               self->startup_id,
+                                               self->cancellable,
+                                               register_client_cb,
+                                               self);
 }

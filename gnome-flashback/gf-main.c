@@ -25,8 +25,12 @@
 #include "gf-application.h"
 #include "gf-session.h"
 
-static GMainLoop *loop = NULL;
-static GfApplication *application = NULL;
+typedef struct
+{
+  GMainLoop     *loop;
+  GfApplication *application;
+  int            exit_status;
+} GfMainData;
 
 static gboolean replace = FALSE;
 static gboolean version = FALSE;
@@ -81,18 +85,16 @@ parse_arguments (int    *argc,
 }
 
 static void
-main_loop_quit (void)
+main_loop_quit (GfMainData *main_data)
 {
-  if (application != NULL)
-    g_clear_object (&application);
-
-  g_main_loop_quit (loop);
+  g_clear_object (&main_data->application);
+  g_main_loop_quit (main_data->loop);
 }
 
 static gboolean
 on_term_signal (gpointer user_data)
 {
-  main_loop_quit ();
+  main_loop_quit (user_data);
 
   return G_SOURCE_REMOVE;
 }
@@ -100,36 +102,63 @@ on_term_signal (gpointer user_data)
 static gboolean
 on_int_signal (gpointer user_data)
 {
-  main_loop_quit ();
+  main_loop_quit (user_data);
 
   return G_SOURCE_REMOVE;
 }
 
 static void
-session_ready_cb (GfSession *session,
-                  gpointer   user_data)
+name_lost_cb (GfSession  *session,
+              gboolean    was_acquired,
+              GfMainData *main_data)
 {
-  g_unix_signal_add (SIGTERM, on_term_signal, NULL);
-  g_unix_signal_add (SIGINT, on_int_signal, NULL);
+  main_loop_quit (main_data);
 
-  application = gf_application_new ();
-  gf_session_set_environment (session, "XDG_MENU_PREFIX", "gnome-flashback-");
+  if (was_acquired)
+    return;
+
+  main_data->exit_status = EXIT_FAILURE;
+
+  g_warning ("Failed to acquire bus name!");
+}
+
+static void
+session_ready_cb (GfSession  *session,
+                  gboolean    is_session_running,
+                  GfMainData *main_data)
+{
+  g_unix_signal_add (SIGTERM, on_term_signal, main_data);
+  g_unix_signal_add (SIGINT, on_int_signal, main_data);
+
+  if (!is_session_running)
+    {
+      gf_session_set_environment (session,
+                                  "XDG_MENU_PREFIX",
+                                  "gnome-flashback-");
+
 #ifdef HAVE_COMPIZ_SESSION
-  gf_session_set_environment (session, "COMPIZ_CONFIG_PROFILE", "gnome-flashback");
+      gf_session_set_environment (session,
+                                  "COMPIZ_CONFIG_PROFILE",
+                                  "gnome-flashback");
 #endif
+    }
+
+  main_data->application = gf_application_new ();
   gf_session_register (session);
 }
 
 static void
-session_end_cb (GfSession *session,
-                gpointer   user_data)
+end_session_cb (GfSession  *session,
+                GfMainData *main_data)
 {
-  main_loop_quit ();
+  main_loop_quit (main_data);
 }
 
 int
 main (int argc, char *argv[])
 {
+  const char *autostart_id;
+  GfMainData main_data;
   GfSession *session;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALE_DIR);
@@ -148,13 +177,33 @@ main (int argc, char *argv[])
       return EXIT_SUCCESS;
     }
 
-  loop = g_main_loop_new (NULL, FALSE);
-  session = gf_session_new (replace, session_ready_cb, session_end_cb, NULL);
+  main_data.exit_status = EXIT_SUCCESS;
+  main_data.loop = g_main_loop_new (NULL, FALSE);
+  main_data.application = NULL;
 
-  g_main_loop_run (loop);
+  autostart_id = g_getenv ("DESKTOP_AUTOSTART_ID");
+  session = gf_session_new (replace, autostart_id != NULL ? autostart_id : "");
+  g_unsetenv ("DESKTOP_AUTOSTART_ID");
 
+  g_signal_connect (session,
+                    "name-lost",
+                    G_CALLBACK (name_lost_cb),
+                    &main_data);
+
+  g_signal_connect (session,
+                    "session-ready",
+                    G_CALLBACK (session_ready_cb),
+                    &main_data);
+
+  g_signal_connect (session,
+                    "end-session",
+                    G_CALLBACK (end_session_cb),
+                    &main_data);
+
+  g_main_loop_run (main_data.loop);
+
+  g_main_loop_unref (main_data.loop);
   g_object_unref (session);
-  g_main_loop_unref (loop);
 
-  return EXIT_SUCCESS;
+  return main_data.exit_status;
 }
