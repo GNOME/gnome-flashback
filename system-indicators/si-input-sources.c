@@ -855,12 +855,6 @@ append_show_layout_item (SiInputSources *self,
 
   g_signal_connect (item, "activate", G_CALLBACK (show_layout_cb), self);
 
-  item = si_desktop_menu_item_new (_("Region & Language Settings"),
-                                   "gnome-region-panel.desktop");
-
-  gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), item);
-  gtk_widget_show (item);
-
   if (layout != NULL && *layout != '\0')
     {
       char *description;
@@ -879,6 +873,18 @@ append_show_layout_item (SiInputSources *self,
     {
       gtk_widget_set_sensitive (item, FALSE);
     }
+}
+
+static void
+append_settings_item (SiInputSources *self)
+{
+  GtkWidget *item;
+
+  item = si_desktop_menu_item_new (_("Region & Language Settings"),
+                                   "gnome-region-panel.desktop");
+
+  gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), item);
+  gtk_widget_show (item);
 }
 
 static void
@@ -906,6 +912,7 @@ update_indicator_menu (SiInputSources *self,
   gtk_widget_show (separator);
 
   append_show_layout_item (self, current_source);
+  append_settings_item (self);
 
   return count;
 }
