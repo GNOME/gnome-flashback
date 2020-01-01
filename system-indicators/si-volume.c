@@ -432,6 +432,11 @@ create_menu (SiVolume *self)
                     self);
 
   append_mute_item (self, menu);
+
+  separator = gtk_separator_menu_item_new ();
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), separator);
+  gtk_widget_show (separator);
+
   append_slider_item (self, menu);
 
   separator = gtk_separator_menu_item_new ();
