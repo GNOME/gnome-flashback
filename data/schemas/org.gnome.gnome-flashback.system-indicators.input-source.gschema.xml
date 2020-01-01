@@ -22,7 +22,7 @@
 
     <key name="icon-font-weight" type="i">
       <range min="100" max="1000"/>
-      <default>600</default>
+      <default>500</default>
       <summary>Icon font weight</summary>
     </key>
 
