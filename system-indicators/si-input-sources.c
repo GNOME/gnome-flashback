@@ -1132,7 +1132,7 @@ si_input_sources_init (SiInputSources *self)
 {
   self->icon_theme_path = g_build_filename (g_get_user_cache_dir (),
                                             "gnome-flashback",
-                                            "input-sources",
+                                            "system-indicators",
                                             "icons",
                                             NULL);
 
