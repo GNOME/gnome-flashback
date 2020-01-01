@@ -25,9 +25,14 @@
 #include "dbus/gf-upower-device-gen.h"
 #include "si-desktop-menu-item.h"
 
+#define SHOW_BATTERY_PERCENTAGE_KEY "show-battery-percentage"
+
 struct _SiPower
 {
   SiIndicator        parent;
+
+  GSettings         *settings;
+  gboolean           show_battery_percentage;
 
   GtkWidget         *menu;
 
@@ -146,6 +151,28 @@ update_indicator_menu (SiPower *self)
 }
 
 static void
+update_indicator_label (SiPower *self)
+{
+  GtkWidget *menu_item;
+  double percentage;
+  char *label;
+
+  menu_item = si_indicator_get_menu_item (SI_INDICATOR (self));
+
+  if (self->device == NULL || !self->show_battery_percentage)
+    {
+      gtk_menu_item_set_label (GTK_MENU_ITEM (menu_item), NULL);
+      return;
+    }
+
+  percentage = gf_upower_device_gen_get_percentage (self->device);
+  label = g_strdup_printf ("%.0f%%", percentage);
+
+  gtk_menu_item_set_label (GTK_MENU_ITEM (menu_item), label);
+  g_free (label);
+}
+
+static void
 update_indicator_icon (SiPower *self)
 {
   GpApplet *applet;
@@ -198,6 +225,7 @@ update_indicator (SiPower *self)
     }
 
   update_indicator_icon (self);
+  update_indicator_label (self);
   update_indicator_menu (self);
 
   tooltip = get_state_text (self);
@@ -294,6 +322,23 @@ name_vanished_handler_cb (GDBusConnection *connection,
 }
 
 static void
+show_battery_percentage_changed_cb (GSettings  *settings,
+                                    const char *key,
+                                    SiPower    *self)
+{
+  gboolean show_battery_percentage;
+
+  show_battery_percentage = g_settings_get_boolean (settings,
+                                                    SHOW_BATTERY_PERCENTAGE_KEY);
+
+  if (self->show_battery_percentage == show_battery_percentage)
+    return;
+
+  self->show_battery_percentage = show_battery_percentage;
+  update_indicator_label (self);
+}
+
+static void
 si_power_constructed (GObject *object)
 {
   SiPower *self;
@@ -335,6 +380,7 @@ si_power_dispose (GObject *object)
   g_cancellable_cancel (self->cancellable);
   g_clear_object (&self->cancellable);
 
+  g_clear_object (&self->settings);
   g_clear_object (&self->device);
 
   G_OBJECT_CLASS (si_power_parent_class)->dispose (object);
@@ -354,6 +400,16 @@ si_power_class_init (SiPowerClass *self_class)
 static void
 si_power_init (SiPower *self)
 {
+  self->settings = g_settings_new ("org.gnome.desktop.interface");
+
+  g_signal_connect (self->settings,
+                    "changed::" SHOW_BATTERY_PERCENTAGE_KEY,
+                    G_CALLBACK (show_battery_percentage_changed_cb),
+                    self);
+
+  self->show_battery_percentage = g_settings_get_boolean (self->settings,
+                                                          SHOW_BATTERY_PERCENTAGE_KEY);
+
   self->bus_name_id = g_bus_watch_name (G_BUS_TYPE_SYSTEM,
                                         "org.freedesktop.UPower",
                                         G_BUS_NAME_WATCHER_FLAGS_NONE,
