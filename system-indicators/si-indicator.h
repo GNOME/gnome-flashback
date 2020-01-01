@@ -40,6 +40,9 @@ void       si_indicator_set_icon_name     (SiIndicator *self,
 void       si_indicator_set_icon_filename (SiIndicator *self,
                                            const char  *filename);
 
+void       si_indicator_set_icon          (SiIndicator *self,
+                                           GIcon       *icon);
+
 G_END_DECLS
 
 #endif

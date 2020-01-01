@@ -172,41 +172,92 @@ update_indicator_label (SiPower *self)
   g_free (label);
 }
 
+static GIcon *
+get_themed_icon (SiPower  *self,
+                 gboolean  symbolic)
+{
+  const char *device_icon_name;
+  GIcon *icon;
+
+  device_icon_name = gf_upower_device_gen_get_icon_name (self->device);
+
+  if (device_icon_name != NULL && device_icon_name[0] != '\0')
+    {
+      if (!symbolic && g_str_has_suffix (device_icon_name, "-symbolic"))
+        {
+          char *icon_name;
+          char *tmp;
+
+          icon_name = g_strdup (device_icon_name);
+          tmp = g_strrstr (icon_name, "-symbolic");
+
+          g_strlcpy (tmp, "", sizeof (tmp));
+
+          icon = g_themed_icon_new (icon_name);
+          g_free (icon_name);
+        }
+      else
+        {
+          icon = g_themed_icon_new (device_icon_name);
+        }
+    }
+  else
+    {
+      if (symbolic)
+        icon = g_themed_icon_new ("battery-symbolic");
+      else
+        icon = g_themed_icon_new ("battery");
+    }
+
+  return icon;
+}
+
 static void
 update_indicator_icon (SiPower *self)
 {
   GpApplet *applet;
-  char *icon_name;
+  gboolean symbolic;
+  GIcon *icon;
 
   if (self->device == NULL)
     return;
 
   applet = si_indicator_get_applet (SI_INDICATOR (self));
-  icon_name = g_strdup (gf_upower_device_gen_get_icon_name (self->device));
+  symbolic = gp_applet_get_prefer_symbolic_icons (applet);
 
-  if (icon_name != NULL && icon_name[0] != '\0')
+  icon = get_themed_icon (self, symbolic);
+
+  if (symbolic)
     {
-      if (!gp_applet_get_prefer_symbolic_icons (applet) &&
-          g_str_has_suffix (icon_name, "-symbolic"))
+      UpDeviceState state;
+      double percentage;
+      int level;
+      char *icon_name;
+
+      state = gf_upower_device_gen_get_state (self->device);
+      percentage = gf_upower_device_gen_get_percentage (self->device);
+      level = floor (percentage / 10);
+
+      if (level == 100 || state == UP_DEVICE_STATE_FULLY_CHARGED)
         {
-          char *symbolic;
-
-          symbolic = g_strrstr (icon_name, "-symbolic");
-          g_strlcpy (symbolic, "", sizeof (symbolic));
+          icon_name = g_strdup ("battery-level-100-charged-symbolic");
         }
-    }
-  else
-    {
-      g_free (icon_name);
-
-      if (gp_applet_get_prefer_symbolic_icons (applet))
-        icon_name = g_strdup ("battery-symbolic");
       else
-        icon_name = g_strdup ("battery");
+        {
+          gboolean charging;
+
+          charging = state == UP_DEVICE_STATE_CHARGING;
+          icon_name = g_strdup_printf ("battery-level-%d%s-symbolic",
+                                       level,
+                                       charging ? "-charging" : "");
+        }
+
+      g_themed_icon_prepend_name (G_THEMED_ICON (icon), icon_name);
+      g_free (icon_name);
     }
 
-  si_indicator_set_icon_name (SI_INDICATOR (self), icon_name);
-  g_free (icon_name);
+  si_indicator_set_icon (SI_INDICATOR (self), icon);
+  g_object_unref (icon);
 }
 
 static void

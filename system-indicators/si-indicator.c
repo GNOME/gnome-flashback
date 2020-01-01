@@ -325,3 +325,26 @@ si_indicator_set_icon_filename (SiIndicator *self,
 
   gtk_widget_show (priv->image);
 }
+
+void
+si_indicator_set_icon (SiIndicator *self,
+                       GIcon       *icon)
+{
+  SiIndicatorPrivate *priv;
+
+  priv = si_indicator_get_instance_private (self);
+
+  g_clear_pointer (&priv->filename, g_free);
+  gtk_image_clear (GTK_IMAGE (priv->image));
+
+  if (icon == NULL)
+    {
+      gtk_widget_hide (priv->image);
+      return;
+    }
+
+  gtk_image_set_from_gicon (GTK_IMAGE (priv->image), icon, GTK_ICON_SIZE_MENU);
+  update_icon (self);
+
+  gtk_widget_show (priv->image);
+}
