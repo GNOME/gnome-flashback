@@ -15,19 +15,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SI_INPUT_SOURCE_H
-#define SI_INPUT_SOURCE_H
+#ifndef SI_INPUT_SOURCES_H
+#define SI_INPUT_SOURCES_H
 
 #include <libgnome-panel/gp-applet.h>
 #include "si-indicator.h"
 
 G_BEGIN_DECLS
 
-#define SI_TYPE_INPUT_SOURCE (si_input_source_get_type ())
-G_DECLARE_FINAL_TYPE (SiInputSource, si_input_source,
-                      SI, INPUT_SOURCE, SiIndicator)
+#define SI_TYPE_INPUT_SOURCES (si_input_sources_get_type ())
+G_DECLARE_FINAL_TYPE (SiInputSources, si_input_sources,
+                      SI, INPUT_SOURCES, SiIndicator)
 
-SiIndicator *si_input_source_new (GpApplet *applet);
+SiIndicator *si_input_sources_new (GpApplet *applet);
 
 G_END_DECLS
 

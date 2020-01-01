@@ -20,7 +20,7 @@
 
 #include "gvc-mixer-control.h"
 #include "si-bluetooth.h"
-#include "si-input-source.h"
+#include "si-input-sources.h"
 #include "si-menu-bar.h"
 #include "si-power.h"
 #include "si-volume.h"
@@ -34,7 +34,7 @@ struct _SiApplet
   GvcMixerControl *mixer_control;
 
   SiIndicator     *bluetooth;
-  SiIndicator     *input_source;
+  SiIndicator     *input_sources;
   SiIndicator     *power;
   SiIndicator     *volume_input;
   SiIndicator     *volume_output;
@@ -85,13 +85,13 @@ append_bluetooth (SiApplet *self)
 }
 
 static void
-append_input_source (SiApplet *self)
+append_input_sources (SiApplet *self)
 {
   GtkWidget *item;
 
-  self->input_source = si_input_source_new (GP_APPLET (self));
+  self->input_sources = si_input_sources_new (GP_APPLET (self));
 
-  item = si_indicator_get_menu_item (self->input_source);
+  item = si_indicator_get_menu_item (self->input_sources);
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu_bar), item);
 }
 
@@ -119,7 +119,7 @@ setup_applet (SiApplet *self)
   self->mixer_control = gvc_mixer_control_new ("GNOME Flashback Volume Control");
   gvc_mixer_control_open (self->mixer_control);
 
-  append_input_source (self);
+  append_input_sources (self);
   append_volume (self);
   append_bluetooth (self);
   append_power (self);
@@ -142,7 +142,7 @@ si_applet_dispose (GObject *object)
   g_clear_object (&self->mixer_control);
 
   g_clear_object (&self->bluetooth);
-  g_clear_object (&self->input_source);
+  g_clear_object (&self->input_sources);
   g_clear_object (&self->power);
   g_clear_object (&self->volume_input);
   g_clear_object (&self->volume_output);

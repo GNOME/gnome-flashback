@@ -16,7 +16,7 @@
  */
 
 #include "config.h"
-#include "si-input-source.h"
+#include "si-input-sources.h"
 
 #include <glib/gi18n-lib.h>
 #include <libgnome-panel/gp-image-menu-item.h>
@@ -26,7 +26,7 @@
 #include "dbus/gf-input-sources-gen.h"
 #include "si-desktop-menu-item.h"
 
-struct _SiInputSource
+struct _SiInputSources
 {
   SiIndicator        parent;
 
@@ -46,7 +46,7 @@ struct _SiInputSource
   char              *icon_file;
 };
 
-G_DEFINE_TYPE (SiInputSource, si_input_source, SI_TYPE_INDICATOR)
+G_DEFINE_TYPE (SiInputSources, si_input_sources, SI_TYPE_INDICATOR)
 
 static GString *
 cairo_path_to_string (cairo_path_t   *path,
@@ -363,7 +363,7 @@ generate_icon_name (const char *text,
 }
 
 static gchar *
-get_icon_name (SiInputSource *self)
+get_icon_name (SiInputSources *self)
 {
   char *font_family;
   int font_weight;
@@ -409,7 +409,7 @@ get_icon_name (SiInputSource *self)
 }
 
 static void
-update_icon (SiInputSource *self)
+update_icon (SiInputSources *self)
 {
   gboolean use_ibus_icon;
 
@@ -435,8 +435,8 @@ update_icon (SiInputSource *self)
 }
 
 static void
-update_indicator_icon (SiInputSource *self,
-                       GVariant      *current_source)
+update_indicator_icon (SiInputSources *self,
+                       GVariant       *current_source)
 {
   GVariantDict dict;
   const char *icon_text;
@@ -468,17 +468,17 @@ update_indicator_icon (SiInputSource *self,
 }
 
 static void
-settings_changed_cb (GSettings     *settings,
-                     const char    *key,
-                     SiInputSource *self)
+settings_changed_cb (GSettings      *settings,
+                     const char     *key,
+                     SiInputSources *self)
 {
   update_icon (self);
 }
 
 static void
-prefer_symbolic_icons_cb (GObject       *object,
-                          GParamSpec    *pspec,
-                          SiInputSource *self)
+prefer_symbolic_icons_cb (GObject        *object,
+                          GParamSpec     *pspec,
+                          SiInputSources *self)
 {
   update_icon (self);
 }
@@ -506,8 +506,8 @@ activate_cb (GObject      *object,
 }
 
 static void
-item_activate_cb (GtkMenuItem   *item,
-                  SiInputSource *self)
+item_activate_cb (GtkMenuItem    *item,
+                  SiInputSources *self)
 {
   guint *index;
 
@@ -529,8 +529,8 @@ item_activate_cb (GtkMenuItem   *item,
 }
 
 static int
-append_input_sources (SiInputSource *self,
-                      GVariant      *input_sources)
+append_input_sources (SiInputSources *self,
+                      GVariant       *input_sources)
 {
   GVariantIter iter;
   GSList *group;
@@ -613,8 +613,8 @@ activate_property_cb (GObject      *object,
 }
 
 static void
-property_activate_cb (GtkMenuItem   *item,
-                      SiInputSource *self)
+property_activate_cb (GtkMenuItem    *item,
+                      SiInputSources *self)
 {
   const char *key;
 
@@ -633,9 +633,9 @@ property_activate_cb (GtkMenuItem   *item,
 }
 
 static void
-append_properties_to_menu (SiInputSource *self,
-                           GVariantIter  *iter,
-                           GtkWidget     *menu)
+append_properties_to_menu (SiInputSources *self,
+                           GVariantIter   *iter,
+                           GtkWidget      *menu)
 {
   GVariant *child;
 
@@ -746,8 +746,8 @@ append_properties_to_menu (SiInputSource *self,
 }
 
 static int
-append_properties (SiInputSource *self,
-                   GVariant      *current_source)
+append_properties (SiInputSources *self,
+                   GVariant       *current_source)
 {
   GVariantDict dict;
   GVariant *properties;
@@ -820,8 +820,8 @@ spawn_keyboard_display (const char *description)
 }
 
 static void
-show_layout_cb (GtkMenuItem   *menuitem,
-                SiInputSource *self)
+show_layout_cb (GtkMenuItem    *menuitem,
+                SiInputSources *self)
 {
   const char *description;
 
@@ -833,8 +833,8 @@ show_layout_cb (GtkMenuItem   *menuitem,
 }
 
 static void
-append_show_layout_item (SiInputSource *self,
-                         GVariant      *current_source)
+append_show_layout_item (SiInputSources *self,
+                         GVariant       *current_source)
 {
   GVariantDict dict;
   const char *layout;
@@ -889,9 +889,9 @@ remove_item_cb (GtkWidget *widget,
 }
 
 static int
-update_indicator_menu (SiInputSource *self,
-                       GVariant      *input_sources,
-                       GVariant      *current_source)
+update_indicator_menu (SiInputSources *self,
+                       GVariant       *input_sources,
+                       GVariant       *current_source)
 {
   int count;
   GtkWidget *separator;
@@ -911,9 +911,9 @@ update_indicator_menu (SiInputSource *self,
 }
 
 static void
-update_indicator (SiInputSource *self,
-                  GVariant      *input_sources,
-                  GVariant      *current_source)
+update_indicator (SiInputSources *self,
+                  GVariant       *input_sources,
+                  GVariant       *current_source)
 {
   int count;
   GtkWidget *menu_item;
@@ -933,7 +933,7 @@ get_input_sources_cb (GObject      *object,
   GError *error;
   GVariant *input_sources;
   GVariant *current_source;
-  SiInputSource *self;
+  SiInputSources *self;
 
   error = NULL;
   gf_input_sources_gen_call_get_input_sources_finish (GF_INPUT_SOURCES_GEN (object),
@@ -951,7 +951,7 @@ get_input_sources_cb (GObject      *object,
       return;
     }
 
-  self = SI_INPUT_SOURCE (user_data);
+  self = SI_INPUT_SOURCES (user_data);
 
   update_indicator (self, input_sources, current_source);
 
@@ -961,7 +961,7 @@ get_input_sources_cb (GObject      *object,
 
 static void
 changed_cb (GfInputSourcesGen *input_sources,
-            SiInputSource     *self)
+            SiInputSources    *self)
 {
   g_cancellable_cancel (self->cancellable);
   g_clear_object (&self->cancellable);
@@ -981,7 +981,7 @@ input_sources_ready_cb (GObject      *object,
 {
   GError *error;
   GfInputSourcesGen *input_sources;
-  SiInputSource *self;
+  SiInputSources *self;
 
   error = NULL;
   input_sources = gf_input_sources_gen_proxy_new_for_bus_finish (res, &error);
@@ -995,7 +995,7 @@ input_sources_ready_cb (GObject      *object,
       return;
     }
 
-  self = SI_INPUT_SOURCE (user_data);
+  self = SI_INPUT_SOURCES (user_data);
   self->input_sources = input_sources;
 
   g_signal_connect (self->input_sources, "changed",
@@ -1013,9 +1013,9 @@ name_appeared_handler_cb (GDBusConnection *connection,
                           const gchar     *name_owner,
                           gpointer         user_data)
 {
-  SiInputSource *self;
+  SiInputSources *self;
 
-  self = SI_INPUT_SOURCE (user_data);
+  self = SI_INPUT_SOURCES (user_data);
 
   g_cancellable_cancel (self->cancellable);
   g_clear_object (&self->cancellable);
@@ -1036,10 +1036,10 @@ name_vanished_handler_cb (GDBusConnection *connection,
                           const gchar     *name,
                           gpointer         user_data)
 {
-  SiInputSource *self;
+  SiInputSources *self;
   GtkWidget *menu_item;
 
-  self = SI_INPUT_SOURCE (user_data);
+  self = SI_INPUT_SOURCES (user_data);
 
   g_clear_object (&self->input_sources);
 
@@ -1048,16 +1048,16 @@ name_vanished_handler_cb (GDBusConnection *connection,
 }
 
 static void
-si_input_source_constructed (GObject *object)
+si_input_sources_constructed (GObject *object)
 {
-  SiInputSource *self;
+  SiInputSources *self;
   GtkWidget *menu_item;
   GpApplet *applet;
   const char *schema;
 
-  self = SI_INPUT_SOURCE (object);
+  self = SI_INPUT_SOURCES (object);
 
-  G_OBJECT_CLASS (si_input_source_parent_class)->constructed (object);
+  G_OBJECT_CLASS (si_input_sources_parent_class)->constructed (object);
 
   menu_item = si_indicator_get_menu_item (SI_INDICATOR (self));
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), self->menu);
@@ -1079,11 +1079,11 @@ si_input_source_constructed (GObject *object)
 }
 
 static void
-si_input_source_dispose (GObject *object)
+si_input_sources_dispose (GObject *object)
 {
-  SiInputSource *self;
+  SiInputSources *self;
 
-  self = SI_INPUT_SOURCE (object);
+  self = SI_INPUT_SOURCES (object);
 
   if (self->name_id != 0)
     {
@@ -1098,37 +1098,37 @@ si_input_source_dispose (GObject *object)
 
   g_clear_object (&self->input_sources);
 
-  G_OBJECT_CLASS (si_input_source_parent_class)->dispose (object);
+  G_OBJECT_CLASS (si_input_sources_parent_class)->dispose (object);
 }
 
 static void
-si_input_source_finalize (GObject *object)
+si_input_sources_finalize (GObject *object)
 {
-  SiInputSource *self;
+  SiInputSources *self;
 
-  self = SI_INPUT_SOURCE (object);
+  self = SI_INPUT_SOURCES (object);
 
   g_clear_pointer (&self->icon_theme_path, g_free);
   g_clear_pointer (&self->icon_text, g_free);
   g_clear_pointer (&self->icon_file, g_free);
 
-  G_OBJECT_CLASS (si_input_source_parent_class)->finalize (object);
+  G_OBJECT_CLASS (si_input_sources_parent_class)->finalize (object);
 }
 
 static void
-si_input_source_class_init (SiInputSourceClass *self_class)
+si_input_sources_class_init (SiInputSourcesClass *self_class)
 {
   GObjectClass *object_class;
 
   object_class = G_OBJECT_CLASS (self_class);
 
-  object_class->constructed = si_input_source_constructed;
-  object_class->dispose = si_input_source_dispose;
-  object_class->finalize = si_input_source_finalize;
+  object_class->constructed = si_input_sources_constructed;
+  object_class->dispose = si_input_sources_dispose;
+  object_class->finalize = si_input_sources_finalize;
 }
 
 static void
-si_input_source_init (SiInputSource *self)
+si_input_sources_init (SiInputSources *self)
 {
   self->icon_theme_path = g_build_filename (g_get_user_cache_dir (),
                                             "gnome-flashback",
@@ -1151,9 +1151,9 @@ si_input_source_init (SiInputSource *self)
 }
 
 SiIndicator *
-si_input_source_new (GpApplet *applet)
+si_input_sources_new (GpApplet *applet)
 {
-  return g_object_new (SI_TYPE_INPUT_SOURCE,
+  return g_object_new (SI_TYPE_INPUT_SOURCES,
                        "applet", applet,
                        NULL);
 }

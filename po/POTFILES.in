@@ -41,7 +41,7 @@ gnome-flashback/libscreensaver/gf-auth.c
 gvc/gvc/gvc-mixer-control.c
 system-indicators/si-bluetooth.c
 system-indicators/si-desktop-menu-item.c
-system-indicators/si-input-source.c
+system-indicators/si-input-sources.c
 system-indicators/si-module.c
 system-indicators/si-power.c
 system-indicators/si-volume.c

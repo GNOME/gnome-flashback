@@ -28,8 +28,8 @@ system_indicators_la_SOURCES = \
 	si-desktop-menu-item.h \
 	si-indicator.c \
 	si-indicator.h \
-	si-input-source.c \
-	si-input-source.h \
+	si-input-sources.c \
+	si-input-sources.h \
 	si-menu-bar.c \
 	si-menu-bar.h \
 	si-module.c \
