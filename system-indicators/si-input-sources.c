@@ -685,7 +685,7 @@ append_properties_to_menu (SiInputSources *self,
         }
 
       gtk_menu_item_set_label (GTK_MENU_ITEM (item), label);
-      gtk_widget_set_tooltip_text (item , tooltip);
+      gtk_widget_set_tooltip_text (item, tooltip);
 
       if (g_strcmp0 (type, "menu") == 0)
         {
@@ -737,7 +737,7 @@ append_properties_to_menu (SiInputSources *self,
                             self);
         }
 
-      gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), item);
+      gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
       gtk_widget_show (item);
 
       g_variant_dict_unref (dict);
