@@ -22,8 +22,6 @@
 #include <glib-object.h>
 #include <ibus-1.0/ibus.h>
 
-#include "gf-ibus-manager.h"
-
 G_BEGIN_DECLS
 
 #define GF_TYPE_INPUT_SOURCE gf_input_source_get_type ()
@@ -34,13 +32,6 @@ struct _GfInputSourceClass
 {
   GObjectClass parent_class;
 };
-
-GfInputSource *gf_input_source_new              (GfIBusManager *ibus_manager,
-                                                 const gchar   *type,
-                                                 const gchar   *id,
-                                                 const gchar   *display_name,
-                                                 const gchar   *short_name,
-                                                 guint          index);
 
 const gchar   *gf_input_source_get_source_type  (GfInputSource *source);
 

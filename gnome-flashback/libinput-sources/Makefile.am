@@ -28,6 +28,10 @@ libinput_sources_la_SOURCES = \
 	gf-candidate-popup.h \
 	gf-ibus-manager.c \
 	gf-ibus-manager.h \
+	gf-input-source-ibus.c \
+	gf-input-source-ibus.h \
+	gf-input-source-xkb.c \
+	gf-input-source-xkb.h \
 	gf-input-source.c \
 	gf-input-source.h \
 	gf-input-sources.c \

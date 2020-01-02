@@ -17,6 +17,7 @@
  */
 
 #include "config.h"
+#include "gf-input-source-manager.h"
 
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
@@ -26,10 +27,10 @@
 #include <X11/Xatom.h>
 
 #include "gf-ibus-manager.h"
-#include "gf-input-source.h"
-#include "gf-input-source-manager.h"
+#include "gf-input-source-ibus.h"
 #include "gf-input-source-popup.h"
 #include "gf-input-source-settings.h"
+#include "gf-input-source-xkb.h"
 #include "gf-keyboard-manager.h"
 
 #define DESKTOP_WM_KEYBINDINGS_SCHEMA "org.gnome.desktop.wm.keybindings"
@@ -1188,6 +1189,7 @@ sources_changed_cb (GfInputSourceSettings *settings,
 
   for (l = source_infos; l != NULL; l = g_list_next (l))
     {
+      GType gtype;
       SourceInfo *info;
       gint position;
       GfInputSource *source;
@@ -1195,9 +1197,19 @@ sources_changed_cb (GfInputSourceSettings *settings,
       info = (SourceInfo *) l->data;
       position = g_list_position (source_infos, l);
 
-      source = gf_input_source_new (manager->ibus_manager, info->type,
-                                    info->id, info->display_name,
-                                    info->short_name, position);
+      if (g_strcmp0 (info->type, INPUT_SOURCE_TYPE_IBUS) == 0)
+        gtype = GF_TYPE_INPUT_SOURCE_IBUS;
+      else
+        gtype = GF_TYPE_INPUT_SOURCE_XKB;
+
+      source = g_object_new (gtype,
+                             "ibus-manager", manager->ibus_manager,
+                             "type", info->type,
+                             "id", info->id,
+                             "display-name", info->display_name,
+                             "short-name", info->short_name,
+                             "index", position,
+                             NULL);
 
       gf_input_source_set_icon_file (source, info->icon_file);
 

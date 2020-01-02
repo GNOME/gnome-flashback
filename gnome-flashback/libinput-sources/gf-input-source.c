@@ -67,7 +67,7 @@ enum
 
 static GParamSpec *properties[LAST_PROP] = { NULL };
 
-G_DEFINE_TYPE_WITH_PRIVATE (GfInputSource, gf_input_source, G_TYPE_OBJECT)
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GfInputSource, gf_input_source, G_TYPE_OBJECT)
 
 static gchar *
 get_xkb_id (GfInputSource *source)
@@ -291,24 +291,6 @@ gf_input_source_class_init (GfInputSourceClass *source_class)
 static void
 gf_input_source_init (GfInputSource *source)
 {
-}
-
-GfInputSource *
-gf_input_source_new (GfIBusManager *ibus_manager,
-                     const gchar   *type,
-                     const gchar   *id,
-                     const gchar   *display_name,
-                     const gchar   *short_name,
-                     guint          index)
-{
-  return g_object_new (GF_TYPE_INPUT_SOURCE,
-                       "ibus-manager", ibus_manager,
-                       "type", type,
-                       "id", id,
-                       "display-name", display_name,
-                       "short-name", short_name,
-                       "index", index,
-                       NULL);
 }
 
 const gchar *
