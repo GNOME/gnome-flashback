@@ -44,8 +44,6 @@ struct _SourceInfo
   gchar *type;
 
   gchar *id;
-
-  char  *icon_file;
 };
 
 typedef struct
@@ -416,7 +414,6 @@ source_info_free (gpointer data)
 
   g_free (info->type);
   g_free (info->id);
-  g_free (info->icon_file);
 
   g_free (info);
 }
@@ -700,7 +697,6 @@ get_source_info_list (GfInputSourceManager *manager)
       else if (g_strcmp0 (type, INPUT_SOURCE_TYPE_IBUS) == 0)
         {
           IBusEngineDesc *engine_desc;
-          const char *icon;
 
           if (manager->disable_ibus)
             continue;
@@ -711,10 +707,7 @@ get_source_info_list (GfInputSourceManager *manager)
           if (engine_desc == NULL)
             continue;
 
-          icon = ibus_engine_desc_get_icon (engine_desc);
-
           info = source_info_new (type, id);
-          info->icon_file = g_strdup (icon);
         }
 
       if (info != NULL)
@@ -1146,8 +1139,6 @@ sources_changed_cb (GfInputSourceSettings *settings,
                                  "index", position,
                                  NULL);
         }
-
-      gf_input_source_set_icon_file (source, info->icon_file);
 
       g_signal_connect (source, "activate",
                         G_CALLBACK (activate_cb), manager);

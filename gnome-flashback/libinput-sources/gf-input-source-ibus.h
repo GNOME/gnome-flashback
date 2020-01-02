@@ -27,6 +27,8 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (GfInputSourceIBus, gf_input_source_ibus,
                       GF, INPUT_SOURCE_IBUS, GfInputSource)
 
+const char   *gf_input_source_ibus_get_icon       (GfInputSourceIBus *self);
+
 IBusPropList *gf_input_source_ibus_get_properties (GfInputSourceIBus *self);
 
 void          gf_input_source_ibus_set_properties (GfInputSourceIBus *self,

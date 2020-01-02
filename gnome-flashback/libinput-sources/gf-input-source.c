@@ -26,8 +26,6 @@ typedef struct
   gchar         *type;
   gchar         *id;
   guint          index;
-
-  char          *icon_file;
 } GfInputSourcePrivate;
 
 enum
@@ -130,7 +128,6 @@ gf_input_source_finalize (GObject *object)
 
   g_free (priv->type);
   g_free (priv->id);
-  g_free (priv->icon_file);
 
   G_OBJECT_CLASS (gf_input_source_parent_class)->finalize (object);
 }
@@ -242,26 +239,4 @@ gf_input_source_activate (GfInputSource *source,
                           gboolean       interactive)
 {
   g_signal_emit (source, signals[SIGNAL_ACTIVATE], 0, interactive);
-}
-
-const char *
-gf_input_source_get_icon_file (GfInputSource *self)
-{
-  GfInputSourcePrivate *priv;
-
-  priv = gf_input_source_get_instance_private (self);
-
-  return priv->icon_file;
-}
-
-void
-gf_input_source_set_icon_file (GfInputSource *self,
-                               const char    *icon_file)
-{
-  GfInputSourcePrivate *priv;
-
-  priv = gf_input_source_get_instance_private (self);
-
-  g_clear_pointer (&priv->icon_file, g_free);
-  priv->icon_file = g_strdup (icon_file);
 }

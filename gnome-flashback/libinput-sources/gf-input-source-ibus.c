@@ -31,6 +31,8 @@ struct _GfInputSourceIBus
   char          *display_name;
   char          *short_name;
 
+  char          *icon;
+
   char          *xkb_id;
 };
 
@@ -127,6 +129,8 @@ gf_input_source_ibus_constructed (GObject *object)
   self->display_name = g_strdup_printf ("%s (%s)", language, longname);
   self->short_name = make_engine_short_name (engine_desc);
 
+  self->icon = g_strdup (ibus_engine_desc_get_icon (engine_desc));
+
   layout = ibus_engine_desc_get_layout (engine_desc);
   layout_variant = ibus_engine_desc_get_layout_variant (engine_desc);
 
@@ -158,6 +162,7 @@ gf_input_source_ibus_finalize (GObject *object)
 
   g_clear_pointer (&self->display_name, g_free);
   g_clear_pointer (&self->short_name, g_free);
+  g_clear_pointer (&self->icon, g_free);
   g_clear_pointer (&self->xkb_id, g_free);
 
   G_OBJECT_CLASS (gf_input_source_ibus_parent_class)->finalize (object);
@@ -272,6 +277,12 @@ gf_input_source_ibus_class_init (GfInputSourceIBusClass *self_class)
 static void
 gf_input_source_ibus_init (GfInputSourceIBus *self)
 {
+}
+
+const char *
+gf_input_source_ibus_get_icon (GfInputSourceIBus *self)
+{
+  return self->icon;
 }
 
 IBusPropList *

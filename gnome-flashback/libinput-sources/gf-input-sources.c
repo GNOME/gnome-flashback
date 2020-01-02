@@ -66,19 +66,26 @@ append_icon_info (GVariantBuilder *builder,
 {
   const char *display_name;
   const char *icon_text;
-  const char *icon_file;
 
   display_name = gf_input_source_get_display_name (self->current_source);
   icon_text = gf_input_source_get_short_name (self->current_source);
-  icon_file = gf_input_source_get_icon_file (self->current_source);
 
   if (GF_IS_INPUT_SOURCE_IBUS (self->current_source))
     {
       GfInputSourceIBus *ibus_source;
+      const char *icon;
       IBusPropList *prop_list;
 
       ibus_source = GF_INPUT_SOURCE_IBUS (self->current_source);
+
+      icon = gf_input_source_ibus_get_icon (ibus_source);
       prop_list = gf_input_source_ibus_get_properties (ibus_source);
+
+      if (icon != NULL)
+        {
+          g_variant_builder_add (builder, "{sv}", "icon-file",
+                                 g_variant_new_string (icon));
+        }
 
       if (prop_list != NULL)
         {
@@ -120,12 +127,6 @@ append_icon_info (GVariantBuilder *builder,
 
   g_variant_builder_add (builder, "{sv}", "icon-text",
                          g_variant_new_string (icon_text));
-
-  if (icon_file != NULL)
-    {
-      g_variant_builder_add (builder, "{sv}", "icon-file",
-                             g_variant_new_string (icon_file));
-    }
 }
 
 static const char *
