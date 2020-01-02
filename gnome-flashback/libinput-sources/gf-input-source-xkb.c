@@ -18,8 +18,6 @@
 #include "config.h"
 #include "gf-input-source-xkb.h"
 
-#include <libgnome-desktop/gnome-xkb-info.h>
-
 struct _GfInputSourceXkb
 {
   GfInputSource  parent;
@@ -216,4 +214,17 @@ gf_input_source_xkb_class_init (GfInputSourceXkbClass *self_class)
 static void
 gf_input_source_xkb_init (GfInputSourceXkb *self)
 {
+}
+
+GfInputSource *
+gf_input_source_xkb_new (GnomeXkbInfo *xkb_info,
+                         const char   *id,
+                         int           index)
+{
+  return g_object_new (GF_TYPE_INPUT_SOURCE_XKB,
+                       "xkb-info", xkb_info,
+                       "type", INPUT_SOURCE_TYPE_XKB,
+                       "id", id,
+                       "index", index,
+                       NULL);
 }

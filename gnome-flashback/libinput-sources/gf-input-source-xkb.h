@@ -18,6 +18,8 @@
 #ifndef GF_INPUT_SOURCE_XKB_H
 #define GF_INPUT_SOURCE_XKB_H
 
+#include <libgnome-desktop/gnome-xkb-info.h>
+
 #include "gf-input-source.h"
 
 G_BEGIN_DECLS
@@ -25,6 +27,10 @@ G_BEGIN_DECLS
 #define GF_TYPE_INPUT_SOURCE_XKB (gf_input_source_xkb_get_type ())
 G_DECLARE_FINAL_TYPE (GfInputSourceXkb, gf_input_source_xkb,
                       GF, INPUT_SOURCE_XKB, GfInputSource)
+
+GfInputSource *gf_input_source_xkb_new (GnomeXkbInfo *xkb_info,
+                                        const char   *id,
+                                        int           index);
 
 G_END_DECLS
 

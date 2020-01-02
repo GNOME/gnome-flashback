@@ -1129,12 +1129,7 @@ sources_changed_cb (GfInputSourceSettings *settings,
 
           xkb_info = gf_keyboard_manager_get_xkb_info (manager->keyboard_manager);
 
-          source = g_object_new (GF_TYPE_INPUT_SOURCE_XKB,
-                                 "xkb-info", xkb_info,
-                                 "type", info->type,
-                                 "id", info->id,
-                                 "index", position,
-                                 NULL);
+          source = gf_input_source_xkb_new (xkb_info, info->id, position);
         }
 
       g_signal_connect (source, "activate",
