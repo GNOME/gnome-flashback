@@ -507,16 +507,10 @@ gf_keyboard_manager_new (void)
   return g_object_new (GF_TYPE_KEYBOARD_MANAGER, NULL);
 }
 
-/**
- * gf_keyboard_manager_get_xkb_info:
- * @manager: a #GfKeyboardManager
- *
- * Returns: (transfer full):
- */
 GnomeXkbInfo *
 gf_keyboard_manager_get_xkb_info (GfKeyboardManager *manager)
 {
-  return g_object_ref (manager->xkb_info);
+  return manager->xkb_info;
 }
 
 /**

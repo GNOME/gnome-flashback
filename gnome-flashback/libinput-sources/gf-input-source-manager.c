@@ -806,8 +806,6 @@ get_source_info_list (GfInputSourceManager *manager)
       list = g_list_append (list, info);
     }
 
-  g_object_unref (xkb_info);
-
   return list;
 }
 
@@ -1209,7 +1207,12 @@ sources_changed_cb (GfInputSourceSettings *settings,
         }
       else
         {
+          GnomeXkbInfo *xkb_info;
+
+          xkb_info = gf_keyboard_manager_get_xkb_info (manager->keyboard_manager);
+
           source = g_object_new (GF_TYPE_INPUT_SOURCE_XKB,
+                                 "xkb-info", xkb_info,
                                  "type", info->type,
                                  "id", info->id,
                                  "display-name", info->display_name,
