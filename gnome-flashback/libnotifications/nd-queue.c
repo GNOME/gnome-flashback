@@ -62,8 +62,6 @@ static void     on_notification_close   (NdNotification *notification,
                                          int             reason,
                                          NdQueue        *queue);
 
-static gpointer queue_object = NULL;
-
 G_DEFINE_TYPE_WITH_PRIVATE (NdQueue, nd_queue, G_TYPE_OBJECT)
 
 static void
@@ -966,13 +964,5 @@ nd_queue_add (NdQueue        *queue,
 NdQueue *
 nd_queue_new (void)
 {
-        if (queue_object != NULL) {
-                g_object_ref (queue_object);
-        } else {
-                queue_object = g_object_new (ND_TYPE_QUEUE, NULL);
-                g_object_add_weak_pointer (queue_object,
-                                           (gpointer *) &queue_object);
-        }
-
-        return ND_QUEUE (queue_object);
+        return g_object_new (ND_TYPE_QUEUE, NULL);
 }
