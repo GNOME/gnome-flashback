@@ -45,9 +45,6 @@ struct _SourceInfo
 
   gchar *id;
 
-  gchar *display_name;
-  gchar *short_name;
-
   char  *icon_file;
 };
 
@@ -398,9 +395,7 @@ get_symbol_from_char_code (gunichar code)
 
 static SourceInfo *
 source_info_new (const gchar *type,
-                 const gchar *id,
-                 const gchar *display_name,
-                 const gchar *short_name)
+                 const gchar *id)
 {
   SourceInfo *info;
 
@@ -408,8 +403,6 @@ source_info_new (const gchar *type,
 
   info->type = g_strdup (type);
   info->id = g_strdup (id);
-  info->display_name = g_strdup (display_name);
-  info->short_name = g_strdup (short_name);
 
   return info;
 }
@@ -423,8 +416,6 @@ source_info_free (gpointer data)
 
   g_free (info->type);
   g_free (info->id);
-  g_free (info->display_name);
-  g_free (info->short_name);
   g_free (info->icon_file);
 
   g_free (info);
@@ -672,41 +663,6 @@ keybindings_init (GfInputSourceManager *manager)
   switch_input_backward_changed_cb (manager->wm_keybindings, NULL, manager);
 }
 
-static gchar *
-make_engine_short_name (IBusEngineDesc *engine_desc)
-{
-  const gchar *symbol;
-  const gchar *language;
-
-  symbol = ibus_engine_desc_get_symbol (engine_desc);
-
-  if (symbol != NULL && symbol[0] != '\0')
-    return g_strdup (symbol);
-
-  language = ibus_engine_desc_get_language (engine_desc);
-
-  if (language != NULL && language[0] != '\0')
-    {
-      gchar **codes;
-
-      codes = g_strsplit (language, "_", 2);
-
-      if (strlen (codes[0]) == 2 || strlen (codes[0]) == 3)
-        {
-          gchar *short_name;
-
-          short_name = g_ascii_strdown (codes[0], -1);
-          g_strfreev (codes);
-
-          return short_name;
-        }
-
-      g_strfreev (codes);
-    }
-
-  return get_symbol_from_char_code (0x2328);
-}
-
 static GList *
 get_source_info_list (GfInputSourceManager *manager)
 {
@@ -734,25 +690,17 @@ get_source_info_list (GfInputSourceManager *manager)
       if (g_strcmp0 (type, INPUT_SOURCE_TYPE_XKB) == 0)
         {
           gboolean exists;
-          const gchar *display_name;
-          const gchar *short_name;
 
-          exists = gnome_xkb_info_get_layout_info (xkb_info, id, &display_name,
-                                                   &short_name, NULL, NULL);
+          exists = gnome_xkb_info_get_layout_info (xkb_info, id, NULL,
+                                                   NULL, NULL, NULL);
 
           if (exists)
-            info = source_info_new (type, id, display_name, short_name);
+            info = source_info_new (type, id);
         }
       else if (g_strcmp0 (type, INPUT_SOURCE_TYPE_IBUS) == 0)
         {
           IBusEngineDesc *engine_desc;
-          const gchar *language_code;
-          const gchar *language;
-          const gchar *longname;
-          const gchar *textdomain;
           const char *icon;
-          gchar *display_name;
-          gchar *short_name;
 
           if (manager->disable_ibus)
             continue;
@@ -763,23 +711,10 @@ get_source_info_list (GfInputSourceManager *manager)
           if (engine_desc == NULL)
             continue;
 
-          language_code = ibus_engine_desc_get_language (engine_desc);
-          language = ibus_get_language_name (language_code);
-          longname = ibus_engine_desc_get_longname (engine_desc);
-          textdomain = ibus_engine_desc_get_textdomain (engine_desc);
           icon = ibus_engine_desc_get_icon (engine_desc);
 
-          if (*textdomain != '\0' && *longname != '\0')
-            longname = g_dgettext (textdomain, longname);
-
-          display_name = g_strdup_printf ("%s (%s)", language, longname);
-          short_name = make_engine_short_name (engine_desc);
-
-          info = source_info_new (type, id, display_name, short_name);
+          info = source_info_new (type, id);
           info->icon_file = g_strdup (icon);
-
-          g_free (display_name);
-          g_free (short_name);
         }
 
       if (info != NULL)
@@ -792,17 +727,12 @@ get_source_info_list (GfInputSourceManager *manager)
     {
       const gchar *type;
       const gchar *id;
-      const gchar *display_name;
-      const gchar *short_name;
       SourceInfo *info;
 
       type = INPUT_SOURCE_TYPE_XKB;
       id = gf_keyboard_manager_get_default_layout (manager->keyboard_manager);
 
-      gnome_xkb_info_get_layout_info (xkb_info, id, &display_name,
-                                      &short_name, NULL, NULL);
-
-      info = source_info_new (type, id, display_name, short_name);
+      info = source_info_new (type, id);
       list = g_list_append (list, info);
     }
 
@@ -1200,8 +1130,6 @@ sources_changed_cb (GfInputSourceSettings *settings,
                                  "ibus-manager", manager->ibus_manager,
                                  "type", info->type,
                                  "id", info->id,
-                                 "display-name", info->display_name,
-                                 "short-name", info->short_name,
                                  "index", position,
                                  NULL);
         }
@@ -1215,8 +1143,6 @@ sources_changed_cb (GfInputSourceSettings *settings,
                                  "xkb-info", xkb_info,
                                  "type", info->type,
                                  "id", info->id,
-                                 "display-name", info->display_name,
-                                 "short-name", info->short_name,
                                  "index", position,
                                  NULL);
         }

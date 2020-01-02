@@ -31,7 +31,14 @@ struct _GfInputSourceClass
 {
   GObjectClass parent_class;
 
-  const char * (* get_xkb_id) (GfInputSource *self);
+  const char * (* get_display_name) (GfInputSource *self);
+
+  const char * (* get_short_name)   (GfInputSource *self);
+
+  gboolean     (* set_short_name)   (GfInputSource *self,
+                                     const char    *short_name);
+
+  const char * (* get_xkb_id)       (GfInputSource *self);
 };
 
 const gchar   *gf_input_source_get_source_type  (GfInputSource *source);
