@@ -119,6 +119,14 @@ real_ungrab (FlashbackShell *shell,
   return gf_keybindings_ungrab (shell->keybindings, action);
 }
 
+static void
+remove_watch (gpointer key,
+              gpointer value,
+              gpointer user_data)
+{
+  g_bus_unwatch_name (GPOINTER_TO_UINT (value));
+}
+
 static gboolean
 remove_accelerator (gpointer key,
                     gpointer value,
@@ -493,6 +501,7 @@ flashback_shell_finalize (GObject *object)
 
   if (shell->grabbers)
     {
+      g_hash_table_foreach (shell->grabbers, remove_watch, NULL);
       g_hash_table_destroy (shell->grabbers);
       shell->grabbers = NULL;
     }
