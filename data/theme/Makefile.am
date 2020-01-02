@@ -3,6 +3,7 @@ NULL =
 SUBDIRS = \
 	Adwaita \
 	HighContrast \
+	Yaru \
 	$(NULL)
 
 EXTRA_DIST = \

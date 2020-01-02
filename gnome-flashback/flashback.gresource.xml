@@ -5,6 +5,7 @@
     <file alias="Adwaita/gnome-flashback-dark.css">../data/theme/Adwaita/gnome-flashback-dark.css</file>
     <file alias="HighContrast/gnome-flashback.css">../data/theme/HighContrast/gnome-flashback.css</file>
     <file alias="HighContrast/gnome-flashback-inverse.css">../data/theme/HighContrast/gnome-flashback-inverse.css</file>
+    <file alias="Yaru/gnome-flashback.css">../data/theme/Yaru/gnome-flashback.css</file>
     <file alias="common.css">../data/theme/common.css</file>
     <file alias="fallback.css">../data/theme/fallback.css</file>
   </gresource>

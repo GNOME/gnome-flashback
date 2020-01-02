@@ -90,6 +90,9 @@ static GfSupportedTheme supported_themes[] =
     { "Adwaita-dark", "Adwaita", "dark", FALSE },
     { "HighContrast", "HighContrast", NULL, FALSE },
     { "HighContrastInverse", "HighContrast", "inverse", FALSE },
+    { "Yaru", "Yaru", NULL, FALSE },
+    { "Yaru-light", "Yaru", NULL, FALSE },
+    { "Yaru-dark", "Yaru", NULL, FALSE },
     { NULL, NULL, FALSE, FALSE }
   };
 

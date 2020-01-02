@@ -1,0 +1,30 @@
+@import url("resource:///org/gnome/gnome-flashback/theme/common.css");
+
+gf-popup-window {
+  border: 1px solid @borders;
+}
+
+gf-icon label {
+  color: white;
+}
+
+gf-icon:selected label {
+  background-color: @theme_selected_bg_color;
+  color: @theme_selected_fg_color;
+}
+
+gf-icon:selected:backdrop label {
+  background-color: @theme_unfocused_selected_bg_color;
+  color: @theme_unfocused_selected_fg_color;
+}
+
+#gf-candidate-popup gf-candidate-box:selected,
+#gf-candidate-popup gf-candidate-box:hover {
+  background-color: @theme_selected_bg_color;
+  color: @theme_selected_fg_color;
+}
+
+#gf-input-source-popup #gf-input-source:selected {
+  background-color: @theme_selected_bg_color;
+  color: @theme_selected_fg_color;
+}
