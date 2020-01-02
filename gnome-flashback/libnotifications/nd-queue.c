@@ -56,13 +56,6 @@ struct NdQueuePrivate
         guint          update_id;
 };
 
-enum {
-        CHANGED,
-        LAST_SIGNAL
-};
-
-static guint signals [LAST_SIGNAL] = { 0, };
-
 static void     nd_queue_finalize       (GObject        *object);
 static void     queue_update            (NdQueue        *queue);
 static void     on_notification_close   (NdNotification *notification,
@@ -221,17 +214,6 @@ nd_queue_class_init (NdQueueClass *klass)
         GObjectClass   *object_class = G_OBJECT_CLASS (klass);
 
         object_class->finalize = nd_queue_finalize;
-
-        signals [CHANGED] =
-                g_signal_new ("changed",
-                              G_TYPE_FROM_CLASS (object_class),
-                              G_SIGNAL_RUN_LAST,
-                              G_STRUCT_OFFSET (NdQueueClass, changed),
-                              NULL,
-                              NULL,
-                              g_cclosure_marshal_VOID__VOID,
-                              G_TYPE_NONE,
-                              0);
 }
 
 static void
@@ -344,9 +326,6 @@ _nd_queue_remove_all (NdQueue *queue)
 {
         GHashTableIter iter;
         gpointer       key, value;
-        gboolean       changed;
-
-        changed = FALSE;
 
         clear_stacks (queue);
 
@@ -358,14 +337,9 @@ _nd_queue_remove_all (NdQueue *queue)
                 g_signal_handlers_disconnect_by_func (n, G_CALLBACK (on_notification_close), queue);
                 nd_notification_close (n, ND_NOTIFICATION_CLOSED_USER);
                 g_hash_table_iter_remove (&iter);
-                changed = TRUE;
         }
         popdown_dock (queue);
         queue_update (queue);
-
-        if (changed) {
-                g_signal_emit (queue, signals[CHANGED], 0);
-        }
 }
 
 static void
@@ -945,9 +919,6 @@ _nd_queue_remove (NdQueue        *queue,
         }
         g_hash_table_remove (queue->priv->notifications, GUINT_TO_POINTER (id));
 
-        /* FIXME: should probably only emit this when it really removes something */
-        g_signal_emit (queue, signals[CHANGED], 0);
-
         queue_update (queue);
 }
 
@@ -988,9 +959,6 @@ nd_queue_add (NdQueue        *queue,
         g_queue_push_head (queue->priv->queue, GUINT_TO_POINTER (id));
 
         g_signal_connect (notification, "closed", G_CALLBACK (on_notification_close), queue);
-
-        /* FIXME: should probably only emit this when it really adds something */
-        g_signal_emit (queue, signals[CHANGED], 0);
 
         queue_update (queue);
 }

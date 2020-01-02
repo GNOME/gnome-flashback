@@ -42,8 +42,6 @@ typedef struct
 typedef struct
 {
         GObjectClass   parent_class;
-
-        void          (* changed) (NdQueue      *queue);
 } NdQueueClass;
 
 GType               nd_queue_get_type                       (void);
