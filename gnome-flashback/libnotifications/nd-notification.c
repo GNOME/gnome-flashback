@@ -45,7 +45,7 @@ struct _NdNotification {
         char         *sender;
         guint32       id;
         char         *app_name;
-        char         *icon;
+        char         *app_icon;
         char         *summary;
         char         *body;
         char        **actions;
@@ -234,7 +234,7 @@ nd_notification_init (NdNotification *notification)
         notification->id = get_next_notification_serial ();
 
         notification->app_name = NULL;
-        notification->icon = NULL;
+        notification->app_icon = NULL;
         notification->summary = NULL;
         notification->body = NULL;
         notification->actions = NULL;
@@ -253,7 +253,7 @@ nd_notification_finalize (GObject *object)
 
         g_free (notification->sender);
         g_free (notification->app_name);
-        g_free (notification->icon);
+        g_free (notification->app_icon);
         g_free (notification->summary);
         g_free (notification->body);
         g_strfreev (notification->actions);
@@ -269,7 +269,7 @@ nd_notification_finalize (GObject *object)
 gboolean
 nd_notification_update (NdNotification     *notification,
                         const gchar        *app_name,
-                        const gchar        *icon,
+                        const gchar        *app_icon,
                         const gchar        *summary,
                         const gchar        *body,
                         const gchar *const *actions,
@@ -284,8 +284,8 @@ nd_notification_update (NdNotification     *notification,
         g_free (notification->app_name);
         notification->app_name = g_strdup (app_name);
 
-        g_free (notification->icon);
-        notification->icon = g_strdup (icon);
+        g_free (notification->app_icon);
+        notification->app_icon = g_strdup (app_icon);
 
         g_free (notification->summary);
         notification->summary = g_strdup (summary);
@@ -446,14 +446,6 @@ nd_notification_get_body (NdNotification *notification)
         g_return_val_if_fail (ND_IS_NOTIFICATION (notification), NULL);
 
         return notification->body;
-}
-
-const char *
-nd_notification_get_icon (NdNotification *notification)
-{
-        g_return_val_if_fail (ND_IS_NOTIFICATION (notification), NULL);
-
-        return notification->icon;
 }
 
 int
@@ -641,8 +633,8 @@ nd_notification_load_image (NdNotification *notification,
                 } else {
                         g_warning ("Expected image_path hint to be of type string");
                 }
-        } else if (*notification->icon != '\0') {
-                pixbuf = _notify_daemon_pixbuf_from_path (notification->icon, size);
+        } else if (*notification->app_icon != '\0') {
+                pixbuf = _notify_daemon_pixbuf_from_path (notification->app_icon, size);
         } else if ((data = (GVariant *) g_hash_table_lookup (notification->hints, "icon_data"))) {
                 g_warning("\"icon_data\" hint is deprecated, please use \"image_data\" instead");
                 pixbuf = _notify_daemon_pixbuf_from_data_hint (data, size);

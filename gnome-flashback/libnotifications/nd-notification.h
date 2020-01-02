@@ -47,7 +47,7 @@ GType                 nd_notification_get_type            (void) G_GNUC_CONST;
 NdNotification *      nd_notification_new                 (const char     *sender);
 gboolean              nd_notification_update              (NdNotification     *notification,
                                                            const gchar        *app_name,
-                                                           const gchar        *icon,
+                                                           const gchar        *app_icon,
                                                            const gchar        *summary,
                                                            const gchar        *body,
                                                            const gchar *const *actions,
@@ -65,7 +65,6 @@ guint                 nd_notification_get_id              (NdNotification *notif
 int                   nd_notification_get_timeout         (NdNotification *notification);
 const char *          nd_notification_get_sender          (NdNotification *notification);
 const char *          nd_notification_get_app_name        (NdNotification *notification);
-const char *          nd_notification_get_icon            (NdNotification *notification);
 const char *          nd_notification_get_summary         (NdNotification *notification);
 const char *          nd_notification_get_body            (NdNotification *notification);
 char **               nd_notification_get_actions         (NdNotification *notification);
