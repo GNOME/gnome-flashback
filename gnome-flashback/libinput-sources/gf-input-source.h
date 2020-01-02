@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2015 Sebastian Geiger
+ * Copyright (C) 2019 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,9 +24,16 @@
 
 #include "gf-ibus-manager.h"
 
+G_BEGIN_DECLS
+
 #define GF_TYPE_INPUT_SOURCE gf_input_source_get_type ()
-G_DECLARE_FINAL_TYPE (GfInputSource, gf_input_source,
-                      GF, INPUT_SOURCE, GObject)
+G_DECLARE_DERIVABLE_TYPE (GfInputSource, gf_input_source,
+                          GF, INPUT_SOURCE, GObject)
+
+struct _GfInputSourceClass
+{
+  GObjectClass parent_class;
+};
 
 GfInputSource *gf_input_source_new              (GfIBusManager *ibus_manager,
                                                  const gchar   *type,
@@ -61,5 +69,7 @@ const char    *gf_input_source_get_icon_file    (GfInputSource *self);
 
 void           gf_input_source_set_icon_file    (GfInputSource *self,
                                                  const char    *icon_file);
+
+G_END_DECLS
 
 #endif
