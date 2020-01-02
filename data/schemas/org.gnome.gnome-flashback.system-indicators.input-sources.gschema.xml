@@ -1,5 +1,5 @@
 <schemalist gettext-domain="gnome-flashback">
-  <schema id="org.gnome.gnome-flashback.system-indicators.input-source">
+  <schema id="org.gnome.gnome-flashback.system-indicators.input-sources">
     <key name="use-ibus-icon-if-available" type="b">
       <default>false</default>
       <summary>Use IBus icon if available</summary>

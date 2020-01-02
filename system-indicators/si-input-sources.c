@@ -1070,7 +1070,7 @@ si_input_sources_constructed (GObject *object)
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), self->menu);
 
   applet = si_indicator_get_applet (SI_INDICATOR (self));
-  schema = "org.gnome.gnome-flashback.system-indicators.input-source";
+  schema = "org.gnome.gnome-flashback.system-indicators.input-sources";
 
   self->settings = gp_applet_settings_new (applet, schema);
 

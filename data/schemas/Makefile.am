@@ -17,7 +17,7 @@ gsettings_SCHEMAS = \
 
 if WITH_SYSTEM_INDICATORS
 gsettings_SCHEMAS += \
-	org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml \
+	org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml \
 	$(NULL)
 endif
 
@@ -30,7 +30,7 @@ EXTRA_DIST = \
 
 if !WITH_SYSTEM_INDICATORS
 EXTRA_DIST += \
-	org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml \
+	org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml \
 	$(NULL)
 endif
 
