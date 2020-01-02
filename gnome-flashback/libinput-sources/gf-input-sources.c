@@ -26,6 +26,7 @@
 #include "dbus/gf-input-sources-gen.h"
 #include "gf-ibus-manager.h"
 #include "gf-input-sources.h"
+#include "gf-input-source-ibus.h"
 #include "gf-input-source-manager.h"
 #include "gf-input-source.h"
 
@@ -66,44 +67,51 @@ append_icon_info (GVariantBuilder *builder,
   const char *display_name;
   const char *icon_text;
   const char *icon_file;
-  IBusPropList *prop_list;
 
   display_name = gf_input_source_get_display_name (self->current_source);
   icon_text = gf_input_source_get_short_name (self->current_source);
   icon_file = gf_input_source_get_icon_file (self->current_source);
-  prop_list = gf_input_source_get_properties (self->current_source);
 
-  if (prop_list != NULL)
+  if (GF_IS_INPUT_SOURCE_IBUS (self->current_source))
     {
-      guint i;
+      GfInputSourceIBus *ibus_source;
+      IBusPropList *prop_list;
 
-      for (i = 0; i < prop_list->properties->len; i++)
+      ibus_source = GF_INPUT_SOURCE_IBUS (self->current_source);
+      prop_list = gf_input_source_ibus_get_properties (ibus_source);
+
+      if (prop_list != NULL)
         {
-          IBusProperty *prop;
-          const char *key;
-          IBusText *symbol;
-          IBusText *label;
-          const char *tmp;
+          guint i;
 
-          prop = ibus_prop_list_get (prop_list, i);
+          for (i = 0; i < prop_list->properties->len; i++)
+            {
+              IBusProperty *prop;
+              const char *key;
+              IBusText *symbol;
+              IBusText *label;
+              const char *tmp;
 
-          if (!ibus_property_get_visible (prop))
-            continue;
+              prop = ibus_prop_list_get (prop_list, i);
 
-          key = ibus_property_get_key (prop);
-          if (g_strcmp0 (key, "InputMode") != 0)
-            continue;
+              if (!ibus_property_get_visible (prop))
+                continue;
 
-          symbol = ibus_property_get_symbol (prop);
-          label = ibus_property_get_label (prop);
+              key = ibus_property_get_key (prop);
+              if (g_strcmp0 (key, "InputMode") != 0)
+                continue;
 
-          if (symbol != NULL)
-            tmp = ibus_text_get_text (symbol);
-          else
-            tmp = ibus_text_get_text (label);
+              symbol = ibus_property_get_symbol (prop);
+              label = ibus_property_get_label (prop);
 
-          if (tmp != NULL && *tmp != '\0' && g_utf8_strlen (tmp, -1) < 3)
-            icon_text = tmp;
+              if (symbol != NULL)
+                tmp = ibus_text_get_text (symbol);
+              else
+                tmp = ibus_text_get_text (label);
+
+              if (tmp != NULL && *tmp != '\0' && g_utf8_strlen (tmp, -1) < 3)
+                icon_text = tmp;
+            }
         }
     }
 
@@ -245,7 +253,18 @@ append_properties (GVariantBuilder *builder,
   IBusPropList *prop_list;
   GVariant *properties;
 
-  prop_list = gf_input_source_get_properties (self->current_source);
+  if (GF_IS_INPUT_SOURCE_IBUS (self->current_source))
+    {
+      GfInputSourceIBus *ibus_source;
+
+      ibus_source = GF_INPUT_SOURCE_IBUS (self->current_source);
+      prop_list = gf_input_source_ibus_get_properties (ibus_source);
+    }
+  else
+    {
+      prop_list = NULL;
+    }
+
   properties = prop_list_to_variant (prop_list);
 
   g_variant_builder_add (builder, "{sv}", "properties", properties);
@@ -502,10 +521,22 @@ handle_activate_property_cb (GfInputSourcesGen     *object,
                              const char            *key,
                              GfInputSources        *self)
 {
+  GfInputSourceIBus *ibus_source;
   IBusPropList *prop_list;
   IBusProperty *prop;
 
-  prop_list = gf_input_source_get_properties (self->current_source);
+  if (!GF_IS_INPUT_SOURCE_IBUS (self->current_source))
+    {
+      g_dbus_method_invocation_return_error (invocation,
+                                             G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Input source does not have properties");
+
+      return TRUE;
+    }
+
+  ibus_source = GF_INPUT_SOURCE_IBUS (self->current_source);
+  prop_list = gf_input_source_ibus_get_properties (ibus_source);
 
   if (prop_list == NULL)
     {

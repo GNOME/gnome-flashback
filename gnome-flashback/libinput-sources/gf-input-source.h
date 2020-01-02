@@ -20,7 +20,6 @@
 #define GF_INPUT_SOURCE_H
 
 #include <glib-object.h>
-#include <ibus-1.0/ibus.h>
 
 G_BEGIN_DECLS
 
@@ -31,6 +30,8 @@ G_DECLARE_DERIVABLE_TYPE (GfInputSource, gf_input_source,
 struct _GfInputSourceClass
 {
   GObjectClass parent_class;
+
+  const char * (* get_xkb_id) (GfInputSource *self);
 };
 
 const gchar   *gf_input_source_get_source_type  (GfInputSource *source);
@@ -50,11 +51,6 @@ const gchar   *gf_input_source_get_xkb_id       (GfInputSource *source);
 
 void           gf_input_source_activate         (GfInputSource *source,
                                                  gboolean       interactive);
-
-IBusPropList  *gf_input_source_get_properties   (GfInputSource *source);
-
-void           gf_input_source_set_properties   (GfInputSource *source,
-                                                 IBusPropList  *prop_list);
 
 const char    *gf_input_source_get_icon_file    (GfInputSource *self);
 

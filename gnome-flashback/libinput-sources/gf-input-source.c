@@ -21,21 +21,13 @@
 
 #include <string.h>
 
-#include "gf-ibus-manager.h"
-
 typedef struct
 {
-  GfIBusManager *ibus_manager;
-
   gchar         *type;
   gchar         *id;
   gchar         *display_name;
   gchar         *short_name;
   guint          index;
-
-  gchar         *xkb_id;
-
-  IBusPropList  *prop_list;
 
   char          *icon_file;
 } GfInputSourcePrivate;
@@ -54,8 +46,6 @@ enum
 {
   PROP_0,
 
-  PROP_IBUS_MANAGER,
-
   PROP_TYPE,
   PROP_ID,
   PROP_DISPLAY_NAME,
@@ -68,30 +58,6 @@ enum
 static GParamSpec *properties[LAST_PROP] = { NULL };
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GfInputSource, gf_input_source, G_TYPE_OBJECT)
-
-static gchar *
-get_xkb_id (GfInputSource *source)
-{
-  GfInputSourcePrivate *priv;
-  IBusEngineDesc *engine_desc;
-  const gchar *layout_variant;
-  const gchar *layout;
-
-  priv = gf_input_source_get_instance_private (source);
-
-  engine_desc = gf_ibus_manager_get_engine_desc (priv->ibus_manager, priv->id);
-
-  if (!engine_desc)
-    return g_strdup (priv->id);
-
-  layout = ibus_engine_desc_get_layout (engine_desc);
-  layout_variant = ibus_engine_desc_get_layout_variant (engine_desc);
-
-  if (layout_variant && strlen (layout_variant) > 0)
-    return g_strdup_printf ("%s+%s", layout, layout_variant);
-  else
-    return g_strdup (layout);
-}
 
 static void
 gf_input_source_get_property (GObject    *object,
@@ -107,10 +73,6 @@ gf_input_source_get_property (GObject    *object,
 
   switch (prop_id)
     {
-      case PROP_IBUS_MANAGER:
-        g_value_set_object (value, priv->ibus_manager);
-        break;
-
       case PROP_TYPE:
         g_value_set_string (value, priv->type);
         break;
@@ -151,10 +113,6 @@ gf_input_source_set_property (GObject      *object,
 
   switch (prop_id)
     {
-      case PROP_IBUS_MANAGER:
-        priv->ibus_manager = g_value_get_object (value);
-        break;
-
       case PROP_TYPE:
         priv->type = g_value_dup_string (value);
         break;
@@ -182,20 +140,6 @@ gf_input_source_set_property (GObject      *object,
 }
 
 static void
-gf_input_source_dispose (GObject *object)
-{
-  GfInputSource *source;
-  GfInputSourcePrivate *priv;
-
-  source = GF_INPUT_SOURCE (object);
-  priv = gf_input_source_get_instance_private (source);
-
-  g_clear_object (&priv->prop_list);
-
-  G_OBJECT_CLASS (gf_input_source_parent_class)->dispose (object);
-}
-
-static void
 gf_input_source_finalize (GObject *object)
 {
   GfInputSource *source;
@@ -208,24 +152,9 @@ gf_input_source_finalize (GObject *object)
   g_free (priv->id);
   g_free (priv->display_name);
   g_free (priv->short_name);
-  g_free (priv->xkb_id);
   g_free (priv->icon_file);
 
   G_OBJECT_CLASS (gf_input_source_parent_class)->finalize (object);
-}
-
-static void
-gf_input_source_constructed (GObject *object)
-{
-  GfInputSource *source;
-  GfInputSourcePrivate *priv;
-
-  source = GF_INPUT_SOURCE (object);
-  priv = gf_input_source_get_instance_private (source);
-
-  G_OBJECT_CLASS (gf_input_source_parent_class)->constructed (object);
-
-  priv->xkb_id = get_xkb_id (source);
 }
 
 static void
@@ -235,8 +164,6 @@ gf_input_source_class_init (GfInputSourceClass *source_class)
 
   object_class = G_OBJECT_CLASS (source_class);
 
-  object_class->constructed = gf_input_source_constructed;
-  object_class->dispose = gf_input_source_dispose;
   object_class->finalize = gf_input_source_finalize;
   object_class->get_property = gf_input_source_get_property;
   object_class->set_property = gf_input_source_set_property;
@@ -249,13 +176,6 @@ gf_input_source_class_init (GfInputSourceClass *source_class)
   signals[SIGNAL_CHANGED] =
     g_signal_new ("changed", G_OBJECT_CLASS_TYPE (source_class),
                   G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
-
-  properties[PROP_IBUS_MANAGER] =
-    g_param_spec_object ("ibus-manager", "IBus Manager",
-                         "The instance of IBus Manager used by the input-sources module",
-                         GF_TYPE_IBUS_MANAGER,
-                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE |
-                         G_PARAM_STATIC_STRINGS);
 
   properties[PROP_TYPE] =
     g_param_spec_string ("type", "type", "The type of the input source",
@@ -363,11 +283,17 @@ gf_input_source_get_index (GfInputSource *source)
 const gchar *
 gf_input_source_get_xkb_id (GfInputSource *source)
 {
+  GfInputSourceClass *input_source_class;
   GfInputSourcePrivate *priv;
+
+  input_source_class = GF_INPUT_SOURCE_GET_CLASS (source);
+
+  if (input_source_class->get_xkb_id != NULL)
+    return input_source_class->get_xkb_id (source);
 
   priv = gf_input_source_get_instance_private (source);
 
-  return priv->xkb_id;
+  return priv->id;
 }
 
 void
@@ -375,30 +301,6 @@ gf_input_source_activate (GfInputSource *source,
                           gboolean       interactive)
 {
   g_signal_emit (source, signals[SIGNAL_ACTIVATE], 0, interactive);
-}
-
-IBusPropList *
-gf_input_source_get_properties (GfInputSource *source)
-{
-  GfInputSourcePrivate *priv;
-
-  priv = gf_input_source_get_instance_private (source);
-
-  return priv->prop_list;
-}
-
-void
-gf_input_source_set_properties (GfInputSource *source,
-                                IBusPropList  *prop_list)
-{
-  GfInputSourcePrivate *priv;
-
-  priv = gf_input_source_get_instance_private (source);
-
-  g_clear_object (&priv->prop_list);
-
-  if (prop_list != NULL)
-    priv->prop_list = g_object_ref (prop_list);
 }
 
 const char *

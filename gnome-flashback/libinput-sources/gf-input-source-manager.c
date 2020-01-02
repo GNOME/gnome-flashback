@@ -1189,7 +1189,6 @@ sources_changed_cb (GfInputSourceSettings *settings,
 
   for (l = source_infos; l != NULL; l = g_list_next (l))
     {
-      GType gtype;
       SourceInfo *info;
       gint position;
       GfInputSource *source;
@@ -1198,18 +1197,26 @@ sources_changed_cb (GfInputSourceSettings *settings,
       position = g_list_position (source_infos, l);
 
       if (g_strcmp0 (info->type, INPUT_SOURCE_TYPE_IBUS) == 0)
-        gtype = GF_TYPE_INPUT_SOURCE_IBUS;
+        {
+          source = g_object_new (GF_TYPE_INPUT_SOURCE_IBUS,
+                                 "ibus-manager", manager->ibus_manager,
+                                 "type", info->type,
+                                 "id", info->id,
+                                 "display-name", info->display_name,
+                                 "short-name", info->short_name,
+                                 "index", position,
+                                 NULL);
+        }
       else
-        gtype = GF_TYPE_INPUT_SOURCE_XKB;
-
-      source = g_object_new (gtype,
-                             "ibus-manager", manager->ibus_manager,
-                             "type", info->type,
-                             "id", info->id,
-                             "display-name", info->display_name,
-                             "short-name", info->short_name,
-                             "index", position,
-                             NULL);
+        {
+          source = g_object_new (GF_TYPE_INPUT_SOURCE_XKB,
+                                 "type", info->type,
+                                 "id", info->id,
+                                 "display-name", info->display_name,
+                                 "short-name", info->short_name,
+                                 "index", position,
+                                 NULL);
+        }
 
       gf_input_source_set_icon_file (source, info->icon_file);
 
@@ -1357,10 +1364,11 @@ properties_registered_cb (GfIBusManager *ibus_manager,
   source = (GfInputSource *) g_hash_table_lookup (manager->ibus_sources,
                                                   engine_name);
 
-  if (!source)
+  if (!source || !GF_IS_INPUT_SOURCE_IBUS (source))
     return;
 
-  gf_input_source_set_properties (source, prop_list);
+  gf_input_source_ibus_set_properties (GF_INPUT_SOURCE_IBUS (source),
+                                       prop_list);
 
   if (compare_sources (source, manager->current_source))
     g_signal_emit (manager, signals[SIGNAL_CURRENT_SOURCE_CHANGED], 0, NULL);
@@ -1423,10 +1431,10 @@ property_updated_cb (GfIBusManager *ibus_manager,
   source = (GfInputSource *) g_hash_table_lookup (manager->ibus_sources,
                                                   engine_name);
 
-  if (!source)
+  if (!source || !GF_IS_INPUT_SOURCE_IBUS (source))
     return;
 
-  prop_list = gf_input_source_get_properties (source);
+  prop_list = gf_input_source_ibus_get_properties (GF_INPUT_SOURCE_IBUS (source));
 
   if (!update_sub_property (prop_list, property))
     return;

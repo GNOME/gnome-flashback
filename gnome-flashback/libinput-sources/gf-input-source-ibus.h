@@ -18,6 +18,7 @@
 #ifndef GF_INPUT_SOURCE_IBUS_H
 #define GF_INPUT_SOURCE_IBUS_H
 
+#include <ibus-1.0/ibus.h>
 #include "gf-input-source.h"
 
 G_BEGIN_DECLS
@@ -25,6 +26,11 @@ G_BEGIN_DECLS
 #define GF_TYPE_INPUT_SOURCE_IBUS (gf_input_source_ibus_get_type ())
 G_DECLARE_FINAL_TYPE (GfInputSourceIBus, gf_input_source_ibus,
                       GF, INPUT_SOURCE_IBUS, GfInputSource)
+
+IBusPropList *gf_input_source_ibus_get_properties (GfInputSourceIBus *self);
+
+void          gf_input_source_ibus_set_properties (GfInputSourceIBus *self,
+                                                   IBusPropList      *prop_list);
 
 G_END_DECLS
 
