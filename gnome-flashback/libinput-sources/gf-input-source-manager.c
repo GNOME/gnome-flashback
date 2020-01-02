@@ -1119,12 +1119,9 @@ sources_changed_cb (GfInputSourceSettings *settings,
 
       if (g_strcmp0 (info->type, INPUT_SOURCE_TYPE_IBUS) == 0)
         {
-          source = g_object_new (GF_TYPE_INPUT_SOURCE_IBUS,
-                                 "ibus-manager", manager->ibus_manager,
-                                 "type", info->type,
-                                 "id", info->id,
-                                 "index", position,
-                                 NULL);
+          source = gf_input_source_ibus_new (manager->ibus_manager,
+                                             info->id,
+                                             position);
         }
       else
         {

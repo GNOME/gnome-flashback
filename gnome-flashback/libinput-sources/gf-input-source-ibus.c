@@ -18,8 +18,6 @@
 #include "config.h"
 #include "gf-input-source-ibus.h"
 
-#include "gf-ibus-manager.h"
-
 struct _GfInputSourceIBus
 {
   GfInputSource  parent;
@@ -301,6 +299,19 @@ gf_input_source_ibus_class_init (GfInputSourceIBusClass *self_class)
 static void
 gf_input_source_ibus_init (GfInputSourceIBus *self)
 {
+}
+
+GfInputSource *
+gf_input_source_ibus_new (GfIBusManager *ibus_manager,
+                          const char    *id,
+                          int            index)
+{
+  return g_object_new (GF_TYPE_INPUT_SOURCE_IBUS,
+                       "ibus-manager", ibus_manager,
+                       "type", INPUT_SOURCE_TYPE_IBUS,
+                       "id", id,
+                       "index", index,
+                       NULL);
 }
 
 const char *

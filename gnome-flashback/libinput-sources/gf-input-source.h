@@ -21,6 +21,9 @@
 
 #include <glib-object.h>
 
+#define INPUT_SOURCE_TYPE_XKB "xkb"
+#define INPUT_SOURCE_TYPE_IBUS "ibus"
+
 G_BEGIN_DECLS
 
 #define GF_TYPE_INPUT_SOURCE gf_input_source_get_type ()
