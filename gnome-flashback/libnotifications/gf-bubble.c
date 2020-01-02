@@ -196,43 +196,6 @@ add_notification_action (GfBubble    *bubble,
   gtk_widget_show (priv->actions_box);
 }
 
-static GdkPixbuf *
-scale_pixbuf (GdkPixbuf *pixbuf,
-              gint       max_width,
-              gint       max_height)
-{
-  gint pw;
-  gint ph;
-  gfloat scale_factor_x;
-  gfloat scale_factor_y;
-  gfloat scale_factor;
-
-  pw = gdk_pixbuf_get_width (pixbuf);
-  ph = gdk_pixbuf_get_height (pixbuf);
-
-  /* Determine which dimension requires the smallest scale. */
-  scale_factor_x = (gfloat) max_width / (gfloat) pw;
-  scale_factor_y = (gfloat) max_height / (gfloat) ph;
-
-  scale_factor = scale_factor_x;
-  if (scale_factor_x > scale_factor_y)
-    scale_factor = scale_factor_y;
-
-  if (scale_factor < 1.0f)
-    {
-      gint scale_x;
-      gint scale_y;
-
-      scale_x = (gint) (pw * scale_factor);
-      scale_y = (gint) (ph * scale_factor);
-
-      return gdk_pixbuf_scale_simple (pixbuf, scale_x, scale_y,
-                                      GDK_INTERP_BILINEAR);
-    }
-
-  return g_object_ref (pixbuf);
-}
-
 static gboolean
 timeout_bubble (gpointer user_data)
 {
@@ -292,7 +255,7 @@ update_bubble (GfBubble *bubble)
   gchar **actions;
   gint i;
   gboolean have_actions;
-  GdkPixbuf *pixbuf;
+  GIcon *icon;
   gboolean have_icon;
 
   priv = gf_bubble_get_instance_private (bubble);
@@ -361,36 +324,17 @@ update_bubble (GfBubble *bubble)
 
   /* Icon */
 
-  pixbuf = nd_notification_load_image (priv->notification, IMAGE_SIZE);
+  icon = nd_notification_get_icon (priv->notification);
   have_icon = FALSE;
 
-  if (pixbuf != NULL)
+  if (icon != NULL)
     {
-      GdkPixbuf *scaled;
+      gtk_image_set_from_gicon (GTK_IMAGE (priv->icon), icon, GTK_ICON_SIZE_DIALOG);
+      gtk_image_set_pixel_size (GTK_IMAGE (priv->icon), IMAGE_SIZE);
 
-      scaled = scale_pixbuf (pixbuf, IMAGE_SIZE, IMAGE_SIZE);
-      g_object_unref (pixbuf);
-
-      gtk_image_set_from_pixbuf (GTK_IMAGE (priv->icon), scaled);
-
-      have_icon = scaled != NULL;
+      have_icon = TRUE;
       gtk_widget_set_visible (priv->icon, have_icon);
-
-      if (scaled != NULL)
-        {
-          gint width;
-
-          width = gdk_pixbuf_get_width (scaled);
-          g_object_unref (scaled);
-
-          width = MAX (BODY_X_OFFSET, width);
-
-          gtk_widget_set_size_request (priv->icon, width, -1);
-        }
-      else
-        {
-          gtk_widget_set_size_request (priv->icon, BODY_X_OFFSET, -1);
-        }
+      gtk_widget_set_size_request (priv->icon, BODY_X_OFFSET, -1);
     }
 
   if (have_body || have_actions || have_icon)

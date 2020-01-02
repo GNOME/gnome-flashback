@@ -172,7 +172,7 @@ update_notification_box (NdNotificationBox *notification_box)
         gboolean       have_body;
         const char    *body;
         gboolean       have_actions;
-        GdkPixbuf     *pixbuf;
+        GIcon         *icon;
         char         **actions;
         int            i;
         char          *str;
@@ -187,11 +187,10 @@ update_notification_box (NdNotificationBox *notification_box)
         have_actions = FALSE;
 
         /* image */
-        pixbuf = nd_notification_load_image (notification_box->priv->notification, IMAGE_SIZE);
-        if (pixbuf != NULL) {
-                gtk_image_set_from_pixbuf (GTK_IMAGE (notification_box->priv->icon), pixbuf);
-
-                g_object_unref (G_OBJECT (pixbuf));
+        icon = nd_notification_get_icon (notification_box->priv->notification);
+        if (icon != NULL) {
+                gtk_image_set_from_gicon (GTK_IMAGE (notification_box->priv->icon), icon, GTK_ICON_SIZE_DIALOG);
+                gtk_image_set_pixel_size (GTK_IMAGE (notification_box->priv->icon), IMAGE_SIZE);
                 have_icon = TRUE;
         }
 

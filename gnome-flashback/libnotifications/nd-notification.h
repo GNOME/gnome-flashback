@@ -70,8 +70,8 @@ const char *          nd_notification_get_body            (NdNotification *notif
 char **               nd_notification_get_actions         (NdNotification *notification);
 GHashTable *          nd_notification_get_hints           (NdNotification *notification);
 
-GdkPixbuf *           nd_notification_load_image          (NdNotification *notification,
-                                                           int             size);
+GIcon *               nd_notification_get_icon            (NdNotification *notification);
+
 gboolean              nd_notification_get_is_resident     (NdNotification *notification);
 gboolean              nd_notification_get_is_transient    (NdNotification *notification);
 gboolean              nd_notification_get_action_icons    (NdNotification *notification);

@@ -45,7 +45,7 @@ struct _NdNotification {
         char         *sender;
         guint32       id;
         char         *app_name;
-        char         *app_icon;
+        GIcon        *icon;
         char         *summary;
         char         *body;
         char        **actions;
@@ -194,6 +194,120 @@ parse_markup (const gchar  *text,
 }
 
 static void
+free_pixels (guchar   *pixels,
+             gpointer  user_data)
+{
+        g_free (pixels);
+}
+
+static GIcon *
+icon_from_data (GVariant *icon_data)
+{
+        gboolean        has_alpha;
+        int             bits_per_sample;
+        int             width;
+        int             height;
+        int             rowstride;
+        int             n_channels;
+        GVariant       *data_variant;
+        gsize           expected_len;
+        guchar         *data;
+        GdkPixbuf      *pixbuf;
+
+        g_variant_get (icon_data,
+                       "(iiibii@ay)",
+                       &width,
+                       &height,
+                       &rowstride,
+                       &has_alpha,
+                       &bits_per_sample,
+                       &n_channels,
+                       &data_variant);
+
+        expected_len = (height - 1) * rowstride + width
+                * ((n_channels * bits_per_sample + 7) / 8);
+
+        if (expected_len != g_variant_get_size (data_variant)) {
+                g_warning ("Expected image data to be of length %" G_GSIZE_FORMAT
+                           " but got a " "length of %" G_GSIZE_FORMAT,
+                           expected_len,
+                           g_variant_get_size (data_variant));
+                return NULL;
+        }
+
+        data = (guchar *) g_memdup (g_variant_get_data (data_variant),
+                                    g_variant_get_size (data_variant));
+
+        pixbuf = gdk_pixbuf_new_from_data (data,
+                                           GDK_COLORSPACE_RGB,
+                                           has_alpha,
+                                           bits_per_sample,
+                                           width,
+                                           height,
+                                           rowstride,
+                                           free_pixels,
+                                           NULL);
+
+        return G_ICON (pixbuf);
+}
+
+static GIcon *
+icon_from_path (const char *path)
+{
+        GFile *file;
+        GIcon *icon;
+
+        if (path == NULL || *path == '\0')
+                return NULL;
+
+        if (g_str_has_prefix (path, "file://"))
+                file = g_file_new_for_uri (path);
+        else if (*path == '/')
+                file = g_file_new_for_path (path);
+        else
+                file = NULL;
+
+        if (file != NULL) {
+                icon = g_file_icon_new (file);
+                g_object_unref (file);
+        } else {
+                icon = g_themed_icon_new (path);
+        }
+
+        return icon;
+}
+
+static void
+update_icon (NdNotification *notification,
+             const gchar    *app_icon,
+             GVariant       *hints)
+{
+        GIcon *icon;
+        GVariantDict dict;
+        GVariant *image_data;
+        const char *image_path;
+
+        g_variant_dict_init (&dict, hints);
+
+        if (g_variant_dict_lookup (&dict, "image-data", "@(iiibiiay)", &image_data) ||
+            g_variant_dict_lookup (&dict, "image_data", "@(iiibiiay)", &image_data)) {
+                icon = icon_from_data (image_data);
+        } else if (g_variant_dict_lookup (&dict, "image-path", "&s", &image_path) ||
+                   g_variant_dict_lookup (&dict, "image_path", "&s", &image_path)) {
+                icon = icon_from_path (image_path);
+        } else if (*app_icon != '\0') {
+                icon = icon_from_path (app_icon);
+        } else if (g_variant_dict_lookup (&dict, "icon_data", "v", &image_data)) {
+                icon = icon_from_data (image_data);
+        } else {
+                icon = NULL;
+        }
+
+        g_clear_object (&notification->icon);
+        notification->icon = icon;
+}
+
+static void
 nd_notification_class_init (NdNotificationClass *class)
 {
         GObjectClass *gobject_class;
@@ -234,7 +348,7 @@ nd_notification_init (NdNotification *notification)
         notification->id = get_next_notification_serial ();
 
         notification->app_name = NULL;
-        notification->app_icon = NULL;
+        notification->icon = NULL;
         notification->summary = NULL;
         notification->body = NULL;
         notification->actions = NULL;
@@ -253,7 +367,7 @@ nd_notification_finalize (GObject *object)
 
         g_free (notification->sender);
         g_free (notification->app_name);
-        g_free (notification->app_icon);
+        g_clear_object (&notification->icon);
         g_free (notification->summary);
         g_free (notification->body);
         g_strfreev (notification->actions);
@@ -284,8 +398,7 @@ nd_notification_update (NdNotification     *notification,
         g_free (notification->app_name);
         notification->app_name = g_strdup (app_name);
 
-        g_free (notification->app_icon);
-        notification->app_icon = g_strdup (app_icon);
+        update_icon (notification, app_icon, hints);
 
         g_free (notification->summary);
         notification->summary = g_strdup (summary);
@@ -456,191 +569,10 @@ nd_notification_get_timeout (NdNotification *notification)
         return notification->timeout;
 }
 
-static GdkPixbuf *
-scale_pixbuf (GdkPixbuf *pixbuf,
-              int        max_width,
-              int        max_height,
-              gboolean   no_stretch_hint)
+GIcon *
+nd_notification_get_icon (NdNotification *notification)
 {
-        int        pw;
-        int        ph;
-        float      scale_factor_x = 1.0;
-        float      scale_factor_y = 1.0;
-        float      scale_factor = 1.0;
-
-        pw = gdk_pixbuf_get_width (pixbuf);
-        ph = gdk_pixbuf_get_height (pixbuf);
-
-        /* Determine which dimension requires the smallest scale. */
-        scale_factor_x = (float) max_width / (float) pw;
-        scale_factor_y = (float) max_height / (float) ph;
-
-        if (scale_factor_x > scale_factor_y) {
-                scale_factor = scale_factor_y;
-        } else {
-                scale_factor = scale_factor_x;
-        }
-
-        /* always scale down, allow to disable scaling up */
-        if (scale_factor < 1.0f || !no_stretch_hint) {
-                int scale_x;
-                int scale_y;
-
-                scale_x = (int) (pw * scale_factor);
-                scale_y = (int) (ph * scale_factor);
-                return gdk_pixbuf_scale_simple (pixbuf,
-                                                scale_x,
-                                                scale_y,
-                                                GDK_INTERP_BILINEAR);
-        } else {
-                return g_object_ref (pixbuf);
-        }
-}
-
-static void
-free_pixels (guchar   *pixels,
-             gpointer  user_data)
-{
-  g_free (pixels);
-}
-
-static GdkPixbuf *
-_notify_daemon_pixbuf_from_data_hint (GVariant *icon_data,
-                                      int       size)
-{
-        gboolean        has_alpha;
-        int             bits_per_sample;
-        int             width;
-        int             height;
-        int             rowstride;
-        int             n_channels;
-        GVariant       *data_variant;
-        gsize           expected_len;
-        guchar         *data;
-        GdkPixbuf      *pixbuf;
-
-        g_variant_get (icon_data,
-                       "(iiibii@ay)",
-                       &width,
-                       &height,
-                       &rowstride,
-                       &has_alpha,
-                       &bits_per_sample,
-                       &n_channels,
-                       &data_variant);
-
-        expected_len = (height - 1) * rowstride + width
-                * ((n_channels * bits_per_sample + 7) / 8);
-
-        if (expected_len != g_variant_get_size (data_variant)) {
-                g_warning ("Expected image data to be of length %" G_GSIZE_FORMAT
-                           " but got a " "length of %" G_GSIZE_FORMAT,
-                           expected_len,
-                           g_variant_get_size (data_variant));
-                return NULL;
-        }
-
-        data = (guchar *) g_memdup (g_variant_get_data (data_variant),
-                                    g_variant_get_size (data_variant));
-
-        pixbuf = gdk_pixbuf_new_from_data (data,
-                                           GDK_COLORSPACE_RGB,
-                                           has_alpha,
-                                           bits_per_sample,
-                                           width,
-                                           height,
-                                           rowstride,
-                                           free_pixels,
-                                           NULL);
-        if (pixbuf != NULL && size > 0) {
-                GdkPixbuf *scaled;
-                scaled = scale_pixbuf (pixbuf, size, size, TRUE);
-                g_object_unref (pixbuf);
-                pixbuf = scaled;
-        }
-
-        return pixbuf;
-}
-
-static GdkPixbuf *
-_notify_daemon_pixbuf_from_path (const char *path,
-                                 int         size)
-{
-        GFile *file;
-        GdkPixbuf *pixbuf = NULL;
-
-        file = g_file_new_for_commandline_arg (path);
-        if (g_file_is_native (file)) {
-                char *realpath;
-
-                realpath = g_file_get_path (file);
-                pixbuf = gdk_pixbuf_new_from_file_at_size (realpath, size, size, NULL);
-                g_free (realpath);
-        }
-        g_object_unref (file);
-
-        if (pixbuf == NULL) {
-                /* Load icon theme icon */
-                GtkIconTheme *theme;
-                GtkIconInfo  *icon_info;
-
-                theme = gtk_icon_theme_get_default ();
-                icon_info = gtk_icon_theme_lookup_icon (theme,
-                                                        path,
-                                                        size,
-                                                        GTK_ICON_LOOKUP_USE_BUILTIN);
-
-                if (icon_info != NULL) {
-                        gint icon_size;
-
-                        icon_size = MIN (size,
-                                         gtk_icon_info_get_base_size (icon_info));
-
-                        if (icon_size == 0)
-                                icon_size = size;
-
-                        pixbuf = gtk_icon_theme_load_icon (theme,
-                                                           path,
-                                                           icon_size,
-                                                           GTK_ICON_LOOKUP_USE_BUILTIN,
-                                                           NULL);
-
-                        g_object_unref (icon_info);
-                }
-        }
-
-        return pixbuf;
-}
-
-GdkPixbuf *
-nd_notification_load_image (NdNotification *notification,
-                            int             size)
-{
-        GVariant  *data;
-        GdkPixbuf *pixbuf;
-
-        pixbuf = NULL;
-
-        if ((data = (GVariant *) g_hash_table_lookup (notification->hints, "image-data"))
-            || (data = (GVariant *) g_hash_table_lookup (notification->hints, "image_data"))) {
-                pixbuf = _notify_daemon_pixbuf_from_data_hint (data, size);
-        } else if ((data = (GVariant *) g_hash_table_lookup (notification->hints, "image-path"))
-                   || (data = (GVariant *) g_hash_table_lookup (notification->hints, "image_path"))) {
-                if (g_variant_is_of_type (data, G_VARIANT_TYPE_STRING)) {
-                        const char *path;
-                        path = g_variant_get_string (data, NULL);
-                        pixbuf = _notify_daemon_pixbuf_from_path (path, size);
-                } else {
-                        g_warning ("Expected image_path hint to be of type string");
-                }
-        } else if (*notification->app_icon != '\0') {
-                pixbuf = _notify_daemon_pixbuf_from_path (notification->app_icon, size);
-        } else if ((data = (GVariant *) g_hash_table_lookup (notification->hints, "icon_data"))) {
-                g_warning("\"icon_data\" hint is deprecated, please use \"image_data\" instead");
-                pixbuf = _notify_daemon_pixbuf_from_data_hint (data, size);
-        }
-
-        return pixbuf;
+        return notification->icon;
 }
 
 void
