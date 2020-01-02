@@ -47,6 +47,19 @@ static GParamSpec *ibus_properties[LAST_PROP] = { NULL };
 
 G_DEFINE_TYPE (GfInputSourceIBus, gf_input_source_ibus, GF_TYPE_INPUT_SOURCE)
 
+static const char *
+get_layout (IBusEngineDesc *engine_desc)
+{
+  const char *layout;
+
+  layout = ibus_engine_desc_get_layout (engine_desc);
+
+  if (g_strcmp0 (layout, "default") == 0)
+    return "us";
+
+  return layout;
+}
+
 static gchar *
 get_symbol_from_char_code (gunichar code)
 {
@@ -129,7 +142,7 @@ gf_input_source_ibus_constructed (GObject *object)
 
   self->icon = g_strdup (ibus_engine_desc_get_icon (engine_desc));
 
-  layout = ibus_engine_desc_get_layout (engine_desc);
+  layout = get_layout (engine_desc);
   layout_variant = ibus_engine_desc_get_layout_variant (engine_desc);
 
   if (layout_variant != NULL && *layout_variant != '\0')
@@ -242,7 +255,7 @@ gf_input_source_ibus_get_layout (GfInputSource  *input_source,
   if (engine_desc == NULL)
     return FALSE;
 
-  *layout = ibus_engine_desc_get_layout (engine_desc);
+  *layout = get_layout (engine_desc);
   *variant = ibus_engine_desc_get_layout_variant (engine_desc);
 
   return TRUE;
