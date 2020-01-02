@@ -228,6 +228,16 @@ gf_input_source_get_index (GfInputSource *source)
   return priv->index;
 }
 
+gboolean
+gf_input_source_get_layout (GfInputSource  *source,
+                            const char    **layout,
+                            const char    **variant)
+{
+  return GF_INPUT_SOURCE_GET_CLASS (source)->get_layout (source,
+                                                         layout,
+                                                         variant);
+}
+
 const gchar *
 gf_input_source_get_xkb_id (GfInputSource *source)
 {

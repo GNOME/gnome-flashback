@@ -19,7 +19,6 @@
 
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
-#include <libgnome-desktop/gnome-xkb-info.h>
 #include <locale.h>
 #include <utime.h>
 
@@ -275,56 +274,17 @@ static void
 append_layout_info (GVariantBuilder *builder,
                     GfInputSources  *self)
 {
-  char *layout;
-  char *layout_variant;
-  const char *type;
-  const char *id;
+  const char *layout;
+  const char *layout_variant;
   GVariant *variant;
 
   layout = NULL;
   layout_variant = NULL;
 
-  type = gf_input_source_get_source_type (self->current_source);
-  id = gf_input_source_get_id (self->current_source);
-
-  if (g_strcmp0 (type, INPUT_SOURCE_TYPE_XKB) == 0)
-    {
-      GnomeXkbInfo *info;
-      const char *xkb_layout;
-      const char *xkb_variant;
-
-      info = gnome_xkb_info_new ();
-
-      gnome_xkb_info_get_layout_info (info,
-                                      id,
-                                      NULL,
-                                      NULL,
-                                      &xkb_layout,
-                                      &xkb_variant);
-
-      layout = g_strdup (xkb_layout);
-      layout_variant = g_strdup (xkb_variant);
-
-      g_clear_object (&info);
-    }
-  else if (g_strcmp0 (type, INPUT_SOURCE_TYPE_IBUS) == 0)
-    {
-      IBusEngineDesc *engine_desc;
-
-      engine_desc = gf_ibus_manager_get_engine_desc (self->ibus_manager, id);
-
-      if (engine_desc)
-        {
-          const char *ibus_layout;
-          const char *ibus_variant;
-
-          ibus_layout = ibus_engine_desc_get_layout (engine_desc);
-          ibus_variant = ibus_engine_desc_get_layout_variant (engine_desc);
-
-          layout = g_strdup (ibus_layout);
-          layout_variant = g_strdup (ibus_variant);
-        }
-    }
+  if (!gf_input_source_get_layout (self->current_source,
+                                   &layout,
+                                   &layout_variant))
+    return;
 
   if (layout != NULL)
     {
@@ -337,9 +297,6 @@ append_layout_info (GVariantBuilder *builder,
       variant = g_variant_new_string (layout_variant);
       g_variant_builder_add (builder, "{sv}", "layout-variant", variant);
     }
-
-  g_free (layout_variant);
-  g_free (layout);
 }
 
 static GVariant *

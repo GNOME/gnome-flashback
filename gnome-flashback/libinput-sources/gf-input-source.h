@@ -31,33 +31,41 @@ struct _GfInputSourceClass
 {
   GObjectClass parent_class;
 
-  const char * (* get_display_name) (GfInputSource *self);
+  const char * (* get_display_name) (GfInputSource  *self);
 
-  const char * (* get_short_name)   (GfInputSource *self);
+  const char * (* get_short_name)   (GfInputSource  *self);
 
-  gboolean     (* set_short_name)   (GfInputSource *self,
-                                     const char    *short_name);
+  gboolean     (* set_short_name)   (GfInputSource  *self,
+                                     const char     *short_name);
 
-  const char * (* get_xkb_id)       (GfInputSource *self);
+  gboolean     (* get_layout)       (GfInputSource  *self,
+                                     const char    **layout,
+                                     const char    **variant);
+
+  const char * (* get_xkb_id)       (GfInputSource  *self);
 };
 
-const gchar   *gf_input_source_get_source_type  (GfInputSource *source);
+const gchar *gf_input_source_get_source_type  (GfInputSource  *source);
 
-const gchar   *gf_input_source_get_id           (GfInputSource *source);
+const gchar *gf_input_source_get_id           (GfInputSource  *source);
 
-const gchar   *gf_input_source_get_display_name (GfInputSource *source);
+const gchar *gf_input_source_get_display_name (GfInputSource  *source);
 
-const gchar   *gf_input_source_get_short_name   (GfInputSource *source);
+const gchar *gf_input_source_get_short_name   (GfInputSource  *source);
 
-void           gf_input_source_set_short_name   (GfInputSource *source,
-                                                 const gchar   *short_name);
+void         gf_input_source_set_short_name   (GfInputSource  *source,
+                                               const gchar    *short_name);
 
-guint          gf_input_source_get_index        (GfInputSource *source);
+guint        gf_input_source_get_index        (GfInputSource  *source);
 
-const gchar   *gf_input_source_get_xkb_id       (GfInputSource *source);
+gboolean     gf_input_source_get_layout       (GfInputSource  *source,
+                                               const char    **layout,
+                                               const char    **variant);
 
-void           gf_input_source_activate         (GfInputSource *source,
-                                                 gboolean       interactive);
+const gchar *gf_input_source_get_xkb_id       (GfInputSource  *source);
+
+void         gf_input_source_activate         (GfInputSource  *source,
+                                               gboolean        interactive);
 
 G_END_DECLS
 

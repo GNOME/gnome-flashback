@@ -152,6 +152,23 @@ gf_input_source_xkb_set_short_name (GfInputSource *input_source,
   return TRUE;
 }
 
+static gboolean
+gf_input_source_xkb_get_layout (GfInputSource  *input_source,
+                                const char    **layout,
+                                const char    **variant)
+{
+  GfInputSourceXkb *self;
+
+  self = GF_INPUT_SOURCE_XKB (input_source);
+
+  return gnome_xkb_info_get_layout_info (self->xkb_info,
+                                         gf_input_source_get_id (input_source),
+                                         NULL,
+                                         NULL,
+                                         layout,
+                                         variant);
+}
+
 static const char *
 gf_input_source_xkb_get_xkb_id (GfInputSource *input_source)
 {
@@ -190,6 +207,7 @@ gf_input_source_xkb_class_init (GfInputSourceXkbClass *self_class)
   input_source_class->get_display_name = gf_input_source_xkb_get_display_name;
   input_source_class->get_short_name = gf_input_source_xkb_get_short_name;
   input_source_class->set_short_name = gf_input_source_xkb_set_short_name;
+  input_source_class->get_layout = gf_input_source_xkb_get_layout;
   input_source_class->get_xkb_id = gf_input_source_xkb_get_xkb_id;
 
   install_properties (object_class);

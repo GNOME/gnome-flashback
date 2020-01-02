@@ -227,6 +227,29 @@ gf_input_source_ibus_set_short_name (GfInputSource *input_source,
   return TRUE;
 }
 
+static gboolean
+gf_input_source_ibus_get_layout (GfInputSource  *input_source,
+                                 const char    **layout,
+                                 const char    **variant)
+{
+  GfInputSourceIBus *self;
+  const char *id;
+  IBusEngineDesc *engine_desc;
+
+  self = GF_INPUT_SOURCE_IBUS (input_source);
+
+  id = gf_input_source_get_id (input_source);
+  engine_desc = gf_ibus_manager_get_engine_desc (self->ibus_manager, id);
+
+  if (engine_desc == NULL)
+    return FALSE;
+
+  *layout = ibus_engine_desc_get_layout (engine_desc);
+  *variant = ibus_engine_desc_get_layout_variant (engine_desc);
+
+  return TRUE;
+}
+
 static const char *
 gf_input_source_ibus_get_xkb_id (GfInputSource *input_source)
 {
@@ -269,6 +292,7 @@ gf_input_source_ibus_class_init (GfInputSourceIBusClass *self_class)
   input_source_class->get_display_name = gf_input_source_ibus_get_display_name;
   input_source_class->get_short_name = gf_input_source_ibus_get_short_name;
   input_source_class->set_short_name = gf_input_source_ibus_set_short_name;
+  input_source_class->get_layout = gf_input_source_ibus_get_layout;
   input_source_class->get_xkb_id = gf_input_source_ibus_get_xkb_id;
 
   install_properties (object_class);
