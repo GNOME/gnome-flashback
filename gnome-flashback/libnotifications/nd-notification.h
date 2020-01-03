@@ -68,7 +68,6 @@ const char *          nd_notification_get_app_name        (NdNotification *notif
 const char *          nd_notification_get_summary         (NdNotification *notification);
 const char *          nd_notification_get_body            (NdNotification *notification);
 char **               nd_notification_get_actions         (NdNotification *notification);
-GHashTable *          nd_notification_get_hints           (NdNotification *notification);
 
 GIcon *               nd_notification_get_icon            (NdNotification *notification);
 

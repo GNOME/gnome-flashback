@@ -49,7 +49,9 @@ struct _NdNotification {
         char         *summary;
         char         *body;
         char        **actions;
-        GHashTable   *hints;
+        gboolean      transient;
+        gboolean      resident;
+        gboolean      action_icons;
         int           timeout;
 };
 
@@ -280,24 +282,21 @@ icon_from_path (const char *path)
 static void
 update_icon (NdNotification *notification,
              const gchar    *app_icon,
-             GVariant       *hints)
+             GVariantDict   *hints)
 {
         GIcon *icon;
-        GVariantDict dict;
         GVariant *image_data;
         const char *image_path;
 
-        g_variant_dict_init (&dict, hints);
-
-        if (g_variant_dict_lookup (&dict, "image-data", "@(iiibiiay)", &image_data) ||
-            g_variant_dict_lookup (&dict, "image_data", "@(iiibiiay)", &image_data)) {
+        if (g_variant_dict_lookup (hints, "image-data", "@(iiibiiay)", &image_data) ||
+            g_variant_dict_lookup (hints, "image_data", "@(iiibiiay)", &image_data)) {
                 icon = icon_from_data (image_data);
-        } else if (g_variant_dict_lookup (&dict, "image-path", "&s", &image_path) ||
-                   g_variant_dict_lookup (&dict, "image_path", "&s", &image_path)) {
+        } else if (g_variant_dict_lookup (hints, "image-path", "&s", &image_path) ||
+                   g_variant_dict_lookup (hints, "image_path", "&s", &image_path)) {
                 icon = icon_from_path (image_path);
         } else if (*app_icon != '\0') {
                 icon = icon_from_path (app_icon);
-        } else if (g_variant_dict_lookup (&dict, "icon_data", "v", &image_data)) {
+        } else if (g_variant_dict_lookup (hints, "icon_data", "v", &image_data)) {
                 icon = icon_from_data (image_data);
         } else {
                 icon = NULL;
@@ -352,10 +351,9 @@ nd_notification_init (NdNotification *notification)
         notification->summary = NULL;
         notification->body = NULL;
         notification->actions = NULL;
-        notification->hints = g_hash_table_new_full (g_str_hash,
-                                                     g_str_equal,
-                                                     g_free,
-                                                     (GDestroyNotify) g_variant_unref);
+        notification->transient = FALSE;
+        notification->resident = FALSE;
+        notification->action_icons = FALSE;
 }
 
 static void
@@ -372,10 +370,6 @@ nd_notification_finalize (GObject *object)
         g_free (notification->body);
         g_strfreev (notification->actions);
 
-        if (notification->hints != NULL) {
-                g_hash_table_destroy (notification->hints);
-        }
-
         if (G_OBJECT_CLASS (nd_notification_parent_class)->finalize)
                 (*G_OBJECT_CLASS (nd_notification_parent_class)->finalize) (object);
 }
@@ -390,15 +384,12 @@ nd_notification_update (NdNotification     *notification,
                         GVariant           *hints,
                         gint                timeout)
 {
-        GVariant *item;
-        GVariantIter iter;
+        GVariantDict dict;
 
         g_return_val_if_fail (ND_IS_NOTIFICATION (notification), FALSE);
 
         g_free (notification->app_name);
         notification->app_name = g_strdup (app_name);
-
-        update_icon (notification, app_icon, hints);
 
         g_free (notification->summary);
         notification->summary = g_strdup (summary);
@@ -409,20 +400,18 @@ nd_notification_update (NdNotification     *notification,
         g_strfreev (notification->actions);
         notification->actions = g_strdupv ((char **)actions);
 
-        g_hash_table_remove_all (notification->hints);
+        g_variant_dict_init (&dict, hints);
 
-        g_variant_iter_init (&iter, hints);
-        while ((item = g_variant_iter_next_value (&iter))) {
-                gchar *key;
-                GVariant *value;
+        update_icon (notification, app_icon, &dict);
 
-                g_variant_get (item, "{sv}", &key, &value);
-                g_hash_table_insert (notification->hints, g_strdup (key),
-                                     g_variant_ref (value));
+        if (!g_variant_dict_lookup (&dict, "transient", "b", &notification->transient))
+                notification->transient = FALSE;
 
-                g_variant_unref (value);
-                g_free (key);
-        }
+        if (!g_variant_dict_lookup (&dict, "resident", "b", &notification->resident))
+                notification->resident = FALSE;
+
+        if (!g_variant_dict_lookup (&dict, "action-icons", "b", &notification->action_icons))
+                notification->action_icons = FALSE;
 
         notification->timeout = timeout;
 
@@ -466,51 +455,22 @@ nd_notification_get_is_closed (NdNotification *notification)
         return notification->is_closed;
 }
 
-static gboolean
-hint_to_boolean (NdNotification *notification,
-                 const gchar    *hint_name)
-{
-        GVariant *value;
-
-        g_return_val_if_fail (ND_IS_NOTIFICATION (notification), FALSE);
-
-        value = g_hash_table_lookup (notification->hints, hint_name);
-        if (value == NULL)
-                return FALSE;
-
-        if (g_variant_is_of_type (value, G_VARIANT_TYPE_INT32)) {
-                return (g_variant_get_int32 (value) != 0);
-        } else if (g_variant_is_of_type (value, G_VARIANT_TYPE_DOUBLE)) {
-                return (g_variant_get_double (value) != 0);
-        } else if (g_variant_is_of_type (value, G_VARIANT_TYPE_STRING)) {
-                return TRUE;
-        } else if (g_variant_is_of_type (value, G_VARIANT_TYPE_BYTE)) {
-                return (g_variant_get_byte (value) != 0);
-        } else if (g_variant_is_of_type (value, G_VARIANT_TYPE_BOOLEAN)) {
-                return g_variant_get_boolean (value);
-        } else {
-                g_assert_not_reached ();
-        }
-
-        return FALSE;
-}
-
 gboolean
 nd_notification_get_is_transient (NdNotification *notification)
 {
-        return hint_to_boolean (notification, "transient");
+        return notification->transient;
 }
 
 gboolean
 nd_notification_get_is_resident (NdNotification *notification)
 {
-        return hint_to_boolean (notification, "resident");
+        return notification->resident;
 }
 
 gboolean
 nd_notification_get_action_icons (NdNotification *notification)
 {
-        return hint_to_boolean (notification, "action-icons");
+        return notification->action_icons;
 }
 
 guint32
@@ -519,14 +479,6 @@ nd_notification_get_id (NdNotification *notification)
         g_return_val_if_fail (ND_IS_NOTIFICATION (notification), -1);
 
         return notification->id;
-}
-
-GHashTable *
-nd_notification_get_hints (NdNotification *notification)
-{
-        g_return_val_if_fail (ND_IS_NOTIFICATION (notification), NULL);
-
-        return notification->hints;
 }
 
 char **
