@@ -385,11 +385,18 @@ gf_background_surface_create (GdkDisplay *display,
       monitor = gdk_display_get_monitor (display, i);
       gdk_monitor_get_geometry (monitor, &geometry);
 
+#ifdef HAVE_GNOME_DESKTOP_3_35_4
+      monitor_surface = gnome_bg_create_surface (bg,
+                                                 window,
+                                                 geometry.width,
+                                                 geometry.height);
+#else
       monitor_surface = gnome_bg_create_surface (bg,
                                                  window,
                                                  geometry.width,
                                                  geometry.height,
                                                  FALSE);
+#endif
 
       cairo_set_source_surface (cr, monitor_surface, geometry.x, geometry.y);
       cairo_paint (cr);

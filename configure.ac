@@ -284,6 +284,14 @@ PKG_CHECK_EXISTS([pango >= 1.44.0],
                            [Define if Pango is 1.44.0 or newer]))
 
 dnl **************************************************************************
+dnl Check if we have gnome-desktop 3.35.4 or newer
+dnl **************************************************************************
+
+PKG_CHECK_EXISTS([gnome-desktop-3.0 >= 3.35.4],
+                 AC_DEFINE([HAVE_GNOME_DESKTOP_3_35_4], [1],
+                           [Define if gnome-desktop is 3.35.4 or newer]))
+
+dnl **************************************************************************
 dnl Systemd session
 dnl **************************************************************************
 
