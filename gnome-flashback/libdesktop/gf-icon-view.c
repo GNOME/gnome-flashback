@@ -18,7 +18,6 @@
 #include "config.h"
 #include "gf-icon-view.h"
 
-#include <gdk/gdkx.h>
 #include <glib/gi18n.h>
 
 #include "dbus/gf-file-manager-gen.h"
@@ -32,6 +31,7 @@
 #include "gf-monitor-view.h"
 #include "gf-trash-icon.h"
 #include "gf-utils.h"
+#include "gf-workarea-watcher.h"
 
 typedef struct
 {
@@ -43,6 +43,8 @@ typedef struct
 struct _GfIconView
 {
   GtkEventBox         parent;
+
+  GfWorkareaWatcher  *workarea_watcher;
 
   GfThumbnailFactory *thumbnail_factory;
 
@@ -1723,7 +1725,8 @@ find_monitor_view_by_monitor (GfIconView *self,
 }
 
 static void
-workarea_changed (GfIconView *self)
+workarea_watcher_changed_cb (GfWorkareaWatcher *workarea_watcher,
+                             GfIconView        *self)
 {
   GList *children;
   GList *l;
@@ -1921,55 +1924,6 @@ show_trash_changed_cb (GSettings  *settings,
       if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
         remove_and_readd_icons (self);
     }
-}
-
-static GdkFilterReturn
-filter_func (GdkXEvent *xevent,
-             GdkEvent  *event,
-             gpointer   user_data)
-{
-  XEvent *x;
-  GdkAtom atom;
-
-  x = (XEvent *) xevent;
-
-  if (x->type != PropertyNotify)
-    return GDK_FILTER_CONTINUE;
-
-  atom = gdk_atom_intern_static_string ("_NET_WORKAREA");
-  if (x->xproperty.atom == gdk_x11_atom_to_xatom (atom))
-    workarea_changed (GF_ICON_VIEW (user_data));
-
-  return GDK_FILTER_CONTINUE;
-}
-
-static void
-remove_event_filter (GfIconView *self)
-{
-  GdkScreen *screen;
-  GdkWindow *root;
-
-  screen = gtk_widget_get_screen (GTK_WIDGET (self));
-  root = gdk_screen_get_root_window (screen);
-
-  gdk_window_remove_filter (root, filter_func, self);
-}
-
-static void
-add_event_filter (GfIconView *self)
-{
-  GdkScreen *screen;
-  GdkWindow *root;
-  GdkEventMask event_mask;
-
-  screen = gtk_widget_get_screen (GTK_WIDGET (self));
-  root = gdk_screen_get_root_window (screen);
-
-  event_mask = gdk_window_get_events (root);
-  event_mask |= GDK_PROPERTY_NOTIFY;
-
-  gdk_window_add_filter (root, filter_func, self);
-  gdk_window_set_events (root, event_mask);
 }
 
 static char **
@@ -2407,6 +2361,8 @@ gf_icon_view_dispose (GObject *object)
 
   self = GF_ICON_VIEW (object);
 
+  g_clear_object (&self->workarea_watcher);
+
   g_clear_object (&self->thumbnail_factory);
 
   g_clear_object (&self->multi_press);
@@ -2449,8 +2405,6 @@ gf_icon_view_finalize (GObject *object)
   self = GF_ICON_VIEW (object);
 
   g_clear_pointer (&self->dummy_icon, gtk_widget_unparent);
-
-  remove_event_filter (self);
 
   G_OBJECT_CLASS (gf_icon_view_parent_class)->finalize (object);
 }
@@ -2798,7 +2752,11 @@ gf_icon_view_init (GfIconView *self)
   g_signal_connect (self, "toggle", G_CALLBACK (toggle_cb), NULL);
   g_signal_connect (self, "move", G_CALLBACK (move_cb), NULL);
 
-  add_event_filter (self);
+  self->workarea_watcher = gf_workarea_watcher_new ();
+
+  g_signal_connect (self->workarea_watcher, "changed",
+                    G_CALLBACK (workarea_watcher_changed_cb),
+                    self);
 
   self->thumbnail_factory = gf_thumbnail_factory_new ();
 

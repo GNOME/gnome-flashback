@@ -48,6 +48,8 @@ libdesktop_la_SOURCES = \
 	gf-thumbnail-factory.h \
 	gf-utils.c \
 	gf-utils.h \
+	gf-workarea-watcher.c \
+	gf-workarea-watcher.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 
