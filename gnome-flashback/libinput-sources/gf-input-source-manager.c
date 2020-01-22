@@ -154,6 +154,7 @@ get_active_window (void)
 
   gdk_x11_display_error_trap_push (display);
 
+  prop = NULL;
   status = XGetWindowProperty (xdisplay,
                                DefaultRootWindow (xdisplay),
                                _net_active_window,
@@ -167,21 +168,12 @@ get_active_window (void)
                                &bytes_after,
                                &prop);
 
+  gdk_x11_display_error_trap_pop_ignored (display);
+
   if (status != Success ||
       actual_type != XA_WINDOW)
     {
-      if (prop)
-        XFree (prop);
-
-      gdk_x11_display_error_trap_pop_ignored (display);
-
-      return None;
-    }
-
-  if (gdk_x11_display_error_trap_pop (display) != Success)
-    {
-      if (prop)
-        XFree (prop);
+      XFree (prop);
 
       return None;
     }
