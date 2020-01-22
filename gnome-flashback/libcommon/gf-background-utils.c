@@ -154,8 +154,8 @@ get_root_pixmap (GdkDisplay *display)
   Pixmap pixmap;
 
   xdisplay = gdk_x11_display_get_xdisplay (display);
-
   xrootpmap_id_atom = XInternAtom (xdisplay, "_XROOTPMAP_ID", False);
+  prop = NULL;
 
   result = XGetWindowProperty (xdisplay,
                                XDefaultRootWindow (xdisplay),
@@ -175,8 +175,7 @@ get_root_pixmap (GdkDisplay *display)
       actual_format != 32 ||
       n_items != 1)
     {
-      if (prop != NULL)
-        XFree (prop);
+      XFree (prop);
 
       return None;
     }
@@ -265,6 +264,7 @@ set_root_pixmap (GdkDisplay *display,
 
   esetroot_pmap_id_atom = XInternAtom (xdisplay, "ESETROOT_PMAP_ID", False);
   xrootpmap_id_atom = XInternAtom (xdisplay, "_XROOTPMAP_ID", False);
+  prop = NULL;
 
   result = XGetWindowProperty (xdisplay,
                                XDefaultRootWindow (xdisplay),
@@ -279,22 +279,20 @@ set_root_pixmap (GdkDisplay *display,
                                &bytes_after,
                                &prop);
 
-  if (prop != NULL)
+  if (result == Success &&
+      actual_type == XA_PIXMAP &&
+      actual_format == 32 &&
+      n_items == 1 &&
+      prop != NULL)
     {
-      if (result == Success &&
-          actual_type == XA_PIXMAP &&
-          actual_format == 32 &&
-          n_items == 1)
-        {
-          gdk_x11_display_error_trap_push (display);
+      gdk_x11_display_error_trap_push (display);
 
-          XKillClient (xdisplay, *(Pixmap *) prop);
+      XKillClient (xdisplay, *(Pixmap *) prop);
 
-          gdk_x11_display_error_trap_pop_ignored (display);
-        }
-
-      XFree (prop);
+      gdk_x11_display_error_trap_pop_ignored (display);
     }
+
+  XFree (prop);
 
   XChangeProperty (xdisplay,
                    XDefaultRootWindow (xdisplay),
