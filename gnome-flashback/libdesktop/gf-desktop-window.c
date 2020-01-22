@@ -100,6 +100,7 @@ get_representative_color (GfDesktopWindow *self,
 
   gdk_x11_display_error_trap_push (display);
 
+  prop = NULL;
   status = XGetWindowProperty (xdisplay,
                                XDefaultRootWindow (xdisplay),
                                atom,
@@ -115,10 +116,9 @@ get_representative_color (GfDesktopWindow *self,
 
   gdk_x11_display_error_trap_pop_ignored (display);
 
-  if (status != Success)
-    return FALSE;
-
-  if (n_items == 0)
+  if (status != Success ||
+      actual_type != XA_STRING ||
+      n_items == 0)
     {
       XFree (prop);
       return FALSE;
