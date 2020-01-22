@@ -13,13 +13,8 @@ gsettings_SCHEMAS = \
 	org.gnome.gnome-flashback.desktop.gschema.xml \
 	org.gnome.gnome-flashback.desktop.background.gschema.xml \
 	org.gnome.gnome-flashback.desktop.icons.gschema.xml \
-	$(NULL)
-
-if WITH_SYSTEM_INDICATORS
-gsettings_SCHEMAS += \
 	org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml \
 	$(NULL)
-endif
 
 @GSETTINGS_RULES@
 
@@ -27,12 +22,6 @@ EXTRA_DIST = \
 	$(override_DATA) \
 	$(gsettings_SCHEMAS) \
 	$(NULL)
-
-if !WITH_SYSTEM_INDICATORS
-EXTRA_DIST += \
-	org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml \
-	$(NULL)
-endif
 
 CLEANFILES = \
 	*.gschema.valid \

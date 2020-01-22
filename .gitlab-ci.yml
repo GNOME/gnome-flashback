@@ -24,6 +24,7 @@ build-ubuntu:
                       libglib2.0-dev
                       libgnome-bluetooth-dev
                       libgnome-desktop-3-dev
+                      libgnome-panel-dev
                       libgtk-3-dev
                       libibus-1.0-dev
                       libpam0g-dev

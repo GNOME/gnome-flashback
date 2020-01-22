@@ -90,6 +90,7 @@ dnl **************************************************************************
 GDK_PIXBUF_REQUIRED=2.32.2
 GTK_REQUIRED=3.22.0
 LIBGNOME_DESKTOP_REQUIRED=3.12.0
+LIBGNOME_PANEL_REQUIRED=3.35.2
 CANBERRA_REQUIRED=0.13
 GLIB_REQUIRED=2.44.0
 GSETTINGS_DESKTOP_SCHEMAS_REQUIRED=3.31.0
@@ -311,36 +312,19 @@ dnl **************************************************************************
 dnl System indicators
 dnl **************************************************************************
 
-AC_ARG_WITH([system-indicators],
-            [AS_HELP_STRING([--with-system-indicators], [build with System indicators])],
-            [with_system_indicators="$withval"], [with_system_indicators="auto"])
+GNOME_PANEL_LAYOUTS_DIR=`$PKG_CONFIG --variable=layoutsdir libgnome-panel`
+AC_SUBST([GNOME_PANEL_LAYOUTS_DIR], [$GNOME_PANEL_LAYOUTS_DIR])
 
-AS_IF([test "x$with_system_indicators" != "xno"], [
-  PKG_CHECK_EXISTS([libgnome-panel],
-                   [found_libgnome_panel="yes"], [found_libgnome_panel="no"])
+GNOME_PANEL_MODULES_DIR=`$PKG_CONFIG --variable=modulesdir libgnome-panel`
+AC_SUBST([GNOME_PANEL_MODULES_DIR], [$GNOME_PANEL_MODULES_DIR])
 
-  AS_IF([test "x$found_libgnome_panel" = "xyes"], [
-    GNOME_PANEL_LAYOUTS_DIR=`$PKG_CONFIG --variable=layoutsdir libgnome-panel`
-    AC_SUBST([GNOME_PANEL_LAYOUTS_DIR], [$GNOME_PANEL_LAYOUTS_DIR])
-
-    GNOME_PANEL_MODULES_DIR=`$PKG_CONFIG --variable=modulesdir libgnome-panel`
-    AC_SUBST([GNOME_PANEL_MODULES_DIR], [$GNOME_PANEL_MODULES_DIR])
-
-    PKG_CHECK_MODULES([SYSTEM_INDICATORS], [
-      gio-unix-2.0 >= $GLIB_REQUIRED
-      gnome-bluetooth-1.0
-      libcanberra-gtk3 >= $CANBERRA_REQUIRED
-      libgnome-panel
-      upower-glib
-    ])
-  ], [
-    AS_IF([test "x$with_system_indicators" = "xyes"], [
-      AC_MSG_ERROR([System indicators requested but libgnome-panel not found])
-    ])
-  ])
-], [found_libgnome_panel=no])
-
-AM_CONDITIONAL(WITH_SYSTEM_INDICATORS, [test "x$found_libgnome_panel" = "xyes"])
+PKG_CHECK_MODULES([SYSTEM_INDICATORS], [
+  gio-unix-2.0 >= $GLIB_REQUIRED
+  gnome-bluetooth-1.0
+  libcanberra-gtk3 >= $CANBERRA_REQUIRED
+  libgnome-panel >= $LIBGNOME_PANEL_REQUIRED
+  upower-glib
+])
 
 dnl **************************************************************************
 dnl Compiz session
@@ -454,6 +438,5 @@ echo "  libdir ......................: ${libdir}"
 echo "  sysconfdir ..................: ${sysconfdir}"
 echo "  libexecdir ..................: ${libexecdir}"
 echo ""
-echo "  System indicators ...........: ${found_libgnome_panel}"
 echo "  Compiz session ..............: ${found_compiz}"
 echo ""

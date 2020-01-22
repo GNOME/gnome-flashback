@@ -1,6 +1,5 @@
 NULL =
 
-if WITH_SYSTEM_INDICATORS
 system_indicators_libdir = $(GNOME_PANEL_MODULES_DIR)
 system_indicators_lib_LTLIBRARIES = system_indicators.la
 
@@ -50,6 +49,5 @@ system_indicators_la_LDFLAGS = \
 	$(WARN_LDFLAGS) \
 	$(AM_LDFLAGS) \
 	$(NULL)
-endif
 
 -include $(top_srcdir)/git.mk
