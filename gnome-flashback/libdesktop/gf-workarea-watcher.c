@@ -28,10 +28,10 @@ struct _GfWorkareaWatcher
   Atom     net_supported;
   Atom     net_current_desktop;
   Atom     net_workarea;
-  Atom     net_workareas;
+  Atom     gtk_workareas;
 
-  gboolean net_workareas_supported;
-  Atom     net_workareas_dn;
+  gboolean gtk_workareas_supported;
+  Atom     gtk_workareas_dn;
 
   guint    changed_id;
 };
@@ -73,12 +73,12 @@ emit_changed_idle (GfWorkareaWatcher *self)
 }
 
 static void
-update_net_workareas_supported (GfWorkareaWatcher *self,
+update_gtk_workareas_supported (GfWorkareaWatcher *self,
                                 gboolean           emit)
 {
   gboolean changed;
-  gboolean net_workareas_supported;
-  Atom net_workareas_dn;
+  gboolean gtk_workareas_supported;
+  Atom gtk_workareas_dn;
   GdkDisplay *display;
   Display *xdisplay;
   int result;
@@ -89,8 +89,8 @@ update_net_workareas_supported (GfWorkareaWatcher *self,
   unsigned char *prop;
 
   changed = FALSE;
-  net_workareas_supported = FALSE;
-  net_workareas_dn = None;
+  gtk_workareas_supported = FALSE;
+  gtk_workareas_dn = None;
 
   display = gdk_display_get_default ();
   xdisplay = gdk_x11_display_get_xdisplay (display);
@@ -123,9 +123,9 @@ update_net_workareas_supported (GfWorkareaWatcher *self,
 
       for (i = 0; i < n_items; i++)
         {
-          if (atoms[i] == self->net_workareas)
+          if (atoms[i] == self->gtk_workareas)
             {
-              net_workareas_supported = TRUE;
+              gtk_workareas_supported = TRUE;
               break;
             }
         }
@@ -134,7 +134,7 @@ update_net_workareas_supported (GfWorkareaWatcher *self,
   XFree (prop);
   prop = NULL;
 
-  if (net_workareas_supported)
+  if (gtk_workareas_supported)
     {
       int current_desktop;
 
@@ -172,21 +172,21 @@ update_net_workareas_supported (GfWorkareaWatcher *self,
         {
           char *atom_name;
 
-          atom_name = g_strdup_printf ("_NET_WORKAREAS_D%d", current_desktop);
-          net_workareas_dn = XInternAtom (xdisplay, atom_name, False);
+          atom_name = g_strdup_printf ("_GTK_WORKAREAS_D%d", current_desktop);
+          gtk_workareas_dn = XInternAtom (xdisplay, atom_name, False);
           g_free (atom_name);
         }
     }
 
-  if (self->net_workareas_supported != net_workareas_supported)
+  if (self->gtk_workareas_supported != gtk_workareas_supported)
     {
-      self->net_workareas_supported = net_workareas_supported;
+      self->gtk_workareas_supported = gtk_workareas_supported;
       changed = TRUE;
     }
 
-  if (self->net_workareas_dn != net_workareas_dn)
+  if (self->gtk_workareas_dn != gtk_workareas_dn)
     {
-      self->net_workareas_dn = net_workareas_dn;
+      self->gtk_workareas_dn = gtk_workareas_dn;
       changed = TRUE;
     }
 
@@ -209,12 +209,12 @@ filter_func (GdkXEvent *xevent,
 
   self = GF_WORKAREA_WATCHER (user_data);
 
-  if (self->net_workareas_supported &&
-      x->xproperty.atom == self->net_workareas_dn)
+  if (self->gtk_workareas_supported &&
+      x->xproperty.atom == self->gtk_workareas_dn)
     {
       emit_changed_idle (self);
     }
-  else if (!self->net_workareas_supported &&
+  else if (!self->gtk_workareas_supported &&
            x->xproperty.atom == self->net_workarea)
     {
       emit_changed_idle (self);
@@ -222,7 +222,7 @@ filter_func (GdkXEvent *xevent,
   else if (x->xproperty.atom == self->net_current_desktop ||
            x->xproperty.atom == self->net_supported)
     {
-      update_net_workareas_supported (self, TRUE);
+      update_gtk_workareas_supported (self, TRUE);
     }
 
   return GDK_FILTER_CONTINUE;
@@ -295,10 +295,10 @@ gf_workarea_watcher_init (GfWorkareaWatcher *self)
   self->net_supported = XInternAtom (xdisplay, "_NET_SUPPORTED", False);
   self->net_current_desktop = XInternAtom (xdisplay, "_NET_CURRENT_DESKTOP", False);
   self->net_workarea = XInternAtom (xdisplay, "_NET_WORKAREA", False);
-  self->net_workareas = XInternAtom (xdisplay, "_NET_WORKAREAS", False);
+  self->gtk_workareas = XInternAtom (xdisplay, "_GTK_WORKAREAS", False);
 
-  self->net_workareas_supported = FALSE;
-  self->net_workareas_dn = None;
+  self->gtk_workareas_supported = FALSE;
+  self->gtk_workareas_dn = None;
 
   screen = gdk_display_get_default_screen (display);
   root = gdk_screen_get_root_window (screen);
@@ -309,7 +309,7 @@ gf_workarea_watcher_init (GfWorkareaWatcher *self)
   gdk_window_add_filter (root, filter_func, self);
   gdk_window_set_events (root, event_mask);
 
-  update_net_workareas_supported (self, FALSE);
+  update_gtk_workareas_supported (self, FALSE);
 }
 
 GfWorkareaWatcher *
