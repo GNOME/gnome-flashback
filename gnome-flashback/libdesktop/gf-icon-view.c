@@ -18,10 +18,11 @@
 #include "config.h"
 #include "gf-icon-view.h"
 
+#include <gdk/gdkx.h>
 #include <glib/gi18n.h>
 
 #include "dbus/gf-file-manager-gen.h"
-#include "dbus/gf-nautilus-gen.h"
+#include "dbus/gf-nautilus2-gen.h"
 #include "gf-create-folder-dialog.h"
 #include "gf-desktop-enum-types.h"
 #include "gf-desktop-enums.h"
@@ -77,7 +78,7 @@ struct _GfIconView
   GdkRectangle        rubberband_rect;
   GList              *rubberband_icons;
 
-  GfNautilusGen      *nautilus;
+  GfNautilus2Gen     *nautilus;
   GfFileManagerGen   *file_manager;
 
   GtkWidget          *create_folder_dialog;
@@ -108,6 +109,39 @@ enum
 static guint view_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GfIconView, gf_icon_view, GTK_TYPE_EVENT_BOX)
+
+static GVariant *
+get_platform_data (GfIconView *self,
+                   guint32     timestamp)
+{
+  GVariantBuilder builder;
+  GtkWidget *toplevel;
+  GdkWindow *window;
+  char *parent_handle;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+
+  toplevel = gtk_widget_get_toplevel (GTK_WIDGET (self));
+  window = gtk_widget_get_window (toplevel);
+  parent_handle = g_strdup_printf ("x11:%lx", gdk_x11_window_get_xid (window));
+
+  g_variant_builder_add (&builder,
+                         "{sv}",
+                         "parent-handle",
+                         g_variant_new_take_string (parent_handle));
+
+  g_variant_builder_add (&builder,
+                         "{sv}",
+                         "timestamp",
+                         g_variant_new_uint32 (timestamp));
+
+  g_variant_builder_add (&builder,
+                         "{sv}",
+                         "window-position",
+                         g_variant_new_string ("center"));
+
+  return g_variant_builder_end (&builder);
+}
 
 static char *
 build_attributes_list (const char *first,
@@ -510,26 +544,26 @@ empty_trash_cb (GObject      *object,
   GError *error;
 
   error = NULL;
-  gf_nautilus_gen_call_empty_trash_finish (GF_NAUTILUS_GEN (object),
-                                           res, &error);
+  gf_nautilus2_gen_call_empty_trash_finish (GF_NAUTILUS2_GEN (object),
+                                            res, &error);
 
   if (error != NULL)
     {
       if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
-        g_warning ("Error creating new folder: %s", error->message);
+        g_warning ("Error emptying trash: %s", error->message);
       g_error_free (error);
     }
 }
 
 static void
-trash_files_cb (GObject      *object,
-                GAsyncResult *res,
-                gpointer      user_data)
+trash_uris_cb (GObject      *object,
+               GAsyncResult *res,
+               gpointer      user_data)
 {
   GError *error;
 
   error = NULL;
-  gf_nautilus_gen_call_trash_files_finish (GF_NAUTILUS_GEN (object),
+  gf_nautilus2_gen_call_trash_uris_finish (GF_NAUTILUS2_GEN (object),
                                            res, &error);
 
   if (error != NULL)
@@ -541,14 +575,14 @@ trash_files_cb (GObject      *object,
 }
 
 static void
-rename_file_cb (GObject      *object,
-                GAsyncResult *res,
-                gpointer      user_data)
+rename_uri_cb (GObject      *object,
+               GAsyncResult *res,
+               gpointer      user_data)
 {
   GError *error;
 
   error = NULL;
-  gf_nautilus_gen_call_rename_file_finish (GF_NAUTILUS_GEN (object),
+  gf_nautilus2_gen_call_rename_uri_finish (GF_NAUTILUS2_GEN (object),
                                            res, &error);
 
   if (error != NULL)
@@ -567,8 +601,8 @@ copy_uris_cb (GObject      *object,
   GError *error;
 
   error = NULL;
-  gf_nautilus_gen_call_copy_uris_finish (GF_NAUTILUS_GEN (object),
-                                         res, &error);
+  gf_nautilus2_gen_call_copy_uris_finish (GF_NAUTILUS2_GEN (object),
+                                          res, &error);
 
   if (error != NULL)
     {
@@ -586,8 +620,8 @@ move_uris_cb (GObject      *object,
   GError *error;
 
   error = NULL;
-  gf_nautilus_gen_call_move_uris_finish (GF_NAUTILUS_GEN (object),
-                                         res, &error);
+  gf_nautilus2_gen_call_move_uris_finish (GF_NAUTILUS2_GEN (object),
+                                          res, &error);
 
   if (error != NULL)
     {
@@ -841,8 +875,8 @@ create_folder_cb (GObject      *object,
   GError *error;
 
   error = NULL;
-  gf_nautilus_gen_call_create_folder_finish (GF_NAUTILUS_GEN (object),
-                                             res, &error);
+  gf_nautilus2_gen_call_create_folder_finish (GF_NAUTILUS2_GEN (object),
+                                              res, &error);
 
   if (error != NULL)
     {
@@ -858,29 +892,39 @@ create_folder_dialog_response_cb (GtkDialog  *dialog,
                                   GfIconView *self)
 {
   GfCreateFolderDialog *folder_dialog;
-  char *folder_name;
-  GFile *new_file;
-  char *uri;
 
   if (response_id != GTK_RESPONSE_ACCEPT)
     return;
 
   folder_dialog = GF_CREATE_FOLDER_DIALOG (dialog);
-  folder_name = gf_create_folder_dialog_get_folder_name (folder_dialog);
 
-  new_file = g_file_get_child (self->desktop, folder_name);
-  g_free (folder_name);
+  if (self->nautilus != NULL)
+    {
+      char *parent_uri;
+      char *folder_name;
+      guint32 timestamp;
 
-  uri = g_file_get_uri (new_file);
-  g_object_unref (new_file);
+      parent_uri = g_file_get_uri (self->desktop);
+      folder_name = gf_create_folder_dialog_get_folder_name (folder_dialog);
+      timestamp = gtk_get_current_event_time ();
 
-  gf_nautilus_gen_call_create_folder (self->nautilus, uri,
-                                      self->cancellable,
-                                      create_folder_cb,
-                                      NULL);
+      gf_nautilus2_gen_call_create_folder (self->nautilus,
+                                           parent_uri,
+                                           folder_name,
+                                           get_platform_data (self, timestamp),
+                                           self->cancellable,
+                                           create_folder_cb,
+                                           NULL);
+
+      g_free (parent_uri);
+      g_free (folder_name);
+    }
+  else
+    {
+      g_assert_not_reached ();
+    }
 
   gtk_widget_destroy (GTK_WIDGET (dialog));
-  g_free (uri);
 }
 
 static void
@@ -1668,17 +1712,17 @@ enumerate_desktop (GfIconView *self)
 }
 
 static void
-nautilus_ready_cb (GObject     *object,
+nautilus_ready_cb (GObject      *object,
                    GAsyncResult *res,
                    gpointer      user_data)
 
 {
   GError *error;
-  GfNautilusGen *nautilus;
+  GfNautilus2Gen *nautilus;
   GfIconView *self;
 
   error = NULL;
-  nautilus = gf_nautilus_gen_proxy_new_for_bus_finish (res, &error);
+  nautilus = gf_nautilus2_gen_proxy_new_for_bus_finish (res, &error);
 
   if (error != NULL)
     {
@@ -2051,7 +2095,9 @@ trash_cb (GfIconView *self,
   if (uris == NULL)
     return;
 
-  gf_icon_view_move_to_trash (self, (const char * const *) uris);
+  gf_icon_view_move_to_trash (self,
+                              (const char * const *) uris,
+                              gtk_get_current_event_time ());
   g_strfreev (uris);
 }
 
@@ -2868,13 +2914,13 @@ gf_icon_view_init (GfIconView *self)
 
   self->cancellable = g_cancellable_new ();
 
-  gf_nautilus_gen_proxy_new_for_bus (G_BUS_TYPE_SESSION,
-                                     G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION,
-                                     "org.gnome.Nautilus",
-                                     "/org/gnome/Nautilus",
-                                     self->cancellable,
-                                     nautilus_ready_cb,
-                                     self);
+  gf_nautilus2_gen_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+                                      G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION,
+                                      "org.gnome.Nautilus",
+                                      "/org/gnome/Nautilus/FileOperations2",
+                                       self->cancellable,
+                                       nautilus_ready_cb,
+                                       self);
 
   gf_file_manager_gen_proxy_new_for_bus (G_BUS_TYPE_SESSION,
                                          G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION,
@@ -3023,15 +3069,18 @@ gf_icon_view_show_item_properties (GfIconView         *self,
 }
 
 void
-gf_icon_view_empty_trash (GfIconView  *self)
+gf_icon_view_empty_trash (GfIconView *self,
+                          guint32     timestamp)
 {
   if (self->nautilus == NULL)
     return;
 
-  gf_nautilus_gen_call_empty_trash (self->nautilus,
-                                    self->cancellable,
-                                    empty_trash_cb,
-                                    NULL);
+  gf_nautilus2_gen_call_empty_trash (self->nautilus,
+                                     TRUE,
+                                     get_platform_data (self, timestamp),
+                                     self->cancellable,
+                                     empty_trash_cb,
+                                     NULL);
 }
 
 gboolean
@@ -3119,62 +3168,70 @@ gf_icon_view_validate_new_name (GfIconView  *self,
 
 void
 gf_icon_view_move_to_trash (GfIconView         *self,
-                            const char * const *uris)
+                            const char * const *uris,
+                            guint32             timestamp)
 {
   if (self->nautilus == NULL)
     return;
 
-  gf_nautilus_gen_call_trash_files (self->nautilus,
+  gf_nautilus2_gen_call_trash_uris (self->nautilus,
                                     uris,
+                                    get_platform_data (self, timestamp),
                                     self->cancellable,
-                                    trash_files_cb,
+                                    trash_uris_cb,
                                     NULL);
 }
 
 void
 gf_icon_view_rename_file (GfIconView *self,
                           const char *uri,
-                          const char *new_name)
+                          const char *new_name,
+                          guint32     timestamp)
 {
   if (self->nautilus == NULL)
     return;
 
-  gf_nautilus_gen_call_rename_file (self->nautilus,
+  gf_nautilus2_gen_call_rename_uri (self->nautilus,
                                     uri,
                                     new_name,
+                                    get_platform_data (self, timestamp),
                                     self->cancellable,
-                                    rename_file_cb,
+                                    rename_uri_cb,
                                     NULL);
 }
 
 void
 gf_icon_view_copy_uris (GfIconView         *self,
                         const char * const *uris,
-                        const char         *destination)
+                        const char         *destination,
+                        guint32             timestamp)
 {
   if (self->nautilus == NULL)
     return;
 
-  gf_nautilus_gen_call_copy_uris (self->nautilus,
-                                  uris,
-                                  destination,
-                                  self->cancellable,
-                                  copy_uris_cb,
-                                  NULL);
+  gf_nautilus2_gen_call_copy_uris (self->nautilus,
+                                   uris,
+                                   destination,
+                                   get_platform_data (self, timestamp),
+                                   self->cancellable,
+                                   copy_uris_cb,
+                                   NULL);
 }
 
 void
 gf_icon_view_move_uris (GfIconView         *self,
                         const char * const *uris,
-                        const char         *destination)
+                        const char         *destination,
+                        guint32             timestamp)
 {
   if (self->nautilus == NULL)
     return;
 
-  gf_nautilus_gen_call_move_uris (self->nautilus,
-                                  uris,
-                                  destination,
-                                  self->cancellable,
-                                  move_uris_cb,
-                                  NULL);
+  gf_nautilus2_gen_call_move_uris (self->nautilus,
+                                   uris,
+                                   destination,
+                                   get_platform_data (self, timestamp),
+                                   self->cancellable,
+                                   move_uris_cb,
+                                   NULL);
 }

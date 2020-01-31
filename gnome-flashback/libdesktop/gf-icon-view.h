@@ -47,7 +47,8 @@ GList              *gf_icon_view_get_selected_icons       (GfIconView          *
 void                gf_icon_view_show_item_properties     (GfIconView          *self,
                                                            const char * const  *uris);
 
-void                gf_icon_view_empty_trash              (GfIconView          *self);
+void                gf_icon_view_empty_trash              (GfIconView          *self,
+                                                           guint32              timestamp);
 
 gboolean            gf_icon_view_validate_new_name        (GfIconView          *self,
                                                            GFileType            file_type,
@@ -55,19 +56,23 @@ gboolean            gf_icon_view_validate_new_name        (GfIconView          *
                                                            char               **message);
 
 void                gf_icon_view_move_to_trash            (GfIconView          *self,
-                                                           const char * const  *uris);
+                                                           const char * const  *uris,
+                                                           guint32              timestamp);
 
 void                gf_icon_view_rename_file              (GfIconView          *self,
                                                            const char          *uri,
-                                                           const char          *new_name);
+                                                           const char          *new_name,
+                                                           guint32              timestamp);
 
 void                gf_icon_view_copy_uris                (GfIconView          *self,
                                                            const char * const  *uris,
-                                                           const char          *destination);
+                                                           const char          *destination,
+                                                           guint32              timestamp);
 
 void                gf_icon_view_move_uris                (GfIconView          *self,
                                                            const char * const  *uris,
-                                                           const char          *destination);
+                                                           const char          *destination,
+                                                           guint32              timestamp);
 
 G_END_DECLS
 

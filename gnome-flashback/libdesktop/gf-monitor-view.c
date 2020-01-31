@@ -456,7 +456,8 @@ get_uris_from_gnome_icon_list (GfMonitorView *self,
 
 static void
 copy_to_desktop (GfMonitorView  *self,
-                 char          **uris)
+                 char          **uris,
+                 guint           time)
 {
   char *desktop_uri;
 
@@ -464,14 +465,16 @@ copy_to_desktop (GfMonitorView  *self,
 
   gf_icon_view_copy_uris (self->icon_view,
                           (const char * const *) uris,
-                          desktop_uri);
+                          desktop_uri,
+                          time);
 
   g_free (desktop_uri);
 }
 
 static void
 move_to_desktop (GfMonitorView  *self,
-                 char          **uris)
+                 char          **uris,
+                 guint           time)
 {
   char *desktop_uri;
 
@@ -479,7 +482,8 @@ move_to_desktop (GfMonitorView  *self,
 
   gf_icon_view_move_uris (self->icon_view,
                           (const char * const *) uris,
-                          desktop_uri);
+                          desktop_uri,
+                          time);
 
   g_free (desktop_uri);
 }
@@ -582,7 +586,7 @@ drag_data_received_cb (GtkWidget        *widget,
 
                   uris = get_uris_from_icon_list (self, icon);
 
-                  copy_to_desktop (self, uris);
+                  copy_to_desktop (self, uris, time);
                   g_strfreev (uris);
 
                   success = TRUE;
@@ -603,7 +607,7 @@ drag_data_received_cb (GtkWidget        *widget,
 
                   uris = get_uris_from_gnome_icon_list (self, selection_data);
 
-                  move_to_desktop (self, uris);
+                  move_to_desktop (self, uris, time);
                   g_strfreev (uris);
 
                   success = TRUE;
@@ -618,7 +622,7 @@ drag_data_received_cb (GtkWidget        *widget,
 
                   uris = get_uris_from_gnome_icon_list (self, selection_data);
 
-                  copy_to_desktop (self, uris);
+                  copy_to_desktop (self, uris, time);
                   g_strfreev (uris);
 
                   success = TRUE;
@@ -635,7 +639,7 @@ drag_data_received_cb (GtkWidget        *widget,
 
                   uris = gtk_selection_data_get_uris (data);
 
-                  copy_to_desktop (self, uris);
+                  copy_to_desktop (self, uris, time);
                   g_strfreev (uris);
 
                   success = TRUE;

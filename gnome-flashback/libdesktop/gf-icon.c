@@ -385,7 +385,10 @@ rename_do_rename_cb (GfRenamePopover *popover,
       char *uri;
 
       uri = g_file_get_uri (priv->file);
-      gf_icon_view_rename_file (priv->icon_view, uri, new_name);
+      gf_icon_view_rename_file (priv->icon_view,
+                                uri,
+                                new_name,
+                                gtk_get_current_event_time ());
       g_free (uri);
     }
 
@@ -431,7 +434,9 @@ move_to_trash_cb (GtkMenuItem *item,
   if (uris == NULL)
     return;
 
-  gf_icon_view_move_to_trash (priv->icon_view, (const char * const *) uris);
+  gf_icon_view_move_to_trash (priv->icon_view,
+                              (const char * const *) uris,
+                              gtk_get_current_event_time ());
   g_strfreev (uris);
 }
 
@@ -475,7 +480,7 @@ empty_trash_cb (GtkMenuItem *item,
 
   priv = gf_icon_get_instance_private (self);
 
-  gf_icon_view_empty_trash (priv->icon_view);
+  gf_icon_view_empty_trash (priv->icon_view, gtk_get_current_event_time ());
 }
 
 static void
