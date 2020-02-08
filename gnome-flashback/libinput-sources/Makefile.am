@@ -34,6 +34,8 @@ libinput_sources_la_SOURCES = \
 	gf-input-source-xkb.h \
 	gf-input-source.c \
 	gf-input-source.h \
+	gf-input-sources-button.c \
+	gf-input-sources-button.h \
 	gf-input-sources.c \
 	gf-input-sources.h \
 	gf-input-source-manager.c \
