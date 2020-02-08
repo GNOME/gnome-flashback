@@ -501,7 +501,6 @@ modifiers_accelerator_activated_cb (GfKeybindings    *keybindings,
 {
   GfInputSourceManager *manager;
   guint size;
-  GList *keys;
 
   manager = GF_INPUT_SOURCE_MANAGER (user_data);
 
@@ -512,28 +511,9 @@ modifiers_accelerator_activated_cb (GfKeybindings    *keybindings,
       return TRUE;
     }
 
-  keys = g_hash_table_get_keys (manager->input_sources);
-  keys = g_list_sort (keys, compare_indexes);
-
   if (keybinding_type == GF_KEYBINDING_ISO_NEXT_GROUP)
     {
-      GfInputSource *current_source;
-      GfInputSource *next_source;
-      guint next_index;
-
-      current_source = manager->current_source;
-      if (current_source == NULL)
-        current_source = g_hash_table_lookup (manager->input_sources,
-                                              GUINT_TO_POINTER (0));
-
-      next_index = gf_input_source_get_index (current_source ) + 1;
-      if (next_index > GPOINTER_TO_UINT (g_list_nth_data (keys, size - 1)))
-        next_index = 0;
-
-      next_source = g_hash_table_lookup (manager->input_sources,
-                                         GUINT_TO_POINTER (next_index));
-
-      gf_input_source_activate (next_source, TRUE);
+      gf_input_source_manager_active_next_source (manager);
     }
   else if (keybinding_type == GF_KEYBINDING_ISO_FIRST_GROUP)
     {
@@ -546,15 +526,18 @@ modifiers_accelerator_activated_cb (GfKeybindings    *keybindings,
     }
   else if (keybinding_type == GF_KEYBINDING_ISO_LAST_GROUP)
     {
+      GList *keys;
       GfInputSource *last_source;
+
+      keys = g_hash_table_get_keys (manager->input_sources);
+      keys = g_list_sort (keys, compare_indexes);
 
       last_source = g_hash_table_lookup (manager->input_sources,
                                          g_list_nth_data (keys, size - 1));
 
       gf_input_source_activate (last_source, TRUE);
+      g_list_free (keys);
     }
-
-  g_list_free (keys);
 
   return TRUE;
 }
@@ -1598,4 +1581,37 @@ gf_input_source_manager_get_input_sources (GfInputSourceManager *manager)
   sources = g_list_sort (sources, compare_sources_by_index);
 
   return sources;
+}
+
+void
+gf_input_source_manager_active_next_source (GfInputSourceManager *manager)
+{
+  guint size;
+  GList *keys;
+  GfInputSource *current_source;
+  guint next_index;
+  GfInputSource *next_source;
+
+  size = g_hash_table_size (manager->input_sources);
+  if (size == 0)
+    return;
+
+  keys = g_hash_table_get_keys (manager->input_sources);
+  keys = g_list_sort (keys, compare_indexes);
+
+  current_source = manager->current_source;
+
+  if (current_source == NULL)
+    current_source = g_hash_table_lookup (manager->input_sources,
+                                          GUINT_TO_POINTER (0));
+
+  next_index = gf_input_source_get_index (current_source) + 1;
+  if (next_index > GPOINTER_TO_UINT (g_list_nth_data (keys, size - 1)))
+    next_index = 0;
+
+  next_source = g_hash_table_lookup (manager->input_sources,
+                                     GUINT_TO_POINTER (next_index));
+
+  gf_input_source_activate (next_source, TRUE);
+  g_list_free (keys);
 }

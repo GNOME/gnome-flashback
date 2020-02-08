@@ -34,4 +34,6 @@ GfInputSource        *gf_input_source_manager_get_current_source (GfInputSourceM
 
 GList                *gf_input_source_manager_get_input_sources  (GfInputSourceManager *manager);
 
+void                  gf_input_source_manager_active_next_source (GfInputSourceManager *manager);
+
 #endif
