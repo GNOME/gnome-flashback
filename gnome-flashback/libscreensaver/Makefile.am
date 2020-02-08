@@ -38,6 +38,8 @@ libscreensaver_la_SOURCES = \
 	gf-screensaver.h \
 	gf-screensaver-utils.c \
 	gf-screensaver-utils.h \
+	gf-unlock-dialog.c \
+	gf-unlock-dialog.h \
 	gf-user-image.c \
 	gf-user-image.h \
 	gf-watcher.c \
@@ -58,6 +60,7 @@ libscreensaver_la_LIBADD = \
 
 ENUM_TYPES = \
 	$(srcdir)/gf-auth.h \
+	$(srcdir)/gf-unlock-dialog.h \
 	$(NULL)
 
 gf-screensaver-enum-types.c: gf-screensaver-enum-types.c.in gf-screensaver-enum-types.h $(ENUM_TYPES)
