@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2019 Alberts Muktupāvels
+ * Copyright (C) 2015-2020 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 
 #include "dbus/gf-input-sources-gen.h"
 #include "gf-ibus-manager.h"
+#include "gf-input-sources-button.h"
 #include "gf-input-sources.h"
 #include "gf-input-source-ibus.h"
 #include "gf-input-source-manager.h"
@@ -648,4 +649,10 @@ GfInputSources *
 gf_input_sources_new (void)
 {
   return g_object_new (GF_TYPE_INPUT_SOURCES, NULL);
+}
+
+GtkWidget *
+gf_input_sources_create_button (GfInputSources *self)
+{
+  return gf_input_sources_button_new (self->input_source_manager);
 }
