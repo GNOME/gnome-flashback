@@ -44,6 +44,8 @@ libscreensaver_la_SOURCES = \
 	gf-user-image.h \
 	gf-watcher.c \
 	gf-watcher.h \
+	gf-window.c \
+	gf-window.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 
