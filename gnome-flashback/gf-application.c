@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Alberts Muktupāvels
+ * Copyright (C) 2014-2020 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -234,6 +234,12 @@ settings_changed (GSettings   *settings,
   if (application->input_settings)
     gf_input_settings_set_monitor_manager (application->input_settings,
                                            monitor_manager);
+
+  if (application->screensaver)
+    {
+      gf_screensaver_set_input_sources (application->screensaver,
+                                        application->input_sources);
+    }
 
   if (application->shell)
     flashback_shell_set_monitor_manager (application->shell, monitor_manager);

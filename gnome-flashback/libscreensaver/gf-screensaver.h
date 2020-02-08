@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Alberts Muktupāvels
+ * Copyright (C) 2016-2020 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,13 +19,17 @@
 #define GF_SCREENSAVER_H
 
 #include <glib-object.h>
+#include <libinput-sources/gf-input-sources.h>
 
 G_BEGIN_DECLS
 
 #define GF_TYPE_SCREENSAVER gf_screensaver_get_type ()
 G_DECLARE_FINAL_TYPE (GfScreensaver, gf_screensaver, GF, SCREENSAVER, GObject)
 
-GfScreensaver *gf_screensaver_new (void);
+GfScreensaver *gf_screensaver_new               (void);
+
+void           gf_screensaver_set_input_sources (GfScreensaver  *self,
+                                                 GfInputSources *input_sources);
 
 G_END_DECLS
 

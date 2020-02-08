@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Alberts Muktupāvels
+ * Copyright (C) 2016-2020 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,4 +40,10 @@ GfScreensaver *
 gf_screensaver_new (void)
 {
   return g_object_new (GF_TYPE_SCREENSAVER, NULL);
+}
+
+void
+gf_screensaver_set_input_sources (GfScreensaver  *self,
+                                  GfInputSources *input_sources)
+{
 }
