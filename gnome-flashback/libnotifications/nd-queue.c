@@ -484,10 +484,6 @@ nd_queue_finalize (GObject *object)
 
         g_return_if_fail (queue->priv != NULL);
 
-        if (queue->priv->update_id != 0) {
-                g_source_remove (queue->priv->update_id);
-        }
-
         g_hash_table_destroy (queue->priv->notifications);
         g_hash_table_destroy (queue->priv->bubbles);
         g_queue_free (queue->priv->queue);
@@ -498,6 +494,11 @@ nd_queue_finalize (GObject *object)
         g_clear_object (&queue->priv->status_icon);
 
         g_clear_pointer (&queue->priv->dock, gtk_widget_destroy);
+
+        if (queue->priv->update_id != 0) {
+                g_source_remove (queue->priv->update_id);
+                queue->priv->update_id = 0;
+        }
 
         G_OBJECT_CLASS (nd_queue_parent_class)->finalize (object);
 }
