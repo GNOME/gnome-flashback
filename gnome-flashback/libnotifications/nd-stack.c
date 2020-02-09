@@ -153,7 +153,7 @@ nd_stack_finalize (GObject *object)
                 g_source_remove (stack->priv->update_id);
         }
 
-        g_list_free (stack->priv->bubbles);
+        g_list_free_full (stack->priv->bubbles, (GDestroyNotify) gtk_widget_destroy);
 
         G_OBJECT_CLASS (nd_stack_parent_class)->finalize (object);
 }

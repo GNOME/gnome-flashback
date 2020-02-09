@@ -497,6 +497,8 @@ nd_queue_finalize (GObject *object)
         g_clear_object (&queue->priv->numerable_icon);
         g_clear_object (&queue->priv->status_icon);
 
+        g_clear_pointer (&queue->priv->dock, gtk_widget_destroy);
+
         G_OBJECT_CLASS (nd_queue_parent_class)->finalize (object);
 }
 
