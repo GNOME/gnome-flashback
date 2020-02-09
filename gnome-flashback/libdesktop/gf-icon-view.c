@@ -1806,10 +1806,24 @@ monitor_removed_cb (GdkDisplay *display,
                     GfIconView *self)
 {
   GtkWidget *view;
+  GList *l;
 
   view = find_monitor_view_by_monitor (self, monitor);
   if (view == NULL)
     return;
+
+  for (l = self->icons; l != NULL; l = l->next)
+    {
+      GfIconInfo *info;
+
+      info = (GfIconInfo *) l->data;
+
+      if (info->view != view)
+        continue;
+
+      gf_monitor_view_remove_icon (GF_MONITOR_VIEW (view), info->icon);
+      info->view = NULL;
+    }
 
   gtk_widget_destroy (view);
 }
