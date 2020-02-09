@@ -43,7 +43,6 @@ typedef struct
 struct NdQueuePrivate
 {
         GHashTable    *notifications;
-        GHashTable    *bubbles;
         GQueue        *queue;
 
         GtkStatusIcon *status_icon;
@@ -436,7 +435,6 @@ nd_queue_init (NdQueue *queue)
 {
         queue->priv = nd_queue_get_instance_private (queue);
         queue->priv->notifications = g_hash_table_new_full (NULL, NULL, NULL, g_object_unref);
-        queue->priv->bubbles = g_hash_table_new_full (NULL, NULL, NULL, g_object_unref);
         queue->priv->queue = g_queue_new ();
         queue->priv->status_icon = NULL;
 
@@ -485,7 +483,6 @@ nd_queue_finalize (GObject *object)
         g_return_if_fail (queue->priv != NULL);
 
         g_hash_table_destroy (queue->priv->notifications);
-        g_hash_table_destroy (queue->priv->bubbles);
         g_queue_free (queue->priv->queue);
 
         destroy_screen (queue);
