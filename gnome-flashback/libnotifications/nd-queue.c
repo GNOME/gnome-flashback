@@ -286,9 +286,9 @@ on_dock_grab_notify (GtkWidget *widget,
 }
 
 static gboolean
-on_dock_grab_broken_event (GtkWidget *widget,
-                           gboolean   was_grabbed,
-                           NdQueue   *queue)
+on_dock_grab_broken_event (GtkWidget          *widget,
+                           GdkEventGrabBroken *event,
+                           NdQueue            *queue)
 {
         grab_notify (queue, FALSE);
 
