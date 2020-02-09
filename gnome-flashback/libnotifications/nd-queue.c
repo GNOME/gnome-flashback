@@ -121,6 +121,12 @@ monitor_removed_cb (GdkDisplay *display,
         stack = g_hash_table_lookup (nscreen->stacks, monitor);
         focused_stack = get_stack_with_pointer (queue);
 
+        if (focused_stack == NULL) {
+                g_hash_table_remove (nscreen->stacks, monitor);
+                queue_update (queue);
+                return;
+        }
+
         bubbles = g_list_copy (nd_stack_get_bubbles (stack));
         for (l = bubbles; l != NULL; l = l->next) {
                 /* skip removing the bubble from the
