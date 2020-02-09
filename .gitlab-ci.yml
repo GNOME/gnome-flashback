@@ -21,6 +21,7 @@ build-ubuntu:
                       libcanberra-gtk3-dev
                       libdbus-glib-1-dev
                       libgdk-pixbuf2.0-dev
+                      libgdm-dev
                       libglib2.0-dev
                       libgnome-bluetooth-dev
                       libgnome-desktop-3-dev
