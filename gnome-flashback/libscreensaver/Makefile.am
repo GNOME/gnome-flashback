@@ -32,6 +32,8 @@ libscreensaver_la_SOURCES = \
 	gf-info-bar.h \
 	gf-listener.c \
 	gf-listener.h \
+	gf-manager.c \
+	gf-manager.h \
 	gf-panel.c \
 	gf-panel.h \
 	gf-prefs.c \
