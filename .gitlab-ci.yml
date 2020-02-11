@@ -44,6 +44,7 @@ build-ubuntu:
                       libxi-dev
                       libxkbfile-dev
                       libxrandr-dev
+                      libxxf86vm-dev
                       xkb-data
   script:
     - ./autogen.sh

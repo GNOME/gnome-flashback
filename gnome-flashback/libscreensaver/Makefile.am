@@ -24,6 +24,8 @@ libscreensaver_la_CFLAGS = \
 libscreensaver_la_SOURCES = \
 	gf-auth.c \
 	gf-auth.h \
+	gf-fade.c \
+	gf-fade.h \
 	gf-grab.c \
 	gf-grab.h \
 	gf-info-bar.c \
