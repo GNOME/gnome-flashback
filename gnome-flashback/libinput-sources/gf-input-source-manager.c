@@ -513,7 +513,7 @@ modifiers_accelerator_activated_cb (GfKeybindings    *keybindings,
 
   if (keybinding_type == GF_KEYBINDING_ISO_NEXT_GROUP)
     {
-      gf_input_source_manager_active_next_source (manager);
+      gf_input_source_manager_activate_next_source (manager);
     }
   else if (keybinding_type == GF_KEYBINDING_ISO_FIRST_GROUP)
     {
@@ -1584,7 +1584,7 @@ gf_input_source_manager_get_input_sources (GfInputSourceManager *manager)
 }
 
 void
-gf_input_source_manager_active_next_source (GfInputSourceManager *manager)
+gf_input_source_manager_activate_next_source (GfInputSourceManager *manager)
 {
   guint size;
   GList *keys;

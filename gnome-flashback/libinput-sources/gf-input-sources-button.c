@@ -144,7 +144,7 @@ gf_input_sources_button_clicked (GtkButton *button)
 
   self = GF_INPUT_SOURCES_BUTTON (button);
 
-  gf_input_source_manager_active_next_source (self->manager);
+  gf_input_source_manager_activate_next_source (self->manager);
 }
 
 static void
