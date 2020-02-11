@@ -42,6 +42,7 @@ system_indicators_la_LIBADD = \
 	$(top_builddir)/dbus/libdbus.la \
 	$(top_builddir)/gvc/libgvc.la \
 	$(SYSTEM_INDICATORS_LIBS) \
+	$(LIBM) \
 	$(NULL)
 
 system_indicators_la_LDFLAGS = \
