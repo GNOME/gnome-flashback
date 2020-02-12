@@ -363,6 +363,12 @@ login_session_ready_cb (GObject      *object,
 
   g_signal_connect (self->login_session, "notify::active",
                     G_CALLBACK (notify_active_cb), self);
+
+  if (gf_login_session_gen_get_locked_hint (self->login_session))
+    {
+      g_debug ("systemd LockedHint=True");
+      g_signal_emit (self, listener_signals[LOCK], 0);
+    }
 }
 
 static void

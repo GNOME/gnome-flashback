@@ -7,6 +7,8 @@
 
     <property name="Active" type="b" access="read" />
 
+    <property name="LockedHint" type="b" access="read" />
+
     <method name="SetLockedHint">
       <arg direction="in" type="b" />
     </method>
