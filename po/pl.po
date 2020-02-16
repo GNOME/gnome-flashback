@@ -1,15 +1,15 @@
 # Polish translation for gnome-flashback.
-# Copyright © 2007-2019 the gnome-flashback authors.
+# Copyright © 2007-2020 the gnome-flashback authors.
 # This file is distributed under the same license as the gnome-flashback package.
-# Piotr Drąg <piotrdrag@gmail.com>, 2007-2019.
-# Aviary.pl <community-poland@mozilla.org>, 2010-2019.
+# Piotr Drąg <piotrdrag@gmail.com>, 2007-2020.
+# Aviary.pl <community-poland@mozilla.org>, 2010-2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-12-27 19:44+0000\n"
-"PO-Revision-Date: 2019-12-28 16:25+0100\n"
+"POT-Creation-Date: 2020-02-11 13:04+0000\n"
+"PO-Revision-Date: 2020-02-16 13:27+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -63,19 +63,6 @@ msgstr "Zarządzanie połączeniami sieciowymi"
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:6
 msgid "nm-device-wireless"
 msgstr "nm-device-wireless"
-
-#: data/autostart/gnome-flashback-screensaver.desktop.in:4
-msgid "Screensaver (GNOME Flashback)"
-msgstr "Wygaszacz ekranu (Tradycyjne środowisko GNOME)"
-
-#: data/autostart/gnome-flashback-screensaver.desktop.in:5
-msgid "Launch screensaver and locker program"
-msgstr "Uruchamia wygaszacz ekranu i program blokujący"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-screensaver.desktop.in:7
-msgid "preferences-desktop-screensaver"
-msgstr "preferences-desktop-screensaver"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -310,7 +297,7 @@ msgid "The size of desktop icons."
 msgstr "Rozmiar ikon na pulpicie."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
-#: gnome-flashback/libdesktop/gf-icon-view.c:1215
+#: gnome-flashback/libdesktop/gf-icon-view.c:1217
 msgid "Placement"
 msgstr "Rozmieszczenie"
 
@@ -324,7 +311,7 @@ msgstr ""
 "przez użytkownika). Steruje sposobem rozmieszczania ikon na pulpicie."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
-#: gnome-flashback/libdesktop/gf-icon-view.c:1221
+#: gnome-flashback/libdesktop/gf-icon-view.c:1223
 msgid "Sort by"
 msgstr "Porządkowanie"
 
@@ -385,23 +372,23 @@ msgstr ""
 "Jeśli jest ustawione na wartość „true”, to na pulpicie będzie umieszczona "
 "ikona kosza."
 
-#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml:5
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
 msgstr "Użycie ikony IBus, jeśli jest dostępna"
 
-#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml:10
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:10
 msgid "Icon background color"
 msgstr "Kolor tła ikony"
 
-#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml:15
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:15
 msgid "Icon foreground color"
 msgstr "Kolor tekstu ikony"
 
-#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml:20
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:20
 msgid "Icon font family"
 msgstr "Rodzina czcionki ikony"
 
-#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml:26
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:26
 msgid "Icon font weight"
 msgstr "Waga czcionki ikony"
 
@@ -449,15 +436,11 @@ msgstr[0] "Zmiany ustawień zostaną przywrócone za %d sekundę."
 msgstr[1] "Zmiany ustawień zostaną przywrócone za %d sekundy."
 msgstr[2] "Zmiany ustawień zostaną przywrócone za %d sekund."
 
-#: gnome-flashback/gf-main.c:40
-msgid "Enable debugging code"
-msgstr "Włącza kod debugowania"
-
-#: gnome-flashback/gf-main.c:46
+#: gnome-flashback/gf-main.c:43
 msgid "Replace a currently running application"
 msgstr "Zastępuje obecnie uruchomiony program"
 
-#: gnome-flashback/gf-main.c:52
+#: gnome-flashback/gf-main.c:49
 msgid "Print version and exit"
 msgstr "Wyświetla wersję i kończy działanie"
 
@@ -552,7 +535,7 @@ msgid "What kind of device did you plug in?"
 msgstr "Jakiego rodzaju urządzenie podłączono?"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
-#: system-indicators/si-bluetooth.c:274 system-indicators/si-volume.c:441
+#: system-indicators/si-bluetooth.c:274 system-indicators/si-volume.c:446
 msgid "Sound Settings"
 msgstr "Ustawienia dźwięku"
 
@@ -698,7 +681,7 @@ msgid "_Unmount"
 msgstr "Od_montuj"
 
 #: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
-#: gnome-flashback/libdesktop/gf-icon-view.c:1203
+#: gnome-flashback/libdesktop/gf-icon-view.c:1205
 msgid "New Folder"
 msgstr "Nowy katalog"
 
@@ -735,80 +718,80 @@ msgstr "Opróżnij kosz"
 msgid "Properties"
 msgstr "Właściwości"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:999
+#: gnome-flashback/libdesktop/gf-icon-view.c:1001
 msgid "Auto arrange icons"
 msgstr "Automatyczne porządkowanie ikon"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1003
+#: gnome-flashback/libdesktop/gf-icon-view.c:1005
 msgid "Align icons to grid"
 msgstr "Wyrównywanie ikon do siatki"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1007
+#: gnome-flashback/libdesktop/gf-icon-view.c:1009
 msgctxt "Free placement of icons"
 msgid "Free"
 msgstr "Użytkownika"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1107
+#: gnome-flashback/libdesktop/gf-icon-view.c:1109
 msgid "Name"
 msgstr "Nazwa"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1111
+#: gnome-flashback/libdesktop/gf-icon-view.c:1113
 msgid "Date modified"
 msgstr "Data modyfikacji"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1115
+#: gnome-flashback/libdesktop/gf-icon-view.c:1117
 msgid "Size"
 msgstr "Rozmiar"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1231
+#: gnome-flashback/libdesktop/gf-icon-view.c:1233
 msgid "Change Background"
 msgstr "Zmień tło"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1239
+#: gnome-flashback/libdesktop/gf-icon-view.c:1241
 msgid "Display Settings"
 msgstr "Ustawienia ekranu"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1251
+#: gnome-flashback/libdesktop/gf-icon-view.c:1253
 msgid "Open Terminal"
 msgstr "Otwórz terminal"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3068
+#: gnome-flashback/libdesktop/gf-icon-view.c:3040
 msgid "Folder names cannot contain “/”."
 msgstr "Nazwy katalogów nie mogą zawierać znaku „/”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3070
+#: gnome-flashback/libdesktop/gf-icon-view.c:3042
 msgid "File names cannot contain “/”."
 msgstr "Nazwy plików nie mogą zawierać znaku „/”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3077
+#: gnome-flashback/libdesktop/gf-icon-view.c:3049
 msgid "A folder cannot be called “.”."
 msgstr "Katalog nie może mieć nazwy „.”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3079
+#: gnome-flashback/libdesktop/gf-icon-view.c:3051
 msgid "A file cannot be called “.”."
 msgstr "Plik nie może mieć nazwy „.”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3086
+#: gnome-flashback/libdesktop/gf-icon-view.c:3058
 msgid "A folder cannot be called “..”."
 msgstr "Katalog nie może mieć nazwy „..”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3088
+#: gnome-flashback/libdesktop/gf-icon-view.c:3060
 msgid "A file cannot be called “..”."
 msgstr "Plik nie może mieć nazwy „..”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3104
+#: gnome-flashback/libdesktop/gf-icon-view.c:3076
 msgid "A folder with that name already exists."
 msgstr "Katalog o tej nazwie już istnieje."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3106
+#: gnome-flashback/libdesktop/gf-icon-view.c:3078
 msgid "A file with that name already exists."
 msgstr "Plik o tej nazwie już istnieje."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3117
+#: gnome-flashback/libdesktop/gf-icon-view.c:3089
 msgid "Folders with “.” at the beginning of their name are hidden."
 msgstr "Katalogi z „.” na początku nazwy są ukryte."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3119
+#: gnome-flashback/libdesktop/gf-icon-view.c:3091
 msgid "Files with “.” at the beginning of their name are hidden."
 msgstr "Pliki z „.” na początku nazwy są ukryte."
 
@@ -932,20 +915,20 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Zablokuj ekran"
 
-#: gnome-flashback/libnotifications/gf-bubble.c:619
-#: gnome-flashback/libnotifications/gf-bubble.c:623
-#: gnome-flashback/libnotifications/nd-notification-box.c:321
-#: gnome-flashback/libnotifications/nd-notification-box.c:323
+#: gnome-flashback/libnotifications/gf-bubble.c:563
+#: gnome-flashback/libnotifications/gf-bubble.c:567
+#: gnome-flashback/libnotifications/nd-notification-box.c:320
+#: gnome-flashback/libnotifications/nd-notification-box.c:322
 msgid "Closes the notification."
 msgstr "Zamyka powiadomienie."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:643
-#: gnome-flashback/libnotifications/gf-bubble.c:674
-#: gnome-flashback/libnotifications/nd-notification-box.c:339
+#: gnome-flashback/libnotifications/gf-bubble.c:587
+#: gnome-flashback/libnotifications/gf-bubble.c:618
+#: gnome-flashback/libnotifications/nd-notification-box.c:338
 msgid "Notification summary text."
 msgstr "Tekst podsumowania powiadomienia."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:693
+#: gnome-flashback/libnotifications/gf-bubble.c:637
 msgid "Notification"
 msgstr "Powiadomienie"
 
@@ -957,15 +940,15 @@ msgstr "Nieprawidłowy identyfikator powiadomienia"
 msgid "Exceeded maximum number of notifications"
 msgstr "Przekroczono maksymalną liczbę powiadomień"
 
-#: gnome-flashback/libnotifications/nd-notification-box.c:359
+#: gnome-flashback/libnotifications/nd-notification-box.c:358
 msgid "Notification body text."
 msgstr "Tekst treści powiadomienia."
 
-#: gnome-flashback/libnotifications/nd-queue.c:451
+#: gnome-flashback/libnotifications/nd-queue.c:428
 msgid "Clear all notifications"
 msgstr "Wyczyść wszystkie powiadomienia"
 
-#: gnome-flashback/libnotifications/nd-queue.c:868
+#: gnome-flashback/libnotifications/nd-queue.c:846
 msgid "Notifications"
 msgstr "Powiadomienia"
 
@@ -976,6 +959,7 @@ msgstr "_Hasło dla %s:"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:104
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:370
 msgid "_Password:"
 msgstr "_Hasło"
 
@@ -1063,6 +1047,30 @@ msgstr "Konto ma nadane ograniczenie czasowe, które właśnie minęło."
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "To nie zadziałało. Proszę spróbować ponownie."
 
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:181
+msgid "Failed to switch to greeter!"
+msgstr "Przełączenie na ekran powitalny się nie powiodło."
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:255
+msgid "Time has expired."
+msgstr "Czas minął."
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:506
+msgid "Checking…"
+msgstr "Sprawdzanie…"
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:531
+msgid "S_witch User…"
+msgstr "_Przełącz użytkownika…"
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:540
+msgid "_Unlock"
+msgstr "_Odblokuj…"
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:751
+msgid "You have the Caps Lock key on."
+msgstr "Klawisz Caps Lock jest włączony."
+
 #. translators:
 #. * The device has been disabled
 #: gvc/gvc/gvc-mixer-control.c:1892
@@ -1139,11 +1147,11 @@ msgstr "Nie można odnaleźć pliku .desktop „%s”."
 msgid "Failed to start “%s”: %s"
 msgstr "Uruchomienie „%s” się nie powiodło: %s"
 
-#: system-indicators/si-input-source.c:852
+#: system-indicators/si-input-sources.c:852
 msgid "Show Keyboard Layout"
 msgstr "Wyświetl układ klawiatury"
 
-#: system-indicators/si-input-source.c:858
+#: system-indicators/si-input-sources.c:883
 msgid "Region & Language Settings"
 msgstr "Ustawienia regionu i języka"
 
@@ -1155,43 +1163,43 @@ msgstr "Wskaźniki systemowe"
 msgid "This applet contains system indicators"
 msgstr "Ten aplet zawiera wskaźniki systemowe"
 
-#: system-indicators/si-power.c:58
+#: system-indicators/si-power.c:63
 msgid "UPS"
 msgstr "UPS"
 
-#: system-indicators/si-power.c:60
+#: system-indicators/si-power.c:65
 msgid "Battery"
 msgstr "Akumulator"
 
-#: system-indicators/si-power.c:76
+#: system-indicators/si-power.c:81
 msgid "Fully Charged"
 msgstr "Naładowane"
 
-#: system-indicators/si-power.c:78
+#: system-indicators/si-power.c:83
 msgid "Empty"
 msgstr "Puste"
 
-#: system-indicators/si-power.c:84
+#: system-indicators/si-power.c:89
 msgid "Not Charging"
 msgstr "Nie jest ładowane"
 
-#: system-indicators/si-power.c:86 system-indicators/si-power.c:91
+#: system-indicators/si-power.c:91 system-indicators/si-power.c:96
 msgid "Estimating..."
 msgstr "Obliczanie…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: system-indicators/si-power.c:100
+#: system-indicators/si-power.c:105
 #, c-format
 msgid "%.0f:%02.0f Remaining (%.0f%%)"
 msgstr "Pozostało: %.0f∶%02.0f (%.0f%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: system-indicators/si-power.c:107
+#: system-indicators/si-power.c:112
 #, c-format
 msgid "%.0f:%02.0f Until Full (%.0f%%)"
 msgstr "Do naładowania: %.0f∶%02.0f (%.0f%%)"
 
-#: system-indicators/si-power.c:141
+#: system-indicators/si-power.c:146
 msgid "Power Settings"
 msgstr "Ustawienia zasilania"
 
@@ -1203,14 +1211,14 @@ msgstr "Zmieniono głośność"
 msgid "Mute"
 msgstr "Wycisz"
 
-#: system-indicators/si-volume.c:518
+#: system-indicators/si-volume.c:523
 msgid "Input"
 msgstr "Wejście"
 
-#: system-indicators/si-volume.c:518
+#: system-indicators/si-volume.c:523
 msgid "Output"
 msgstr "Wyjście"
 
-#: system-indicators/si-volume.c:529
+#: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Wyciszone"
