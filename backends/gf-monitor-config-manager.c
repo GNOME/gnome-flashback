@@ -153,6 +153,37 @@ find_primary_monitor (GfMonitorManager *monitor_manager)
     }
 }
 
+static GfMonitorTransform
+get_monitor_transform (GfMonitorManager *monitor_manager,
+                       GfMonitor        *monitor)
+{
+  GfBackend *backend;
+  GfOrientationManager *orientation_manager;
+
+  if (!gf_monitor_is_laptop_panel (monitor))
+    return GF_MONITOR_TRANSFORM_NORMAL;
+
+  backend = gf_monitor_manager_get_backend (monitor_manager);
+  orientation_manager = gf_backend_get_orientation_manager (backend);
+
+  switch (gf_orientation_manager_get_orientation (orientation_manager))
+    {
+      case GF_ORIENTATION_BOTTOM_UP:
+        return GF_MONITOR_TRANSFORM_180;
+
+      case GF_ORIENTATION_LEFT_UP:
+        return GF_MONITOR_TRANSFORM_90;
+
+      case GF_ORIENTATION_RIGHT_UP:
+        return GF_MONITOR_TRANSFORM_270;
+
+      case GF_ORIENTATION_UNDEFINED:
+      case GF_ORIENTATION_NORMAL:
+      default:
+        return GF_MONITOR_TRANSFORM_NORMAL;
+    }
+}
+
 static GfLogicalMonitorConfig *
 create_preferred_logical_monitor_config (GfMonitorManager           *monitor_manager,
                                          GfMonitor                  *monitor,
@@ -164,6 +195,7 @@ create_preferred_logical_monitor_config (GfMonitorManager           *monitor_man
   GfMonitorMode *mode;
   int width, height;
   float scale;
+  GfMonitorTransform transform;
   GfMonitorConfig *monitor_config;
   GfLogicalMonitorConfig *logical_monitor_config;
 
@@ -191,6 +223,15 @@ create_preferred_logical_monitor_config (GfMonitorManager           *monitor_man
     }
 
   monitor_config = gf_monitor_config_new (monitor, mode);
+  transform = get_monitor_transform (monitor_manager, monitor);
+
+  if (gf_monitor_transform_is_rotated (transform))
+    {
+      int temp = width;
+
+      width = height;
+      height = temp;
+    }
 
   logical_monitor_config = g_new0 (GfLogicalMonitorConfig, 1);
   *logical_monitor_config = (GfLogicalMonitorConfig) {
@@ -200,6 +241,7 @@ create_preferred_logical_monitor_config (GfMonitorManager           *monitor_man
       .width = width,
       .height = height
     },
+    .transform = transform,
     .scale = scale,
     .monitor_configs = g_list_append (NULL, monitor_config)
   };
