@@ -31,6 +31,8 @@ gf_crtc_mode_finalize (GObject *object)
   if (crtc_mode->driver_notify)
     crtc_mode->driver_notify (crtc_mode);
 
+  g_clear_pointer (&crtc_mode->name, g_free);
+
   G_OBJECT_CLASS (gf_crtc_mode_parent_class)->finalize (object);
 }
 
