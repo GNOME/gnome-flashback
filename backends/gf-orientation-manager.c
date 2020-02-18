@@ -106,6 +106,9 @@ read_iio_proxy (GfOrientationManager *manager)
 static void
 sync_state (GfOrientationManager *manager)
 {
+  if (g_settings_get_boolean (manager->settings, ORIENTATION_LOCK_KEY))
+    return;
+
   read_iio_proxy (manager);
 
   if (manager->prev_orientation == manager->curr_orientation)
@@ -113,9 +116,6 @@ sync_state (GfOrientationManager *manager)
 
   manager->prev_orientation = manager->curr_orientation;
   if (manager->curr_orientation == GF_ORIENTATION_UNDEFINED)
-    return;
-
-  if (g_settings_get_boolean (manager->settings, ORIENTATION_LOCK_KEY))
     return;
 
   g_signal_emit (manager, manager_signals[ORIENTATION_CHANGED], 0);
