@@ -478,6 +478,42 @@ clone_logical_monitor_config_list (GList *configs_in)
   return configs_out;
 }
 
+static GfLogicalMonitorConfig *
+find_logical_config_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
+                                                  GList                  *logical_monitor_configs)
+{
+  GfMonitor *panel;
+  GList *l;
+
+  panel = gf_monitor_manager_get_laptop_panel (config_manager->monitor_manager);
+
+  if (panel == NULL || !gf_monitor_is_active (panel))
+    return NULL;
+
+  for (l = logical_monitor_configs; l; l = l->next)
+    {
+      GfLogicalMonitorConfig *logical_monitor_config;
+      GfMonitorConfig *monitor_config;
+
+      logical_monitor_config = l->data;
+
+      /*
+       * We only want to return the config for the panel if it is
+       * configured on its own, so we skip configs which contain clones.
+       */
+      if (g_list_length (logical_monitor_config->monitor_configs) != 1)
+        continue;
+
+      monitor_config = logical_monitor_config->monitor_configs->data;
+      if (gf_monitor_spec_equals (gf_monitor_get_spec (panel),
+                                  monitor_config->monitor_spec))
+        return logical_monitor_config;
+    }
+
+  return NULL;
+}
+
+
 static GfMonitorsConfig *
 create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
                                      gboolean                rotate,
@@ -487,19 +523,19 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
   GfLogicalMonitorConfig *logical_monitor_config;
   GfLogicalMonitorConfig *current_logical_monitor_config;
   GList *logical_monitor_configs;
+  GList *current_configs;
   GfLogicalMonitorLayoutMode layout_mode;
   GList *current_monitor_configs;
-
-  if (!gf_monitor_manager_get_is_builtin_display_on (config_manager->monitor_manager))
-    return NULL;
 
   if (!config_manager->current_config)
     return NULL;
 
-  if (g_list_length (config_manager->current_config->logical_monitor_configs) != 1)
-    return NULL;
+  current_configs = config_manager->current_config->logical_monitor_configs;
+  current_logical_monitor_config = find_logical_config_for_builtin_display_rotation (config_manager,
+                                                                                     current_configs);
 
-  current_logical_monitor_config = config_manager->current_config->logical_monitor_configs->data;
+  if (!current_logical_monitor_config)
+    return NULL;
 
   if (rotate)
     transform = (current_logical_monitor_config->transform + 1) % GF_MONITOR_TRANSFORM_FLIPPED;
@@ -521,13 +557,11 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
   if (current_logical_monitor_config->transform == transform)
     return NULL;
 
-  if (g_list_length (current_logical_monitor_config->monitor_configs) != 1)
-    return NULL;
-
   current_monitor_configs = config_manager->current_config->logical_monitor_configs;
   logical_monitor_configs = clone_logical_monitor_config_list (current_monitor_configs);
 
-  logical_monitor_config = logical_monitor_configs->data;
+  logical_monitor_config = find_logical_config_for_builtin_display_rotation (config_manager,
+                                                                             logical_monitor_configs);
   logical_monitor_config->transform = transform;
 
   if (gf_monitor_transform_is_rotated (current_logical_monitor_config->transform) !=
