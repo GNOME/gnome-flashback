@@ -84,8 +84,6 @@ gf_gpu_xrandr_read_current (GfGpu   *gpu,
   GfMonitorManagerXrandr *monitor_manager_xrandr;
   Display *xdisplay;
   XRRScreenResources *resources;
-  CARD16 dpms_state;
-  BOOL dpms_enabled;
   gint min_width;
   gint min_height;
   Screen *screen;
@@ -102,38 +100,6 @@ gf_gpu_xrandr_read_current (GfGpu   *gpu,
   xdisplay = gf_monitor_manager_xrandr_get_xdisplay (monitor_manager_xrandr);
 
   g_clear_pointer (&gpu_xrandr->resources, XRRFreeScreenResources);
-
-  if (DPMSCapable (xdisplay) &&
-      DPMSInfo (xdisplay, &dpms_state, &dpms_enabled) &&
-      dpms_enabled)
-    {
-      switch (dpms_state)
-        {
-          case DPMSModeOn:
-            monitor_manager->power_save_mode = GF_POWER_SAVE_ON;
-            break;
-
-          case DPMSModeStandby:
-            monitor_manager->power_save_mode = GF_POWER_SAVE_STANDBY;
-            break;
-
-          case DPMSModeSuspend:
-            monitor_manager->power_save_mode = GF_POWER_SAVE_SUSPEND;
-            break;
-
-          case DPMSModeOff:
-            monitor_manager->power_save_mode = GF_POWER_SAVE_OFF;
-            break;
-
-          default:
-            monitor_manager->power_save_mode = GF_POWER_SAVE_UNSUPPORTED;
-            break;
-        }
-    }
-  else
-    {
-      monitor_manager->power_save_mode = GF_POWER_SAVE_UNSUPPORTED;
-    }
 
   XRRGetScreenSizeRange (xdisplay, DefaultRootWindow (xdisplay),
                          &min_width, &min_height,

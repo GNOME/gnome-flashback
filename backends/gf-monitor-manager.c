@@ -45,13 +45,15 @@
 
 typedef struct
 {
-  GfBackend *backend;
+  GfBackend   *backend;
 
-  gboolean   in_init;
+  gboolean     in_init;
 
-  guint      bus_name_id;
+  guint        bus_name_id;
 
-  guint      persistent_timeout_id;
+  guint        persistent_timeout_id;
+
+  GfPowerSave  power_save_mode;
 } GfMonitorManagerPrivate;
 
 typedef gboolean (* MonitorMatchFunc) (GfMonitor *monitor);
@@ -133,9 +135,11 @@ power_save_mode_changed (GfMonitorManager *manager,
                          GParamSpec       *pspec,
                          gpointer          user_data)
 {
+  GfMonitorManagerPrivate *priv;
   GfMonitorManagerClass *manager_class;
   gint mode;
 
+  priv = gf_monitor_manager_get_instance_private (manager);
   manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
   mode = gf_dbus_display_config_get_power_save_mode (manager->display_config);
 
@@ -143,7 +147,7 @@ power_save_mode_changed (GfMonitorManager *manager,
     return;
 
   /* If DPMS is unsupported, force the property back. */
-  if (manager->power_save_mode == GF_POWER_SAVE_UNSUPPORTED)
+  if (priv->power_save_mode == GF_POWER_SAVE_UNSUPPORTED)
     {
       gf_dbus_display_config_set_power_save_mode (manager->display_config,
                                                   GF_POWER_SAVE_UNSUPPORTED);
@@ -153,9 +157,7 @@ power_save_mode_changed (GfMonitorManager *manager,
   if (manager_class->set_power_save_mode)
     manager_class->set_power_save_mode (manager, mode);
 
-  manager->power_save_mode = mode;
-
-  g_signal_emit (manager, manager_signals[POWER_SAVE_MODE_CHANGED], 0);
+  gf_monitor_manager_power_save_mode_changed (manager, mode);
 }
 
 static void
@@ -1908,6 +1910,28 @@ gf_monitor_manager_real_is_lid_closed (GfMonitorManager *manager)
 }
 
 static void
+gf_monitor_manager_real_read_current_state (GfMonitorManager *manager)
+{
+  GList *l;
+
+  manager->serial++;
+
+  for (l = manager->gpus; l; l = l->next)
+    {
+      GfGpu *gpu = l->data;
+      GError *error = NULL;
+
+      if (!gf_gpu_read_current (gpu, &error))
+        {
+          g_warning ("Failed to read current KMS state: %s", error->message);
+          g_clear_error (&error);
+        }
+    }
+
+  rebuild_monitors (manager);
+}
+
+static void
 lid_is_closed_changed (UpClient   *client,
                        GParamSpec *pspec,
                        gpointer    user_data)
@@ -2119,6 +2143,7 @@ gf_monitor_manager_class_init (GfMonitorManagerClass *manager_class)
 
   manager_class->read_edid = gf_monitor_manager_real_read_edid;
   manager_class->is_lid_closed = gf_monitor_manager_real_is_lid_closed;
+  manager_class->read_current_state = gf_monitor_manager_real_read_current_state;
 
   gf_monitor_manager_install_properties (object_class);
   gf_monitor_manager_install_signals (object_class);
@@ -2259,23 +2284,7 @@ gf_monitor_manager_has_hotplug_mode_update (GfMonitorManager *manager)
 void
 gf_monitor_manager_read_current_state (GfMonitorManager *manager)
 {
-  GList *l;
-
-  manager->serial++;
-
-  for (l = manager->gpus; l; l = l->next)
-    {
-      GfGpu *gpu = l->data;
-      GError *error = NULL;
-
-      if (!gf_gpu_read_current (gpu, &error))
-        {
-          g_warning ("Failed to read current KMS state: %s", error->message);
-          g_clear_error (&error);
-        }
-    }
-
-  rebuild_monitors (manager);
+  return GF_MONITOR_MANAGER_GET_CLASS (manager)->read_current_state (manager);
 }
 
 void
@@ -2593,6 +2602,31 @@ gf_monitor_manager_get_vendor_name (GfMonitorManager *manager,
     manager->pnp_ids = gnome_pnp_ids_new ();
 
   return gnome_pnp_ids_get_pnp_id (manager->pnp_ids, vendor);
+}
+
+GfPowerSave
+gf_monitor_manager_get_power_save_mode (GfMonitorManager *manager)
+{
+  GfMonitorManagerPrivate *priv;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
+
+  return priv->power_save_mode;
+}
+
+void
+gf_monitor_manager_power_save_mode_changed (GfMonitorManager *manager,
+                                            GfPowerSave       mode)
+{
+  GfMonitorManagerPrivate *priv;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
+
+  if (priv->power_save_mode == mode)
+    return;
+
+  priv->power_save_mode = mode;
+  g_signal_emit (manager, manager_signals[POWER_SAVE_MODE_CHANGED], 0);
 }
 
 gint

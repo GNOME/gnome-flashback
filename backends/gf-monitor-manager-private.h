@@ -54,8 +54,6 @@ struct _GfMonitorManager
 
   guint                        serial;
 
-  GfPowerSave                  power_save_mode;
-
   GfLogicalMonitorLayoutMode   layout_mode;
 
   gint                         screen_width;
@@ -85,6 +83,8 @@ typedef struct
                                                                  GfOutput                    *output);
 
   gboolean                     (* is_lid_closed)                (GfMonitorManager            *manager);
+
+  void                         (* read_current_state)           (GfMonitorManager            *manager);
 
   void                         (* ensure_initial_config)        (GfMonitorManager            *manager);
 
@@ -225,6 +225,11 @@ GfMonitorConfigManager     *gf_monitor_manager_get_config_manager           (GfM
 
 char                       *gf_monitor_manager_get_vendor_name              (GfMonitorManager            *manager,
                                                                              const char                  *vendor);
+
+GfPowerSave                 gf_monitor_manager_get_power_save_mode          (GfMonitorManager            *manager);
+
+void                        gf_monitor_manager_power_save_mode_changed      (GfMonitorManager            *manager,
+                                                                             GfPowerSave                  mode);
 
 static inline gboolean
 gf_monitor_transform_is_rotated (GfMonitorTransform transform)

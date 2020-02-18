@@ -777,6 +777,55 @@ gf_monitor_manager_xrandr_read_edid (GfMonitorManager *manager,
 }
 
 static void
+gf_monitor_manager_xrandr_read_current_state (GfMonitorManager *manager)
+{
+  GfMonitorManagerXrandr *self;
+  CARD16 dpms_state;
+  BOOL dpms_enabled;
+  GfPowerSave power_save_mode;
+  GfMonitorManagerClass *parent_class;
+
+  self = GF_MONITOR_MANAGER_XRANDR (manager);
+
+  if (DPMSCapable (self->xdisplay) &&
+      DPMSInfo (self->xdisplay, &dpms_state, &dpms_enabled) &&
+      dpms_enabled)
+    {
+      switch (dpms_state)
+        {
+          case DPMSModeOn:
+            power_save_mode = GF_POWER_SAVE_ON;
+            break;
+
+          case DPMSModeStandby:
+            power_save_mode = GF_POWER_SAVE_STANDBY;
+            break;
+
+          case DPMSModeSuspend:
+            power_save_mode = GF_POWER_SAVE_SUSPEND;
+            break;
+
+          case DPMSModeOff:
+            power_save_mode = GF_POWER_SAVE_OFF;
+            break;
+
+          default:
+            power_save_mode = GF_POWER_SAVE_UNSUPPORTED;
+            break;
+        }
+    }
+  else
+    {
+      power_save_mode = GF_POWER_SAVE_UNSUPPORTED;
+    }
+
+  gf_monitor_manager_power_save_mode_changed (manager, power_save_mode);
+
+  parent_class = GF_MONITOR_MANAGER_CLASS (gf_monitor_manager_xrandr_parent_class);
+  parent_class->read_current_state (manager);
+}
+
+static void
 gf_monitor_manager_xrandr_ensure_initial_config (GfMonitorManager *manager)
 {
   GfMonitorConfigManager *config_manager;
@@ -1101,6 +1150,7 @@ gf_monitor_manager_xrandr_class_init (GfMonitorManagerXrandrClass *xrandr_class)
   object_class->finalize = gf_monitor_manager_xrandr_finalize;
 
   manager_class->read_edid = gf_monitor_manager_xrandr_read_edid;
+  manager_class->read_current_state = gf_monitor_manager_xrandr_read_current_state;
   manager_class->ensure_initial_config = gf_monitor_manager_xrandr_ensure_initial_config;
   manager_class->apply_monitors_config = gf_monitor_manager_xrandr_apply_monitors_config;
   manager_class->set_power_save_mode = gf_monitor_manager_xrandr_set_power_save_mode;
