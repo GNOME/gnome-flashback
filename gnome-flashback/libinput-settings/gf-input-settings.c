@@ -91,6 +91,7 @@ get_property (GfInputSettings *settings,
 {
   Atom property_atom;
   gint device_id;
+  GdkDisplay *display;
   gint rc;
   Atom type_ret;
   gint format_ret;
@@ -105,9 +106,14 @@ get_property (GfInputSettings *settings,
   device_id = gdk_x11_device_get_id (device);
   data_ret = NULL;
 
+  display = gdk_display_get_default ();
+  gdk_x11_display_error_trap_push (display);
+
   rc = XIGetProperty (settings->xdisplay, device_id, property_atom,
                       0, 10, False, type, &type_ret, &format_ret,
                       &nitems_ret, &bytes_after_ret, &data_ret);
+
+  gdk_x11_display_error_trap_pop_ignored (display);
 
   if (rc == Success && type_ret == type && format_ret == format && nitems_ret >= nitems)
     {
