@@ -38,6 +38,7 @@ gnome-flashback/libpolkit/flashback-polkit-dialog.c
 gnome-flashback/libpolkit/flashback-polkit-dialog.ui
 gnome-flashback/libscreensaver/gf-auth.c
 gnome-flashback/libscreensaver/gf-unlock-dialog.c
+gnome-flashback/libscreenshot/gf-screenshot.c
 gvc/gvc/gvc-mixer-control.c
 system-indicators/si-bluetooth.c
 system-indicators/si-desktop-menu-item.c

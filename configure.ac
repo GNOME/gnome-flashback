@@ -234,6 +234,7 @@ PKG_CHECK_MODULES([SCREENSAVER], [
 PKG_CHECK_MODULES([SCREENSHOT], [
   gio-unix-2.0 >= $GLIB_REQUIRED
   gtk+-3.0 >= $GTK_REQUIRED
+  libcanberra-gtk3 >= $CANBERRA_REQUIRED
   x11
   xext
   xfixes

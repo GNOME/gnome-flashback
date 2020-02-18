@@ -22,6 +22,8 @@
 #include "config.h"
 #include "gf-screenshot.h"
 
+#include <canberra-gtk.h>
+#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <X11/extensions/shape.h>
@@ -249,6 +251,37 @@ screenshot_add_cursor (GdkPixbuf      *pixbuf,
     }
 }
 
+static void
+play_sound_effect (const char *event_id,
+                   const char *event_desc)
+{
+  ca_context *c;
+
+  c = ca_gtk_context_get ();
+
+  ca_context_play (c, 0,
+                   CA_PROP_EVENT_ID, event_id,
+                   CA_PROP_EVENT_DESCRIPTION, event_desc,
+                   CA_PROP_CANBERRA_CACHE_CONTROL, "permanent",
+                   NULL);
+}
+
+static void
+save_to_clipboard (GfScreenshot *self,
+                   GdkPixbuf    *pixbuf)
+{
+  GdkDisplay *display;
+  GtkClipboard *clipboard;
+
+  display = gdk_display_get_default ();
+  clipboard = gtk_clipboard_get_for_display (display, GDK_SELECTION_CLIPBOARD);
+
+  play_sound_effect ("screen-capture", _("Screenshot taken"));
+
+  gtk_clipboard_set_image (clipboard, pixbuf);
+  g_object_unref (pixbuf);
+}
+
 static gchar *
 get_unique_path (const gchar *path,
                  const gchar *filename)
@@ -324,6 +357,12 @@ save_screenshot (GfScreenshot  *screenshot,
 
   if (pixbuf == NULL)
     return FALSE;
+
+  if (filename_in == NULL || *filename_in == '\0')
+    {
+      save_to_clipboard (screenshot, pixbuf);
+      return TRUE;
+    }
 
   filename = get_filename (filename_in);
 
