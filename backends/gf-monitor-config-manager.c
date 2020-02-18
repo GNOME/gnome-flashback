@@ -423,6 +423,61 @@ create_for_switch_config_builtin (GfMonitorConfigManager *config_manager)
                                  layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
 }
 
+static GList *
+clone_monitor_config_list (GList *configs_in)
+{
+  GList *configs_out;
+  GList *l;
+
+  configs_out = NULL;
+
+  for (l = configs_in; l != NULL; l = l->next)
+    {
+      GfMonitorConfig *config_in;
+      GfMonitorConfig *config_out;
+
+      config_in = l->data;
+
+      config_out = g_new0 (GfMonitorConfig, 1);
+      *config_out = (GfMonitorConfig) {
+        .monitor_spec = gf_monitor_spec_clone (config_in->monitor_spec),
+        .mode_spec = g_memdup (config_in->mode_spec, sizeof (GfMonitorModeSpec)),
+        .enable_underscanning = config_in->enable_underscanning
+      };
+
+      configs_out = g_list_append (configs_out, config_out);
+    }
+
+  return configs_out;
+}
+
+static GList *
+clone_logical_monitor_config_list (GList *configs_in)
+{
+  GList *configs_out;
+  GList *l;
+
+  configs_out = NULL;
+
+  for (l = configs_in; l != NULL; l = l->next)
+    {
+      GfLogicalMonitorConfig *config_in;
+      GfLogicalMonitorConfig *config_out;
+      GList *config_list;
+
+      config_in = l->data;
+
+      config_out = g_memdup (config_in, sizeof (GfLogicalMonitorConfig));
+
+      config_list = clone_monitor_config_list (config_in->monitor_configs);
+      config_out->monitor_configs = config_list;
+
+      configs_out = g_list_append (configs_out, config_out);
+    }
+
+  return configs_out;
+}
+
 static GfMonitorsConfig *
 create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
                                      gboolean                rotate,
@@ -433,8 +488,7 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
   GfLogicalMonitorConfig *current_logical_monitor_config;
   GList *logical_monitor_configs;
   GfLogicalMonitorLayoutMode layout_mode;
-  GfMonitorConfig *monitor_config;
-  GfMonitorConfig *current_monitor_config;
+  GList *current_monitor_configs;
 
   if (!gf_monitor_manager_get_is_builtin_display_on (config_manager->monitor_manager))
     return NULL;
@@ -470,17 +524,10 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
   if (g_list_length (current_logical_monitor_config->monitor_configs) != 1)
     return NULL;
 
-  current_monitor_config = current_logical_monitor_config->monitor_configs->data;
+  current_monitor_configs = config_manager->current_config->logical_monitor_configs;
+  logical_monitor_configs = clone_logical_monitor_config_list (current_monitor_configs);
 
-  monitor_config = g_new0 (GfMonitorConfig, 1);
-  *monitor_config = (GfMonitorConfig) {
-    .monitor_spec = gf_monitor_spec_clone (current_monitor_config->monitor_spec),
-    .mode_spec = g_memdup (current_monitor_config->mode_spec, sizeof (GfMonitorModeSpec)),
-    .enable_underscanning = current_monitor_config->enable_underscanning
-  };
-
-  logical_monitor_config = g_memdup (current_logical_monitor_config, sizeof (GfLogicalMonitorConfig));
-  logical_monitor_config->monitor_configs = g_list_append (NULL, monitor_config);
+  logical_monitor_config = logical_monitor_configs->data;
   logical_monitor_config->transform = transform;
 
   if (gf_monitor_transform_is_rotated (current_logical_monitor_config->transform) !=
@@ -492,7 +539,6 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
       logical_monitor_config->layout.height = temp;
     }
 
-  logical_monitor_configs = g_list_append (NULL, logical_monitor_config);
   layout_mode = config_manager->current_config->layout_mode;
 
   return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
