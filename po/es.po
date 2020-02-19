@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2020-02-09 12:47+0000\n"
-"PO-Revision-Date: 2020-02-10 11:38+0100\n"
+"POT-Creation-Date: 2020-02-18 19:47+0000\n"
+"PO-Revision-Date: 2020-02-19 11:45+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -65,19 +65,6 @@ msgstr "Administre sus conexiones de red"
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:6
 msgid "nm-device-wireless"
 msgstr "nm-device-wireless"
-
-#: data/autostart/gnome-flashback-screensaver.desktop.in:4
-msgid "Screensaver (GNOME Flashback)"
-msgstr "Salvapantallas (GNOME Flashback)"
-
-#: data/autostart/gnome-flashback-screensaver.desktop.in:5
-msgid "Launch screensaver and locker program"
-msgstr "Lanzar el programa salvapantallas y de bloqueo"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-screensaver.desktop.in:7
-msgid "preferences-desktop-screensaver"
-msgstr "preferences-desktop-screensaver"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -755,43 +742,43 @@ msgstr "Configuración de pantalla"
 msgid "Open Terminal"
 msgstr "Abrir terminal"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3026
+#: gnome-flashback/libdesktop/gf-icon-view.c:3040
 msgid "Folder names cannot contain “/”."
 msgstr "Los nombres de las carpetas no pueden contener «/»."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3028
+#: gnome-flashback/libdesktop/gf-icon-view.c:3042
 msgid "File names cannot contain “/”."
 msgstr "Los nombres de los archivos no pueden contener «/»."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3035
+#: gnome-flashback/libdesktop/gf-icon-view.c:3049
 msgid "A folder cannot be called “.”."
 msgstr "Una carpeta no se puede llamar «.»."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3037
+#: gnome-flashback/libdesktop/gf-icon-view.c:3051
 msgid "A file cannot be called “.”."
 msgstr "Un archivo no se puede llamar «.»."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3044
+#: gnome-flashback/libdesktop/gf-icon-view.c:3058
 msgid "A folder cannot be called “..”."
 msgstr "Una carpeta no se puede llamar «..»."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3046
+#: gnome-flashback/libdesktop/gf-icon-view.c:3060
 msgid "A file cannot be called “..”."
 msgstr "Un archivo no se puede llamar «..»."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3062
+#: gnome-flashback/libdesktop/gf-icon-view.c:3076
 msgid "A folder with that name already exists."
 msgstr "Ya existe una carpeta con ese nombre."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3064
+#: gnome-flashback/libdesktop/gf-icon-view.c:3078
 msgid "A file with that name already exists."
 msgstr "Ya existe un archivo con ese nombre."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3075
+#: gnome-flashback/libdesktop/gf-icon-view.c:3089
 msgid "Folders with “.” at the beginning of their name are hidden."
 msgstr "Las carpetas cuyo nombre empieza por «.» están ocultas."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3077
+#: gnome-flashback/libdesktop/gf-icon-view.c:3091
 msgid "Files with “.” at the beginning of their name are hidden."
 msgstr "Los archivos cuyo nombre empieza por «.» están ocultas."
 
@@ -939,7 +926,7 @@ msgstr "Se exedió el numero máximo de notificaciones"
 msgid "Notification body text."
 msgstr "Texto del cuerpo de la notificación."
 
-#: gnome-flashback/libnotifications/nd-queue.c:429
+#: gnome-flashback/libnotifications/nd-queue.c:428
 msgid "Clear all notifications"
 msgstr "Limpiar todas las notificaciones"
 
@@ -1069,6 +1056,11 @@ msgstr "Desbloq_uear"
 #: gnome-flashback/libscreensaver/gf-unlock-dialog.c:751
 msgid "You have the Caps Lock key on."
 msgstr "La tecla Bloq. Mayús. está activada"
+
+#: gnome-flashback/libscreenshot/gf-screenshot.c:279
+#| msgid "Screenshots"
+msgid "Screenshot taken"
+msgstr "Captura de pantalla realizada"
 
 #. translators:
 #. * The device has been disabled
@@ -1218,6 +1210,15 @@ msgstr "Salida"
 #: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Silenciado"
+
+#~ msgid "Screensaver (GNOME Flashback)"
+#~ msgstr "Salvapantallas (GNOME Flashback)"
+
+#~ msgid "Launch screensaver and locker program"
+#~ msgstr "Lanzar el programa salvapantallas y de bloqueo"
+
+#~ msgid "preferences-desktop-screensaver"
+#~ msgstr "preferences-desktop-screensaver"
 
 #~ msgid "Bluetooth applet"
 #~ msgstr "Applet de Bluetooth"
