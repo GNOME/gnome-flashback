@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2020-02-11 13:04+0000\n"
-"PO-Revision-Date: 2020-02-16 16:26-0300\n"
+"POT-Creation-Date: 2020-02-18 19:47+0000\n"
+"PO-Revision-Date: 2020-02-20 19:49-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -1054,6 +1054,11 @@ msgstr "_Desbloquear"
 msgid "You have the Caps Lock key on."
 msgstr "Você está com a tecla Caps Lock ativada."
 
+#: gnome-flashback/libscreenshot/gf-screenshot.c:279
+#| msgid "Screenshots"
+msgid "Screenshot taken"
+msgstr "Captura de tela obtida"
+
 #. translators:
 #. * The device has been disabled
 #: gvc/gvc/gvc-mixer-control.c:1892
@@ -1091,17 +1096,14 @@ msgid "Disconnect"
 msgstr "Desconectar"
 
 #: system-indicators/si-bluetooth.c:241
-#| msgid "Not Connected"
 msgid "Connect"
 msgstr "Conectar"
 
 #: system-indicators/si-bluetooth.c:256
-#| msgid "Sound Settings"
 msgid "Keyboard Settings"
 msgstr "Configurações de teclado"
 
 #: system-indicators/si-bluetooth.c:264
-#| msgid "Sound Settings"
 msgid "Mouse & Touchpad Settings"
 msgstr "Configurações de mouse & touchpad"
 
@@ -1127,7 +1129,6 @@ msgstr "Arquivo desktop “%s” faltando!"
 
 #: system-indicators/si-desktop-menu-item.c:95
 #, c-format
-#| msgid "Failed to start Sound Preferences: %s"
 msgid "Failed to start “%s”: %s"
 msgstr "Falha ao iniciar “%s”: %s"
 
@@ -1192,7 +1193,6 @@ msgid "Volume changed"
 msgstr "Volume alterado"
 
 #: system-indicators/si-volume.c:266
-#| msgid "_Mute"
 msgid "Mute"
 msgstr "Sem som"
 
