@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2020-02-11 13:04+0000\n"
-"PO-Revision-Date: 2020-02-16 13:27+0100\n"
+"POT-Creation-Date: 2020-02-18 19:47+0000\n"
+"PO-Revision-Date: 2020-02-23 12:50+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -1070,6 +1070,10 @@ msgstr "_Odblokuj…"
 #: gnome-flashback/libscreensaver/gf-unlock-dialog.c:751
 msgid "You have the Caps Lock key on."
 msgstr "Klawisz Caps Lock jest włączony."
+
+#: gnome-flashback/libscreenshot/gf-screenshot.c:279
+msgid "Screenshot taken"
+msgstr "Wykonano zrzut ekranu"
 
 #. translators:
 #. * The device has been disabled
