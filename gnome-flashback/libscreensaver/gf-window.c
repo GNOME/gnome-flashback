@@ -100,14 +100,16 @@ set_invisible_cursor (GfWindow *self,
   g_clear_object (&cursor);
 }
 
-static void
+static gboolean
 maybe_emit_activity (GfWindow *self)
 {
   if (self->unlock_dialog != NULL ||
       !gtk_widget_get_sensitive (GTK_WIDGET (self)))
-    return;
+    return FALSE;
 
   g_signal_emit (self, window_signals[ACTIVITY], 0);
+
+  return TRUE;
 }
 
 static gboolean
@@ -374,6 +376,27 @@ gf_window_grab_broken_event (GtkWidget          *widget,
 }
 
 static gboolean
+gf_window_key_press_event (GtkWidget   *widget,
+                           GdkEventKey *event)
+{
+  GfWindow *self;
+
+  self = GF_WINDOW (widget);
+
+  if (maybe_emit_activity (self))
+    {
+      if (event->keyval == GDK_KEY_Return ||
+          event->keyval == GDK_KEY_KP_Enter ||
+          event->keyval == GDK_KEY_Escape ||
+          event->keyval == GDK_KEY_space)
+        return TRUE;
+    }
+
+  return GTK_WIDGET_CLASS (gf_window_parent_class)->key_press_event (widget,
+                                                                     event);
+}
+
+static gboolean
 gf_window_motion_notify_event (GtkWidget      *widget,
                                GdkEventMotion *event)
 {
@@ -504,6 +527,7 @@ gf_window_class_init (GfWindowClass *self_class)
   widget_class->button_press_event = gf_window_button_press_event;
   widget_class->draw = gf_window_draw;
   widget_class->grab_broken_event = gf_window_grab_broken_event;
+  widget_class->key_press_event = gf_window_key_press_event;
   widget_class->motion_notify_event = gf_window_motion_notify_event;
   widget_class->realize = gf_window_realize;
   widget_class->scroll_event = gf_window_scroll_event;
