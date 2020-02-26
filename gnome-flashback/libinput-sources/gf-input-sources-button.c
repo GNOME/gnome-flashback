@@ -91,13 +91,13 @@ gf_input_sources_button_constructed (GObject *object)
 
   G_OBJECT_CLASS (gf_input_sources_button_parent_class)->constructed (object);
 
-  g_signal_connect (self->manager, "sources-changed",
-                    G_CALLBACK (sources_changed_cb),
-                    self);
+  g_signal_connect_object (self->manager, "sources-changed",
+                           G_CALLBACK (sources_changed_cb),
+                           self, 0);
 
-  g_signal_connect (self->manager, "current-source-changed",
-                    G_CALLBACK (current_source_changed_cb),
-                    self);
+  g_signal_connect_object (self->manager, "current-source-changed",
+                           G_CALLBACK (current_source_changed_cb),
+                           self, 0);
 
   sources_changed_cb (self->manager, self);
 }
