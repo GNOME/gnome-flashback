@@ -1,5 +1,6 @@
 stages:
   - build
+  - analysis
 
 variables:
   GIT_SUBMODULE_STRATEGY: normal
@@ -52,3 +53,65 @@ build-ubuntu:
     - ./autogen.sh
     - make
     - make distcheck
+
+coverity:
+  image: ubuntu:devel
+  stage: analysis
+  when: manual
+  before_script:
+    - apt-get update
+    - apt-get install -q -y --no-install-recommends
+                      autoconf-archive
+                      automake
+                      autopoint
+                      build-essential
+                      ca-certificates
+                      clang
+                      curl
+                      gettext
+                      git
+                      gsettings-desktop-schemas-dev
+                      libasound2-dev
+                      libcanberra-gtk3-dev
+                      libdbus-glib-1-dev
+                      libgdk-pixbuf2.0-dev
+                      libgdm-dev
+                      libglib2.0-dev
+                      libgnome-bluetooth-dev
+                      libgnome-desktop-3-dev
+                      libgnome-panel-dev
+                      libgtk-3-dev
+                      libibus-1.0-dev
+                      libpam0g-dev
+                      libpango1.0-dev
+                      libpolkit-agent-1-dev
+                      libpolkit-gobject-1-dev
+                      libpulse-dev
+                      libsystemd-dev
+                      libtool
+                      libupower-glib-dev
+                      libx11-dev
+                      libx11-xcb-dev
+                      libxcb-randr0-dev
+                      libxext-dev
+                      libxfixes-dev
+                      libxi-dev
+                      libxkbfile-dev
+                      libxrandr-dev
+                      libxxf86vm-dev
+                      xkb-data
+  script:
+    - curl https://scan.coverity.com/download/linux64
+      --data "token=$COVERITY_TOKEN&project=gnome-flashback"
+      --output /tmp/coverity_tool.tgz
+    - tar zxf /tmp/coverity_tool.tgz
+    - CC=clang ./autogen.sh --disable-Werror
+    - ./cov-analysis-linux64-*/bin/cov-build --dir cov-int make
+    - tar czf cov-int.tar.gz cov-int
+    - curl --form token=$COVERITY_TOKEN
+      --form email=alberts.muktupavels@gmail.com
+      --form file=@cov-int.tar.gz
+      --form version="$(autoconf --trace='AC_INIT:$2')-$CI_COMMIT_SHORT_SHA"
+      https://scan.coverity.com/builds?project=gnome-flashback
+  only:
+    - master
