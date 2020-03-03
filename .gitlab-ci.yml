@@ -7,6 +7,8 @@ variables:
 build-ubuntu:
   image: ubuntu:devel
   stage: build
+  except:
+    - tags
   before_script:
     - apt-get update
     - apt-get install -q -y --no-install-recommends
