@@ -19,7 +19,7 @@
 #include "si-volume.h"
 
 #include <canberra-gtk.h>
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 #include <libgnome-panel/gp-image-menu-item.h>
 #include <math.h>
 

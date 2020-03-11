@@ -18,7 +18,7 @@
 #include "config.h"
 #include "si-power.h"
 
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 #include <libupower-glib/upower.h>
 #include <math.h>
 

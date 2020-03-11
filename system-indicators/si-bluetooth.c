@@ -19,7 +19,7 @@
 #include "si-bluetooth.h"
 
 #include <bluetooth-client.h>
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 
 #include "dbus/gf-sd-rfkill-gen.h"
 #include "si-desktop-menu-item.h"
