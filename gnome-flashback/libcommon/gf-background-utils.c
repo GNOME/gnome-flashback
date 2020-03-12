@@ -73,7 +73,7 @@ get_average_color (cairo_surface_t *surface,
   red_total = 0;
   green_total = 0;
   blue_total = 0;
-  pixels_total = width * height;
+  pixels_total = (guint64) width * height;
 
   for (row = 0; row < height; row++)
     {
