@@ -330,15 +330,18 @@ bus_acquired_cb (GDBusConnection *connection,
   GfSnWatcherV0 *v0;
   GDBusInterfaceSkeleton *skeleton;
   GError *error;
+  gboolean exported;
 
   v0 = GF_SN_WATCHER_V0 (user_data);
   skeleton = G_DBUS_INTERFACE_SKELETON (v0);
 
   error = NULL;
-  g_dbus_interface_skeleton_export (skeleton, connection,
-                                    "/StatusNotifierWatcher", &error);
+  exported = g_dbus_interface_skeleton_export (skeleton,
+                                               connection,
+                                               "/StatusNotifierWatcher",
+                                               &error);
 
-  if (error != NULL)
+  if (!exported)
     {
       g_warning ("%s", error->message);
       g_error_free (error);
