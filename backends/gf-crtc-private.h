@@ -44,24 +44,20 @@ typedef struct
 
 struct _GfCrtc
 {
-  GObject             parent;
+  GObject         parent;
 
-  GfGpu              *gpu;
+  GfGpu          *gpu;
 
-  glong               crtc_id;
-  guint               all_transforms;
+  glong           crtc_id;
+  guint           all_transforms;
 
-  /* Only used to build the logical configuration
-   * from the HW one
-   */
-  GfLogicalMonitor   *logical_monitor;
-  GfCrtcConfig       *config;
+  GfCrtcConfig   *config;
 
   /* Used when changing configuration */
-  gboolean            is_dirty;
+  gboolean        is_dirty;
 
-  gpointer            driver_private;
-  GDestroyNotify      driver_notify;
+  gpointer        driver_private;
+  GDestroyNotify  driver_notify;
 };
 
 struct _GfCrtcMode

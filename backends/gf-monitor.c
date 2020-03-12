@@ -53,16 +53,18 @@
 
 typedef struct
 {
-  GfGpu         *gpu;
+  GfGpu            *gpu;
 
-  GList         *outputs;
-  GList         *modes;
-  GHashTable    *mode_ids;
+  GList            *outputs;
+  GList            *modes;
+  GHashTable       *mode_ids;
 
-  GfMonitorMode *preferred_mode;
-  GfMonitorMode *current_mode;
+  GfMonitorMode    *preferred_mode;
+  GfMonitorMode    *current_mode;
 
-  GfMonitorSpec *spec;
+  GfMonitorSpec    *spec;
+
+  GfLogicalMonitor *logical_monitor;
 
   /*
    * The primary or first output for this monitor, 0 if we can't figure out.
@@ -73,9 +75,9 @@ typedef struct
    * (it's an attempt to keep windows on the same monitor, and preferably on
    * the primary one).
    */
-  glong          winsys_id;
+  glong             winsys_id;
 
-  char          *display_name;
+  char             *display_name;
 } GfMonitorPrivate;
 
 enum
@@ -917,16 +919,11 @@ gf_monitor_get_suggested_position (GfMonitor *monitor,
 GfLogicalMonitor *
 gf_monitor_get_logical_monitor (GfMonitor *monitor)
 {
-  GfOutput *output;
-  GfCrtc *crtc;
+  GfMonitorPrivate *priv;
 
-  output = gf_monitor_get_main_output (monitor);
-  crtc = gf_output_get_assigned_crtc (output);
+  priv = gf_monitor_get_instance_private (monitor);
 
-  if (crtc)
-    return crtc->logical_monitor;
-  else
-    return NULL;
+  return priv->logical_monitor;
 }
 
 GfMonitorMode *
@@ -1248,4 +1245,15 @@ gf_monitor_has_aspect_as_size (GfMonitor *monitor)
          (width_mm == 160 && height_mm == 100) ||
          (width_mm == 16 && height_mm == 9) ||
          (width_mm == 16 && height_mm == 10);
+}
+
+void
+gf_monitor_set_logical_monitor (GfMonitor        *monitor,
+                                GfLogicalMonitor *logical_monitor)
+{
+  GfMonitorPrivate *priv;
+
+  priv = gf_monitor_get_instance_private (monitor);
+
+  priv->logical_monitor = logical_monitor;
 }

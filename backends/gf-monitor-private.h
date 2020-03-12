@@ -238,6 +238,9 @@ gboolean            gf_verify_monitor_mode_spec           (GfMonitorModeSpec    
 
 gboolean            gf_monitor_has_aspect_as_size         (GfMonitor                  *monitor);
 
+void                gf_monitor_set_logical_monitor        (GfMonitor                  *monitor,
+                                                           GfLogicalMonitor           *logical_monitor);
+
 G_END_DECLS
 
 #endif
