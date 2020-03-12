@@ -2232,6 +2232,7 @@ move_cb (GfIconView       *self,
 
   extend = FALSE;
   modify = FALSE;
+  view = NULL;
 
   if (self->icons == NULL)
     return;
