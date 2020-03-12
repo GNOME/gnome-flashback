@@ -2480,9 +2480,14 @@ gf_monitor_manager_ensure_configured (GfMonitorManager *manager)
 done:
   if (!config)
     {
-      gf_monitor_manager_apply_monitors_config (manager, NULL,
-                                                fallback_method,
-                                                &error);
+      if (!gf_monitor_manager_apply_monitors_config (manager, NULL,
+                                                     fallback_method,
+                                                     &error))
+        {
+          g_warning ("%s", error->message);
+          g_clear_error (&error);
+        }
+
       return NULL;
     }
 
