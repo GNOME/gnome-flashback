@@ -1870,13 +1870,24 @@ bus_acquired_cb (GDBusConnection *connection,
 {
   GfMonitorManager *manager;
   GDBusInterfaceSkeleton *skeleton;
+  GError *error;
+  gboolean exported;
 
   manager = GF_MONITOR_MANAGER (user_data);
   skeleton = G_DBUS_INTERFACE_SKELETON (manager->display_config);
 
-  g_dbus_interface_skeleton_export (skeleton, connection,
-                                    "/org/gnome/Mutter/DisplayConfig",
-                                    NULL);
+  error = NULL;
+  exported = g_dbus_interface_skeleton_export (skeleton,
+                                               connection,
+                                               "/org/gnome/Mutter/DisplayConfig",
+                                               &error);
+
+  if (!exported)
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+      return;
+    }
 }
 
 static void
