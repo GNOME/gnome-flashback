@@ -211,39 +211,14 @@ is_crtc_assignment_changed (GfCrtc      *crtc,
   for (i = 0; i < n_crtc_infos; i++)
     {
       GfCrtcInfo *crtc_info = crtc_infos[i];
-      guint j;
 
       if (crtc_info->crtc != crtc)
         continue;
 
-      if (crtc->current_mode != crtc_info->mode)
-        return TRUE;
-
-      if (crtc->rect.x != crtc_info->x)
-        return TRUE;
-
-      if (crtc->rect.y != crtc_info->y)
-        return TRUE;
-
-      if (crtc->transform != crtc_info->transform)
-        return TRUE;
-
-      for (j = 0; j < crtc_info->outputs->len; j++)
-        {
-          GfOutput *output;
-          GfCrtc *assigned_crtc;
-
-          output = ((GfOutput**) crtc_info->outputs->pdata)[j];
-          assigned_crtc = gf_output_get_assigned_crtc (output);
-
-          if (assigned_crtc != crtc)
-            return TRUE;
-        }
-
-      return FALSE;
+      return gf_crtc_xrandr_is_assignment_changed (crtc, crtc_info);
     }
 
-  return crtc->current_mode != NULL;
+  return !!gf_crtc_xrandr_get_current_mode (crtc);
 }
 
 static gboolean
@@ -416,16 +391,8 @@ apply_crtc_assignments (GfMonitorManager  *manager,
       if (crtc_info->mode == NULL)
         continue;
 
-      if (gf_monitor_transform_is_rotated (crtc_info->transform))
-        {
-          width = MAX (width, crtc_info->x + crtc_info->mode->height);
-          height = MAX (height, crtc_info->y + crtc_info->mode->width);
-        }
-      else
-        {
-          width = MAX (width, crtc_info->x + crtc_info->mode->width);
-          height = MAX (height, crtc_info->y + crtc_info->mode->height);
-        }
+      width = MAX (width, crtc_info->layout.x + crtc_info->layout.width);
+      height = MAX (height, crtc_info->layout.y + crtc_info->layout.height);
     }
 
   /* Second disable all newly disabled CRTCs, or CRTCs that in the previous
@@ -437,10 +404,17 @@ apply_crtc_assignments (GfMonitorManager  *manager,
     {
       GfCrtcInfo *crtc_info = crtcs[i];
       GfCrtc *crtc = crtc_info->crtc;
+      GfCrtcConfig *crtc_config;
+      int x2, y2;
 
-      if (crtc_info->mode == NULL ||
-          crtc->rect.x + crtc->rect.width > width ||
-          crtc->rect.y + crtc->rect.height > height)
+      crtc_config = crtc->config;
+      if (crtc_config == NULL)
+        continue;
+
+      x2 = crtc_config->layout.x + crtc_config->layout.width;
+      y2 = crtc_config->layout.y + crtc_config->layout.height;
+
+      if (crtc_info->mode == NULL || x2 > width || y2 > height)
         {
           xrandr_set_crtc_config (xrandr,
                                   crtc,
@@ -451,11 +425,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
                                   XCB_RANDR_ROTATION_ROTATE_0,
                                   NULL, 0);
 
-          crtc->rect.x = 0;
-          crtc->rect.y = 0;
-          crtc->rect.width = 0;
-          crtc->rect.height = 0;
-          crtc->current_mode = NULL;
+          gf_crtc_unset_config (crtc);
         }
     }
 
@@ -470,7 +440,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
           continue;
         }
 
-      if (crtc->current_mode == NULL)
+      if (!crtc->config)
         continue;
 
       xrandr_set_crtc_config (xrandr,
@@ -482,11 +452,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
                               XCB_RANDR_ROTATION_ROTATE_0,
                               NULL, 0);
 
-      crtc->rect.x = 0;
-      crtc->rect.y = 0;
-      crtc->rect.width = 0;
-      crtc->rect.height = 0;
-      crtc->current_mode = NULL;
+      gf_crtc_unset_config (crtc);
     }
 
   g_assert (width > 0 && height > 0);
@@ -536,7 +502,8 @@ apply_crtc_assignments (GfMonitorManager  *manager,
                                        save_timestamp,
                                        (xcb_randr_crtc_t) crtc->crtc_id,
                                        XCB_CURRENT_TIME,
-                                       crtc_info->x, crtc_info->y,
+                                       crtc_info->layout.x,
+                                       crtc_info->layout.y,
                                        (xcb_randr_mode_t) mode->mode_id,
                                        rotation,
                                        output_ids, n_output_ids))
@@ -544,29 +511,17 @@ apply_crtc_assignments (GfMonitorManager  *manager,
               g_warning ("Configuring CRTC %d with mode %d (%d x %d @ %f) at position %d, %d and transform %u failed\n",
                          (guint) (crtc->crtc_id), (guint) (mode->mode_id),
                          mode->width, mode->height, (gdouble) mode->refresh_rate,
-                         crtc_info->x, crtc_info->y, crtc_info->transform);
+                         crtc_info->layout.x, crtc_info->layout.y,
+                         crtc_info->transform);
 
               g_free (output_ids);
               continue;
             }
 
-          if (gf_monitor_transform_is_rotated (crtc_info->transform))
-            {
-              width = mode->height;
-              height = mode->width;
-            }
-          else
-            {
-              width = mode->width;
-              height = mode->height;
-            }
-
-          crtc->rect.x = crtc_info->x;
-          crtc->rect.y = crtc_info->y;
-          crtc->rect.width = width;
-          crtc->rect.height = height;
-          crtc->current_mode = mode;
-          crtc->transform = crtc_info->transform;
+          gf_crtc_set_config (crtc,
+                              &crtc_info->layout,
+                              mode,
+                              crtc_info->transform);
 
           g_free (output_ids);
         }

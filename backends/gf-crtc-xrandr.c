@@ -27,8 +27,24 @@
 
 #include <X11/Xlib-xcb.h>
 
+#include "gf-output-private.h"
+
 #define ALL_ROTATIONS (RR_Rotate_0 | RR_Rotate_90 | RR_Rotate_180 | RR_Rotate_270)
 #define ALL_TRANSFORMS ((1 << (GF_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
+
+typedef struct
+{
+  GfRectangle         rect;
+  GfMonitorTransform  transform;
+
+  GfCrtcMode         *current_mode;
+} GfCrtcXrandr;
+
+static void
+gf_crtc_destroy_notify (GfCrtc *crtc)
+{
+  g_free (crtc->driver_private);
+}
 
 static GfMonitorTransform
 gf_monitor_transform_from_xrandr (Rotation rotation)
@@ -110,19 +126,27 @@ gf_create_xrandr_crtc (GfGpuXrandr        *gpu_xrandr,
 
 {
   GfCrtc *crtc;
+  GfCrtcXrandr *crtc_xrandr;
   unsigned int i;
   GList *modes;
 
   crtc = g_object_new (GF_TYPE_CRTC, NULL);
 
+  crtc_xrandr = g_new0 (GfCrtcXrandr, 1);
+  crtc_xrandr->rect = (GfRectangle) {
+    .x = xrandr_crtc->x,
+    .y = xrandr_crtc->y,
+    .width = xrandr_crtc->width,
+    .height = xrandr_crtc->height,
+  };
+  crtc_xrandr->transform = gf_monitor_transform_from_xrandr (xrandr_crtc->rotation);
+
+  crtc->driver_private = crtc_xrandr;
+  crtc->driver_notify = (GDestroyNotify) gf_crtc_destroy_notify;
+
   crtc->gpu = GF_GPU (gpu_xrandr);
   crtc->crtc_id = crtc_id;
-  crtc->rect.x = xrandr_crtc->x;
-  crtc->rect.y = xrandr_crtc->y;
-  crtc->rect.width = xrandr_crtc->width;
-  crtc->rect.height = xrandr_crtc->height;
   crtc->is_dirty = FALSE;
-  crtc->transform = gf_monitor_transform_from_xrandr (xrandr_crtc->rotation);
   crtc->all_transforms = gf_monitor_transform_from_xrandr_all (xrandr_crtc->rotations);
 
   modes = gf_gpu_get_modes (crtc->gpu);
@@ -130,9 +154,17 @@ gf_create_xrandr_crtc (GfGpuXrandr        *gpu_xrandr,
     {
       if (resources->modes[i].id == xrandr_crtc->mode)
         {
-          crtc->current_mode = g_list_nth_data (modes, i);
+          crtc_xrandr->current_mode = g_list_nth_data (modes, i);
           break;
         }
+    }
+
+  if (crtc_xrandr->current_mode)
+    {
+      gf_crtc_set_config (crtc,
+                          &crtc_xrandr->rect,
+                          crtc_xrandr->current_mode,
+                          crtc_xrandr->transform);
     }
 
   return crtc;
@@ -192,4 +224,50 @@ gf_crtc_xrandr_set_config (GfCrtc               *crtc,
   g_free (reply);
 
   return TRUE;
+}
+
+gboolean
+gf_crtc_xrandr_is_assignment_changed (GfCrtc     *crtc,
+                                      GfCrtcInfo *crtc_info)
+{
+  GfCrtcXrandr *crtc_xrandr;
+  unsigned int i;
+
+  crtc_xrandr = crtc->driver_private;
+
+  if (crtc_xrandr->current_mode != crtc_info->mode)
+    return TRUE;
+
+  if (crtc_xrandr->rect.x != crtc_info->layout.x)
+    return TRUE;
+
+  if (crtc_xrandr->rect.y != crtc_info->layout.y)
+    return TRUE;
+
+  if (crtc_xrandr->transform != crtc_info->transform)
+    return TRUE;
+
+  for (i = 0; i < crtc_info->outputs->len; i++)
+    {
+      GfOutput *output;
+      GfCrtc *assigned_crtc;
+
+      output = ((GfOutput **) crtc_info->outputs->pdata)[i];
+      assigned_crtc = gf_output_get_assigned_crtc (output);
+
+      if (assigned_crtc != crtc)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+GfCrtcMode *
+gf_crtc_xrandr_get_current_mode (GfCrtc *crtc)
+{
+  GfCrtcXrandr *crtc_xrandr;
+
+  crtc_xrandr = crtc->driver_private;
+
+  return crtc_xrandr->current_mode;
 }

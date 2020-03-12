@@ -1082,29 +1082,47 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
     {
       GfCrtc *crtc = l->data;
       GVariantBuilder transforms;
-      gint current_mode_index;
+      GfCrtcConfig *crtc_config;
 
       g_variant_builder_init (&transforms, G_VARIANT_TYPE ("au"));
       for (j = 0; j <= GF_MONITOR_TRANSFORM_FLIPPED_270; j++)
         if (crtc->all_transforms & (1 << j))
           g_variant_builder_add (&transforms, "u", j);
 
-      if (crtc->current_mode)
-        current_mode_index = g_list_index (combined_modes, crtc->current_mode);
-      else
-        current_mode_index = -1;
+      crtc_config = crtc->config;
 
-      g_variant_builder_add (&crtc_builder, "(uxiiiiiuaua{sv})",
-                             i, /* ID */
-                             (gint64) crtc->crtc_id,
-                             (gint) crtc->rect.x,
-                             (gint) crtc->rect.y,
-                             (gint) crtc->rect.width,
-                             (gint) crtc->rect.height,
-                             current_mode_index,
-                             (guint32) crtc->transform,
-                             &transforms,
-                             NULL /* properties */);
+      if (crtc_config != NULL)
+        {
+          int current_mode_index;
+
+          current_mode_index = g_list_index (combined_modes, crtc_config->mode);
+
+          g_variant_builder_add (&crtc_builder, "(uxiiiiiuaua{sv})",
+                                 i, /* ID */
+                                 (int64_t) crtc->crtc_id,
+                                 crtc_config->layout.x,
+                                 crtc_config->layout.y,
+                                 crtc_config->layout.width,
+                                 crtc_config->layout.height,
+                                 current_mode_index,
+                                 (uint32_t) crtc_config->transform,
+                                 &transforms,
+                                 NULL /* properties */);
+        }
+      else
+        {
+          g_variant_builder_add (&crtc_builder, "(uxiiiiiuaua{sv})",
+                                 i, /* ID */
+                                 0,
+                                 0,
+                                 0,
+                                 0,
+                                 0,
+                                 -1,
+                                 (uint32_t) GF_MONITOR_TRANSFORM_NORMAL,
+                                 &transforms,
+                                 NULL /* properties */);
+        }
     }
 
   for (l = combined_outputs, i = 0; l; l = l->next, i++)

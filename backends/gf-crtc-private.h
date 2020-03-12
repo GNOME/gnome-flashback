@@ -34,6 +34,14 @@
 
 G_BEGIN_DECLS
 
+typedef struct
+{
+  GfRectangle         layout;
+  GfMonitorTransform  transform;
+
+  GfCrtcMode         *mode;
+} GfCrtcConfig;
+
 struct _GfCrtc
 {
   GObject             parent;
@@ -41,15 +49,13 @@ struct _GfCrtc
   GfGpu              *gpu;
 
   glong               crtc_id;
-  GfRectangle         rect;
-  GfCrtcMode         *current_mode;
-  GfMonitorTransform  transform;
   guint               all_transforms;
 
   /* Only used to build the logical configuration
    * from the HW one
    */
   GfLogicalMonitor   *logical_monitor;
+  GfCrtcConfig       *config;
 
   /* Used when changing configuration */
   gboolean            is_dirty;
@@ -79,8 +85,7 @@ typedef struct
 {
   GfCrtc             *crtc;
   GfCrtcMode         *mode;
-  int                 x;
-  int                 y;
+  GfRectangle         layout;
   GfMonitorTransform  transform;
   GPtrArray          *outputs;
 } GfCrtcInfo;
@@ -91,7 +96,14 @@ G_DECLARE_FINAL_TYPE (GfCrtc, gf_crtc, GF, CRTC, GObject)
 #define GF_TYPE_CRTC_MODE (gf_crtc_mode_get_type ())
 G_DECLARE_FINAL_TYPE (GfCrtcMode, gf_crtc_mode, GF, CRTC_MODE, GObject)
 
-GfGpu *gf_crtc_get_gpu (GfCrtc *crtc);
+GfGpu *gf_crtc_get_gpu      (GfCrtc             *crtc);
+
+void   gf_crtc_set_config   (GfCrtc             *crtc,
+                             GfRectangle        *layout,
+                             GfCrtcMode         *mode,
+                             GfMonitorTransform  transform);
+
+void   gf_crtc_unset_config (GfCrtc             *crtc);
 
 G_END_DECLS
 

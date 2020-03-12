@@ -92,7 +92,7 @@ derive_monitor_transform (GfMonitor *monitor)
   GfMonitorTransform transform;
 
   main_output = gf_monitor_get_main_output (monitor);
-  transform = gf_output_get_assigned_crtc (main_output)->transform;
+  transform = gf_output_get_assigned_crtc (main_output)->config->transform;
 
   return gf_monitor_crtc_to_logical_transform (monitor, transform);
 }

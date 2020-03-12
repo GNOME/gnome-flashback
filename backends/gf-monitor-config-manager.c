@@ -665,6 +665,11 @@ assign_monitor_crtc (GfMonitor          *monitor,
   GfMonitorTransform transform;
   GfMonitorTransform crtc_transform;
   int crtc_x, crtc_y;
+  float x_offset, y_offset;
+  float scale;
+  float width, height;
+  GfCrtcMode *crtc_mode;
+  GfRectangle crtc_layout;
   GfCrtcInfo *crtc_info;
   GfOutputInfo *output_info;
   GfMonitorConfig *first_monitor_config;
@@ -694,28 +699,36 @@ assign_monitor_crtc (GfMonitor          *monitor,
   gf_monitor_calculate_crtc_pos (monitor, mode, output, crtc_transform,
                                  &crtc_x, &crtc_y);
 
+  x_offset = data->logical_monitor_config->layout.x;
+  y_offset = data->logical_monitor_config->layout.y;
+  scale = data->logical_monitor_config->scale;
+  crtc_mode = monitor_crtc_mode->crtc_mode;
+
+  if (gf_monitor_transform_is_rotated (crtc_transform))
+    {
+      width = crtc_mode->height / scale;
+      height = crtc_mode->width / scale;
+    }
+  else
+    {
+      width = crtc_mode->width / scale;
+      height = crtc_mode->height / scale;
+    }
+
+  crtc_layout.x = (int) roundf (x_offset + (crtc_x / scale));
+  crtc_layout.y = (int) roundf (y_offset + (crtc_y / scale));
+  crtc_layout.width = (int) roundf (width);
+  crtc_layout.height = (int) roundf (height);
+
   crtc_info = g_slice_new0 (GfCrtcInfo);
   *crtc_info = (GfCrtcInfo) {
     .crtc = crtc,
-    .mode = monitor_crtc_mode->crtc_mode,
-    .x = crtc_x,
-    .y = crtc_y,
+    .mode = crtc_mode,
+    .layout = crtc_layout,
     .transform = crtc_transform,
     .outputs = g_ptr_array_new ()
   };
   g_ptr_array_add (crtc_info->outputs, output);
-
-  /*
-   * Currently, GfCrtcInfo are deliberately offset incorrectly to carry over
-   * logical monitor location inside the GfCrtc struct, when in fact this
-   * depends on the framebuffer configuration. This will eventually be negated
-   * when setting the actual KMS mode.
-   *
-   * TODO: Remove this hack when we don't need to rely on GfCrtc to pass
-   * logical monitor state.
-   */
-  crtc_info->x += data->logical_monitor_config->layout.x;
-  crtc_info->y += data->logical_monitor_config->layout.y;
 
   /*
    * Only one output can be marked as primary (due to Xrandr limitation),

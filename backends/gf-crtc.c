@@ -31,6 +31,8 @@ gf_crtc_finalize (GObject *object)
   if (crtc->driver_notify)
     crtc->driver_notify (crtc);
 
+  g_clear_pointer (&crtc->config, g_free);
+
   G_OBJECT_CLASS (gf_crtc_parent_class)->finalize (object);
 }
 
@@ -53,4 +55,28 @@ GfGpu *
 gf_crtc_get_gpu (GfCrtc *crtc)
 {
   return crtc->gpu;
+}
+
+void
+gf_crtc_set_config (GfCrtc             *crtc,
+                    GfRectangle        *layout,
+                    GfCrtcMode         *mode,
+                    GfMonitorTransform  transform)
+{
+  GfCrtcConfig *config;
+
+  gf_crtc_unset_config (crtc);
+
+  config = g_new0 (GfCrtcConfig, 1);
+  config->layout = *layout;
+  config->mode = mode;
+  config->transform = transform;
+
+  crtc->config = config;
+}
+
+void
+gf_crtc_unset_config (GfCrtc *crtc)
+{
+  g_clear_pointer (&crtc->config, g_free);
 }

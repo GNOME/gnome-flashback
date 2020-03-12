@@ -30,21 +30,26 @@
 
 G_BEGIN_DECLS
 
-GfCrtc   *gf_create_xrandr_crtc     (GfGpuXrandr          *gpu_xrandr,
-                                     XRRCrtcInfo          *xrandr_crtc,
-                                     RRCrtc                crtc_id,
-                                     XRRScreenResources   *resources);
+GfCrtc     *gf_create_xrandr_crtc                (GfGpuXrandr          *gpu_xrandr,
+                                                  XRRCrtcInfo          *xrandr_crtc,
+                                                  RRCrtc                crtc_id,
+                                                  XRRScreenResources   *resources);
 
-gboolean  gf_crtc_xrandr_set_config (GfCrtc               *crtc,
-                                     xcb_randr_crtc_t      xrandr_crtc,
-                                     xcb_timestamp_t       timestamp,
-                                     int                   x,
-                                     int                   y,
-                                     xcb_randr_mode_t      mode,
-                                     xcb_randr_rotation_t  rotation,
-                                     xcb_randr_output_t   *outputs,
-                                     int                   n_outputs,
-                                     xcb_timestamp_t      *out_timestamp);
+gboolean    gf_crtc_xrandr_set_config            (GfCrtc               *crtc,
+                                                  xcb_randr_crtc_t      xrandr_crtc,
+                                                  xcb_timestamp_t       timestamp,
+                                                  int                   x,
+                                                  int                   y,
+                                                  xcb_randr_mode_t      mode,
+                                                  xcb_randr_rotation_t  rotation,
+                                                  xcb_randr_output_t   *outputs,
+                                                  int                   n_outputs,
+                                                  xcb_timestamp_t      *out_timestamp);
+
+gboolean    gf_crtc_xrandr_is_assignment_changed (GfCrtc               *crtc,
+                                                  GfCrtcInfo           *crtc_info);
+
+GfCrtcMode *gf_crtc_xrandr_get_current_mode      (GfCrtc               *crtc);
 
 G_END_DECLS
 

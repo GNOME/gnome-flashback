@@ -639,6 +639,7 @@ gf_monitor_tiled_derive_layout (GfMonitor   *monitor,
     {
       GfOutput *output;
       GfCrtc *crtc;
+      GfCrtcConfig *crtc_config;
 
       output = l->data;
       crtc = gf_output_get_assigned_crtc (output);
@@ -646,10 +647,14 @@ gf_monitor_tiled_derive_layout (GfMonitor   *monitor,
       if (!crtc)
         continue;
 
-      min_x = MIN (crtc->rect.x, min_x);
-      min_y = MIN (crtc->rect.y, min_y);
-      max_x = MAX (crtc->rect.x + crtc->rect.width, max_x);
-      max_y = MAX (crtc->rect.y + crtc->rect.height, max_y);
+      crtc_config = crtc->config;
+
+      g_return_if_fail (crtc_config);
+
+      min_x = MIN (crtc_config->layout.x, min_x);
+      min_y = MIN (crtc_config->layout.y, min_y);
+      max_x = MAX (crtc_config->layout.x + crtc_config->layout.width, max_x);
+      max_y = MAX (crtc_config->layout.y + crtc_config->layout.height, max_y);
     }
 
   *layout = (GfRectangle) {
