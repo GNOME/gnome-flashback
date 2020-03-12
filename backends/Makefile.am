@@ -72,6 +72,7 @@ libbackends_la_SOURCES = \
 	gf-monitor-spec.c \
 	gf-monitor-tiled-private.h \
 	gf-monitor-tiled.c \
+	gf-monitor-transform.h \
 	gf-monitor.c \
 	gf-monitors-config-private.h \
 	gf-monitors-config.c \

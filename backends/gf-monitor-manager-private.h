@@ -34,6 +34,7 @@
 #include "gf-monitor-manager-enums-private.h"
 #include "gf-monitor-manager-types-private.h"
 #include "gf-monitor-manager.h"
+#include "gf-monitor-transform.h"
 
 G_BEGIN_DECLS
 
@@ -230,18 +231,6 @@ GfPowerSave                 gf_monitor_manager_get_power_save_mode          (GfM
 
 void                        gf_monitor_manager_power_save_mode_changed      (GfMonitorManager            *manager,
                                                                              GfPowerSave                  mode);
-
-static inline gboolean
-gf_monitor_transform_is_rotated (GfMonitorTransform transform)
-{
-  return (transform % 2);
-}
-
-static inline gboolean
-gf_monitor_transform_is_flipped (GfMonitorTransform transform)
-{
-  return (transform >= GF_MONITOR_TRANSFORM_FLIPPED);
-}
 
 G_END_DECLS
 
