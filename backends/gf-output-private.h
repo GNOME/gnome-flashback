@@ -127,6 +127,9 @@ gboolean            gf_output_is_laptop                 (GfOutput           *out
 GfMonitorTransform  gf_output_logical_to_crtc_transform (GfOutput           *output,
                                                          GfMonitorTransform  transform);
 
+GfMonitorTransform  gf_output_crtc_to_logical_transform (GfOutput           *output,
+                                                         GfMonitorTransform  transform);
+
 G_END_DECLS
 
 #endif
