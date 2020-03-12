@@ -191,7 +191,8 @@ get_themed_icon (SiPower  *self,
           icon_name = g_strdup (device_icon_name);
           tmp = g_strrstr (icon_name, "-symbolic");
 
-          g_strlcpy (tmp, "", sizeof (tmp));
+          if (tmp != NULL)
+            *tmp = '\0';
 
           icon = g_themed_icon_new (icon_name);
           g_free (icon_name);
