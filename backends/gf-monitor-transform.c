@@ -49,3 +49,18 @@ gf_monitor_transform_invert (GfMonitorTransform transform)
 
   return inverted_transform;
 }
+
+GfMonitorTransform
+gf_monitor_transform_transform (GfMonitorTransform transform,
+                                GfMonitorTransform other)
+{
+  GfMonitorTransform new_transform;
+
+  new_transform = (transform + other) % GF_MONITOR_TRANSFORM_FLIPPED;
+
+  if (gf_monitor_transform_is_flipped (transform) !=
+      gf_monitor_transform_is_flipped (other))
+    new_transform += GF_MONITOR_TRANSFORM_FLIPPED;
+
+  return new_transform;
+}

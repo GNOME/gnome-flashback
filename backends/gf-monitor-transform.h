@@ -47,7 +47,10 @@ gf_monitor_transform_is_flipped (GfMonitorTransform transform)
   return (transform >= GF_MONITOR_TRANSFORM_FLIPPED);
 }
 
-GfMonitorTransform gf_monitor_transform_invert (GfMonitorTransform transform);
+GfMonitorTransform gf_monitor_transform_invert    (GfMonitorTransform transform);
+
+GfMonitorTransform gf_monitor_transform_transform (GfMonitorTransform transform,
+                                                   GfMonitorTransform other);
 
 G_END_DECLS
 
