@@ -37,6 +37,7 @@
 typedef struct
 {
   GfMonitorManager       *monitor_manager;
+  GfMonitorsConfig       *config;
   GfLogicalMonitorConfig *logical_monitor_config;
   GfMonitorConfig        *monitor_config;
   GPtrArray              *crtc_infos;
@@ -701,7 +702,19 @@ assign_monitor_crtc (GfMonitor          *monitor,
 
   x_offset = data->logical_monitor_config->layout.x;
   y_offset = data->logical_monitor_config->layout.y;
-  scale = data->logical_monitor_config->scale;
+
+  switch (data->config->layout_mode)
+    {
+      case GF_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
+        scale = data->logical_monitor_config->scale;
+        break;
+
+      case GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
+      default:
+        scale = 1.0;
+        break;
+    }
+
   crtc_mode = monitor_crtc_mode->crtc_mode;
 
   if (gf_monitor_transform_is_rotated (crtc_transform))
@@ -764,6 +777,7 @@ assign_monitor_crtc (GfMonitor          *monitor,
 
 static gboolean
 assign_monitor_crtcs (GfMonitorManager        *manager,
+                      GfMonitorsConfig        *config,
                       GfLogicalMonitorConfig  *logical_monitor_config,
                       GfMonitorConfig         *monitor_config,
                       GPtrArray               *crtc_infos,
@@ -801,6 +815,7 @@ assign_monitor_crtcs (GfMonitorManager        *manager,
 
   data = (MonitorAssignmentData) {
     .monitor_manager = manager,
+    .config = config,
     .logical_monitor_config = logical_monitor_config,
     .monitor_config = monitor_config,
     .crtc_infos = crtc_infos,
@@ -818,6 +833,7 @@ assign_monitor_crtcs (GfMonitorManager        *manager,
 
 static gboolean
 assign_logical_monitor_crtcs (GfMonitorManager        *manager,
+                              GfMonitorsConfig        *config,
                               GfLogicalMonitorConfig  *logical_monitor_config,
                               GPtrArray               *crtc_infos,
                               GPtrArray               *output_infos,
@@ -831,6 +847,7 @@ assign_logical_monitor_crtcs (GfMonitorManager        *manager,
       GfMonitorConfig *monitor_config = l->data;
 
       if (!assign_monitor_crtcs (manager,
+                                 config,
                                  logical_monitor_config,
                                  monitor_config,
                                  crtc_infos, output_infos,
@@ -979,9 +996,13 @@ gf_monitor_config_manager_assign (GfMonitorManager  *manager,
     {
       GfLogicalMonitorConfig *logical_monitor_config = l->data;
 
-      if (!assign_logical_monitor_crtcs (manager, logical_monitor_config,
-                                         crtc_infos, output_infos,
-                                         reserved_crtcs, error))
+      if (!assign_logical_monitor_crtcs (manager,
+                                         config,
+                                         logical_monitor_config,
+                                         crtc_infos,
+                                         output_infos,
+                                         reserved_crtcs,
+                                         error))
         {
           g_ptr_array_free (crtc_infos, TRUE);
           g_ptr_array_free (output_infos, TRUE);
