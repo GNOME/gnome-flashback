@@ -51,6 +51,7 @@ foreach_crtc (GfMonitor          *monitor,
   ForeachCrtcData *data = user_data;
 
   data->func (data->logical_monitor,
+              monitor,
               monitor_crtc_mode->output,
               gf_output_get_assigned_crtc (monitor_crtc_mode->output),
               data->user_data);
