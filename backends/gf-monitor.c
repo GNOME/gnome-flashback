@@ -895,17 +895,15 @@ gf_monitor_crtc_to_logical_transform (GfMonitor          *monitor,
                                       GfMonitorTransform  transform)
 {
   GfOutput *output;
-  GfMonitorTransform new_transform;
+  GfMonitorTransform panel_orientation_transform;
+  GfMonitorTransform inverted_transform;
 
   output = gf_monitor_get_main_output (monitor);
-  new_transform = (transform + GF_MONITOR_TRANSFORM_FLIPPED -
-                   output->panel_orientation_transform) %
-                  GF_MONITOR_TRANSFORM_FLIPPED;
 
-  if (gf_monitor_transform_is_flipped (transform))
-    new_transform += GF_MONITOR_TRANSFORM_FLIPPED;
+  panel_orientation_transform = output->panel_orientation_transform;
+  inverted_transform = gf_monitor_transform_invert (panel_orientation_transform);
 
-  return new_transform;
+  return gf_monitor_transform_transform (transform, inverted_transform);
 }
 
 gboolean
