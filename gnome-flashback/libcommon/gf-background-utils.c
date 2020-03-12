@@ -371,6 +371,8 @@ gf_background_surface_create (GdkDisplay *display,
 
   cr = cairo_create (surface);
 
+  color = (GdkRGBA) {};
+
   n_monitors = gdk_display_get_n_monitors (display);
 
   for (i = 0; i < n_monitors; i++)
