@@ -60,6 +60,7 @@ struct _GfLogicalMonitor
 };
 
 typedef void (* GfLogicalMonitorCrtcFunc) (GfLogicalMonitor *logical_monitor,
+                                           GfOutput         *output,
                                            GfCrtc           *crtc,
                                            gpointer          user_data);
 
