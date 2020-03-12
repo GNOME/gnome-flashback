@@ -881,16 +881,10 @@ gf_monitor_logical_to_crtc_transform (GfMonitor          *monitor,
                                       GfMonitorTransform  transform)
 {
   GfOutput *output;
-  GfMonitorTransform new_transform;
 
   output = gf_monitor_get_main_output (monitor);
-  new_transform = (transform + output->panel_orientation_transform) %
-                  GF_MONITOR_TRANSFORM_FLIPPED;
 
-  if (gf_monitor_transform_is_flipped (transform))
-    new_transform += GF_MONITOR_TRANSFORM_FLIPPED;
-
-  return new_transform;
+  return gf_output_logical_to_crtc_transform (output, transform);
 }
 
 GfMonitorTransform

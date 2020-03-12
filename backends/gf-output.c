@@ -207,3 +207,18 @@ gf_output_is_laptop (GfOutput *output)
 
   return FALSE;
 }
+
+GfMonitorTransform
+gf_output_logical_to_crtc_transform (GfOutput           *output,
+                                     GfMonitorTransform  transform)
+{
+  GfMonitorTransform new_transform;
+
+  new_transform = (transform + output->panel_orientation_transform) %
+                  GF_MONITOR_TRANSFORM_FLIPPED;
+
+  if (gf_monitor_transform_is_flipped (transform))
+    new_transform += GF_MONITOR_TRANSFORM_FLIPPED;
+
+  return new_transform;
+}

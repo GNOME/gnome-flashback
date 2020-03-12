@@ -110,19 +110,22 @@ struct _GfOutput
 #define GF_TYPE_OUTPUT (gf_output_get_type ())
 G_DECLARE_FINAL_TYPE (GfOutput, gf_output, GF, OUTPUT, GObject)
 
-GfGpu    *gf_output_get_gpu           (GfOutput *output);
+GfGpu              *gf_output_get_gpu                   (GfOutput           *output);
 
-void      gf_output_assign_crtc       (GfOutput *output,
-                                       GfCrtc   *crtc);
+void                gf_output_assign_crtc               (GfOutput           *output,
+                                                         GfCrtc             *crtc);
 
-void      gf_output_unassign_crtc     (GfOutput *output);
+void                gf_output_unassign_crtc             (GfOutput           *output);
 
-GfCrtc   *gf_output_get_assigned_crtc (GfOutput *output);
+GfCrtc             *gf_output_get_assigned_crtc         (GfOutput           *output);
 
-void      gf_output_parse_edid        (GfOutput *output,
-                                       GBytes   *edid);
+void                gf_output_parse_edid                (GfOutput           *output,
+                                                         GBytes             *edid);
 
-gboolean  gf_output_is_laptop         (GfOutput *output);
+gboolean            gf_output_is_laptop                 (GfOutput           *output);
+
+GfMonitorTransform  gf_output_logical_to_crtc_transform (GfOutput           *output,
+                                                         GfMonitorTransform  transform);
 
 G_END_DECLS
 
