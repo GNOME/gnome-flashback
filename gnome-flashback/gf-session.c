@@ -215,14 +215,20 @@ is_session_running_cb (GObject      *source_object,
 
   if (error != NULL)
     {
-      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
         {
+          g_error_free (error);
+          return;
+        }
+      else
+        {
+          is_session_running = TRUE;
+
           g_warning ("Failed to check if session has entered the Running phase: %s",
                      error->message);
-        }
 
-      g_error_free (error);
-      return;
+          g_error_free (error);
+        }
     }
 
   self = GF_SESSION (user_data);
