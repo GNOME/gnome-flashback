@@ -4,6 +4,7 @@
 # Ask Hjorth Larsen <asklarsen@gmail.com>, 2016.
 # Joe Hansen <joedalton2@yahoo.dk>, 2018.
 # Alan Mortensen <alanmortensen.am@gmail.com>, 2018.
+# scootergrisen, 2020.
 #
 # font weight -> skriftstyrke
 #
@@ -11,45 +12,49 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2018-12-08 17:20+0000\n"
-"PO-Revision-Date: 2019-01-26 16:08+0100\n"
-"Last-Translator: Alan Mortensen <alanmortensen.am@gmail.com>\n"
+"POT-Creation-Date: 2019-12-28 19:11+0000\n"
+"PO-Revision-Date: 2020-03-09 00:00+0200\n"
+"Last-Translator: scootergrisen\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.6\n"
 
-#: backends/gf-monitor-manager.c:971
+#: backends/gf-monitor.c:131
 msgid "Built-in display"
 msgstr "Indbygget skærm"
 
-#: backends/gf-monitor-manager.c:1002
+#: backends/gf-monitor.c:165
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
 msgid "Unknown"
 msgstr "Ukendt"
 
-#: backends/gf-monitor-manager.c:1004
+#: backends/gf-monitor.c:167
 msgid "Unknown Display"
 msgstr "Ukendt skærm"
 
-#. TRANSLATORS: this is a monitor vendor name, followed by a
-#. * size in inches, like 'Dell 15"'
-#.
-#: backends/gf-monitor-manager.c:1014
+#: backends/gf-monitor.c:176
 #, c-format
+#| msgid "%s %s"
+msgctxt ""
+"This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
-msgstr "%2$s %1$s"
+msgstr "%s %s"
 
-#: data/applications/gnome-flashback.desktop.in:4
+#: backends/gf-monitor.c:190
+#, c-format
+#| msgid "%s %s"
+msgctxt ""
+"This is a monitor vendor name followed by product/model name where size in "
+"inches could not be calculated, e.g. Dell U2414H"
+msgid "%s %s"
+msgstr "%s %s"
+
+#: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME Flashback"
-
-#: data/applications/gnome-flashback-init.desktop.in:4
-msgid "GNOME Flashback Initialization"
-msgstr "Klargøring af GNOME Flashback"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
@@ -132,34 +137,19 @@ msgstr ""
 "flytbare medier automatisk."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:22
-msgid "Bluetooth applet"
-msgstr "Bluetooth-panelprogram"
+msgid "Clipboard"
+msgstr "Udklipsholder"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
-msgid ""
-"If set to true, then GNOME Flashback application will be used to show a "
-"Bluetooth applet."
-msgstr ""
-"Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at vise et "
-"Bluetooth-panelprogram."
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:27
+#: gnome-flashback/libdesktop/gf-desktop-window.c:815
+msgid "Desktop"
+msgstr "Skrivebord"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:28
-msgid "Desktop background"
-msgstr "Skrivebordsbaggrund"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
-msgid ""
-"If set to true, then GNOME Flashback application will be used to draw the "
-"desktop background."
-msgstr ""
-"Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at tegne "
-"skrivebordsbaggrunden."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:34
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:32
 msgid "End session dialog"
 msgstr "Afslut session-dialog"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
@@ -167,11 +157,11 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at vise "
 "dialogen afslut session."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:40
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "Idle monitor"
 msgstr "Overvåg aktivitet"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
@@ -179,15 +169,15 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at måle "
 "brugeraktivitet."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "Input settings"
-msgstr "Inputindstillinger"
+msgstr "Indstillinger for input"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:51
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
 msgid "Keyboard layouts and input methods"
 msgstr "Tastaturlayout og inputmetoder"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -195,11 +185,11 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at "
 "håndtere tastaturlayout og inputmetoder."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:57
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
 msgid "Notification daemon"
 msgstr "Påmindelsesdæmon"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
@@ -207,32 +197,25 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at "
 "håndtere påmindelser."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:63
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid "Authentication agent for polkit"
 msgstr "Godkendelsesagent for polkit"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr "Dette er samme godkendelsesagent, som PolyciKit-gnome tilbød."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:69
-msgid "Power applet"
-msgstr "Strømpanelprogram"
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
+#| msgid "Desktop background"
+msgid "Root background"
+msgstr "Root-baggrund"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
-msgid ""
-"If set to true, then GNOME Flashback application will be used to show a "
-"power applet."
-msgstr ""
-"Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at vise et "
-"strømpanelprogram."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:75
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
 msgid "Screencasts"
 msgstr "Skærmoptagelse"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -240,22 +223,23 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at optage "
 "skærmen."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:81
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
 msgid "Screensaver"
 msgstr "Pauseskærm"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
 msgstr ""
-"Hvis sat til sand, vil programmet GNOME Flashback blive brugt som pauseskærm."
+"Hvis sat til sand, vil programmet GNOME Flashback blive brugt som "
+"pauseskærm."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:87
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
 msgid "Screenshots"
 msgstr "Skærmbilleder"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -263,35 +247,20 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at tage "
 "skærmbilleder."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:93
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid "Shell"
 msgstr "Skal"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
-msgstr ""
-"Hvis sat til sand, vil programmet GNOME Flashback blive brugt som skal."
+msgstr "Hvis sat til sand, vil programmet GNOME Flashback blive brugt som skal."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:99
-msgid "Sound applet"
-msgstr "Lydpanelprogram"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
-msgid ""
-"If set to true, then GNOME Flashback application will be used to show a "
-"sound applet. This is the same sound applet that used to be a part of GNOME "
-"Control Center."
-msgstr ""
-"Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at vise et "
-"lydpanelprogram. Det drejer sig om samme panelprogram, som tidligere var del "
-"af GNOME Kontrolcenter."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:105
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
 msgid "Status Notifier Watcher"
 msgstr "Statuspåmindelsesovervågning"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -299,11 +268,39 @@ msgstr ""
 "Hvis sat til sand, vil programmet GNOME Flashback blive brugt som "
 "statuspåmindelsesovervågning."
 
-#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:5
+#| msgid "Desktop background"
+msgid "Draw desktop background"
+msgstr "Tegn skrivebordsbaggrund"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:6
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to draw the "
+#| "desktop background."
+msgid "If set to true, then GNOME Flashback will draw the desktop background."
+msgstr ""
+"Hvis sat til sand, bruges GNOME Flashback til at tegne "
+"skrivebordsbaggrunden."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:11
+msgid "Show desktop icons"
+msgstr "Vis skrivebordsikoner"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:12
+#| msgid ""
+#| "If set to true, then GNOME Flashback application will be used to draw the "
+#| "desktop background."
+msgid ""
+"If set to true, then GNOME Flashback will draw the icons on the desktop."
+msgstr ""
+"Hvis sat til sand, bruges GNOME Flashback til at tegne ikonerne på "
+"skrivebordet."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:5
 msgid "Fade the background on change"
 msgstr "Udtoning ved ændring af baggrund"
 
-#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:6
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:6
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -311,25 +308,114 @@ msgstr ""
 "Hvis sat til sand, vil udtoningseffekten blive brugt til at ændre "
 "skrivebordsbaggrunden."
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
-msgid "The background color"
-msgstr "Baggrundsfarven"
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:5
+msgid "Icon size"
+msgstr "Ikonstørrelse"
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:13
-msgid "The foreground color"
-msgstr "Forgrundsfarven"
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:6
+msgid "The size of desktop icons."
+msgstr "Størrelsen på skrivebordsikoner."
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:18
-msgid "The font family"
-msgstr "Skrifttypens familie"
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
+#: gnome-flashback/libdesktop/gf-icon-view.c:1215
+msgid "Placement"
+msgstr "Placering"
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:24
-msgid "The font weight"
-msgstr "Skrifttypens styrke"
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:12
+msgid ""
+"Can be one of \"auto-arrange-icons\", \"align-icons-to-grid\" or \"free\". "
+"It controls how icons are placed on desktop."
+msgstr ""
+"Kan være enten “auto-arrange-icons”, “align-icons-to-grid” eller “free”. Den "
+"styrer ikonernes placering på skrivebordet."
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
-msgid "Symbolic"
-msgstr "Symbolsk"
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
+#: gnome-flashback/libdesktop/gf-icon-view.c:1221
+msgid "Sort by"
+msgstr "Sortér efter"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:18
+msgid ""
+"Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons "
+"are sorted in \"auto-arrange-icons\" placement."
+msgstr ""
+"Kan være enten “name”, “date-modified” eller “size”. Den styrer ikonernes "
+"sortering i “auto-arrange-icons”-placering."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
+msgid "Extra text width"
+msgstr "Ekstra tekstbredde"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:25
+msgid "Extra width for icon text."
+msgstr "Ekstra bredde for ikontekst."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:31
+msgid "Column spacing"
+msgstr "Kolonnemellemrum"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:32
+msgid "The amount of space between columns."
+msgstr "Størrelsen på mellemrum mellem kolonner."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:38
+msgid "Row spacing"
+msgstr "Rækkemellemrum"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:39
+msgid "The amount of space between rows."
+msgstr "Størrelsen på mellemrum mellem rækker."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:44
+msgid "Show home icon"
+msgstr "Vis hjem-ikon"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:45
+#| msgid ""
+#| "If set to true, then fade effect will be used to change the desktop "
+#| "background."
+msgid ""
+"If this is set to true, an icon linking to the home folder will be put on "
+"the desktop."
+msgstr ""
+"Hvis sat til sand, vil et ikon på skrivebordet henvise til "
+"hjemmemappen."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:50
+msgid "Show trash icon"
+msgstr "Vis papirkurv-ikon"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:51
+msgid ""
+"If this is set to true, an icon linking to the trash will be put on the "
+"desktop."
+msgstr ""
+"Hvis sat til sand, vil et ikon på skrivebordet henvise til "
+"papirkurven."
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml:5
+msgid "Use IBus icon if available"
+msgstr "Brug IBus-ikon hvis det er tilgængeligt"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml:10
+#| msgid "The background color"
+msgid "Icon background color"
+msgstr "Baggrundsfarve for ikon"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml:15
+#| msgid "The foreground color"
+msgid "Icon foreground color"
+msgstr "Forgrundsfarve for ikon"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml:20
+#| msgid "The font family"
+msgid "Icon font family"
+msgstr "Skrifttypefamilie for ikon"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-source.gschema.xml:26
+#| msgid "The font weight"
+msgid "Icon font weight"
+msgstr "Skriftstyrke for ikon"
 
 #: data/ui/gf-confirm-display-change-dialog.ui:57
 msgid "Do you want to keep these display settings?"
@@ -370,19 +456,11 @@ msgid_plural "Settings changes will revert in %d seconds!"
 msgstr[0] "Indstillingsændringer vil blive nulstillet om %d sekund!"
 msgstr[1] "Indstillingsændringer vil blive nulstillet om %d sekunder!"
 
-#: gnome-flashback/gf-main.c:41
-msgid "Enable debugging code"
-msgstr "Slå kodefejlsøgning til"
-
-#: gnome-flashback/gf-main.c:47
-msgid "Initialize GNOME Flashback session"
-msgstr "Klargør GNOME Flashback-session"
-
-#: gnome-flashback/gf-main.c:53
+#: gnome-flashback/gf-main.c:43
 msgid "Replace a currently running application"
 msgstr "Erstat et kørende program"
 
-#: gnome-flashback/gf-main.c:59
+#: gnome-flashback/gf-main.c:49
 msgid "Print version and exit"
 msgstr "Udskriv versionen og afslut"
 
@@ -404,13 +482,13 @@ msgstr ""
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
+#: system-indicators/si-bluetooth.c:85
 msgid "Turn Off"
 msgstr "Sluk"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
+#: system-indicators/si-bluetooth.c:99
 msgid "Turn On"
 msgstr "Tænd"
 
@@ -468,7 +546,6 @@ msgid "Microphone"
 msgstr "Mikrofon"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:260
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
 msgstr "Kunne ikke starte lydindstillinger: %s"
@@ -478,10 +555,12 @@ msgid "What kind of device did you plug in?"
 msgstr "Hvilken slags enhed tilsluttede du?"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
+#: system-indicators/si-bluetooth.c:274 system-indicators/si-volume.c:441
 msgid "Sound Settings"
-msgstr "Lydindstillinger"
+msgstr "Indstillinger for lyd"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:104
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
 msgid "Cancel"
 msgstr "Annullér"
@@ -619,32 +698,132 @@ msgstr "_Skub ud"
 msgid "_Unmount"
 msgstr "_Afmontér"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:164
-msgid "Send Files"
-msgstr "Send filer"
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
+#: gnome-flashback/libdesktop/gf-icon-view.c:1203
+#| msgid "Open Folder"
+msgid "New Folder"
+msgstr "Ny mappe"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
-msgid "Bluetooth Settings"
-msgstr "Indstillinger for Bluetooth"
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:112
+msgid "Create"
+msgstr "Opret"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:271
-msgid "Bluetooth active"
-msgstr "Bluetooth tændt"
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:140
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "Folder name"
+msgstr "Mappenavn"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:276
-msgid "Bluetooth disabled"
-msgstr "Bluetooth slukket"
+#: gnome-flashback/libdesktop/gf-home-icon.c:45
+msgid "Home"
+msgstr "Hjem"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:282
-#, c-format
-msgid "%d Connected Device"
-msgid_plural "%d Connected Devices"
-msgstr[0] "%d forbundet enhed"
-msgstr[1] "%d forbundne enheder"
+#: gnome-flashback/libdesktop/gf-icon.c:524
+msgid "Open"
+msgstr "Åbn"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
-msgid "Not Connected"
-msgstr "Ikke forbundet"
+#: gnome-flashback/libdesktop/gf-icon.c:560
+msgid "Move to Trash"
+msgstr "Flyt til papirkurv"
+
+#: gnome-flashback/libdesktop/gf-icon.c:580
+msgid "Rename..."
+msgstr "Omdøb …"
+
+#: gnome-flashback/libdesktop/gf-icon.c:600
+#| msgid "Empty"
+msgid "Empty Trash"
+msgstr "Tøm papirkurv"
+
+#: gnome-flashback/libdesktop/gf-icon.c:614
+msgid "Properties"
+msgstr "Egenskaber"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:999
+msgid "Auto arrange icons"
+msgstr "Automatisk opstilling af ikoner"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1003
+msgid "Align icons to grid"
+msgstr "Juster ikoner til gitter"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1007
+msgctxt "Free placement of icons"
+msgid "Free"
+msgstr "Fri"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1107
+msgid "Name"
+msgstr "Navn"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1111
+msgid "Date modified"
+msgstr "Ændringsdato"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1115
+msgid "Size"
+msgstr "Størrelse"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1231
+#| msgid "The background color"
+msgid "Change Background"
+msgstr "Skift baggrund"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1239
+#| msgid "Sound Settings"
+msgid "Display Settings"
+msgstr "Indstillinger for skærm"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1251
+msgid "Open Terminal"
+msgstr "Åbn terminal"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3068
+msgid "Folder names cannot contain “/”."
+msgstr "Mappenavne må ikke indeholde “/”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3070
+msgid "File names cannot contain “/”."
+msgstr "Filnavne må ikke indeholde “/”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3077
+msgid "A folder cannot be called “.”."
+msgstr "En mappe må ikke kaldes “.”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3079
+msgid "A file cannot be called “.”."
+msgstr "En fil må ikke kaldes “.”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3086
+msgid "A folder cannot be called “..”."
+msgstr "En mappe må ikke kaldes “..”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3088
+msgid "A file cannot be called “..”."
+msgstr "En fil må ikke kaldes “..”."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3104
+msgid "A folder with that name already exists."
+msgstr "Der findes allerede en mappe med det navn."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3106
+msgid "A file with that name already exists."
+msgstr "Der findes allerede en fil med det navn."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3117
+msgid "Folders with “.” at the beginning of their name are hidden."
+msgstr "Mapper med “.” i begyndelsen af deres navn er skjulte."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3119
+msgid "Files with “.” at the beginning of their name are hidden."
+msgstr "Filer med “.” i begyndelsen af deres navn er skjulte."
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "File name"
+msgstr "Filnavn"
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:254
+msgid "Rename"
+msgstr "Omdøb"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
@@ -746,14 +925,6 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Lås skærm"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:801
-msgid "Show Keyboard Layout"
-msgstr "Vis tastaturlayout"
-
-#: gnome-flashback/libinput-sources/gf-input-sources.c:867
-msgid "Keyboard"
-msgstr "Tastatur"
-
 #: gnome-flashback/libnotifications/gf-bubble.c:619
 #: gnome-flashback/libnotifications/gf-bubble.c:623
 #: gnome-flashback/libnotifications/nd-notification-box.c:321
@@ -787,7 +958,7 @@ msgstr "Hovedtekst for påmindelse."
 msgid "Clear all notifications"
 msgstr "Ryd alle påmindelser"
 
-#: gnome-flashback/libnotifications/nd-queue.c:867
+#: gnome-flashback/libnotifications/nd-queue.c:868
 msgid "Notifications"
 msgstr "Påmindelser"
 
@@ -817,7 +988,6 @@ msgstr ""
 "Et program forsøger at udføre en handling, som kræver privilegier. For at "
 "udføre den, kræves godkendelse som en af brugerne nedenfor."
 
-# lidt underlig formulering?  Men den skelner så nøjagtigt at det nok er en god idé at oversætte rimelig direkte
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
 msgid ""
@@ -878,83 +1048,23 @@ msgstr "<small><b>_Detaljer</b></small>"
 msgid "_Authenticate"
 msgstr "_Godkend"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:135
-msgid "Power Settings"
-msgstr "Strømindstillinger"
+#: gnome-flashback/libscreensaver/gf-auth.c:424
+msgid "Your account was given a time limit that has now passed."
+msgstr "Din konto fik en tidsgrænse som nu er overskredet."
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:182
-msgid "Fully Charged"
-msgstr "Fuldt opladet"
-
-#: gnome-flashback/libpower-applet/gf-power-applet.c:184
-msgid "Empty"
-msgstr "Tom"
-
-#: gnome-flashback/libpower-applet/gf-power-applet.c:190
-msgid "Not Charging"
-msgstr "Oplader ikke"
-
-#: gnome-flashback/libpower-applet/gf-power-applet.c:192
-#: gnome-flashback/libpower-applet/gf-power-applet.c:197
-msgid "Estimating..."
-msgstr "Anslår …"
-
-#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:206
-#, c-format
-msgid "%.0f:%02.0f Remaining (%.0f%%)"
-msgstr "%.0f:%02.0f tilbage (%.0f%%)"
-
-#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:213
-#, c-format
-msgid "%.0f:%02.0f Until Full (%.0f%%)"
-msgstr "%.0f:%02.0f indtil fuld (%.0f%%)"
-
-#: gnome-flashback/libpower-applet/gf-power-applet.c:228
-msgid "UPS"
-msgstr "Nødstrøm"
-
-#: gnome-flashback/libpower-applet/gf-power-applet.c:230
-msgid "Battery"
-msgstr "Batteri"
-
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:283
-msgid "Output"
-msgstr "Udgang"
-
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:286
-msgid "Sound Output Volume"
-msgstr "Afspilningslydstyrke"
-
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:293
-msgid "Input"
-msgstr "Indgang"
-
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:296
-msgid "Microphone Volume"
-msgstr "Mikrofonlydstyrke"
-
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:535
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:544
-msgctxt "volume"
-msgid "100%"
-msgstr "100 %"
-
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:539
-msgctxt "volume"
-msgid "Unamplified"
-msgstr "Uforstærket"
+#: gnome-flashback/libscreensaver/gf-auth.c:428
+msgid "Sorry, that didn’t work. Please try again."
+msgstr "Beklager, det virkede ikke. Prøv venligst igen."
 
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1864
+#: gvc/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
 msgstr "Deaktiveret"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1871
+#: gvc/gvc/gvc-mixer-control.c:1899
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -963,84 +1073,140 @@ msgstr[1] "%u udgange"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1881
+#: gvc/gvc/gvc-mixer-control.c:1909
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u indgang"
 msgstr[1] "%u indgange"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2736
+#: gvc/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Systemlyde"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:285
-msgid "_Mute"
-msgstr "_Stilhed"
+#: system-indicators/si-bluetooth.c:91
+msgid "Send Files"
+msgstr "Send filer"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:294
-msgid "_Sound Preferences"
-msgstr "_Lydindstillinger"
+#: system-indicators/si-bluetooth.c:228
+msgid "Disconnect"
+msgstr "Afbryd forbindelse"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:424
-msgid "Muted"
+#: system-indicators/si-bluetooth.c:241
+#| msgid "Not Connected"
+msgid "Connect"
+msgstr "Opret forbindelse"
+
+#: system-indicators/si-bluetooth.c:256
+#| msgid "Sound Settings"
+msgid "Keyboard Settings"
+msgstr "Indstillinger for tastatur"
+
+#: system-indicators/si-bluetooth.c:264
+#| msgid "Sound Settings"
+msgid "Mouse & Touchpad Settings"
+msgstr "Indstillinger for mus og pegeplade"
+
+#: system-indicators/si-bluetooth.c:328
+msgid "Bluetooth Settings"
+msgstr "Indstillinger for Bluetooth"
+
+#: system-indicators/si-bluetooth.c:448
+#, c-format
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "%d forbundet enhed"
+msgstr[1] "%d forbundne enheder"
+
+#: system-indicators/si-bluetooth.c:455
+msgid "Not Connected"
+msgstr "Ikke forbundet"
+
+#: system-indicators/si-desktop-menu-item.c:80
+#, c-format
+msgid "Desktop file “%s” is missing!"
+msgstr "Skrivebordsfilen “%s” mangler!"
+
+#: system-indicators/si-desktop-menu-item.c:95
+#, c-format
+#| msgid "Failed to start Sound Preferences: %s"
+msgid "Failed to start “%s”: %s"
+msgstr "Kunne ikke starte “%s”: %s"
+
+#: system-indicators/si-input-source.c:852
+msgid "Show Keyboard Layout"
+msgstr "Vis tastaturlayout"
+
+#: system-indicators/si-input-source.c:858
+msgid "Region & Language Settings"
+msgstr "Indstillinger for region og sprog"
+
+#: system-indicators/si-module.c:33
+#| msgid "System Sounds"
+msgid "System Indicators"
+msgstr "Systemindikatorer"
+
+#: system-indicators/si-module.c:34
+msgid "This applet contains system indicators"
+msgstr "Panelprogrammet indeholder systemindikatorer"
+
+#: system-indicators/si-power.c:58
+msgid "UPS"
+msgstr "Nødstrøm"
+
+#: system-indicators/si-power.c:60
+msgid "Battery"
+msgstr "Batteri"
+
+#: system-indicators/si-power.c:76
+msgid "Fully Charged"
+msgstr "Fuldt opladet"
+
+#: system-indicators/si-power.c:78
+msgid "Empty"
+msgstr "Tom"
+
+#: system-indicators/si-power.c:84
+msgid "Not Charging"
+msgstr "Oplader ikke"
+
+#: system-indicators/si-power.c:86 system-indicators/si-power.c:91
+msgid "Estimating..."
+msgstr "Anslår …"
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: system-indicators/si-power.c:100
+#, c-format
+msgid "%.0f:%02.0f Remaining (%.0f%%)"
+msgstr "%.0f:%02.0f tilbage (%.0f%%)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: system-indicators/si-power.c:107
+#, c-format
+msgid "%.0f:%02.0f Until Full (%.0f%%)"
+msgstr "%.0f:%02.0f indtil fuld (%.0f%%)"
+
+#: system-indicators/si-power.c:141
+msgid "Power Settings"
+msgstr "Indstillinger for strøm"
+
+#: system-indicators/si-volume.c:245
+msgid "Volume changed"
+msgstr "Lydstyrken blev ændret"
+
+#: system-indicators/si-volume.c:266
+#| msgid "_Mute"
+msgid "Mute"
 msgstr "Stilhed"
 
-#~ msgid "Workarounds"
-#~ msgstr "Omgå fejl"
+#: system-indicators/si-volume.c:518
+msgid "Input"
+msgstr "Indgang"
 
-#~ msgid ""
-#~ "If set to true, then GNOME Flashback application will use workarounds to "
-#~ "fix bugs."
-#~ msgstr ""
-#~ "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til at omgå "
-#~ "programfejl."
+#: system-indicators/si-volume.c:518
+msgid "Output"
+msgstr "Udgang"
 
-#~ msgid "Fix missing app menu button"
-#~ msgstr "Fiks manglende programmenuknap"
-
-#~ msgid ""
-#~ "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
-#~ "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
-#~ "xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
-#~ msgstr ""
-#~ "Hvis sat til sand, vil gnome-flashback tvinge Gtk/ShellShowsAppMenu til "
-#~ "falsk (FALSE). Slå fra, hvis du vil bruge særindstillinger fra gnome-"
-#~ "settings-daemon i xsettings-udvidelsesmodulet til “Gtk/ShellShowsAppMenu”-"
-#~ "egenskaben."
-
-#~ msgid "Fix wrong button layout"
-#~ msgstr "Fiks forkert knaplayout"
-
-#~ msgid ""
-#~ "If set to non-empty string, then gnome-flashback will force Gtk/"
-#~ "DecorationLayout to value set by this setting. Set to empty string if you "
-#~ "want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
-#~ "DecorationLayout' property."
-#~ msgstr ""
-#~ "Hvis sat til en ikke-tom streng, vil gnome-flashback tvinge Gtk/"
-#~ "DecorationLayout til en værdi angivet af denne indstilling. Sæt til en "
-#~ "tom streng hvis du vil bruge særindstillinger fra gnome-settings-daemon i "
-#~ "xsettings-udvidelsesmodulet til “Gtk/DecorationLayout”-egenskaben."
-
-#~ msgid "Display configuration"
-#~ msgstr "Vis konfiguration"
-
-#~ msgid ""
-#~ "If set to true, then GNOME Flashback application will be used to provide "
-#~ "the display configuration."
-#~ msgstr ""
-#~ "Hvis sat til sand, vil programmet GNOME Flashback blive brugt til "
-#~ "skærmkonfigurationen."
-
-#~ msgid ""
-#~ "This contains the background color for the status icon that is shown in "
-#~ "the system tray."
-#~ msgstr ""
-#~ "Indeholder baggrundsfarven for statusikonet, som vises i statusfeltet."
-
-#~ msgid ""
-#~ "This contains the foreground color for the status icon that is shown in "
-#~ "the system tray."
-#~ msgstr ""
-#~ "Indeholder forgrundsfarven for statusikonet, der vises i statusfeltet."
+#: system-indicators/si-volume.c:529
+msgid "Muted"
+msgstr "Stilhed"
