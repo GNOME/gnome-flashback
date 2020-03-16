@@ -30,6 +30,8 @@
 #include "gf-prefs.h"
 #include "gf-watcher.h"
 
+#define PAM_CONFIG_FILE "/etc/pam.d/gnome-flashback"
+
 struct _GfScreensaver
 {
   GObject     parent;
@@ -48,6 +50,13 @@ struct _GfScreensaver
 };
 
 G_DEFINE_TYPE (GfScreensaver, gf_screensaver, G_TYPE_OBJECT)
+
+static gboolean
+pam_config_exists (void)
+{
+  return g_file_test (PAM_CONFIG_FILE, G_FILE_TEST_EXISTS) &&
+         g_file_test (PAM_CONFIG_FILE, G_FILE_TEST_IS_REGULAR);
+}
 
 static gboolean
 release_grab_cb (gpointer user_data)
@@ -81,6 +90,13 @@ update_from_prefs (GfScreensaver *self)
   lock_enabled = gf_prefs_get_lock_enabled (self->prefs) &&
                  !gf_prefs_get_lock_disabled (self->prefs);
 
+  if (lock_enabled && !pam_config_exists ())
+    {
+      g_warning ("Locking disabled because PAM configuration file `"
+                 PAM_CONFIG_FILE "` does not exist");
+      lock_enabled = FALSE;
+    }
+
   gf_manager_set_lock_enabled (self->manager, lock_enabled);
 
   lock_timeout = gf_prefs_get_lock_delay (self->prefs);
@@ -113,30 +129,36 @@ static void
 listener_lock_cb (GfListener    *listener,
                   GfScreensaver *self)
 {
-  if (!gf_prefs_get_lock_disabled (self->prefs))
-    {
-      gboolean locked;
+  gboolean locked;
 
-      /* set lock flag before trying to activate screensaver
-       * in case something tries to react to the ActiveChanged signal
-       */
-
-      locked = gf_manager_get_lock_active (self->manager);
-      gf_manager_set_lock_active (self->manager, TRUE);
-
-      if (!gf_manager_get_active (self->manager))
-        {
-          if (!gf_listener_set_active (self->listener, TRUE))
-            {
-              /* If we've failed then restore lock status */
-              gf_manager_set_lock_active (self->manager, locked);
-              g_debug ("Unable to lock the screen");
-            }
-        }
-    }
-  else
+  if (gf_prefs_get_lock_disabled (self->prefs))
     {
       g_debug ("Locking disabled by the administrator");
+      return;
+    }
+
+  if (!pam_config_exists ())
+    {
+      g_warning ("Locking disabled because PAM configuration file `"
+                 PAM_CONFIG_FILE "` does not exist");
+      return;
+    }
+
+  /* set lock flag before trying to activate screensaver
+   * in case something tries to react to the ActiveChanged signal
+   */
+
+  locked = gf_manager_get_lock_active (self->manager);
+  gf_manager_set_lock_active (self->manager, TRUE);
+
+  if (!gf_manager_get_active (self->manager))
+    {
+      if (!gf_listener_set_active (self->listener, TRUE))
+        {
+          /* If we've failed then restore lock status */
+          gf_manager_set_lock_active (self->manager, locked);
+          g_debug ("Unable to lock the screen");
+        }
     }
 }
 
