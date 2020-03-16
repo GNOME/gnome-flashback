@@ -1,3 +1,13 @@
+Version 3.36.0
+==============
+- Save screenshot to clipboard when filename is empty.
+- Show password box on key presses. (#36)
+- Fix system indicators localisation. (#39)
+- Fix build with gettext 0.20+. (!25)
+- Add UsbProtection plugin to required components.
+- Disable screen locking without PAM configuration file. (#38)
+- Updated translations.
+
 Version 3.35.2
 ==============
 - Add Yaru as supported theme. (#31)
