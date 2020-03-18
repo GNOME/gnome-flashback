@@ -1019,6 +1019,24 @@ placement_to_string (GfPlacement placement)
   return string;
 }
 
+static gboolean
+is_placement_implemented (GfPlacement placement)
+{
+  switch (placement)
+    {
+      case GF_PLACEMENT_AUTO_ARRANGE_ICONS:
+        return TRUE;
+
+      case GF_PLACEMENT_ALIGN_ICONS_TO_GRID:
+      case GF_PLACEMENT_FREE:
+      case GF_PLACEMENT_LAST:
+      default:
+        break;
+    }
+
+  return FALSE;
+}
+
 static void
 append_placement_submenu (GfIconView *self,
                           GtkWidget  *parent)
@@ -1049,6 +1067,8 @@ append_placement_submenu (GfIconView *self,
 
       if (i == self->placement)
         gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), TRUE);
+
+      gtk_widget_set_sensitive (item, is_placement_implemented (i));
 
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
       gtk_widget_show (item);
@@ -1832,7 +1852,7 @@ static GfPlacement
 warn_if_placement_not_implemented (GfIconView  *self,
                                    GfPlacement  placement)
 {
-  if (placement != GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+  if (!is_placement_implemented (placement))
     {
       g_warning ("Placement mode `%s` is not implemented!",
                  placement_to_string (placement));
