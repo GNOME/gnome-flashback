@@ -364,8 +364,13 @@ dnl **************************************************************************
 dnl PAM
 dnl **************************************************************************
 
-AC_CHECK_HEADERS([security/pam_appl.h])
-AC_SEARCH_LIBS([pam_start], [pam])
+AC_CHECK_HEADERS([security/pam_appl.h], [], [
+  AC_MSG_ERROR([PAM development files not found])
+])
+
+AC_SEARCH_LIBS([pam_start], [pam], [], [
+  AC_MSG_ERROR([PAM library not found])
+])
 
 dnl **************************************************************************
 dnl Process .in files
