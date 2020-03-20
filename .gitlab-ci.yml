@@ -1,9 +1,23 @@
 stages:
+  - validate
   - build
   - analysis
 
 variables:
   GIT_SUBMODULE_STRATEGY: normal
+
+validate-menu:
+  image: ubuntu:devel
+  stage: validate
+  except:
+    - tags
+  before_script:
+    - apt-get update
+    - apt-get install -q -y --no-install-recommends libxml2-utils
+  script:
+    - xmllint --noblanks --noout
+      --path https://standards.freedesktop.org/menu-spec/menu-latest.dtd
+      data/menus/gnome-flashback-applications.menu
 
 build-ubuntu:
   image: ubuntu:devel
