@@ -31,6 +31,7 @@
 #include <gdk/gdkx.h>
 #include <cairo-xlib.h>
 
+#include "dbus/gf-screensaver-gen.h"
 #include "gf-inhibit-dialog.h"
 
 #define IS_STRING_EMPTY(string) ((string) == NULL || (string)[0] == '\0')
@@ -89,6 +90,52 @@ static void populate_model                (GfInhibitDialog *dialog);
 static void update_dialog_text            (GfInhibitDialog *dialog);
 
 G_DEFINE_TYPE_WITH_PRIVATE (GfInhibitDialog, gf_inhibit_dialog, GTK_TYPE_WINDOW)
+
+static void
+lock_cb (GObject      *object,
+         GAsyncResult *res,
+         gpointer      user_data)
+{
+  GError *error;
+
+  error = NULL;
+  gf_screensaver_gen_call_lock_finish (GF_SCREENSAVER_GEN (object),
+                                       res,
+                                       &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Couldn't lock screen: %s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+}
+
+static void
+screensaver_ready_cb (GObject      *object,
+                      GAsyncResult *res,
+                      gpointer      user_data)
+{
+  GError *error;
+  GfScreensaverGen *proxy;
+
+  error = NULL;
+  proxy = gf_screensaver_gen_proxy_new_for_bus_finish (res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Couldn't lock screen: %s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  gf_screensaver_gen_call_lock (proxy, NULL, lock_cb, NULL);
+  g_object_unref (proxy);
+}
 
 static void
 gf_inhibit_dialog_set_action (GfInhibitDialog *dialog,
@@ -911,16 +958,13 @@ static void
 lock_screen_button_clicked (GtkButton       *button,
                             GfInhibitDialog *dialog)
 {
-  GError *error;
-
-  error = NULL;
-  g_spawn_command_line_async ("gnome-screensaver-command --lock", &error);
-
-  if (error != NULL)
-    {
-      g_warning ("Couldn't lock screen: %s", error->message);
-      g_error_free (error);
-    }
+  gf_screensaver_gen_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+                                        G_DBUS_PROXY_FLAGS_NONE,
+                                        "org.gnome.ScreenSaver",
+                                        "/org/gnome/ScreenSaver",
+                                        NULL,
+                                        screensaver_ready_cb,
+                                        NULL);
 
   gf_inhibit_dialog_close (dialog);
 }
