@@ -194,12 +194,6 @@
     </Include>
   </Menu> <!-- End Other -->
 
-  <Layout>
-    <Merge type="menus" />
-    <Menuname>Other</Menuname>
-    <Merge type="files" />
-  </Layout>
-
   <Include>
     <Filename>org.gnome.Software.desktop</Filename>
   </Include>
@@ -207,6 +201,7 @@
   <!-- Separator between menus and GNOME Software -->
   <Layout>
     <Merge type="menus"/>
+    <Menuname>Other</Menuname>
     <Merge type="files"/>
     <Separator/>
     <Filename>org.gnome.Software.desktop</Filename>
