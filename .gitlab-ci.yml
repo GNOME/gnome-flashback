@@ -4,6 +4,7 @@ stages:
   - analysis
 
 variables:
+  DEBIAN_FRONTEND: noninteractive
   GIT_SUBMODULE_STRATEGY: normal
 
 validate-menu:
