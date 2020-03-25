@@ -138,6 +138,21 @@ gf_input_sources_button_set_property (GObject      *object,
 }
 
 static void
+gf_input_sources_button_show (GtkWidget *widget)
+{
+  GfInputSourcesButton *self;
+  GList *input_sources;
+
+  self = GF_INPUT_SOURCES_BUTTON (widget);
+  input_sources = gf_input_source_manager_get_input_sources (self->manager);
+
+  if (g_list_length (input_sources) <= 1)
+    return;
+
+  GTK_WIDGET_CLASS (gf_input_sources_button_parent_class)->show (widget);
+}
+
+static void
 gf_input_sources_button_clicked (GtkButton *button)
 {
   GfInputSourcesButton *self;
@@ -166,14 +181,18 @@ static void
 gf_input_sources_button_class_init (GfInputSourcesButtonClass *self_class)
 {
   GObjectClass *object_class;
+  GtkWidgetClass *widget_class;
   GtkButtonClass *button_class;
 
   object_class = G_OBJECT_CLASS (self_class);
+  widget_class = GTK_WIDGET_CLASS (self_class);
   button_class = GTK_BUTTON_CLASS (self_class);
 
   object_class->constructed = gf_input_sources_button_constructed;
   object_class->dispose = gf_input_sources_button_dispose;
   object_class->set_property = gf_input_sources_button_set_property;
+
+  widget_class->show = gf_input_sources_button_show;
 
   button_class->clicked = gf_input_sources_button_clicked;
 
