@@ -1025,8 +1025,11 @@ gf_unlock_dialog_set_input_sources (GfUnlockDialog *self,
   gtk_container_add (GTK_CONTAINER (self->indicator_box),
                      self->input_source_button);
 
-  gtk_widget_show (self->input_source_button);
-  gtk_widget_show (self->indicator_box);
+  g_object_bind_property (self->input_source_button,
+                          "visible",
+                          self->indicator_box,
+                          "visible",
+                          G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE);
 }
 
 void
