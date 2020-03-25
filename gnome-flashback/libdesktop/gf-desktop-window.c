@@ -650,6 +650,13 @@ gf_desktop_window_set_property (GObject      *object,
 }
 
 static gboolean
+gf_desktop_window_delete_event (GtkWidget   *widget,
+                                GdkEventAny *event)
+{
+  return GDK_EVENT_STOP;
+}
+
+static gboolean
 gf_desktop_window_draw (GtkWidget *widget,
                         cairo_t   *cr)
 {
@@ -738,6 +745,7 @@ gf_desktop_window_class_init (GfDesktopWindowClass *self_class)
   object_class->finalize = gf_desktop_window_finalize;
   object_class->set_property = gf_desktop_window_set_property;
 
+  widget_class->delete_event = gf_desktop_window_delete_event;
   widget_class->draw = gf_desktop_window_draw;
   widget_class->realize = gf_desktop_window_realize;
 
