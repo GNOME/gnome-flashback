@@ -291,7 +291,7 @@ ensure_file_exists (const char *icon_theme_path,
 
   g_free (filename);
 
-  if (g_file_test (filename, G_FILE_TEST_EXISTS))
+  if (g_file_test (path, G_FILE_TEST_EXISTS))
     {
       g_free (path);
       return;
