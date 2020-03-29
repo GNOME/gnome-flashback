@@ -1,3 +1,12 @@
+Version 3.36.1
+==============
+- Disable unimplemented icon placement modes. (#41)
+- Fix lock screen button in end session dialog. (#43)
+- Exclude Extensions application from menu. (#42)
+- Fix visibility of input source button in lock screen. (#45)
+- Do no close/destroy desktop window. (gnome-applets#15)
+- Fix use after free in System Indicators. (gnome-panel#21)
+
 Version 3.36.0
 ==============
 - Save screenshot to clipboard when filename is empty.
