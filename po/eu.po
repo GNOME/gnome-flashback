@@ -9,8 +9,8 @@
 msgid ""
 msgstr "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2018-12-08 17:20+0000\n"
-"PO-Revision-Date: 2019-08-08 10:00+0100\n"
+"POT-Creation-Date: 2020-03-25 21:13+0000\n"
+"PO-Revision-Date: 2020-04-07 10:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asier.sarasua@gmail.com>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -19,34 +19,37 @@ msgstr "Project-Id-Version: gnome-flashback master\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: backends/gf-monitor-manager.c:971
+#: backends/gf-monitor.c:133
 msgid "Built-in display"
 msgstr "Bertako pantaila"
 
-#: backends/gf-monitor-manager.c:1002
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
+#: backends/gf-monitor.c:167
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
 msgid "Unknown"
 msgstr "Ezezaguna"
 
-#: backends/gf-monitor-manager.c:1004
+#: backends/gf-monitor.c:169
 msgid "Unknown Display"
 msgstr "Pantaila ezezaguna"
 
-#. TRANSLATORS: this is a monitor vendor name, followed by a
-#. * size in inches, like 'Dell 15"'
-#.
-#: backends/gf-monitor-manager.c:1014
+#: backends/gf-monitor.c:178
 #, c-format
+msgctxt ""
+"This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: data/applications/gnome-flashback.desktop.in:4
+#: backends/gf-monitor.c:192
+#, c-format
+msgctxt ""
+"This is a monitor vendor name followed by product/model name where size in "
+"inches could not be calculated, e.g. Dell U2414H"
+msgid "%s %s"
+msgstr "%s %s"
+
+#: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME Flashback"
-
-#: data/applications/gnome-flashback-init.desktop.in:4
-msgid "GNOME Flashback Initialization"
-msgstr "GNOME Flashback hasieratzea"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
@@ -60,19 +63,6 @@ msgstr "Kudeatu sareko konexioak"
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:6
 msgid "nm-device-wireless"
 msgstr "nm-device-wireless"
-
-#: data/autostart/gnome-flashback-screensaver.desktop.in:4
-msgid "Screensaver (GNOME Flashback)"
-msgstr "Pantaila-babeslea (GNOME Flashback)"
-
-#: data/autostart/gnome-flashback-screensaver.desktop.in:5
-msgid "Launch screensaver and locker program"
-msgstr "Abiarazi pantaila-babeslea eta programa blokeatzailea"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-screensaver.desktop.in:7
-msgid "preferences-desktop-screensaver"
-msgstr "preferences-desktop-screensaver"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -116,7 +106,7 @@ msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aurkezteko audio 
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:16
 msgid "Automount manager"
-msgstr "Automuntaketa kudeatzailea"
+msgstr "Automuntaketa-kudeatzailea"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
 msgid ""
@@ -125,177 +115,240 @@ msgid ""
 msgstr "Gaitzen bada, GNOME Flashback aplikazioa erabiliko da euskarri aldagarriak automatikoki muntatzeko."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:22
-msgid "Bluetooth applet"
-msgstr "Bluetooth appleta"
+msgid "Clipboard"
+msgstr "Arbela"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
-msgid ""
-"If set to true, then GNOME Flashback application will be used to show a "
-"Bluetooth applet."
-msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko Bluetooth appleta."
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:27
+#: gnome-flashback/libdesktop/gf-desktop-window.c:823
+msgid "Desktop"
+msgstr "Mahaigaina"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:28
-msgid "Desktop background"
-msgstr "Mahaigainaren atzeko planoa"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
-msgid ""
-"If set to true, then GNOME Flashback application will be used to draw the "
-"desktop background."
-msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da ezartzeko mahaigainaren atzeko planoa."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:34
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:32
 msgid "End session dialog"
-msgstr "Saioa bukatzeko elkarrizketa"
+msgstr "Saioa amaitzeko elkarrizketa-koadroa"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
-msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aurkezteko saioa bukatzeko elkarrizketa."
+msgstr "Gaitzen baduzu, GNOME Flashback aplikazioa erabiliko da aurkezteko saioa amaitzeko elkarrizketa-koadroa erakusteko."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:40
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "Idle monitor"
 msgstr "Pantaila inaktiboa"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
-msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da monitorizatzeko erabiltzailearen aktibitatea."
+msgstr "Gaitzen baduzu, GNOME Flashback aplikazioa erabiliko da erabiltzailearen aktibitatea monitorizatzeko."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "Input settings"
 msgstr "Sarreraren ezarpenak"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:51
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
 msgid "Keyboard layouts and input methods"
 msgstr "Teklatuak eta testu-sarrerako metodoak"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
 msgstr "True (egia) bada, GNOME Flashback aplikazioa erabiliko da laster-teklen diseinuak eta sarrerako metodoak kudeatzeko."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:57
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
 msgid "Notification daemon"
-msgstr "Jakinarazpenen deabrua"
+msgstr "Jakinarazpenen daemona"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
 msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da kudeatzeko jakinarazpenak."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:63
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid "Authentication agent for polkit"
 msgstr "Polkit-entzako autentifikazio-agentea"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr "PolicyKit-gnomek hornitzen duen autentifikazio-agente berbera da"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:69
-msgid "Power applet"
-msgstr "Energia appleta"
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
+msgid "Root background"
+msgstr "Erroaren atzeko planoa"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
-msgid ""
-"If set to true, then GNOME Flashback application will be used to show a "
-"power applet."
-msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko energia appleta."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:75
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
 msgid "Screencasts"
 msgstr "Pantaila-kaptura"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
-msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da grabatzeko pantaila."
+msgstr "Gaitzen baduzu, GNOME Flashback aplikazioa erabiliko da pantaila grabatzeko."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:81
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
 msgid "Screensaver"
 msgstr "Pantaila-babeslea"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
-msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da pantaila-babesteko."
+msgstr "Gaitzen baduzu, GNOME Flashback aplikazioa erabiliko da pantaila babesteko."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:87
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
 msgid "Screenshots"
 msgstr "Pantaila-argazkiak"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
 msgstr "True (egia) gisa ezartzean, GNOME Flashback aplikazioa erabiliko da pantaila-argazkiak egiteko."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:93
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid "Shell"
 msgstr "Shell"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
-msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da shell moduan."
+msgstr "Gaitzen baduzu, GNOME Flashback aplikazioa erabiliko da shell moduan."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:99
-msgid "Sound applet"
-msgstr "Soinu appleta"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
-msgid ""
-"If set to true, then GNOME Flashback application will be used to show a "
-"sound applet. This is the same sound applet that used to be a part of GNOME "
-"Control Center."
-msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko soinu appleta. GNOME Kontrol Zentroak erabiltzen duen soinu applet berbera da."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:105
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
 msgid "Status Notifier Watcher"
 msgstr "Egoeraren Jakinarazpenen begiralea"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
-msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da jakinarazpenen begirale moduan."
+msgstr "Gaitzen baduzu, GNOME Flashback aplikazioa erabiliko da jakinarazpenen begirale moduan."
 
-#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:5
+msgid "Draw desktop background"
+msgstr "Marraztu mahaigainaren atzeko planoa"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:6
+msgid "If set to true, then GNOME Flashback will draw the desktop background."
+msgstr "True (egia) ezartzen bada, GNOME Flashback aplikazioak marraztuko du mahaigainaren atzeko planoa."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:11
+msgid "Show desktop icons"
+msgstr "Erakutsi mahaigaineko ikonoak"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:12
+msgid ""
+"If set to true, then GNOME Flashback will draw the icons on the desktop."
+msgstr "True (egia) gisa ezartzen bada, GNOME Flashback aplikazioak marraztuko ditu mahaigaineko ikonoak."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:5
 msgid "Fade the background on change"
 msgstr "Iraungi atzeko planoa aldatzean"
 
-#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:6
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:6
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
-msgstr "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da aldatzeko mahaigainaren atzeko planoa."
+msgstr "Gaitzen bada, GNOME Flashback aplikazioa erabiliko da mahaigainaren atzeko planoa aldatzeko."
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
-msgid "The background color"
-msgstr "Atzeko planoaren kolorea"
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:5
+msgid "Icon size"
+msgstr "Ikonoaren tamaina"
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:13
-msgid "The foreground color"
-msgstr "Aurreko planoaren kolorea"
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:6
+msgid "The size of desktop icons."
+msgstr "Mahaigaineko ikonoen tamaina."
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:18
-msgid "The font family"
-msgstr "Letra-tipoen familia"
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
+#: gnome-flashback/libdesktop/gf-icon-view.c:1237
+msgid "Placement"
+msgstr "Kokapena"
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:24
-msgid "The font weight"
-msgstr "Letra-tipoaren lodiera"
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:12
+msgid ""
+"Can be one of \"auto-arrange-icons\", \"align-icons-to-grid\" or \"free\". "
+"It controls how icons are placed on desktop."
+msgstr "Hauetako bat izan daiteke: \"auto-arrange-icons\", \"align-icons-to-grid\" edo \"free\". Ikonoak mahaigainean nola kokatzen diren kontrolatzen du."
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
-msgid "Symbolic"
-msgstr "Sinbolikoa"
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
+#: gnome-flashback/libdesktop/gf-icon-view.c:1243
+msgid "Sort by"
+msgstr "Ordenatu honen arabera:"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:18
+msgid ""
+"Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons "
+"are sorted in \"auto-arrange-icons\" placement."
+msgstr "Hauetako bat izan daiteke: \"name\", \"date-modified\" edo \"size\". Ikonoak \"auto-arrange-icons\" kokatze-moduan nola ordenatuko diren kontrolatzen du."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
+msgid "Extra text width"
+msgstr "Testu-zabalera gehigarria"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:25
+msgid "Extra width for icon text."
+msgstr "Zabalera gehigarria ikonoen testurako"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:31
+msgid "Column spacing"
+msgstr "Zutabeen arteko tartea"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:32
+msgid "The amount of space between columns."
+msgstr "Zutabeen arteko tartea."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:38
+msgid "Row spacing"
+msgstr "Errenkaden arteko tartea"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:39
+msgid "The amount of space between rows."
+msgstr "Errenkaden arteko tartea."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:44
+msgid "Show home icon"
+msgstr "Erakutsi karpeta nagusiaren ikonoa"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:45
+msgid ""
+"If this is set to true, an icon linking to the home folder will be put on "
+"the desktop."
+msgstr "Egia dela ezartzen bada, karpeta nagusiarekin lotzen duen ikono bat erakutsiko da mahaigainean."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:50
+msgid "Show trash icon"
+msgstr "Erakutsi zakarrontziaren ikonoa"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:51
+msgid ""
+"If this is set to true, an icon linking to the trash will be put on the "
+"desktop."
+msgstr "Egia dela ezartzen bada, zakarrontziarekin lotzen duen ikono bat erakutsiko da mahaigainean."
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
+msgid "Use IBus icon if available"
+msgstr "Erabili IBus ikonoa, erabilgarri badago"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:10
+msgid "Icon background color"
+msgstr "Ikonoen atzeko planoaren kolorea"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:15
+msgid "Icon foreground color"
+msgstr "Ikonoen aurreko planoaren kolorea"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:20
+msgid "Icon font family"
+msgstr "Ikonoen letra-familia"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:26
+msgid "Icon font weight"
+msgstr "Ikonoen letra-lodiera"
 
 #: data/ui/gf-confirm-display-change-dialog.ui:57
 msgid "Do you want to keep these display settings?"
@@ -336,19 +389,11 @@ msgid_plural "Settings changes will revert in %d seconds!"
 msgstr[0] "Ezarpenen aldaketa %d segundotan leheneratuko da"
 msgstr[1] "Ezarpenen aldaketak %d segundotan leheneratuko dira"
 
-#: gnome-flashback/gf-main.c:41
-msgid "Enable debugging code"
-msgstr "Gaitu arazketa-kodea"
-
-#: gnome-flashback/gf-main.c:47
-msgid "Initialize GNOME Flashback session"
-msgstr "Hasieratu GNOME Flashback saioa"
-
-#: gnome-flashback/gf-main.c:53
+#: gnome-flashback/gf-main.c:43
 msgid "Replace a currently running application"
 msgstr "Aldatu uneko aplikazioa"
 
-#: gnome-flashback/gf-main.c:59
+#: gnome-flashback/gf-main.c:49
 msgid "Print version and exit"
 msgstr "Erakutsi bertsioa eta irten"
 
@@ -368,13 +413,13 @@ msgstr "Shift teklari 8 segundo baino denbora gehiago eutsi diozu sakatuta. Hori
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
+#: system-indicators/si-bluetooth.c:85
 msgid "Turn Off"
 msgstr "Itzali"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
+#: system-indicators/si-bluetooth.c:99
 msgid "Turn On"
 msgstr "Piztu"
 
@@ -427,7 +472,6 @@ msgid "Microphone"
 msgstr "Mikrofonoa"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:260
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
 msgstr "Huts egin du soinu-ezarpenak hasieratzeak: %s"
@@ -437,10 +481,12 @@ msgid "What kind of device did you plug in?"
 msgstr "Zer gailu mota konektatu duzu?"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
+#: system-indicators/si-bluetooth.c:274 system-indicators/si-volume.c:446
 msgid "Sound Settings"
 msgstr "Soinu-ezarpenak"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:104
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
 msgid "Cancel"
 msgstr "Utzi"
@@ -576,111 +622,207 @@ msgstr "E_gotzi"
 msgid "_Unmount"
 msgstr "_Desmuntatu"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:164
-msgid "Send Files"
-msgstr "Bidali fitxategiak"
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
+#: gnome-flashback/libdesktop/gf-icon-view.c:1225
+msgid "New Folder"
+msgstr "Karpeta berria"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
-msgid "Bluetooth Settings"
-msgstr "Bluetooth ezarpenak"
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:112
+msgid "Create"
+msgstr "Sorrera"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:271
-msgid "Bluetooth active"
-msgstr "Bluetooth aktiboa"
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:140
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "Folder name"
+msgstr "Karpeta-izena"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:276
-msgid "Bluetooth disabled"
-msgstr "Bluetooth-a desgaituta"
+#: gnome-flashback/libdesktop/gf-home-icon.c:45
+msgid "Home"
+msgstr "Karpeta nagusia"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:282
-#, c-format
-msgid "%d Connected Device"
-msgid_plural "%d Connected Devices"
-msgstr[0] "Gailu %d konektatuta"
-msgstr[1] "%d gailu konektatuta"
+#: gnome-flashback/libdesktop/gf-icon.c:524
+msgid "Open"
+msgstr "Ireki"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
-msgid "Not Connected"
-msgstr "Konektatu gabe"
+#: gnome-flashback/libdesktop/gf-icon.c:560
+msgid "Move to Trash"
+msgstr "Bota zakarrontzira"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
+#: gnome-flashback/libdesktop/gf-icon.c:580
+msgid "Rename..."
+msgstr "Aldatu izena…"
+
+#: gnome-flashback/libdesktop/gf-icon.c:600
+msgid "Empty Trash"
+msgstr "Hustu zakarrontzia"
+
+#: gnome-flashback/libdesktop/gf-icon.c:614
+msgid "Properties"
+msgstr "Propietateak"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1001
+msgid "Auto arrange icons"
+msgstr "Antolatu ikonoak automatikoki"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1005
+msgid "Align icons to grid"
+msgstr "Lerrokatu ikonoak saretarekin"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1009
+msgctxt "Free placement of icons"
+msgid "Free"
+msgstr "Librea"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1129
+msgid "Name"
+msgstr "Izena"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1133
+msgid "Date modified"
+msgstr "Aldatze-data"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1137
+msgid "Size"
+msgstr "Tamaina"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1253
+msgid "Change Background"
+msgstr "Aldatu atzeko planoa"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1261
+msgid "Display Settings"
+msgstr "Pantailaren ezarpenak"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1273
+msgid "Open Terminal"
+msgstr "Ireki terminala"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3061
+msgid "Folder names cannot contain “/”."
+msgstr "Karpeta-izenak ezin du '/' karaktererik eduki."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3063
+msgid "File names cannot contain “/”."
+msgstr "Fitxategi-izenek ezin dute '/' karaktererik eduki."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3070
+msgid "A folder cannot be called “.”."
+msgstr "Karpeta ezin da '.' gisa deitu."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3072
+msgid "A file cannot be called “.”."
+msgstr "Fitxategia ezin da '.' gisa deitu."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3079
+msgid "A folder cannot be called “..”."
+msgstr "Karpeta ezin da '..' gisa deitu."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3081
+msgid "A file cannot be called “..”."
+msgstr "Fitxategia ezin da '..' gisa deitu."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3097
+msgid "A folder with that name already exists."
+msgstr "Direktorio hori badago lehendik ere."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3099
+msgid "A file with that name already exists."
+msgstr "Izen hori duen fitxategia badago lehendik ere."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3110
+msgid "Folders with “.” at the beginning of their name are hidden."
+msgstr "Izenaren hasieran \".\" duten karpetak ezkutuan daude."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3112
+msgid "Files with “.” at the beginning of their name are hidden."
+msgstr "Files with \".” at the beginning of their name are hidden."
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "File name"
+msgstr "Fitxategi-izena"
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:254
+msgid "Rename"
+msgstr "Aldatu izena"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:514
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:739
 msgid "Log Out"
 msgstr "Amaitu saioa"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:470
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr "Egin klik \"Amaitu saioa\" aukeran aplikazioak ixteko eta sistemaren saioa amaitzeko."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:472
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s erabiltzailearen saioa automatikoki %d segundotan amaituko da."
 msgstr[1] "%s erabiltzailearen saioa automatikoki %d segundotan amaituko da."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:696
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:743
 msgid "Power Off"
 msgstr "Itzali"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:482
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:529
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "Egin klik \"Itzali\" aukeran aplikazioak ixteko eta sistema itzaltzeko."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:484
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:531
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Sistema automatikoki segundo %dean itzaliko da."
 msgstr[1] "Sistema automatikoki %d segundotan itzaliko da."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:700
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:538
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:747
 msgid "Restart"
 msgstr "Berrabiarazi"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:494
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:541
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "Egin klik \"Berrabiarazi\" aukeran aplikazioak ixteko eta sistema berrabiarazteko."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:496
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:543
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Sistema automatikoki segundo %dean berrabiaraziko da."
 msgstr[1] "Sistema automatikoki %d segundotan berrabiaraziko da."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:503
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:704
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:550
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:751
 msgid "Hibernate"
 msgstr "Hibernatu"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:504
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:551
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
 msgstr[0] "Sistema automatikoki hibernatuko da segundo %dean."
 msgstr[1] "Sistema automatikoki hibernatuko da %d segundotan."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:511
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:708
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:558
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:755
 msgid "Suspend"
 msgstr "Eseki"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:512
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:559
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
 msgstr[0] "Sistema automatikoki esekiko da segundo %dean."
 msgstr[1] "Sistema automatikoki esekiko da %d segundotan."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:712
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:566
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:759
 msgid "Hybrid Sleep"
 msgstr "Lo hibridoa"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:520
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:567
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
@@ -701,28 +843,20 @@ msgstr "Aplikazio horiek amaitzeko zain. Eteteak datuen galera eragin lezake."
 msgid "Lock Screen"
 msgstr "Blokeatu pantaila"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:801
-msgid "Show Keyboard Layout"
-msgstr "Erakutsi teklatuaren diseinua"
-
-#: gnome-flashback/libinput-sources/gf-input-sources.c:867
-msgid "Keyboard"
-msgstr "Teklatua"
-
-#: gnome-flashback/libnotifications/gf-bubble.c:619
-#: gnome-flashback/libnotifications/gf-bubble.c:623
-#: gnome-flashback/libnotifications/nd-notification-box.c:321
-#: gnome-flashback/libnotifications/nd-notification-box.c:323
+#: gnome-flashback/libnotifications/gf-bubble.c:563
+#: gnome-flashback/libnotifications/gf-bubble.c:567
+#: gnome-flashback/libnotifications/nd-notification-box.c:320
+#: gnome-flashback/libnotifications/nd-notification-box.c:322
 msgid "Closes the notification."
 msgstr "Jakinarazpenak ixten ditu."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:643
-#: gnome-flashback/libnotifications/gf-bubble.c:674
-#: gnome-flashback/libnotifications/nd-notification-box.c:339
+#: gnome-flashback/libnotifications/gf-bubble.c:587
+#: gnome-flashback/libnotifications/gf-bubble.c:618
+#: gnome-flashback/libnotifications/nd-notification-box.c:338
 msgid "Notification summary text."
 msgstr "Jakinarazpenaren laburpenaren testua."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:693
+#: gnome-flashback/libnotifications/gf-bubble.c:637
 msgid "Notification"
 msgstr "Jakinarazpena"
 
@@ -734,15 +868,15 @@ msgstr "Jakinarazpen-identifikatzaile baliogabea"
 msgid "Exceeded maximum number of notifications"
 msgstr "Gehieneko jakinarazpen kopurua gaindituta"
 
-#: gnome-flashback/libnotifications/nd-notification-box.c:359
+#: gnome-flashback/libnotifications/nd-notification-box.c:358
 msgid "Notification body text."
 msgstr "Jakinarazpenaren testua."
 
-#: gnome-flashback/libnotifications/nd-queue.c:451
+#: gnome-flashback/libnotifications/nd-queue.c:428
 msgid "Clear all notifications"
 msgstr "Garbitu jakinarazpen guztiak"
 
-#: gnome-flashback/libnotifications/nd-queue.c:867
+#: gnome-flashback/libnotifications/nd-queue.c:846
 msgid "Notifications"
 msgstr "Jakinarazpenak"
 
@@ -753,6 +887,7 @@ msgstr "%s(r)en _pasahitza:"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:104
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:370
 msgid "_Password:"
 msgstr "_Pasahitza:"
 
@@ -785,7 +920,7 @@ msgstr "Aplikazio bat baimena behar duen ekintza bat lantzen saiatzen ari da. Ek
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:386
 msgid "Select user..."
-msgstr "Hautatu erabiltzailea..."
+msgstr "Hautatu erabiltzailea…"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:425
 #, c-format
@@ -826,83 +961,51 @@ msgstr "<small><b>_Xehetasunak</b></small>"
 msgid "_Authenticate"
 msgstr "_Autentifikatu"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:135
-msgid "Power Settings"
-msgstr "Energiaren ezarpenak"
+#: gnome-flashback/libscreensaver/gf-auth.c:424
+msgid "Your account was given a time limit that has now passed."
+msgstr "Zure kontuari denbora-muga bat eman zitzaion, orain iraungi dena."
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:182
-msgid "Fully Charged"
-msgstr "Erabat kargatuta"
+#: gnome-flashback/libscreensaver/gf-auth.c:428
+msgid "Sorry, that didn’t work. Please try again."
+msgstr "Huts egin du. Saiatu berriro."
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:184
-msgid "Empty"
-msgstr "Hutsa"
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:181
+msgid "Failed to switch to greeter!"
+msgstr "Huts egin du ongietorrira aldatzeak!"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:190
-msgid "Not Charging"
-msgstr "Kargarik ez"
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:255
+msgid "Time has expired."
+msgstr "Denbora iraungi da."
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:192
-#: gnome-flashback/libpower-applet/gf-power-applet.c:197
-msgid "Estimating..."
-msgstr "Kalkulatzen..."
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:506
+msgid "Checking…"
+msgstr "Egiaztatzen…"
 
-#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:206
-#, c-format
-msgid "%.0f:%02.0f Remaining (%.0f%%)"
-msgstr "%.0f:%02.0f geratzen da (%% %.0f)"
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:531
+msgid "S_witch User…"
+msgstr "A_ldatu erabiltzailea…"
 
-#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:213
-#, c-format
-msgid "%.0f:%02.0f Until Full (%.0f%%)"
-msgstr "%.0f:%02.0f betetzeko (%% %.0f)"
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:540
+msgid "_Unlock"
+msgstr "_Desblokeatu"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:228
-msgid "UPS"
-msgstr "UPS"
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:751
+msgid "You have the Caps Lock key on."
+msgstr "Maiuskulen blokeoaren tekla aktibatuta dago."
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:230
-msgid "Battery"
-msgstr "Bateria"
-
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:283
-msgid "Output"
-msgstr "Irteera"
-
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:286
-msgid "Sound Output Volume"
-msgstr "Soinuaren irteerako bolumena"
-
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:293
-msgid "Input"
-msgstr "Sarrera"
-
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:296
-msgid "Microphone Volume"
-msgstr "Mikrofonoaren bolumena"
-
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:535
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:544
-msgctxt "volume"
-msgid "100%"
-msgstr "% 100"
-
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:539
-msgctxt "volume"
-msgid "Unamplified"
-msgstr "Anplifikatu gabea"
+#: gnome-flashback/libscreenshot/gf-screenshot.c:279
+msgid "Screenshot taken"
+msgstr "Hartutako pantaila-argazkia"
 
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1864
+#: gvc/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
 msgstr "Desgaituta"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1871
+#: gvc/gvc/gvc-mixer-control.c:1899
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -911,28 +1014,215 @@ msgstr[1] "%u irteera"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1881
+#: gvc/gvc/gvc-mixer-control.c:1909
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "Sarrera %u"
 msgstr[1] "%u sarrera"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2736
+#: gvc/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Sistemaren soinuak"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:285
-msgid "_Mute"
-msgstr "_Mututu"
+#: system-indicators/si-bluetooth.c:91
+msgid "Send Files"
+msgstr "Bidali fitxategiak"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:294
-msgid "_Sound Preferences"
-msgstr "_Soinuaren hobespenak"
+#: system-indicators/si-bluetooth.c:228
+msgid "Disconnect"
+msgstr "Deskonektatu"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:424
+#: system-indicators/si-bluetooth.c:241
+msgid "Connect"
+msgstr "Konektatu"
+
+#: system-indicators/si-bluetooth.c:256
+msgid "Keyboard Settings"
+msgstr "Teklatuaren ezarpenak"
+
+#: system-indicators/si-bluetooth.c:264
+msgid "Mouse & Touchpad Settings"
+msgstr "Saguaren eta ukipen-panelaren ezarpenak"
+
+#: system-indicators/si-bluetooth.c:328
+msgid "Bluetooth Settings"
+msgstr "Bluetooth ezarpenak"
+
+#: system-indicators/si-bluetooth.c:448
+#, c-format
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "Gailu %d konektatuta"
+msgstr[1] "%d gailu konektatuta"
+
+#: system-indicators/si-bluetooth.c:455
+msgid "Not Connected"
+msgstr "Konektatu gabe"
+
+#: system-indicators/si-desktop-menu-item.c:80
+#, c-format
+msgid "Desktop file “%s” is missing!"
+msgstr "Mahaigaineko “%s” fitxategia falta da!"
+
+#: system-indicators/si-desktop-menu-item.c:95
+#, c-format
+msgid "Failed to start “%s”: %s"
+msgstr "Huts egin du “%s” abioak: %s"
+
+#: system-indicators/si-input-sources.c:852
+msgid "Show Keyboard Layout"
+msgstr "Erakutsi teklatuaren diseinua"
+
+#: system-indicators/si-input-sources.c:883
+msgid "Region & Language Settings"
+msgstr "Eskualdearen eta hizkuntzaren ezarpenak"
+
+#: system-indicators/si-module.c:33
+msgid "System Indicators"
+msgstr "Sistema-adierazleak"
+
+#: system-indicators/si-module.c:34
+msgid "This applet contains system indicators"
+msgstr "Miniaplikazio honek sistema-adierazleak ditu"
+
+#: system-indicators/si-power.c:63
+msgid "UPS"
+msgstr "UPS"
+
+#: system-indicators/si-power.c:65
+msgid "Battery"
+msgstr "Bateria"
+
+#: system-indicators/si-power.c:81
+msgid "Fully Charged"
+msgstr "Erabat kargatuta"
+
+#: system-indicators/si-power.c:83
+msgid "Empty"
+msgstr "Hutsa"
+
+#: system-indicators/si-power.c:89
+msgid "Not Charging"
+msgstr "Kargarik ez"
+
+#: system-indicators/si-power.c:91 system-indicators/si-power.c:96
+msgid "Estimating..."
+msgstr "Kalkulatzen…"
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: system-indicators/si-power.c:105
+#, c-format
+msgid "%.0f:%02.0f Remaining (%.0f%%)"
+msgstr "%.0f:%02.0f geratzen da (%% %.0f)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: system-indicators/si-power.c:112
+#, c-format
+msgid "%.0f:%02.0f Until Full (%.0f%%)"
+msgstr "%.0f:%02.0f betetzeko (%% %.0f)"
+
+#: system-indicators/si-power.c:146
+msgid "Power Settings"
+msgstr "Energiaren ezarpenak"
+
+#: system-indicators/si-volume.c:245
+msgid "Volume changed"
+msgstr "Bolumena aldatuta"
+
+#: system-indicators/si-volume.c:266
+msgid "Mute"
+msgstr "Mututu"
+
+#: system-indicators/si-volume.c:523
+msgid "Input"
+msgstr "Sarrera"
+
+#: system-indicators/si-volume.c:523
+msgid "Output"
+msgstr "Irteera"
+
+#: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Mutututa"
+
+#~ msgid "GNOME Flashback Initialization"
+#~ msgstr "GNOME Flashback hasieratzea"
+
+#~ msgid "Screensaver (GNOME Flashback)"
+#~ msgstr "Pantaila-babeslea (GNOME Flashback)"
+
+#~ msgid "Launch screensaver and locker program"
+#~ msgstr "Abiarazi pantaila-babeslea eta programa blokeatzailea"
+
+#~ msgid "preferences-desktop-screensaver"
+#~ msgstr "preferences-desktop-screensaver"
+
+#~ msgid "Bluetooth applet"
+#~ msgstr "Bluetooth appleta"
+
+#~ msgid ""
+#~ "If set to true, then GNOME Flashback application will be used to show a "
+#~ "Bluetooth applet."
+#~ msgstr ""
+#~ "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko "
+#~ "Bluetooth appleta."
+
+#~ msgid "Power applet"
+#~ msgstr "Energia appleta"
+
+#~ msgid ""
+#~ "If set to true, then GNOME Flashback application will be used to show a "
+#~ "power applet."
+#~ msgstr ""
+#~ "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko energia "
+#~ "appleta."
+
+#~ msgid "Sound applet"
+#~ msgstr "Soinu appleta"
+
+#~ msgid ""
+#~ "If set to true, then GNOME Flashback application will be used to show a "
+#~ "sound applet. This is the same sound applet that used to be a part of "
+#~ "GNOME Control Center."
+#~ msgstr ""
+#~ "Gaitzen baduzu GNOME Flashback aplikazioa erabiliko da erakusteko soinu "
+#~ "appleta. GNOME Kontrol Zentroak erabiltzen duen soinu applet berbera da."
+
+#~ msgid "Symbolic"
+#~ msgstr "Sinbolikoa"
+
+#~ msgid "Enable debugging code"
+#~ msgstr "Gaitu arazketa-kodea"
+
+#~ msgid "Initialize GNOME Flashback session"
+#~ msgstr "Hasieratu GNOME Flashback saioa"
+
+#~ msgid "Bluetooth active"
+#~ msgstr "Bluetooth aktiboa"
+
+#~ msgid "Bluetooth disabled"
+#~ msgstr "Bluetooth-a desgaituta"
+
+#~ msgid "Keyboard"
+#~ msgstr "Teklatua"
+
+#~ msgid "Sound Output Volume"
+#~ msgstr "Soinuaren irteerako bolumena"
+
+#~ msgid "Microphone Volume"
+#~ msgstr "Mikrofonoaren bolumena"
+
+#~ msgctxt "volume"
+#~ msgid "100%"
+#~ msgstr "% 100"
+
+#~ msgctxt "volume"
+#~ msgid "Unamplified"
+#~ msgstr "Anplifikatu gabea"
+
+#~ msgid "_Sound Preferences"
+#~ msgstr "_Soinuaren hobespenak"
 
 #~ msgid "Display configuration"
 #~ msgstr "Pantailaren konfigurazioa"
