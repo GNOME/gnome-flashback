@@ -111,12 +111,6 @@ gf-login-session-gen.c: org.freedesktop.login1.Session.xml
 		--generate-c-code gf-login-session-gen \
 		$(srcdir)/org.freedesktop.login1.Session.xml
 
-gf-nautilus-gen.h:
-gf-nautilus-gen.c: org.gnome.Nautilus.FileOperations.xml
-	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
-		--generate-c-code gf-nautilus-gen \
-		$(srcdir)/org.gnome.Nautilus.FileOperations.xml
-
 gf-nautilus2-gen.h:
 gf-nautilus2-gen.c: org.gnome.Nautilus.FileOperations2.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
@@ -212,8 +206,6 @@ BUILT_SOURCES = \
 	gf-login-seat-gen.h \
 	gf-login-session-gen.c \
 	gf-login-session-gen.h \
-	gf-nautilus-gen.c \
-	gf-nautilus-gen.h \
 	gf-nautilus2-gen.c \
 	gf-nautilus2-gen.h \
 	gf-upower-device-gen.c \
@@ -251,7 +243,6 @@ EXTRA_DIST = \
 	org.freedesktop.Notifications.xml \
 	org.freedesktop.UPower.Device.xml \
 	org.gnome.Flashback.InputSources.xml \
-	org.gnome.Nautilus.FileOperations.xml \
 	org.gnome.Nautilus.FileOperations2.xml \
 	org.gnome.ScreenSaver.xml \
 	org.gnome.SessionManager.ClientPrivate.xml \
