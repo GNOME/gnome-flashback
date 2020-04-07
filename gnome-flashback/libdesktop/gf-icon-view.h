@@ -59,6 +59,10 @@ void                gf_icon_view_move_to_trash            (GfIconView          *
                                                            const char * const  *uris,
                                                            guint32              timestamp);
 
+void                gf_icon_view_delete                   (GfIconView          *self,
+                                                           const char * const  *uris,
+                                                           guint32              timestamp);
+
 void                gf_icon_view_rename_file              (GfIconView          *self,
                                                            const char          *uri,
                                                            const char          *new_name,

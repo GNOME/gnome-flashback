@@ -575,6 +575,25 @@ trash_uris_cb (GObject      *object,
 }
 
 static void
+delete_uris_cb (GObject      *object,
+                GAsyncResult *res,
+                gpointer      user_data)
+{
+  GError *error;
+
+  error = NULL;
+  gf_nautilus2_gen_call_delete_uris_finish (GF_NAUTILUS2_GEN (object),
+                                            res, &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Error deleting files: %s", error->message);
+      g_error_free (error);
+    }
+}
+
+static void
 rename_uri_cb (GObject      *object,
                GAsyncResult *res,
                gpointer      user_data)
@@ -2105,6 +2124,35 @@ static void
 delete_cb (GfIconView *self,
            gpointer    user_data)
 {
+  gboolean can_delete;
+  GList *l;
+  char **uris;
+
+  if (self->selected_icons == NULL)
+    return;
+
+  can_delete = TRUE;
+  for (l = self->selected_icons; l != NULL; l = l->next)
+    {
+      if (!GF_ICON_GET_CLASS (l->data)->can_delete (GF_ICON (l->data)))
+        {
+          can_delete = FALSE;
+          break;
+        }
+    }
+
+  if (!can_delete)
+    return;
+
+  uris = get_selected_uris (self);
+  if (uris == NULL)
+    return;
+
+  gf_icon_view_delete (self,
+                       (const char * const *) uris,
+                       gtk_get_current_event_time ());
+
+  g_strfreev (uris);
 }
 
 static void
@@ -3180,6 +3228,22 @@ gf_icon_view_move_to_trash (GfIconView         *self,
                                     self->cancellable,
                                     trash_uris_cb,
                                     NULL);
+}
+
+void
+gf_icon_view_delete (GfIconView         *self,
+                     const char * const *uris,
+                     guint32             timestamp)
+{
+  if (self->nautilus == NULL)
+    return;
+
+  gf_nautilus2_gen_call_delete_uris (self->nautilus,
+                                     uris,
+                                     get_platform_data (self, timestamp),
+                                     self->cancellable,
+                                     delete_uris_cb,
+                                     NULL);
 }
 
 void
