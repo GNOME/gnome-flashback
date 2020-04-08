@@ -511,8 +511,9 @@ monitor_removed_cb (GdkDisplay *display,
       if (gf_window_get_monitor (GF_WINDOW (l->data)) != monitor)
         continue;
 
-      self->windows = g_slist_delete_link (self->windows, l);
+      self->windows = g_slist_remove_link (self->windows, l);
       gtk_widget_destroy (GTK_WIDGET (l->data));
+      g_slist_free (l);
       break;
     }
 
