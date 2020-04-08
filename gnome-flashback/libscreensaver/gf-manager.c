@@ -79,9 +79,6 @@ enum
   ACTIVATED,
   DEACTIVATED,
 
-  AUTH_REQUEST_BEGIN,
-  AUTH_REQUEST_END,
-
   LAST_SIGNAL
 };
 
@@ -315,8 +312,6 @@ window_dialog_up_cb (GfWindow  *window,
 
       g_debug ("Handling dialog up");
 
-      g_signal_emit (self, manager_signals[AUTH_REQUEST_BEGIN], 0);
-
       self->dialog_up = TRUE;
 
       /* Make all other windows insensitive so we don't get events */
@@ -341,8 +336,6 @@ window_dialog_up_cb (GfWindow  *window,
         gtk_widget_set_sensitive (GTK_WIDGET (l->data), TRUE);
 
       self->dialog_up = FALSE;
-
-      g_signal_emit (self, manager_signals[AUTH_REQUEST_END], 0);
     }
 }
 
@@ -670,14 +663,6 @@ install_signals (void)
 
   manager_signals[DEACTIVATED] =
     g_signal_new ("deactivated", GF_TYPE_MANAGER, G_SIGNAL_RUN_LAST,
-                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
-
-  manager_signals[AUTH_REQUEST_BEGIN] =
-    g_signal_new ("auth-request-begin", GF_TYPE_MANAGER, G_SIGNAL_RUN_LAST,
-                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
-
-  manager_signals[AUTH_REQUEST_END] =
-    g_signal_new ("auth-request-end", GF_TYPE_MANAGER, G_SIGNAL_RUN_LAST,
                   0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 }
 
