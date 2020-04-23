@@ -818,7 +818,13 @@ gf_unlock_dialog_dispose (GObject *object)
   g_clear_object (&self->dm_seat);
   g_clear_object (&self->login_seat);
 
-  g_clear_object (&self->auth);
+  if (self->auth != NULL)
+    {
+      gf_auth_cancel (self->auth);
+
+      g_object_unref (self->auth);
+      self->auth = NULL;
+    }
 
   G_OBJECT_CLASS (gf_unlock_dialog_parent_class)->dispose (object);
 }

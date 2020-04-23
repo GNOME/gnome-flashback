@@ -52,6 +52,8 @@ void      gf_auth_set_response    (GfAuth     *self,
 
 void      gf_auth_verify          (GfAuth     *self);
 
+void      gf_auth_cancel          (GfAuth     *self);
+
 G_END_DECLS
 
 #endif

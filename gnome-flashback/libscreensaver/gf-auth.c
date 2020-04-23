@@ -403,9 +403,6 @@ verify_done_cb (GObject      *object,
 
   self = GF_AUTH (user_data);
 
-  if (!verified)
-    g_clear_object (&self->task);
-
   message = "";
   if (error != NULL)
     {
@@ -441,6 +438,16 @@ verify_done_cb (GObject      *object,
 }
 
 static void
+task_finalized_cb (gpointer  data,
+                   GObject  *where_the_object_was)
+{
+  GfAuth *self;
+
+  self = GF_AUTH (data);
+  self->task = NULL;
+}
+
+static void
 gf_auth_dispose (GObject *object)
 {
   GfAuth *self;
@@ -458,12 +465,9 @@ gf_auth_dispose (GObject *object)
       self->message_id = 0;
     }
 
-  if (self->awaits_response)
-    g_cond_signal (&self->cond);
+  g_assert (!self->awaits_response);
 
   g_mutex_unlock (&self->mutex);
-
-  g_clear_object (&self->task);
 
   G_OBJECT_CLASS (gf_auth_parent_class)->dispose (object);
 }
@@ -630,7 +634,17 @@ gf_auth_verify (GfAuth *self)
     return;
 
   self->task = g_task_new (NULL, self->cancellable, verify_done_cb, self);
-  g_task_set_task_data (self->task, self, NULL);
+  g_task_set_task_data (self->task, g_object_ref (self), g_object_unref);
+
+  g_object_weak_ref (G_OBJECT (self->task), task_finalized_cb, self);
 
   g_task_run_in_thread (self->task, verify_in_thread_cb);
+  g_object_unref (self->task);
+}
+
+void
+gf_auth_cancel (GfAuth *self)
+{
+  g_cancellable_cancel (self->cancellable);
+  gf_auth_set_response (self, NULL);
 }
