@@ -43,6 +43,9 @@ void       gf_unlock_dialog_set_input_sources       (GfUnlockDialog *self,
 void       gf_unlock_dialog_set_user_switch_enabled (GfUnlockDialog *self,
                                                      gboolean        user_switch_enabled);
 
+void       gf_unlock_dialog_forward_key_event       (GfUnlockDialog *self,
+                                                     GdkEvent       *event);
+
 G_END_DECLS
 
 #endif

@@ -1049,3 +1049,10 @@ gf_unlock_dialog_set_user_switch_enabled (GfUnlockDialog *self,
 
   update_user_switch_button (self);
 }
+
+void
+gf_unlock_dialog_forward_key_event (GfUnlockDialog *self,
+                                    GdkEvent       *event)
+{
+  gtk_widget_event (self->prompt_entry, event);
+}

@@ -26,6 +26,8 @@
 #include "gf-panel.h"
 #include "gf-unlock-dialog.h"
 
+#define MAX_QUEUED_EVENTS 16
+
 struct _GfWindow
 {
   GtkWindow        parent;
@@ -40,6 +42,8 @@ struct _GfWindow
   cairo_surface_t *surface;
 
   GfInputSources  *input_sources;
+
+  GList           *key_events;
 
   gboolean         lock_enabled;
   gboolean         user_switch_enabled;
@@ -178,6 +182,21 @@ unlock_dialog_close_cb (GfUnlockDialog *dialog,
 }
 
 static void
+unlock_dialog_show_cb (GtkWidget *widget,
+                       GfWindow  *self)
+{
+  GList *l;
+
+  self->key_events = g_list_reverse (self->key_events);
+
+  for (l = self->key_events; l != NULL; l = l->next)
+    gf_unlock_dialog_forward_key_event (GF_UNLOCK_DIALOG (widget), l->data);
+
+  g_list_free_full (self->key_events, (GDestroyNotify) gdk_event_free);
+  self->key_events = NULL;
+}
+
+static void
 popup_dialog (GfWindow *self)
 {
   g_debug ("Popping up dialog");
@@ -198,6 +217,9 @@ popup_dialog (GfWindow *self)
 
   g_signal_connect (self->unlock_dialog, "close",
                     G_CALLBACK (unlock_dialog_close_cb), self);
+
+  g_signal_connect (self->unlock_dialog, "show",
+                    G_CALLBACK (unlock_dialog_show_cb), self);
 
   gtk_box_pack_start (GTK_BOX (self->vbox), self->unlock_dialog, TRUE, TRUE, 0);
 }
@@ -284,6 +306,12 @@ gf_window_finalize (GObject *object)
   self = GF_WINDOW (object);
 
   g_clear_pointer (&self->surface, cairo_surface_destroy);
+
+  if (self->key_events != NULL)
+    {
+      g_list_free_full (self->key_events, (GDestroyNotify) gdk_event_free);
+      self->key_events = NULL;
+    }
 
   if (self->emit_deactivated_idle_id != 0)
     {
@@ -390,6 +418,24 @@ gf_window_key_press_event (GtkWidget   *widget,
           event->keyval == GDK_KEY_Escape ||
           event->keyval == GDK_KEY_space)
         return TRUE;
+    }
+
+  if (self->unlock_dialog == NULL ||
+      !gtk_widget_is_visible (self->unlock_dialog))
+    {
+      /* Only cache MAX_QUEUED_EVENTS key events. If there are any more
+       * than this then something is wrong.
+       *
+       * Don't queue keys that may cause focus navigation in the dialog.
+       */
+      if (g_list_length (self->key_events) < MAX_QUEUED_EVENTS &&
+          event->keyval != GDK_KEY_Tab &&
+          event->keyval != GDK_KEY_Up &&
+          event->keyval != GDK_KEY_Down)
+        {
+          self->key_events = g_list_prepend (self->key_events,
+                                             gdk_event_copy ((GdkEvent *) event));
+        }
     }
 
   return GTK_WIDGET_CLASS (gf_window_parent_class)->key_press_event (widget,
