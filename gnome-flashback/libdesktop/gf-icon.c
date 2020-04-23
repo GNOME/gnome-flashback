@@ -280,7 +280,7 @@ drag_data_get_cb (GtkWidget        *widget,
 
       uris = get_selected_uris (self);
       gtk_selection_data_set_uris (data, uris);
-      g_free (uris);
+      g_strfreev (uris);
     }
 }
 
