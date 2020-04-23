@@ -203,6 +203,8 @@ find_user_by_name_cb (GObject      *object,
                                           self->cancellable,
                                           user_ready_cb,
                                           self);
+
+  g_free (user);
 }
 
 static void
