@@ -96,7 +96,7 @@ test_audio_device_selection_LDADD = \
 endif
 
 ENUM_TYPES = \
-	gvc/gvc-mixer-stream.h \
+	$(srcdir)/gvc/gvc-mixer-stream.h \
 	$(NULL)
 
 gvc-enum-types.c: gvc-enum-types.c.in gvc-enum-types.h $(ENUM_TYPES)
