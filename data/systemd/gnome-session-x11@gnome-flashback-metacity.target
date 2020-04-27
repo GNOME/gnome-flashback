@@ -1,7 +1,5 @@
 [Unit]
 Description=GNOME Flashback Session
-OnFailure=gnome-session-failed.target
-OnFailureJobMode=replace
 DefaultDependencies=no
 RefuseManualStart=no
 
