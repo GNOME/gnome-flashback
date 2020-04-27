@@ -400,12 +400,14 @@ AC_CONFIG_FILES([
 
   dbus/Makefile
 
+  daemons/Makefile
+  daemons/clipboard/Makefile
+
   gnome-flashback/Makefile
   gnome-flashback/liba11y-keyboard/Makefile
   gnome-flashback/libaudio-device-selection/Makefile
   gnome-flashback/libautomount-manager/Makefile
   gnome-flashback/libcommon/Makefile
-  gnome-flashback/libclipboard/Makefile
   gnome-flashback/libdesktop/Makefile
   gnome-flashback/libend-session-dialog/Makefile
   gnome-flashback/libidle-monitor/Makefile

@@ -114,4 +114,3 @@ get_server_time (Display *display,
 
   return xevent.xproperty.time;
 }
-

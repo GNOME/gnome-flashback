@@ -26,7 +26,6 @@
 #include "liba11y-keyboard/gf-a11y-keyboard.h"
 #include "libaudio-device-selection/gf-audio-device-selection.h"
 #include "libautomount-manager/gsd-automount-manager.h"
-#include "libclipboard/gf-clipboard.h"
 #include "libdesktop/gf-desktop.h"
 #include "libend-session-dialog/gf-end-session-dialog.h"
 #include "libidle-monitor/flashback-idle-monitor.h"
@@ -59,7 +58,6 @@ struct _GfApplication
   FlashbackShell          *shell;
   GfA11yKeyboard          *a11y_keyboard;
   GfAudioDeviceSelection  *audio_device_selection;
-  GfClipboard             *clipboard;
   GfDesktop               *desktop;
   GfEndSessionDialog      *dialog;
   GfInputSettings         *input_settings;
@@ -218,7 +216,6 @@ settings_changed (GSettings   *settings,
   SETTING_CHANGED (a11y_keyboard, "a11y-keyboard", gf_a11y_keyboard_new)
   SETTING_CHANGED (audio_device_selection, "audio-device-selection", gf_audio_device_selection_new)
   SETTING_CHANGED (desktop, "desktop", gf_desktop_new)
-  SETTING_CHANGED (clipboard, "clipboard", gf_clipboard_new)
   SETTING_CHANGED (dialog, "end-session-dialog", gf_end_session_dialog_new)
   SETTING_CHANGED (input_settings, "input-settings", gf_input_settings_new)
   SETTING_CHANGED (input_sources, "input-sources", gf_input_sources_new)
@@ -269,7 +266,6 @@ gf_application_dispose (GObject *object)
   g_clear_object (&application->a11y_keyboard);
   g_clear_object (&application->audio_device_selection);
   g_clear_object (&application->desktop);
-  g_clear_object (&application->clipboard);
   g_clear_object (&application->dialog);
   g_clear_object (&application->input_settings);
   g_clear_object (&application->input_sources);

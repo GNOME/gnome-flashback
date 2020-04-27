@@ -3,6 +3,7 @@ NULL =
 SUBDIRS = \
 	data \
 	dbus \
+	daemons \
 	backends \
 	gvc \
 	gnome-flashback \

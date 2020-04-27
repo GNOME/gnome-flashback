@@ -2,6 +2,7 @@
 # Please keep this file sorted alphabetically.
 backends/gf-monitor.c
 data/applications/gnome-flashback.desktop.in.in
+data/autostart/gnome-flashback-clipboard.desktop.in.in
 data/autostart/gnome-flashback-nm-applet.desktop.in
 data/directories/X-GNOME-Flashback-Settings.directory.desktop.in
 data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in
