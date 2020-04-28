@@ -29,14 +29,16 @@ struct _GfIconClass
 {
   GtkButtonClass parent_class;
 
-  GIcon      * (* get_icon)   (GfIcon   *self,
-                              gboolean *is_thumbnail);
+  void         (* create_file_monitor) (GfIcon   *self);
 
-  const char * (* get_text)   (GfIcon   *self);
+  GIcon      * (* get_icon)            (GfIcon   *self,
+                                        gboolean *is_thumbnail);
 
-  gboolean     (* can_delete) (GfIcon   *self);
+  const char * (* get_text)            (GfIcon   *self);
 
-  gboolean     (* can_rename) (GfIcon   *self);
+  gboolean     (* can_delete)          (GfIcon   *self);
+
+  gboolean     (* can_rename)          (GfIcon   *self);
 };
 
 GtkWidget  *gf_icon_new               (GfIconView *icon_view,
