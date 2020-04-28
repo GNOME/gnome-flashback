@@ -41,6 +41,8 @@ typedef struct
   GFile           *file;
   GFileInfo       *info;
 
+  GFileMonitor    *monitor;
+
   GfIconSize       icon_size;
   guint            extra_text_width;
 
@@ -1010,6 +1012,69 @@ set_icon_size (GfIcon *self,
 }
 
 static void
+file_changed_cb (GFileMonitor      *monitor,
+                 GFile             *file,
+                 GFile             *other_file,
+                 GFileMonitorEvent  event_type,
+                 GfIcon            *self)
+{
+  switch (event_type)
+    {
+      case G_FILE_MONITOR_EVENT_CHANGED:
+        break;
+
+      case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
+        icon_refresh (self);
+        break;
+
+      case G_FILE_MONITOR_EVENT_DELETED:
+        break;
+
+      case G_FILE_MONITOR_EVENT_CREATED:
+        break;
+
+      case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
+        gf_icon_update (self);
+        break;
+
+      case G_FILE_MONITOR_EVENT_PRE_UNMOUNT:
+        break;
+
+      case G_FILE_MONITOR_EVENT_UNMOUNTED:
+        break;
+
+      case G_FILE_MONITOR_EVENT_MOVED:
+        break;
+
+      case G_FILE_MONITOR_EVENT_RENAMED:
+        break;
+
+      case G_FILE_MONITOR_EVENT_MOVED_IN:
+        break;
+
+      case G_FILE_MONITOR_EVENT_MOVED_OUT:
+        break;
+
+      default:
+        break;
+    }
+}
+
+static void
+set_file (GfIcon *self,
+          GFile  *file)
+{
+  GfIconPrivate *priv;
+
+  priv = gf_icon_get_instance_private (self);
+
+  g_clear_object (&priv->file);
+  priv->file = g_object_ref (file);
+
+  GF_ICON_GET_CLASS (self)->create_file_monitor (self);
+}
+
+static void
 gf_icon_constructed (GObject *object)
 {
   G_OBJECT_CLASS (gf_icon_parent_class)->constructed (object);
@@ -1035,6 +1100,8 @@ gf_icon_dispose (GObject *object)
 
   g_clear_object (&priv->file);
   g_clear_object (&priv->info);
+
+  g_clear_object (&priv->monitor);
 
   g_clear_object (&priv->app_info);
 
@@ -1112,7 +1179,7 @@ gf_icon_set_property (GObject      *object,
 
       case PROP_FILE:
         g_assert (priv->file == NULL);
-        priv->file = g_value_dup_object (value);
+        set_file (self, g_value_get_object (value));
         break;
 
       case PROP_INFO:
@@ -1152,6 +1219,35 @@ gf_icon_get_preferred_width (GtkWidget *widget,
 
   *minimum_width += priv->extra_text_width;
   *natural_width += priv->extra_text_width;
+}
+
+static void
+gf_icon_create_file_monitor (GfIcon *self)
+{
+  GfIconPrivate *priv;
+  GError *error;
+
+  priv = gf_icon_get_instance_private (self);
+
+  g_clear_object (&priv->monitor);
+
+  error = NULL;
+  priv->monitor = g_file_monitor_file (priv->file,
+                                       G_FILE_MONITOR_NONE,
+                                       NULL,
+                                       &error);
+
+  if (error != NULL)
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+      return;
+    }
+
+  g_signal_connect (priv->monitor,
+                    "changed",
+                    G_CALLBACK (file_changed_cb),
+                    self);
 }
 
 static GIcon *
@@ -1299,6 +1395,7 @@ gf_icon_class_init (GfIconClass *self_class)
 
   widget_class->get_preferred_width = gf_icon_get_preferred_width;
 
+  self_class->create_file_monitor = gf_icon_create_file_monitor;
   self_class->get_icon = gf_icon_get_icon;
   self_class->get_text = gf_icon_get_text;
   self_class->can_delete = gf_icon_can_delete;
@@ -1416,9 +1513,7 @@ gf_icon_set_file (GfIcon *self,
 
   g_clear_pointer (&priv->popover, gtk_widget_destroy);
 
-  g_clear_object (&priv->file);
-  priv->file = g_object_ref (file);
-
+  set_file (self, file);
   gf_icon_update (self);
 }
 

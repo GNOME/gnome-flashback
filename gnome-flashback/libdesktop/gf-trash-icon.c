@@ -145,28 +145,10 @@ static void
 gf_trash_icon_constructed (GObject *object)
 {
   GfTrashIcon *self;
-  GError *error;
 
   self = GF_TRASH_ICON (object);
 
   G_OBJECT_CLASS (gf_trash_icon_parent_class)->constructed (object);
-
-  error = NULL;
-  self->monitor = g_file_monitor_directory (gf_icon_get_file (GF_ICON (self)),
-                                            G_FILE_MONITOR_WATCH_MOVES,
-                                            self->cancellable,
-                                            &error);
-
-  if (error != NULL)
-    {
-      g_warning ("%s", error->message);
-      g_error_free (error);
-      return;
-    }
-
-  g_signal_connect (self->monitor, "changed",
-                    G_CALLBACK (trash_changed_cb),
-                    self);
 
   check_if_empty (self);
 }
@@ -184,6 +166,35 @@ gf_trash_icon_dispose (GObject *object)
   g_clear_object (&self->monitor);
 
   G_OBJECT_CLASS (gf_trash_icon_parent_class)->dispose (object);
+}
+
+static void
+gf_trash_icon_create_file_monitor (GfIcon *icon)
+{
+  GfTrashIcon *self;
+  GError *error;
+
+  self = GF_TRASH_ICON (icon);
+
+  g_clear_object (&self->monitor);
+
+  error = NULL;
+  self->monitor = g_file_monitor_directory (gf_icon_get_file (GF_ICON (self)),
+                                            G_FILE_MONITOR_WATCH_MOVES,
+                                            self->cancellable,
+                                            &error);
+
+  if (error != NULL)
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+      return;
+    }
+
+  g_signal_connect (self->monitor,
+                    "changed",
+                    G_CALLBACK (trash_changed_cb),
+                    self);
 }
 
 static GIcon *
@@ -222,6 +233,7 @@ gf_trash_icon_class_init (GfTrashIconClass *self_class)
   object_class->constructed = gf_trash_icon_constructed;
   object_class->dispose = gf_trash_icon_dispose;
 
+  icon_class->create_file_monitor = gf_trash_icon_create_file_monitor;
   icon_class->get_icon = gf_trash_icon_get_icon;
   icon_class->can_delete = gf_trash_icon_can_delete;
   icon_class->can_rename = gf_trash_icon_can_rename;
