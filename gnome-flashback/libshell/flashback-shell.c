@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2019 Alberts Muktupāvels
+ * Copyright (C) 2015-2020 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include "dbus/gf-shell-gen.h"
 #include "flashback-monitor-labeler.h"
 #include "flashback-osd.h"
+#include "gf-shell-introspect.h"
 
 #define SHELL_DBUS_NAME "org.gnome.Shell"
 #define SHELL_DBUS_PATH "/org/gnome/Shell"
@@ -52,6 +53,8 @@ struct _FlashbackShell
 
   /* osd */
   FlashbackOsd            *osd;
+
+  GfShellIntrospect       *introspect;
 };
 
 G_DEFINE_TYPE (FlashbackShell, flashback_shell, G_TYPE_OBJECT)
@@ -509,6 +512,7 @@ flashback_shell_finalize (GObject *object)
   g_clear_object (&shell->keybindings);
   g_clear_object (&shell->labeler);
   g_clear_object (&shell->osd);
+  g_clear_object (&shell->introspect);
 
   G_OBJECT_CLASS (flashback_shell_parent_class)->finalize (object);
 }
@@ -536,6 +540,8 @@ flashback_shell_init (FlashbackShell *shell)
 
   shell->labeler = flashback_monitor_labeler_new ();
   shell->osd = flashback_osd_new ();
+
+  shell->introspect = gf_shell_introspect_new ();
 
   shell->bus_name = g_bus_watch_name (G_BUS_TYPE_SESSION,
                                       SHELL_DBUS_NAME,
