@@ -159,6 +159,12 @@ gf-shell-gen.c: org.gnome.Shell.xml
 		--generate-c-code gf-shell-gen \
 		$(srcdir)/org.gnome.Shell.xml
 
+gf-shell-introspect-gen.h:
+gf-shell-introspect-gen.c: org.gnome.Shell.Introspect.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-shell-introspect-gen \
+		$(srcdir)/org.gnome.Shell.Introspect.xml
+
 gf-sm-client-private-gen.h:
 gf-sm-client-private-gen.c: org.gnome.SessionManager.ClientPrivate.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
@@ -222,6 +228,8 @@ BUILT_SOURCES = \
 	gf-session-manager-gen.h \
 	gf-shell-gen.c \
 	gf-shell-gen.h \
+	gf-shell-introspect-gen.c \
+	gf-shell-introspect-gen.h \
 	gf-sm-client-private-gen.c \
 	gf-sm-client-private-gen.h \
 	gf-sm-presence-gen.c \
@@ -251,6 +259,7 @@ EXTRA_DIST = \
 	org.gnome.SessionManager.xml \
 	org.gnome.SettingsDaemon.Rfkill.xml \
 	org.gnome.Shell.AudioDeviceSelection.xml \
+	org.gnome.Shell.Introspect.xml \
 	org.gnome.Shell.Screencast.xml \
 	org.gnome.Shell.Screenshot.xml \
 	org.gnome.Shell.xml \
