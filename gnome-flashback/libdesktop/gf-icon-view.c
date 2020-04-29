@@ -727,6 +727,8 @@ query_info_cb (GObject      *object,
     resort_icons (self, TRUE);
   else
     add_icons (self);
+
+  gf_icon_update (GF_ICON (icon));
 }
 
 static GfIconInfo *
