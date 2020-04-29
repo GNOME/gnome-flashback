@@ -75,6 +75,8 @@ gboolean    gf_icon_get_selected      (GfIcon     *self);
 
 void        gf_icon_open              (GfIcon     *self);
 
+void        gf_icon_rename            (GfIcon     *self);
+
 void        gf_icon_popup_menu        (GfIcon     *self);
 
 void        gf_icon_update            (GfIcon     *self);
