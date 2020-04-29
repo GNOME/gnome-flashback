@@ -765,6 +765,19 @@ remove_icon_from_view (GfIconView *self,
 }
 
 static void
+remove_icon (GfIconView *self,
+             GfIconInfo *info)
+{
+  remove_icon_from_view (self, info);
+
+  self->icons = g_list_remove (self->icons, info);
+  gf_icon_info_free (info);
+
+  if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+    remove_and_readd_icons (self);
+}
+
+static void
 file_deleted (GfIconView *self,
               GFile      *deleted_file)
 {
@@ -775,13 +788,7 @@ file_deleted (GfIconView *self,
   if (info == NULL)
     return;
 
-  remove_icon_from_view (self, info);
-
-  self->icons = g_list_remove (self->icons, info);
-  gf_icon_info_free (info);
-
-  if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
-    remove_and_readd_icons (self);
+  remove_icon (self, info);
 }
 
 static void
@@ -808,14 +815,25 @@ file_renamed (GfIconView *self,
               GFile      *old_file,
               GFile      *new_file)
 {
-  GfIconInfo *info;
+  GfIconInfo *old_info;
+  GfIconInfo *new_info;
 
-  info = find_icon_info_by_file (self, old_file);
+  old_info = find_icon_info_by_file (self, old_file);
+  new_info = find_icon_info_by_file (self, new_file);
 
-  if (info == NULL)
-    return;
-
-  gf_icon_set_file (GF_ICON (info->icon), new_file);
+  if (old_info != NULL && new_info != NULL)
+    {
+      gf_icon_set_file (GF_ICON (new_info->icon), new_file);
+      remove_icon (self, old_info);
+    }
+  else if (old_info != NULL)
+    {
+      gf_icon_set_file (GF_ICON (old_info->icon), new_file);
+    }
+  else if (new_info != NULL)
+    {
+      gf_icon_set_file (GF_ICON (new_info->icon), new_file);
+    }
 }
 
 static void
