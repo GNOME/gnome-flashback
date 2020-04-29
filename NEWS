@@ -1,3 +1,14 @@
+Version 3.37.1
+==============
+- Add a possibility to permanently delete files from desktop. (#28)
+  (Desktop now requires nautilus 3.37.1.1+!)
+- Fix screensaver unlock problems. (#46)
+- Fix few small memory leaks.
+- Fix screenshot saving to clipboard. (#50)
+- Active desktop icon rename with F2 key. (LP:#1875703)
+- Fix creating new desktop icons. (LP:#1875317)
+- Updated translations.
+
 Version 3.36.1
 ==============
 - Disable unimplemented icon placement modes. (#41)
