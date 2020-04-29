@@ -439,32 +439,7 @@ static void
 rename_cb (GtkMenuItem *item,
            GfIcon      *self)
 {
-  GfIconPrivate *priv;
-
-  priv = gf_icon_get_instance_private (self);
-
-  g_assert (priv->popover == NULL);
-  priv->popover = gf_rename_popover_new (GTK_WIDGET (self),
-                                         gf_icon_get_file_type (self),
-                                         gf_icon_get_name (self));
-
-  g_signal_connect (priv->popover, "validate",
-                    G_CALLBACK (rename_validate_cb),
-                    self);
-
-  g_signal_connect (priv->popover, "do-rename",
-                    G_CALLBACK (rename_do_rename_cb),
-                    self);
-
-  g_signal_connect (priv->popover, "closed",
-                    G_CALLBACK (rename_closed_cb),
-                    self);
-
-  g_signal_connect (priv->popover, "destroy",
-                    G_CALLBACK (rename_destroy_cb),
-                    self);
-
-  gtk_popover_popup (GTK_POPOVER (priv->popover));
+  gf_icon_rename (self);
 }
 
 static void
@@ -580,6 +555,9 @@ create_popup_menu (GfIcon *self)
       item = gtk_menu_item_new_with_label (_("Rename..."));
       gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), item);
       gtk_widget_show (item);
+
+      label = gtk_bin_get_child (GTK_BIN (item));
+      gtk_accel_label_set_accel (GTK_ACCEL_LABEL (label), GDK_KEY_F2, 0);
 
       g_signal_connect (item, "activate",
                         G_CALLBACK (rename_cb),
@@ -1587,6 +1565,40 @@ gf_icon_open (GfIcon *self)
     }
 
   g_free (uri);
+}
+
+void
+gf_icon_rename (GfIcon *self)
+{
+  GfIconPrivate *priv;
+
+  if (!GF_ICON_GET_CLASS (self)->can_rename (self))
+    return;
+
+  priv = gf_icon_get_instance_private (self);
+
+  g_assert (priv->popover == NULL);
+  priv->popover = gf_rename_popover_new (GTK_WIDGET (self),
+                                         gf_icon_get_file_type (self),
+                                         gf_icon_get_name (self));
+
+  g_signal_connect (priv->popover, "validate",
+                    G_CALLBACK (rename_validate_cb),
+                    self);
+
+  g_signal_connect (priv->popover, "do-rename",
+                    G_CALLBACK (rename_do_rename_cb),
+                    self);
+
+  g_signal_connect (priv->popover, "closed",
+                    G_CALLBACK (rename_closed_cb),
+                    self);
+
+  g_signal_connect (priv->popover, "destroy",
+                    G_CALLBACK (rename_destroy_cb),
+                    self);
+
+  gtk_popover_popup (GTK_POPOVER (priv->popover));
 }
 
 void
