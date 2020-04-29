@@ -627,6 +627,14 @@ create_icon_info (GfIconView *self,
 }
 
 static void
+icon_changed_cb (GfIcon     *icon,
+                 GfIconView *self)
+{
+  if (self->placement == GF_PLACEMENT_AUTO_ARRANGE_ICONS)
+    resort_icons (self, FALSE);
+}
+
+static void
 query_info_cb (GObject      *object,
                GAsyncResult *res,
                gpointer      user_data)
@@ -656,6 +664,8 @@ query_info_cb (GObject      *object,
 
   icon = gf_icon_new (self, file, file_info);
   g_object_unref (file_info);
+
+  g_signal_connect (icon, "changed", G_CALLBACK (icon_changed_cb), self);
 
   icon_info = create_icon_info (self, icon);
   self->icons = g_list_prepend (self->icons, icon_info);
@@ -1617,6 +1627,8 @@ next_files_cb (GObject      *object,
 
       icon = gf_icon_new (self, file, info);
       g_object_unref (file);
+
+      g_signal_connect (icon, "changed", G_CALLBACK (icon_changed_cb), self);
 
       icon_info = create_icon_info (self, icon);
       self->icons = g_list_prepend (self->icons, icon_info);

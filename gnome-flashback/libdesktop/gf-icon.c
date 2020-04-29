@@ -85,6 +85,8 @@ enum
 {
   SELECTED,
 
+  CHANGED,
+
   LAST_SIGNAL
 };
 
@@ -835,21 +837,33 @@ update_icon (GfIcon *self)
   gtk_image_set_pixel_size (GTK_IMAGE (priv->image), priv->icon_size);
 }
 
-static void
+static gboolean
 update_text (GfIcon *self)
 {
   GfIconPrivate *priv;
   const char *name;
+  char *old_name;
 
   priv = gf_icon_get_instance_private (self);
 
   name = GF_ICON_GET_CLASS (self)->get_text (self);
 
+  old_name = priv->name;
   priv->name = g_strdup (name);
+
   gtk_label_set_text (GTK_LABEL (priv->label), name);
 
   g_clear_pointer (&priv->name_collated, g_free);
   priv->name_collated = g_utf8_collate_key_for_filename (name, -1);
+
+  if (g_strcmp0 (old_name, name) != 0)
+    {
+      g_free (old_name);
+      return TRUE;
+    }
+
+  g_free (old_name);
+  return FALSE;
 }
 
 static void
@@ -924,7 +938,7 @@ load_thumbnail (GfIcon *self)
   g_free (uri);
 }
 
-static void
+static gboolean
 icon_refresh (GfIcon *self)
 {
   GfIconPrivate *priv;
@@ -948,7 +962,8 @@ icon_refresh (GfIcon *self)
     }
 
   update_icon (self);
-  update_text (self);
+
+  return update_text (self);
 }
 
 static void
@@ -980,6 +995,8 @@ query_info_cb (GObject      *object,
   priv->info = file_info;
 
   icon_refresh (self);
+
+  g_signal_emit (self, icon_signals[CHANGED], 0);
 }
 
 static void
@@ -1019,7 +1036,8 @@ file_changed_cb (GFileMonitor      *monitor,
         break;
 
       case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
-        icon_refresh (self);
+        if (icon_refresh (self))
+          g_signal_emit (self, icon_signals[CHANGED], 0);
         break;
 
       case G_FILE_MONITOR_EVENT_DELETED:
@@ -1370,6 +1388,10 @@ install_signals (void)
 {
   icon_signals[SELECTED] =
     g_signal_new ("selected", GF_TYPE_ICON, G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+
+  icon_signals[CHANGED] =
+    g_signal_new ("changed", GF_TYPE_ICON, G_SIGNAL_RUN_LAST,
                   0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 }
 
