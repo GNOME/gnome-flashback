@@ -68,11 +68,11 @@ ENUM_TYPES = \
 	$(srcdir)/gf-desktop-enums.h \
 	$(NULL)
 
-gf-desktop-enum-types.c: gf-desktop-enum-types.c.in gf-desktop-enum-types.h $(ENUM_TYPES)
+gf-desktop-enum-types.c: gf-desktop-enum-types.c.in $(ENUM_TYPES) Makefile.am
 	$(AM_V_GEN) $(GLIB_MKENUMS) --template $(srcdir)/gf-desktop-enum-types.c.in $(ENUM_TYPES) > \
 		gf-desktop-enum-types.c.tmp && mv gf-desktop-enum-types.c.tmp gf-desktop-enum-types.c
 
-gf-desktop-enum-types.h: gf-desktop-enum-types.h.in $(ENUM_TYPES)
+gf-desktop-enum-types.h: gf-desktop-enum-types.h.in $(ENUM_TYPES) Makefile.am
 	$(AM_V_GEN) $(GLIB_MKENUMS) --template $(srcdir)/gf-desktop-enum-types.h.in $(ENUM_TYPES) > \
 		gf-desktop-enum-types.h.tmp && mv gf-desktop-enum-types.h.tmp gf-desktop-enum-types.h
 
