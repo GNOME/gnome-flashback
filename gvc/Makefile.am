@@ -99,11 +99,11 @@ ENUM_TYPES = \
 	$(srcdir)/gvc/gvc-mixer-stream.h \
 	$(NULL)
 
-gvc-enum-types.c: gvc-enum-types.c.in gvc-enum-types.h $(ENUM_TYPES)
+gvc-enum-types.c: gvc-enum-types.c.in $(ENUM_TYPES) Makefile.am
 	$(AM_V_GEN) $(GLIB_MKENUMS) --template $(srcdir)/gvc-enum-types.c.in $(ENUM_TYPES) > \
 		gvc-enum-types.c.tmp && mv gvc-enum-types.c.tmp gvc-enum-types.c
 
-gvc-enum-types.h: gvc-enum-types.h.in $(ENUM_TYPES)
+gvc-enum-types.h: gvc-enum-types.h.in $(ENUM_TYPES) Makefile.am
 	$(AM_V_GEN) $(GLIB_MKENUMS) --template $(srcdir)/gvc-enum-types.h.in $(ENUM_TYPES) > \
 		gvc-enum-types.h.tmp && mv gvc-enum-types.h.tmp gvc-enum-types.h
 

@@ -40,11 +40,11 @@ ENUM_TYPES = \
 	$(srcdir)/gf-keybindings.h \
 	$(NULL)
 
-gf-common-enum-types.c: gf-common-enum-types.c.in gf-common-enum-types.h $(ENUM_TYPES)
+gf-common-enum-types.c: gf-common-enum-types.c.in $(ENUM_TYPES) Makefile.am
 	$(AM_V_GEN) $(GLIB_MKENUMS) --template $(srcdir)/gf-common-enum-types.c.in $(ENUM_TYPES) > \
 		gf-common-enum-types.c.tmp && mv gf-common-enum-types.c.tmp gf-common-enum-types.c
 
-gf-common-enum-types.h: gf-common-enum-types.h.in $(ENUM_TYPES)
+gf-common-enum-types.h: gf-common-enum-types.h.in $(ENUM_TYPES) Makefile.am
 	$(AM_V_GEN) $(GLIB_MKENUMS) --template $(srcdir)/gf-common-enum-types.h.in $(ENUM_TYPES) > \
 		gf-common-enum-types.h.tmp && mv gf-common-enum-types.h.tmp gf-common-enum-types.h
 

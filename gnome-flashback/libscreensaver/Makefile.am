@@ -69,11 +69,11 @@ ENUM_TYPES = \
 	$(srcdir)/gf-unlock-dialog.h \
 	$(NULL)
 
-gf-screensaver-enum-types.c: gf-screensaver-enum-types.c.in gf-screensaver-enum-types.h $(ENUM_TYPES)
+gf-screensaver-enum-types.c: gf-screensaver-enum-types.c.in $(ENUM_TYPES) Makefile.am
 	$(AM_V_GEN) $(GLIB_MKENUMS) --template $(srcdir)/gf-screensaver-enum-types.c.in $(ENUM_TYPES) > \
 		gf-screensaver-enum-types.c.tmp && mv gf-screensaver-enum-types.c.tmp gf-screensaver-enum-types.c
 
-gf-screensaver-enum-types.h: gf-screensaver-enum-types.h.in $(ENUM_TYPES)
+gf-screensaver-enum-types.h: gf-screensaver-enum-types.h.in $(ENUM_TYPES) Makefile.am
 	$(AM_V_GEN) $(GLIB_MKENUMS) --template $(srcdir)/gf-screensaver-enum-types.h.in $(ENUM_TYPES) > \
 		gf-screensaver-enum-types.h.tmp && mv gf-screensaver-enum-types.h.tmp gf-screensaver-enum-types.h
 
