@@ -1,3 +1,7 @@
+Version 3.36.3
+==============
+- Fix enum type generation. (#52)
+
 Version 3.36.2
 ==============
 - Fix screensaver unlock problems. (#46)
