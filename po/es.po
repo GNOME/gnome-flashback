@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2020-02-18 19:47+0000\n"
-"PO-Revision-Date: 2020-02-19 11:45+0100\n"
+"POT-Creation-Date: 2020-04-28 12:04+0000\n"
+"PO-Revision-Date: 2020-04-30 12:08+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -19,29 +19,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 3.34.0\n"
+"X-Generator: Gtranslator 3.36.0\n"
 
-#: backends/gf-monitor.c:131
+#: backends/gf-monitor.c:133
 msgid "Built-in display"
 msgstr "Pantalla integrada"
 
-#: backends/gf-monitor.c:165
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
+#: backends/gf-monitor.c:167
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: backends/gf-monitor.c:167
+#: backends/gf-monitor.c:169
 msgid "Unknown Display"
 msgstr "Pantalla desconocida"
 
-#: backends/gf-monitor.c:176
+#: backends/gf-monitor.c:178
 #, c-format
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: backends/gf-monitor.c:190
+#: backends/gf-monitor.c:192
 #, c-format
 msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
@@ -52,6 +52,11 @@ msgstr "%s %s"
 #: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME Flashback"
+
+#: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
+#| msgid "Network (GNOME Flashback)"
+msgid "Clipboard (GNOME Flashback)"
+msgstr "Portapapeles (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
@@ -125,7 +130,7 @@ msgid "Clipboard"
 msgstr "Portapapeles"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:27
-#: gnome-flashback/libdesktop/gf-desktop-window.c:815
+#: gnome-flashback/libdesktop/gf-desktop-window.c:823
 msgid "Desktop"
 msgstr "Escritorio"
 
@@ -291,7 +296,7 @@ msgid "The size of desktop icons."
 msgstr "El tamaño de los iconos del escritorio."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
-#: gnome-flashback/libdesktop/gf-icon-view.c:1217
+#: gnome-flashback/libdesktop/gf-icon-view.c:1300
 msgid "Placement"
 msgstr "Posicionamiento"
 
@@ -304,7 +309,7 @@ msgstr ""
 "Controla cómo se ordenan los iconos en el escritorio."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
-#: gnome-flashback/libdesktop/gf-icon-view.c:1223
+#: gnome-flashback/libdesktop/gf-icon-view.c:1306
 msgid "Sort by"
 msgstr "Ordenar por"
 
@@ -668,7 +673,7 @@ msgid "_Unmount"
 msgstr "_Desmontar"
 
 #: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
-#: gnome-flashback/libdesktop/gf-icon-view.c:1205
+#: gnome-flashback/libdesktop/gf-icon-view.c:1288
 msgid "New Folder"
 msgstr "Carpeta nueva"
 
@@ -685,100 +690,100 @@ msgstr "Nombre de la carpeta"
 msgid "Home"
 msgstr "Carpeta personal"
 
-#: gnome-flashback/libdesktop/gf-icon.c:524
+#: gnome-flashback/libdesktop/gf-icon.c:529
 msgid "Open"
 msgstr "Abrir"
 
-#: gnome-flashback/libdesktop/gf-icon.c:560
+#: gnome-flashback/libdesktop/gf-icon.c:565
 msgid "Move to Trash"
 msgstr "Mover a la papelera"
 
-#: gnome-flashback/libdesktop/gf-icon.c:580
+#: gnome-flashback/libdesktop/gf-icon.c:585
 msgid "Rename..."
 msgstr "Renombrar…"
 
-#: gnome-flashback/libdesktop/gf-icon.c:600
+#: gnome-flashback/libdesktop/gf-icon.c:605
 msgid "Empty Trash"
 msgstr "Vaciar la papelera"
 
-#: gnome-flashback/libdesktop/gf-icon.c:614
+#: gnome-flashback/libdesktop/gf-icon.c:619
 msgid "Properties"
 msgstr "Propiedades"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1001
+#: gnome-flashback/libdesktop/gf-icon-view.c:1064
 msgid "Auto arrange icons"
 msgstr "Ordenar iconos automáticamente"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1005
+#: gnome-flashback/libdesktop/gf-icon-view.c:1068
 msgid "Align icons to grid"
 msgstr "Ajustar iconos a la cuadrícula"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1009
+#: gnome-flashback/libdesktop/gf-icon-view.c:1072
 msgctxt "Free placement of icons"
 msgid "Free"
 msgstr "Libre"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1109
+#: gnome-flashback/libdesktop/gf-icon-view.c:1192
 msgid "Name"
 msgstr "Nombre"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1113
+#: gnome-flashback/libdesktop/gf-icon-view.c:1196
 msgid "Date modified"
 msgstr "Fecha de modificación"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1117
+#: gnome-flashback/libdesktop/gf-icon-view.c:1200
 msgid "Size"
 msgstr "Tamaño"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1233
+#: gnome-flashback/libdesktop/gf-icon-view.c:1316
 msgid "Change Background"
 msgstr "Cambiar el fondo"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1241
+#: gnome-flashback/libdesktop/gf-icon-view.c:1324
 msgid "Display Settings"
 msgstr "Configuración de pantalla"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1253
+#: gnome-flashback/libdesktop/gf-icon-view.c:1336
 msgid "Open Terminal"
 msgstr "Abrir terminal"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3040
+#: gnome-flashback/libdesktop/gf-icon-view.c:3158
 msgid "Folder names cannot contain “/”."
 msgstr "Los nombres de las carpetas no pueden contener «/»."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3042
+#: gnome-flashback/libdesktop/gf-icon-view.c:3160
 msgid "File names cannot contain “/”."
 msgstr "Los nombres de los archivos no pueden contener «/»."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3049
+#: gnome-flashback/libdesktop/gf-icon-view.c:3167
 msgid "A folder cannot be called “.”."
 msgstr "Una carpeta no se puede llamar «.»."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3051
+#: gnome-flashback/libdesktop/gf-icon-view.c:3169
 msgid "A file cannot be called “.”."
 msgstr "Un archivo no se puede llamar «.»."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3058
+#: gnome-flashback/libdesktop/gf-icon-view.c:3176
 msgid "A folder cannot be called “..”."
 msgstr "Una carpeta no se puede llamar «..»."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3060
+#: gnome-flashback/libdesktop/gf-icon-view.c:3178
 msgid "A file cannot be called “..”."
 msgstr "Un archivo no se puede llamar «..»."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3076
+#: gnome-flashback/libdesktop/gf-icon-view.c:3194
 msgid "A folder with that name already exists."
 msgstr "Ya existe una carpeta con ese nombre."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3078
+#: gnome-flashback/libdesktop/gf-icon-view.c:3196
 msgid "A file with that name already exists."
 msgstr "Ya existe un archivo con ese nombre."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3089
+#: gnome-flashback/libdesktop/gf-icon-view.c:3207
 msgid "Folders with “.” at the beginning of their name are hidden."
 msgstr "Las carpetas cuyo nombre empieza por «.» están ocultas."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3091
+#: gnome-flashback/libdesktop/gf-icon-view.c:3209
 msgid "Files with “.” at the beginning of their name are hidden."
 msgstr "Los archivos cuyo nombre empieza por «.» están ocultas."
 
@@ -790,87 +795,87 @@ msgstr "Nombre de archivo"
 msgid "Rename"
 msgstr "Renombrar"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:514
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:739
 msgid "Log Out"
 msgstr "Cerrar la sesión"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:470
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Pulse Cerrar la sesión para salir de estas aplicaciones y cerrar la sesión "
 "en el sistema."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:472
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "Se cerrará automáticamente la sesión de %s en %d segundo."
 msgstr[1] "Se cerrará automáticamente la sesión de %s en %d segundos."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:696
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:743
 msgid "Power Off"
 msgstr "Apagar"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:482
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:529
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "Pulse Apagar para cerrar de estas aplicaciones y reiniciar el sistema."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:484
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:531
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "El sistema se apagará automáticamente en %d segundo."
 msgstr[1] "El sistema se apagará automáticamente en %d segundos."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:700
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:538
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:747
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:494
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:541
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Pulse Reiniciar para salir de estas aplicaciones y reiniciar el sistema."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:496
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:543
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "El sistema se reiniciará automáticamente en %d segundo."
 msgstr[1] "El sistema se reiniciará automáticamente en %d segundos."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:503
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:704
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:550
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:751
 msgid "Hibernate"
 msgstr "Hibernar"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:504
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:551
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
 msgstr[0] "El sistema hibernará automáticamente en %d segundo."
 msgstr[1] "El sistema hibernará automáticamente en %d segundos."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:511
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:708
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:558
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:755
 msgid "Suspend"
 msgstr "Suspender"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:512
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:559
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
 msgstr[0] "El sistema se suspenderá automáticamente en %d segundo."
 msgstr[1] "El sistema se suspenderá automáticamente en %d segundos."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:712
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:566
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:759
 msgid "Hybrid Sleep"
 msgstr "Suspensión híbrida"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:520
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:567
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
@@ -1025,11 +1030,11 @@ msgstr "<small><b>_Detalles</b></small>"
 msgid "_Authenticate"
 msgstr "_Autenticar"
 
-#: gnome-flashback/libscreensaver/gf-auth.c:424
+#: gnome-flashback/libscreensaver/gf-auth.c:421
 msgid "Your account was given a time limit that has now passed."
 msgstr "Su cuenta ha sobrepasado el límite de tiempo establecido."
 
-#: gnome-flashback/libscreensaver/gf-auth.c:428
+#: gnome-flashback/libscreensaver/gf-auth.c:425
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Eso no ha funcionado, inténtelo de nuevo."
 
@@ -1058,7 +1063,6 @@ msgid "You have the Caps Lock key on."
 msgstr "La tecla Bloq. Mayús. está activada"
 
 #: gnome-flashback/libscreenshot/gf-screenshot.c:279
-#| msgid "Screenshots"
 msgid "Screenshot taken"
 msgstr "Captura de pantalla realizada"
 
