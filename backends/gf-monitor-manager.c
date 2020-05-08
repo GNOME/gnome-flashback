@@ -1650,12 +1650,6 @@ gf_monitor_manager_handle_get_current_state (GfDBusDisplayConfig   *skeleton,
     }
 
   capabilities = gf_monitor_manager_get_capabilities (manager);
-  if ((capabilities & GF_MONITOR_MANAGER_CAPABILITY_MIRRORING) == 0)
-    {
-      g_variant_builder_add (&properties_builder, "{sv}",
-                             "supports-mirroring",
-                             g_variant_new_boolean (FALSE));
-    }
 
   g_variant_builder_add (&properties_builder, "{sv}",
                          "layout-mode",

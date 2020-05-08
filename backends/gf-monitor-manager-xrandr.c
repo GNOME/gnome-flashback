@@ -1060,14 +1060,7 @@ gf_monitor_manager_xrandr_calculate_supported_scales (GfMonitorManager          
 static GfMonitorManagerCapability
 gf_monitor_manager_xrandr_get_capabilities (GfMonitorManager *manager)
 {
-  GfMonitorManagerCapability capabilities;
-
-  capabilities = GF_MONITOR_MANAGER_CAPABILITY_NONE;
-
-  capabilities |= GF_MONITOR_MANAGER_CAPABILITY_MIRRORING;
-  capabilities |= GF_MONITOR_MANAGER_CAPABILITY_GLOBAL_SCALE_REQUIRED;
-
-  return capabilities;
+  return GF_MONITOR_MANAGER_CAPABILITY_GLOBAL_SCALE_REQUIRED;
 }
 
 static gboolean
