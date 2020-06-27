@@ -257,7 +257,7 @@ geometry_changed_cb (GdkMonitor *monitor,
                      GParamSpec *pspec,
                      GfWindow   *self)
 {
-  if (gtk_widget_get_realized (GTK_WIDGET (self)))
+  if (!gtk_widget_get_realized (GTK_WIDGET (self)))
     return;
 
   move_resize (self);
