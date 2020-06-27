@@ -66,6 +66,8 @@ enum
 
   ACTIVE_CHANGED,
 
+  PREPARE_FOR_SLEEP,
+
   LAST_SIGNAL
 };
 
@@ -379,7 +381,7 @@ prepare_for_sleep_cb (GfLoginManagerGen *login_manager,
   if (start)
     {
       g_debug ("A system suspend has been requested");
-      g_signal_emit (self, listener_signals[LOCK], 0);
+      g_signal_emit (self, listener_signals[PREPARE_FOR_SLEEP], 0);
       release_inhibit_lock (self);
     }
   else
@@ -524,6 +526,10 @@ install_signals (GObjectClass *object_class)
   listener_signals[ACTIVE_CHANGED] =
     g_signal_new ("active-changed", GF_TYPE_LISTENER, G_SIGNAL_RUN_LAST,
                   0, NULL, NULL, NULL, G_TYPE_BOOLEAN, 1, G_TYPE_BOOLEAN);
+
+  listener_signals[PREPARE_FOR_SLEEP] =
+    g_signal_new ("prepare-for-sleep", GF_TYPE_LISTENER, G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL, G_TYPE_NONE, 0);
 }
 
 static void
