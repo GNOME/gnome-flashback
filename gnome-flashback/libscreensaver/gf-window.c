@@ -222,6 +222,7 @@ popup_dialog (GfWindow *self)
                     G_CALLBACK (unlock_dialog_show_cb), self);
 
   gtk_box_pack_start (GTK_BOX (self->vbox), self->unlock_dialog, TRUE, TRUE, 0);
+  gdk_window_raise (gtk_widget_get_window (GTK_WIDGET (self)));
 }
 
 static gboolean
