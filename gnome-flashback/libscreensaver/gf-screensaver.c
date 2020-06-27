@@ -196,6 +196,16 @@ listener_show_message_cb (GfListener    *listener,
   gf_manager_show_message (self->manager, summary, body, icon);
 }
 
+static void
+listener_prepare_for_sleep_cb (GfListener    *listener,
+                               GfScreensaver *self)
+{
+  if (!gf_prefs_get_lock_enabled (self->prefs))
+    return;
+
+  listener_lock_cb (listener, self);
+}
+
 static gboolean
 watcher_idle_changed_cb (GfWatcher     *watcher,
                          gboolean       is_idle,
@@ -334,6 +344,10 @@ gf_screensaver_init (GfScreensaver *self)
 
   g_signal_connect (self->listener, "show-message",
                     G_CALLBACK (listener_show_message_cb),
+                    self);
+
+  g_signal_connect (self->listener, "prepare-for-sleep",
+                    G_CALLBACK (listener_prepare_for_sleep_cb),
                     self);
 
   g_signal_connect (self->watcher, "idle-changed",
