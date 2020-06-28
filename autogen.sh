@@ -14,14 +14,8 @@ fi
 olddir=$(pwd)
 cd "$srcdir"
 
-if [ ! -f $srcdir/gnome-flashback/libsound-applet/gvc/Makefile.am ]; then
-	set -x
-	git submodule init
-	{ set +x; } 2>/dev/null
-fi
-
 set -x
-git submodule update
+git submodule update --init
 { set +x; } 2>/dev/null
 
 PKG_NAME=$(autoconf --trace 'AC_INIT:$1' "$srcdir/configure.ac")
