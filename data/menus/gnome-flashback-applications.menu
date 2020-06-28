@@ -28,6 +28,9 @@
         <Not><Category>System</Category></Not>
       </And>
     </Include>
+    <Exclude>
+      <Filename>org.gnome.Extensions.desktop</Filename>
+    </Exclude>
   </Menu> <!-- End Accessories -->
 
   <!-- Accessibility submenu -->
@@ -192,9 +195,6 @@
         <Not><Category>X-Unity-Settings-Panel</Category></Not>
       </And>
     </Include>
-    <Exclude>
-      <Filename>org.gnome.Extensions.desktop</Filename>
-    </Exclude>
   </Menu> <!-- End Other -->
 
   <Include>
