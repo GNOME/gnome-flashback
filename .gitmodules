@@ -1,4 +1,4 @@
-[submodule "gnome-flashback/libsound-applet/gvc"]
+[submodule "libgnome-volume-control"]
 	path = gvc/gvc
 	url = https://gitlab.gnome.org/GNOME/libgnome-volume-control.git
 	ignore = untracked
