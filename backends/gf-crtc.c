@@ -19,7 +19,25 @@
 #include "config.h"
 #include "gf-crtc-private.h"
 
-G_DEFINE_TYPE (GfCrtc, gf_crtc, G_TYPE_OBJECT)
+#include "gf-gpu-private.h"
+
+typedef struct
+{
+  GfGpu *gpu;
+} GfCrtcPrivate;
+
+enum
+{
+  PROP_0,
+
+  PROP_GPU,
+
+  LAST_PROP
+};
+
+static GParamSpec *crtc_properties[LAST_PROP] = { NULL };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GfCrtc, gf_crtc, G_TYPE_OBJECT)
 
 static void
 gf_crtc_finalize (GObject *object)
@@ -37,6 +55,54 @@ gf_crtc_finalize (GObject *object)
 }
 
 static void
+gf_crtc_get_property (GObject    *object,
+                      guint       property_id,
+                      GValue     *value,
+                      GParamSpec *pspec)
+{
+  GfCrtc *self;
+  GfCrtcPrivate *priv;
+
+  self = GF_CRTC (object);
+  priv = gf_crtc_get_instance_private (self);
+
+  switch (property_id)
+    {
+      case PROP_GPU:
+        g_value_set_object (value, priv->gpu);
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
+
+static void
+gf_crtc_set_property (GObject      *object,
+                      guint         property_id,
+                      const GValue *value,
+                      GParamSpec   *pspec)
+{
+  GfCrtc *self;
+  GfCrtcPrivate *priv;
+
+  self = GF_CRTC (object);
+  priv = gf_crtc_get_instance_private (self);
+
+  switch (property_id)
+    {
+      case PROP_GPU:
+        priv->gpu = g_value_get_object (value);
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
+
+static void
 gf_crtc_class_init (GfCrtcClass *crtc_class)
 {
   GObjectClass *object_class;
@@ -44,6 +110,20 @@ gf_crtc_class_init (GfCrtcClass *crtc_class)
   object_class = G_OBJECT_CLASS (crtc_class);
 
   object_class->finalize = gf_crtc_finalize;
+  object_class->get_property = gf_crtc_get_property;
+  object_class->set_property = gf_crtc_set_property;
+
+  crtc_properties[PROP_GPU] =
+    g_param_spec_object ("gpu",
+                         "GfGpu",
+                         "GfGpu",
+                         GF_TYPE_GPU,
+                         G_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (object_class, LAST_PROP,
+                                     crtc_properties);
 }
 
 static void
@@ -54,7 +134,11 @@ gf_crtc_init (GfCrtc *crtc)
 GfGpu *
 gf_crtc_get_gpu (GfCrtc *crtc)
 {
-  return crtc->gpu;
+  GfCrtcPrivate *priv;
+
+  priv = gf_crtc_get_instance_private (crtc);
+
+  return priv->gpu;
 }
 
 void

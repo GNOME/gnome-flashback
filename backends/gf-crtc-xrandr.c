@@ -127,12 +127,17 @@ gf_create_xrandr_crtc (GfGpuXrandr        *gpu_xrandr,
                        XRRScreenResources *resources)
 
 {
+  GfGpu *gpu;
   GfCrtc *crtc;
   GfCrtcXrandr *crtc_xrandr;
   unsigned int i;
   GList *modes;
 
-  crtc = g_object_new (GF_TYPE_CRTC, NULL);
+  gpu = GF_GPU (gpu_xrandr);
+
+  crtc = g_object_new (GF_TYPE_CRTC,
+                       "gpu", gpu,
+                       NULL);
 
   crtc_xrandr = g_new0 (GfCrtcXrandr, 1);
   crtc_xrandr->rect = (GfRectangle) {
@@ -146,12 +151,11 @@ gf_create_xrandr_crtc (GfGpuXrandr        *gpu_xrandr,
   crtc->driver_private = crtc_xrandr;
   crtc->driver_notify = (GDestroyNotify) gf_crtc_destroy_notify;
 
-  crtc->gpu = GF_GPU (gpu_xrandr);
   crtc->crtc_id = crtc_id;
   crtc->is_dirty = FALSE;
   crtc->all_transforms = gf_monitor_transform_from_xrandr_all (xrandr_crtc->rotations);
 
-  modes = gf_gpu_get_modes (crtc->gpu);
+  modes = gf_gpu_get_modes (gpu);
   for (i = 0; i < (guint) resources->nmode; i++)
     {
       if (resources->modes[i].id == xrandr_crtc->mode)

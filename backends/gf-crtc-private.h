@@ -46,8 +46,6 @@ struct _GfCrtc
 {
   GObject         parent;
 
-  GfGpu          *gpu;
-
   glong           crtc_id;
   guint           all_transforms;
 
