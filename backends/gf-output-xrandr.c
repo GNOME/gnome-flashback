@@ -531,7 +531,7 @@ output_get_crtcs (GfOutput      *output,
         {
           GfCrtc *crtc = l->data;
 
-          if ((XID) crtc->crtc_id == xrandr_output->crtcs[j])
+          if ((XID) gf_crtc_get_id (crtc) == xrandr_output->crtcs[j])
             {
               output->possible_crtcs[n_actual_crtcs] = crtc;
               n_actual_crtcs += 1;
@@ -546,7 +546,7 @@ output_get_crtcs (GfOutput      *output,
     {
       GfCrtc *crtc = l->data;
 
-      if ((XID) crtc->crtc_id == xrandr_output->crtc)
+      if ((XID) gf_crtc_get_id (crtc) == xrandr_output->crtc)
         {
           gf_output_assign_crtc (output, crtc);
           break;

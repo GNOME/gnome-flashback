@@ -23,13 +23,16 @@
 
 typedef struct
 {
-  GfGpu *gpu;
+  uint64_t  id;
+
+  GfGpu    *gpu;
 } GfCrtcPrivate;
 
 enum
 {
   PROP_0,
 
+  PROP_ID,
   PROP_GPU,
 
   LAST_PROP
@@ -68,6 +71,10 @@ gf_crtc_get_property (GObject    *object,
 
   switch (property_id)
     {
+      case PROP_ID:
+        g_value_set_uint64 (value, priv->id);
+        break;
+
       case PROP_GPU:
         g_value_set_object (value, priv->gpu);
         break;
@@ -92,6 +99,10 @@ gf_crtc_set_property (GObject      *object,
 
   switch (property_id)
     {
+      case PROP_ID:
+        priv->id = g_value_get_uint64 (value);
+        break;
+
       case PROP_GPU:
         priv->gpu = g_value_get_object (value);
         break;
@@ -113,6 +124,17 @@ gf_crtc_class_init (GfCrtcClass *crtc_class)
   object_class->get_property = gf_crtc_get_property;
   object_class->set_property = gf_crtc_set_property;
 
+  crtc_properties[PROP_ID] =
+    g_param_spec_uint64 ("id",
+                         "id",
+                         "id",
+                         0,
+                         UINT64_MAX,
+                         0,
+                         G_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_STATIC_STRINGS);
+
   crtc_properties[PROP_GPU] =
     g_param_spec_object ("gpu",
                          "GfGpu",
@@ -129,6 +151,16 @@ gf_crtc_class_init (GfCrtcClass *crtc_class)
 static void
 gf_crtc_init (GfCrtc *crtc)
 {
+}
+
+uint64_t
+gf_crtc_get_id (GfCrtc *self)
+{
+  GfCrtcPrivate *priv;
+
+  priv = gf_crtc_get_instance_private (self);
+
+  return priv->id;
 }
 
 GfGpu *

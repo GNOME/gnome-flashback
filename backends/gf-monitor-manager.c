@@ -1111,7 +1111,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
 
           g_variant_builder_add (&crtc_builder, "(uxiiiiiuaua{sv})",
                                  i, /* ID */
-                                 (int64_t) crtc->crtc_id,
+                                 (int64_t) gf_crtc_get_id (crtc),
                                  crtc_config->layout.x,
                                  crtc_config->layout.y,
                                  crtc_config->layout.width,
@@ -1125,7 +1125,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
         {
           g_variant_builder_add (&crtc_builder, "(uxiiiiiuaua{sv})",
                                  i, /* ID */
-                                 (int64_t) crtc->crtc_id,
+                                 (int64_t) gf_crtc_get_id (crtc),
                                  0,
                                  0,
                                  0,

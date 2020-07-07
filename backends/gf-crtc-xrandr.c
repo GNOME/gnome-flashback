@@ -136,6 +136,7 @@ gf_create_xrandr_crtc (GfGpuXrandr        *gpu_xrandr,
   gpu = GF_GPU (gpu_xrandr);
 
   crtc = g_object_new (GF_TYPE_CRTC,
+                       "id", crtc_id,
                        "gpu", gpu,
                        NULL);
 
@@ -151,7 +152,6 @@ gf_create_xrandr_crtc (GfGpuXrandr        *gpu_xrandr,
   crtc->driver_private = crtc_xrandr;
   crtc->driver_notify = (GDestroyNotify) gf_crtc_destroy_notify;
 
-  crtc->crtc_id = crtc_id;
   crtc->is_dirty = FALSE;
   crtc->all_transforms = gf_monitor_transform_from_xrandr_all (xrandr_crtc->rotations);
 

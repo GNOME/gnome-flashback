@@ -428,7 +428,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
           xrandr_set_crtc_config (xrandr,
                                   crtc,
                                   save_timestamp,
-                                  (xcb_randr_crtc_t) crtc->crtc_id,
+                                  (xcb_randr_crtc_t) gf_crtc_get_id (crtc),
                                   XCB_CURRENT_TIME,
                                   0, 0, XCB_NONE,
                                   XCB_RANDR_ROTATION_ROTATE_0,
@@ -455,7 +455,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
       xrandr_set_crtc_config (xrandr,
                               crtc,
                               save_timestamp,
-                              (xcb_randr_crtc_t) crtc->crtc_id,
+                              (xcb_randr_crtc_t) gf_crtc_get_id (crtc),
                               XCB_CURRENT_TIME,
                               0, 0, XCB_NONE,
                               XCB_RANDR_ROTATION_ROTATE_0,
@@ -509,7 +509,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
           if (!xrandr_set_crtc_config (xrandr,
                                        crtc,
                                        save_timestamp,
-                                       (xcb_randr_crtc_t) crtc->crtc_id,
+                                       (xcb_randr_crtc_t) gf_crtc_get_id (crtc),
                                        XCB_CURRENT_TIME,
                                        crtc_info->layout.x,
                                        crtc_info->layout.y,
@@ -518,7 +518,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
                                        output_ids, n_output_ids))
             {
               g_warning ("Configuring CRTC %d with mode %d (%d x %d @ %f) at position %d, %d and transform %u failed\n",
-                         (guint) (crtc->crtc_id), (guint) (mode->mode_id),
+                         (guint) gf_crtc_get_id (crtc), (guint) (mode->mode_id),
                          mode->width, mode->height, (gdouble) mode->refresh_rate,
                          crtc_info->layout.x, crtc_info->layout.y,
                          crtc_info->transform);
@@ -916,7 +916,7 @@ gf_monitor_manager_xrandr_get_crtc_gamma (GfMonitorManager  *manager,
   XRRCrtcGamma *gamma;
 
   xrandr = GF_MONITOR_MANAGER_XRANDR (manager);
-  gamma = XRRGetCrtcGamma (xrandr->xdisplay, (XID) crtc->crtc_id);
+  gamma = XRRGetCrtcGamma (xrandr->xdisplay, (XID) gf_crtc_get_id (crtc));
 
   *size = gamma->size;
   *red = g_memdup (gamma->red, sizeof (gushort) * gamma->size);
@@ -944,7 +944,7 @@ gf_monitor_manager_xrandr_set_crtc_gamma (GfMonitorManager *manager,
   memcpy (gamma->green, green, sizeof (gushort) * size);
   memcpy (gamma->blue, blue, sizeof (gushort) * size);
 
-  XRRSetCrtcGamma (xrandr->xdisplay, (XID) crtc->crtc_id, gamma);
+  XRRSetCrtcGamma (xrandr->xdisplay, (XID) gf_crtc_get_id (crtc), gamma);
   XRRFreeGamma (gamma);
 }
 
