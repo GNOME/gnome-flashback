@@ -27,10 +27,7 @@
 
 #include <gio/gio.h>
 
-#include "gf-backend-native-private.h"
 #include "gf-backend-x11-cm-private.h"
-#include "gf-backend-x11-nested-private.h"
-#include "gf-monitor-manager-dummy-private.h"
 #include "gf-orientation-manager-private.h"
 #include "gf-settings-private.h"
 
@@ -54,13 +51,6 @@ static GfMonitorManager *
 create_monitor_manager (GfBackend  *backend,
                         GError    **error)
 {
-  if (g_getenv ("DUMMY_MONITORS"))
-    {
-      return g_object_new (GF_TYPE_MONITOR_MANAGER_DUMMY,
-                           "backend", backend,
-                           NULL);
-    }
-
   return GF_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend, error);
 }
 
@@ -146,14 +136,6 @@ gf_backend_new (GfBackendType type)
     {
       case GF_BACKEND_TYPE_X11_CM:
         gtype = GF_TYPE_BACKEND_X11_CM;
-        break;
-
-      case GF_BACKEND_TYPE_X11_NESTED:
-        gtype = GF_TYPE_BACKEND_X11_NESTED;
-        break;
-
-      case GF_BACKEND_TYPE_NATIVE:
-        gtype = GF_TYPE_BACKEND_NATIVE;
         break;
 
       default:

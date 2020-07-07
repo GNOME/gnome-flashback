@@ -35,9 +35,7 @@ G_DECLARE_DERIVABLE_TYPE (GfBackend, gf_backend, GF, BACKEND, GObject)
 
 typedef enum
 {
-  GF_BACKEND_TYPE_X11_CM,
-  GF_BACKEND_TYPE_X11_NESTED,
-  GF_BACKEND_TYPE_NATIVE
+  GF_BACKEND_TYPE_X11_CM
 } GfBackendType;
 
 GfBackend        *gf_backend_new                 (GfBackendType  type);

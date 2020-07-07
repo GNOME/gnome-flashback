@@ -18,13 +18,9 @@ libbackends_la_CFLAGS = \
 	$(NULL)
 
 libbackends_la_SOURCES = \
-	gf-backend-native-private.h \
-	gf-backend-native.c \
 	gf-backend-private.h \
 	gf-backend-x11-cm-private.h \
 	gf-backend-x11-cm.c \
-	gf-backend-x11-nested-private.h \
-	gf-backend-x11-nested.c \
 	gf-backend-x11-private.h \
 	gf-backend-x11.c \
 	gf-backend.c \
@@ -54,8 +50,6 @@ libbackends_la_SOURCES = \
 	gf-monitor-config-store-private.h \
 	gf-monitor-config-store.c \
 	gf-monitor-config.c \
-	gf-monitor-manager-dummy-private.h \
-	gf-monitor-manager-dummy.c \
 	gf-monitor-manager-enums-private.h \
 	gf-monitor-manager-kms-private.h \
 	gf-monitor-manager-kms.c \
