@@ -57,8 +57,6 @@ struct _GfOutput
 {
   GObject              parent;
 
-  GfGpu               *gpu;
-
   /* The low-level ID of this output, used to apply back configuration */
   glong                winsys_id;
   gchar               *name;

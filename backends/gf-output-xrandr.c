@@ -767,8 +767,9 @@ gf_create_xrandr_output (GfGpuXrandr   *gpu_xrandr,
   GBytes *edid;
   unsigned int i;
 
-  output = g_object_new (GF_TYPE_OUTPUT, NULL);
-  output->gpu = GF_GPU (gpu_xrandr);
+  output = g_object_new (GF_TYPE_OUTPUT,
+                         "gpu", GF_GPU (gpu_xrandr),
+                         NULL);
 
   output->winsys_id = output_id;
   output->name = g_strdup (xrandr_output->name);

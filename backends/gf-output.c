@@ -32,9 +32,22 @@
 
 typedef struct
 {
+  GfGpu  *gpu;
+
   /* The CRTC driving this output, NULL if the output is not enabled */
   GfCrtc *crtc;
 } GfOutputPrivate;
+
+enum
+{
+  PROP_0,
+
+  PROP_GPU,
+
+  LAST_PROP
+};
+
+static GParamSpec *output_properties[LAST_PROP] = { NULL };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GfOutput, gf_output, G_TYPE_OBJECT)
 
@@ -74,6 +87,54 @@ gf_output_finalize (GObject *object)
 }
 
 static void
+gf_output_get_property (GObject    *object,
+                        guint       property_id,
+                        GValue     *value,
+                        GParamSpec *pspec)
+{
+  GfOutput *self;
+  GfOutputPrivate *priv;
+
+  self = GF_OUTPUT (object);
+  priv = gf_output_get_instance_private (self);
+
+  switch (property_id)
+    {
+      case PROP_GPU:
+        g_value_set_object (value, priv->gpu);
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
+
+static void
+gf_output_set_property (GObject      *object,
+                        guint         property_id,
+                        const GValue *value,
+                        GParamSpec   *pspec)
+{
+  GfOutput *self;
+  GfOutputPrivate *priv;
+
+  self = GF_OUTPUT (object);
+  priv = gf_output_get_instance_private (self);
+
+  switch (property_id)
+    {
+      case PROP_GPU:
+        priv->gpu = g_value_get_object (value);
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
+
+static void
 gf_output_class_init (GfOutputClass *output_class)
 {
   GObjectClass *object_class;
@@ -82,6 +143,20 @@ gf_output_class_init (GfOutputClass *output_class)
 
   object_class->dispose = gf_output_dispose;
   object_class->finalize = gf_output_finalize;
+  object_class->get_property = gf_output_get_property;
+  object_class->set_property = gf_output_set_property;
+
+  output_properties[PROP_GPU] =
+    g_param_spec_object ("gpu",
+                         "GfGpu",
+                         "GfGpu",
+                         GF_TYPE_GPU,
+                         G_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (object_class, LAST_PROP,
+                                     output_properties);
 }
 
 static void
@@ -92,7 +167,11 @@ gf_output_init (GfOutput *output)
 GfGpu *
 gf_output_get_gpu (GfOutput *output)
 {
-  return output->gpu;
+  GfOutputPrivate *priv;
+
+  priv = gf_output_get_instance_private (output);
+
+  return priv->gpu;
 }
 
 void
