@@ -80,6 +80,7 @@ gf_gpu_xrandr_read_current (GfGpu   *gpu,
                             GError **error)
 {
   GfGpuXrandr *gpu_xrandr;
+  GfBackend *backend;
   GfMonitorManager *monitor_manager;
   GfMonitorManagerXrandr *monitor_manager_xrandr;
   Display *xdisplay;
@@ -95,7 +96,9 @@ gf_gpu_xrandr_read_current (GfGpu   *gpu,
   RROutput primary_output;
 
   gpu_xrandr = GF_GPU_XRANDR (gpu);
-  monitor_manager = gf_gpu_get_monitor_manager (gpu);
+
+  backend = gf_gpu_get_backend (gpu);
+  monitor_manager = gf_backend_get_monitor_manager (backend);
   monitor_manager_xrandr = GF_MONITOR_MANAGER_XRANDR (monitor_manager);
   xdisplay = gf_monitor_manager_xrandr_get_xdisplay (monitor_manager_xrandr);
 
@@ -244,10 +247,10 @@ gf_gpu_xrandr_init (GfGpuXrandr *gpu_xrandr)
 }
 
 GfGpuXrandr *
-gf_gpu_xrandr_new (GfMonitorManagerXrandr *monitor_manager_xrandr)
+gf_gpu_xrandr_new (GfBackendX11 *backend_x11)
 {
   return g_object_new (GF_TYPE_GPU_XRANDR,
-                       "monitor-manager", monitor_manager_xrandr,
+                       "backend", backend_x11,
                        NULL);
 }
 

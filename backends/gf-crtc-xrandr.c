@@ -27,6 +27,8 @@
 
 #include <X11/Xlib-xcb.h>
 
+#include "gf-backend-private.h"
+#include "gf-monitor-manager-xrandr-private.h"
 #include "gf-output-private.h"
 
 #define ALL_ROTATIONS (RR_Rotate_0 | RR_Rotate_90 | RR_Rotate_180 | RR_Rotate_270)
@@ -184,6 +186,7 @@ gf_crtc_xrandr_set_config (GfCrtc               *crtc,
 {
   GfGpu *gpu;
   GfGpuXrandr *gpu_xrandr;
+  GfBackend *backend;
   GfMonitorManager *monitor_manager;
   GfMonitorManagerXrandr *monitor_manager_xrandr;
   Display *xdisplay;
@@ -197,7 +200,9 @@ gf_crtc_xrandr_set_config (GfCrtc               *crtc,
   gpu = gf_crtc_get_gpu (crtc);
   gpu_xrandr = GF_GPU_XRANDR (gpu);
 
-  monitor_manager = gf_gpu_get_monitor_manager (gpu);
+  backend = gf_gpu_get_backend (gpu);
+
+  monitor_manager = gf_backend_get_monitor_manager (backend);
   monitor_manager_xrandr = GF_MONITOR_MANAGER_XRANDR (monitor_manager);
 
   xdisplay = gf_monitor_manager_xrandr_get_xdisplay (monitor_manager_xrandr);

@@ -28,6 +28,7 @@
 #include <gio/gio.h>
 
 #include "gf-backend-x11-cm-private.h"
+#include "gf-gpu-private.h"
 #include "gf-orientation-manager-private.h"
 #include "gf-settings-private.h"
 
@@ -37,7 +38,18 @@ typedef struct
   GfOrientationManager *orientation_manager;
 
   GfMonitorManager     *monitor_manager;
+
+  GList                *gpus;
 } GfBackendPrivate;
+
+enum
+{
+  GPU_ADDED,
+
+  LAST_SIGNAL
+};
+
+static guint backend_signals[LAST_SIGNAL] = { 0 };
 
 static void
 initable_iface_init (GInitableIface *initable_iface);
@@ -98,6 +110,20 @@ gf_backend_dispose (GObject *object)
 }
 
 static void
+gf_backend_finalize (GObject *object)
+{
+  GfBackend *self;
+  GfBackendPrivate *priv;
+
+  self = GF_BACKEND (object);
+  priv = gf_backend_get_instance_private (self);
+
+  g_list_free_full (priv->gpus, g_object_unref);
+
+  G_OBJECT_CLASS (gf_backend_parent_class)->finalize (object);
+}
+
+static void
 gf_backend_real_post_init (GfBackend *backend)
 {
   GfBackendPrivate *priv;
@@ -115,8 +141,21 @@ gf_backend_class_init (GfBackendClass *backend_class)
   object_class = G_OBJECT_CLASS (backend_class);
 
   object_class->dispose = gf_backend_dispose;
+  object_class->finalize = gf_backend_finalize;
 
   backend_class->post_init = gf_backend_real_post_init;
+
+  backend_signals[GPU_ADDED] =
+    g_signal_new ("gpu-added",
+                  G_TYPE_FROM_CLASS (backend_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL,
+                  NULL,
+                  NULL,
+                  G_TYPE_NONE,
+                  1,
+                  GF_TYPE_GPU);
 }
 
 static void
@@ -196,4 +235,27 @@ gf_backend_get_settings (GfBackend *backend)
 void
 gf_backend_monitors_changed (GfBackend *backend)
 {
+}
+
+void
+gf_backend_add_gpu (GfBackend *self,
+                    GfGpu     *gpu)
+{
+  GfBackendPrivate *priv;
+
+  priv = gf_backend_get_instance_private (self);
+
+  priv->gpus = g_list_append (priv->gpus, gpu);
+
+  g_signal_emit (self, backend_signals[GPU_ADDED], 0, gpu);
+}
+
+GList *
+gf_backend_get_gpus (GfBackend *self)
+{
+  GfBackendPrivate *priv;
+
+  priv = gf_backend_get_instance_private (self);
+
+  return priv->gpus;
 }

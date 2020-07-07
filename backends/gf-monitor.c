@@ -511,11 +511,13 @@ void
 gf_monitor_make_display_name (GfMonitor *monitor)
 {
   GfMonitorPrivate *priv;
+  GfBackend *backend;
   GfMonitorManager *manager;
 
   priv = gf_monitor_get_instance_private (monitor);
 
-  manager = gf_gpu_get_monitor_manager (priv->gpu);
+  backend = gf_gpu_get_backend (priv->gpu);
+  manager = gf_backend_get_monitor_manager (backend);
 
   g_free (priv->display_name);
   priv->display_name = make_display_name (monitor, manager);
@@ -1041,7 +1043,8 @@ gf_monitor_calculate_mode_scale (GfMonitor     *monitor,
   gint global_scaling_factor;
 
   priv = gf_monitor_get_instance_private (monitor);
-  monitor_manager = gf_gpu_get_monitor_manager (priv->gpu);
+  backend = gf_gpu_get_backend (priv->gpu);
+  monitor_manager = gf_backend_get_monitor_manager (backend);
   backend = gf_monitor_manager_get_backend (monitor_manager);
   settings = gf_backend_get_settings (backend);
 

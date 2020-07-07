@@ -31,10 +31,11 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (GfMonitorTiled, gf_monitor_tiled,
                       GF, MONITOR_TILED, GfMonitor)
 
-GfMonitorTiled *gf_monitor_tiled_new               (GfGpu          *gpu,
-                                                    GfOutput       *output);
+GfMonitorTiled *gf_monitor_tiled_new               (GfGpu            *gpu,
+                                                    GfMonitorManager *monitor_manager,
+                                                    GfOutput         *output);
 
-uint32_t        gf_monitor_tiled_get_tile_group_id (GfMonitorTiled *monitor_tiled);
+uint32_t        gf_monitor_tiled_get_tile_group_id (GfMonitorTiled   *monitor_tiled);
 
 G_END_DECLS
 

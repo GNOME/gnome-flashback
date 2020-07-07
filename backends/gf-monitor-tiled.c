@@ -34,15 +34,17 @@ typedef struct
 
 struct _GfMonitorTiled
 {
-  GfMonitor  parent;
+  GfMonitor         parent;
 
-  uint32_t   tile_group_id;
+  GfMonitorManager *monitor_manager;
+
+  uint32_t          tile_group_id;
 
   /* The tile (0, 0) output. */
-  GfOutput  *origin_output;
+  GfOutput         *origin_output;
 
   /* The output enabled even when a non-tiled mode is used. */
-  GfOutput  *main_output;
+  GfOutput         *main_output;
 };
 
 G_DEFINE_TYPE (GfMonitorTiled, gf_monitor_tiled, GF_TYPE_MONITOR)
@@ -594,15 +596,12 @@ calculate_tile_coordinate (GfMonitor          *monitor,
 static void
 gf_monitor_tiled_finalize (GObject *object)
 {
-  GfMonitor *monitor;
-  GfGpu *gpu;
-  GfMonitorManager *monitor_manager;
+  GfMonitorTiled *self;
 
-  monitor = GF_MONITOR (object);
+  self = GF_MONITOR_TILED (object);
 
-  gpu = gf_monitor_get_gpu (monitor);
-  monitor_manager = gf_gpu_get_monitor_manager (gpu);
-  gf_monitor_manager_tiled_monitor_removed (monitor_manager, monitor);
+  gf_monitor_manager_tiled_monitor_removed (self->monitor_manager,
+                                            GF_MONITOR (self));
 
   G_OBJECT_CLASS (gf_monitor_tiled_parent_class)->finalize (object);
 }
@@ -719,18 +718,20 @@ gf_monitor_tiled_init (GfMonitorTiled *tiled)
 }
 
 GfMonitorTiled *
-gf_monitor_tiled_new (GfGpu    *gpu,
-                      GfOutput *output)
+gf_monitor_tiled_new (GfGpu            *gpu,
+                      GfMonitorManager *monitor_manager,
+                      GfOutput         *output)
 {
   GfMonitorTiled *tiled;
   GfMonitor *monitor;
-  GfMonitorManager *monitor_manager;
 
   tiled = g_object_new (GF_TYPE_MONITOR_TILED,
                         "gpu", gpu,
                         NULL);
 
   monitor = GF_MONITOR (tiled);
+
+  tiled->monitor_manager = monitor_manager;
 
   tiled->tile_group_id = output->tile_info.group_id;
   gf_monitor_set_winsys_id (monitor, output->winsys_id);
@@ -742,7 +743,6 @@ gf_monitor_tiled_new (GfGpu    *gpu,
 
   gf_monitor_generate_spec (monitor);
 
-  monitor_manager = gf_gpu_get_monitor_manager (gpu);
   gf_monitor_manager_tiled_monitor_added (monitor_manager, monitor);
   generate_modes (tiled);
 

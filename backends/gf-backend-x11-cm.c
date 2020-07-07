@@ -21,6 +21,7 @@
 
 #include "config.h"
 #include "gf-backend-x11-cm-private.h"
+#include "gf-gpu-xrandr-private.h"
 #include "gf-monitor-manager-xrandr-private.h"
 
 struct _GfBackendX11Cm
@@ -69,6 +70,15 @@ gf_backend_x11_cm_class_init (GfBackendX11CmClass *x11_cm_class)
 }
 
 static void
-gf_backend_x11_cm_init (GfBackendX11Cm *x11_cm)
+gf_backend_x11_cm_init (GfBackendX11Cm *self)
 {
+  GfGpuXrandr *gpu_xrandr;
+
+  /*
+   * The X server deals with multiple GPUs for us, so we just see what the X
+   * server gives us as one single GPU, even though it may actually be backed
+   * by multiple.
+   */
+  gpu_xrandr = gf_gpu_xrandr_new (GF_BACKEND_X11 (self));
+  gf_backend_add_gpu (GF_BACKEND (self), GF_GPU (gpu_xrandr));
 }

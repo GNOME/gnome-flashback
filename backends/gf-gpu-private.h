@@ -36,27 +36,27 @@ struct _GfGpuClass
                              GError **error);
 };
 
-gboolean          gf_gpu_read_current            (GfGpu   *gpu,
-                                                  GError **error);
+gboolean   gf_gpu_read_current            (GfGpu   *self,
+                                           GError **error);
 
-gboolean          gf_gpu_has_hotplug_mode_update (GfGpu   *gpu);
+gboolean   gf_gpu_has_hotplug_mode_update (GfGpu   *self);
 
-GfMonitorManager *gf_gpu_get_monitor_manager     (GfGpu   *gpu);
+GfBackend *gf_gpu_get_backend             (GfGpu   *self);
 
-GList            *gf_gpu_get_outputs             (GfGpu   *gpu);
+GList     *gf_gpu_get_outputs             (GfGpu   *self);
 
-GList            *gf_gpu_get_crtcs               (GfGpu   *gpu);
+GList     *gf_gpu_get_crtcs               (GfGpu   *self);
 
-GList            *gf_gpu_get_modes               (GfGpu   *gpu);
+GList     *gf_gpu_get_modes               (GfGpu   *self);
 
-void              gf_gpu_take_outputs            (GfGpu   *gpu,
-                                                  GList   *outputs);
+void       gf_gpu_take_outputs            (GfGpu   *self,
+                                           GList   *outputs);
 
-void              gf_gpu_take_crtcs              (GfGpu   *gpu,
-                                                  GList   *crtcs);
+void       gf_gpu_take_crtcs              (GfGpu   *self,
+                                           GList   *crtcs);
 
-void              gf_gpu_take_modes              (GfGpu   *gpu,
-                                                  GList   *modes);
+void       gf_gpu_take_modes              (GfGpu   *self,
+                                           GList   *modes);
 
 G_END_DECLS
 

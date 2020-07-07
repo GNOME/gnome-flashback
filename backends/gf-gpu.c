@@ -19,22 +19,23 @@
 #include "config.h"
 #include "gf-gpu-private.h"
 
+#include "gf-backend-private.h"
 #include "gf-output-private.h"
 
 typedef struct
 {
-  GfMonitorManager *monitor_manager;
+  GfBackend *backend;
 
-  GList            *outputs;
-  GList            *crtcs;
-  GList            *modes;
+  GList     *outputs;
+  GList     *crtcs;
+  GList     *modes;
 } GfGpuPrivate;
 
 enum
 {
   PROP_0,
 
-  PROP_MONITOR_MANAGER,
+  PROP_BACKEND,
 
   LAST_PROP
 };
@@ -73,8 +74,8 @@ gf_gpu_get_property (GObject    *object,
 
   switch (property_id)
     {
-      case PROP_MONITOR_MANAGER:
-        g_value_set_object (value, priv->monitor_manager);
+      case PROP_BACKEND:
+        g_value_set_object (value, priv->backend);
         break;
 
       default:
@@ -97,8 +98,8 @@ gf_gpu_set_property (GObject      *object,
 
   switch (property_id)
     {
-      case PROP_MONITOR_MANAGER:
-        priv->monitor_manager = g_value_get_object (value);
+      case PROP_BACKEND:
+        priv->backend = g_value_get_object (value);
         break;
 
       default:
@@ -110,11 +111,11 @@ gf_gpu_set_property (GObject      *object,
 static void
 gf_gpu_install_properties (GObjectClass *object_class)
 {
-  gpu_properties[PROP_MONITOR_MANAGER] =
-    g_param_spec_object ("monitor-manager",
-                         "GfMonitorManager",
-                         "GfMonitorManager",
-                         GF_TYPE_MONITOR_MANAGER,
+  gpu_properties[PROP_BACKEND] =
+    g_param_spec_object ("backend",
+                         "GfBackend",
+                         "GfBackend",
+                         GF_TYPE_BACKEND,
                          G_PARAM_WRITABLE |
                          G_PARAM_CONSTRUCT_ONLY |
                          G_PARAM_STATIC_STRINGS);
@@ -187,14 +188,14 @@ gf_gpu_has_hotplug_mode_update (GfGpu *gpu)
   return FALSE;
 }
 
-GfMonitorManager *
-gf_gpu_get_monitor_manager (GfGpu *gpu)
+GfBackend *
+gf_gpu_get_backend (GfGpu *self)
 {
   GfGpuPrivate *priv;
 
-  priv = gf_gpu_get_instance_private (gpu);
+  priv = gf_gpu_get_instance_private (self);
 
-  return priv->monitor_manager;
+  return priv->backend;
 }
 
 GList *

@@ -32,16 +32,19 @@
 #include <xcb/randr.h>
 
 #include "gf-crtc-private.h"
+#include "gf-monitor-manager-xrandr-private.h"
 
 static Display *
 xdisplay_from_output (GfOutput *output)
 {
   GfGpu *gpu;
+  GfBackend *backend;
   GfMonitorManager *monitor_manager;
   GfMonitorManagerXrandr *monitor_manager_xrandr;
 
   gpu = gf_output_get_gpu (output);
-  monitor_manager = gf_gpu_get_monitor_manager (gpu);
+  backend = gf_gpu_get_backend (gpu);
+  monitor_manager = gf_backend_get_monitor_manager (backend);
   monitor_manager_xrandr = GF_MONITOR_MANAGER_XRANDR (monitor_manager);
 
   return gf_monitor_manager_xrandr_get_xdisplay (monitor_manager_xrandr);
@@ -430,6 +433,7 @@ static void
 output_get_tile_info (GfOutput *output)
 {
   GfGpu *gpu;
+  GfBackend *backend;
   GfMonitorManager *monitor_manager;
   GfMonitorManagerXrandr *monitor_manager_xrandr;
   Display *xdisplay;
@@ -440,7 +444,8 @@ output_get_tile_info (GfOutput *output)
   Atom actual_type;
 
   gpu = gf_output_get_gpu (output);
-  monitor_manager = gf_gpu_get_monitor_manager (gpu);
+  backend = gf_gpu_get_backend (gpu);
+  monitor_manager = gf_backend_get_monitor_manager (backend);
   monitor_manager_xrandr = GF_MONITOR_MANAGER_XRANDR (monitor_manager);
 
   if (!gf_monitor_manager_xrandr_has_randr15 (monitor_manager_xrandr))

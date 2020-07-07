@@ -28,6 +28,7 @@
 
 #include "gf-backend.h"
 #include "gf-monitor-manager-private.h"
+#include "gf-monitor-manager-types-private.h"
 #include "gf-orientation-manager-private.h"
 #include "gf-settings-private.h"
 
@@ -48,6 +49,11 @@ GfOrientationManager *gf_backend_get_orientation_manager (GfBackend *backend);
 GfSettings           *gf_backend_get_settings            (GfBackend *backend);
 
 void                  gf_backend_monitors_changed        (GfBackend *backend);
+
+void                  gf_backend_add_gpu                 (GfBackend *self,
+                                                          GfGpu     *gpu);
+
+GList                *gf_backend_get_gpus                (GfBackend *self);
 
 G_END_DECLS
 

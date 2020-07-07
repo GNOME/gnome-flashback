@@ -996,7 +996,11 @@ is_main_tiled_monitor_output (GfOutput *output)
 static void
 rebuild_monitors (GfMonitorManager *manager)
 {
+  GfMonitorManagerPrivate *priv;
+  GList *gpus;
   GList *l;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
 
   if (manager->monitors)
     {
@@ -1004,7 +1008,9 @@ rebuild_monitors (GfMonitorManager *manager)
       manager->monitors = NULL;
     }
 
-  for (l = manager->gpus; l; l = l->next)
+  gpus = gf_backend_get_gpus (priv->backend);
+
+  for (l = gpus; l; l = l->next)
     {
       GfGpu *gpu = l->data;
       GList *k;
@@ -1019,7 +1025,7 @@ rebuild_monitors (GfMonitorManager *manager)
                 {
                   GfMonitorTiled *monitor_tiled;
 
-                  monitor_tiled = gf_monitor_tiled_new (gpu, output);
+                  monitor_tiled = gf_monitor_tiled_new (gpu, manager, output);
                   manager->monitors = g_list_append (manager->monitors, monitor_tiled);
                 }
             }
@@ -1038,10 +1044,16 @@ static GList *
 combine_gpu_lists (GfMonitorManager *manager,
                    GList            * (*list_getter) (GfGpu *gpu))
 {
+  GfMonitorManagerPrivate *priv;
+  GList *gpus;
   GList *list = NULL;
   GList *l;
 
-  for (l = manager->gpus; l; l = l->next)
+  priv = gf_monitor_manager_get_instance_private (manager);
+
+  gpus = gf_backend_get_gpus (priv->backend);
+
+  for (l = gpus; l; l = l->next)
     {
       GfGpu *gpu = l->data;
 
@@ -1935,11 +1947,14 @@ gf_monitor_manager_real_is_lid_closed (GfMonitorManager *manager)
 static void
 gf_monitor_manager_real_read_current_state (GfMonitorManager *manager)
 {
+  GfMonitorManagerPrivate *priv;
   GList *l;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
 
   manager->serial++;
 
-  for (l = manager->gpus; l; l = l->next)
+  for (l = gf_backend_get_gpus (priv->backend); l; l = l->next)
     {
       GfGpu *gpu = l->data;
       GError *error = NULL;
@@ -2054,7 +2069,6 @@ gf_monitor_manager_finalize (GObject *object)
 
   manager = GF_MONITOR_MANAGER (object);
 
-  g_list_free_full (manager->gpus, g_object_unref);
   g_list_free_full (manager->logical_monitors, g_object_unref);
 
   G_OBJECT_CLASS (gf_monitor_manager_parent_class)->finalize (object);
@@ -2275,25 +2289,18 @@ gf_monitor_manager_get_primary_logical_monitor (GfMonitorManager *manager)
   return manager->primary_logical_monitor;
 }
 
-void
-gf_monitor_manager_add_gpu (GfMonitorManager *manager,
-                            GfGpu            *gpu)
-{
-  manager->gpus = g_list_append (manager->gpus, gpu);
-}
-
-GList *
-gf_monitor_manager_get_gpus (GfMonitorManager *manager)
-{
-  return manager->gpus;
-}
-
 gboolean
 gf_monitor_manager_has_hotplug_mode_update (GfMonitorManager *manager)
 {
+  GfMonitorManagerPrivate *priv;
+  GList *gpus;
   GList *l;
 
-  for (l = manager->gpus; l; l = l->next)
+  priv = gf_monitor_manager_get_instance_private (manager);
+
+  gpus = gf_backend_get_gpus (priv->backend);
+
+  for (l = gpus; l; l = l->next)
     {
       GfGpu *gpu = l->data;
 

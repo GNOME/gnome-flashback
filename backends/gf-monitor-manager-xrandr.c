@@ -63,13 +63,6 @@ struct _GfMonitorManagerXrandr
   gboolean          has_randr15;
   GHashTable       *tiled_monitor_atoms;
 
-  /*
-   * The X server deals with multiple GPUs for us, soe just see what the X
-   * server gives us as one single GPU, even though it may actually be backed
-   * by multiple.
-   */
-  GfGpu            *gpu;
-
   Time              last_xrandr_set_timestamp;
 
   gfloat           *supported_scales;
@@ -278,6 +271,18 @@ is_output_assignment_changed (GfOutput      *output,
   return TRUE;
 }
 
+static GfGpu *
+get_gpu (GfMonitorManagerXrandr *self)
+{
+  GfMonitorManager *manager;
+  GfBackend *backend;
+
+  manager = GF_MONITOR_MANAGER (self);
+  backend = gf_monitor_manager_get_backend (manager);
+
+  return GF_GPU (gf_backend_get_gpus (backend)->data);
+}
+
 static gboolean
 is_assignments_changed (GfMonitorManager  *manager,
                         GfCrtcInfo       **crtc_infos,
@@ -286,11 +291,13 @@ is_assignments_changed (GfMonitorManager  *manager,
                         guint              n_output_infos)
 {
   GfMonitorManagerXrandr *manager_xrandr;
+  GfGpu *gpu;
   GList *l;
 
   manager_xrandr = GF_MONITOR_MANAGER_XRANDR (manager);
+  gpu = get_gpu (manager_xrandr);
 
-  for (l = gf_gpu_get_crtcs (manager_xrandr->gpu); l; l = l->next)
+  for (l = gf_gpu_get_crtcs (gpu); l; l = l->next)
     {
       GfCrtc *crtc = l->data;
 
@@ -298,7 +305,7 @@ is_assignments_changed (GfMonitorManager  *manager,
         return TRUE;
     }
 
-  for (l = gf_gpu_get_outputs (manager_xrandr->gpu); l; l = l->next)
+  for (l = gf_gpu_get_outputs (gpu); l; l = l->next)
     {
       GfOutput *output = l->data;
 
@@ -371,11 +378,13 @@ apply_crtc_assignments (GfMonitorManager  *manager,
                         guint              n_outputs)
 {
   GfMonitorManagerXrandr *xrandr;
+  GfGpu *gpu;
   gint width, height, width_mm, height_mm;
   guint i;
   GList *l;
 
   xrandr = GF_MONITOR_MANAGER_XRANDR (manager);
+  gpu = get_gpu (xrandr);
 
   XGrabServer (xrandr->xdisplay);
 
@@ -430,7 +439,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
     }
 
   /* Disable CRTCs not mentioned in the list */
-  for (l = gf_gpu_get_crtcs (xrandr->gpu); l; l = l->next)
+  for (l = gf_gpu_get_crtcs (gpu); l; l = l->next)
     {
       GfCrtc *crtc = l->data;
 
@@ -540,7 +549,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
     }
 
   /* Disable outputs not mentioned in the list */
-  for (l = gf_gpu_get_outputs (xrandr->gpu); l; l = l->next)
+  for (l = gf_gpu_get_outputs (gpu); l; l = l->next)
     {
       GfOutput *output = l->data;
 
@@ -665,9 +674,6 @@ gf_monitor_manager_xrandr_constructed (GObject *object)
   xrandr->xdisplay = gf_backend_x11_get_xdisplay (GF_BACKEND_X11 (backend));
   xrandr->xroot = DefaultRootWindow (xrandr->xdisplay);
 
-  xrandr->gpu = GF_GPU (gf_gpu_xrandr_new (xrandr));
-  gf_monitor_manager_add_gpu (GF_MONITOR_MANAGER (xrandr), xrandr->gpu);
-
   if (XRRQueryExtension (xrandr->xdisplay, &rr_event_base, &rr_error_base))
     {
       gint major_version;
@@ -718,7 +724,6 @@ gf_monitor_manager_xrandr_finalize (GObject *object)
 
   xrandr = GF_MONITOR_MANAGER_XRANDR (object);
 
-  g_clear_object (&xrandr->gpu);
   g_clear_pointer (&xrandr->supported_scales, g_free);
 
   G_OBJECT_CLASS (gf_monitor_manager_xrandr_parent_class)->finalize (object);
@@ -1069,10 +1074,12 @@ gf_monitor_manager_xrandr_get_max_screen_size (GfMonitorManager *manager,
                                                gint             *max_height)
 {
   GfMonitorManagerXrandr *xrandr;
+  GfGpu *gpu;
 
   xrandr = GF_MONITOR_MANAGER_XRANDR (manager);
+  gpu = get_gpu (xrandr);
 
-  gf_gpu_xrandr_get_max_screen_size (GF_GPU_XRANDR (xrandr->gpu),
+  gf_gpu_xrandr_get_max_screen_size (GF_GPU_XRANDR (gpu),
                                      max_width, max_height);
 
   return TRUE;
@@ -1137,6 +1144,7 @@ gf_monitor_manager_xrandr_handle_xevent (GfMonitorManagerXrandr *xrandr,
                                          XEvent                 *event)
 {
   GfMonitorManager *manager;
+  GfGpu *gpu;
   GfGpuXrandr *gpu_xrandr;
   XRRScreenResources *resources;
 
@@ -1148,7 +1156,8 @@ gf_monitor_manager_xrandr_handle_xevent (GfMonitorManagerXrandr *xrandr,
   XRRUpdateConfiguration (event);
   gf_monitor_manager_read_current_state (manager);
 
-  gpu_xrandr = GF_GPU_XRANDR (xrandr->gpu);
+  gpu = get_gpu (xrandr);
+  gpu_xrandr = GF_GPU_XRANDR (gpu);
   resources = gf_gpu_xrandr_get_resources (gpu_xrandr);
 
   if (!resources)

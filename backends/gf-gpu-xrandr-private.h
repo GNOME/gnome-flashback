@@ -22,21 +22,21 @@
 #include <glib-object.h>
 #include <X11/extensions/Xrandr.h>
 
+#include "gf-backend-x11-private.h"
 #include "gf-gpu-private.h"
-#include "gf-monitor-manager-xrandr-private.h"
 
 G_BEGIN_DECLS
 
 #define GF_TYPE_GPU_XRANDR (gf_gpu_xrandr_get_type ())
 G_DECLARE_FINAL_TYPE (GfGpuXrandr, gf_gpu_xrandr, GF, GPU_XRANDR, GfGpu)
 
-GfGpuXrandr        *gf_gpu_xrandr_new                 (GfMonitorManagerXrandr *monitor_manager_xrandr);
+GfGpuXrandr        *gf_gpu_xrandr_new                 (GfBackendX11 *backend_x11);
 
-XRRScreenResources *gf_gpu_xrandr_get_resources       (GfGpuXrandr            *gpu_xrandr);
+XRRScreenResources *gf_gpu_xrandr_get_resources       (GfGpuXrandr  *self);
 
-void                gf_gpu_xrandr_get_max_screen_size (GfGpuXrandr            *gpu_xrandr,
-                                                       int                    *max_width,
-                                                       int                    *max_height);
+void                gf_gpu_xrandr_get_max_screen_size (GfGpuXrandr  *self,
+                                                       int          *max_width,
+                                                       int          *max_height);
 
 G_END_DECLS
 

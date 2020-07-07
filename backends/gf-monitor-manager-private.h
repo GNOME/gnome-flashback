@@ -60,8 +60,6 @@ struct _GfMonitorManager
   gint                         screen_width;
   gint                         screen_height;
 
-  GList                       *gpus;
-
   GList                       *monitors;
 
   GList                       *logical_monitors;
@@ -165,12 +163,6 @@ GfMonitor                  *gf_monitor_manager_get_monitor_from_spec        (GfM
 GList                      *gf_monitor_manager_get_monitors                 (GfMonitorManager            *manager);
 
 GfLogicalMonitor           *gf_monitor_manager_get_primary_logical_monitor  (GfMonitorManager            *manager);
-
-void                        gf_monitor_manager_add_gpu                      (GfMonitorManager            *manager,
-                                                                             GfGpu                       *gpu);
-
-GList                      *gf_monitor_manager_get_gpus                     (GfMonitorManager            *manager);
-
 
 gboolean                    gf_monitor_manager_has_hotplug_mode_update      (GfMonitorManager            *manager);
 void                        gf_monitor_manager_read_current_state           (GfMonitorManager            *manager);
