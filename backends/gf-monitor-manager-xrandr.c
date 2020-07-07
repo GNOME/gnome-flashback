@@ -379,12 +379,17 @@ apply_crtc_assignments (GfMonitorManager  *manager,
 {
   GfMonitorManagerXrandr *xrandr;
   GfGpu *gpu;
+  GList *to_configure_outputs;
+  GList *to_disable_crtcs;
   gint width, height, width_mm, height_mm;
   guint i;
   GList *l;
 
   xrandr = GF_MONITOR_MANAGER_XRANDR (manager);
   gpu = get_gpu (xrandr);
+
+  to_configure_outputs = g_list_copy (gf_gpu_get_outputs (gpu));
+  to_disable_crtcs = g_list_copy (gf_gpu_get_crtcs (gpu));
 
   XGrabServer (xrandr->xdisplay);
 
@@ -395,10 +400,10 @@ apply_crtc_assignments (GfMonitorManager  *manager,
       GfCrtcInfo *crtc_info = crtcs[i];
       GfCrtc *crtc = crtc_info->crtc;
 
-      crtc->is_dirty = TRUE;
-
       if (crtc_info->mode == NULL)
         continue;
+
+      to_disable_crtcs = g_list_remove (to_disable_crtcs, crtc);
 
       width = MAX (width, crtc_info->layout.x + crtc_info->layout.width);
       height = MAX (height, crtc_info->layout.y + crtc_info->layout.height);
@@ -438,16 +443,9 @@ apply_crtc_assignments (GfMonitorManager  *manager,
         }
     }
 
-  /* Disable CRTCs not mentioned in the list */
-  for (l = gf_gpu_get_crtcs (gpu); l; l = l->next)
+  for (l = to_disable_crtcs; l; l = l->next)
     {
       GfCrtc *crtc = l->data;
-
-      if (crtc->is_dirty)
-        {
-          crtc->is_dirty = FALSE;
-          continue;
-        }
 
       if (!crtc->config)
         continue;
@@ -499,7 +497,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
 
               output = ((GfOutput**) crtc_info->outputs->pdata)[j];
 
-              output->is_dirty = TRUE;
+              to_configure_outputs = g_list_remove (to_configure_outputs, output);
               gf_output_assign_crtc (output, crtc);
 
               output_ids[j] = output->winsys_id;
@@ -549,15 +547,9 @@ apply_crtc_assignments (GfMonitorManager  *manager,
     }
 
   /* Disable outputs not mentioned in the list */
-  for (l = gf_gpu_get_outputs (gpu); l; l = l->next)
+  for (l = to_configure_outputs; l; l = l->next)
     {
       GfOutput *output = l->data;
-
-      if (output->is_dirty)
-        {
-          output->is_dirty = FALSE;
-          continue;
-        }
 
       gf_output_unassign_crtc (output);
       output->is_primary = FALSE;
@@ -565,6 +557,9 @@ apply_crtc_assignments (GfMonitorManager  *manager,
 
   XUngrabServer (xrandr->xdisplay);
   XFlush (xrandr->xdisplay);
+
+  g_clear_pointer (&to_configure_outputs, g_list_free);
+  g_clear_pointer (&to_disable_crtcs, g_list_free);
 }
 
 static GQuark

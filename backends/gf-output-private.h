@@ -83,9 +83,6 @@ struct _GfOutput
   gint                 backlight_min;
   gint                 backlight_max;
 
-  /* Used when changing configuration */
-  gboolean             is_dirty;
-
   /* The low-level bits used to build the high-level info in GfLogicalMonitor */
   gboolean             is_primary;
   gboolean             is_presentation;

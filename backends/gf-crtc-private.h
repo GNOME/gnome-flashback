@@ -51,9 +51,6 @@ struct _GfCrtc
 
   GfCrtcConfig   *config;
 
-  /* Used when changing configuration */
-  gboolean        is_dirty;
-
   gpointer        driver_private;
   GDestroyNotify  driver_notify;
 };

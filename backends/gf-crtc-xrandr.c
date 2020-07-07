@@ -152,7 +152,6 @@ gf_create_xrandr_crtc (GfGpuXrandr        *gpu_xrandr,
   crtc->driver_private = crtc_xrandr;
   crtc->driver_notify = (GDestroyNotify) gf_crtc_destroy_notify;
 
-  crtc->is_dirty = FALSE;
   crtc->all_transforms = gf_monitor_transform_from_xrandr_all (xrandr_crtc->rotations);
 
   modes = gf_gpu_get_modes (gpu);
