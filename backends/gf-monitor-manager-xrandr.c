@@ -500,7 +500,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
               to_configure_outputs = g_list_remove (to_configure_outputs, output);
               gf_output_assign_crtc (output, crtc);
 
-              output_ids[j] = output->winsys_id;
+              output_ids[j] = gf_output_get_id (output);
             }
 
           rotation = gf_monitor_transform_to_xrandr (crtc_info->transform);
@@ -992,7 +992,7 @@ gf_monitor_manager_xrandr_tiled_monitor_added (GfMonitorManager *manager,
     {
       GfOutput *output = l->data;
 
-      monitor_info->outputs[i] = output->winsys_id;
+      monitor_info->outputs[i] = gf_output_get_id (output);
     }
 
   XRRSetMonitor (xrandr->xdisplay, xrandr->xroot, monitor_info);

@@ -26,6 +26,7 @@
 #define GF_OUTPUT_PRIVATE_H
 
 #include <glib-object.h>
+#include <stdint.h>
 
 #include "gf-gpu-private.h"
 #include "gf-monitor-manager-enums-private.h"
@@ -57,8 +58,6 @@ struct _GfOutput
 {
   GObject              parent;
 
-  /* The low-level ID of this output, used to apply back configuration */
-  glong                winsys_id;
   gchar               *name;
   gchar               *vendor;
   gchar               *product;
@@ -104,6 +103,8 @@ struct _GfOutput
 
 #define GF_TYPE_OUTPUT (gf_output_get_type ())
 G_DECLARE_FINAL_TYPE (GfOutput, gf_output, GF, OUTPUT, GObject)
+
+uint64_t            gf_output_get_id                    (GfOutput           *self);
 
 GfGpu              *gf_output_get_gpu                   (GfOutput           *output);
 

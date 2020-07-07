@@ -1236,7 +1236,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
 
       g_variant_builder_add (&output_builder, "(uxiausauaua{sv})",
                              i, /* ID */
-                             (gint64) output->winsys_id,
+                             gf_output_get_id (output),
                              crtc_index,
                              &crtcs,
                              output->name,

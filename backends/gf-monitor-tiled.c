@@ -734,7 +734,7 @@ gf_monitor_tiled_new (GfGpu            *gpu,
   tiled->monitor_manager = monitor_manager;
 
   tiled->tile_group_id = output->tile_info.group_id;
-  gf_monitor_set_winsys_id (monitor, output->winsys_id);
+  gf_monitor_set_winsys_id (monitor, gf_output_get_id (output));
 
   tiled->origin_output = output;
   add_tiled_monitor_outputs (gpu, tiled);

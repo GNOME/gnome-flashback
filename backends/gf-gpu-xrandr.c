@@ -215,7 +215,7 @@ gf_gpu_xrandr_read_current (GfGpu   *gpu,
             {
               GfOutput *possible_clone = k->data;
 
-              if (clone == (XID) possible_clone->winsys_id)
+              if (clone == (XID) gf_output_get_id (possible_clone))
                 {
                   output->possible_clones[j] = possible_clone;
                   break;

@@ -146,7 +146,7 @@ gf_logical_monitor_new (GfMonitorManager       *monitor_manager,
   main_output = gf_monitor_get_main_output (first_monitor);
 
   logical_monitor->number = monitor_number;
-  logical_monitor->winsys_id = main_output->winsys_id;
+  logical_monitor->winsys_id = gf_output_get_id (main_output);
   logical_monitor->scale = logical_monitor_config->scale;
   logical_monitor->transform = logical_monitor_config->transform;
   logical_monitor->in_fullscreen = -1;
@@ -179,7 +179,7 @@ gf_logical_monitor_new_derived (GfMonitorManager *monitor_manager,
   main_output = gf_monitor_get_main_output (monitor);
 
   logical_monitor->number = monitor_number;
-  logical_monitor->winsys_id = main_output->winsys_id;
+  logical_monitor->winsys_id = gf_output_get_id (main_output);
   logical_monitor->scale = scale;
   logical_monitor->transform = transform;
   logical_monitor->in_fullscreen = -1;

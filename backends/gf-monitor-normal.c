@@ -176,7 +176,7 @@ gf_monitor_normal_new (GfGpu    *gpu,
   monitor = GF_MONITOR (normal);
 
   gf_monitor_append_output (monitor, output);
-  gf_monitor_set_winsys_id (monitor, output->winsys_id);
+  gf_monitor_set_winsys_id (monitor, gf_output_get_id (output));
   gf_monitor_generate_spec (monitor);
   generate_modes (normal);
 

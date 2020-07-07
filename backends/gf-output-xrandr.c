@@ -63,7 +63,7 @@ output_set_presentation_xrandr (GfOutput *output,
   value= presentation;
 
   xcb_randr_change_output_property (XGetXCBConnection (xdisplay),
-                                    (XID) output->winsys_id,
+                                    (XID) gf_output_get_id (output),
                                     atom, XCB_ATOM_CARDINAL, 32,
                                     XCB_PROP_MODE_REPLACE,
                                     1, &value);
@@ -84,7 +84,7 @@ output_set_underscanning_xrandr (GfOutput *output,
   valueatom = XInternAtom (xdisplay, value, False);
 
   xcb_randr_change_output_property (XGetXCBConnection (xdisplay),
-                                    (XID) output->winsys_id,
+                                    (XID) gf_output_get_id (output),
                                     prop, XCB_ATOM_ATOM, 32,
                                     XCB_PROP_MODE_REPLACE,
                                     1, &valueatom);
@@ -106,7 +106,7 @@ output_set_underscanning_xrandr (GfOutput *output,
       border_value = crtc_config->mode->width * 0.05;
 
       xcb_randr_change_output_property (XGetXCBConnection (xdisplay),
-                                        (XID) output->winsys_id,
+                                        (XID) gf_output_get_id (output),
                                         prop, XCB_ATOM_INTEGER, 32,
                                         XCB_PROP_MODE_REPLACE,
                                         1, &border_value);
@@ -115,7 +115,7 @@ output_set_underscanning_xrandr (GfOutput *output,
       border_value = crtc_config->mode->height * 0.05;
 
       xcb_randr_change_output_property (XGetXCBConnection (xdisplay),
-                                        (XID) output->winsys_id,
+                                        (XID) gf_output_get_id (output),
                                         prop, XCB_ATOM_INTEGER, 32,
                                         XCB_PROP_MODE_REPLACE,
                                         1, &border_value);
@@ -170,7 +170,7 @@ output_get_property_exists (GfOutput    *output,
 
   xdisplay = xdisplay_from_output (output);
   atom = XInternAtom (xdisplay, propname, False);
-  XRRGetOutputProperty (xdisplay, (XID) output->winsys_id, atom,
+  XRRGetOutputProperty (xdisplay, (XID) gf_output_get_id (output), atom,
                         0, G_MAXLONG, False, False, AnyPropertyType,
                         &actual_type, &actual_format,
                         &nitems, &bytes_after, &buffer);
@@ -203,7 +203,7 @@ output_get_integer_property (GfOutput    *output,
 
   xdisplay = xdisplay_from_output (output);
   atom = XInternAtom (xdisplay, propname, False);
-  XRRGetOutputProperty (xdisplay, (XID) output->winsys_id, atom,
+  XRRGetOutputProperty (xdisplay, (XID) gf_output_get_id (output), atom,
                         0, G_MAXLONG, False, False, XA_INTEGER,
                         &actual_type, &actual_format,
                         &nitems, &bytes_after, &buffer);
@@ -289,7 +289,7 @@ output_get_connector_type_from_prop (GfOutput *output)
 
   xdisplay = xdisplay_from_output (output);
   atom = XInternAtom (xdisplay, "ConnectorType", False);
-  XRRGetOutputProperty (xdisplay, (XID) output->winsys_id, atom,
+  XRRGetOutputProperty (xdisplay, (XID) gf_output_get_id (output), atom,
                         0, G_MAXLONG, False, False, XA_ATOM,
                         &actual_type, &actual_format,
                         &nitems, &bytes_after, &buffer);
@@ -401,7 +401,7 @@ output_get_panel_orientation_transform (GfOutput *output)
   str = NULL;
 
   atom = XInternAtom (xdisplay, "panel orientation", False);
-  XRRGetOutputProperty (xdisplay, (XID) output->winsys_id, atom,
+  XRRGetOutputProperty (xdisplay, (XID) gf_output_get_id (output), atom,
                         0, G_MAXLONG, False, False, XA_ATOM,
                         &actual_type, &actual_format,
                         &nitems, &bytes_after, &buffer);
@@ -453,7 +453,7 @@ output_get_tile_info (GfOutput *output)
 
   xdisplay = gf_monitor_manager_xrandr_get_xdisplay (monitor_manager_xrandr);
   tile_atom = XInternAtom (xdisplay, "TILE", FALSE);
-  XRRGetOutputProperty (xdisplay, output->winsys_id,
+  XRRGetOutputProperty (xdisplay, gf_output_get_id (output),
                         tile_atom, 0, 100, False,
                         False, AnyPropertyType,
                         &actual_type, &actual_format,
@@ -567,7 +567,7 @@ output_get_boolean_property (GfOutput    *output,
 
   xdisplay = xdisplay_from_output (output);
   atom = XInternAtom (xdisplay, propname, False);
-  XRRGetOutputProperty (xdisplay, (XID) output->winsys_id, atom,
+  XRRGetOutputProperty (xdisplay, (XID) gf_output_get_id (output), atom,
                         0, G_MAXLONG, False, False, XA_CARDINAL,
                         &actual_type, &actual_format,
                         &nitems, &bytes_after, &buffer);
@@ -605,7 +605,7 @@ output_get_underscanning_xrandr (GfOutput *output)
 
   xdisplay = xdisplay_from_output (output);
   atom = XInternAtom (xdisplay, "underscan", False);
-  XRRGetOutputProperty (xdisplay, (XID) output->winsys_id, atom,
+  XRRGetOutputProperty (xdisplay, (XID) gf_output_get_id (output), atom,
                         0, G_MAXLONG, False, False, XA_ATOM,
                         &actual_type, &actual_format,
                         &nitems, &bytes_after, &buffer);
@@ -641,7 +641,7 @@ output_get_supports_underscanning_xrandr (GfOutput *output)
 
   xdisplay = xdisplay_from_output (output);
   atom = XInternAtom (xdisplay, "underscan", False);
-  XRRGetOutputProperty (xdisplay, (XID) output->winsys_id, atom,
+  XRRGetOutputProperty (xdisplay, (XID) gf_output_get_id (output), atom,
                         0, G_MAXLONG, False, False, XA_ATOM,
                         &actual_type, &actual_format,
                         &nitems, &bytes_after, &buffer);
@@ -655,7 +655,7 @@ output_get_supports_underscanning_xrandr (GfOutput *output)
     }
 
   property_info = XRRQueryOutputProperty (xdisplay,
-                                          (XID) output->winsys_id,
+                                          (XID) gf_output_get_id (output),
                                           atom);
   values = (Atom *) property_info->values;
 
@@ -696,7 +696,7 @@ output_get_backlight_xrandr (GfOutput *output)
 
   xdisplay = xdisplay_from_output (output);
   atom = XInternAtom (xdisplay, "Backlight", False);
-  XRRGetOutputProperty (xdisplay, (XID) output->winsys_id, atom,
+  XRRGetOutputProperty (xdisplay, (XID) gf_output_get_id (output), atom,
                         0, G_MAXLONG, False, False, XA_INTEGER,
                         &actual_type, &actual_format,
                         &nitems, &bytes_after, &buffer);
@@ -724,6 +724,7 @@ output_get_backlight_limits_xrandr (GfOutput *output)
   Display *xdisplay;
   Atom atom;
   xcb_connection_t *xcb_conn;
+  xcb_randr_output_t output_id;
   xcb_randr_query_output_property_cookie_t cookie;
   xcb_randr_query_output_property_reply_t *reply;
   int32_t *values;
@@ -732,8 +733,9 @@ output_get_backlight_limits_xrandr (GfOutput *output)
   atom = XInternAtom (xdisplay, "Backlight", False);
 
   xcb_conn = XGetXCBConnection (xdisplay);
+  output_id = gf_output_get_id (output);
   cookie = xcb_randr_query_output_property (xcb_conn,
-                                            (xcb_randr_output_t) output->winsys_id,
+                                            output_id,
                                             (xcb_atom_t) atom);
 
   reply = xcb_randr_query_output_property_reply (xcb_conn, cookie, NULL);
@@ -768,10 +770,10 @@ gf_create_xrandr_output (GfGpuXrandr   *gpu_xrandr,
   unsigned int i;
 
   output = g_object_new (GF_TYPE_OUTPUT,
+                         "id", output_id,
                          "gpu", GF_GPU (gpu_xrandr),
                          NULL);
 
-  output->winsys_id = output_id;
   output->name = g_strdup (xrandr_output->name);
 
   edid = gf_output_xrandr_read_edid (output);
@@ -811,7 +813,7 @@ gf_create_xrandr_output (GfGpuXrandr   *gpu_xrandr,
       output->possible_clones[i] = GINT_TO_POINTER (xrandr_output->clones[i]);
     }
 
-  output->is_primary = ((XID) output->winsys_id == primary_output);
+  output->is_primary = ((XID) gf_output_get_id (output) == primary_output);
   output->is_presentation = output_get_presentation_xrandr (output);
   output->is_underscanning = output_get_underscanning_xrandr (output);
   output->supports_underscanning = output_get_supports_underscanning_xrandr (output);
@@ -842,12 +844,18 @@ gf_output_xrandr_read_edid (GfOutput *output)
 
   xdisplay = xdisplay_from_output (output);
   edid_atom = XInternAtom (xdisplay, "EDID", FALSE);
-  result = get_edid_property (xdisplay, output->winsys_id, edid_atom, &len);
+  result = get_edid_property (xdisplay,
+                              gf_output_get_id (output),
+                              edid_atom,
+                              &len);
 
   if (!result)
     {
       edid_atom = XInternAtom (xdisplay, "EDID_DATA", FALSE);
-      result = get_edid_property (xdisplay, output->winsys_id, edid_atom, &len);
+      result = get_edid_property (xdisplay,
+                                  gf_output_get_id (output),
+                                  edid_atom,
+                                  &len);
     }
 
   if (result)
@@ -871,7 +879,7 @@ gf_output_xrandr_apply_mode (GfOutput *output)
   if (output->is_primary)
     {
       XRRSetOutputPrimary (xdisplay, DefaultRootWindow (xdisplay),
-                           (XID) output->winsys_id);
+                           (XID) gf_output_get_id (output));
     }
 
   output_set_presentation_xrandr (output, output->is_presentation);
@@ -893,7 +901,7 @@ gf_output_xrandr_change_backlight (GfOutput *output,
   atom = XInternAtom (xdisplay, "Backlight", False);
 
   xcb_randr_change_output_property (XGetXCBConnection (xdisplay),
-                                    (XID)output->winsys_id,
+                                    (XID) gf_output_get_id (output),
                                     atom, XCB_ATOM_INTEGER, 32,
                                     XCB_PROP_MODE_REPLACE,
                                     1, &hw_value);
