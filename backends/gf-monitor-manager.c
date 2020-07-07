@@ -1113,7 +1113,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
         {
           g_variant_builder_add (&crtc_builder, "(uxiiiiiuaua{sv})",
                                  i, /* ID */
-                                 0,
+                                 (int64_t) crtc->crtc_id,
                                  0,
                                  0,
                                  0,
