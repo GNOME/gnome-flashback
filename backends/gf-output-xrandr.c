@@ -512,8 +512,9 @@ output_get_modes (GfOutput      *output,
 }
 
 static void
-output_get_crtcs (GfOutput      *output,
-                  XRROutputInfo *xrandr_output)
+output_get_crtcs (GfOutput       *output,
+                  XRROutputInfo  *xrandr_output,
+                  GfCrtc        **assigned_crtc)
 {
   GfGpu *gpu;
   guint j;
@@ -548,10 +549,12 @@ output_get_crtcs (GfOutput      *output,
 
       if ((XID) gf_crtc_get_id (crtc) == xrandr_output->crtc)
         {
-          gf_output_assign_crtc (output, crtc);
-          break;
+          *assigned_crtc = crtc;
+          return;
         }
     }
+
+  *assigned_crtc = NULL;
 }
 
 static gboolean
@@ -767,6 +770,7 @@ gf_create_xrandr_output (GfGpuXrandr   *gpu_xrandr,
 {
   GfOutput *output;
   GBytes *edid;
+  GfCrtc *assigned_crtc;
   unsigned int i;
 
   output = g_object_new (GF_TYPE_OUTPUT,
@@ -799,7 +803,20 @@ gf_create_xrandr_output (GfGpuXrandr   *gpu_xrandr,
 
   output_get_tile_info (output);
   output_get_modes (output, xrandr_output);
-  output_get_crtcs (output, xrandr_output);
+  output_get_crtcs (output, xrandr_output, &assigned_crtc);
+
+  if (assigned_crtc)
+    {
+      GfOutputInfo output_info;
+
+      output_info = (GfOutputInfo) {
+        .is_primary = (XID) gf_output_get_id (output) == primary_output,
+        .is_presentation = output_get_presentation_xrandr (output),
+        .is_underscanning = output_get_underscanning_xrandr (output),
+      };
+
+      gf_output_assign_crtc (output, assigned_crtc, &output_info);
+    }
 
   output->n_possible_clones = xrandr_output->nclone;
   output->possible_clones = g_new0 (GfOutput *, output->n_possible_clones);
@@ -813,17 +830,12 @@ gf_create_xrandr_output (GfGpuXrandr   *gpu_xrandr,
       output->possible_clones[i] = GINT_TO_POINTER (xrandr_output->clones[i]);
     }
 
-  output->is_primary = ((XID) gf_output_get_id (output) == primary_output);
-  output->is_presentation = output_get_presentation_xrandr (output);
-  output->is_underscanning = output_get_underscanning_xrandr (output);
   output->supports_underscanning = output_get_supports_underscanning_xrandr (output);
 
   output_get_backlight_limits_xrandr (output);
 
   if (!(output->backlight_min == 0 && output->backlight_max == 0))
-    output->backlight = output_get_backlight_xrandr (output);
-  else
-    output->backlight = -1;
+    gf_output_set_backlight (output, output_get_backlight_xrandr (output));
 
   if (output->n_modes == 0 || output->n_possible_crtcs == 0)
     {
@@ -876,16 +888,19 @@ gf_output_xrandr_apply_mode (GfOutput *output)
 
   xdisplay = xdisplay_from_output (output);
 
-  if (output->is_primary)
+  if (gf_output_is_primary (output))
     {
       XRRSetOutputPrimary (xdisplay, DefaultRootWindow (xdisplay),
                            (XID) gf_output_get_id (output));
     }
 
-  output_set_presentation_xrandr (output, output->is_presentation);
+  output_set_presentation_xrandr (output, gf_output_is_presentation (output));
 
   if (output->supports_underscanning)
-    output_set_underscanning_xrandr (output, output->is_underscanning);
+    {
+      output_set_underscanning_xrandr (output,
+                                       gf_output_is_underscanning (output));
+    }
 }
 
 void
@@ -907,5 +922,5 @@ gf_output_xrandr_change_backlight (GfOutput *output,
                                     1, &hw_value);
 
   /* We're not selecting for property notifies, so update the value immediately */
-  output->backlight = normalize_backlight (output, hw_value);
+  gf_output_set_backlight (output, normalize_backlight (output, hw_value));
 }

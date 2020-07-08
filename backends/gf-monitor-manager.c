@@ -1192,18 +1192,18 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
       g_variant_builder_add (&properties, "{sv}", "display-name",
                              g_variant_new_string (output->name));
       g_variant_builder_add (&properties, "{sv}", "backlight",
-                             g_variant_new_int32 (output->backlight));
+                             g_variant_new_int32 (gf_output_get_backlight (output)));
       g_variant_builder_add (&properties, "{sv}", "min-backlight-step",
                              g_variant_new_int32 ((output->backlight_max - output->backlight_min) ?
                                                   100 / (output->backlight_max - output->backlight_min) : -1));
       g_variant_builder_add (&properties, "{sv}", "primary",
-                             g_variant_new_boolean (output->is_primary));
+                             g_variant_new_boolean (gf_output_is_primary (output)));
       g_variant_builder_add (&properties, "{sv}", "presentation",
-                             g_variant_new_boolean (output->is_presentation));
+                             g_variant_new_boolean (gf_output_is_presentation (output)));
       g_variant_builder_add (&properties, "{sv}", "connector-type",
                              g_variant_new_string (get_connector_type_name (output->connector_type)));
       g_variant_builder_add (&properties, "{sv}", "underscanning",
-                             g_variant_new_boolean (output->is_underscanning));
+                             g_variant_new_boolean (gf_output_is_underscanning (output)));
       g_variant_builder_add (&properties, "{sv}", "supports-underscanning",
                              g_variant_new_boolean (output->supports_underscanning));
 
@@ -1291,6 +1291,7 @@ gf_monitor_manager_handle_change_backlight (GfDBusDisplayConfig   *skeleton,
   GfMonitorManagerClass *manager_class;
   GList *combined_outputs;
   GfOutput *output;
+  int new_backlight;
 
   manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
 
@@ -1325,7 +1326,7 @@ gf_monitor_manager_handle_change_backlight (GfDBusDisplayConfig   *skeleton,
       return TRUE;
     }
 
-  if (output->backlight == -1 ||
+  if (gf_output_get_backlight (output) == -1 ||
       (output->backlight_min == 0 && output->backlight_max == 0))
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
@@ -1336,8 +1337,10 @@ gf_monitor_manager_handle_change_backlight (GfDBusDisplayConfig   *skeleton,
 
   manager_class->change_backlight (manager, output, value);
 
-  gf_dbus_display_config_complete_change_backlight (skeleton, invocation,
-                                                    output->backlight);
+  new_backlight = gf_output_get_backlight (output);
+  gf_dbus_display_config_complete_change_backlight (skeleton,
+                                                    invocation,
+                                                    new_backlight);
 
   return TRUE;
 }

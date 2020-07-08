@@ -724,7 +724,7 @@ gf_monitor_is_primary (GfMonitor *monitor)
 
   output = gf_monitor_get_main_output (monitor);
 
-  return output->is_primary;
+  return gf_output_is_primary (output);
 }
 
 gboolean
@@ -744,7 +744,7 @@ gf_monitor_is_underscanning (GfMonitor *monitor)
 
   output = gf_monitor_get_main_output (monitor);
 
-  return output->is_underscanning;
+  return gf_output_is_underscanning (output);
 }
 
 gboolean

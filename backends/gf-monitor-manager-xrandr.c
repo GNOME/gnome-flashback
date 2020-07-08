@@ -234,13 +234,13 @@ is_output_assignment_changed (GfOutput      *output,
       if (output_info->output != output)
         continue;
 
-      if (output->is_primary != output_info->is_primary)
+      if (gf_output_is_primary (output) != output_info->is_primary)
         return TRUE;
 
-      if (output->is_presentation != output_info->is_presentation)
+      if (gf_output_is_presentation (output) != output_info->is_presentation)
         return TRUE;
 
-      if (output->is_underscanning != output_info->is_underscanning)
+      if (gf_output_is_underscanning (output) != output_info->is_underscanning)
         return TRUE;
 
       output_is_found = TRUE;
@@ -494,11 +494,14 @@ apply_crtc_assignments (GfMonitorManager  *manager,
           for (j = 0; j < n_output_ids; j++)
             {
               GfOutput *output;
+              GfOutputInfo *output_info;
 
               output = ((GfOutput**) crtc_info->outputs->pdata)[j];
 
               to_configure_outputs = g_list_remove (to_configure_outputs, output);
-              gf_output_assign_crtc (output, crtc);
+
+              output_info = gf_find_output_info (outputs, n_outputs, output);
+              gf_output_assign_crtc (output, crtc, output_info);
 
               output_ids[j] = gf_output_get_id (output);
             }
@@ -539,20 +542,14 @@ apply_crtc_assignments (GfMonitorManager  *manager,
       GfOutputInfo *output_info = outputs[i];
       GfOutput *output = output_info->output;
 
-      output->is_primary = output_info->is_primary;
-      output->is_presentation = output_info->is_presentation;
-      output->is_underscanning = output_info->is_underscanning;
-
       gf_output_xrandr_apply_mode (output);
     }
 
-  /* Disable outputs not mentioned in the list */
   for (l = to_configure_outputs; l; l = l->next)
     {
       GfOutput *output = l->data;
 
       gf_output_unassign_crtc (output);
-      output->is_primary = FALSE;
     }
 
   XUngrabServer (xrandr->xdisplay);

@@ -217,7 +217,8 @@ gf_logical_monitor_add_monitor (GfLogicalMonitor *logical_monitor,
           GfOutput *output;
 
           output = l_output->data;
-          is_presentation = is_presentation && output->is_presentation;
+          is_presentation = (is_presentation &&
+                             gf_output_is_presentation (output));
         }
     }
 

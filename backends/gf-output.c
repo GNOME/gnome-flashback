@@ -38,6 +38,13 @@ typedef struct
 
   /* The CRTC driving this output, NULL if the output is not enabled */
   GfCrtc   *crtc;
+
+  gboolean  is_primary;
+  gboolean  is_presentation;
+
+  gboolean  is_underscanning;
+
+  int       backlight;
 } GfOutputPrivate;
 
 enum
@@ -182,8 +189,13 @@ gf_output_class_init (GfOutputClass *output_class)
 }
 
 static void
-gf_output_init (GfOutput *output)
+gf_output_init (GfOutput *self)
 {
+  GfOutputPrivate *priv;
+
+  priv = gf_output_get_instance_private (self);
+
+  priv->backlight = -1;
 }
 
 uint64_t
@@ -207,16 +219,21 @@ gf_output_get_gpu (GfOutput *output)
 }
 
 void
-gf_output_assign_crtc (GfOutput *output,
-                       GfCrtc   *crtc)
+gf_output_assign_crtc (GfOutput           *self,
+                       GfCrtc             *crtc,
+                       const GfOutputInfo *output_info)
 {
   GfOutputPrivate *priv;
 
-  priv = gf_output_get_instance_private (output);
+  priv = gf_output_get_instance_private (self);
 
   g_assert (crtc);
 
   g_set_object (&priv->crtc, crtc);
+
+  priv->is_primary = output_info->is_primary;
+  priv->is_presentation = output_info->is_presentation;
+  priv->is_underscanning = output_info->is_underscanning;
 }
 
 void
@@ -227,6 +244,9 @@ gf_output_unassign_crtc (GfOutput *output)
   priv = gf_output_get_instance_private (output);
 
   g_clear_object (&priv->crtc);
+
+  priv->is_primary = FALSE;
+  priv->is_presentation = FALSE;
 }
 
 GfCrtc *
@@ -338,4 +358,55 @@ gf_output_crtc_to_logical_transform (GfOutput           *output,
   inverted_transform = gf_monitor_transform_invert (panel_orientation_transform);
 
   return gf_monitor_transform_transform (transform, inverted_transform);
+}
+
+gboolean
+gf_output_is_primary (GfOutput *self)
+{
+  GfOutputPrivate *priv;
+
+  priv = gf_output_get_instance_private (self);
+
+  return priv->is_primary;
+}
+
+gboolean
+gf_output_is_presentation (GfOutput *self)
+{
+  GfOutputPrivate *priv;
+
+  priv = gf_output_get_instance_private (self);
+
+  return priv->is_presentation;
+}
+
+gboolean
+gf_output_is_underscanning (GfOutput *self)
+{
+  GfOutputPrivate *priv;
+
+  priv = gf_output_get_instance_private (self);
+
+  return priv->is_underscanning;
+}
+
+void
+gf_output_set_backlight (GfOutput *self,
+                         int       backlight)
+{
+  GfOutputPrivate *priv;
+
+  priv = gf_output_get_instance_private (self);
+
+  priv->backlight = backlight;
+}
+
+int
+gf_output_get_backlight (GfOutput *self)
+{
+  GfOutputPrivate *priv;
+
+  priv = gf_output_get_instance_private (self);
+
+  return priv->backlight;
 }

@@ -78,14 +78,9 @@ struct _GfOutput
   GfOutput           **possible_clones;
   guint                n_possible_clones;
 
-  gint                 backlight;
   gint                 backlight_min;
   gint                 backlight_max;
 
-  /* The low-level bits used to build the high-level info in GfLogicalMonitor */
-  gboolean             is_primary;
-  gboolean             is_presentation;
-  gboolean             is_underscanning;
   gboolean             supports_underscanning;
 
   gpointer             driver_private;
@@ -109,7 +104,8 @@ uint64_t            gf_output_get_id                    (GfOutput           *sel
 GfGpu              *gf_output_get_gpu                   (GfOutput           *output);
 
 void                gf_output_assign_crtc               (GfOutput           *output,
-                                                         GfCrtc             *crtc);
+                                                         GfCrtc             *crtc,
+                                                         const GfOutputInfo *output_info);
 
 void                gf_output_unassign_crtc             (GfOutput           *output);
 
@@ -125,6 +121,37 @@ GfMonitorTransform  gf_output_logical_to_crtc_transform (GfOutput           *out
 
 GfMonitorTransform  gf_output_crtc_to_logical_transform (GfOutput           *output,
                                                          GfMonitorTransform  transform);
+
+gboolean            gf_output_is_primary                (GfOutput           *self);
+
+gboolean            gf_output_is_presentation           (GfOutput           *self);
+
+gboolean            gf_output_is_underscanning          (GfOutput           *self);
+
+void                gf_output_set_backlight             (GfOutput           *self,
+                                                         int                 backlight);
+
+int                 gf_output_get_backlight             (GfOutput           *self);
+
+static inline GfOutputInfo *
+gf_find_output_info (GfOutputInfo **outputs,
+                     unsigned int   n_outputs,
+                     GfOutput      *output)
+{
+  unsigned int i;
+
+  for (i = 0; i < n_outputs; i++)
+    {
+      GfOutputInfo *output_info;
+
+      output_info = outputs[i];
+
+      if (output == output_info->output)
+        return output_info;
+    }
+
+  return NULL;
+}
 
 G_END_DECLS
 
