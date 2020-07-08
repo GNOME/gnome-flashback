@@ -103,6 +103,8 @@ uint64_t            gf_output_get_id                    (GfOutput           *sel
 
 GfGpu              *gf_output_get_gpu                   (GfOutput           *output);
 
+const char         *gf_output_get_name                  (GfOutput           *self);
+
 void                gf_output_assign_crtc               (GfOutput           *output,
                                                          GfCrtc             *crtc,
                                                          const GfOutputInfo *output_info);

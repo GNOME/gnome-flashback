@@ -218,6 +218,12 @@ gf_output_get_gpu (GfOutput *output)
   return priv->gpu;
 }
 
+const char *
+gf_output_get_name (GfOutput *self)
+{
+  return self->name;
+}
+
 void
 gf_output_assign_crtc (GfOutput           *self,
                        GfCrtc             *crtc,
