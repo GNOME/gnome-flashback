@@ -195,31 +195,33 @@ xrandr_set_crtc_config (GfMonitorManagerXrandr *xrandr,
 }
 
 static gboolean
-is_crtc_assignment_changed (GfCrtc      *crtc,
-                            GfCrtcInfo **crtc_infos,
-                            guint        n_crtc_infos)
+is_crtc_assignment_changed (GfCrtc            *crtc,
+                            GfCrtcAssignment **crtc_assignments,
+                            unsigned int       n_crtc_assignments)
 {
   guint i;
 
-  for (i = 0; i < n_crtc_infos; i++)
+  for (i = 0; i < n_crtc_assignments; i++)
     {
-      GfCrtcInfo *crtc_info = crtc_infos[i];
+      GfCrtcAssignment *crtc_assignment;
 
-      if (crtc_info->crtc != crtc)
+      crtc_assignment = crtc_assignments[i];
+
+      if (crtc_assignment->crtc != crtc)
         continue;
 
-      return gf_crtc_xrandr_is_assignment_changed (crtc, crtc_info);
+      return gf_crtc_xrandr_is_assignment_changed (crtc, crtc_assignment);
     }
 
   return !!gf_crtc_xrandr_get_current_mode (crtc);
 }
 
 static gboolean
-is_output_assignment_changed (GfOutput      *output,
-                              GfCrtcInfo   **crtc_infos,
-                              guint          n_crtc_infos,
-                              GfOutputInfo **output_infos,
-                              guint          n_output_infos)
+is_output_assignment_changed (GfOutput            *output,
+                              GfCrtcAssignment   **crtc_assignments,
+                              guint                n_crtc_assignments,
+                              GfOutputAssignment **output_assignments,
+                              guint                n_output_assignments)
 {
   gboolean output_is_found;
   GfCrtc *assigned_crtc;
@@ -227,20 +229,22 @@ is_output_assignment_changed (GfOutput      *output,
 
   output_is_found = FALSE;
 
-  for (i = 0; i < n_output_infos; i++)
+  for (i = 0; i < n_output_assignments; i++)
     {
-      GfOutputInfo *output_info = output_infos[i];
+      GfOutputAssignment *output_assignment;
 
-      if (output_info->output != output)
+      output_assignment = output_assignments[i];
+
+      if (output_assignment->output != output)
         continue;
 
-      if (gf_output_is_primary (output) != output_info->is_primary)
+      if (gf_output_is_primary (output) != output_assignment->is_primary)
         return TRUE;
 
-      if (gf_output_is_presentation (output) != output_info->is_presentation)
+      if (gf_output_is_presentation (output) != output_assignment->is_presentation)
         return TRUE;
 
-      if (gf_output_is_underscanning (output) != output_info->is_underscanning)
+      if (gf_output_is_underscanning (output) != output_assignment->is_underscanning)
         return TRUE;
 
       output_is_found = TRUE;
@@ -251,19 +255,21 @@ is_output_assignment_changed (GfOutput      *output,
   if (!output_is_found)
     return assigned_crtc != NULL;
 
-  for (i = 0; i < n_crtc_infos; i++)
+  for (i = 0; i < n_crtc_assignments; i++)
     {
-      GfCrtcInfo *crtc_info = crtc_infos[i];
+      GfCrtcAssignment *crtc_assignment;
       guint j;
 
-      for (j = 0; j < crtc_info->outputs->len; j++)
+      crtc_assignment = crtc_assignments[i];
+
+      for (j = 0; j < crtc_assignment->outputs->len; j++)
         {
-          GfOutput *crtc_info_output;
+          GfOutput *crtc_assignment_output;
 
-          crtc_info_output = ((GfOutput**) crtc_info->outputs->pdata)[j];
+          crtc_assignment_output = ((GfOutput**) crtc_assignment->outputs->pdata)[j];
 
-          if (crtc_info_output == output &&
-              crtc_info->crtc == assigned_crtc)
+          if (crtc_assignment_output == output &&
+              crtc_assignment->crtc == assigned_crtc)
             return FALSE;
         }
     }
@@ -284,11 +290,11 @@ get_gpu (GfMonitorManagerXrandr *self)
 }
 
 static gboolean
-is_assignments_changed (GfMonitorManager  *manager,
-                        GfCrtcInfo       **crtc_infos,
-                        guint              n_crtc_infos,
-                        GfOutputInfo     **output_infos,
-                        guint              n_output_infos)
+is_assignments_changed (GfMonitorManager    *manager,
+                        GfCrtcAssignment   **crtc_assignments,
+                        guint                n_crtc_assignments,
+                        GfOutputAssignment **output_assignments,
+                        guint                n_output_assignments)
 {
   GfMonitorManagerXrandr *manager_xrandr;
   GfGpu *gpu;
@@ -301,7 +307,7 @@ is_assignments_changed (GfMonitorManager  *manager,
     {
       GfCrtc *crtc = l->data;
 
-      if (is_crtc_assignment_changed (crtc, crtc_infos, n_crtc_infos))
+      if (is_crtc_assignment_changed (crtc, crtc_assignments, n_crtc_assignments))
         return TRUE;
     }
 
@@ -310,10 +316,10 @@ is_assignments_changed (GfMonitorManager  *manager,
       GfOutput *output = l->data;
 
       if (is_output_assignment_changed (output,
-                                        crtc_infos,
-                                        n_crtc_infos,
-                                        output_infos,
-                                        n_output_infos))
+                                        crtc_assignments,
+                                        n_crtc_assignments,
+                                        output_assignments,
+                                        n_output_assignments))
         return TRUE;
     }
 
@@ -370,12 +376,12 @@ gf_monitor_transform_to_xrandr (GfMonitorTransform transform)
 }
 
 static void
-apply_crtc_assignments (GfMonitorManager  *manager,
-                        gboolean           save_timestamp,
-                        GfCrtcInfo       **crtcs,
-                        guint              n_crtcs,
-                        GfOutputInfo     **outputs,
-                        guint              n_outputs)
+apply_crtc_assignments (GfMonitorManager    *manager,
+                        gboolean             save_timestamp,
+                        GfCrtcAssignment   **crtcs,
+                        guint                n_crtcs,
+                        GfOutputAssignment **outputs,
+                        guint                n_outputs)
 {
   GfMonitorManagerXrandr *xrandr;
   GfGpu *gpu;
@@ -397,16 +403,16 @@ apply_crtc_assignments (GfMonitorManager  *manager,
   width = 0; height = 0;
   for (i = 0; i < n_crtcs; i++)
     {
-      GfCrtcInfo *crtc_info = crtcs[i];
-      GfCrtc *crtc = crtc_info->crtc;
+      GfCrtcAssignment *crtc_assignment = crtcs[i];
+      GfCrtc *crtc = crtc_assignment->crtc;
 
-      if (crtc_info->mode == NULL)
+      if (crtc_assignment->mode == NULL)
         continue;
 
       to_disable_crtcs = g_list_remove (to_disable_crtcs, crtc);
 
-      width = MAX (width, crtc_info->layout.x + crtc_info->layout.width);
-      height = MAX (height, crtc_info->layout.y + crtc_info->layout.height);
+      width = MAX (width, crtc_assignment->layout.x + crtc_assignment->layout.width);
+      height = MAX (height, crtc_assignment->layout.y + crtc_assignment->layout.height);
     }
 
   /* Second disable all newly disabled CRTCs, or CRTCs that in the previous
@@ -416,8 +422,8 @@ apply_crtc_assignments (GfMonitorManager  *manager,
    */
   for (i = 0; i < n_crtcs; i++)
     {
-      GfCrtcInfo *crtc_info = crtcs[i];
-      GfCrtc *crtc = crtc_info->crtc;
+      GfCrtcAssignment *crtc_assignment = crtcs[i];
+      GfCrtc *crtc = crtc_assignment->crtc;
       GfCrtcConfig *crtc_config;
       int x2, y2;
 
@@ -428,7 +434,7 @@ apply_crtc_assignments (GfMonitorManager  *manager,
       x2 = crtc_config->layout.x + crtc_config->layout.width;
       y2 = crtc_config->layout.y + crtc_config->layout.height;
 
-      if (crtc_info->mode == NULL || x2 > width || y2 > height)
+      if (crtc_assignment->mode == NULL || x2 > width || y2 > height)
         {
           xrandr_set_crtc_config (xrandr,
                                   crtc,
@@ -476,44 +482,44 @@ apply_crtc_assignments (GfMonitorManager  *manager,
 
   for (i = 0; i < n_crtcs; i++)
     {
-      GfCrtcInfo *crtc_info = crtcs[i];
-      GfCrtc *crtc = crtc_info->crtc;
+      GfCrtcAssignment *crtc_assignment = crtcs[i];
+      GfCrtc *crtc = crtc_assignment->crtc;
 
-      if (crtc_info->mode != NULL)
+      if (crtc_assignment->mode != NULL)
         {
           GfCrtcMode *mode;
           xcb_randr_output_t *output_ids;
           guint j, n_output_ids;
           xcb_randr_rotation_t rotation;
 
-          mode = crtc_info->mode;
+          mode = crtc_assignment->mode;
 
-          n_output_ids = crtc_info->outputs->len;
+          n_output_ids = crtc_assignment->outputs->len;
           output_ids = g_new0 (xcb_randr_output_t, n_output_ids);
 
           for (j = 0; j < n_output_ids; j++)
             {
               GfOutput *output;
-              GfOutputInfo *output_info;
+              GfOutputAssignment *output_assignment;
 
-              output = ((GfOutput**) crtc_info->outputs->pdata)[j];
+              output = ((GfOutput**) crtc_assignment->outputs->pdata)[j];
 
               to_configure_outputs = g_list_remove (to_configure_outputs, output);
 
-              output_info = gf_find_output_info (outputs, n_outputs, output);
-              gf_output_assign_crtc (output, crtc, output_info);
+              output_assignment = gf_find_output_assignment (outputs, n_outputs, output);
+              gf_output_assign_crtc (output, crtc, output_assignment);
 
               output_ids[j] = gf_output_get_id (output);
             }
 
-          rotation = gf_monitor_transform_to_xrandr (crtc_info->transform);
+          rotation = gf_monitor_transform_to_xrandr (crtc_assignment->transform);
           if (!xrandr_set_crtc_config (xrandr,
                                        crtc,
                                        save_timestamp,
                                        (xcb_randr_crtc_t) gf_crtc_get_id (crtc),
                                        XCB_CURRENT_TIME,
-                                       crtc_info->layout.x,
-                                       crtc_info->layout.y,
+                                       crtc_assignment->layout.x,
+                                       crtc_assignment->layout.y,
                                        (xcb_randr_mode_t) mode->mode_id,
                                        rotation,
                                        output_ids, n_output_ids))
@@ -521,17 +527,18 @@ apply_crtc_assignments (GfMonitorManager  *manager,
               g_warning ("Configuring CRTC %d with mode %d (%d x %d @ %f) at position %d, %d and transform %u failed\n",
                          (guint) gf_crtc_get_id (crtc), (guint) (mode->mode_id),
                          mode->width, mode->height, (gdouble) mode->refresh_rate,
-                         crtc_info->layout.x, crtc_info->layout.y,
-                         crtc_info->transform);
+                         crtc_assignment->layout.x,
+                         crtc_assignment->layout.y,
+                         crtc_assignment->transform);
 
               g_free (output_ids);
               continue;
             }
 
           gf_crtc_set_config (crtc,
-                              &crtc_info->layout,
+                              &crtc_assignment->layout,
                               mode,
-                              crtc_info->transform);
+                              crtc_assignment->transform);
 
           g_free (output_ids);
         }
@@ -539,8 +546,8 @@ apply_crtc_assignments (GfMonitorManager  *manager,
 
   for (i = 0; i < n_outputs; i++)
     {
-      GfOutputInfo *output_info = outputs[i];
-      GfOutput *output = output_info->output;
+      GfOutputAssignment *output_assignment = outputs[i];
+      GfOutput *output = output_assignment->output;
 
       gf_output_xrandr_apply_mode (output);
     }
@@ -803,8 +810,8 @@ gf_monitor_manager_xrandr_apply_monitors_config (GfMonitorManager        *manage
                                                  GfMonitorsConfigMethod   method,
                                                  GError                 **error)
 {
-  GPtrArray *crtc_infos;
-  GPtrArray *output_infos;
+  GPtrArray *crtc_assignments;
+  GPtrArray *output_assignments;
 
   if (!config)
     {
@@ -813,7 +820,7 @@ gf_monitor_manager_xrandr_apply_monitors_config (GfMonitorManager        *manage
     }
 
   if (!gf_monitor_config_manager_assign (manager, config,
-                                         &crtc_infos, &output_infos,
+                                         &crtc_assignments, &output_assignments,
                                          error))
     return FALSE;
 
@@ -828,17 +835,17 @@ gf_monitor_manager_xrandr_apply_monitors_config (GfMonitorManager        *manage
        * just update the logical state.
        */
       if (is_assignments_changed (manager,
-                                  (GfCrtcInfo **) crtc_infos->pdata,
-                                  crtc_infos->len,
-                                  (GfOutputInfo **) output_infos->pdata,
-                                  output_infos->len))
+                                  (GfCrtcAssignment **) crtc_assignments->pdata,
+                                  crtc_assignments->len,
+                                  (GfOutputAssignment **) output_assignments->pdata,
+                                  output_assignments->len))
         {
           apply_crtc_assignments (manager,
                                   TRUE,
-                                  (GfCrtcInfo **) crtc_infos->pdata,
-                                  crtc_infos->len,
-                                  (GfOutputInfo **) output_infos->pdata,
-                                  output_infos->len);
+                                  (GfCrtcAssignment **) crtc_assignments->pdata,
+                                  crtc_assignments->len,
+                                  (GfOutputAssignment **) output_assignments->pdata,
+                                  output_assignments->len);
         }
       else
         {
@@ -846,8 +853,8 @@ gf_monitor_manager_xrandr_apply_monitors_config (GfMonitorManager        *manage
         }
     }
 
-  g_ptr_array_free (crtc_infos, TRUE);
-  g_ptr_array_free (output_infos, TRUE);
+  g_ptr_array_free (crtc_assignments, TRUE);
+  g_ptr_array_free (output_assignments, TRUE);
 
   return TRUE;
 }

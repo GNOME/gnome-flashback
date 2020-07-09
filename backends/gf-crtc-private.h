@@ -79,7 +79,7 @@ typedef struct
   GfRectangle         layout;
   GfMonitorTransform  transform;
   GPtrArray          *outputs;
-} GfCrtcInfo;
+} GfCrtcAssignment;
 
 #define GF_TYPE_CRTC (gf_crtc_get_type ())
 G_DECLARE_FINAL_TYPE (GfCrtc, gf_crtc, GF, CRTC, GObject)

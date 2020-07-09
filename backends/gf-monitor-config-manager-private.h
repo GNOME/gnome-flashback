@@ -39,8 +39,8 @@ GfMonitorConfigStore   *gf_monitor_config_manager_get_store                 (GfM
 
 gboolean                gf_monitor_config_manager_assign                    (GfMonitorManager            *manager,
                                                                              GfMonitorsConfig            *config,
-                                                                             GPtrArray                  **crtc_infos,
-                                                                             GPtrArray                  **output_infos,
+                                                                             GPtrArray                  **crtc_assignments,
+                                                                             GPtrArray                  **output_assignments,
                                                                              GError                     **error);
 
 GfMonitorsConfig       *gf_monitor_config_manager_get_stored                (GfMonitorConfigManager      *config_manager);

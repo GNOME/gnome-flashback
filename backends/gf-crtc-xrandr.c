@@ -235,32 +235,32 @@ gf_crtc_xrandr_set_config (GfCrtc               *crtc,
 }
 
 gboolean
-gf_crtc_xrandr_is_assignment_changed (GfCrtc     *crtc,
-                                      GfCrtcInfo *crtc_info)
+gf_crtc_xrandr_is_assignment_changed (GfCrtc           *crtc,
+                                      GfCrtcAssignment *crtc_assignment)
 {
   GfCrtcXrandr *crtc_xrandr;
   unsigned int i;
 
   crtc_xrandr = crtc->driver_private;
 
-  if (crtc_xrandr->current_mode != crtc_info->mode)
+  if (crtc_xrandr->current_mode != crtc_assignment->mode)
     return TRUE;
 
-  if (crtc_xrandr->rect.x != crtc_info->layout.x)
+  if (crtc_xrandr->rect.x != crtc_assignment->layout.x)
     return TRUE;
 
-  if (crtc_xrandr->rect.y != crtc_info->layout.y)
+  if (crtc_xrandr->rect.y != crtc_assignment->layout.y)
     return TRUE;
 
-  if (crtc_xrandr->transform != crtc_info->transform)
+  if (crtc_xrandr->transform != crtc_assignment->transform)
     return TRUE;
 
-  for (i = 0; i < crtc_info->outputs->len; i++)
+  for (i = 0; i < crtc_assignment->outputs->len; i++)
     {
       GfOutput *output;
       GfCrtc *assigned_crtc;
 
-      output = ((GfOutput **) crtc_info->outputs->pdata)[i];
+      output = ((GfOutput **) crtc_assignment->outputs->pdata)[i];
       assigned_crtc = gf_output_get_assigned_crtc (output);
 
       if (assigned_crtc != crtc)

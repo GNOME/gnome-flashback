@@ -807,15 +807,15 @@ gf_create_xrandr_output (GfGpuXrandr   *gpu_xrandr,
 
   if (assigned_crtc)
     {
-      GfOutputInfo output_info;
+      GfOutputAssignment output_assignment;
 
-      output_info = (GfOutputInfo) {
+      output_assignment = (GfOutputAssignment) {
         .is_primary = (XID) gf_output_get_id (output) == primary_output,
         .is_presentation = output_get_presentation_xrandr (output),
         .is_underscanning = output_get_underscanning_xrandr (output),
       };
 
-      gf_output_assign_crtc (output, assigned_crtc, &output_info);
+      gf_output_assign_crtc (output, assigned_crtc, &output_assignment);
     }
 
   output->n_possible_clones = xrandr_output->nclone;

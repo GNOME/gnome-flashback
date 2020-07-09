@@ -47,7 +47,7 @@ gboolean    gf_crtc_xrandr_set_config            (GfCrtc               *crtc,
                                                   xcb_timestamp_t      *out_timestamp);
 
 gboolean    gf_crtc_xrandr_is_assignment_changed (GfCrtc               *crtc,
-                                                  GfCrtcInfo           *crtc_info);
+                                                  GfCrtcAssignment     *crtc_assignment);
 
 GfCrtcMode *gf_crtc_xrandr_get_current_mode      (GfCrtc               *crtc);
 

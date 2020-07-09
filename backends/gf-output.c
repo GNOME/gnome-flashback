@@ -225,9 +225,9 @@ gf_output_get_name (GfOutput *self)
 }
 
 void
-gf_output_assign_crtc (GfOutput           *self,
-                       GfCrtc             *crtc,
-                       const GfOutputInfo *output_info)
+gf_output_assign_crtc (GfOutput                *self,
+                       GfCrtc                   *crtc,
+                       const GfOutputAssignment *output_assignment)
 {
   GfOutputPrivate *priv;
 
@@ -237,9 +237,9 @@ gf_output_assign_crtc (GfOutput           *self,
 
   g_set_object (&priv->crtc, crtc);
 
-  priv->is_primary = output_info->is_primary;
-  priv->is_presentation = output_info->is_presentation;
-  priv->is_underscanning = output_info->is_underscanning;
+  priv->is_primary = output_assignment->is_primary;
+  priv->is_presentation = output_assignment->is_presentation;
+  priv->is_underscanning = output_assignment->is_underscanning;
 }
 
 void

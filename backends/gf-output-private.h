@@ -52,7 +52,7 @@ typedef struct
   gboolean  is_primary;
   gboolean  is_presentation;
   gboolean  is_underscanning;
-} GfOutputInfo;
+} GfOutputAssignment;
 
 struct _GfOutput
 {
@@ -99,57 +99,57 @@ struct _GfOutput
 #define GF_TYPE_OUTPUT (gf_output_get_type ())
 G_DECLARE_FINAL_TYPE (GfOutput, gf_output, GF, OUTPUT, GObject)
 
-uint64_t            gf_output_get_id                    (GfOutput           *self);
+uint64_t            gf_output_get_id                    (GfOutput                 *self);
 
-GfGpu              *gf_output_get_gpu                   (GfOutput           *output);
+GfGpu              *gf_output_get_gpu                   (GfOutput                 *self);
 
-const char         *gf_output_get_name                  (GfOutput           *self);
+const char         *gf_output_get_name                  (GfOutput                 *self);
 
-void                gf_output_assign_crtc               (GfOutput           *output,
-                                                         GfCrtc             *crtc,
-                                                         const GfOutputInfo *output_info);
+void                gf_output_assign_crtc               (GfOutput                 *self,
+                                                         GfCrtc                   *crtc,
+                                                         const GfOutputAssignment *output_assignment);
 
-void                gf_output_unassign_crtc             (GfOutput           *output);
+void                gf_output_unassign_crtc             (GfOutput                 *self);
 
-GfCrtc             *gf_output_get_assigned_crtc         (GfOutput           *output);
+GfCrtc             *gf_output_get_assigned_crtc         (GfOutput                 *self);
 
-void                gf_output_parse_edid                (GfOutput           *output,
-                                                         GBytes             *edid);
+void                gf_output_parse_edid                (GfOutput                 *self,
+                                                         GBytes                   *edid);
 
-gboolean            gf_output_is_laptop                 (GfOutput           *output);
+gboolean            gf_output_is_laptop                 (GfOutput                 *self);
 
-GfMonitorTransform  gf_output_logical_to_crtc_transform (GfOutput           *output,
-                                                         GfMonitorTransform  transform);
+GfMonitorTransform  gf_output_logical_to_crtc_transform (GfOutput                 *self,
+                                                         GfMonitorTransform        transform);
 
-GfMonitorTransform  gf_output_crtc_to_logical_transform (GfOutput           *output,
-                                                         GfMonitorTransform  transform);
+GfMonitorTransform  gf_output_crtc_to_logical_transform (GfOutput                 *self,
+                                                         GfMonitorTransform        transform);
 
-gboolean            gf_output_is_primary                (GfOutput           *self);
+gboolean            gf_output_is_primary                (GfOutput                 *self);
 
-gboolean            gf_output_is_presentation           (GfOutput           *self);
+gboolean            gf_output_is_presentation           (GfOutput                 *self);
 
-gboolean            gf_output_is_underscanning          (GfOutput           *self);
+gboolean            gf_output_is_underscanning          (GfOutput                 *self);
 
-void                gf_output_set_backlight             (GfOutput           *self,
-                                                         int                 backlight);
+void                gf_output_set_backlight             (GfOutput                 *self,
+                                                         int                       backlight);
 
-int                 gf_output_get_backlight             (GfOutput           *self);
+int                 gf_output_get_backlight             (GfOutput                 *self);
 
-static inline GfOutputInfo *
-gf_find_output_info (GfOutputInfo **outputs,
-                     unsigned int   n_outputs,
-                     GfOutput      *output)
+static inline GfOutputAssignment *
+gf_find_output_assignment (GfOutputAssignment **outputs,
+                           unsigned int         n_outputs,
+                           GfOutput            *output)
 {
   unsigned int i;
 
   for (i = 0; i < n_outputs; i++)
     {
-      GfOutputInfo *output_info;
+      GfOutputAssignment *output_assignment;
 
-      output_info = outputs[i];
+      output_assignment = outputs[i];
 
-      if (output == output_info->output)
-        return output_info;
+      if (output == output_assignment->output)
+        return output_assignment;
     }
 
   return NULL;
