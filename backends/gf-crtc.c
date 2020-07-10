@@ -23,9 +23,11 @@
 
 typedef struct
 {
-  uint64_t  id;
+  uint64_t            id;
 
-  GfGpu    *gpu;
+  GfGpu              *gpu;
+
+  GfMonitorTransform  all_transforms;
 } GfCrtcPrivate;
 
 enum
@@ -34,6 +36,7 @@ enum
 
   PROP_ID,
   PROP_GPU,
+  PROP_ALL_TRANSFORMS,
 
   LAST_PROP
 };
@@ -79,6 +82,10 @@ gf_crtc_get_property (GObject    *object,
         g_value_set_object (value, priv->gpu);
         break;
 
+      case PROP_ALL_TRANSFORMS:
+        g_value_set_uint (value, priv->all_transforms);
+        break;
+
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
         break;
@@ -105,6 +112,10 @@ gf_crtc_set_property (GObject      *object,
 
       case PROP_GPU:
         priv->gpu = g_value_get_object (value);
+        break;
+
+      case PROP_ALL_TRANSFORMS:
+        priv->all_transforms = g_value_get_uint (value);
         break;
 
       default:
@@ -144,13 +155,29 @@ gf_crtc_class_init (GfCrtcClass *crtc_class)
                          G_PARAM_CONSTRUCT_ONLY |
                          G_PARAM_STATIC_STRINGS);
 
+  crtc_properties[PROP_ALL_TRANSFORMS] =
+    g_param_spec_uint ("all-transforms",
+                       "all-transforms",
+                       "All transforms",
+                       0,
+                       GF_MONITOR_ALL_TRANSFORMS,
+                       GF_MONITOR_ALL_TRANSFORMS,
+                       G_PARAM_READWRITE |
+                       G_PARAM_CONSTRUCT_ONLY |
+                       G_PARAM_STATIC_STRINGS);
+
   g_object_class_install_properties (object_class, LAST_PROP,
                                      crtc_properties);
 }
 
 static void
-gf_crtc_init (GfCrtc *crtc)
+gf_crtc_init (GfCrtc *self)
 {
+  GfCrtcPrivate *priv;
+
+  priv = gf_crtc_get_instance_private (self);
+
+  priv->all_transforms = GF_MONITOR_ALL_TRANSFORMS;
 }
 
 uint64_t
@@ -171,6 +198,16 @@ gf_crtc_get_gpu (GfCrtc *crtc)
   priv = gf_crtc_get_instance_private (crtc);
 
   return priv->gpu;
+}
+
+GfMonitorTransform
+gf_crtc_get_all_transforms (GfCrtc *self)
+{
+  GfCrtcPrivate *priv;
+
+  priv = gf_crtc_get_instance_private (self);
+
+  return priv->all_transforms;
 }
 
 void

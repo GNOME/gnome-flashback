@@ -35,6 +35,9 @@ typedef enum
   GF_MONITOR_TRANSFORM_FLIPPED_270,
 } GfMonitorTransform;
 
+#define GF_MONITOR_N_TRANSFORMS (GF_MONITOR_TRANSFORM_FLIPPED_270 + 1)
+#define GF_MONITOR_ALL_TRANSFORMS ((1 << GF_MONITOR_N_TRANSFORMS) - 1)
+
 static inline gboolean
 gf_monitor_transform_is_rotated (GfMonitorTransform transform)
 {

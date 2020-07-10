@@ -1030,7 +1030,7 @@ gf_monitor_manager_xrandr_is_transform_handled (GfMonitorManager   *manager,
                                                 GfCrtc             *crtc,
                                                 GfMonitorTransform  transform)
 {
-  g_warn_if_fail ((crtc->all_transforms & transform) == transform);
+  g_warn_if_fail ((gf_crtc_get_all_transforms (crtc) & transform) == transform);
 
   return TRUE;
 }

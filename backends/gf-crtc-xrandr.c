@@ -32,7 +32,6 @@
 #include "gf-output-private.h"
 
 #define ALL_ROTATIONS (RR_Rotate_0 | RR_Rotate_90 | RR_Rotate_180 | RR_Rotate_270)
-#define ALL_TRANSFORMS ((1 << (GF_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
 typedef struct
 {
@@ -99,7 +98,7 @@ gf_monitor_transform_from_xrandr_all (Rotation rotation)
   /* All rotations and one reflection -> all of them by composition */
   if ((rotation & ALL_ROTATIONS) &&
       ((rotation & RR_Reflect_X) || (rotation & RR_Reflect_Y)))
-    return ALL_TRANSFORMS;
+    return GF_MONITOR_ALL_TRANSFORMS;
 
   ret = 1 << GF_MONITOR_TRANSFORM_NORMAL;
   if (rotation & RR_Rotate_90)
@@ -128,6 +127,7 @@ gf_create_xrandr_crtc (GfGpuXrandr        *gpu_xrandr,
 
 {
   GfGpu *gpu;
+  GfMonitorTransform all_transforms;
   GfCrtc *crtc;
   GfCrtcXrandr *crtc_xrandr;
   unsigned int i;
@@ -135,9 +135,12 @@ gf_create_xrandr_crtc (GfGpuXrandr        *gpu_xrandr,
 
   gpu = GF_GPU (gpu_xrandr);
 
+  all_transforms = gf_monitor_transform_from_xrandr_all (xrandr_crtc->rotations);
+
   crtc = g_object_new (GF_TYPE_CRTC,
                        "id", crtc_id,
                        "gpu", gpu,
+                       "all-transforms", all_transforms,
                        NULL);
 
   crtc_xrandr = g_new0 (GfCrtcXrandr, 1);
@@ -151,8 +154,6 @@ gf_create_xrandr_crtc (GfGpuXrandr        *gpu_xrandr,
 
   crtc->driver_private = crtc_xrandr;
   crtc->driver_notify = (GDestroyNotify) gf_crtc_destroy_notify;
-
-  crtc->all_transforms = gf_monitor_transform_from_xrandr_all (xrandr_crtc->rotations);
 
   modes = gf_gpu_get_modes (gpu);
   for (i = 0; i < (guint) resources->nmode; i++)

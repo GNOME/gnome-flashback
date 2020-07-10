@@ -1106,8 +1106,10 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
 
       g_variant_builder_init (&transforms, G_VARIANT_TYPE ("au"));
       for (j = 0; j <= GF_MONITOR_TRANSFORM_FLIPPED_270; j++)
-        if (crtc->all_transforms & (1 << j))
-          g_variant_builder_add (&transforms, "u", j);
+        {
+          if (gf_crtc_get_all_transforms (crtc) & (1 << j))
+            g_variant_builder_add (&transforms, "u", j);
+        }
 
       crtc_config = crtc->config;
 

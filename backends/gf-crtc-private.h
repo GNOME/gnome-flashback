@@ -47,8 +47,6 @@ struct _GfCrtc
 {
   GObject         parent;
 
-  guint           all_transforms;
-
   GfCrtcConfig   *config;
 
   gpointer        driver_private;
@@ -87,16 +85,18 @@ G_DECLARE_FINAL_TYPE (GfCrtc, gf_crtc, GF, CRTC, GObject)
 #define GF_TYPE_CRTC_MODE (gf_crtc_mode_get_type ())
 G_DECLARE_FINAL_TYPE (GfCrtcMode, gf_crtc_mode, GF, CRTC_MODE, GObject)
 
-uint64_t  gf_crtc_get_id       (GfCrtc             *self);
+uint64_t            gf_crtc_get_id             (GfCrtc             *self);
 
-GfGpu    *gf_crtc_get_gpu      (GfCrtc             *self);
+GfGpu              *gf_crtc_get_gpu            (GfCrtc             *self);
 
-void      gf_crtc_set_config   (GfCrtc             *self,
-                                GfRectangle        *layout,
-                                GfCrtcMode         *mode,
-                                GfMonitorTransform  transform);
+GfMonitorTransform  gf_crtc_get_all_transforms (GfCrtc             *self);
 
-void      gf_crtc_unset_config (GfCrtc             *self);
+void                gf_crtc_set_config         (GfCrtc             *self,
+                                                GfRectangle        *layout,
+                                                GfCrtcMode         *mode,
+                                                GfMonitorTransform  transform);
+
+void                gf_crtc_unset_config       (GfCrtc             *self);
 
 G_END_DECLS
 
