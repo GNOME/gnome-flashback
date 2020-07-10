@@ -108,13 +108,15 @@ output_set_underscanning_xrandr (GfOutput *output,
     {
       GfCrtc *crtc;
       const GfCrtcConfig *crtc_config;
+      const GfCrtcModeInfo *crtc_mode_info;
       uint32_t border_value;
 
       crtc = gf_output_get_assigned_crtc (output);
       crtc_config = gf_crtc_get_config (crtc);
+      crtc_mode_info = gf_crtc_mode_get_info (crtc_config->mode);
 
       prop = XInternAtom (xdisplay, "underscan hborder", False);
-      border_value = crtc_config->mode->width * 0.05;
+      border_value = crtc_mode_info->width * 0.05;
 
       xcb_randr_change_output_property (XGetXCBConnection (xdisplay),
                                         (XID) gf_output_get_id (output),
@@ -123,7 +125,7 @@ output_set_underscanning_xrandr (GfOutput *output,
                                         1, &border_value);
 
       prop = XInternAtom (xdisplay, "underscan vborder", False);
-      border_value = crtc_config->mode->height * 0.05;
+      border_value = crtc_mode_info->height * 0.05;
 
       xcb_randr_change_output_property (XGetXCBConnection (xdisplay),
                                         (XID) gf_output_get_id (output),
@@ -524,7 +526,7 @@ output_info_init_modes (GfOutputInfo  *output_info,
         {
           GfCrtcMode *mode = l->data;
 
-          if (xrandr_output->modes[j] == (XID) mode->mode_id)
+          if (xrandr_output->modes[j] == (XID) gf_crtc_mode_get_id (mode))
             {
               output_info->modes[n_actual_modes] = mode;
               n_actual_modes += 1;

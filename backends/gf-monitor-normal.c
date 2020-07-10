@@ -37,28 +37,32 @@ generate_modes (GfMonitorNormal *normal)
   GfMonitor *monitor;
   GfOutput *output;
   const GfOutputInfo *output_info;
+  GfCrtcMode *preferred_mode;
   GfCrtcModeFlag preferred_mode_flags;
   guint i;
 
   monitor = GF_MONITOR (normal);
   output = gf_monitor_get_main_output (monitor);
   output_info = gf_output_get_info (output);
-  preferred_mode_flags = output_info->preferred_mode->flags;
+  preferred_mode = output_info->preferred_mode;
+  preferred_mode_flags = gf_crtc_mode_get_info (preferred_mode)->flags;
 
   for (i = 0; i < output_info->n_modes; i++)
     {
       GfCrtcMode *crtc_mode;
+      const GfCrtcModeInfo *crtc_mode_info;
       GfMonitorMode *mode;
       gboolean replace;
       GfCrtc *crtc;
 
       crtc_mode = output_info->modes[i];
+      crtc_mode_info = gf_crtc_mode_get_info (crtc_mode);
 
       mode = g_new0 (GfMonitorMode, 1);
       mode->monitor = monitor;
       mode->spec = gf_monitor_create_spec (monitor,
-                                           crtc_mode->width,
-                                           crtc_mode->height,
+                                           crtc_mode_info->width,
+                                           crtc_mode_info->height,
                                            crtc_mode);
 
       mode->id = gf_monitor_mode_spec_generate_id (&mode->spec);
@@ -74,7 +78,7 @@ generate_modes (GfMonitorNormal *normal)
        * otherwise take the first one in the list. This guarantees that the
        * preferred mode is always added.
        */
-      replace = crtc_mode->flags == preferred_mode_flags;
+      replace = crtc_mode_info->flags == preferred_mode_flags;
 
       if (!gf_monitor_add_mode (monitor, mode, replace))
         {

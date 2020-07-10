@@ -16,30 +16,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GF_CRTC_MODE_PRIVATE_H
-#define GF_CRTC_MODE_PRIVATE_H
-
-#include <glib-object.h>
-#include <stdint.h>
-
+#include "config.h"
 #include "gf-crtc-mode-info-private.h"
 
-G_BEGIN_DECLS
+G_DEFINE_BOXED_TYPE (GfCrtcModeInfo,
+                     gf_crtc_mode_info,
+                     gf_crtc_mode_info_ref,
+                     gf_crtc_mode_info_unref)
 
-#define GF_TYPE_CRTC_MODE (gf_crtc_mode_get_type ())
-G_DECLARE_DERIVABLE_TYPE (GfCrtcMode, gf_crtc_mode, GF, CRTC_MODE, GObject)
-
-struct _GfCrtcModeClass
+GfCrtcModeInfo *
+gf_crtc_mode_info_new (void)
 {
-  GObjectClass parent_class;
-};
+  GfCrtcModeInfo *self;
 
-uint64_t              gf_crtc_mode_get_id   (GfCrtcMode *self);
+  self = g_new0 (GfCrtcModeInfo, 1);
+  g_ref_count_init (&self->ref_count);
 
-const char           *gf_crtc_mode_get_name (GfCrtcMode *self);
+  return self;
+}
 
-const GfCrtcModeInfo *gf_crtc_mode_get_info (GfCrtcMode *self);
+GfCrtcModeInfo *
+gf_crtc_mode_info_ref (GfCrtcModeInfo *self)
+{
+  g_ref_count_inc (&self->ref_count);
 
-G_END_DECLS
+  return self;
+}
 
-#endif
+void
+gf_crtc_mode_info_unref (GfCrtcModeInfo *self)
+{
+  if (g_ref_count_dec (&self->ref_count))
+    g_free (self);
+}

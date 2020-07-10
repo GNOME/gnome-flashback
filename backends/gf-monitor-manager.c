@@ -1282,14 +1282,17 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
   for (l = combined_modes, i = 0; l; l = l->next, i++)
     {
       GfCrtcMode *mode = l->data;
+      const GfCrtcModeInfo *crtc_mode_info;
+
+      crtc_mode_info = gf_crtc_mode_get_info (mode);
 
       g_variant_builder_add (&mode_builder, "(uxuudu)",
                              i, /* ID */
-                             (gint64) mode->mode_id,
-                             (guint32) mode->width,
-                             (guint32) mode->height,
-                             (gdouble) mode->refresh_rate,
-                             (guint32) mode->flags);
+                             (int64_t) gf_crtc_mode_get_id (mode),
+                             (uint32_t) crtc_mode_info->width,
+                             (uint32_t) crtc_mode_info->height,
+                             (double) crtc_mode_info->refresh_rate,
+                             (uint32_t) crtc_mode_info->flags);
     }
 
   if (!gf_monitor_manager_get_max_screen_size (manager,

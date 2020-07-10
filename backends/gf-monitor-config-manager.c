@@ -679,6 +679,7 @@ assign_monitor_crtc (GfMonitor          *monitor,
   float scale;
   float width, height;
   GfCrtcMode *crtc_mode;
+  const GfCrtcModeInfo *crtc_mode_info;
   GfRectangle crtc_layout;
   GfCrtcAssignment *crtc_assignment;
   GfOutputAssignment *output_assignment;
@@ -730,16 +731,17 @@ assign_monitor_crtc (GfMonitor          *monitor,
     }
 
   crtc_mode = monitor_crtc_mode->crtc_mode;
+  crtc_mode_info = gf_crtc_mode_get_info (crtc_mode);
 
   if (gf_monitor_transform_is_rotated (crtc_transform))
     {
-      width = crtc_mode->height / scale;
-      height = crtc_mode->width / scale;
+      width = crtc_mode_info->height / scale;
+      height = crtc_mode_info->width / scale;
     }
   else
     {
-      width = crtc_mode->width / scale;
-      height = crtc_mode->height / scale;
+      width = crtc_mode_info->width / scale;
+      height = crtc_mode_info->height / scale;
     }
 
   crtc_layout.x = (int) roundf (x_offset + (crtc_x / scale));

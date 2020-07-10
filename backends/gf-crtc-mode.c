@@ -19,34 +19,183 @@
 #include "config.h"
 #include "gf-crtc-mode-private.h"
 
-G_DEFINE_TYPE (GfCrtcMode, gf_crtc_mode, G_TYPE_OBJECT)
+typedef struct
+{
+  uint64_t        id;
+  char           *name;
+  GfCrtcModeInfo *info;
+} GfCrtcModePrivate;
+
+enum
+{
+  PROP_0,
+
+  PROP_ID,
+  PROP_NAME,
+  PROP_INFO,
+
+  LAST_PROP
+};
+
+static GParamSpec *crtc_mode_properties[LAST_PROP] = { NULL };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GfCrtcMode, gf_crtc_mode, G_TYPE_OBJECT)
 
 static void
 gf_crtc_mode_finalize (GObject *object)
 {
-  GfCrtcMode *crtc_mode;
+  GfCrtcMode *self;
+  GfCrtcModePrivate *priv;
 
-  crtc_mode = GF_CRTC_MODE (object);
+  self = GF_CRTC_MODE (object);
+  priv = gf_crtc_mode_get_instance_private (self);
 
-  if (crtc_mode->driver_notify)
-    crtc_mode->driver_notify (crtc_mode);
-
-  g_clear_pointer (&crtc_mode->name, g_free);
+  g_clear_pointer (&priv->name, g_free);
+  g_clear_pointer (&priv->info, gf_crtc_mode_info_unref);
 
   G_OBJECT_CLASS (gf_crtc_mode_parent_class)->finalize (object);
 }
 
 static void
-gf_crtc_mode_class_init (GfCrtcModeClass *crtc_mode_class)
+gf_crtc_mode_get_property (GObject    *object,
+                           guint       property_id,
+                           GValue     *value,
+                           GParamSpec *pspec)
 {
-  GObjectClass *object_class;
+  GfCrtcMode *self;
+  GfCrtcModePrivate *priv;
 
-  object_class = G_OBJECT_CLASS (crtc_mode_class);
+  self = GF_CRTC_MODE (object);
+  priv = gf_crtc_mode_get_instance_private (self);
 
-  object_class->finalize = gf_crtc_mode_finalize;
+  switch (property_id)
+    {
+      case PROP_ID:
+        g_value_set_uint64 (value, priv->id);
+        break;
+
+      case PROP_NAME:
+        g_value_set_string (value, priv->name);
+        break;
+
+      case PROP_INFO:
+        g_value_set_boxed (value, priv->info);
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
 }
 
 static void
-gf_crtc_mode_init (GfCrtcMode *crtc_mode)
+gf_crtc_mode_set_property (GObject      *object,
+                           guint         property_id,
+                           const GValue *value,
+                           GParamSpec   *pspec)
 {
+  GfCrtcMode *self;
+  GfCrtcModePrivate *priv;
+
+  self = GF_CRTC_MODE (object);
+  priv = gf_crtc_mode_get_instance_private (self);
+
+  switch (property_id)
+    {
+      case PROP_ID:
+        priv->id = g_value_get_uint64 (value);
+        break;
+
+      case PROP_NAME:
+        priv->name = g_value_dup_string (value);
+        break;
+
+      case PROP_INFO:
+        priv->info = gf_crtc_mode_info_ref (g_value_get_boxed (value));
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
+
+static void
+gf_crtc_mode_class_init (GfCrtcModeClass *self_class)
+{
+  GObjectClass *object_class;
+
+  object_class = G_OBJECT_CLASS (self_class);
+
+  object_class->finalize = gf_crtc_mode_finalize;
+  object_class->get_property = gf_crtc_mode_get_property;
+  object_class->set_property = gf_crtc_mode_set_property;
+
+  crtc_mode_properties[PROP_ID] =
+    g_param_spec_uint64 ("id",
+                         "id",
+                         "CRTC mode id",
+                         0,
+                         UINT64_MAX,
+                         0,
+                         G_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_STATIC_STRINGS);
+
+  crtc_mode_properties[PROP_NAME] =
+    g_param_spec_string ("name",
+                         "name",
+                         "Name of CRTC mode",
+                         NULL,
+                         G_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_STATIC_STRINGS);
+
+  crtc_mode_properties[PROP_INFO] =
+    g_param_spec_boxed ("info",
+                        "info",
+                        "GfCrtcModeInfo",
+                        GF_TYPE_CRTC_MODE_INFO,
+                        G_PARAM_READWRITE |
+                        G_PARAM_CONSTRUCT_ONLY |
+                        G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (object_class,
+                                     LAST_PROP,
+                                     crtc_mode_properties);
+}
+
+static void
+gf_crtc_mode_init (GfCrtcMode *self)
+{
+}
+
+uint64_t
+gf_crtc_mode_get_id (GfCrtcMode *self)
+{
+  GfCrtcModePrivate *priv;
+
+  priv = gf_crtc_mode_get_instance_private (self);
+
+  return priv->id;
+}
+
+const char *
+gf_crtc_mode_get_name (GfCrtcMode *self)
+{
+  GfCrtcModePrivate *priv;
+
+  priv = gf_crtc_mode_get_instance_private (self);
+
+  return priv->name;
+}
+
+const GfCrtcModeInfo *
+gf_crtc_mode_get_info (GfCrtcMode *self)
+{
+  GfCrtcModePrivate *priv;
+
+  priv = gf_crtc_mode_get_instance_private (self);
+
+  return priv->info;
 }

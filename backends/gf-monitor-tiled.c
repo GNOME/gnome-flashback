@@ -54,11 +54,13 @@ is_crtc_mode_tiled (GfOutput   *output,
                     GfCrtcMode *crtc_mode)
 {
   const GfOutputInfo *output_info;
+  const GfCrtcModeInfo *crtc_mode_info;
 
   output_info = gf_output_get_info (output);
+  crtc_mode_info = gf_crtc_mode_get_info (crtc_mode);
 
-  return (crtc_mode->width == (int) output_info->tile_info.tile_w &&
-          crtc_mode->height == (int) output_info->tile_info.tile_h);
+  return (crtc_mode_info->width == (int) output_info->tile_info.tile_w &&
+          crtc_mode_info->height == (int) output_info->tile_info.tile_h);
 }
 
 static GfCrtcMode *
@@ -66,10 +68,12 @@ find_tiled_crtc_mode (GfOutput   *output,
                       GfCrtcMode *reference_crtc_mode)
 {
   const GfOutputInfo *output_info;
+  const GfCrtcModeInfo *reference_crtc_mode_info;
   GfCrtcMode *crtc_mode;
   guint i;
 
   output_info = gf_output_get_info (output);
+  reference_crtc_mode_info = gf_crtc_mode_get_info (reference_crtc_mode);
   crtc_mode = output_info->preferred_mode;
 
   if (is_crtc_mode_tiled (output, crtc_mode))
@@ -77,15 +81,18 @@ find_tiled_crtc_mode (GfOutput   *output,
 
   for (i = 0; i < output_info->n_modes; i++)
     {
+      const GfCrtcModeInfo *crtc_mode_info;
+
       crtc_mode = output_info->modes[i];
+      crtc_mode_info = gf_crtc_mode_get_info (crtc_mode);
 
       if (!is_crtc_mode_tiled (output, crtc_mode))
         continue;
 
-      if (crtc_mode->refresh_rate != reference_crtc_mode->refresh_rate)
+      if (crtc_mode_info->refresh_rate != reference_crtc_mode_info->refresh_rate)
         continue;
 
-      if (crtc_mode->flags != reference_crtc_mode->flags)
+      if (crtc_mode_info->flags != reference_crtc_mode_info->flags)
         continue;
 
       return crtc_mode;
@@ -195,6 +202,7 @@ create_untiled_monitor_mode (GfMonitorTiled *tiled,
   GfMonitor *monitor;
   GList *outputs;
   GfMonitorModeTiled *mode;
+  const GfCrtcModeInfo *crtc_mode_info;
   GList *l;
   guint i;
 
@@ -208,9 +216,11 @@ create_untiled_monitor_mode (GfMonitorTiled *tiled,
   mode->is_tiled = FALSE;
 
   mode->parent.monitor = monitor;
+
+  crtc_mode_info = gf_crtc_mode_get_info (crtc_mode);
   mode->parent.spec = gf_monitor_create_spec (monitor,
-                                              crtc_mode->width,
-                                              crtc_mode->height,
+                                              crtc_mode_info->width,
+                                              crtc_mode_info->height,
                                               crtc_mode);
 
   mode->parent.id = gf_monitor_mode_spec_generate_id (&mode->parent.spec);

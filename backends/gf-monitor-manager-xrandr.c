@@ -489,12 +489,13 @@ apply_crtc_assignments (GfMonitorManager    *manager,
 
       if (crtc_assignment->mode != NULL)
         {
-          GfCrtcMode *mode;
+          GfCrtcMode *crtc_mode;
           xcb_randr_output_t *output_ids;
           guint j, n_output_ids;
           xcb_randr_rotation_t rotation;
+          xcb_randr_mode_t mode;
 
-          mode = crtc_assignment->mode;
+          crtc_mode = crtc_assignment->mode;
 
           n_output_ids = crtc_assignment->outputs->len;
           output_ids = g_new0 (xcb_randr_output_t, n_output_ids);
@@ -515,6 +516,8 @@ apply_crtc_assignments (GfMonitorManager    *manager,
             }
 
           rotation = gf_monitor_transform_to_xrandr (crtc_assignment->transform);
+          mode = gf_crtc_mode_get_id (crtc_mode);
+
           if (!xrandr_set_crtc_config (xrandr,
                                        crtc,
                                        save_timestamp,
@@ -522,13 +525,20 @@ apply_crtc_assignments (GfMonitorManager    *manager,
                                        XCB_CURRENT_TIME,
                                        crtc_assignment->layout.x,
                                        crtc_assignment->layout.y,
-                                       (xcb_randr_mode_t) mode->mode_id,
+                                       mode,
                                        rotation,
                                        output_ids, n_output_ids))
             {
+              const GfCrtcModeInfo *crtc_mode_info;
+
+              crtc_mode_info = gf_crtc_mode_get_info (crtc_mode);
+
               g_warning ("Configuring CRTC %d with mode %d (%d x %d @ %f) at position %d, %d and transform %u failed\n",
-                         (guint) gf_crtc_get_id (crtc), (guint) (mode->mode_id),
-                         mode->width, mode->height, (gdouble) mode->refresh_rate,
+                         (unsigned) gf_crtc_get_id (crtc),
+                         (unsigned) mode,
+                         crtc_mode_info->width,
+                         crtc_mode_info->height,
+                         (double) crtc_mode_info->refresh_rate,
                          crtc_assignment->layout.x,
                          crtc_assignment->layout.y,
                          crtc_assignment->transform);
@@ -539,7 +549,7 @@ apply_crtc_assignments (GfMonitorManager    *manager,
 
           gf_crtc_set_config (crtc,
                               &crtc_assignment->layout,
-                              mode,
+                              crtc_mode,
                               crtc_assignment->transform);
 
           g_free (output_ids);

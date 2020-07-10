@@ -606,9 +606,11 @@ gf_monitor_create_spec (GfMonitor  *monitor,
                         GfCrtcMode *crtc_mode)
 {
   const GfOutputInfo *output_info;
+  const GfCrtcModeInfo *crtc_mode_info;
   GfMonitorModeSpec spec;
 
   output_info = gf_monitor_get_main_output_info (monitor);
+  crtc_mode_info = gf_crtc_mode_get_info (crtc_mode);
 
   if (gf_monitor_transform_is_rotated (output_info->panel_orientation_transform))
     {
@@ -621,8 +623,8 @@ gf_monitor_create_spec (GfMonitor  *monitor,
 
   spec.width = width;
   spec.height = height;
-  spec.refresh_rate = crtc_mode->refresh_rate;
-  spec.flags = crtc_mode->flags & HANDLED_CRTC_MODE_FLAGS;
+  spec.refresh_rate = crtc_mode_info->refresh_rate;
+  spec.flags = crtc_mode_info->flags & HANDLED_CRTC_MODE_FLAGS;
 
   return spec;
 }
