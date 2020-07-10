@@ -162,13 +162,13 @@ gf_gpu_xrandr_read_current (GfGpu   *gpu,
     {
       XRRCrtcInfo *xrandr_crtc;
       RRCrtc crtc_id;
-      GfCrtc *crtc;
+      GfCrtcXrandr *crtc_xrandr;
 
       crtc_id = resources->crtcs[i];
       xrandr_crtc = XRRGetCrtcInfo (xdisplay, resources, crtc_id);
-      crtc = gf_create_xrandr_crtc (gpu_xrandr, xrandr_crtc, crtc_id, resources);
+      crtc_xrandr = gf_crtc_xrandr_new (gpu_xrandr, xrandr_crtc, crtc_id, resources);
 
-      crtcs = g_list_append (crtcs, crtc);
+      crtcs = g_list_append (crtcs, crtc_xrandr);
       XRRFreeCrtcInfo (xrandr_crtc);
     }
 

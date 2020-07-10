@@ -182,7 +182,8 @@ xrandr_set_crtc_config (GfMonitorManagerXrandr *xrandr,
 {
   xcb_timestamp_t new_timestamp;
 
-  if (!gf_crtc_xrandr_set_config (crtc, xrandr_crtc, timestamp,
+  if (!gf_crtc_xrandr_set_config (GF_CRTC_XRANDR (crtc),
+                                  xrandr_crtc, timestamp,
                                   x, y, mode, rotation,
                                   outputs, n_outputs,
                                   &new_timestamp))
@@ -210,10 +211,11 @@ is_crtc_assignment_changed (GfCrtc            *crtc,
       if (crtc_assignment->crtc != crtc)
         continue;
 
-      return gf_crtc_xrandr_is_assignment_changed (crtc, crtc_assignment);
+      return gf_crtc_xrandr_is_assignment_changed (GF_CRTC_XRANDR (crtc),
+                                                   crtc_assignment);
     }
 
-  return !!gf_crtc_xrandr_get_current_mode (crtc);
+  return !!gf_crtc_xrandr_get_current_mode (GF_CRTC_XRANDR (crtc));
 }
 
 static gboolean

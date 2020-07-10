@@ -43,14 +43,6 @@ typedef struct
   GfCrtcMode         *mode;
 } GfCrtcConfig;
 
-struct _GfCrtc
-{
-  GObject         parent;
-
-  gpointer        driver_private;
-  GDestroyNotify  driver_notify;
-};
-
 struct _GfCrtcMode
 {
   GObject         parent;
@@ -78,7 +70,12 @@ typedef struct
 } GfCrtcAssignment;
 
 #define GF_TYPE_CRTC (gf_crtc_get_type ())
-G_DECLARE_FINAL_TYPE (GfCrtc, gf_crtc, GF, CRTC, GObject)
+G_DECLARE_DERIVABLE_TYPE (GfCrtc, gf_crtc, GF, CRTC, GObject)
+
+struct _GfCrtcClass
+{
+  GObjectClass parent_class;
+};
 
 #define GF_TYPE_CRTC_MODE (gf_crtc_mode_get_type ())
 G_DECLARE_FINAL_TYPE (GfCrtcMode, gf_crtc_mode, GF, CRTC_MODE, GObject)

@@ -45,7 +45,7 @@ enum
 
 static GParamSpec *crtc_properties[LAST_PROP] = { NULL };
 
-G_DEFINE_TYPE_WITH_PRIVATE (GfCrtc, gf_crtc, G_TYPE_OBJECT)
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GfCrtc, gf_crtc, G_TYPE_OBJECT)
 
 static void
 gf_crtc_finalize (GObject *object)
@@ -55,9 +55,6 @@ gf_crtc_finalize (GObject *object)
 
   crtc = GF_CRTC (object);
   priv = gf_crtc_get_instance_private (crtc);
-
-  if (crtc->driver_notify)
-    crtc->driver_notify (crtc);
 
   g_clear_pointer (&priv->config, g_free);
 
