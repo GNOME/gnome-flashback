@@ -25,6 +25,7 @@
 #include "gf-gpu-private.h"
 #include "gf-monitor-manager-enums-private.h"
 #include "gf-monitor-manager-types-private.h"
+#include "gf-output-info-private.h"
 #include "gf-rectangle.h"
 
 G_BEGIN_DECLS
@@ -112,6 +113,8 @@ GfMonitorModeSpec   gf_monitor_create_spec                (GfMonitor            
                                                            int                         width,
                                                            int                         height,
                                                            GfCrtcMode                 *crtc_mode);
+
+const GfOutputInfo *gf_monitor_get_main_output_info       (GfMonitor                  *self);
 
 void                gf_monitor_generate_spec              (GfMonitor                  *monitor);
 

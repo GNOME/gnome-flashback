@@ -49,9 +49,18 @@ static gint
 compare_outputs (const void *one,
                  const void *two)
 {
-  const GfOutput *o_one = one, *o_two = two;
+  GfOutput *o_one;
+  GfOutput *o_two;
+  const GfOutputInfo *output_info_one;
+  const GfOutputInfo *output_info_two;
 
-  return strcmp (o_one->name, o_two->name);
+  o_one = (GfOutput *) one;
+  o_two = (GfOutput *) two;
+
+  output_info_one = gf_output_get_info (o_one);
+  output_info_two = gf_output_get_info (o_two);
+
+  return strcmp (output_info_one->name, output_info_two->name);
 }
 
 static char *
@@ -203,13 +212,15 @@ gf_gpu_xrandr_read_current (GfGpu   *gpu,
   for (l = outputs; l; l = l->next)
     {
       GfOutput *output;
+      const GfOutputInfo *output_info;
       GList *k;
 
       output = l->data;
+      output_info = gf_output_get_info (output);
 
-      for (j = 0; j < output->n_possible_clones; j++)
+      for (j = 0; j < output_info->n_possible_clones; j++)
         {
-          RROutput clone = GPOINTER_TO_INT (output->possible_clones[j]);
+          RROutput clone = GPOINTER_TO_INT (output_info->possible_clones[j]);
 
           for (k = outputs; k; k = k->next)
             {
@@ -217,7 +228,7 @@ gf_gpu_xrandr_read_current (GfGpu   *gpu,
 
               if (clone == (XID) gf_output_get_id (possible_clone))
                 {
-                  output->possible_clones[j] = possible_clone;
+                  output_info->possible_clones[j] = possible_clone;
                   break;
                 }
             }

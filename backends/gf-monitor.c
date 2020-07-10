@@ -603,12 +603,12 @@ gf_monitor_create_spec (GfMonitor  *monitor,
                         int         height,
                         GfCrtcMode *crtc_mode)
 {
-  GfOutput *output;
+  const GfOutputInfo *output_info;
   GfMonitorModeSpec spec;
 
-  output = gf_monitor_get_main_output (monitor);
+  output_info = gf_monitor_get_main_output_info (monitor);
 
-  if (gf_monitor_transform_is_rotated (output->panel_orientation_transform))
+  if (gf_monitor_transform_is_rotated (output_info->panel_orientation_transform))
     {
       int temp;
 
@@ -625,22 +625,32 @@ gf_monitor_create_spec (GfMonitor  *monitor,
   return spec;
 }
 
+const GfOutputInfo *
+gf_monitor_get_main_output_info (GfMonitor *self)
+{
+  GfOutput *output;
+
+  output = gf_monitor_get_main_output (self);
+
+  return gf_output_get_info (output);
+}
+
 void
 gf_monitor_generate_spec (GfMonitor *monitor)
 {
   GfMonitorPrivate *priv;
-  GfOutput *output;
+  const GfOutputInfo *output_info;
   GfMonitorSpec *monitor_spec;
 
   priv = gf_monitor_get_instance_private (monitor);
-  output = gf_monitor_get_main_output (monitor);
+  output_info = gf_monitor_get_main_output_info (monitor);
 
   monitor_spec = g_new0 (GfMonitorSpec, 1);
 
-  monitor_spec->connector = g_strdup (output->name);
-  monitor_spec->vendor = g_strdup (output->vendor);
-  monitor_spec->product = g_strdup (output->product);
-  monitor_spec->serial = g_strdup (output->serial);
+  monitor_spec->connector = g_strdup (output_info->name);
+  monitor_spec->vendor = g_strdup (output_info->vendor);
+  monitor_spec->product = g_strdup (output_info->product);
+  monitor_spec->serial = g_strdup (output_info->serial);
 
   priv->spec = monitor_spec;
 }
@@ -730,11 +740,11 @@ gf_monitor_is_primary (GfMonitor *monitor)
 gboolean
 gf_monitor_supports_underscanning (GfMonitor *monitor)
 {
-  GfOutput *output;
+  const GfOutputInfo *output_info;
 
-  output = gf_monitor_get_main_output (monitor);
+  output_info = gf_monitor_get_main_output_info (monitor);
 
-  return output->supports_underscanning;
+  return output_info->supports_underscanning;
 }
 
 gboolean
@@ -750,11 +760,11 @@ gf_monitor_is_underscanning (GfMonitor *monitor)
 gboolean
 gf_monitor_is_laptop_panel (GfMonitor *monitor)
 {
-  GfOutput *output;
+  const GfOutputInfo *output_info;
 
-  output = gf_monitor_get_main_output (monitor);
+  output_info = gf_monitor_get_main_output_info (monitor);
 
-  switch (output->connector_type)
+  switch (output_info->connector_type)
     {
       case GF_CONNECTOR_TYPE_eDP:
       case GF_CONNECTOR_TYPE_LVDS:
@@ -828,57 +838,62 @@ gf_monitor_get_physical_dimensions (GfMonitor *monitor,
                                     gint      *width_mm,
                                     gint      *height_mm)
 {
-  GfOutput *output;
+  const GfOutputInfo *output_info;
 
-  output = gf_monitor_get_main_output (monitor);
+  output_info = gf_monitor_get_main_output_info (monitor);
 
-  *width_mm = output->width_mm;
-  *height_mm = output->height_mm;
+  *width_mm = output_info->width_mm;
+  *height_mm = output_info->height_mm;
 }
 
 const gchar *
 gf_monitor_get_connector (GfMonitor *monitor)
 {
-  GfOutput *output;
+  const GfOutputInfo *output_info;
 
-  output = gf_monitor_get_main_output (monitor);
-  return output->name;
+  output_info = gf_monitor_get_main_output_info (monitor);
+
+  return output_info->name;
 }
 
 const gchar *
 gf_monitor_get_vendor (GfMonitor *monitor)
 {
-  GfOutput *output;
+  const GfOutputInfo *output_info;
 
-  output = gf_monitor_get_main_output (monitor);
-  return output->vendor;
+  output_info = gf_monitor_get_main_output_info (monitor);
+
+  return output_info->vendor;
 }
 
 const gchar *
 gf_monitor_get_product (GfMonitor *monitor)
 {
-  GfOutput *output;
+  const GfOutputInfo *output_info;
 
-  output = gf_monitor_get_main_output (monitor);
-  return output->product;
+  output_info = gf_monitor_get_main_output_info (monitor);
+
+  return output_info->product;
 }
 
 const gchar *
 gf_monitor_get_serial (GfMonitor *monitor)
 {
-  GfOutput *output;
+  const GfOutputInfo *output_info;
 
-  output = gf_monitor_get_main_output (monitor);
-  return output->serial;
+  output_info = gf_monitor_get_main_output_info (monitor);
+
+  return output_info->serial;
 }
 
 GfConnectorType
 gf_monitor_get_connector_type (GfMonitor *monitor)
 {
-  GfOutput *output;
+  const GfOutputInfo *output_info;
 
-  output = gf_monitor_get_main_output (monitor);
-  return output->connector_type;
+  output_info = gf_monitor_get_main_output_info (monitor);
+
+  return output_info->connector_type;
 }
 
 GfMonitorTransform

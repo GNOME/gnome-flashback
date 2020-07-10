@@ -29,22 +29,9 @@
 #include <stdint.h>
 
 #include "gf-gpu-private.h"
-#include "gf-monitor-manager-enums-private.h"
-#include "gf-monitor-manager-types-private.h"
+#include "gf-output-info-private.h"
 
 G_BEGIN_DECLS
-
-typedef struct
-{
-  guint32 group_id;
-  guint32 flags;
-  guint32 max_h_tiles;
-  guint32 max_v_tiles;
-  guint32 loc_h_tile;
-  guint32 loc_v_tile;
-  guint32 tile_w;
-  guint32 tile_h;
-} GfTileInfo;
 
 typedef struct
 {
@@ -56,44 +43,10 @@ typedef struct
 
 struct _GfOutput
 {
-  GObject              parent;
+  GObject        parent;
 
-  gchar               *name;
-  gchar               *vendor;
-  gchar               *product;
-  gchar               *serial;
-  gint                 width_mm;
-  gint                 height_mm;
-
-  GfConnectorType      connector_type;
-  GfMonitorTransform   panel_orientation_transform;
-
-  GfCrtcMode          *preferred_mode;
-  GfCrtcMode         **modes;
-  guint                n_modes;
-
-  GfCrtc             **possible_crtcs;
-  guint                n_possible_crtcs;
-
-  GfOutput           **possible_clones;
-  guint                n_possible_clones;
-
-  gint                 backlight_min;
-  gint                 backlight_max;
-
-  gboolean             supports_underscanning;
-
-  gpointer             driver_private;
-  GDestroyNotify       driver_notify;
-
-  /* Get a new preferred mode on hotplug events, to handle
-   * dynamic guest resizing
-   */
-  gboolean             hotplug_mode_update;
-  gint                 suggested_x;
-  gint                 suggested_y;
-
-  GfTileInfo           tile_info;
+  gpointer       driver_private;
+  GDestroyNotify driver_notify;
 };
 
 #define GF_TYPE_OUTPUT (gf_output_get_type ())
@@ -102,6 +55,8 @@ G_DECLARE_FINAL_TYPE (GfOutput, gf_output, GF, OUTPUT, GObject)
 uint64_t            gf_output_get_id                    (GfOutput                 *self);
 
 GfGpu              *gf_output_get_gpu                   (GfOutput                 *self);
+
+const GfOutputInfo *gf_output_get_info                  (GfOutput                 *self);
 
 const char         *gf_output_get_name                  (GfOutput                 *self);
 
@@ -112,9 +67,6 @@ void                gf_output_assign_crtc               (GfOutput               
 void                gf_output_unassign_crtc             (GfOutput                 *self);
 
 GfCrtc             *gf_output_get_assigned_crtc         (GfOutput                 *self);
-
-void                gf_output_parse_edid                (GfOutput                 *self,
-                                                         GBytes                   *edid);
 
 gboolean            gf_output_is_laptop                 (GfOutput                 *self);
 
@@ -134,6 +86,9 @@ void                gf_output_set_backlight             (GfOutput               
                                                          int                       backlight);
 
 int                 gf_output_get_backlight             (GfOutput                 *self);
+
+void                gf_output_add_possible_clone        (GfOutput                 *self,
+                                                         GfOutput                 *possible_clone);
 
 static inline GfOutputAssignment *
 gf_find_output_assignment (GfOutputAssignment **outputs,

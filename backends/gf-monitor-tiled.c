@@ -53,24 +53,31 @@ static gboolean
 is_crtc_mode_tiled (GfOutput   *output,
                     GfCrtcMode *crtc_mode)
 {
-  return (crtc_mode->width == (gint) output->tile_info.tile_w &&
-          crtc_mode->height == (gint) output->tile_info.tile_h);
+  const GfOutputInfo *output_info;
+
+  output_info = gf_output_get_info (output);
+
+  return (crtc_mode->width == (int) output_info->tile_info.tile_w &&
+          crtc_mode->height == (int) output_info->tile_info.tile_h);
 }
 
 static GfCrtcMode *
 find_tiled_crtc_mode (GfOutput   *output,
                       GfCrtcMode *reference_crtc_mode)
 {
+  const GfOutputInfo *output_info;
   GfCrtcMode *crtc_mode;
   guint i;
 
-  crtc_mode = output->preferred_mode;
+  output_info = gf_output_get_info (output);
+  crtc_mode = output_info->preferred_mode;
+
   if (is_crtc_mode_tiled (output, crtc_mode))
     return crtc_mode;
 
-  for (i = 0; i < output->n_modes; i++)
+  for (i = 0; i < output_info->n_modes; i++)
     {
-      crtc_mode = output->modes[i];
+      crtc_mode = output_info->modes[i];
 
       if (!is_crtc_mode_tiled (output, crtc_mode))
         continue;
@@ -104,13 +111,15 @@ calculate_tiled_size (GfMonitor *monitor,
 
   for (l = outputs; l; l = l->next)
     {
-      GfOutput *output = l->data;
+      const GfOutputInfo *output_info;
 
-      if (output->tile_info.loc_v_tile == 0)
-        width += output->tile_info.tile_w;
+      output_info = gf_output_get_info (l->data);
 
-      if (output->tile_info.loc_h_tile == 0)
-        height += output->tile_info.tile_h;
+      if (output_info->tile_info.loc_v_tile == 0)
+        width += output_info->tile_info.tile_w;
+
+      if (output_info->tile_info.loc_h_tile == 0)
+        height += output_info->tile_info.tile_h;
     }
 
   *out_width = width;
@@ -152,14 +161,16 @@ create_tiled_monitor_mode (GfMonitorTiled *tiled,
   for (l = outputs, i = 0; l; l = l->next, i++)
     {
       GfOutput *output;
+      const GfOutputInfo *output_info;
       GfCrtcMode *tiled_crtc_mode;
 
       output = l->data;
+      output_info = gf_output_get_info (output);
       tiled_crtc_mode = find_tiled_crtc_mode (output, reference_crtc_mode);
 
       if (!tiled_crtc_mode)
         {
-          g_warning ("No tiled mode found on %s", output->name);
+          g_warning ("No tiled mode found on %s", gf_output_get_name (output));
           gf_monitor_mode_free ((GfMonitorMode *) mode);
           return NULL;
         }
@@ -167,7 +178,8 @@ create_tiled_monitor_mode (GfMonitorTiled *tiled,
       mode->parent.crtc_modes[i].output = output;
       mode->parent.crtc_modes[i].crtc_mode = tiled_crtc_mode;
 
-      is_preferred = is_preferred && tiled_crtc_mode == output->preferred_mode;
+      is_preferred = (is_preferred &&
+                      tiled_crtc_mode == output_info->preferred_mode);
     }
 
   *out_is_preferred = is_preferred;
@@ -228,6 +240,7 @@ generate_tiled_monitor_modes (GfMonitorTiled *tiled)
 {
   GfMonitor *monitor;
   GfOutput *main_output;
+  const GfOutputInfo *main_output_info;
   GList *tiled_modes;
   GfMonitorMode *best_mode;
   guint i;
@@ -235,17 +248,18 @@ generate_tiled_monitor_modes (GfMonitorTiled *tiled)
 
   monitor = GF_MONITOR (tiled);
   main_output = gf_monitor_get_main_output (monitor);
+  main_output_info = gf_output_get_info (main_output);
 
   tiled_modes = NULL;
   best_mode = NULL;
 
-  for (i = 0; i < main_output->n_modes; i++)
+  for (i = 0; i < main_output_info->n_modes; i++)
     {
       GfCrtcMode *reference_crtc_mode;
       GfMonitorMode *mode;
       gboolean is_preferred;
 
-      reference_crtc_mode = main_output->modes[i];
+      reference_crtc_mode = main_output_info->modes[i];
 
       if (!is_crtc_mode_tiled (main_output, reference_crtc_mode))
         continue;
@@ -295,18 +309,20 @@ generate_untiled_monitor_modes (GfMonitorTiled *tiled)
 {
   GfMonitor *monitor;
   GfOutput *main_output;
+  const GfOutputInfo *main_output_info;
   guint i;
 
   monitor = GF_MONITOR (tiled);
   main_output = gf_monitor_get_main_output (monitor);
+  main_output_info = gf_output_get_info (main_output);
 
-  for (i = 0; i < main_output->n_modes; i++)
+  for (i = 0; i < main_output_info->n_modes; i++)
     {
       GfCrtcMode *crtc_mode;
       GfMonitorMode *mode;
       GfMonitorMode *preferred_mode;
 
-      crtc_mode = main_output->modes[i];
+      crtc_mode = main_output_info->modes[i];
       mode = create_untiled_monitor_mode (tiled, main_output, crtc_mode);
 
       if (!mode)
@@ -329,7 +345,7 @@ generate_untiled_monitor_modes (GfMonitorTiled *tiled)
         }
 
       preferred_mode = gf_monitor_get_preferred_mode (monitor);
-      if (!preferred_mode && crtc_mode == main_output->preferred_mode)
+      if (!preferred_mode && crtc_mode == main_output_info->preferred_mode)
         gf_monitor_set_preferred_mode (monitor, mode);
     }
 }
@@ -446,15 +462,18 @@ generate_modes (GfMonitorTiled *tiled)
 static int
 count_untiled_crtc_modes (GfOutput *output)
 {
+  const GfOutputInfo *output_info;
   gint count;
   guint i;
 
+  output_info = gf_output_get_info (output);
+
   count = 0;
-  for (i = 0; i < output->n_modes; i++)
+  for (i = 0; i < output_info->n_modes; i++)
     {
       GfCrtcMode *crtc_mode;
 
-      crtc_mode = output->modes[i];
+      crtc_mode = output_info->modes[i];
       if (!is_crtc_mode_tiled (output, crtc_mode))
         count++;
     }
@@ -511,10 +530,12 @@ add_tiled_monitor_outputs (GfGpu          *gpu,
   for (l = outputs; l; l = l->next)
     {
       GfOutput *output;
+      const GfOutputInfo *output_info;
 
       output = l->data;
+      output_info = gf_output_get_info (output);
 
-      if (output->tile_info.group_id != tiled->tile_group_id)
+      if (output_info->tile_info.group_id != tiled->tile_group_id)
         continue;
 
       gf_monitor_append_output (monitor, output);
@@ -528,60 +549,62 @@ calculate_tile_coordinate (GfMonitor          *monitor,
                            gint               *out_x,
                            gint               *out_y)
 {
+  const GfOutputInfo *output_info;
   GList *outputs;
   GList *l;
   gint x;
   gint y;
 
+  output_info = gf_output_get_info (output);
   outputs = gf_monitor_get_outputs (monitor);
   x = y = 0;
 
   for (l = outputs; l; l = l->next)
     {
-      GfOutput *other_output;
+      const GfOutputInfo *other_output_info;
 
-      other_output = l->data;
+      other_output_info = gf_output_get_info (l->data);
 
       switch (crtc_transform)
         {
           case GF_MONITOR_TRANSFORM_NORMAL:
           case GF_MONITOR_TRANSFORM_FLIPPED:
-            if (other_output->tile_info.loc_v_tile == output->tile_info.loc_v_tile &&
-                other_output->tile_info.loc_h_tile < output->tile_info.loc_h_tile)
-              x += other_output->tile_info.tile_w;
-            if (other_output->tile_info.loc_h_tile == output->tile_info.loc_h_tile &&
-                other_output->tile_info.loc_v_tile < output->tile_info.loc_v_tile)
-              y += other_output->tile_info.tile_h;
+            if (other_output_info->tile_info.loc_v_tile == output_info->tile_info.loc_v_tile &&
+                other_output_info->tile_info.loc_h_tile < output_info->tile_info.loc_h_tile)
+              x += other_output_info->tile_info.tile_w;
+            if (other_output_info->tile_info.loc_h_tile == output_info->tile_info.loc_h_tile &&
+                other_output_info->tile_info.loc_v_tile < output_info->tile_info.loc_v_tile)
+              y += other_output_info->tile_info.tile_h;
             break;
 
           case GF_MONITOR_TRANSFORM_180:
           case GF_MONITOR_TRANSFORM_FLIPPED_180:
-            if (other_output->tile_info.loc_v_tile == output->tile_info.loc_v_tile &&
-                other_output->tile_info.loc_h_tile > output->tile_info.loc_h_tile)
-              x += other_output->tile_info.tile_w;
-            if (other_output->tile_info.loc_h_tile == output->tile_info.loc_h_tile &&
-                other_output->tile_info.loc_v_tile > output->tile_info.loc_v_tile)
-              y += other_output->tile_info.tile_h;
+            if (other_output_info->tile_info.loc_v_tile == output_info->tile_info.loc_v_tile &&
+                other_output_info->tile_info.loc_h_tile > output_info->tile_info.loc_h_tile)
+              x += other_output_info->tile_info.tile_w;
+            if (other_output_info->tile_info.loc_h_tile == output_info->tile_info.loc_h_tile &&
+                other_output_info->tile_info.loc_v_tile > output_info->tile_info.loc_v_tile)
+              y += other_output_info->tile_info.tile_h;
             break;
 
           case GF_MONITOR_TRANSFORM_270:
           case GF_MONITOR_TRANSFORM_FLIPPED_270:
-            if (other_output->tile_info.loc_v_tile == output->tile_info.loc_v_tile &&
-                other_output->tile_info.loc_h_tile > output->tile_info.loc_h_tile)
-              y += other_output->tile_info.tile_w;
-            if (other_output->tile_info.loc_h_tile == output->tile_info.loc_h_tile &&
-                other_output->tile_info.loc_v_tile > output->tile_info.loc_v_tile)
-              x += other_output->tile_info.tile_h;
+            if (other_output_info->tile_info.loc_v_tile == output_info->tile_info.loc_v_tile &&
+                other_output_info->tile_info.loc_h_tile > output_info->tile_info.loc_h_tile)
+              y += other_output_info->tile_info.tile_w;
+            if (other_output_info->tile_info.loc_h_tile == output_info->tile_info.loc_h_tile &&
+                other_output_info->tile_info.loc_v_tile > output_info->tile_info.loc_v_tile)
+              x += other_output_info->tile_info.tile_h;
             break;
 
           case GF_MONITOR_TRANSFORM_90:
           case GF_MONITOR_TRANSFORM_FLIPPED_90:
-            if (other_output->tile_info.loc_v_tile == output->tile_info.loc_v_tile &&
-                other_output->tile_info.loc_h_tile < output->tile_info.loc_h_tile)
-              y += other_output->tile_info.tile_w;
-            if (other_output->tile_info.loc_h_tile == output->tile_info.loc_h_tile &&
-                other_output->tile_info.loc_v_tile < output->tile_info.loc_v_tile)
-              x += other_output->tile_info.tile_h;
+            if (other_output_info->tile_info.loc_v_tile == output_info->tile_info.loc_v_tile &&
+                other_output_info->tile_info.loc_h_tile < output_info->tile_info.loc_h_tile)
+              y += other_output_info->tile_info.tile_w;
+            if (other_output_info->tile_info.loc_h_tile == output_info->tile_info.loc_h_tile &&
+                other_output_info->tile_info.loc_v_tile < output_info->tile_info.loc_v_tile)
+              x += other_output_info->tile_info.tile_h;
             break;
 
           default:
@@ -722,8 +745,11 @@ gf_monitor_tiled_new (GfGpu            *gpu,
                       GfMonitorManager *monitor_manager,
                       GfOutput         *output)
 {
+  const GfOutputInfo *output_info;
   GfMonitorTiled *tiled;
   GfMonitor *monitor;
+
+  output_info = gf_output_get_info (output);
 
   tiled = g_object_new (GF_TYPE_MONITOR_TILED,
                         "gpu", gpu,
@@ -733,7 +759,7 @@ gf_monitor_tiled_new (GfGpu            *gpu,
 
   tiled->monitor_manager = monitor_manager;
 
-  tiled->tile_group_id = output->tile_info.group_id;
+  tiled->tile_group_id = output_info->tile_info.group_id;
   gf_monitor_set_winsys_id (monitor, gf_output_get_id (output));
 
   tiled->origin_output = output;

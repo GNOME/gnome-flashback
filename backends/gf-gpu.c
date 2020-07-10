@@ -179,9 +179,13 @@ gf_gpu_has_hotplug_mode_update (GfGpu *gpu)
 
   for (l = priv->outputs; l; l = l->next)
     {
-      GfOutput *output = l->data;
+      GfOutput *output;
+      const GfOutputInfo *output_info;
 
-      if (output->hotplug_mode_update)
+      output = l->data;
+      output_info = gf_output_get_info (output);
+
+      if (output_info->hotplug_mode_update)
         return TRUE;
     }
 

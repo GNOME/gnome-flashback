@@ -36,21 +36,23 @@ generate_modes (GfMonitorNormal *normal)
 {
   GfMonitor *monitor;
   GfOutput *output;
+  const GfOutputInfo *output_info;
   GfCrtcModeFlag preferred_mode_flags;
   guint i;
 
   monitor = GF_MONITOR (normal);
   output = gf_monitor_get_main_output (monitor);
-  preferred_mode_flags = output->preferred_mode->flags;
+  output_info = gf_output_get_info (output);
+  preferred_mode_flags = output_info->preferred_mode->flags;
 
-  for (i = 0; i < output->n_modes; i++)
+  for (i = 0; i < output_info->n_modes; i++)
     {
       GfCrtcMode *crtc_mode;
       GfMonitorMode *mode;
       gboolean replace;
       GfCrtc *crtc;
 
-      crtc_mode = output->modes[i];
+      crtc_mode = output_info->modes[i];
 
       mode = g_new0 (GfMonitorMode, 1);
       mode->monitor = monitor;
@@ -76,12 +78,12 @@ generate_modes (GfMonitorNormal *normal)
 
       if (!gf_monitor_add_mode (monitor, mode, replace))
         {
-          g_assert (crtc_mode != output->preferred_mode);
+          g_assert (crtc_mode != output_info->preferred_mode);
           gf_monitor_mode_free (mode);
           continue;
         }
 
-      if (crtc_mode == output->preferred_mode)
+      if (crtc_mode == output_info->preferred_mode)
         gf_monitor_set_preferred_mode (monitor, mode);
 
       crtc = gf_output_get_assigned_crtc (output);
@@ -132,14 +134,15 @@ gf_monitor_normal_get_suggested_position (GfMonitor *monitor,
                                           gint      *x,
                                           gint      *y)
 {
-  GfOutput *output;
+  const GfOutputInfo *output_info;
 
-  output = gf_monitor_get_main_output (monitor);
-  if (output->suggested_x < 0 && output->suggested_y < 0)
+  output_info = gf_monitor_get_main_output_info (monitor);
+
+  if (output_info->suggested_x < 0 && output_info->suggested_y < 0)
     return FALSE;
 
-  *x = output->suggested_x;
-  *y = output->suggested_y;
+  *x = output_info->suggested_x;
+  *y = output_info->suggested_y;
 
   return TRUE;
 }

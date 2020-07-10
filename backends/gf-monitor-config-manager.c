@@ -624,16 +624,19 @@ find_unassigned_crtc (GfOutput  *output,
                       GArray    *reserved_crtcs)
 {
   GfCrtc *crtc;
+  const GfOutputInfo *output_info;
   unsigned int i;
 
   crtc = gf_output_get_assigned_crtc (output);
   if (crtc && !is_crtc_assigned (crtc, crtc_assignments))
     return crtc;
 
+  output_info = gf_output_get_info (output);
+
   /* then try to assign a CRTC that wasn't used */
-  for (i = 0; i < output->n_possible_crtcs; i++)
+  for (i = 0; i < output_info->n_possible_crtcs; i++)
     {
-      crtc = output->possible_crtcs[i];
+      crtc = output_info->possible_crtcs[i];
 
       if (is_crtc_assigned (crtc, crtc_assignments))
         continue;
@@ -645,9 +648,9 @@ find_unassigned_crtc (GfOutput  *output,
     }
 
   /* finally just give a CRTC that we haven't assigned */
-  for (i = 0; i < output->n_possible_crtcs; i++)
+  for (i = 0; i < output_info->n_possible_crtcs; i++)
     {
-      crtc = output->possible_crtcs[i];
+      crtc = output_info->possible_crtcs[i];
 
       if (is_crtc_assigned (crtc, crtc_assignments))
         continue;

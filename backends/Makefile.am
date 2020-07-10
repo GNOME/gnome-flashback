@@ -73,6 +73,8 @@ libbackends_la_SOURCES = \
 	gf-monitors-config.c \
 	gf-orientation-manager-private.h \
 	gf-orientation-manager.c \
+	gf-output-info-private.h \
+	gf-output-info.c \
 	gf-output-private.h \
 	gf-output-xrandr-private.h \
 	gf-output-xrandr.c \
