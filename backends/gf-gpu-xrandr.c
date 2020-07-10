@@ -189,15 +189,15 @@ gf_gpu_xrandr_read_current (GfGpu   *gpu,
 
       if (xrandr_output->connection != RR_Disconnected)
         {
-          GfOutput *output;
+          GfOutputXrandr *output_xrandr;
 
-          output = gf_create_xrandr_output (gpu_xrandr,
-                                            xrandr_output,
-                                            output_id,
-                                            primary_output);
+          output_xrandr = gf_output_xrandr_new (gpu_xrandr,
+                                                xrandr_output,
+                                                output_id,
+                                                primary_output);
 
-          if (output)
-            outputs = g_list_prepend (outputs, output);
+          if (output_xrandr)
+            outputs = g_list_prepend (outputs, output_xrandr);
         }
 
       XRRFreeOutputInfo (xrandr_output);

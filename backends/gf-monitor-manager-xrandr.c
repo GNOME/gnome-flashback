@@ -549,7 +549,7 @@ apply_crtc_assignments (GfMonitorManager    *manager,
       GfOutputAssignment *output_assignment = outputs[i];
       GfOutput *output = output_assignment->output;
 
-      gf_output_xrandr_apply_mode (output);
+      gf_output_xrandr_apply_mode (GF_OUTPUT_XRANDR (output));
     }
 
   for (l = to_configure_outputs; l; l = l->next)
@@ -732,7 +732,7 @@ static GBytes *
 gf_monitor_manager_xrandr_read_edid (GfMonitorManager *manager,
                                      GfOutput         *output)
 {
-  return gf_output_xrandr_read_edid (output);
+  return gf_output_xrandr_read_edid (GF_OUTPUT_XRANDR (output));
 }
 
 static void
@@ -900,7 +900,7 @@ gf_monitor_manager_xrandr_change_backlight (GfMonitorManager *manager,
                                             GfOutput         *output,
                                             gint              value)
 {
-  gf_output_xrandr_change_backlight (output, value);
+  gf_output_xrandr_change_backlight (GF_OUTPUT_XRANDR (output), value);
 }
 
 static void

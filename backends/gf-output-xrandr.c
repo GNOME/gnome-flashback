@@ -34,6 +34,13 @@
 #include "gf-crtc-private.h"
 #include "gf-monitor-manager-xrandr-private.h"
 
+struct _GfOutputXrandr
+{
+  GfOutput parent;
+};
+
+G_DEFINE_TYPE (GfOutputXrandr, gf_output_xrandr, GF_TYPE_OUTPUT)
+
 static Display *
 xdisplay_from_gpu (GfGpu *gpu)
 {
@@ -781,11 +788,21 @@ output_info_init_backlight_limits_xrandr (GfOutputInfo       *output_info,
   g_free (reply);
 }
 
-GfOutput *
-gf_create_xrandr_output (GfGpuXrandr   *gpu_xrandr,
-                         XRROutputInfo *xrandr_output,
-                         RROutput       output_id,
-                         RROutput       primary_output)
+static void
+gf_output_xrandr_class_init (GfOutputXrandrClass *self_class)
+{
+}
+
+static void
+gf_output_xrandr_init (GfOutputXrandr *self)
+{
+}
+
+GfOutputXrandr *
+gf_output_xrandr_new (GfGpuXrandr   *gpu_xrandr,
+                      XRROutputInfo *xrandr_output,
+                      RROutput       output_id,
+                      RROutput       primary_output)
 {
   GfGpu *gpu;
   GfBackend *backend;
@@ -855,7 +872,7 @@ gf_create_xrandr_output (GfGpuXrandr   *gpu_xrandr,
                                                                                   output_id);
   output_info_init_backlight_limits_xrandr (output_info, xdisplay, output_id);
 
-  output = g_object_new (GF_TYPE_OUTPUT,
+  output = g_object_new (GF_TYPE_OUTPUT_XRANDR,
                          "id", output_id,
                          "gpu", gpu_xrandr,
                          "info", output_info,
@@ -891,15 +908,17 @@ gf_create_xrandr_output (GfGpuXrandr   *gpu_xrandr,
 
   gf_output_info_unref (output_info);
 
-  return output;
+  return GF_OUTPUT_XRANDR (output);
 }
 
 GBytes *
-gf_output_xrandr_read_edid (GfOutput *output)
+gf_output_xrandr_read_edid (GfOutputXrandr *self)
 {
+  GfOutput *output;
   Display *xdisplay;
   RROutput output_id;
 
+  output = GF_OUTPUT (self);
   xdisplay = xdisplay_from_output (output);
   output_id = (RROutput) gf_output_get_id (output);
 
@@ -907,10 +926,12 @@ gf_output_xrandr_read_edid (GfOutput *output)
 }
 
 void
-gf_output_xrandr_apply_mode (GfOutput *output)
+gf_output_xrandr_apply_mode (GfOutputXrandr *self)
 {
+  GfOutput *output;
   Display *xdisplay;
 
+  output = GF_OUTPUT (self);
   xdisplay = xdisplay_from_output (output);
 
   if (gf_output_is_primary (output))
@@ -929,13 +950,16 @@ gf_output_xrandr_apply_mode (GfOutput *output)
 }
 
 void
-gf_output_xrandr_change_backlight (GfOutput *output,
-                                   int       value)
+gf_output_xrandr_change_backlight (GfOutputXrandr *self,
+                                   int             value)
 {
+  GfOutput *output;
   const GfOutputInfo *output_info;
   Display *xdisplay;
   gint hw_value;
   Atom atom;
+
+  output = GF_OUTPUT (self);
 
   output_info = gf_output_get_info (output);
   xdisplay = xdisplay_from_output (output);

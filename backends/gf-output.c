@@ -61,7 +61,7 @@ enum
 
 static GParamSpec *output_properties[LAST_PROP] = { NULL };
 
-G_DEFINE_TYPE_WITH_PRIVATE (GfOutput, gf_output, G_TYPE_OBJECT)
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GfOutput, gf_output, G_TYPE_OBJECT)
 
 static void
 gf_output_dispose (GObject *object)
@@ -87,9 +87,6 @@ gf_output_finalize (GObject *object)
   priv = gf_output_get_instance_private (output);
 
   g_clear_pointer (&priv->info, gf_output_info_unref);
-
-  if (output->driver_notify)
-    output->driver_notify (output);
 
   G_OBJECT_CLASS (gf_output_parent_class)->finalize (object);
 }

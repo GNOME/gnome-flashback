@@ -41,16 +41,13 @@ typedef struct
   gboolean  is_underscanning;
 } GfOutputAssignment;
 
-struct _GfOutput
-{
-  GObject        parent;
-
-  gpointer       driver_private;
-  GDestroyNotify driver_notify;
-};
-
 #define GF_TYPE_OUTPUT (gf_output_get_type ())
-G_DECLARE_FINAL_TYPE (GfOutput, gf_output, GF, OUTPUT, GObject)
+G_DECLARE_DERIVABLE_TYPE (GfOutput, gf_output, GF, OUTPUT, GObject)
+
+struct _GfOutputClass
+{
+  GObjectClass parent_class;
+};
 
 uint64_t            gf_output_get_id                    (GfOutput                 *self);
 

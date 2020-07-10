@@ -26,17 +26,21 @@
 
 G_BEGIN_DECLS
 
-GfOutput *gf_create_xrandr_output           (GfGpuXrandr   *gpu_xrandr,
-                                             XRROutputInfo *xrandr_output,
-                                             RROutput       output_id,
-                                             RROutput       primary_output);
+#define GF_TYPE_OUTPUT_XRANDR (gf_output_xrandr_get_type ())
+G_DECLARE_FINAL_TYPE (GfOutputXrandr, gf_output_xrandr,
+                      GF, OUTPUT_XRANDR, GfOutput)
 
-GBytes   *gf_output_xrandr_read_edid        (GfOutput      *output);
+GfOutputXrandr *gf_output_xrandr_new             (GfGpuXrandr    *gpu_xrandr,
+                                                  XRROutputInfo  *xrandr_output,
+                                                  RROutput        output_id,
+                                                  RROutput        primary_output);
 
-void      gf_output_xrandr_apply_mode       (GfOutput      *output);
+GBytes        *gf_output_xrandr_read_edid        (GfOutputXrandr *self);
 
-void      gf_output_xrandr_change_backlight (GfOutput      *output,
-                                             int            value);
+void           gf_output_xrandr_apply_mode       (GfOutputXrandr *self);
+
+void           gf_output_xrandr_change_backlight (GfOutputXrandr *self,
+                                                  int             value);
 
 G_END_DECLS
 
