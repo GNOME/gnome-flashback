@@ -138,6 +138,9 @@ gf_monitor_normal_get_suggested_position (GfMonitor *monitor,
 
   output_info = gf_monitor_get_main_output_info (monitor);
 
+  if (!output_info->hotplug_mode_update)
+    return FALSE;
+
   if (output_info->suggested_x < 0 && output_info->suggested_y < 0)
     return FALSE;
 
