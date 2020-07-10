@@ -424,10 +424,10 @@ apply_crtc_assignments (GfMonitorManager    *manager,
     {
       GfCrtcAssignment *crtc_assignment = crtcs[i];
       GfCrtc *crtc = crtc_assignment->crtc;
-      GfCrtcConfig *crtc_config;
+      const GfCrtcConfig *crtc_config;
       int x2, y2;
 
-      crtc_config = crtc->config;
+      crtc_config = gf_crtc_get_config (crtc);
       if (crtc_config == NULL)
         continue;
 
@@ -453,7 +453,7 @@ apply_crtc_assignments (GfMonitorManager    *manager,
     {
       GfCrtc *crtc = l->data;
 
-      if (!crtc->config)
+      if (!gf_crtc_get_config (crtc))
         continue;
 
       xrandr_set_crtc_config (xrandr,

@@ -28,6 +28,8 @@ typedef struct
   GfGpu              *gpu;
 
   GfMonitorTransform  all_transforms;
+
+  GfCrtcConfig       *config;
 } GfCrtcPrivate;
 
 enum
@@ -49,13 +51,15 @@ static void
 gf_crtc_finalize (GObject *object)
 {
   GfCrtc *crtc;
+  GfCrtcPrivate *priv;
 
   crtc = GF_CRTC (object);
+  priv = gf_crtc_get_instance_private (crtc);
 
   if (crtc->driver_notify)
     crtc->driver_notify (crtc);
 
-  g_clear_pointer (&crtc->config, g_free);
+  g_clear_pointer (&priv->config, g_free);
 
   G_OBJECT_CLASS (gf_crtc_parent_class)->finalize (object);
 }
@@ -211,25 +215,42 @@ gf_crtc_get_all_transforms (GfCrtc *self)
 }
 
 void
-gf_crtc_set_config (GfCrtc             *crtc,
+gf_crtc_set_config (GfCrtc             *self,
                     GfRectangle        *layout,
                     GfCrtcMode         *mode,
                     GfMonitorTransform  transform)
 {
+  GfCrtcPrivate *priv;
   GfCrtcConfig *config;
 
-  gf_crtc_unset_config (crtc);
+  priv = gf_crtc_get_instance_private (self);
+
+  gf_crtc_unset_config (self);
 
   config = g_new0 (GfCrtcConfig, 1);
   config->layout = *layout;
   config->mode = mode;
   config->transform = transform;
 
-  crtc->config = config;
+  priv->config = config;
 }
 
 void
-gf_crtc_unset_config (GfCrtc *crtc)
+gf_crtc_unset_config (GfCrtc *self)
 {
-  g_clear_pointer (&crtc->config, g_free);
+  GfCrtcPrivate *priv;
+
+  priv = gf_crtc_get_instance_private (self);
+
+  g_clear_pointer (&priv->config, g_free);
+}
+
+const GfCrtcConfig *
+gf_crtc_get_config (GfCrtc *self)
+{
+  GfCrtcPrivate *priv;
+
+  priv = gf_crtc_get_instance_private (self);
+
+  return priv->config;
 }

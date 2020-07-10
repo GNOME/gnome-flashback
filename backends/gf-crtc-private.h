@@ -47,8 +47,6 @@ struct _GfCrtc
 {
   GObject         parent;
 
-  GfCrtcConfig   *config;
-
   gpointer        driver_private;
   GDestroyNotify  driver_notify;
 };
@@ -97,6 +95,9 @@ void                gf_crtc_set_config         (GfCrtc             *self,
                                                 GfMonitorTransform  transform);
 
 void                gf_crtc_unset_config       (GfCrtc             *self);
+
+
+const GfCrtcConfig *gf_crtc_get_config         (GfCrtc             *self);
 
 G_END_DECLS
 

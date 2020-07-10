@@ -100,11 +100,11 @@ output_set_underscanning_xrandr (GfOutput *output,
   if (underscanning)
     {
       GfCrtc *crtc;
-      GfCrtcConfig *crtc_config;
+      const GfCrtcConfig *crtc_config;
       uint32_t border_value;
 
       crtc = gf_output_get_assigned_crtc (output);
-      crtc_config = crtc->config;
+      crtc_config = gf_crtc_get_config (crtc);
 
       prop = XInternAtom (xdisplay, "underscan hborder", False);
       border_value = crtc_config->mode->width * 0.05;

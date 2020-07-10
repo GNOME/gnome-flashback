@@ -208,7 +208,7 @@ is_current_mode_known (GfMonitor *monitor)
   output = gf_monitor_get_main_output (monitor);
   crtc = gf_output_get_assigned_crtc (output);
 
-  return gf_monitor_is_active (monitor) == (crtc && crtc->config);
+  return gf_monitor_is_active (monitor) == (crtc && gf_crtc_get_config (crtc));
 }
 
 static gboolean
@@ -548,14 +548,16 @@ gf_monitor_is_mode_assigned (GfMonitor     *monitor,
       GfOutput *output;
       GfMonitorCrtcMode *monitor_crtc_mode;
       GfCrtc *crtc;
+      const GfCrtcConfig *crtc_config;
 
       output = l->data;
       monitor_crtc_mode = &mode->crtc_modes[i];
       crtc = gf_output_get_assigned_crtc (output);
+      crtc_config = crtc ? gf_crtc_get_config (crtc) : NULL;
 
       if (monitor_crtc_mode->crtc_mode &&
-          (!crtc || !crtc->config ||
-           crtc->config->mode != monitor_crtc_mode->crtc_mode))
+          (!crtc || !crtc_config ||
+           crtc_config->mode != monitor_crtc_mode->crtc_mode))
         return FALSE;
       else if (!monitor_crtc_mode->crtc_mode && crtc)
         return FALSE;

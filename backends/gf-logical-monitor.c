@@ -89,10 +89,14 @@ static GfMonitorTransform
 derive_monitor_transform (GfMonitor *monitor)
 {
   GfOutput *main_output;
+  GfCrtc *crtc;
+  const GfCrtcConfig *crtc_config;
   GfMonitorTransform transform;
 
   main_output = gf_monitor_get_main_output (monitor);
-  transform = gf_output_get_assigned_crtc (main_output)->config->transform;
+  crtc = gf_output_get_assigned_crtc (main_output);
+  crtc_config = gf_crtc_get_config (crtc);
+  transform = crtc_config->transform;
 
   return gf_monitor_crtc_to_logical_transform (monitor, transform);
 }

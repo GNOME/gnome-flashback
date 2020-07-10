@@ -661,7 +661,7 @@ gf_monitor_tiled_derive_layout (GfMonitor   *monitor,
     {
       GfOutput *output;
       GfCrtc *crtc;
-      GfCrtcConfig *crtc_config;
+      const GfCrtcConfig *crtc_config;
 
       output = l->data;
       crtc = gf_output_get_assigned_crtc (output);
@@ -669,8 +669,7 @@ gf_monitor_tiled_derive_layout (GfMonitor   *monitor,
       if (!crtc)
         continue;
 
-      crtc_config = crtc->config;
-
+      crtc_config = gf_crtc_get_config (crtc);
       g_return_if_fail (crtc_config);
 
       min_x = MIN (crtc_config->layout.x, min_x);

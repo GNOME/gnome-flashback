@@ -87,8 +87,15 @@ generate_modes (GfMonitorNormal *normal)
         gf_monitor_set_preferred_mode (monitor, mode);
 
       crtc = gf_output_get_assigned_crtc (output);
-      if (crtc && crtc->config && crtc_mode == crtc->config->mode)
-        gf_monitor_set_current_mode (monitor, mode);
+
+      if (crtc != NULL)
+        {
+          const GfCrtcConfig *crtc_config;
+
+          crtc_config = gf_crtc_get_config (crtc);
+          if (crtc_config && crtc_mode == crtc_config->mode)
+            gf_monitor_set_current_mode (monitor, mode);
+        }
     }
 }
 
@@ -108,13 +115,15 @@ gf_monitor_normal_derive_layout (GfMonitor   *monitor,
 {
   GfOutput *output;
   GfCrtc *crtc;
+  const GfCrtcConfig *crtc_config;
 
   output = gf_monitor_get_main_output (monitor);
   crtc = gf_output_get_assigned_crtc (output);
+  crtc_config = gf_crtc_get_config (crtc);
 
-  g_return_if_fail (crtc->config);
+  g_return_if_fail (crtc_config);
 
-  *layout = crtc->config->layout;
+  *layout = crtc_config->layout;
 }
 
 static void
