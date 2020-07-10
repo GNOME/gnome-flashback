@@ -22,6 +22,7 @@
 #ifndef GF_MONITOR_PRIVATE_H
 #define GF_MONITOR_PRIVATE_H
 
+#include "gf-crtc-mode-private.h"
 #include "gf-gpu-private.h"
 #include "gf-monitor-manager-enums-private.h"
 #include "gf-monitor-manager-types-private.h"

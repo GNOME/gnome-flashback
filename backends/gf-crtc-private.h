@@ -28,6 +28,7 @@
 #include <glib-object.h>
 #include <stdint.h>
 
+#include "gf-crtc-mode-private.h"
 #include "gf-gpu-private.h"
 #include "gf-monitor-manager-enums-private.h"
 #include "gf-monitor-manager-types-private.h"
@@ -42,23 +43,6 @@ typedef struct
 
   GfCrtcMode         *mode;
 } GfCrtcConfig;
-
-struct _GfCrtcMode
-{
-  GObject         parent;
-
-  /* The low-level ID of this mode, used to apply back configuration */
-  glong           mode_id;
-  gchar          *name;
-
-  gint            width;
-  gint            height;
-  gfloat          refresh_rate;
-  GfCrtcModeFlag  flags;
-
-  gpointer        driver_private;
-  GDestroyNotify  driver_notify;
-};
 
 typedef struct
 {
@@ -76,9 +60,6 @@ struct _GfCrtcClass
 {
   GObjectClass parent_class;
 };
-
-#define GF_TYPE_CRTC_MODE (gf_crtc_mode_get_type ())
-G_DECLARE_FINAL_TYPE (GfCrtcMode, gf_crtc_mode, GF, CRTC_MODE, GObject)
 
 uint64_t            gf_crtc_get_id             (GfCrtc             *self);
 

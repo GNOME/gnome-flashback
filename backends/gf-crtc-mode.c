@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2017 Red Hat
- * Copyright (C) 2018 Alberts Muktupāvels
+ * Copyright (C) 2017-2020 Red Hat
+ * Copyright (C) 2018-2020 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  */
 
 #include "config.h"
-#include "gf-crtc-private.h"
+#include "gf-crtc-mode-private.h"
 
 G_DEFINE_TYPE (GfCrtcMode, gf_crtc_mode, G_TYPE_OBJECT)
 
