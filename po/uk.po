@@ -1,0 +1,1184 @@
+# Ukrainian translation for gnome-flashback.
+# Copyright (C) 2020 gnome-flashback's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-flashback package.
+#
+# Yuri Chornoivan <yurchor@ukr.net>, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-flashback master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
+"POT-Creation-Date: 2020-07-25 12:28+0000\n"
+"PO-Revision-Date: 2020-07-28 15:34+0300\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
+"Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Lokalize 20.07.70\n"
+
+#: backends/gf-monitor.c:133
+msgid "Built-in display"
+msgstr "Вбудований дисплей"
+
+#: backends/gf-monitor.c:167
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
+msgid "Unknown"
+msgstr "Невідомий"
+
+#: backends/gf-monitor.c:169
+msgid "Unknown Display"
+msgstr "Невідомий екран"
+
+#: backends/gf-monitor.c:178
+#, c-format
+msgctxt ""
+"This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
+msgid "%s %s"
+msgstr "%s %s"
+
+#: backends/gf-monitor.c:192
+#, c-format
+msgctxt ""
+"This is a monitor vendor name followed by product/model name where size in "
+"inches could not be calculated, e.g. Dell U2414H"
+msgid "%s %s"
+msgstr "%s %s"
+
+#: data/applications/gnome-flashback.desktop.in.in:4
+msgid "GNOME Flashback"
+msgstr ""
+
+#: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
+msgid "Clipboard (GNOME Flashback)"
+msgstr ""
+
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:3
+msgid "Network (GNOME Flashback)"
+msgstr ""
+
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:4
+msgid "Manage your network connections"
+msgstr "Організуйте ваші мережеві з'єднання"
+
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
+msgid "nm-device-wireless"
+msgstr "nm-device-wireless"
+
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
+msgid "Preferences"
+msgstr "Параметри"
+
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:5
+msgid "Personal preferences"
+msgstr ""
+
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
+msgid "preferences-desktop"
+msgstr ""
+
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
+msgid "Administration"
+msgstr "Адміністрування"
+
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
+msgid "Change system-wide settings (affects all users)"
+msgstr ""
+
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
+msgid "preferences-system"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
+msgid "a11y-keyboard"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:10
+msgid "Audio device selection"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide the "
+"audio device selection dialog."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:16
+msgid "Automount manager"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
+msgid ""
+"If set to true, then GNOME Flashback application will be used to automount "
+"removable media."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:22
+msgid "Clipboard"
+msgstr "Буфер обміну"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:27
+#: gnome-flashback/libdesktop/gf-desktop-window.c:823
+msgid "Desktop"
+msgstr "Стільниця"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:32
+msgid "End session dialog"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show the "
+"end session dialog."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
+msgid "Idle monitor"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
+msgid "Input settings"
+msgstr "Параметри вхідних даних"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
+msgid "Keyboard layouts and input methods"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"keyboard layouts and input methods."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
+msgid "Notification daemon"
+msgstr "Фонова служба сповіщень"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"notifications."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
+msgid "Authentication agent for polkit"
+msgstr "Агент розпізнавання для polkit"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
+msgid ""
+"This is the same authentication agent that was provided by PolicyKit-gnome."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
+msgid "Root background"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
+msgid "Screencasts"
+msgstr "Трансляції з екрана"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
+msgid ""
+"If set to true, then GNOME Flashback application will be used to record the "
+"screen."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
+msgid "Screensaver"
+msgstr "Зберігач екрана"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a "
+"screensaver."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
+msgid "Screenshots"
+msgstr "Знімки екрана"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
+msgid ""
+"If set to true, then GNOME Flashback application will be used to take "
+"screenshots."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
+msgid "Shell"
+msgstr "Оболонка"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a shell."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
+msgid "Status Notifier Watcher"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
+msgid ""
+"If set to true, then GNOME Flashback application will be used as Status "
+"Notifier Watcher."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:5
+msgid "Draw desktop background"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:6
+msgid "If set to true, then GNOME Flashback will draw the desktop background."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:11
+msgid "Show desktop icons"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:12
+msgid ""
+"If set to true, then GNOME Flashback will draw the icons on the desktop."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:5
+msgid "Fade the background on change"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:6
+msgid ""
+"If set to true, then fade effect will be used to change the desktop "
+"background."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:5
+msgid "Icon size"
+msgstr "Розмір піктограм"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:6
+msgid "The size of desktop icons."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
+#: gnome-flashback/libdesktop/gf-icon-view.c:1332
+msgid "Placement"
+msgstr "Розташування"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:12
+msgid ""
+"Can be one of \"auto-arrange-icons\", \"align-icons-to-grid\" or \"free\". "
+"It controls how icons are placed on desktop."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
+#: gnome-flashback/libdesktop/gf-icon-view.c:1338
+msgid "Sort by"
+msgstr "Критерій упорядковування"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:18
+msgid ""
+"Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons "
+"are sorted in \"auto-arrange-icons\" placement."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
+msgid "Extra text width"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:25
+msgid "Extra width for icon text."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:31
+msgid "Column spacing"
+msgstr "Інтервал між стовпчиками"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:32
+msgid "The amount of space between columns."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:38
+msgid "Row spacing"
+msgstr "Міжрядковий інтервал"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:39
+msgid "The amount of space between rows."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:44
+msgid "Show home icon"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:45
+msgid ""
+"If this is set to true, an icon linking to the home folder will be put on "
+"the desktop."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:50
+msgid "Show trash icon"
+msgstr "Показувати піктограму смітника"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:51
+msgid ""
+"If this is set to true, an icon linking to the trash will be put on the "
+"desktop."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
+msgid "Use IBus icon if available"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:10
+msgid "Icon background color"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:15
+msgid "Icon foreground color"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:20
+msgid "Icon font family"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:26
+msgid "Icon font weight"
+msgstr "Вага шрифту піктограм"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:57
+msgid "Do you want to keep these display settings?"
+msgstr "Що слід зробити із цими параметрами дисплея?"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:103
+msgid "_Revert Settings"
+msgstr "_Повернти початкові параметри"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:118
+msgid "_Keep Changes"
+msgstr "З_берегти зміни"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:144
+msgid "Confirm Changes"
+msgstr "Підтвердити зміни"
+
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:3
+msgid "GNOME Flashback (Compiz)"
+msgstr "GNOME Flashback (Compiz)"
+
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:4
+msgid "This session logs you into GNOME Flashback with Compiz"
+msgstr ""
+
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:3
+msgid "GNOME Flashback (Metacity)"
+msgstr "GNOME Flashback (Metacity)"
+
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:4
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr ""
+
+#: gnome-flashback/gf-confirm-display-change-dialog.c:62
+#, c-format
+msgid "Settings changes will revert in %d second!"
+msgid_plural "Settings changes will revert in %d seconds!"
+msgstr[0] "Зміни параметрів буде повернуто через %d секунду!"
+msgstr[1] "Зміни параметрів буде повернуто через %d секунди!"
+msgstr[2] "Зміни параметрів буде повернуто через %d секунд!"
+msgstr[3] "Зміни параметрів буде повернуто через %d секунду!"
+
+#: gnome-flashback/gf-main.c:43
+msgid "Replace a currently running application"
+msgstr ""
+
+#: gnome-flashback/gf-main.c:49
+msgid "Print version and exit"
+msgstr "Показати версію та вийти"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:295
+msgid "Slow Keys Turned On"
+msgstr "Повільні клавіші ввімкнено"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:296
+msgid "Slow Keys Turned Off"
+msgstr "Повільні клавіші вимкнено"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:298
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Ви затиснули клавішу «Shift» на 8 секунд. Це скорочення для повільних "
+"клавіш, які впливають на роботу вашої клавіатури."
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
+#: system-indicators/si-bluetooth.c:85
+msgid "Turn Off"
+msgstr "Вимкнути"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
+#: system-indicators/si-bluetooth.c:99
+msgid "Turn On"
+msgstr "Увімкнути"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
+msgid "Leave On"
+msgstr "Залишити"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
+msgid "Leave Off"
+msgstr "Покинути"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:313
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:400
+msgid "Universal Access"
+msgstr "Універсальний доступ"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:379
+msgid "Sticky Keys Turned On"
+msgstr "Липкі клавіші ввімкнено"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:380
+msgid "Sticky Keys Turned Off"
+msgstr "Липкі клавіші вимкнено"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:383
+msgid ""
+"You just pressed the Shift key 5 times in a row.  This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Ви натиснули клавішу «Shift» 5 раз підряд. Це скорочення для липких клавіш, "
+"які впливають на роботу вашої клавіатури."
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:385
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+"Ви натиснули дві клавіші одночасно або клавішу «Shift» 5 раз підряд. Це "
+"вимикає липкі клавіші, які впливають на роботу вашої клавіатури."
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:109
+msgid "Headphones"
+msgstr "Навушники"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:112
+msgid "Headset"
+msgstr "Гарнітура"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:115
+msgid "Microphone"
+msgstr "Мікрофон"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr ""
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:248
+msgid "What kind of device did you plug in?"
+msgstr ""
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
+#: system-indicators/si-bluetooth.c:274 system-indicators/si-volume.c:446
+msgid "Sound Settings"
+msgstr "Параметри звуку"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:104
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
+msgid "Cancel"
+msgstr "Скасувати"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:285
+msgid "Unknown Audio Device"
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:175
+#, c-format
+msgid "Unable to mount %s"
+msgstr "Не вдалось змонтувати каталог %s"
+
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:288
+#, c-format
+msgid "Unable to open a folder for %s"
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:339
+msgid "Ask what to do"
+msgstr "Питати, що робити"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:345
+msgid "Do Nothing"
+msgstr "Нічого не робити"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:351
+msgid "Open Folder"
+msgstr "Відкрити теку"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
+#, c-format
+msgid "Unable to eject %p"
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:500
+#, c-format
+msgid "Unable to unmount %p"
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
+msgid "You have just inserted an Audio CD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
+msgid "You have just inserted an Audio DVD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
+msgid "You have just inserted a Video DVD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
+msgid "You have just inserted a Video CD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
+msgid "You have just inserted a Super Video CD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
+msgid "You have just inserted a blank CD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
+msgid "You have just inserted a blank DVD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
+msgid "You have just inserted a blank Blu-Ray disc."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
+msgid "You have just inserted a blank HD DVD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
+msgid "You have just inserted a Photo CD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
+msgid "You have just inserted a Picture CD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
+msgid "You have just inserted a medium with digital photos."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
+msgid "You have just inserted a digital audio player."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:735
+msgid ""
+"You have just inserted a medium with software intended to be automatically "
+"started."
+msgstr ""
+
+#. fallback to generic greeting
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
+msgid "You have just inserted a medium."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:740
+msgid "Choose what application to launch."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:749
+#, c-format
+msgid ""
+"Select how to open \"%s\" and whether to perform this action in the future "
+"for other media of type \"%s\"."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:776
+msgid "_Always perform this action"
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
+msgid "_Cancel"
+msgstr "_Скасувати"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:786
+msgid "_OK"
+msgstr "_Гаразд"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:792
+msgid "_Eject"
+msgstr "Ви_штовхнути"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:797
+msgid "_Unmount"
+msgstr "_Демонтувати"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
+#: gnome-flashback/libdesktop/gf-icon-view.c:1320
+msgid "New Folder"
+msgstr "Нова тека"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:112
+msgid "Create"
+msgstr "Створити"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:140
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "Folder name"
+msgstr "Назва теки"
+
+#: gnome-flashback/libdesktop/gf-home-icon.c:45
+msgid "Home"
+msgstr "Домівка"
+
+#: gnome-flashback/libdesktop/gf-icon.c:508
+msgid "Open"
+msgstr "Відкрити"
+
+#: gnome-flashback/libdesktop/gf-icon.c:544
+msgid "Move to Trash"
+msgstr "Пересунути до смітника"
+
+#: gnome-flashback/libdesktop/gf-icon.c:564
+msgid "Rename..."
+msgstr "Перейменувати…"
+
+#: gnome-flashback/libdesktop/gf-icon.c:587
+msgid "Empty Trash"
+msgstr "Спорожнити смітник"
+
+#: gnome-flashback/libdesktop/gf-icon.c:601
+msgid "Properties"
+msgstr "Властивості"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1096
+msgid "Auto arrange icons"
+msgstr ""
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1100
+msgid "Align icons to grid"
+msgstr ""
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1104
+msgctxt "Free placement of icons"
+msgid "Free"
+msgstr "Довільне"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1224
+msgid "Name"
+msgstr "Назва"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1228
+msgid "Date modified"
+msgstr "Дата зміни"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1232
+msgid "Size"
+msgstr "Розмір"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1348
+msgid "Change Background"
+msgstr "Змінити тло"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1356
+msgid "Display Settings"
+msgstr "Параметри екрана"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1368
+msgid "Open Terminal"
+msgstr "Відкрити термінал"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3215
+msgid "Folder names cannot contain “/”."
+msgstr "Назви теки не можуть містити «/»."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3217
+msgid "File names cannot contain “/”."
+msgstr "Назви файла не може містити «/»."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3224
+msgid "A folder cannot be called “.”."
+msgstr "Теку не можна називати як «.»."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3226
+msgid "A file cannot be called “.”."
+msgstr "Файл не можна називати як «.»."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3233
+msgid "A folder cannot be called “..”."
+msgstr "Теку не можна називати як «..»."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3235
+msgid "A file cannot be called “..”."
+msgstr "Файл не можна називати як «..»."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3251
+msgid "A folder with that name already exists."
+msgstr "Тека з такою назвою вже існує."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3253
+msgid "A file with that name already exists."
+msgstr "Файл з такою назвою вже існує."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3264
+msgid "Folders with “.” at the beginning of their name are hidden."
+msgstr "Теки, назви яких починаються із символу «.», є прихованими."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3266
+msgid "Files with “.” at the beginning of their name are hidden."
+msgstr "Файли, назви яких починаються із символу «.», є прихованими."
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "File name"
+msgstr "Назва файла"
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:254
+msgid "Rename"
+msgstr "Перейменувати"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:514
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:739
+msgid "Log Out"
+msgstr "Вийти"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s вийде автоматично через %d секунду."
+msgstr[1] "%s вийде автоматично через %d секунди."
+msgstr[2] "%s вийде автоматично через %d секунд."
+msgstr[3] "%s вийде автоматично через %d секунду."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:743
+msgid "Power Off"
+msgstr "Вимкнути"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:529
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:531
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Система автоматично вимкнеться через %d секунду."
+msgstr[1] "Система автоматично вимкнеться через %d секунди."
+msgstr[2] "Система автоматично вимкнеться через %d секунд."
+msgstr[3] "Система автоматично вимкнеться через %d секунду."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:538
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:747
+msgid "Restart"
+msgstr "Перезапустити"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:541
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:543
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Система автоматично перезапуститься через %d секунду."
+msgstr[1] "Система автоматично перезапуститься через %d секунди."
+msgstr[2] "Система автоматично перезапуститься через %d секунд."
+msgstr[3] "Система автоматично перезапуститься через %d секунду."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:550
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:751
+msgid "Hibernate"
+msgstr "Приспати"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:551
+#, c-format
+msgid "The system will hibernate automatically in %d second."
+msgid_plural "The system will hibernate automatically in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:558
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:755
+msgid "Suspend"
+msgstr "Призупинити"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:559
+#, c-format
+msgid "The system will suspend automatically in %d second."
+msgid_plural "The system will suspend automatically in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:566
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:759
+msgid "Hybrid Sleep"
+msgstr "Гібридне присипляння"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:567
+#, c-format
+msgid "The system will hybrid sleep automatically in %d second."
+msgid_plural "The system will hybrid sleep automatically in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:29
+msgid "Some programs are still running:"
+msgstr "Запущено ще якісь програми:"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:78
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr ""
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
+msgid "Lock Screen"
+msgstr "Заблокувати екран"
+
+#: gnome-flashback/libnotifications/gf-bubble.c:563
+#: gnome-flashback/libnotifications/gf-bubble.c:567
+#: gnome-flashback/libnotifications/nd-notification-box.c:320
+#: gnome-flashback/libnotifications/nd-notification-box.c:322
+msgid "Closes the notification."
+msgstr "Закриває сповіщення."
+
+#: gnome-flashback/libnotifications/gf-bubble.c:587
+#: gnome-flashback/libnotifications/gf-bubble.c:618
+#: gnome-flashback/libnotifications/nd-notification-box.c:338
+msgid "Notification summary text."
+msgstr ""
+
+#: gnome-flashback/libnotifications/gf-bubble.c:637
+msgid "Notification"
+msgstr "Сповіщення"
+
+#: gnome-flashback/libnotifications/nd-daemon.c:100
+msgid "Invalid notification identifier"
+msgstr ""
+
+#: gnome-flashback/libnotifications/nd-daemon.c:181
+msgid "Exceeded maximum number of notifications"
+msgstr ""
+
+#: gnome-flashback/libnotifications/nd-notification-box.c:358
+msgid "Notification body text."
+msgstr "Тест сповіщення."
+
+#: gnome-flashback/libnotifications/nd-queue.c:428
+msgid "Clear all notifications"
+msgstr "Вилучити усі сповіщення"
+
+#: gnome-flashback/libnotifications/nd-queue.c:846
+msgid "Notifications"
+msgstr "Сповіщення"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:100
+#, c-format
+msgid "_Password for %s:"
+msgstr "П_ароль для %s:"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:104
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:370
+msgid "_Password:"
+msgstr "_Пароль:"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:259
+msgid "Your authentication attempt was unsuccessful. Please try again."
+msgstr ""
+
+#: gnome-flashback/libpolkit/flashback-listener.c:139
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Вікно авторизації відхилено користувачем"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:202
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as one of the users below is required to perform this action."
+msgstr ""
+"Програма намагається виконати дію, яка потребує певних привілеїв. Щоб "
+"виконати цю дію, слід зареєструватися від імені одного з користувачів з"
+" наведеного нижче списку."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication is required to perform this action."
+msgstr ""
+"Програма намагається виконати дію, яка потребує певних привілеїв. Щоб "
+"виконати цю дію, слід зареєструватися."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:217
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as the super user is required to perform this action."
+msgstr ""
+"Програма намагається виконати дію, яка потребує певних привілеїв. Щоб "
+"виконати цю дію, слід зареєструватися від імені суперкористувача."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:386
+msgid "Select user..."
+msgstr "Вибрати користувача…"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:425
+#, c-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:600
+msgid "Action:"
+msgstr "Дія:"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:603
+#, c-format
+msgid "Click to edit %s"
+msgstr ""
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:611
+msgid "Vendor:"
+msgstr "Виробник:"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:614
+#, c-format
+msgid "Click to open %s"
+msgstr "Клацніть, щоб відкрити %s"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:8
+msgid "Authenticate"
+msgstr "Розпізнавання"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:53
+msgid "<big><b>Title</b></big>"
+msgstr "<big><b>Заголовок</b></big>"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:192
+msgid "<small><b>_Details</b></small>"
+msgstr "<small><b>_Подробиці</b></small>"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:228
+msgid "_Authenticate"
+msgstr "П_ройти розпізнавання"
+
+#: gnome-flashback/libscreensaver/gf-auth.c:421
+msgid "Your account was given a time limit that has now passed."
+msgstr ""
+
+#: gnome-flashback/libscreensaver/gf-auth.c:425
+msgid "Sorry, that didn’t work. Please try again."
+msgstr "На жаль, це не спрацювало. Будь ласка, спробуйте ще."
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:181
+msgid "Failed to switch to greeter!"
+msgstr "Не вдалося перемкнутися на засіб вітання!"
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:255
+msgid "Time has expired."
+msgstr "Час вичерпано."
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:506
+msgid "Checking…"
+msgstr "Перевіряємо…"
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:531
+msgid "S_witch User…"
+msgstr "П_еремкнути користувача…"
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:540
+msgid "_Unlock"
+msgstr "_Розблокувати"
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:751
+msgid "You have the Caps Lock key on."
+msgstr "Натиснуто клавішу Caps Lock."
+
+#: gnome-flashback/libscreenshot/gf-screenshot.c:279
+msgid "Screenshot taken"
+msgstr "Знімок отримано"
+
+#. translators:
+#. * The device has been disabled
+#: gvc/gvc/gvc-mixer-control.c:1892
+msgid "Disabled"
+msgstr "Вимкнено"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: gvc/gvc/gvc-mixer-control.c:1899
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u вивід"
+msgstr[1] "%u виводи"
+msgstr[2] "%u виводів"
+msgstr[3] "%u вивід"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: gvc/gvc/gvc-mixer-control.c:1909
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u вхід"
+msgstr[1] "%u входи"
+msgstr[2] "%u входів"
+msgstr[3] "%u вхід"
+
+#: gvc/gvc/gvc-mixer-control.c:2766
+msgid "System Sounds"
+msgstr "Системні звуки"
+
+#: system-indicators/si-bluetooth.c:91
+msgid "Send Files"
+msgstr "Надсилання файлів"
+
+#: system-indicators/si-bluetooth.c:228
+msgid "Disconnect"
+msgstr "Від’єднатися"
+
+#: system-indicators/si-bluetooth.c:241
+msgid "Connect"
+msgstr "З'єднатися"
+
+#: system-indicators/si-bluetooth.c:256
+msgid "Keyboard Settings"
+msgstr "Параметри клавіатури"
+
+#: system-indicators/si-bluetooth.c:264
+msgid "Mouse & Touchpad Settings"
+msgstr "Параметри миші і сенсорної панелі"
+
+#: system-indicators/si-bluetooth.c:328
+msgid "Bluetooth Settings"
+msgstr "Параметри Bluetooth"
+
+#: system-indicators/si-bluetooth.c:448
+#, c-format
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "%d з'єднаний пристрій"
+msgstr[1] "%d з'єднаних пристрої"
+msgstr[2] "%d з'єднаних пристроїв"
+msgstr[3] "%d з'єднаний пристрій"
+
+#: system-indicators/si-bluetooth.c:455
+msgid "Not Connected"
+msgstr "Не з'єднано"
+
+#: system-indicators/si-desktop-menu-item.c:80
+#, c-format
+msgid "Desktop file “%s” is missing!"
+msgstr "Немає файла .desktop «%s»!"
+
+#: system-indicators/si-desktop-menu-item.c:95
+#, c-format
+msgid "Failed to start “%s”: %s"
+msgstr "Не вдалося запустити «%s»: %s"
+
+#: system-indicators/si-input-sources.c:852
+msgid "Show Keyboard Layout"
+msgstr "Показати розкладку клавіатури"
+
+#: system-indicators/si-input-sources.c:883
+msgid "Region & Language Settings"
+msgstr "Параметри регіону та мови"
+
+#: system-indicators/si-module.c:33
+msgid "System Indicators"
+msgstr "Індикатори системи"
+
+#: system-indicators/si-module.c:34
+msgid "This applet contains system indicators"
+msgstr "Цей аплет містить індикатори системи"
+
+#: system-indicators/si-power.c:63
+msgid "UPS"
+msgstr "UPS"
+
+#: system-indicators/si-power.c:65
+msgid "Battery"
+msgstr "Акумулятор"
+
+#: system-indicators/si-power.c:81
+msgid "Fully Charged"
+msgstr "Повністю заряджено"
+
+#: system-indicators/si-power.c:83
+msgid "Empty"
+msgstr "Порожній"
+
+#: system-indicators/si-power.c:89
+msgid "Not Charging"
+msgstr "Не заряджається"
+
+#: system-indicators/si-power.c:91 system-indicators/si-power.c:96
+msgid "Estimating..."
+msgstr "Визначення оцінки…"
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: system-indicators/si-power.c:105
+#, c-format
+msgid "%.0f:%02.0f Remaining (%.0f%%)"
+msgstr "%.0f:%02.0f лишилонся (%.0f%%)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: system-indicators/si-power.c:112
+#, c-format
+msgid "%.0f:%02.0f Until Full (%.0f%%)"
+msgstr "%.0f:%02.0f до заповнення (%.0f%%)"
+
+#: system-indicators/si-power.c:146
+msgid "Power Settings"
+msgstr "Параметри живлення"
+
+#: system-indicators/si-volume.c:245
+msgid "Volume changed"
+msgstr "Гучність змінено"
+
+#: system-indicators/si-volume.c:266
+msgid "Mute"
+msgstr "Вимкнути звук"
+
+#: system-indicators/si-volume.c:523
+msgid "Input"
+msgstr "Вхід"
+
+#: system-indicators/si-volume.c:523
+msgid "Output"
+msgstr "Вихід"
+
+#: system-indicators/si-volume.c:534
+msgid "Muted"
+msgstr "Вимкнено звук"
