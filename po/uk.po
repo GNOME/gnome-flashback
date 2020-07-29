@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2020-07-25 12:28+0000\n"
-"PO-Revision-Date: 2020-07-28 15:34+0300\n"
+"POT-Creation-Date: 2020-07-28 12:40+0000\n"
+"PO-Revision-Date: 2020-07-29 17:13+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -49,15 +49,15 @@ msgstr "%s %s"
 
 #: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
-msgstr ""
+msgstr "GNOME Flashback"
 
 #: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
 msgid "Clipboard (GNOME Flashback)"
-msgstr ""
+msgstr "Буфер обміну даними (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
-msgstr ""
+msgstr "Мережа (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:4
 msgid "Manage your network connections"
@@ -74,12 +74,12 @@ msgstr "Параметри"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:5
 msgid "Personal preferences"
-msgstr ""
+msgstr "Особисті параметри"
 
 #. TRANSLATORS: Don't translate this text (this is icon name)
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
 msgid "preferences-desktop"
-msgstr ""
+msgstr "preferences-desktop"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
@@ -87,36 +87,40 @@ msgstr "Адміністрування"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
 msgid "Change system-wide settings (affects all users)"
-msgstr ""
+msgstr "Змінити загальносистемні параметри (стосуються усіх користувачів)"
 
 #. TRANSLATORS: Don't translate this text (this is icon name)
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
 msgid "preferences-system"
-msgstr ""
+msgstr "preferences-system"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
 msgid "a11y-keyboard"
-msgstr ""
+msgstr "a11y-keyboard"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:10
 msgid "Audio device selection"
-msgstr ""
+msgstr "Вибір звукового пристрою"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
 msgid ""
 "If set to true, then GNOME Flashback application will be used to provide the "
 "audio device selection dialog."
 msgstr ""
+"Якщо встановлено значення «true», програму GNOME Flashback буде використано"
+" для показу діалогового вікна вибору звукового пристрою."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:16
 msgid "Automount manager"
-msgstr ""
+msgstr "Керування автоматичним монтуванням"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
 msgid ""
 "If set to true, then GNOME Flashback application will be used to automount "
 "removable media."
 msgstr ""
+"Якщо встановлено значення «true», програму GNOME Flashback буде використано"
+" для автоматичного монтування портативних носіїв даних."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:22
 msgid "Clipboard"
@@ -129,23 +133,27 @@ msgstr "Стільниця"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:32
 msgid "End session dialog"
-msgstr ""
+msgstr "Вікно завершення сеансу"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
 msgstr ""
+"Якщо встановлено значення «true», програму GNOME Flashback буде використано"
+" для показу діалогового вікна завершення сеансу."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "Idle monitor"
-msgstr ""
+msgstr "Спостереження за бездіяльністю"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
 msgstr ""
+"Якщо встановлено значення «true», програму GNOME Flashback буде використано"
+" для спостереження за діяльністю користувачів."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "Input settings"
@@ -153,13 +161,15 @@ msgstr "Параметри вхідних даних"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
 msgid "Keyboard layouts and input methods"
-msgstr ""
+msgstr "Розкладки клавіатури та способи введення"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
 msgstr ""
+"Якщо встановлено значення «true», програму GNOME Flashback буде використано"
+" для керування розкладками клавіатури та способами введення даних."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
 msgid "Notification daemon"
@@ -170,6 +180,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
 msgstr ""
+"Якщо встановлено значення «true», програму GNOME Flashback буде використано"
+" для керування сповіщеннями."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid "Authentication agent for polkit"
@@ -178,11 +190,11 @@ msgstr "Агент розпізнавання для polkit"
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
-msgstr ""
+msgstr "Це той самий агент розпізнавання, який надавався PolicyKit-gnome."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
 msgid "Root background"
-msgstr ""
+msgstr "Фонове зображення режиму root"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
 msgid "Screencasts"
@@ -193,6 +205,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
 msgstr ""
+"Якщо встановлено значення «true», програму GNOME Flashback буде використано"
+" для записування відео з екрана."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
 msgid "Screensaver"
@@ -203,6 +217,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
 msgstr ""
+"Якщо встановлено значення «true», програму GNOME Flashback буде використано"
+" як програму для збереження екрана."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
 msgid "Screenshots"
@@ -213,6 +229,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
 msgstr ""
+"Якщо встановлено значення «true», програму GNOME Flashback буде використано"
+" для створення знімків екрана."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid "Shell"
@@ -222,43 +240,53 @@ msgstr "Оболонка"
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr ""
+"Якщо встановлено значення «true», програму GNOME Flashback буде використано"
+" як командну оболонку."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
 msgid "Status Notifier Watcher"
-msgstr ""
+msgstr "Спостереження за сповіщеннями щодо стану"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
 msgstr ""
+"Якщо встановлено значення «true», програму GNOME Flashback буде використано"
+" як програму для спостереження за сповіщеннями щодо стану."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:5
 msgid "Draw desktop background"
-msgstr ""
+msgstr "Малювати фон стільниці"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:6
 msgid "If set to true, then GNOME Flashback will draw the desktop background."
 msgstr ""
+"Якщо встановлено значення «true», програму GNOME Flashback буде використано"
+" для малювання фону стільниці."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:11
 msgid "Show desktop icons"
-msgstr ""
+msgstr "Показувати піктограми стільниці"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:12
 msgid ""
 "If set to true, then GNOME Flashback will draw the icons on the desktop."
 msgstr ""
+"Якщо встановлено значення «true», програму GNOME Flashback буде показувати"
+" піктограми на стільниці."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:5
 msgid "Fade the background on change"
-msgstr ""
+msgstr "Притлумлювати фон при зміні"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:6
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
 msgstr ""
+"Якщо встановлено значення «true», при зміні фонового зображення стільниці"
+" використовуватиметься ефект притлумлення."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:5
 msgid "Icon size"
@@ -266,7 +294,7 @@ msgstr "Розмір піктограм"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:6
 msgid "The size of desktop icons."
-msgstr ""
+msgstr "Розмір піктограм стільниці."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
 #: gnome-flashback/libdesktop/gf-icon-view.c:1332
@@ -292,11 +320,11 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
 msgid "Extra text width"
-msgstr ""
+msgstr "Додаткова ширина тексту"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:25
 msgid "Extra width for icon text."
-msgstr ""
+msgstr "Додаткова ширина для тексту піктограм."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:31
 msgid "Column spacing"
@@ -304,7 +332,7 @@ msgstr "Інтервал між стовпчиками"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:32
 msgid "The amount of space between columns."
-msgstr ""
+msgstr "Розмір проміжку між стовпчиками."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:38
 msgid "Row spacing"
@@ -312,11 +340,11 @@ msgstr "Міжрядковий інтервал"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:39
 msgid "The amount of space between rows."
-msgstr ""
+msgstr "Розмір проміжку між рядками."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:44
 msgid "Show home icon"
-msgstr ""
+msgstr "Показувати піктограму «Домівка»"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:45
 msgid ""
@@ -336,7 +364,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
-msgstr ""
+msgstr "Використовувати піктограму IBus, якщо доступна"
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:10
 msgid "Icon background color"
@@ -929,8 +957,8 @@ msgid ""
 "Authentication as one of the users below is required to perform this action."
 msgstr ""
 "Програма намагається виконати дію, яка потребує певних привілеїв. Щоб "
-"виконати цю дію, слід зареєструватися від імені одного з користувачів з"
-" наведеного нижче списку."
+"виконати цю дію, слід зареєструватися від імені одного з користувачів з "
+"наведеного нижче списку."
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
