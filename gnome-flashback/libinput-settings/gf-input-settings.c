@@ -21,7 +21,7 @@
 #include <gio/gio.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
-#include <gsettings-desktop-schemas/gdesktop-enums.h>
+#include <gdesktop-enums.h>
 #include <string.h>
 #include <X11/extensions/XInput2.h>
 #include <X11/Xatom.h>
