@@ -8,7 +8,7 @@ variables:
   GIT_SUBMODULE_STRATEGY: normal
 
 validate-menu:
-  image: ubuntu:devel
+  image: ubuntu:focal
   stage: validate
   except:
     - tags
@@ -21,7 +21,7 @@ validate-menu:
       data/menus/gnome-flashback-applications.menu
 
 build-ubuntu:
-  image: ubuntu:devel
+  image: ubuntu:focal
   stage: build
   except:
     - tags
@@ -70,7 +70,7 @@ build-ubuntu:
     - make distcheck
 
 coverity:
-  image: ubuntu:devel
+  image: ubuntu:focal
   stage: analysis
   when: manual
   before_script:
