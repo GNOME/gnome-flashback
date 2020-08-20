@@ -1,3 +1,10 @@
+Version 3.36.4
+==============
+- Update lock screen window on monitor changes. (LP:#1891855)
+- Don't lock screen on suspend if automatic screen lock
+  is disabled. (LP:#1891681)
+- Updated translations. (LP:#1882531)
+
 Version 3.36.3
 ==============
 - Fix enum type generation. (#52)
