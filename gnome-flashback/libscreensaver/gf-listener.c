@@ -36,7 +36,6 @@
 
 #define LOGIN_DBUS_NAME "org.freedesktop.login1"
 #define LOGIN_DBUS_PATH "/org/freedesktop/login1"
-#define LOGIN_SESSION_DBUS_PATH "/org/freedesktop/login1/session"
 
 struct _GfListener
 {
@@ -374,6 +373,42 @@ login_session_ready_cb (GObject      *object,
 }
 
 static void
+get_session_cb (GObject      *object,
+                GAsyncResult *res,
+                gpointer      user_data)
+{
+  char *object_path;
+  GError *error;
+
+  object_path = NULL;
+  error = NULL;
+
+  gf_login_manager_gen_call_get_session_finish (GF_LOGIN_MANAGER_GEN (object),
+                                                &object_path,
+                                                res,
+                                                &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("%s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  gf_login_session_gen_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
+                                          G_DBUS_PROXY_FLAGS_NONE,
+                                          LOGIN_DBUS_NAME,
+                                          object_path,
+                                          NULL,
+                                          login_session_ready_cb,
+                                          user_data);
+
+  g_free (object_path);
+}
+
+static void
 prepare_for_sleep_cb (GfLoginManagerGen *login_manager,
                       gboolean           start,
                       GfListener        *self)
@@ -398,6 +433,7 @@ login_manager_ready_cb (GObject      *object,
   GError *error;
   GfLoginManagerGen *login_manager;
   GfListener *self;
+  char *session_id;
 
   error = NULL;
   login_manager = gf_login_manager_gen_proxy_new_for_bus_finish (res, &error);
@@ -418,6 +454,24 @@ login_manager_ready_cb (GObject      *object,
 
   g_signal_connect (self->login_manager, "prepare-for-sleep",
                     G_CALLBACK (prepare_for_sleep_cb), self);
+
+  session_id = NULL;
+  if (gf_find_systemd_session (&session_id))
+    {
+      g_debug ("Session id: %s", session_id);
+
+      gf_login_manager_gen_call_get_session (self->login_manager,
+                                             session_id,
+                                             NULL,
+                                             get_session_cb,
+                                             self);
+
+      g_free (session_id);
+    }
+  else
+    {
+      g_debug ("Couldn't determine our own session id");
+    }
 }
 
 static void
@@ -426,34 +480,11 @@ name_appeared_handler (GDBusConnection *connection,
                        const gchar     *name_owner,
                        gpointer         user_data)
 {
-  char *session_id;
-  gchar *path;
-
-  session_id = NULL;
-  if (!gf_find_systemd_session (&session_id))
-    {
-      g_debug ("Couldn't determine our own session id");
-      return;
-    }
-
-  g_debug ("Session id: %s", session_id);
-
-  path = g_strdup_printf ("%s/%s", LOGIN_SESSION_DBUS_PATH, session_id);
-  g_free (session_id);
-
-  gf_login_session_gen_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
-                                          G_DBUS_PROXY_FLAGS_NONE,
-                                          LOGIN_DBUS_NAME, path,
-                                          NULL, login_session_ready_cb,
-                                          user_data);
-
   gf_login_manager_gen_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
                                           G_DBUS_PROXY_FLAGS_NONE,
                                           LOGIN_DBUS_NAME, LOGIN_DBUS_PATH,
                                           NULL, login_manager_ready_cb,
                                           user_data);
-
-  g_free (path);
 }
 
 static void
