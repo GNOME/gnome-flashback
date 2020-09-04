@@ -9,38 +9,38 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2020-02-18 19:47+0000\n"
-"PO-Revision-Date: 2020-02-26 07:48+0100\n"
-"Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
+"POT-Creation-Date: 2020-05-17 08:58+0000\n"
+"PO-Revision-Date: 2020-06-25 18:04+0200\n"
+"Last-Translator: Meskó Balázs <mesko.balazs@fsf.hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 19.04.3\n"
+"X-Generator: Poedit 2.3.1\n"
 
-#: backends/gf-monitor.c:131
+#: backends/gf-monitor.c:133
 msgid "Built-in display"
 msgstr "Beépített kijelző"
 
-#: backends/gf-monitor.c:165
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
+#: backends/gf-monitor.c:167
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
 msgid "Unknown"
 msgstr "Ismeretlen"
 
-#: backends/gf-monitor.c:167
+#: backends/gf-monitor.c:169
 msgid "Unknown Display"
 msgstr "Ismeretlen kijelző"
 
-#: backends/gf-monitor.c:176
+#: backends/gf-monitor.c:178
 #, c-format
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: backends/gf-monitor.c:190
+#: backends/gf-monitor.c:192
 #, c-format
 msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
@@ -51,6 +51,10 @@ msgstr "%s %s"
 #: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME Flashback"
+
+#: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
+msgid "Clipboard (GNOME Flashback)"
+msgstr "Vágólap (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
@@ -124,7 +128,7 @@ msgid "Clipboard"
 msgstr "Vágólap"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:27
-#: gnome-flashback/libdesktop/gf-desktop-window.c:815
+#: gnome-flashback/libdesktop/gf-desktop-window.c:823
 msgid "Desktop"
 msgstr "Asztal"
 
@@ -191,7 +195,6 @@ msgstr ""
 "Ugyanaz a hitelesítési ügynök, mint amit a PolicyKit-gnome biztosított."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
-#| msgid "Desktop background"
 msgid "Root background"
 msgstr "Gyökérhátter"
 
@@ -255,14 +258,10 @@ msgstr ""
 "állapotértesítés-figyelőkként."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:5
-#| msgid "Desktop background"
 msgid "Draw desktop background"
 msgstr "Asztalháttér kirajzolása"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:6
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used to draw the "
-#| "desktop background."
 msgid "If set to true, then GNOME Flashback will draw the desktop background."
 msgstr ""
 "Ha igazra van állítva, akkor a GNOME Flashback ki fogja rajzolni az asztal "
@@ -273,9 +272,6 @@ msgid "Show desktop icons"
 msgstr "Asztali ikonok megjelenítése"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:12
-#| msgid ""
-#| "If set to true, then GNOME Flashback application will be used to draw the "
-#| "desktop background."
 msgid ""
 "If set to true, then GNOME Flashback will draw the icons on the desktop."
 msgstr ""
@@ -303,7 +299,7 @@ msgid "The size of desktop icons."
 msgstr "Az asztali ikonok mérete."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
-#: gnome-flashback/libdesktop/gf-icon-view.c:1217
+#: gnome-flashback/libdesktop/gf-icon-view.c:1269
 msgid "Placement"
 msgstr "Elhelyezés"
 
@@ -316,7 +312,7 @@ msgstr ""
 "„free”. Az asztali ikonok elhelyezését vezérli."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
-#: gnome-flashback/libdesktop/gf-icon-view.c:1223
+#: gnome-flashback/libdesktop/gf-icon-view.c:1275
 msgid "Sort by"
 msgstr "Rendezés"
 
@@ -357,9 +353,6 @@ msgid "Show home icon"
 msgstr "Saját mappa ikon megjelenítése"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:45
-#| msgid ""
-#| "If set to true, then fade effect will be used to change the desktop "
-#| "background."
 msgid ""
 "If this is set to true, an icon linking to the home folder will be put on "
 "the desktop."
@@ -384,22 +377,18 @@ msgid "Use IBus icon if available"
 msgstr "IBus ikon használata, ha elérhető"
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:10
-#| msgid "The background color"
 msgid "Icon background color"
 msgstr "Ikon háttérszíne"
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:15
-#| msgid "The foreground color"
 msgid "Icon foreground color"
 msgstr "Ikon előtérszíne"
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:20
-#| msgid "The font family"
 msgid "Icon font family"
 msgstr "Ikon betűcsaládja"
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:26
-#| msgid "The font weight"
 msgid "Icon font weight"
 msgstr "Ikon betűvastagsága"
 
@@ -687,8 +676,7 @@ msgid "_Unmount"
 msgstr "_Leválasztás"
 
 #: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
-#: gnome-flashback/libdesktop/gf-icon-view.c:1205
-#| msgid "Open Folder"
+#: gnome-flashback/libdesktop/gf-icon-view.c:1257
 msgid "New Folder"
 msgstr "Új mappa"
 
@@ -705,103 +693,100 @@ msgstr "Mappanév"
 msgid "Home"
 msgstr "Saját mappa"
 
-#: gnome-flashback/libdesktop/gf-icon.c:524
+#: gnome-flashback/libdesktop/gf-icon.c:503
 msgid "Open"
 msgstr "Megnyitás"
 
-#: gnome-flashback/libdesktop/gf-icon.c:560
+#: gnome-flashback/libdesktop/gf-icon.c:539
 msgid "Move to Trash"
 msgstr "Áthelyezés a Kukába"
 
-#: gnome-flashback/libdesktop/gf-icon.c:580
+#: gnome-flashback/libdesktop/gf-icon.c:559
 msgid "Rename..."
 msgstr "Átnevezés…"
 
-#: gnome-flashback/libdesktop/gf-icon.c:600
-#| msgid "Empty"
+#: gnome-flashback/libdesktop/gf-icon.c:582
 msgid "Empty Trash"
 msgstr "Kuka ürítése"
 
-#: gnome-flashback/libdesktop/gf-icon.c:614
+#: gnome-flashback/libdesktop/gf-icon.c:596
 msgid "Properties"
 msgstr "Tulajdonságok"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1001
+#: gnome-flashback/libdesktop/gf-icon-view.c:1033
 msgid "Auto arrange icons"
 msgstr "Ikonok automatikus elrendezése"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1005
+#: gnome-flashback/libdesktop/gf-icon-view.c:1037
 msgid "Align icons to grid"
 msgstr "Ikonok rácshoz igazítása"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1009
+#: gnome-flashback/libdesktop/gf-icon-view.c:1041
 msgctxt "Free placement of icons"
 msgid "Free"
 msgstr "Szabad"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1109
+#: gnome-flashback/libdesktop/gf-icon-view.c:1161
 msgid "Name"
 msgstr "Név"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1113
+#: gnome-flashback/libdesktop/gf-icon-view.c:1165
 msgid "Date modified"
 msgstr "Módosítás dátuma"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1117
+#: gnome-flashback/libdesktop/gf-icon-view.c:1169
 msgid "Size"
 msgstr "Méret"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1233
-#| msgid "The background color"
+#: gnome-flashback/libdesktop/gf-icon-view.c:1285
 msgid "Change Background"
 msgstr "Háttér módosítása"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1241
-#| msgid "Sound Settings"
+#: gnome-flashback/libdesktop/gf-icon-view.c:1293
 msgid "Display Settings"
 msgstr "Kijelzőbeállítások"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1253
+#: gnome-flashback/libdesktop/gf-icon-view.c:1305
 msgid "Open Terminal"
 msgstr "Terminál megnyitása"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3040
+#: gnome-flashback/libdesktop/gf-icon-view.c:3118
 msgid "Folder names cannot contain “/”."
 msgstr "A mappanevek nem tartalmazhatnak „/” karaktert."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3042
+#: gnome-flashback/libdesktop/gf-icon-view.c:3120
 msgid "File names cannot contain “/”."
 msgstr "A fájlnevek nem tartalmazhatnak „/” karaktert."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3049
+#: gnome-flashback/libdesktop/gf-icon-view.c:3127
 msgid "A folder cannot be called “.”."
 msgstr "Egy mappa neve nem lehet „.”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3051
+#: gnome-flashback/libdesktop/gf-icon-view.c:3129
 msgid "A file cannot be called “.”."
 msgstr "Egy fájl neve nem lehet „.”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3058
+#: gnome-flashback/libdesktop/gf-icon-view.c:3136
 msgid "A folder cannot be called “..”."
 msgstr "A mappa neve nem lehet „..”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3060
+#: gnome-flashback/libdesktop/gf-icon-view.c:3138
 msgid "A file cannot be called “..”."
 msgstr "A fájl neve nem lehet „..”."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3076
+#: gnome-flashback/libdesktop/gf-icon-view.c:3154
 msgid "A folder with that name already exists."
 msgstr "Már létezik ilyen nevű mappa."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3078
+#: gnome-flashback/libdesktop/gf-icon-view.c:3156
 msgid "A file with that name already exists."
 msgstr "Már létezik ilyen nevű fájl."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3089
+#: gnome-flashback/libdesktop/gf-icon-view.c:3167
 msgid "Folders with “.” at the beginning of their name are hidden."
 msgstr "A „.” karakterrel kezdődő nevű mappák rejtettek."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3091
+#: gnome-flashback/libdesktop/gf-icon-view.c:3169
 msgid "Files with “.” at the beginning of their name are hidden."
 msgstr "A „.” karakterrel kezdődő nevű fájlok rejtettek."
 
@@ -813,90 +798,90 @@ msgstr "Fájlnév"
 msgid "Rename"
 msgstr "Átnevezés"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:514
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:739
 msgid "Log Out"
 msgstr "Kijelentkezés"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:470
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Nyomja meg a Kijelentkezés gombot az alkalmazások bezárásához és a "
 "kijelentkezéshez a rendszerből."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:472
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s automatikusan ki fog jelentkezni %d másodperc múlva."
 msgstr[1] "%s automatikusan ki fog jelentkezni %d másodperc múlva."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:696
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:743
 msgid "Power Off"
 msgstr "Kikapcsolás"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:482
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:529
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 "Nyomja meg a Kikapcsolás gombot az alkalmazások bezárásához és a rendszer "
 "kikapcsolásához."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:484
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:531
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "A rendszer automatikusan kikapcsol %d másodperc múlva."
 msgstr[1] "A rendszer automatikusan kikapcsol %d másodperc múlva."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:700
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:538
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:747
 msgid "Restart"
 msgstr "Újraindítás"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:494
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:541
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Nyomja meg az Újraindítás gombot az alkalmazások bezárásához és a rendszer "
 "újraindításához."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:496
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:543
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "A rendszer automatikusan újraindul %d másodperc múlva."
 msgstr[1] "A rendszer automatikusan újraindul %d másodperc múlva."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:503
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:704
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:550
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:751
 msgid "Hibernate"
 msgstr "Hibernálás"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:504
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:551
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
 msgstr[0] "A rendszer automatikusan hibernálásra kerül %d másodperc múlva."
 msgstr[1] "A rendszer automatikusan hibernálásra kerül %d másodperc múlva."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:511
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:708
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:558
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:755
 msgid "Suspend"
 msgstr "Felfüggesztés"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:512
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:559
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
 msgstr[0] "A rendszer automatikusan fel lesz függesztve %d másodperc múlva."
 msgstr[1] "A rendszer automatikusan fel lesz függesztve %d másodperc múlva."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:712
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:566
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:759
 msgid "Hybrid Sleep"
 msgstr "Hibrid alvás"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:520
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:567
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
@@ -1047,11 +1032,11 @@ msgstr "<small><b>_Részletek</b></small>"
 msgid "_Authenticate"
 msgstr "_Hitelesítés"
 
-#: gnome-flashback/libscreensaver/gf-auth.c:424
+#: gnome-flashback/libscreensaver/gf-auth.c:421
 msgid "Your account was given a time limit that has now passed."
 msgstr "A fiókjához időkorlát volt megadva, amely most lejárt."
 
-#: gnome-flashback/libscreensaver/gf-auth.c:428
+#: gnome-flashback/libscreensaver/gf-auth.c:425
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Sajnáljuk, ez nem működött. Próbálja újra."
 
@@ -1080,7 +1065,6 @@ msgid "You have the Caps Lock key on."
 msgstr "A Caps Lock billentyű be van kapcsolva."
 
 #: gnome-flashback/libscreenshot/gf-screenshot.c:279
-#| msgid "Screenshots"
 msgid "Screenshot taken"
 msgstr "Képernyőkép készítve"
 
@@ -1121,17 +1105,14 @@ msgid "Disconnect"
 msgstr "Kapcsolat bontása"
 
 #: system-indicators/si-bluetooth.c:241
-#| msgid "Not Connected"
 msgid "Connect"
 msgstr "Kapcsolódás"
 
 #: system-indicators/si-bluetooth.c:256
-#| msgid "Sound Settings"
 msgid "Keyboard Settings"
 msgstr "Billentyűzetbeállítások"
 
 #: system-indicators/si-bluetooth.c:264
-#| msgid "Sound Settings"
 msgid "Mouse & Touchpad Settings"
 msgstr "Egér- és érintőtábla-beállítások"
 
@@ -1157,7 +1138,6 @@ msgstr "A(z) „%s” asztalfájl hiányzik."
 
 #: system-indicators/si-desktop-menu-item.c:95
 #, c-format
-#| msgid "Failed to start Sound Preferences: %s"
 msgid "Failed to start “%s”: %s"
 msgstr "A(z) „%s” indítása sikertelen: %s"
 
@@ -1170,7 +1150,6 @@ msgid "Region & Language Settings"
 msgstr "Területi és nyelvi beállítások"
 
 #: system-indicators/si-module.c:33
-#| msgid "System Sounds"
 msgid "System Indicators"
 msgstr "Rendszerindikátorok"
 
@@ -1223,7 +1202,6 @@ msgid "Volume changed"
 msgstr "Hangerő megváltozott"
 
 #: system-indicators/si-volume.c:266
-#| msgid "_Mute"
 msgid "Mute"
 msgstr "Némítás"
 
