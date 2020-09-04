@@ -99,12 +99,6 @@ gf-login-manager-gen.c: org.freedesktop.login1.Manager.xml
 		--generate-c-code gf-login-manager-gen \
 		$(srcdir)/org.freedesktop.login1.Manager.xml
 
-gf-login-seat-gen.h:
-gf-login-seat-gen.c: org.freedesktop.login1.Seat.xml
-	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
-		--generate-c-code gf-login-seat-gen \
-		$(srcdir)/org.freedesktop.login1.Seat.xml
-
 gf-login-session-gen.h:
 gf-login-session-gen.c: org.freedesktop.login1.Session.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
@@ -208,8 +202,6 @@ BUILT_SOURCES = \
 	gf-input-sources-gen.h \
 	gf-login-manager-gen.c \
 	gf-login-manager-gen.h \
-	gf-login-seat-gen.c \
-	gf-login-seat-gen.h \
 	gf-login-session-gen.c \
 	gf-login-session-gen.h \
 	gf-nautilus2-gen.c \
@@ -246,7 +238,6 @@ EXTRA_DIST = \
 	org.freedesktop.DisplayManager.Seat.xml \
 	org.freedesktop.FileManager1.xml \
 	org.freedesktop.login1.Manager.xml \
-	org.freedesktop.login1.Seat.xml \
 	org.freedesktop.login1.Session.xml \
 	org.freedesktop.Notifications.xml \
 	org.freedesktop.UPower.Device.xml \

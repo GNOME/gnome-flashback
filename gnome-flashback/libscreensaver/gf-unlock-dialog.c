@@ -22,14 +22,11 @@
 
 #include <gdm/gdm-user-switching.h>
 #include <glib/gi18n.h>
-#include <systemd/sd-login.h>
 
 #include "dbus/gf-dm-seat-gen.h"
-#include "dbus/gf-login-seat-gen.h"
 #include "gf-auth.h"
 #include "gf-user-image.h"
 #include "gf-screensaver-enum-types.h"
-#include "gf-screensaver-utils.h"
 
 #define DIALOG_TIMEOUT_MSEC 60000
 #define MAX_FAILURES 5
@@ -41,7 +38,6 @@ struct _GfUnlockDialog
   GCancellable   *cancellable;
 
   GfDmSeatGen    *dm_seat;
-  GfLoginSeatGen *login_seat;
 
   GfAuth         *auth;
 
@@ -412,16 +408,8 @@ update_user_switch_button (GfUnlockDialog *self)
 
   enabled = self->user_switch_enabled;
 
-  /*
-   * CanSwitch might be true even if it is not possible:
-   * https://github.com/canonical/lightdm/blob/03f218981733e50d810767f9d04e42ee156f7feb/src/lightdm.c#L411-L416
-   * https://bugs.launchpad.net/bugs/1371250
-   */
   if (enabled && self->dm_seat != NULL)
     enabled = gf_dm_seat_gen_get_can_switch (self->dm_seat);
-
-  if (enabled && self->login_seat != NULL)
-    enabled = gf_login_seat_gen_get_can_multi_session (self->login_seat);
 
   gtk_widget_set_visible (self->switch_button, enabled);
 }
@@ -450,33 +438,6 @@ dm_seat_ready_cb (GObject      *object,
 
   self = GF_UNLOCK_DIALOG (user_data);
   self->dm_seat = seat;
-
-  update_user_switch_button (self);
-}
-
-static void
-login_seat_ready_cb (GObject      *object,
-                     GAsyncResult *res,
-                     gpointer      user_data)
-{
-  GError *error;
-  GfLoginSeatGen *seat;
-  GfUnlockDialog *self;
-
-  error = NULL;
-  seat = gf_login_seat_gen_proxy_new_for_bus_finish (res, &error);
-
-  if (error != NULL)
-    {
-      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
-        g_warning ("%s", error->message);
-
-      g_error_free (error);
-      return;
-    }
-
-  self = GF_UNLOCK_DIALOG (user_data);
-  self->login_seat = seat;
 
   update_user_switch_button (self);
 }
@@ -816,7 +777,6 @@ gf_unlock_dialog_dispose (GObject *object)
   g_clear_object (&self->cancellable);
 
   g_clear_object (&self->dm_seat);
-  g_clear_object (&self->login_seat);
 
   if (self->auth != NULL)
     {
@@ -928,7 +888,6 @@ static void
 gf_unlock_dialog_init (GfUnlockDialog *self)
 {
   const gchar *xdg_seat_path;
-  char *session_id;
   GtkStyleContext *style;
   GtkWidget *frame;
   GtkWidget *vbox;
@@ -947,33 +906,6 @@ gf_unlock_dialog_init (GfUnlockDialog *self)
                                         self->cancellable,
                                         dm_seat_ready_cb,
                                         self);
-    }
-
-  session_id = NULL;
-  if (gf_find_systemd_session (&session_id))
-    {
-      char *seat;
-
-      seat = NULL;
-      if (sd_session_get_seat (session_id, &seat) >= 0)
-        {
-          char *seat_path;
-
-          seat_path = g_strdup_printf ("/org/freedesktop/login1/seat/%s", seat);
-          free (seat);
-
-          gf_login_seat_gen_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
-                                               G_DBUS_PROXY_FLAGS_NONE,
-                                               "org.freedesktop.login1",
-                                               seat_path,
-                                               self->cancellable,
-                                               login_seat_ready_cb,
-                                               self);
-
-          g_free (seat_path);
-        }
-
-      g_free (session_id);
     }
 
   gtk_widget_set_size_request (GTK_WIDGET (self), 450, -1);
