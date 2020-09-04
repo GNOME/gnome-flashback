@@ -5,6 +5,11 @@
   <interface name="org.freedesktop.login1.Manager">
     <annotation name="org.gtk.GDBus.C.Name" value="LoginManagerGen" />
 
+    <method name="GetSession">
+      <arg name="session_id" type="s" direction="in" />
+      <arg name="object_path" type="o" direction="out" />
+    </method>
+
     <method name="Inhibit">
       <annotation name="org.gtk.GDBus.C.UnixFD" value="true" />
       <arg name="what" type="s" direction="in" />
