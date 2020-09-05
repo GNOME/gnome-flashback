@@ -1,0 +1,4 @@
+[Unit]
+@WANTS_GSD@
+
+Requires=gnome-flashback.target
