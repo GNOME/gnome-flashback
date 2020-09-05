@@ -51,6 +51,8 @@ void                      gf_monitor_manager_switch_config                     (
 
 gint                      gf_monitor_manager_get_display_configuration_timeout (void);
 
+gboolean                  gf_monitor_manager_get_panel_orientation_managed     (GfMonitorManager          *self);
+
 void                      gf_monitor_manager_confirm_configuration             (GfMonitorManager          *manager,
                                                                                 gboolean                   ok);
 

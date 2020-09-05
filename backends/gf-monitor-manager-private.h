@@ -65,6 +65,8 @@ struct _GfMonitorManager
   GList                       *logical_monitors;
   GfLogicalMonitor            *primary_logical_monitor;
 
+  gboolean                     panel_orientation_managed;
+
   GfMonitorConfigManager      *config_manager;
 
   GnomePnpIds                 *pnp_ids;

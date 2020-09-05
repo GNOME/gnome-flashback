@@ -64,6 +64,8 @@ enum
 
   PROP_BACKEND,
 
+  PROP_PANEL_ORIENTATION_MANAGED,
+
   LAST_PROP
 };
 
@@ -539,6 +541,30 @@ orientation_changed (GfOrientationManager *orientation_manager,
     }
 
   g_object_unref (config);
+}
+
+static void
+update_panel_orientation_managed (GfMonitorManager *self)
+{
+  GfMonitorManagerPrivate *priv;
+  GfOrientationManager *orientation_manager;
+  gboolean panel_orientation_managed;
+
+  priv = gf_monitor_manager_get_instance_private (self);
+
+  orientation_manager = gf_backend_get_orientation_manager (priv->backend);
+  panel_orientation_managed = gf_orientation_manager_has_accelerometer (orientation_manager);
+
+  if (self->panel_orientation_managed == panel_orientation_managed)
+    return;
+
+  self->panel_orientation_managed = panel_orientation_managed;
+
+  g_object_notify_by_pspec (G_OBJECT (self),
+                            manager_properties[PROP_PANEL_ORIENTATION_MANAGED]);
+
+  gf_dbus_display_config_set_panel_orientation_managed (self->display_config,
+                                                        panel_orientation_managed);
 }
 
 static void
@@ -2069,6 +2095,12 @@ gf_monitor_manager_constructed (GObject *object)
   g_signal_connect_object (orientation_manager, "orientation-changed",
                            G_CALLBACK (orientation_changed), manager, 0);
 
+  g_signal_connect_object (orientation_manager,
+                           "notify::has-accelerometer",
+                           G_CALLBACK (update_panel_orientation_managed),
+                           manager,
+                           G_CONNECT_SWAPPED);
+
   manager->current_switch_config = GF_MONITOR_SWITCH_CONFIG_UNKNOWN;
 
   priv->bus_name_id = g_bus_own_name (G_BUS_TYPE_SESSION,
@@ -2136,6 +2168,10 @@ gf_monitor_manager_get_property (GObject    *object,
         g_value_set_object (value, priv->backend);
         break;
 
+      case PROP_PANEL_ORIENTATION_MANAGED:
+        g_value_set_boolean (value, manager->panel_orientation_managed);
+        break;
+
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
         break;
@@ -2160,6 +2196,9 @@ gf_monitor_manager_set_property (GObject      *object,
         priv->backend = g_value_get_object (value);
         break;
 
+      case PROP_PANEL_ORIENTATION_MANAGED:
+        break;
+
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
         break;
@@ -2177,6 +2216,15 @@ gf_monitor_manager_install_properties (GObjectClass *object_class)
                          G_PARAM_WRITABLE |
                          G_PARAM_CONSTRUCT_ONLY |
                          G_PARAM_STATIC_STRINGS);
+
+ manager_properties[PROP_PANEL_ORIENTATION_MANAGED] =
+    g_param_spec_boolean ("panel-orientation-managed",
+                          "Panel orientation managed",
+                          "Panel orientation is managed",
+                          FALSE,
+                          G_PARAM_READABLE |
+                          G_PARAM_EXPLICIT_NOTIFY |
+                          G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class, LAST_PROP,
                                      manager_properties);
@@ -2788,6 +2836,12 @@ gint
 gf_monitor_manager_get_display_configuration_timeout (void)
 {
   return DEFAULT_DISPLAY_CONFIGURATION_TIMEOUT;
+}
+
+gboolean
+gf_monitor_manager_get_panel_orientation_managed (GfMonitorManager *self)
+{
+  return self->panel_orientation_managed;
 }
 
 void
