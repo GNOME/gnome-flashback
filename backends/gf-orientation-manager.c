@@ -38,9 +38,21 @@ struct _GfOrientationManager
   GDBusProxy    *iio_proxy;
   GfOrientation  prev_orientation;
   GfOrientation  curr_orientation;
+  gboolean       has_accel;
 
   GSettings     *settings;
 };
+
+enum
+{
+  PROP_0,
+
+  PROP_HAS_ACCELEROMETER,
+
+  LAST_PROP
+};
+
+static GParamSpec *manager_properties[LAST_PROP] = { NULL };
 
 enum
 {
@@ -71,24 +83,25 @@ orientation_from_string (const gchar *orientation)
 static void
 read_iio_proxy (GfOrientationManager *manager)
 {
-  gboolean has_accel;
   GVariant *variant;
 
   manager->curr_orientation = GF_ORIENTATION_UNDEFINED;
 
   if (!manager->iio_proxy)
-    return;
+    {
+      manager->has_accel = FALSE;
+      return;
+    }
 
-  has_accel = FALSE;
   variant = g_dbus_proxy_get_cached_property (manager->iio_proxy, "HasAccelerometer");
 
   if (variant)
     {
-      has_accel = g_variant_get_boolean (variant);
+      manager->has_accel = g_variant_get_boolean (variant);
       g_variant_unref (variant);
     }
 
-  if (!has_accel)
+  if (!manager->has_accel)
     return;
 
   variant = g_dbus_proxy_get_cached_property (manager->iio_proxy, "AccelerometerOrientation");
@@ -106,10 +119,20 @@ read_iio_proxy (GfOrientationManager *manager)
 static void
 sync_state (GfOrientationManager *manager)
 {
-  if (g_settings_get_boolean (manager->settings, ORIENTATION_LOCK_KEY))
-    return;
+  gboolean had_accel;
+
+  had_accel = manager->has_accel;
 
   read_iio_proxy (manager);
+
+  if (had_accel != manager->has_accel)
+    {
+      g_object_notify_by_pspec (G_OBJECT (manager),
+                                manager_properties[PROP_HAS_ACCELEROMETER]);
+    }
+
+  if (g_settings_get_boolean (manager->settings, ORIENTATION_LOCK_KEY))
+    return;
 
   if (manager->prev_orientation == manager->curr_orientation)
     return;
@@ -275,6 +298,45 @@ gf_orientation_manager_dispose (GObject *object)
 }
 
 static void
+gf_orientation_manager_get_property (GObject    *object,
+                                     guint       property_id,
+                                     GValue     *value,
+                                     GParamSpec *pspec)
+{
+  GfOrientationManager *self;
+
+  self = GF_ORIENTATION_MANAGER (object);
+
+  switch (property_id)
+    {
+      case PROP_HAS_ACCELEROMETER:
+        g_value_set_boolean (value, self->has_accel);
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
+
+static void
+gf_orientation_manager_install_properties (GObjectClass *object_class)
+{
+  manager_properties[PROP_HAS_ACCELEROMETER] =
+    g_param_spec_boolean ("has-accelerometer",
+                          "Has accelerometer",
+                          "Has accelerometer",
+                          FALSE,
+                          G_PARAM_READABLE |
+                          G_PARAM_EXPLICIT_NOTIFY |
+                          G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (object_class,
+                                     LAST_PROP,
+                                     manager_properties);
+}
+
+static void
 gf_orientation_manager_install_signals (GObjectClass *object_class)
 {
   manager_signals[ORIENTATION_CHANGED] =
@@ -291,7 +353,9 @@ gf_orientation_manager_class_init (GfOrientationManagerClass *manager_class)
   object_class = G_OBJECT_CLASS (manager_class);
 
   object_class->dispose = gf_orientation_manager_dispose;
+  object_class->get_property = gf_orientation_manager_get_property;
 
+  gf_orientation_manager_install_properties (object_class);
   gf_orientation_manager_install_signals (object_class);
 }
 
@@ -324,4 +388,10 @@ GfOrientation
 gf_orientation_manager_get_orientation (GfOrientationManager *manager)
 {
   return manager->curr_orientation;
+}
+
+gboolean
+gf_orientation_manager_has_accelerometer (GfOrientationManager *self)
+{
+  return self->has_accel;
 }

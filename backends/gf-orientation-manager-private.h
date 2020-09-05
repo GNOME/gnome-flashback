@@ -40,9 +40,11 @@ typedef enum
 G_DECLARE_FINAL_TYPE (GfOrientationManager, gf_orientation_manager,
                       GF, ORIENTATION_MANAGER, GObject)
 
-GfOrientationManager *gf_orientation_manager_new             (void);
+GfOrientationManager *gf_orientation_manager_new               (void);
 
-GfOrientation         gf_orientation_manager_get_orientation (GfOrientationManager *manager);
+GfOrientation         gf_orientation_manager_get_orientation   (GfOrientationManager *manager);
+
+gboolean              gf_orientation_manager_has_accelerometer (GfOrientationManager *self);
 
 G_END_DECLS
 
