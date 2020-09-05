@@ -505,6 +505,9 @@ orientation_changed (GfOrientationManager *orientation_manager,
   GError *error = NULL;
   GfMonitorsConfig *config;
 
+  if (!manager->panel_orientation_managed)
+    return;
+
   switch (gf_orientation_manager_get_orientation (orientation_manager))
     {
       case GF_ORIENTATION_NORMAL:
