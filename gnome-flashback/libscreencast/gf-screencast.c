@@ -22,15 +22,12 @@
 
 #include "dbus/gf-screencast-gen.h"
 
-#define SCREENCAST_DBUS_NAME "org.gnome.Shell.Screencast"
-#define SCREENCAST_DBUS_PATH "/org/gnome/Shell/Screencast"
-
 struct _GfScreencast
 {
-  GObject                 parent;
+  GObject          parent;
 
-  gint                    bus_name;
-  GDBusInterfaceSkeleton *iface;
+  gint             bus_name_id;
+  GfScreencastGen *screencast_gen;
 };
 
 G_DEFINE_TYPE (GfScreencast, gf_screencast, G_TYPE_OBJECT)
@@ -40,11 +37,14 @@ handle_screencast (GfScreencastGen       *screencast_gen,
                    GDBusMethodInvocation *invocation,
                    const gchar           *file_template,
                    GVariant              *options,
-                   gpointer               user_data)
+                   GfScreencast          *self)
 {
-  g_warning ("screencast: screencast");
-  gf_screencast_gen_complete_screencast (screencast_gen, invocation,
-                                         FALSE, "");
+  g_dbus_method_invocation_return_error_literal (invocation,
+                                                 G_DBUS_ERROR,
+                                                 G_DBUS_ERROR_NOT_SUPPORTED,
+                                                 "Screencast method is not "
+                                                 "implemented in GNOME "
+                                                 "Flashback!");
 
   return TRUE;
 }
@@ -58,11 +58,14 @@ handle_screencast_area (GfScreencastGen       *screencast_gen,
                         gint                   height,
                         const gchar           *file_template,
                         GVariant              *options,
-                        gpointer               user_data)
+                        GfScreencast          *self)
 {
-  g_warning ("screencast: screencast-area");
-  gf_screencast_gen_complete_screencast_area (screencast_gen, invocation,
-                                              FALSE, "");
+  g_dbus_method_invocation_return_error_literal (invocation,
+                                                 G_DBUS_ERROR,
+                                                 G_DBUS_ERROR_NOT_SUPPORTED,
+                                                 "ScreencastArea method is "
+                                                 "not implemented in GNOME "
+                                                 "Flashback!");
 
   return TRUE;
 }
@@ -70,83 +73,118 @@ handle_screencast_area (GfScreencastGen       *screencast_gen,
 static gboolean
 handle_stop_screencast (GfScreencastGen       *screencast_gen,
                         GDBusMethodInvocation *invocation,
-                        gpointer               user_data)
+                        GfScreencast          *self)
 {
-  g_warning ("screencast: stop-screencast");
-  gf_screencast_gen_complete_stop_screencast (screencast_gen, invocation, TRUE);
+  g_dbus_method_invocation_return_error_literal (invocation,
+                                                 G_DBUS_ERROR,
+                                                 G_DBUS_ERROR_NOT_SUPPORTED,
+                                                 "StopScreencast method is "
+                                                 "not implemented in GNOME "
+                                                 "Flashback!");
 
   return TRUE;
 }
 
 static void
-name_appeared_handler (GDBusConnection *connection,
-                       const gchar     *name,
-                       const gchar     *name_owner,
-                       gpointer         user_data)
+bus_acquired_cb (GDBusConnection *connection,
+                 const char      *name,
+                 gpointer         user_data)
 {
-  GfScreencast *screencast;
-  GfScreencastGen *skeleton;
+  GfScreencast *self;
+  GDBusInterfaceSkeleton *skeleton;
   GError *error;
 
-  screencast = GF_SCREENCAST (user_data);
-  skeleton = gf_screencast_gen_skeleton_new ();
-
-  g_signal_connect (skeleton, "handle-screencast",
-                    G_CALLBACK (handle_screencast), screencast);
-  g_signal_connect (skeleton, "handle-screencast-area",
-                    G_CALLBACK (handle_screencast_area), screencast);
-  g_signal_connect (skeleton, "handle-stop-screencast",
-                    G_CALLBACK (handle_stop_screencast), screencast);
-
+  self = GF_SCREENCAST (user_data);
+  skeleton = G_DBUS_INTERFACE_SKELETON (self->screencast_gen);
   error = NULL;
-  screencast->iface = G_DBUS_INTERFACE_SKELETON (skeleton);
 
-	if (!g_dbus_interface_skeleton_export (screencast->iface, connection,
-	                                       SCREENCAST_DBUS_PATH,
-	                                       &error))
-  {
-    g_warning ("Failed to export interface: %s", error->message);
-    g_error_free (error);
-    return;
-  }
-}
-
-static void
-gf_screencast_finalize (GObject *object)
-{
-  GfScreencast *screencast;
-
-  screencast = GF_SCREENCAST (object);
-
-  if (screencast->bus_name)
+  if (!g_dbus_interface_skeleton_export (skeleton,
+                                         connection,
+                                         "/org/gnome/Shell/Screencast",
+                                         &error))
     {
-      g_bus_unwatch_name (screencast->bus_name);
-      screencast->bus_name = 0;
+      g_warning ("Failed to export interface: %s", error->message);
+      g_error_free (error);
+      return;
     }
 
-  G_OBJECT_CLASS (gf_screencast_parent_class)->finalize (object);
+  g_signal_connect (skeleton, "handle-screencast",
+                    G_CALLBACK (handle_screencast),
+                    self);
+
+  g_signal_connect (skeleton, "handle-screencast-area",
+                    G_CALLBACK (handle_screencast_area),
+                    self);
+
+  g_signal_connect (skeleton, "handle-stop-screencast",
+                    G_CALLBACK (handle_stop_screencast),
+                    self);
 }
 
 static void
-gf_screencast_class_init (GfScreencastClass *screencast_class)
+name_acquired_cb (GDBusConnection *connection,
+                  const char      *name,
+                  gpointer         user_data)
+{
+}
+
+static void
+name_lost_cb (GDBusConnection *connection,
+              const char      *name,
+              gpointer         user_data)
+{
+}
+
+static void
+gf_screencast_dispose (GObject *object)
+{
+  GfScreencast *self;
+
+  self = GF_SCREENCAST (object);
+
+  if (self->bus_name_id != 0)
+    {
+      g_bus_unown_name (self->bus_name_id);
+      self->bus_name_id = 0;
+    }
+
+  if (self->screencast_gen)
+    {
+      GDBusInterfaceSkeleton *skeleton;
+
+      skeleton = G_DBUS_INTERFACE_SKELETON (self->screencast_gen);
+
+      g_dbus_interface_skeleton_unexport (skeleton);
+      g_clear_object (&self->screencast_gen);
+    }
+
+  G_OBJECT_CLASS (gf_screencast_parent_class)->dispose (object);
+}
+
+static void
+gf_screencast_class_init (GfScreencastClass *self_class)
 {
   GObjectClass *object_class;
 
-  object_class = G_OBJECT_CLASS (screencast_class);
+  object_class = G_OBJECT_CLASS (self_class);
 
-  object_class->finalize = gf_screencast_finalize;
+  object_class->dispose = gf_screencast_dispose;
 }
 
 static void
-gf_screencast_init (GfScreencast *screencast)
+gf_screencast_init (GfScreencast *self)
 {
-  screencast->bus_name = g_bus_watch_name (G_BUS_TYPE_SESSION,
-                                           SCREENCAST_DBUS_NAME,
-                                           G_BUS_NAME_WATCHER_FLAGS_NONE,
-                                           name_appeared_handler,
-                                           NULL,
-                                           screencast,
-                                           NULL);
+  self->screencast_gen = gf_screencast_gen_skeleton_new ();
+
+  self->bus_name_id = g_bus_own_name (G_BUS_TYPE_SESSION,
+                                      "org.gnome.Shell.Screencast",
+                                      G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
+                                      G_BUS_NAME_OWNER_FLAGS_REPLACE,
+                                      bus_acquired_cb,
+                                      name_acquired_cb,
+                                      name_lost_cb,
+                                      self,
+                                      NULL);
 }
 
 GfScreencast *
