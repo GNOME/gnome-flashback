@@ -12,6 +12,7 @@ libgvc_la_CPPFLAGS = \
 	$(NULL)
 
 libgvc_la_CFLAGS = \
+	$(WARN_CFLAGS) \
 	$(GVC_CFLAGS) \
 	$(AM_CFLAGS) \
 	$(NULL)
