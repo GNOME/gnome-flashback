@@ -373,7 +373,7 @@ AC_SEARCH_LIBS([pam_start], [pam], [], [
 ])
 
 dnl **************************************************************************
-dnl Required components from GNOME Settings Deamon
+dnl Required components from GNOME Settings Daemon
 dnl **************************************************************************
 
 AC_SUBST([REQUIRED_COMPNENTS_GSD], [" \
