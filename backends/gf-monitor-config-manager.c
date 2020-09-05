@@ -264,6 +264,7 @@ create_for_switch_config_all_mirror (GfMonitorConfigManager *config_manager)
   GList *modes;
   GList *monitors;
   GList *l;
+  GfMonitorsConfig *monitors_config;
 
   monitors = gf_monitor_manager_get_monitors (monitor_manager);
   monitor = monitors->data;
@@ -356,8 +357,16 @@ create_for_switch_config_all_mirror (GfMonitorConfigManager *config_manager)
   logical_monitor_configs = g_list_append (NULL, logical_monitor_config);
   layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
 
-  return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
-                                 layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
+  monitors_config = gf_monitors_config_new (monitor_manager,
+                                            logical_monitor_configs,
+                                            layout_mode,
+                                            GF_MONITORS_CONFIG_FLAG_NONE);
+
+  if (monitors_config)
+    gf_monitors_config_set_switch_config (monitors_config,
+                                          GF_MONITOR_SWITCH_CONFIG_ALL_MIRROR);
+
+  return monitors_config;
 }
 
 static GfMonitorsConfig *
@@ -369,6 +378,7 @@ create_for_switch_config_external (GfMonitorConfigManager *config_manager)
   GfLogicalMonitorLayoutMode layout_mode;
   GList *monitors;
   GList *l;
+  GfMonitorsConfig *monitors_config;
 
   layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
 
@@ -394,8 +404,16 @@ create_for_switch_config_external (GfMonitorConfigManager *config_manager)
       x += logical_monitor_config->layout.width;
     }
 
-  return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
-                                 layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
+  monitors_config = gf_monitors_config_new (monitor_manager,
+                                            logical_monitor_configs,
+                                            layout_mode,
+                                            GF_MONITORS_CONFIG_FLAG_NONE);
+
+  if (monitors_config)
+    gf_monitors_config_set_switch_config (monitors_config,
+                                          GF_MONITOR_SWITCH_CONFIG_EXTERNAL);
+
+  return monitors_config;
 }
 
 static GfMonitorsConfig *
@@ -406,6 +424,7 @@ create_for_switch_config_builtin (GfMonitorConfigManager *config_manager)
   GList *logical_monitor_configs;
   GfLogicalMonitorConfig *primary_logical_monitor_config;
   GfMonitor *monitor;
+  GfMonitorsConfig *monitors_config;
 
   monitor = gf_monitor_manager_get_laptop_panel (monitor_manager);
   if (!monitor)
@@ -420,8 +439,16 @@ create_for_switch_config_builtin (GfMonitorConfigManager *config_manager)
   primary_logical_monitor_config->is_primary = TRUE;
   logical_monitor_configs = g_list_append (NULL, primary_logical_monitor_config);
 
-  return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
-                                 layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
+  monitors_config = gf_monitors_config_new (monitor_manager,
+                                            logical_monitor_configs,
+                                            layout_mode,
+                                            GF_MONITORS_CONFIG_FLAG_NONE);
+
+  if (monitors_config)
+    gf_monitors_config_set_switch_config (monitors_config,
+                                          GF_MONITOR_SWITCH_CONFIG_BUILTIN);
+
+  return monitors_config;
 }
 
 static GList *
@@ -1099,6 +1126,7 @@ gf_monitor_config_manager_create_linear (GfMonitorConfigManager *config_manager)
   int x;
   GList *monitors;
   GList *l;
+  GfMonitorsConfig *monitors_config;
 
   primary_monitor = find_primary_monitor (monitor_manager);
   if (!primary_monitor)
@@ -1139,8 +1167,16 @@ gf_monitor_config_manager_create_linear (GfMonitorConfigManager *config_manager)
       x += logical_monitor_config->layout.width;
     }
 
-  return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
-                                 layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
+  monitors_config = gf_monitors_config_new (monitor_manager,
+                                            logical_monitor_configs,
+                                            layout_mode,
+                                            GF_MONITORS_CONFIG_FLAG_NONE);
+
+  if (monitors_config)
+    gf_monitors_config_set_switch_config (monitors_config,
+                                          GF_MONITOR_SWITCH_CONFIG_ALL_LINEAR);
+
+  return monitors_config;
 }
 
 GfMonitorsConfig *
@@ -1291,9 +1327,6 @@ gf_monitor_config_manager_create_for_switch_config (GfMonitorConfigManager    *c
         g_warn_if_reached ();
         break;
     }
-
-  if (config)
-    gf_monitors_config_set_switch_config (config, config_type);
 
   return config;
 }
