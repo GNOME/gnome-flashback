@@ -71,34 +71,20 @@ activate_link_cb (GtkLabel *label,
                   GfBubble *bubble)
 {
   GfBubblePrivate *priv;
-  gchar *escaped_uri;
-  gchar *found;
-  gchar *cmd;
+  GError *error;
 
   priv = gf_bubble_get_instance_private (bubble);
 
   priv->url_clicked_lock = TRUE;
 
-  escaped_uri = g_shell_quote (uri);
-  found = NULL;
-  cmd = NULL;
-
-  if ((found = g_find_program_in_path ("gvfs-open")) != NULL)
-    cmd = g_strdup_printf ("gvfs-open %s", escaped_uri);
-  else if ((found = g_find_program_in_path ("xdg-open")) != NULL)
-    cmd = g_strdup_printf ("xdg-open %s", escaped_uri);
-  else if ((found = g_find_program_in_path ("firefox")) != NULL)
-    cmd = g_strdup_printf ("firefox %s", escaped_uri);
-  else
-    g_warning ("Unable to find a browser.");
-
-  g_free (escaped_uri);
-  g_free (found);
-
-  if (cmd != NULL)
+  error = NULL;
+  if (!gtk_show_uri_on_window (GTK_WINDOW (bubble),
+                               uri,
+                               gtk_get_current_event_time (),
+                               &error))
     {
-      g_spawn_command_line_async (cmd, NULL);
-      g_free (cmd);
+      g_warning ("Could not show link: %s", error->message);
+      g_error_free (error);
     }
 
   return TRUE;
