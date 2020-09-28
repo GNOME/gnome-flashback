@@ -1,0 +1,1115 @@
+# Finnish translation for gnome-flashback.
+# Copyright (C) 2020 gnome-flashback's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-flashback package.
+# Timo Jyrinki <timo.jyrinki@iki.fi>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-flashback gnome-3-36\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
+"POT-Creation-Date: 2019-08-29 12:47+0000\n"
+"PO-Revision-Date: 2020-09-24 13:37+0300\n"
+"Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
+"Language-Team: Finnish <lokalisointi-lista@googlegroups.com>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.4.1\n"
+
+#: backends/gf-monitor-manager.c:971
+msgid "Built-in display"
+msgstr "Sisäänrakennettu näyttö"
+
+#: backends/gf-monitor-manager.c:1002
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
+msgid "Unknown"
+msgstr "Tuntematon"
+
+#: backends/gf-monitor-manager.c:1004
+msgid "Unknown Display"
+msgstr "Tuntematon näyttö"
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: backends/gf-monitor-manager.c:1014
+#, fuzzy, c-format
+msgid "%s %s"
+msgstr "%s %s"
+
+#: data/applications/gnome-flashback.desktop.in:4
+msgid "GNOME Flashback"
+msgstr ""
+
+#: data/applications/gnome-flashback-init.desktop.in:4
+msgid "GNOME Flashback Initialization"
+msgstr ""
+
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:3
+msgid "Network (GNOME Flashback)"
+msgstr ""
+
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:4
+msgid "Manage your network connections"
+msgstr "Hallitse verkkoyhteyksiä"
+
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
+msgid "nm-device-wireless"
+msgstr "nm-device-wireless"
+
+#: data/autostart/gnome-flashback-screensaver.desktop.in:4
+msgid "Screensaver (GNOME Flashback)"
+msgstr ""
+
+#: data/autostart/gnome-flashback-screensaver.desktop.in:5
+msgid "Launch screensaver and locker program"
+msgstr ""
+
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/autostart/gnome-flashback-screensaver.desktop.in:7
+#, fuzzy
+msgid "preferences-desktop-screensaver"
+msgstr "preferences-desktop"
+
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
+msgid "Preferences"
+msgstr "Asetukset"
+
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:5
+msgid "Personal preferences"
+msgstr "Henkilökohtaiset asetukset"
+
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
+msgid "preferences-desktop"
+msgstr "preferences-desktop"
+
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
+msgid "Administration"
+msgstr "Ylläpito"
+
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
+msgid "Change system-wide settings (affects all users)"
+msgstr "Muuta järjestelmänlaajuisia asetuksia (vaikuttaa kaikkiin käyttäjiin)"
+
+#. TRANSLATORS: Don't translate this text (this is icon name)
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
+msgid "preferences-system"
+msgstr "preferences-system"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
+msgid "Audio device selection"
+msgstr "Äänilaitteen valinta"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:6
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide the "
+"audio device selection dialog."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
+msgid "Automount manager"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:12
+msgid ""
+"If set to true, then GNOME Flashback application will be used to automount "
+"removable media."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
+#, fuzzy
+msgid "Bluetooth applet"
+msgstr "Bluetooth-asetukset"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:18
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"Bluetooth applet."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
+#, fuzzy
+msgid "Desktop background"
+msgstr "Piirrä työpöydän tausta"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:24
+msgid ""
+"If set to true, then GNOME Flashback application will be used to draw the "
+"desktop background."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
+msgid "End session dialog"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:30
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show the "
+"end session dialog."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
+msgid "Idle monitor"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:36
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
+msgid "Input settings"
+msgstr "Syöteasetukset"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
+msgid "Keyboard layouts and input methods"
+msgstr "Näppäimistöasettelut ja syötetavat"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:47
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"keyboard layouts and input methods."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
+msgid "Notification daemon"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:53
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"notifications."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
+msgid "Authentication agent for polkit"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:59
+msgid ""
+"This is the same authentication agent that was provided by PolicyKit-gnome."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
+#, fuzzy
+msgid "Power applet"
+msgstr "Virta-asetukset"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:65
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"power applet."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
+msgid "Screencasts"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:71
+msgid ""
+"If set to true, then GNOME Flashback application will be used to record the "
+"screen."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
+msgid "Screensaver"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:77
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a "
+"screensaver."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
+msgid "Screenshots"
+msgstr "Kuvakaappaukset"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:83
+msgid ""
+"If set to true, then GNOME Flashback application will be used to take "
+"screenshots."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
+msgid "Shell"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:89
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a shell."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
+#, fuzzy
+msgid "Sound applet"
+msgstr "Ääniasetukset"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:95
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show a "
+"sound applet. This is the same sound applet that used to be a part of GNOME "
+"Control Center."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
+msgid "Status Notifier Watcher"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:101
+msgid ""
+"If set to true, then GNOME Flashback application will be used as Status "
+"Notifier Watcher."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
+msgid "Workarounds"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:107
+msgid ""
+"If set to true, then GNOME Flashback application will use workarounds to fix "
+"bugs."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
+msgid "Fade the background on change"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:6
+msgid ""
+"If set to true, then fade effect will be used to change the desktop "
+"background."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
+#, fuzzy
+msgid "The background color"
+msgstr "Vaihda taustakuvaa"
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:13
+msgid "The foreground color"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:18
+msgid "The font family"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:24
+msgid "The font weight"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
+msgid "Symbolic"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:5
+msgid "Fix missing app menu button"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:6
+msgid ""
+"If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
+"FALSE. Disable if you want to use gnome-settings-daemon overrides in "
+"xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:11
+msgid "Fix wrong button layout"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.workarounds.gschema.xml:12
+msgid ""
+"If set to non-empty string, then gnome-flashback will force Gtk/"
+"DecorationLayout to value set by this setting. Set to empty string if you "
+"want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
+"DecorationLayout' property."
+msgstr ""
+
+#: data/ui/gf-confirm-display-change-dialog.ui:57
+msgid "Do you want to keep these display settings?"
+msgstr "Haluatko pitää nämä näyttöasetukset?"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:103
+msgid "_Revert Settings"
+msgstr "Palauta _asetukset"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:118
+msgid "_Keep Changes"
+msgstr "_Pidä asetukset"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:144
+msgid "Confirm Changes"
+msgstr "Vahvista asetukset"
+
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:3
+msgid "GNOME Flashback (Compiz)"
+msgstr ""
+
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:4
+msgid "This session logs you into GNOME Flashback with Compiz"
+msgstr ""
+
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:3
+msgid "GNOME Flashback (Metacity)"
+msgstr ""
+
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:4
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr ""
+
+#: gnome-flashback/gf-confirm-display-change-dialog.c:62
+#, c-format
+msgid "Settings changes will revert in %d second!"
+msgid_plural "Settings changes will revert in %d seconds!"
+msgstr[0] "Asetukset palautuvat aiemmiksi %d sekunnissa."
+msgstr[1] "Asetukset palautuvat aiemmiksi %d sekunnissa."
+
+#: gnome-flashback/gf-main.c:40
+msgid "Enable debugging code"
+msgstr ""
+
+#: gnome-flashback/gf-main.c:46
+msgid "Initialize GNOME Flashback session"
+msgstr ""
+
+#: gnome-flashback/gf-main.c:52
+msgid "Replace a currently running application"
+msgstr "Korvaa parhaillaan käynnissä oleva sovellus"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:109
+msgid "Headphones"
+msgstr "Kuulokkeet"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:112
+msgid "Headset"
+msgstr "Kuulokemikrofoni"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:115
+msgid "Microphone"
+msgstr "Mikrofoni"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:255
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr ""
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:248
+msgid "What kind of device did you plug in?"
+msgstr "Minkälainen laite kytkettiin?"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
+msgid "Sound Settings"
+msgstr "Ääniasetukset"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
+msgid "Cancel"
+msgstr "Peru"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:285
+msgid "Unknown Audio Device"
+msgstr "Tuntematon äänilaite"
+
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:177
+#, c-format
+msgid "Unable to mount %s"
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:290
+#, c-format
+msgid "Unable to open a folder for %s"
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:339
+msgid "Ask what to do"
+msgstr "Kysy mitä tehdään"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:345
+msgid "Do Nothing"
+msgstr "Älä tee mitään"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:351
+msgid "Open Folder"
+msgstr "Avaa kansio"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:496
+#, c-format
+msgid "Unable to eject %p"
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
+#, c-format
+msgid "Unable to unmount %p"
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:707
+msgid "You have just inserted an Audio CD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
+msgid "You have just inserted an Audio DVD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
+msgid "You have just inserted a Video DVD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
+msgid "You have just inserted a Video CD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
+msgid "You have just inserted a Super Video CD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
+msgid "You have just inserted a blank CD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
+msgid "You have just inserted a blank DVD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
+msgid "You have just inserted a blank Blu-Ray disc."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
+msgid "You have just inserted a blank HD DVD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
+msgid "You have just inserted a Photo CD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
+msgid "You have just inserted a Picture CD."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
+msgid "You have just inserted a medium with digital photos."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
+msgid "You have just inserted a digital audio player."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
+msgid ""
+"You have just inserted a medium with software intended to be automatically "
+"started."
+msgstr ""
+
+#. fallback to generic greeting
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:736
+msgid "You have just inserted a medium."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
+msgid "Choose what application to launch."
+msgstr "Valitse mikä sovellus käynnistetään."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:747
+#, c-format
+msgid ""
+"Select how to open \"%s\" and whether to perform this action in the future "
+"for other media of type \"%s\"."
+msgstr ""
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:774
+msgid "_Always perform this action"
+msgstr "Suorita _aina tämä toiminto"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:783
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
+msgid "_Cancel"
+msgstr "_Peru"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:784
+msgid "_OK"
+msgstr "_OK"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:790
+msgid "_Eject"
+msgstr "_Poista asemasta"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:795
+msgid "_Unmount"
+msgstr "_Irrota"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
+msgid "Turn Off"
+msgstr ""
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:164
+msgid "Send Files"
+msgstr "Lähetä tiedostoja"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
+msgid "Turn On"
+msgstr ""
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
+msgid "Bluetooth Settings"
+msgstr "Bluetooth-asetukset"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:271
+#, fuzzy
+msgid "Bluetooth active"
+msgstr "Bluetooth-asetukset"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:276
+#, fuzzy
+msgid "Bluetooth disabled"
+msgstr "Bluetooth-asetukset"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:282
+#, c-format
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "%d yhdistetty laite"
+msgstr[1] "%d yhdistettyä laitetta"
+
+#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
+msgid "Not Connected"
+msgstr "Ei yhdistetty"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
+msgid "Log Out"
+msgstr "Kirjaudu ulos"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:470
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Napsaudu Kirjaudu ulos lopettaaksesi nämä sovellukset ja kirjautuaksesi ulos."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:472
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s kirjataan ulos automaattisesti %d sekunnissa."
+msgstr[1] "%s kirjataan ulos automaattisesti %d sekunnissa."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:696
+msgid "Power Off"
+msgstr "Sammuta"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:482
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
+"Napsauta Sammuta lopettaaksesi nämä sovellukset ja sammuttaaksesi "
+"järjestelmän."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:484
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Järjestelmä sammutetaan automaattisesti %d sekunnin kuluttua."
+msgstr[1] "Järjestelmä sammutetaan automaattisesti %d sekunnin kuluttua."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:700
+msgid "Restart"
+msgstr "Käynnistä uudelleen"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:494
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Napsauta Käynnistä uudelleen lopettaaksesi nämä sovellukset ja "
+"käynnistääksesi järjestelmän uudelleen."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:496
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] ""
+"Järjestelmä käynnistyy automaattisesti uudelleen %d sekunnin kuluttua."
+msgstr[1] ""
+"Järjestelmä käynnistyy automaattisesti uudelleen %d sekunnin kuluttua."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:503
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:704
+msgid "Hibernate"
+msgstr "Lepotila"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:504
+#, c-format
+msgid "The system will hibernate automatically in %d second."
+msgid_plural "The system will hibernate automatically in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:511
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:708
+msgid "Suspend"
+msgstr "Valmiustila"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:512
+#, c-format
+msgid "The system will suspend automatically in %d second."
+msgid_plural "The system will suspend automatically in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:712
+msgid "Hybrid Sleep"
+msgstr ""
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:520
+#, c-format
+msgid "The system will hybrid sleep automatically in %d second."
+msgid_plural "The system will hybrid sleep automatically in %d seconds."
+msgstr[0] ""
+msgstr[1] ""
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:29
+msgid "Some programs are still running:"
+msgstr "Jotkin ohjelmat ovat yhä käynnissä:"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:78
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr ""
+"Odotetaan näiden sovellusten valmistumista. Sovellusten keskeyttäminen "
+"saattaa johtaa tietojen katoamiseen."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
+msgid "Lock Screen"
+msgstr "Lukitse näyttö"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:801
+msgid "Show Keyboard Layout"
+msgstr "Näytä näppäimistön asettelu"
+
+#: gnome-flashback/libinput-sources/gf-input-sources.c:867
+#, fuzzy
+msgid "Keyboard"
+msgstr "a11y-keyboard"
+
+#: gnome-flashback/libnotifications/gf-bubble.c:596
+#: gnome-flashback/libnotifications/gf-bubble.c:600
+#: gnome-flashback/libnotifications/nd-notification-box.c:325
+#: gnome-flashback/libnotifications/nd-notification-box.c:327
+msgid "Closes the notification."
+msgstr "Sulkee ilmoituksen."
+
+#: gnome-flashback/libnotifications/gf-bubble.c:620
+#: gnome-flashback/libnotifications/gf-bubble.c:651
+#: gnome-flashback/libnotifications/nd-notification-box.c:343
+msgid "Notification summary text."
+msgstr ""
+
+#: gnome-flashback/libnotifications/gf-bubble.c:670
+msgid "Notification"
+msgstr "Ilmoitus"
+
+#: gnome-flashback/libnotifications/nd-daemon.c:100
+msgid "Invalid notification identifier"
+msgstr ""
+
+#: gnome-flashback/libnotifications/nd-daemon.c:181
+msgid "Exceeded maximum number of notifications"
+msgstr ""
+
+#: gnome-flashback/libnotifications/nd-notification-box.c:363
+msgid "Notification body text."
+msgstr ""
+
+#: gnome-flashback/libnotifications/nd-queue.c:449
+msgid "Clear all notifications"
+msgstr "Tyhjennä ilmoitukset"
+
+#: gnome-flashback/libnotifications/nd-queue.c:878
+msgid "Notifications"
+msgstr "Ilmoitukset"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:93
+#, c-format
+msgid "_Password for %s:"
+msgstr "_Salasana käyttäjälle %s:"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:97
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
+msgid "_Password:"
+msgstr "_Salasana:"
+
+#: gnome-flashback/libpolkit/flashback-authenticator.c:252
+msgid "Your authentication attempt was unsuccessful. Please try again."
+msgstr "Tunnistautuminen epäonnistui. Yritä uudelleen."
+
+#: gnome-flashback/libpolkit/flashback-listener.c:139
+msgid "Authentication dialog was dismissed by the user"
+msgstr ""
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:202
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as one of the users below is required to perform this action."
+msgstr ""
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication is required to perform this action."
+msgstr ""
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:217
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as the super user is required to perform this action."
+msgstr ""
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:386
+msgid "Select user..."
+msgstr "Valitse käyttäjä..."
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:425
+#, c-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:600
+msgid "Action:"
+msgstr "Toiminto:"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:603
+#, c-format
+msgid "Click to edit %s"
+msgstr "Napsauta muokataksesi %s"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:611
+msgid "Vendor:"
+msgstr "Valmistaja:"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:614
+#, c-format
+msgid "Click to open %s"
+msgstr "Napsauta avataksesi %s"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:8
+msgid "Authenticate"
+msgstr "Tunnistaudu"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:53
+msgid "<big><b>Title</b></big>"
+msgstr "<big><b>Otsikko</b></big>"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:192
+msgid "<small><b>_Details</b></small>"
+msgstr "<small><b>_Tiedot</b></small>"
+
+#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:228
+msgid "_Authenticate"
+msgstr "_Tunnistaudu"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:135
+msgid "Power Settings"
+msgstr "Virta-asetukset"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:182
+msgid "Fully Charged"
+msgstr "Ladattu täyteen"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:184
+msgid "Empty"
+msgstr "Tyhjä"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:190
+#: gnome-flashback/libpower-applet/gf-power-applet.c:195
+msgid "Estimating..."
+msgstr "Arvioidaan..."
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: gnome-flashback/libpower-applet/gf-power-applet.c:204
+#, c-format
+msgid "%.0f:%02.0f Remaining (%.0f%%)"
+msgstr "%.0f:%02.0f jäljellä (%.0f%%)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: gnome-flashback/libpower-applet/gf-power-applet.c:211
+#, c-format
+msgid "%.0f:%02.0f Until Full (%.0f%%)"
+msgstr "%.0f:%02.0f kunnes täynnä (%.0f%%)"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:226
+msgid "UPS"
+msgstr "UPS"
+
+#: gnome-flashback/libpower-applet/gf-power-applet.c:228
+msgid "Battery"
+msgstr "Akku"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:283
+msgid "Output"
+msgstr "Ulostulo"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:286
+msgid "Sound Output Volume"
+msgstr ""
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:293
+msgid "Input"
+msgstr "Sisääntulo"
+
+#: gnome-flashback/libsound-applet/gf-sound-applet.c:296
+#, fuzzy
+msgid "Microphone Volume"
+msgstr "Mikrofoni"
+
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:537
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:546
+msgctxt "volume"
+msgid "100%"
+msgstr ""
+
+#: gnome-flashback/libsound-applet/gvc-channel-bar.c:541
+msgctxt "volume"
+msgid "Unamplified"
+msgstr ""
+
+#. translators:
+#. * The device has been disabled
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1866
+msgid "Disabled"
+msgstr "Pois käytöstä"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1873
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u ulostulo"
+msgstr[1] "%u ulostuloa"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u sisääntulo"
+msgstr[1] "%u sisääntuloa"
+
+#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2738
+msgid "System Sounds"
+msgstr "Järjestelmän äänet"
+
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:280
+#, fuzzy
+msgid "_Mute"
+msgstr "Mykistä"
+
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:289
+#, fuzzy
+msgid "_Sound Preferences"
+msgstr "Asetukset"
+
+#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:419
+msgid "Muted"
+msgstr "Mykistetty"
+
+#, c-format
+#~ msgctxt ""
+#~ "This is a monitor vendor name followed by product/model name where size "
+#~ "in inches could not be calculated, e.g. Dell U2414H"
+#~ msgid "%s %s"
+#~ msgstr "%s %s"
+
+#~ msgid "Clipboard"
+#~ msgstr "Leikepöytä"
+
+#~ msgid "Desktop"
+#~ msgstr "Työpöytä"
+
+#~ msgid "Show desktop icons"
+#~ msgstr "Näytä työpöytäkuvakkeet"
+
+#~ msgid "Icon size"
+#~ msgstr "Kuvakkeen koko"
+
+#~ msgid "The size of desktop icons."
+#~ msgstr "Työpöydän kuvakkeiden koko."
+
+#~ msgid "Show home icon"
+#~ msgstr "Näytä kotikansion kuvake"
+
+#~ msgid "Show trash icon"
+#~ msgstr "Näytä roskakorin kuvake"
+
+#~ msgid "Use IBus icon if available"
+#~ msgstr "Käytä IBus-kuvaketta jos saatavilla"
+
+#~ msgid "Print version and exit"
+#~ msgstr "Tulosta versio ja poistu"
+
+#~ msgid "Slow Keys Turned On"
+#~ msgstr "Hitaat näppäimet otettu käyttöön"
+
+#~ msgid "Slow Keys Turned Off"
+#~ msgstr "Hitaat näppäimet poistettu käytöstä"
+
+#~ msgid "Universal Access"
+#~ msgstr "Esteettömyys"
+
+#~ msgid "Sticky Keys Turned On"
+#~ msgstr "Pohjaan jäävät näppäimet otettu käyttöön"
+
+#~ msgid "Sticky Keys Turned Off"
+#~ msgstr "Pohjaan jäävät näppäimet poistettu käytöstä"
+
+#~ msgid "New Folder"
+#~ msgstr "Uusi kansio"
+
+#~ msgid "Create"
+#~ msgstr "Luo"
+
+#~ msgid "Folder name"
+#~ msgstr "Kansion nimi"
+
+#~ msgid "Home"
+#~ msgstr "Koti"
+
+#~ msgid "Open"
+#~ msgstr "Avaa"
+
+#~ msgid "Move to Trash"
+#~ msgstr "Siirrä roskakoriin"
+
+#~ msgid "Rename..."
+#~ msgstr "Nimeä uudelleen..."
+
+#~ msgid "Empty Trash"
+#~ msgstr "Tyhjennä roskakori"
+
+#~ msgid "Properties"
+#~ msgstr "Asetukset"
+
+#~ msgid "Auto arrange icons"
+#~ msgstr "Järjestä kuvakkeet automaattisesti"
+
+#~ msgid "Align icons to grid"
+#~ msgstr "Järjestä kuvakkeet ruudukkoon"
+
+#~ msgctxt "Free placement of icons"
+#~ msgid "Free"
+#~ msgstr "Vapaa"
+
+#~ msgid "Name"
+#~ msgstr "Nimi"
+
+#~ msgid "Date modified"
+#~ msgstr "Muokattu"
+
+#~ msgid "Size"
+#~ msgstr "Koko"
+
+#~ msgid "Display Settings"
+#~ msgstr "Näytön asetukset"
+
+#~ msgid "Open Terminal"
+#~ msgstr "Avaa pääte"
+
+#~ msgid "Folder names cannot contain “/”."
+#~ msgstr "Kansion nimi ei voi sisältää merkkiä \"/\"."
+
+#~ msgid "File names cannot contain “/”."
+#~ msgstr "Tiedoston nimi ei voi sisältää merkkiä “/”."
+
+#~ msgid "A folder cannot be called “.”."
+#~ msgstr "Kansion nimi ei voi olla “.”."
+
+#~ msgid "A file cannot be called “.”."
+#~ msgstr "Tiedoston nimi ei voi olla “.”."
+
+#~ msgid "A folder cannot be called “..”."
+#~ msgstr "Kansion nimi ei voi olla “..”."
+
+#~ msgid "A file cannot be called “..”."
+#~ msgstr "Tiedoston nimi ei voi olla “..”."
+
+#~ msgid "A folder with that name already exists."
+#~ msgstr "Kansio samalla nimellä on jo olemassa."
+
+#~ msgid "A file with that name already exists."
+#~ msgstr "Tiedosto samalla nimellä on jo olemassa."
+
+#~ msgid "Folders with “.” at the beginning of their name are hidden."
+#~ msgstr "Kansiot, joiden nimi alkaa merkillä “.”, ovat piilotettuja."
+
+#~ msgid "Files with “.” at the beginning of their name are hidden."
+#~ msgstr "Tiedostot, joiden nimi alkaa merkillä “.”, ovat piilotettuja."
+
+#~ msgid "File name"
+#~ msgstr "Tiedostonimi"
+
+#~ msgid "Rename"
+#~ msgstr "Nimeä uudelleen"
+
+#~ msgid "Sorry, that didn’t work. Please try again."
+#~ msgstr "Valitettavasti se ei kelvannut. Yritä uudelleen."
+
+#~ msgid "Time has expired."
+#~ msgstr "Aikaraja tuli täyteen."
+
+#~ msgid "Checking…"
+#~ msgstr "Tarkistetaan…"
+
+#~ msgid "S_witch User…"
+#~ msgstr "_Vaihda käyttäjää…"
+
+#~ msgid "_Unlock"
+#~ msgstr "Avaa l_ukitus"
+
+#~ msgid "You have the Caps Lock key on."
+#~ msgstr "Caps Lock on päällä."
+
+#~ msgid "Screenshot taken"
+#~ msgstr "Kuvakaappaus otettu"
+
+#~ msgid "Disconnect"
+#~ msgstr "Katkaise yhteys"
+
+#~ msgid "Connect"
+#~ msgstr "Yhdistä"
+
+#~ msgid "Keyboard Settings"
+#~ msgstr "Näppäimistön asetukset"
+
+#~ msgid "Mouse & Touchpad Settings"
+#~ msgstr "Hiiren ja kosketuslevyn asetukset"
+
+#, c-format
+#~ msgid "Desktop file “%s” is missing!"
+#~ msgstr "Työpöytätiedosto “%s” puuttuu!"
+
+#, c-format
+#~ msgid "Failed to start “%s”: %s"
+#~ msgstr "Ei voitu käynnistää “%s”: %s"
+
+#~ msgid "Region & Language Settings"
+#~ msgstr "Kielen ja alueen asetukset"
+
+#~ msgid "System Indicators"
+#~ msgstr "Järjestelmäilmaisimet"
+
+#~ msgid "This applet contains system indicators"
+#~ msgstr "Tämä sovelma sisältää järjestelmäilmaisimet"
+
+#~ msgid "Not Charging"
+#~ msgstr "Ei lataudu"
+
+#~ msgid "Volume changed"
+#~ msgstr "Äänenvoimakkuutta muutettu"
