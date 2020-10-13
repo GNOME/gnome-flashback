@@ -1,3 +1,9 @@
+Version 3.38.0
+==============
+- Configure systemd session using a drop-in.
+- Get session path from logind manager. (#67)
+- Updated translations.
+
 Version 3.37.3
 ==============
 - Update lock screen window on monitor changes. (LP:#1891855)
