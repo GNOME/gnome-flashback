@@ -1,3 +1,8 @@
+Version 3.36.5
+==============
+- Get session path from logind manager. (#67)
+- Updated translations.
+
 Version 3.36.4
 ==============
 - Update lock screen window on monitor changes. (LP:#1891855)
