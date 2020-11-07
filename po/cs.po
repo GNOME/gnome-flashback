@@ -1,14 +1,14 @@
 # Czech translation for gnome-flashback.
 # Copyright (C) 2014 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
-# Marek Černocký <marek@manet.cz>, 2014, 2015, 2016, 2017, 2018.
+# Marek Černocký <marek@manet.cz>, 2014, 2015, 2016, 2017, 2018, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2019-08-16 12:22+0000\n"
-"PO-Revision-Date: 2019-08-16 20:40+0200\n"
+"POT-Creation-Date: 2020-09-30 11:07+0000\n"
+"PO-Revision-Date: 2020-11-07 19:59+0100\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -18,27 +18,27 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Poedit 2.2.3\n"
 
-#: backends/gf-monitor.c:132
+#: backends/gf-monitor.c:133
 msgid "Built-in display"
 msgstr "Vestavěný displej"
 
-#: backends/gf-monitor.c:166
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:386
+#: backends/gf-monitor.c:167
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: backends/gf-monitor.c:168
+#: backends/gf-monitor.c:169
 msgid "Unknown Display"
 msgstr "Neznámý displej"
 
-#: backends/gf-monitor.c:177
+#: backends/gf-monitor.c:178
 #, c-format
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: backends/gf-monitor.c:191
+#: backends/gf-monitor.c:192
 #, c-format
 msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
@@ -46,9 +46,13 @@ msgctxt ""
 msgid "%s %s"
 msgstr "%s %s"
 
-#: data/applications/gnome-flashback.desktop.in:4
+#: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME historické"
+
+#: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
+msgid "Clipboard (GNOME Flashback)"
+msgstr "Schránka (GNOME historické)"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
@@ -62,19 +66,6 @@ msgstr "Spravujte svá síťová připojení"
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:6
 msgid "nm-device-wireless"
 msgstr "nm-device-wireless"
-
-#: data/autostart/gnome-flashback-screensaver.desktop.in:4
-msgid "Screensaver (GNOME Flashback)"
-msgstr "Šetřič obrazovky (GNOME historické)"
-
-#: data/autostart/gnome-flashback-screensaver.desktop.in:5
-msgid "Launch screensaver and locker program"
-msgstr "Spouštějte šetřič obrazovky a zamykací program"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-screensaver.desktop.in:7
-msgid "preferences-desktop-screensaver"
-msgstr "preferences-desktop-screensaver"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -131,34 +122,19 @@ msgstr ""
 "připojování výměnných médií."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:22
-msgid "Bluetooth applet"
-msgstr "Aplet Bluetooth"
+msgid "Clipboard"
+msgstr "Schránka"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:23
-msgid ""
-"If set to true, then GNOME Flashback application will be used to show a "
-"Bluetooth applet."
-msgstr ""
-"Když je zapnuto, bude aplikace GNOME historické použita k zobrazení apletu "
-"Bluetooth."
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:27
+#: gnome-flashback/libdesktop/gf-desktop-window.c:823
+msgid "Desktop"
+msgstr "Plocha"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:28
-msgid "Desktop background"
-msgstr "Pozadí pracovní plochy"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:29
-msgid ""
-"If set to true, then GNOME Flashback application will be used to draw the "
-"desktop background."
-msgstr ""
-"Když je zapnuto, bude aplikace GNOME historické použita k vykreslování "
-"pozadí pracovní plochy."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:34
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:32
 msgid "End session dialog"
 msgstr "Dialogové okno pro ukončení sezení"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:35
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
@@ -166,11 +142,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k zobrazení "
 "dialogového okna pro ukončení sezení."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:40
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "Idle monitor"
 msgstr "Sledovat nežinnost"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:41
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
 msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
@@ -178,15 +154,15 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita ke sledování "
 "činnosti uživatele."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:46
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "Input settings"
 msgstr "Nastavení vstupu"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:51
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
 msgid "Keyboard layouts and input methods"
 msgstr "Rozložení klávesnice a vstupní metody"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:52
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
@@ -194,44 +170,36 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita ke správě rozložení "
 "klávesnice a vstupních metod."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:57
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
 msgid "Notification daemon"
 msgstr "Démon pro upozornění"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:58
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
 msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita ke správě upozornění."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:63
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid "Authentication agent for polkit"
 msgstr "Ověřovací agent pro polkit"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:64
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
 msgid ""
 "This is the same authentication agent that was provided by PolicyKit-gnome."
 msgstr ""
 "Jedná se o toho samého ověřovacího agenta, které poskytuje PolicyKit-gnome."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:69
-msgid "Power applet"
-msgstr "Aplet napájení"
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
+msgid "Root background"
+msgstr "Základní pozadí plochy"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:70
-msgid ""
-"If set to true, then GNOME Flashback application will be used to show a "
-"power applet."
-msgstr ""
-"Když je zapnuto, bude aplikace GNOME historické použita k zobrazení apletu "
-"napájení."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:75
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
 msgid "Screencasts"
 msgstr "Záznamy obrazovky"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:76
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
@@ -239,11 +207,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k pořizování záznamů "
 "obrazovky."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:81
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
 msgid "Screensaver"
 msgstr "Šetřič obrazovky"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:82
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
@@ -251,11 +219,11 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita jako šetřič "
 "obrazovky."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:87
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
 msgid "Screenshots"
 msgstr "Snímky obrazovky"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:88
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
@@ -263,34 +231,20 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita k pořizování snímků "
 "obrazovky."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:93
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid "Shell"
 msgstr "Shell"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:94
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr "Když je zapnuto, bude aplikace GNOME historické použita jako shell."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:99
-msgid "Sound applet"
-msgstr "Aplet zvuku"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:100
-msgid ""
-"If set to true, then GNOME Flashback application will be used to show a "
-"sound applet. This is the same sound applet that used to be a part of GNOME "
-"Control Center."
-msgstr ""
-"Když je zapnuto, bude aplikace GNOME historické použita k zobrazení "
-"zvukového apletu. Jedná se o stejný zvukový aplet, který je použit v části "
-"řídícího centra GNOME."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:105
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
 msgid "Status Notifier Watcher"
 msgstr "Hlídač upozornění na stav"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:106
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -298,11 +252,31 @@ msgstr ""
 "Když je zapnuto, bude aplikace GNOME historické použita jako hlídač "
 "upozornění na stav."
 
-#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:5
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:5
+msgid "Draw desktop background"
+msgstr "Vykreslovat pozadí plochy"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:6
+msgid "If set to true, then GNOME Flashback will draw the desktop background."
+msgstr ""
+"Když je zapnuto, bude aplikace GNOME historické použita k vykreslování "
+"pozadí plochy."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:11
+msgid "Show desktop icons"
+msgstr "Zobrazovat na ploše ikony"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:12
+msgid ""
+"If set to true, then GNOME Flashback will draw the icons on the desktop."
+msgstr ""
+"Když je zapnuto, bude aplikace GNOME historické vykreslovat na ploše ikony."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:5
 msgid "Fade the background on change"
 msgstr "Prolínat při změně pozadí"
 
-#: data/schemas/org.gnome.gnome-flashback.desktop-background.gschema.xml:6
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:6
 msgid ""
 "If set to true, then fade effect will be used to change the desktop "
 "background."
@@ -310,25 +284,107 @@ msgstr ""
 "Když je zapnuto, bude při změně pozadí pracovní plochy použit efekt "
 "prolínání."
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:8
-msgid "The background color"
-msgstr "Barva pozadí"
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:5
+msgid "Icon size"
+msgstr "Velikost ikon"
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:13
-msgid "The foreground color"
-msgstr "Barva popředí"
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:6
+msgid "The size of desktop icons."
+msgstr "Velikost ikon na ploše."
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:18
-msgid "The font family"
-msgstr "Rodina fontu"
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
+#: gnome-flashback/libdesktop/gf-icon-view.c:1332
+msgid "Placement"
+msgstr "Rozmístění"
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:24
-msgid "The font weight"
-msgstr "Tloušťka fontu"
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:12
+msgid ""
+"Can be one of \"auto-arrange-icons\", \"align-icons-to-grid\" or \"free\". "
+"It controls how icons are placed on desktop."
+msgstr ""
+"Může být jedno z „auto-arrange-icons“ (automaticky uspořádat ikony), „align-"
+"icons-to-grid“ (zarovnat ikony do mřížky) nebo „free“ (volně rozložené). "
+"Řídí, jak mají být ikony rozmístěné na ploše."
 
-#: data/schemas/org.gnome.gnome-flashback.input-sources.gschema.xml:29
-msgid "Symbolic"
-msgstr "Symbolický"
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
+#: gnome-flashback/libdesktop/gf-icon-view.c:1338
+msgid "Sort by"
+msgstr "Řadit podle"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:18
+msgid ""
+"Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons "
+"are sorted in \"auto-arrange-icons\" placement."
+msgstr ""
+"Může být jedno z „name“ (název), „data-modified“ (datum změny) nebo "
+"„size“ (velikost). Řídí, jak jsou ikony seřazení, když jsou rozmístěné "
+"stylem „auto-arrange-icons“ (automaticky uspořádat)."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
+msgid "Extra text width"
+msgstr "Dodatečná šířka textu"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:25
+msgid "Extra width for icon text."
+msgstr "Dodatečná šířka pro text k ikonám."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:31
+msgid "Column spacing"
+msgstr "Rozestup sloupců"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:32
+msgid "The amount of space between columns."
+msgstr "Množství volného místa mezi sloupci."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:38
+msgid "Row spacing"
+msgstr "Rozestup řádků"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:39
+msgid "The amount of space between rows."
+msgstr "Množství volného místa mezi řádky."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:44
+msgid "Show home icon"
+msgstr "Zobrazovat ikonu domovské složky"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:45
+msgid ""
+"If this is set to true, an icon linking to the home folder will be put on "
+"the desktop."
+msgstr ""
+"Když je zapnuto, bude na plochu plochu umístěna ikona odkazující na "
+"domovskou složku."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:50
+msgid "Show trash icon"
+msgstr "Zobrazovat ikonu koše"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:51
+msgid ""
+"If this is set to true, an icon linking to the trash will be put on the "
+"desktop."
+msgstr "Když je zapnuto, bude na plochu umístěna ikona odkazující na koš."
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
+msgid "Use IBus icon if available"
+msgstr "Používat ikonu IBus, pokud je dostupná"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:10
+msgid "Icon background color"
+msgstr "Barva pozadí ikon"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:15
+msgid "Icon foreground color"
+msgstr "Barva popředí ikon"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:20
+msgid "Icon font family"
+msgstr "Rodina fontu pro ikony"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:26
+msgid "Icon font weight"
+msgstr "Tloušťka fontu pro ikony"
 
 #: data/ui/gf-confirm-display-change-dialog.ui:57
 msgid "Do you want to keep these display settings?"
@@ -370,15 +426,11 @@ msgstr[0] "Změny v nastavení budou za %d sekundu vráceny zpět!"
 msgstr[1] "Změny v nastavení budou za %d sekundy vráceny zpět!"
 msgstr[2] "Změny v nastavení budou za %d sekund vráceny zpět!"
 
-#: gnome-flashback/gf-main.c:40
-msgid "Enable debugging code"
-msgstr "Povolit ladicí kód"
-
-#: gnome-flashback/gf-main.c:46
+#: gnome-flashback/gf-main.c:43
 msgid "Replace a currently running application"
 msgstr "Nahradit právě běžící aplikaci"
 
-#: gnome-flashback/gf-main.c:52
+#: gnome-flashback/gf-main.c:49
 msgid "Print version and exit"
 msgstr "Vypsat verzi a skončit"
 
@@ -400,13 +452,13 @@ msgstr ""
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:160
+#: system-indicators/si-bluetooth.c:85
 msgid "Turn Off"
 msgstr "Vypnout"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:170
+#: system-indicators/si-bluetooth.c:99
 msgid "Turn On"
 msgstr "Zapnout"
 
@@ -465,7 +517,6 @@ msgid "Microphone"
 msgstr "Mikrofon"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:260
 #, c-format
 msgid "Failed to start Sound Preferences: %s"
 msgstr "Selhalo spuštění předvoleb zvuku: %s"
@@ -475,10 +526,12 @@ msgid "What kind of device did you plug in?"
 msgstr "Jaký druh zařízení jste připojili?"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
+#: system-indicators/si-bluetooth.c:274 system-indicators/si-volume.c:446
 msgid "Sound Settings"
 msgstr "Nastavení zvuku"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:104
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
 msgid "Cancel"
 msgstr "Zrušit"
@@ -618,45 +671,140 @@ msgstr "_Vysunout"
 msgid "_Unmount"
 msgstr "_Odpojit"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:164
-msgid "Send Files"
-msgstr "Odeslat soubory"
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
+#: gnome-flashback/libdesktop/gf-icon-view.c:1320
+msgid "New Folder"
+msgstr "Nová složka"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:175
-msgid "Bluetooth Settings"
-msgstr "Nastavení Bluetooth"
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:112
+msgid "Create"
+msgstr "Vytvořit"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:271
-msgid "Bluetooth active"
-msgstr "Bluetooth je aktivní"
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:140
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "Folder name"
+msgstr "Název složky"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:276
-msgid "Bluetooth disabled"
-msgstr "Bluetooth je zakázáno"
+#: gnome-flashback/libdesktop/gf-home-icon.c:45
+msgid "Home"
+msgstr "Domov"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:282
-#, c-format
-msgid "%d Connected Device"
-msgid_plural "%d Connected Devices"
-msgstr[0] "%d připojené zařízení"
-msgstr[1] "%d připojená zařízení"
-msgstr[2] "%d připojených zařízení"
+#: gnome-flashback/libdesktop/gf-icon.c:508
+msgid "Open"
+msgstr "Otevřít"
 
-#: gnome-flashback/libbluetooth-applet/gf-bluetooth-applet.c:288
-msgid "Not Connected"
-msgstr "Nepřipojeno"
+#: gnome-flashback/libdesktop/gf-icon.c:544
+msgid "Move to Trash"
+msgstr "Přesunout do koše"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:467
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:692
+#: gnome-flashback/libdesktop/gf-icon.c:564
+msgid "Rename..."
+msgstr "Přejmenovat…"
+
+#: gnome-flashback/libdesktop/gf-icon.c:587
+msgid "Empty Trash"
+msgstr "Vyprázdnit koš"
+
+#: gnome-flashback/libdesktop/gf-icon.c:601
+msgid "Properties"
+msgstr "Vlastnosti"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1096
+msgid "Auto arrange icons"
+msgstr "Automaticky uspořádat ikony"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1100
+msgid "Align icons to grid"
+msgstr "Zarovnat ikony do mřížky"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1104
+msgctxt "Free placement of icons"
+msgid "Free"
+msgstr "Volně rozložené"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1224
+msgid "Name"
+msgstr "Název"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1228
+msgid "Date modified"
+msgstr "Datum změny"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1232
+msgid "Size"
+msgstr "Velikost"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1348
+msgid "Change Background"
+msgstr "Změnit pozadí"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1356
+msgid "Display Settings"
+msgstr "Nastavení displeje"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1368
+msgid "Open Terminal"
+msgstr "Otevřít Terminál"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3215
+msgid "Folder names cannot contain “/”."
+msgstr "Název složky nemůže obsahovat „/“."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3217
+msgid "File names cannot contain “/”."
+msgstr "Název souboru nemůže obsahovat „/“."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3224
+msgid "A folder cannot be called “.”."
+msgstr "Složka nemůže být nazvána „.“."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3226
+msgid "A file cannot be called “.”."
+msgstr "Soubor nemůže být nazván „.“."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3233
+msgid "A folder cannot be called “..”."
+msgstr "Složka nemůže být nazvána „..“."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3235
+msgid "A file cannot be called “..”."
+msgstr "Soubor nemůže být nazván „..“."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3251
+msgid "A folder with that name already exists."
+msgstr "Již existuje složka s tímto názvem."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3253
+msgid "A file with that name already exists."
+msgstr "Již existuje soubor s tímto názvem."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3264
+msgid "Folders with “.” at the beginning of their name are hidden."
+msgstr "Složky s „.“ na začátků názvu jsou skryté."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3266
+msgid "Files with “.” at the beginning of their name are hidden."
+msgstr "Soubory s „.“ na začátku názvu jsou skryté."
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "File name"
+msgstr "Název souboru"
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:254
+msgid "Rename"
+msgstr "Přejmenovat"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:514
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:739
 msgid "Log Out"
 msgstr "Odhlásit"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:470
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Kliknutím na Odhlásit ukončíte tyto aplikace a odhlásíte se ze systému."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:472
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
@@ -664,16 +812,16 @@ msgstr[0] "%s bude odhlášen(a) automaticky za %d sekundu."
 msgstr[1] "%s bude odhlášen(a) automaticky za %d sekundy."
 msgstr[2] "%s bude odhlášen(a) automaticky za %d sekund."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:479
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:696
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:743
 msgid "Power Off"
 msgstr "Vypnout"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:482
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:529
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "Kliknutím na Vypnout ukončíte tyto aplikace a vypnete systém."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:484
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:531
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -681,16 +829,16 @@ msgstr[0] "Systém bude vypnut automaticky za %d sekundu."
 msgstr[1] "Systém bude vypnut automaticky za %d sekundy."
 msgstr[2] "Systém bude vypnut automaticky za %d sekund."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:491
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:700
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:538
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:747
 msgid "Restart"
 msgstr "Restartovat"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:494
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:541
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "Kliknutím na Restartovat ukončíte tyto aplikace a restartujete systém."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:496
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:543
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -698,12 +846,12 @@ msgstr[0] "Systém bude restartován automaticky za %d sekundu."
 msgstr[1] "Systém bude restartován automaticky za %d sekundy."
 msgstr[2] "Systém bude restartován automaticky za %d sekund."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:503
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:704
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:550
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:751
 msgid "Hibernate"
 msgstr "Uspat na disk"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:504
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:551
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
@@ -711,12 +859,12 @@ msgstr[0] "Systém bude uspán na disk automaticky za %d sekundu."
 msgstr[1] "Systém bude uspán na disk automaticky za %d sekundy."
 msgstr[2] "Systém bude uspán na disk automaticky za %d sekund."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:511
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:708
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:558
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:755
 msgid "Suspend"
 msgstr "Uspat do paměti"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:512
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:559
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
@@ -724,12 +872,12 @@ msgstr[0] "Systém bude uspán do paměti automaticky za %d sekundu."
 msgstr[1] "Systém bude uspán do paměti automaticky za %d sekundy."
 msgstr[2] "Systém bude uspán do paměti automaticky za %d sekund."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:712
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:566
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:759
 msgid "Hybrid Sleep"
 msgstr "Uspat hybridně"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:520
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:567
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
@@ -753,28 +901,20 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Uzamknout obrazovku"
 
-#: gnome-flashback/libinput-sources/gf-input-sources.c:801
-msgid "Show Keyboard Layout"
-msgstr "Zobrazit rozložení klávesnice"
-
-#: gnome-flashback/libinput-sources/gf-input-sources.c:867
-msgid "Keyboard"
-msgstr "Klávesnice"
-
-#: gnome-flashback/libnotifications/gf-bubble.c:619
-#: gnome-flashback/libnotifications/gf-bubble.c:623
-#: gnome-flashback/libnotifications/nd-notification-box.c:321
-#: gnome-flashback/libnotifications/nd-notification-box.c:323
+#: gnome-flashback/libnotifications/gf-bubble.c:549
+#: gnome-flashback/libnotifications/gf-bubble.c:553
+#: gnome-flashback/libnotifications/nd-notification-box.c:320
+#: gnome-flashback/libnotifications/nd-notification-box.c:322
 msgid "Closes the notification."
 msgstr "Zavírá upozornění."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:643
-#: gnome-flashback/libnotifications/gf-bubble.c:674
-#: gnome-flashback/libnotifications/nd-notification-box.c:339
+#: gnome-flashback/libnotifications/gf-bubble.c:573
+#: gnome-flashback/libnotifications/gf-bubble.c:604
+#: gnome-flashback/libnotifications/nd-notification-box.c:338
 msgid "Notification summary text."
 msgstr "Souhrnný text upozornění."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:693
+#: gnome-flashback/libnotifications/gf-bubble.c:623
 msgid "Notification"
 msgstr "Upozornění"
 
@@ -786,15 +926,15 @@ msgstr "Neplatný identifikátor upozornění"
 msgid "Exceeded maximum number of notifications"
 msgstr "Byl překročen maximální počet upozornění."
 
-#: gnome-flashback/libnotifications/nd-notification-box.c:359
+#: gnome-flashback/libnotifications/nd-notification-box.c:358
 msgid "Notification body text."
 msgstr "Text v těle upozornění."
 
-#: gnome-flashback/libnotifications/nd-queue.c:451
+#: gnome-flashback/libnotifications/nd-queue.c:428
 msgid "Clear all notifications"
 msgstr "Smazat všechna upozornění"
 
-#: gnome-flashback/libnotifications/nd-queue.c:867
+#: gnome-flashback/libnotifications/nd-queue.c:846
 msgid "Notifications"
 msgstr "Upozornění"
 
@@ -805,6 +945,7 @@ msgstr "_Heslo pro uživatele %s:"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:104
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:366
 msgid "_Password:"
 msgstr "_Heslo:"
 
@@ -884,83 +1025,51 @@ msgstr "<small><b>Po_drobnosti</b></small>"
 msgid "_Authenticate"
 msgstr "_Ověřit"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:135
-msgid "Power Settings"
-msgstr "Nastavení napájení"
+#: gnome-flashback/libscreensaver/gf-auth.c:421
+msgid "Your account was given a time limit that has now passed."
+msgstr "Váš účet určit časové omezení, které nyní uběhlo."
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:182
-msgid "Fully Charged"
-msgstr "Plně nabito"
+#: gnome-flashback/libscreensaver/gf-auth.c:425
+msgid "Sorry, that didn’t work. Please try again."
+msgstr "Omlouváme se, ale nefunguje to. Zkuste to prosím znovu."
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:184
-msgid "Empty"
-msgstr "Zcela vybito"
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:177
+msgid "Failed to switch to greeter!"
+msgstr "Selhalo přepnutí na uvítání!"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:190
-msgid "Not Charging"
-msgstr "Nenabíjí se"
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:251
+msgid "Time has expired."
+msgstr "Vypršel čas."
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:192
-#: gnome-flashback/libpower-applet/gf-power-applet.c:197
-msgid "Estimating..."
-msgstr "Odhaduje se…"
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:467
+msgid "Checking…"
+msgstr "Kontroluje se…"
 
-#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:206
-#, c-format
-msgid "%.0f:%02.0f Remaining (%.0f%%)"
-msgstr "Zbývá %.0f:%02.0f (%.0f %%)"
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:492
+msgid "S_witch User…"
+msgstr "_Přepnout uživatele…"
 
-#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: gnome-flashback/libpower-applet/gf-power-applet.c:213
-#, c-format
-msgid "%.0f:%02.0f Until Full (%.0f%%)"
-msgstr "%.0f:%02.0f do nabití (%.0f %%)"
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:501
+msgid "_Unlock"
+msgstr "_Odemknout"
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:228
-msgid "UPS"
-msgstr "Záložní zdroj"
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:712
+msgid "You have the Caps Lock key on."
+msgstr "Máte zapnutou klávesu Caps Lock."
 
-#: gnome-flashback/libpower-applet/gf-power-applet.c:230
-msgid "Battery"
-msgstr "Baterie"
-
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:283
-msgid "Output"
-msgstr "Výstup"
-
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:286
-msgid "Sound Output Volume"
-msgstr "Hlasitost zvukového výstupu"
-
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:293
-msgid "Input"
-msgstr "Vstup"
-
-#: gnome-flashback/libsound-applet/gf-sound-applet.c:296
-msgid "Microphone Volume"
-msgstr "Hlasitost mikrofonu"
-
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:535
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:544
-msgctxt "volume"
-msgid "100%"
-msgstr "100%"
-
-#: gnome-flashback/libsound-applet/gvc-channel-bar.c:539
-msgctxt "volume"
-msgid "Unamplified"
-msgstr "Nezesíleno"
+#: gnome-flashback/libscreenshot/gf-screenshot.c:279
+msgid "Screenshot taken"
+msgstr "Byl pořízen snímky obrazovky"
 
 #. translators:
 #. * The device has been disabled
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1876
+#: gvc/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Zakázáno"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1883
+#: gvc/gvc/gvc-mixer-control.c:1907
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -970,7 +1079,7 @@ msgstr[2] "%u výstupů"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:1893
+#: gvc/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -978,86 +1087,195 @@ msgstr[0] "%u vstup"
 msgstr[1] "%u vstupy"
 msgstr[2] "%u vstupů"
 
-#: gnome-flashback/libsound-applet/gvc/gvc-mixer-control.c:2750
+#: gvc/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Systémové zvuky"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:285
-msgid "_Mute"
-msgstr "_Ztišit"
+#: system-indicators/si-bluetooth.c:91
+msgid "Send Files"
+msgstr "Odeslat soubory"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:294
-msgid "_Sound Preferences"
-msgstr "_Předvolby zvuku"
+#: system-indicators/si-bluetooth.c:228
+msgid "Disconnect"
+msgstr "Odpojit"
 
-#: gnome-flashback/libsound-applet/gvc-stream-status-icon.c:424
+#: system-indicators/si-bluetooth.c:241
+msgid "Connect"
+msgstr "Připojit"
+
+#: system-indicators/si-bluetooth.c:256
+msgid "Keyboard Settings"
+msgstr "Nastavení klávesnice"
+
+#: system-indicators/si-bluetooth.c:264
+msgid "Mouse & Touchpad Settings"
+msgstr "Nastavení myši a touchpadu"
+
+#: system-indicators/si-bluetooth.c:328
+msgid "Bluetooth Settings"
+msgstr "Nastavení Bluetooth"
+
+#: system-indicators/si-bluetooth.c:448
+#, c-format
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "%d připojené zařízení"
+msgstr[1] "%d připojená zařízení"
+msgstr[2] "%d připojených zařízení"
+
+#: system-indicators/si-bluetooth.c:455
+msgid "Not Connected"
+msgstr "Nepřipojeno"
+
+#: system-indicators/si-desktop-menu-item.c:80
+#, c-format
+msgid "Desktop file “%s” is missing!"
+msgstr "Schází soubor aplikace „%s“!"
+
+#: system-indicators/si-desktop-menu-item.c:95
+#, c-format
+msgid "Failed to start “%s”: %s"
+msgstr "Selhalo spuštění „%s“: %s"
+
+#: system-indicators/si-input-sources.c:852
+msgid "Show Keyboard Layout"
+msgstr "Zobrazit rozložení klávesnice"
+
+#: system-indicators/si-input-sources.c:883
+msgid "Region & Language Settings"
+msgstr "Nastavení regionu a jazyka"
+
+#: system-indicators/si-module.c:33
+msgid "System Indicators"
+msgstr "Systémové indikátory"
+
+#: system-indicators/si-module.c:34
+msgid "This applet contains system indicators"
+msgstr "Tento aplet obsahuje systémové indikátory"
+
+#: system-indicators/si-power.c:63
+msgid "UPS"
+msgstr "Záložní zdroj"
+
+#: system-indicators/si-power.c:65
+msgid "Battery"
+msgstr "Baterie"
+
+#: system-indicators/si-power.c:81
+msgid "Fully Charged"
+msgstr "Plně nabito"
+
+#: system-indicators/si-power.c:83
+msgid "Empty"
+msgstr "Zcela vybito"
+
+#: system-indicators/si-power.c:89
+msgid "Not Charging"
+msgstr "Nenabíjí se"
+
+#: system-indicators/si-power.c:91 system-indicators/si-power.c:96
+msgid "Estimating..."
+msgstr "Odhaduje se…"
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: system-indicators/si-power.c:105
+#, c-format
+msgid "%.0f:%02.0f Remaining (%.0f%%)"
+msgstr "Zbývá %.0f:%02.0f (%.0f %%)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: system-indicators/si-power.c:112
+#, c-format
+msgid "%.0f:%02.0f Until Full (%.0f%%)"
+msgstr "%.0f:%02.0f do nabití (%.0f %%)"
+
+#: system-indicators/si-power.c:146
+msgid "Power Settings"
+msgstr "Nastavení napájení"
+
+#: system-indicators/si-volume.c:245
+msgid "Volume changed"
+msgstr "Byla změněna hlasitost"
+
+#: system-indicators/si-volume.c:266
+msgid "Mute"
+msgstr "Ztišit"
+
+#: system-indicators/si-volume.c:523
+msgid "Input"
+msgstr "Vstup"
+
+#: system-indicators/si-volume.c:523
+msgid "Output"
+msgstr "Výstup"
+
+#: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Ztišeno"
 
-#~ msgid "GNOME Flashback Initialization"
-#~ msgstr "Inicializace GNOME historické"
+msgid "Launch screensaver and locker program"
+msgstr "Spouštějte šetřič obrazovky a zamykací program"
 
-#~ msgid "Workarounds"
-#~ msgstr "Náhradní řešení"
+msgid "Symbolic"
+msgstr "Symbolický"
 
-#~ msgid ""
-#~ "If set to true, then GNOME Flashback application will use workarounds to "
-#~ "fix bugs."
-#~ msgstr ""
-#~ "Když je zapnuto, bude aplikace GNOME historické používat náhradní řešení "
-#~ "k opravám chyb."
+msgid "Enable debugging code"
+msgstr "Povolit ladicí kód"
 
-#~ msgid "Fix missing app menu button"
-#~ msgstr "Opravovat chybějící tlačítko aplikační nabídky"
+msgid "Sound Output Volume"
+msgstr "Hlasitost zvukového výstupu"
 
-#~ msgid ""
-#~ "If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
-#~ "FALSE. Disable if you want to use gnome-settings-daemon overrides in "
-#~ "xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
-#~ msgstr ""
-#~ "Když je zapnuto, gnome-flashback vynutí nastavení Gtk/ShellShowsAppMenu "
-#~ "na FALSE. Vypněte, když chcete používat démona gnome-settings-daemon k "
-#~ "přepisování v zásuvném modulu xsettings pro vlastnost „Gtk/"
-#~ "ShellShowsAppMenu“."
+msgctxt "volume"
+msgid "100%"
+msgstr "100%"
 
-#~ msgid "Initialize GNOME Flashback session"
-#~ msgstr "Inicializovat sezení GNOME historické"
+msgctxt "volume"
+msgid "Unamplified"
+msgstr "Nezesíleno"
 
-#~ msgid "Fix wrong button layout"
-#~ msgstr "Opravovat nesprávné rozložení tlačítek"
+msgid "Workarounds"
+msgstr "Náhradní řešení"
 
-#~ msgid ""
-#~ "If set to non-empty string, then gnome-flashback will force Gtk/"
-#~ "DecorationLayout to value set by this setting. Set to empty string if you "
-#~ "want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
-#~ "DecorationLayout' property."
-#~ msgstr ""
-#~ "Když je nastaveno na neprázdný řetězec, gnome-flashback vynutí nastavení "
-#~ "Gtk/DecorationLayout na hodnotu podle tohoto nastavení. Nastavte na "
-#~ "prázdný řetězec, když chcete používat démona gnome-settings-daemon k "
-#~ "přepisování v zásuvném modulu xsettings pro vlastnost „Gtk/"
-#~ "DecorationLayout“."
+msgid "Fix missing app menu button"
+msgstr "Opravovat chybějící tlačítko aplikační nabídky"
 
-#~ msgid "Display configuration"
-#~ msgstr "Nastavení displeje"
+msgid ""
+"If set to true, then gnome-flashback will force Gtk/ShellShowsAppMenu to "
+"FALSE. Disable if you want to use gnome-settings-daemon overrides in "
+"xsettings plugin for 'Gtk/ShellShowsAppMenu' property."
+msgstr ""
+"Když je zapnuto, gnome-flashback vynutí nastavení Gtk/ShellShowsAppMenu na "
+"FALSE. Vypněte, když chcete používat démona gnome-settings-daemon k "
+"přepisování v zásuvném modulu xsettings pro vlastnost „Gtk/"
+"ShellShowsAppMenu“."
 
-#~ msgid ""
-#~ "If set to true, then GNOME Flashback application will be used to provide "
-#~ "the display configuration."
-#~ msgstr ""
-#~ "Když je zapnuto, bude aplikace GNOME historické použita k poskytnutí "
-#~ "nastavení displeje."
+msgid "Fix wrong button layout"
+msgstr "Opravovat nesprávné rozložení tlačítek"
 
-#~ msgid ""
-#~ "This contains the background color for the status icon that is shown in "
-#~ "the system tray."
-#~ msgstr ""
-#~ "Obsahuje barvu pozadí pro stavovou ikonu, která se zobrazuje v systémové "
-#~ "liště."
+msgid ""
+"If set to non-empty string, then gnome-flashback will force Gtk/"
+"DecorationLayout to value set by this setting. Set to empty string if you "
+"want to use gnome-settings-daemon overrides in xsettings plugin for 'Gtk/"
+"DecorationLayout' property."
+msgstr ""
+"Když je nastaveno na neprázdný řetězec, gnome-flashback vynutí nastavení Gtk/"
+"DecorationLayout na hodnotu podle tohoto nastavení. Nastavte na prázdný "
+"řetězec, když chcete používat démona gnome-settings-daemon k přepisování v "
+"zásuvném modulu xsettings pro vlastnost „Gtk/DecorationLayout“."
 
-#~ msgid ""
-#~ "This contains the foreground color for the status icon that is shown in "
-#~ "the system tray."
-#~ msgstr ""
-#~ "Obsahuje barvu pozadí pro stavovou ikonu, která se zobrazuje v systémové "
-#~ "liště."
+msgid "Display configuration"
+msgstr "Nastavení displeje"
+
+msgid ""
+"This contains the background color for the status icon that is shown in the "
+"system tray."
+msgstr ""
+"Obsahuje barvu pozadí pro stavovou ikonu, která se zobrazuje v systémové "
+"liště."
+
+msgid ""
+"This contains the foreground color for the status icon that is shown in the "
+"system tray."
+msgstr ""
+"Obsahuje barvu pozadí pro stavovou ikonu, která se zobrazuje v systémové "
+"liště."
