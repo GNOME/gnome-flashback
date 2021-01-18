@@ -155,7 +155,7 @@ msgid ""
 "activity monitoring."
 msgstr ""
 "Si s'activa, s'utilitzarà l'aplicació GNOME Flashback per al seguiment de "
-"l'activitat de l'usuari. "
+"l'activitat de l'usuari."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "Input settings"
@@ -633,7 +633,7 @@ msgid ""
 "You have just inserted a medium with software intended to be automatically "
 "started."
 msgstr ""
-"Acabeu d'introduir un suport amb programari pensat per iniciar-se "
+"Acabeu d'introduir un suport amb programari pensat per a iniciar-se "
 "automàticament."
 
 #. fallback to generic greeting
@@ -806,7 +806,7 @@ msgstr "Sortida"
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
-"Feu clic a «Sortida» per tancar aquestes aplicacions i sortir del sistema."
+"Feu clic a «Sortida» per a tancar aquestes aplicacions i sortir del sistema."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
 #, c-format
@@ -823,7 +823,7 @@ msgstr "Apaga"
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:529
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
-"Feu clic a «Apaga» per tancar aquestes aplicacions i apagar el sistema."
+"Feu clic a «Apaga» per a tancar aquestes aplicacions i apagar el sistema."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:531
 #, c-format
@@ -840,7 +840,7 @@ msgstr "Reinicia"
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:541
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
-"Feu clic a «Reinicia» per tancar aquestes aplicacions i tornar a iniciar el "
+"Feu clic a «Reinicia» per a tancar aquestes aplicacions i tornar a iniciar el "
 "sistema."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:543
@@ -1009,7 +1009,7 @@ msgstr "Proveïdor:"
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:614
 #, c-format
 msgid "Click to open %s"
-msgstr "Feu clic per obrir %s"
+msgstr "Feu clic per a obrir %s"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:8
 msgid "Authenticate"
@@ -1186,7 +1186,7 @@ msgstr "%.0f:%02.0f restant (%.0f%%)"
 #: system-indicators/si-power.c:112
 #, c-format
 msgid "%.0f:%02.0f Until Full (%.0f%%)"
-msgstr "%.0f:%02.0f per carregar (%.0f%%)"
+msgstr "%.0f:%02.0f per a carregar (%.0f%%)"
 
 #: system-indicators/si-power.c:146
 msgid "Power Settings"
