@@ -48,7 +48,9 @@ gf_monitor_config_new (GfMonitor     *monitor,
 void
 gf_monitor_config_free (GfMonitorConfig *config)
 {
-  gf_monitor_spec_free (config->monitor_spec);
+  if (config->monitor_spec != NULL)
+    gf_monitor_spec_free (config->monitor_spec);
+
   g_free (config->mode_spec);
   g_free (config);
 }
