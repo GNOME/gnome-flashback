@@ -2413,9 +2413,9 @@ gf_monitor_manager_read_current_state (GfMonitorManager *manager)
 }
 
 void
-gf_monitor_manager_on_hotplug (GfMonitorManager *manager)
+gf_monitor_manager_reconfigure (GfMonitorManager *self)
 {
-  gf_monitor_manager_ensure_configured (manager);
+  gf_monitor_manager_ensure_configured (self);
 }
 
 gboolean

@@ -1176,7 +1176,7 @@ gf_monitor_manager_xrandr_handle_xevent (GfMonitorManagerXrandr *xrandr,
 
   if (resources->timestamp < resources->configTimestamp)
     {
-      gf_monitor_manager_on_hotplug (manager);
+      gf_monitor_manager_reconfigure (manager);
     }
   else
     {
