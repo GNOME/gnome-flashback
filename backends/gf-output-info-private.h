@@ -23,6 +23,7 @@
 #define GF_OUTPUT_INFO_PRIVATE_H
 
 #include <glib-object.h>
+#include <stdint.h>
 
 #include "gf-monitor-manager-enums-private.h"
 #include "gf-monitor-manager-types-private.h"
@@ -32,14 +33,14 @@ G_BEGIN_DECLS
 
 typedef struct
 {
-  guint32 group_id;
-  guint32 flags;
-  guint32 max_h_tiles;
-  guint32 max_v_tiles;
-  guint32 loc_h_tile;
-  guint32 loc_v_tile;
-  guint32 tile_w;
-  guint32 tile_h;
+  uint32_t group_id;
+  uint32_t flags;
+  uint32_t max_h_tiles;
+  uint32_t max_v_tiles;
+  uint32_t loc_h_tile;
+  uint32_t loc_v_tile;
+  uint32_t tile_w;
+  uint32_t tile_h;
 } GfTileInfo;
 
 typedef struct
