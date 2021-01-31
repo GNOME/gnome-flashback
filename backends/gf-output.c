@@ -29,6 +29,8 @@
 #include "config.h"
 #include "gf-output-private.h"
 
+#include "gf-crtc-private.h"
+
 typedef struct
 {
   uint64_t      id;
@@ -278,7 +280,7 @@ gf_output_get_name (GfOutput *self)
 }
 
 void
-gf_output_assign_crtc (GfOutput                *self,
+gf_output_assign_crtc (GfOutput                 *self,
                        GfCrtc                   *crtc,
                        const GfOutputAssignment *output_assignment)
 {
@@ -288,7 +290,11 @@ gf_output_assign_crtc (GfOutput                *self,
 
   g_assert (crtc);
 
+  gf_output_unassign_crtc (self);
+
   g_set_object (&priv->crtc, crtc);
+
+  gf_crtc_assign_output (crtc, self);
 
   priv->is_primary = output_assignment->is_primary;
   priv->is_presentation = output_assignment->is_presentation;
@@ -302,7 +308,11 @@ gf_output_unassign_crtc (GfOutput *output)
 
   priv = gf_output_get_instance_private (output);
 
-  g_clear_object (&priv->crtc);
+  if (priv->crtc != NULL)
+    {
+      gf_crtc_unassign_output (priv->crtc, output);
+      g_clear_object (&priv->crtc);
+    }
 
   priv->is_primary = FALSE;
   priv->is_presentation = FALSE;

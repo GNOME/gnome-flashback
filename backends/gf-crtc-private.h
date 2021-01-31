@@ -67,6 +67,14 @@ GfGpu              *gf_crtc_get_gpu            (GfCrtc             *self);
 
 GfMonitorTransform  gf_crtc_get_all_transforms (GfCrtc             *self);
 
+const GList        *gf_crtc_get_outputs        (GfCrtc             *self);
+
+void                gf_crtc_assign_output      (GfCrtc             *self,
+                                                GfOutput           *output);
+
+void                gf_crtc_unassign_output    (GfCrtc             *self,
+                                                GfOutput           *output);
+
 void                gf_crtc_set_config         (GfCrtc             *self,
                                                 GfRectangle        *layout,
                                                 GfCrtcMode         *mode,

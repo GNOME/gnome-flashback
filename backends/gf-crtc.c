@@ -29,6 +29,8 @@ typedef struct
 
   GfMonitorTransform  all_transforms;
 
+  GList              *outputs;
+
   GfCrtcConfig       *config;
 } GfCrtcPrivate;
 
@@ -57,6 +59,7 @@ gf_crtc_finalize (GObject *object)
   priv = gf_crtc_get_instance_private (crtc);
 
   g_clear_pointer (&priv->config, g_free);
+  g_clear_pointer (&priv->outputs, g_list_free);
 
   G_OBJECT_CLASS (gf_crtc_parent_class)->finalize (object);
 }
@@ -209,6 +212,40 @@ gf_crtc_get_all_transforms (GfCrtc *self)
   priv = gf_crtc_get_instance_private (self);
 
   return priv->all_transforms;
+}
+
+const GList *
+gf_crtc_get_outputs (GfCrtc *self)
+{
+  GfCrtcPrivate *priv;
+
+  priv = gf_crtc_get_instance_private (self);
+
+  return priv->outputs;
+}
+
+void
+gf_crtc_assign_output (GfCrtc   *self,
+                       GfOutput *output)
+{
+  GfCrtcPrivate *priv;
+
+  priv = gf_crtc_get_instance_private (self);
+
+  priv->outputs = g_list_append (priv->outputs, output);
+}
+
+void
+gf_crtc_unassign_output (GfCrtc   *self,
+                         GfOutput *output)
+{
+  GfCrtcPrivate *priv;
+
+  priv = gf_crtc_get_instance_private (self);
+
+  g_return_if_fail (g_list_find (priv->outputs, output));
+
+  priv->outputs = g_list_remove (priv->outputs, output);
 }
 
 void
