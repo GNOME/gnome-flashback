@@ -37,6 +37,8 @@ typedef struct
 
   GfOutputInfo *info;
 
+  GfMonitor    *monitor;
+
   /* The CRTC driving this output, NULL if the output is not enabled */
   GfCrtc       *crtc;
 
@@ -238,6 +240,31 @@ gf_output_get_info (GfOutput *self)
   priv = gf_output_get_instance_private (self);
 
   return priv->info;
+}
+
+GfMonitor *
+gf_output_get_monitor (GfOutput *self)
+{
+  GfOutputPrivate *priv;
+
+  priv = gf_output_get_instance_private (self);
+
+  g_warn_if_fail (priv->monitor);
+
+  return priv->monitor;
+}
+
+void
+gf_output_set_monitor (GfOutput  *self,
+                       GfMonitor *monitor)
+{
+  GfOutputPrivate *priv;
+
+  priv = gf_output_get_instance_private (self);
+
+  g_warn_if_fail (!priv->monitor);
+
+  priv->monitor = monitor;
 }
 
 const char *

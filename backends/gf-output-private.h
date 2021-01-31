@@ -55,6 +55,11 @@ GfGpu              *gf_output_get_gpu                   (GfOutput               
 
 const GfOutputInfo *gf_output_get_info                  (GfOutput                 *self);
 
+GfMonitor          *gf_output_get_monitor               (GfOutput                 *self);
+
+void                gf_output_set_monitor               (GfOutput                 *self,
+                                                         GfMonitor                *monitor);
+
 const char         *gf_output_get_name                  (GfOutput                 *self);
 
 void                gf_output_assign_crtc               (GfOutput                 *self,

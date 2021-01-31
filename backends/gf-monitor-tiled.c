@@ -549,6 +549,7 @@ add_tiled_monitor_outputs (GfGpu          *gpu,
         continue;
 
       gf_monitor_append_output (monitor, output);
+      gf_output_set_monitor (output, GF_MONITOR (tiled));
     }
 }
 
