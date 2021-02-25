@@ -875,7 +875,7 @@ gf_output_xrandr_new (GfGpuXrandr   *gpu_xrandr,
   output_info_init_backlight_limits_xrandr (output_info, xdisplay, output_id);
 
   output = g_object_new (GF_TYPE_OUTPUT_XRANDR,
-                         "id", output_id,
+                         "id", (uint64_t) output_id,
                          "gpu", gpu_xrandr,
                          "info", output_info,
                          NULL);

@@ -145,7 +145,7 @@ gf_crtc_xrandr_new (GfGpuXrandr        *gpu_xrandr,
   all_transforms = gf_monitor_transform_from_xrandr_all (xrandr_crtc->rotations);
 
   crtc_xrandr = g_object_new (GF_TYPE_CRTC_XRANDR,
-                              "id", crtc_id,
+                              "id", (uint64_t) crtc_id,
                               "gpu", gpu,
                               "all-transforms", all_transforms,
                               NULL);

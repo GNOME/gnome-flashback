@@ -157,7 +157,7 @@ gf_gpu_xrandr_read_current (GfGpu   *gpu,
       crtc_mode_info->flags = xmode->modeFlags;
 
       mode = g_object_new (GF_TYPE_CRTC_MODE,
-                           "id", xmode->id,
+                           "id", (uint64_t) xmode->id,
                            "name", crtc_mode_name,
                            "info", crtc_mode_info,
                            NULL);
