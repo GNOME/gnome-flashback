@@ -237,8 +237,8 @@ icon_from_data (GVariant *icon_data)
                 return NULL;
         }
 
-        data = (guchar *) g_memdup (g_variant_get_data (data_variant),
-                                    g_variant_get_size (data_variant));
+        data = g_memdup2 (g_variant_get_data (data_variant),
+                          g_variant_get_size (data_variant));
 
         pixbuf = gdk_pixbuf_new_from_data (data,
                                            GDK_COLORSPACE_RGB,
