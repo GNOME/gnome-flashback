@@ -930,9 +930,9 @@ gf_monitor_manager_xrandr_get_crtc_gamma (GfMonitorManager  *manager,
   gamma = XRRGetCrtcGamma (xrandr->xdisplay, (XID) gf_crtc_get_id (crtc));
 
   *size = gamma->size;
-  *red = g_memdup (gamma->red, sizeof (gushort) * gamma->size);
-  *green = g_memdup (gamma->green, sizeof (gushort) * gamma->size);
-  *blue = g_memdup (gamma->blue, sizeof (gushort) * gamma->size);
+  *red = g_memdup2 (gamma->red, sizeof (gushort) * gamma->size);
+  *green = g_memdup2 (gamma->green, sizeof (gushort) * gamma->size);
+  *blue = g_memdup2 (gamma->blue, sizeof (gushort) * gamma->size);
 
   XRRFreeGamma (gamma);
 }
@@ -1069,8 +1069,8 @@ gf_monitor_manager_xrandr_calculate_supported_scales (GfMonitorManager          
   ensure_supported_monitor_scales (manager);
 
   *n_supported_scales = xrandr->n_supported_scales;
-  return g_memdup (xrandr->supported_scales,
-                   xrandr->n_supported_scales * sizeof (gfloat));
+  return g_memdup2 (xrandr->supported_scales,
+                    xrandr->n_supported_scales * sizeof (gfloat));
 }
 
 static GfMonitorManagerCapability

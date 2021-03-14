@@ -39,7 +39,7 @@ gf_monitor_config_new (GfMonitor     *monitor,
 
   config = g_new0 (GfMonitorConfig, 1);
   config->monitor_spec = gf_monitor_spec_clone (spec);
-  config->mode_spec = g_memdup (mode_spec, sizeof (GfMonitorModeSpec));
+  config->mode_spec = g_memdup2 (mode_spec, sizeof (GfMonitorModeSpec));
   config->enable_underscanning = gf_monitor_is_underscanning (monitor);
 
   return config;

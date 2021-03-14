@@ -469,7 +469,7 @@ clone_monitor_config_list (GList *configs_in)
       config_out = g_new0 (GfMonitorConfig, 1);
       *config_out = (GfMonitorConfig) {
         .monitor_spec = gf_monitor_spec_clone (config_in->monitor_spec),
-        .mode_spec = g_memdup (config_in->mode_spec, sizeof (GfMonitorModeSpec)),
+        .mode_spec = g_memdup2 (config_in->mode_spec, sizeof (GfMonitorModeSpec)),
         .enable_underscanning = config_in->enable_underscanning
       };
 
@@ -495,7 +495,7 @@ clone_logical_monitor_config_list (GList *configs_in)
 
       config_in = l->data;
 
-      config_out = g_memdup (config_in, sizeof (GfLogicalMonitorConfig));
+      config_out = g_memdup2 (config_in, sizeof (GfLogicalMonitorConfig));
 
       config_list = clone_monitor_config_list (config_in->monitor_configs);
       config_out->monitor_configs = config_list;
