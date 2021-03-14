@@ -1199,7 +1199,7 @@ msgstr "Byla změněna hlasitost"
 
 #: system-indicators/si-volume.c:266
 msgid "Mute"
-msgstr "Ztišit"
+msgstr "Vypnout zvuk"
 
 #: system-indicators/si-volume.c:523
 msgid "Input"
@@ -1211,7 +1211,7 @@ msgstr "Výstup"
 
 #: system-indicators/si-volume.c:534
 msgid "Muted"
-msgstr "Ztišeno"
+msgstr "Vypnutý zvuk"
 
 msgid "Launch screensaver and locker program"
 msgstr "Spouštějte šetřič obrazovky a zamykací program"
