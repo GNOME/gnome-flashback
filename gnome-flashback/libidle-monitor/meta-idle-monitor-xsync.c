@@ -238,7 +238,7 @@ free_watch (gpointer data)
     }
 
   g_object_unref (monitor);
-  g_slice_free (MetaIdleMonitorWatchXSync, watch_xsync);
+  g_free (watch_xsync);
 }
 
 static MetaIdleMonitorWatch *
@@ -252,7 +252,7 @@ meta_idle_monitor_xsync_make_watch (MetaIdleMonitor           *monitor,
   MetaIdleMonitorWatchXSync *watch_xsync;
   MetaIdleMonitorWatch *watch;
 
-  watch_xsync = g_slice_new0 (MetaIdleMonitorWatchXSync);
+  watch_xsync = g_new0 (MetaIdleMonitorWatchXSync, 1);
   watch = (MetaIdleMonitorWatch *) watch_xsync;
 
   watch->monitor = monitor;
