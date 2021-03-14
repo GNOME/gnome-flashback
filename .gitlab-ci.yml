@@ -46,7 +46,7 @@ variables:
                   xkb-data
 
 menu:
-  image: ubuntu:devel
+  image: ubuntu:groovy
   stage: validate
   except:
     - tags
@@ -59,7 +59,7 @@ menu:
       data/menus/gnome-flashback-applications.menu
 
 ubuntu:
-  image: ubuntu:devel
+  image: ubuntu:groovy
   stage: build
   except:
     - tags
@@ -72,7 +72,7 @@ ubuntu:
     - make distcheck
 
 coverity:
-  image: ubuntu:devel
+  image: ubuntu:groovy
   stage: analysis
   when: manual
   before_script:
