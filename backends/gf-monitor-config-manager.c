@@ -776,7 +776,7 @@ assign_monitor_crtc (GfMonitor          *monitor,
   crtc_layout.width = (int) roundf (width);
   crtc_layout.height = (int) roundf (height);
 
-  crtc_assignment = g_slice_new0 (GfCrtcAssignment);
+  crtc_assignment = g_new0 (GfCrtcAssignment, 1);
   *crtc_assignment = (GfCrtcAssignment) {
     .crtc = crtc,
     .mode = crtc_mode,
@@ -804,7 +804,7 @@ assign_monitor_crtc (GfMonitor          *monitor,
   else
     assign_output_as_presentation = FALSE;
 
-  output_assignment = g_slice_new0 (GfOutputAssignment);
+  output_assignment = g_new0 (GfOutputAssignment, 1);
   *output_assignment = (GfOutputAssignment) {
     .output = output,
     .is_primary = assign_output_as_primary,
@@ -951,13 +951,13 @@ static void
 gf_crtc_assignment_free (GfCrtcAssignment *assignment)
 {
   g_ptr_array_free (assignment->outputs, TRUE);
-  g_slice_free (GfCrtcAssignment, assignment);
+  g_free (assignment);
 }
 
 static void
 gf_output_assignment_free (GfOutputAssignment *assignment)
 {
-  g_slice_free (GfOutputAssignment, assignment);
+  g_free (assignment);
 }
 
 static void
