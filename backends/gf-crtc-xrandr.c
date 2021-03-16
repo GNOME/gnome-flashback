@@ -135,12 +135,22 @@ gf_crtc_xrandr_new (GfGpuXrandr        *gpu_xrandr,
 
 {
   GfGpu *gpu;
+  GfBackend *backend;
+  GfMonitorManager *monitor_manager;
+  GfMonitorManagerXrandr *monitor_manager_xrandr;
+  Display *xdisplay;
   GfMonitorTransform all_transforms;
   GfCrtcXrandr *crtc_xrandr;
+  XRRPanning *panning;
   unsigned int i;
   GList *modes;
 
   gpu = GF_GPU (gpu_xrandr);
+
+  backend = gf_gpu_get_backend (gpu);
+  monitor_manager = gf_backend_get_monitor_manager (backend);
+  monitor_manager_xrandr = GF_MONITOR_MANAGER_XRANDR (monitor_manager);
+  xdisplay = gf_monitor_manager_xrandr_get_xdisplay (monitor_manager_xrandr);
 
   all_transforms = gf_monitor_transform_from_xrandr_all (xrandr_crtc->rotations);
 
@@ -150,13 +160,28 @@ gf_crtc_xrandr_new (GfGpuXrandr        *gpu_xrandr,
                               "all-transforms", all_transforms,
                               NULL);
 
-  crtc_xrandr->rect = (GfRectangle) {
-    .x = xrandr_crtc->x,
-    .y = xrandr_crtc->y,
-    .width = xrandr_crtc->width,
-    .height = xrandr_crtc->height,
-  };
   crtc_xrandr->transform = gf_monitor_transform_from_xrandr (xrandr_crtc->rotation);
+
+  panning = XRRGetPanning (xdisplay, resources, crtc_id);
+  if (panning && panning->width > 0 && panning->height > 0)
+    {
+      crtc_xrandr->rect = (GfRectangle) {
+        .x = panning->left,
+        .y = panning->top,
+        .width = panning->width,
+        .height = panning->height
+      };
+    }
+  else
+    {
+      crtc_xrandr->rect = (GfRectangle) {
+        .x = xrandr_crtc->x,
+        .y = xrandr_crtc->y,
+        .width = xrandr_crtc->width,
+        .height = xrandr_crtc->height
+      };
+    }
+  XRRFreePanning (panning);
 
   modes = gf_gpu_get_modes (gpu);
   for (i = 0; i < (guint) resources->nmode; i++)
