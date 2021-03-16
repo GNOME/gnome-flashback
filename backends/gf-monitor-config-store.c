@@ -1132,6 +1132,9 @@ read_config_file (GfMonitorConfigStore  *config_store,
   ConfigParser parser;
   GMarkupParseContext *parse_context;
 
+  buffer = NULL;
+  size = 0;
+
   if (!g_file_load_contents (file, NULL, &buffer, &size, NULL, error))
     return FALSE;
 
