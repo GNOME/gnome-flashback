@@ -1480,6 +1480,8 @@ gf_monitor_config_store_save (GfMonitorConfigStore *config_store)
                                  G_FILE_CREATE_REPLACE_DESTINATION,
                                  config_store->save_cancellable,
                                  saved_cb, data);
+
+  /* coverity[leaked_storage : FALSE] */
 }
 
 static void
