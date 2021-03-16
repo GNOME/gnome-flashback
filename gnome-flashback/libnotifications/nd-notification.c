@@ -38,7 +38,6 @@ struct _NdNotification {
         GObject       parent;
 
         gboolean      is_queued;
-        gboolean      is_closed;
 
         gint64        update_time;
 
@@ -448,14 +447,6 @@ nd_notification_get_is_queued (NdNotification *notification)
 }
 
 gboolean
-nd_notification_get_is_closed (NdNotification *notification)
-{
-        g_return_val_if_fail (ND_IS_NOTIFICATION (notification), FALSE);
-
-        return notification->is_closed;
-}
-
-gboolean
 nd_notification_get_is_transient (NdNotification *notification)
 {
         return notification->transient;
@@ -536,8 +527,6 @@ nd_notification_close (NdNotification            *notification,
         g_object_ref (notification);
         g_signal_emit (notification, signals[CLOSED], 0, reason);
         g_object_unref (notification);
-
-        notification->is_closed = TRUE;
 }
 
 void

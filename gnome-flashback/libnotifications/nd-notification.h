@@ -58,7 +58,6 @@ void                  nd_notification_set_is_queued       (NdNotification *notif
                                                            gboolean        is_queued);
 gboolean              nd_notification_get_is_queued       (NdNotification *notification);
 
-gboolean              nd_notification_get_is_closed       (NdNotification *notification);
 gint64                nd_notification_get_update_time     (NdNotification *notification);
 
 guint                 nd_notification_get_id              (NdNotification *notification);
