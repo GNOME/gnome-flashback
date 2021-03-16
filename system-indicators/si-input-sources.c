@@ -280,6 +280,7 @@ ensure_file_exists (const char *icon_theme_path,
   GFile *file;
   GFile *parent;
   GString *svg;
+  GError *error;
 
   filename = g_strdup_printf ("%s.svg", icon_name);
   path = g_build_filename (icon_theme_path,
@@ -311,15 +312,21 @@ ensure_file_exists (const char *icon_theme_path,
                       symbolic);
 
   g_file_make_directory_with_parents (parent, NULL, NULL);
-  g_file_replace_contents (file,
-                           svg->str,
-                           svg->len,
-                           NULL,
-                           FALSE,
-                           G_FILE_CREATE_NONE,
-                           NULL,
-                           NULL,
-                           NULL);
+
+  error = NULL;
+  if (!g_file_replace_contents (file,
+                                svg->str,
+                                svg->len,
+                                NULL,
+                                FALSE,
+                                G_FILE_CREATE_NONE,
+                                NULL,
+                                NULL,
+                                &error))
+    {
+      g_warning ("%s", error->message);
+      g_clear_error (&error);
+    }
 
   utime (icon_theme_path, NULL);
   gtk_icon_theme_rescan_if_needed (gtk_icon_theme_get_default ());
