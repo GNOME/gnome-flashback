@@ -638,6 +638,8 @@ load_config_file (GFile   *file,
   GMarkupParseContext *context;
 
   contents = NULL;
+  size = 0;
+
   if (!g_file_load_contents (file, NULL, &contents, &size, NULL, error))
     return FALSE;
 
