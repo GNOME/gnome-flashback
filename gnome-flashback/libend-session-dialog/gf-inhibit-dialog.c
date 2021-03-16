@@ -514,12 +514,23 @@ update_dialog_text (GfInhibitDialog *dialog)
       title = _("Log Out");
 
       if (inhibited)
-        description = g_strdup (_("Click Log Out to quit these applications and log out of the system."));
+        {
+          description = g_strdup (_("Click Log Out to quit these applications and log out of the system."));
+        }
       else
-        description = g_strdup_printf (ngettext ("%s will be logged out automatically in %d second.",
-                                                 "%s will be logged out automatically in %d seconds.",
-                                                 seconds),
-                                       get_user_name (), seconds);
+        {
+          char *user_name;
+
+          user_name = get_user_name ();
+
+          description = g_strdup_printf (ngettext ("%s will be logged out automatically in %d second.",
+                                                   "%s will be logged out automatically in %d seconds.",
+                                                   seconds),
+                                         user_name,
+                                         seconds);
+
+          g_free (user_name);
+        }
     }
   else if (priv->action == GF_LOGOUT_ACTION_SHUTDOWN)
     {
