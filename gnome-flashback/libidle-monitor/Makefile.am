@@ -44,7 +44,6 @@ meta-dbus-idle-monitor.c: org.gnome.Mutter.IdleMonitor.xml
 		--interface-prefix org.gnome.Mutter \
 		--c-namespace MetaDBus \
 		--generate-c-code meta-dbus-idle-monitor \
-		--c-generate-object-manager \
 		$(srcdir)/org.gnome.Mutter.IdleMonitor.xml
 
 BUILT_SOURCES = \

@@ -196,7 +196,7 @@ create_monitor_skeleton (GDBusObjectManagerServer *server,
                          const gchar              *path)
 {
   MetaDBusIdleMonitor *skeleton;
-  MetaDBusObjectSkeleton *object;
+  GDBusObjectSkeleton *object;
 
   skeleton = meta_dbus_idle_monitor_skeleton_new ();
   g_signal_connect_object (skeleton, "handle-add-idle-watch",
@@ -208,10 +208,11 @@ create_monitor_skeleton (GDBusObjectManagerServer *server,
   g_signal_connect_object (skeleton, "handle-get-idletime",
                            G_CALLBACK (handle_get_idletime), monitor, 0);
 
-  object = meta_dbus_object_skeleton_new (path);
-  meta_dbus_object_skeleton_set_idle_monitor (object, skeleton);
+  object = g_dbus_object_skeleton_new (path);
+  g_dbus_object_skeleton_add_interface (object,
+                                        G_DBUS_INTERFACE_SKELETON (skeleton));
 
-  g_dbus_object_manager_server_export (server, G_DBUS_OBJECT_SKELETON (object));
+  g_dbus_object_manager_server_export (server, object);
 
   g_object_unref (skeleton);
   g_object_unref (object);
