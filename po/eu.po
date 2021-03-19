@@ -4,14 +4,14 @@
 #
 # Alexander Gabilondo <alexgabi@openmailbox.org>, 2017, 2019
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2017.
-# Asier Sarasua Garmendia  <asier.sarasua@gmail.com>, 2019.
+# Asier Sarasua Garmendia <asiersarasua@ni.eus>, 2019, 2021.
 #
 msgid ""
 msgstr "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2020-03-25 21:13+0000\n"
-"PO-Revision-Date: 2020-04-07 10:00+0100\n"
-"Last-Translator: Asier Sarasua Garmendia <asier.sarasua@gmail.com>\n"
+"POT-Creation-Date: 2021-03-14 14:01+0000\n"
+"PO-Revision-Date: 2021-03-19 10:00+0100\n"
+"Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
@@ -50,6 +50,10 @@ msgstr "%s %s"
 #: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME Flashback"
+
+#: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
+msgid "Clipboard (GNOME Flashback)"
+msgstr "Arbela (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
@@ -265,7 +269,7 @@ msgid "The size of desktop icons."
 msgstr "Mahaigaineko ikonoen tamaina."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
-#: gnome-flashback/libdesktop/gf-icon-view.c:1237
+#: gnome-flashback/libdesktop/gf-icon-view.c:1332
 msgid "Placement"
 msgstr "Kokapena"
 
@@ -276,7 +280,7 @@ msgid ""
 msgstr "Hauetako bat izan daiteke: \"auto-arrange-icons\", \"align-icons-to-grid\" edo \"free\". Ikonoak mahaigainean nola kokatzen diren kontrolatzen du."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
-#: gnome-flashback/libdesktop/gf-icon-view.c:1243
+#: gnome-flashback/libdesktop/gf-icon-view.c:1338
 msgid "Sort by"
 msgstr "Ordenatu honen arabera:"
 
@@ -623,7 +627,7 @@ msgid "_Unmount"
 msgstr "_Desmuntatu"
 
 #: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
-#: gnome-flashback/libdesktop/gf-icon-view.c:1225
+#: gnome-flashback/libdesktop/gf-icon-view.c:1320
 msgid "New Folder"
 msgstr "Karpeta berria"
 
@@ -640,100 +644,100 @@ msgstr "Karpeta-izena"
 msgid "Home"
 msgstr "Karpeta nagusia"
 
-#: gnome-flashback/libdesktop/gf-icon.c:524
+#: gnome-flashback/libdesktop/gf-icon.c:508
 msgid "Open"
 msgstr "Ireki"
 
-#: gnome-flashback/libdesktop/gf-icon.c:560
+#: gnome-flashback/libdesktop/gf-icon.c:544
 msgid "Move to Trash"
 msgstr "Bota zakarrontzira"
 
-#: gnome-flashback/libdesktop/gf-icon.c:580
+#: gnome-flashback/libdesktop/gf-icon.c:564
 msgid "Rename..."
 msgstr "Aldatu izena…"
 
-#: gnome-flashback/libdesktop/gf-icon.c:600
+#: gnome-flashback/libdesktop/gf-icon.c:587
 msgid "Empty Trash"
 msgstr "Hustu zakarrontzia"
 
-#: gnome-flashback/libdesktop/gf-icon.c:614
+#: gnome-flashback/libdesktop/gf-icon.c:601
 msgid "Properties"
 msgstr "Propietateak"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1001
+#: gnome-flashback/libdesktop/gf-icon-view.c:1096
 msgid "Auto arrange icons"
 msgstr "Antolatu ikonoak automatikoki"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1005
+#: gnome-flashback/libdesktop/gf-icon-view.c:1100
 msgid "Align icons to grid"
 msgstr "Lerrokatu ikonoak saretarekin"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1009
+#: gnome-flashback/libdesktop/gf-icon-view.c:1104
 msgctxt "Free placement of icons"
 msgid "Free"
 msgstr "Librea"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1129
+#: gnome-flashback/libdesktop/gf-icon-view.c:1224
 msgid "Name"
 msgstr "Izena"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1133
+#: gnome-flashback/libdesktop/gf-icon-view.c:1228
 msgid "Date modified"
 msgstr "Aldatze-data"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1137
+#: gnome-flashback/libdesktop/gf-icon-view.c:1232
 msgid "Size"
 msgstr "Tamaina"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1253
+#: gnome-flashback/libdesktop/gf-icon-view.c:1348
 msgid "Change Background"
 msgstr "Aldatu atzeko planoa"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1261
+#: gnome-flashback/libdesktop/gf-icon-view.c:1356
 msgid "Display Settings"
 msgstr "Pantailaren ezarpenak"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1273
+#: gnome-flashback/libdesktop/gf-icon-view.c:1368
 msgid "Open Terminal"
 msgstr "Ireki terminala"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3061
+#: gnome-flashback/libdesktop/gf-icon-view.c:3215
 msgid "Folder names cannot contain “/”."
 msgstr "Karpeta-izenak ezin du '/' karaktererik eduki."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3063
+#: gnome-flashback/libdesktop/gf-icon-view.c:3217
 msgid "File names cannot contain “/”."
 msgstr "Fitxategi-izenek ezin dute '/' karaktererik eduki."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3070
+#: gnome-flashback/libdesktop/gf-icon-view.c:3224
 msgid "A folder cannot be called “.”."
 msgstr "Karpeta ezin da '.' gisa deitu."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3072
+#: gnome-flashback/libdesktop/gf-icon-view.c:3226
 msgid "A file cannot be called “.”."
 msgstr "Fitxategia ezin da '.' gisa deitu."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3079
+#: gnome-flashback/libdesktop/gf-icon-view.c:3233
 msgid "A folder cannot be called “..”."
 msgstr "Karpeta ezin da '..' gisa deitu."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3081
+#: gnome-flashback/libdesktop/gf-icon-view.c:3235
 msgid "A file cannot be called “..”."
 msgstr "Fitxategia ezin da '..' gisa deitu."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3097
+#: gnome-flashback/libdesktop/gf-icon-view.c:3251
 msgid "A folder with that name already exists."
 msgstr "Direktorio hori badago lehendik ere."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3099
+#: gnome-flashback/libdesktop/gf-icon-view.c:3253
 msgid "A file with that name already exists."
 msgstr "Izen hori duen fitxategia badago lehendik ere."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3110
+#: gnome-flashback/libdesktop/gf-icon-view.c:3264
 msgid "Folders with “.” at the beginning of their name are hidden."
 msgstr "Izenaren hasieran \".\" duten karpetak ezkutuan daude."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3112
+#: gnome-flashback/libdesktop/gf-icon-view.c:3266
 msgid "Files with “.” at the beginning of their name are hidden."
 msgstr "Files with \".” at the beginning of their name are hidden."
 
@@ -843,20 +847,20 @@ msgstr "Aplikazio horiek amaitzeko zain. Eteteak datuen galera eragin lezake."
 msgid "Lock Screen"
 msgstr "Blokeatu pantaila"
 
-#: gnome-flashback/libnotifications/gf-bubble.c:563
-#: gnome-flashback/libnotifications/gf-bubble.c:567
+#: gnome-flashback/libnotifications/gf-bubble.c:549
+#: gnome-flashback/libnotifications/gf-bubble.c:553
 #: gnome-flashback/libnotifications/nd-notification-box.c:320
 #: gnome-flashback/libnotifications/nd-notification-box.c:322
 msgid "Closes the notification."
 msgstr "Jakinarazpenak ixten ditu."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:587
-#: gnome-flashback/libnotifications/gf-bubble.c:618
+#: gnome-flashback/libnotifications/gf-bubble.c:573
+#: gnome-flashback/libnotifications/gf-bubble.c:604
 #: gnome-flashback/libnotifications/nd-notification-box.c:338
 msgid "Notification summary text."
 msgstr "Jakinarazpenaren laburpenaren testua."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:637
+#: gnome-flashback/libnotifications/gf-bubble.c:623
 msgid "Notification"
 msgstr "Jakinarazpena"
 
@@ -887,7 +891,7 @@ msgstr "%s(r)en _pasahitza:"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:104
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:370
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:366
 msgid "_Password:"
 msgstr "_Pasahitza:"
 
@@ -961,35 +965,35 @@ msgstr "<small><b>_Xehetasunak</b></small>"
 msgid "_Authenticate"
 msgstr "_Autentifikatu"
 
-#: gnome-flashback/libscreensaver/gf-auth.c:424
+#: gnome-flashback/libscreensaver/gf-auth.c:421
 msgid "Your account was given a time limit that has now passed."
 msgstr "Zure kontuari denbora-muga bat eman zitzaion, orain iraungi dena."
 
-#: gnome-flashback/libscreensaver/gf-auth.c:428
+#: gnome-flashback/libscreensaver/gf-auth.c:425
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Huts egin du. Saiatu berriro."
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:181
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:177
 msgid "Failed to switch to greeter!"
 msgstr "Huts egin du ongietorrira aldatzeak!"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:255
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:251
 msgid "Time has expired."
 msgstr "Denbora iraungi da."
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:506
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:467
 msgid "Checking…"
 msgstr "Egiaztatzen…"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:531
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:492
 msgid "S_witch User…"
 msgstr "A_ldatu erabiltzailea…"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:540
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:501
 msgid "_Unlock"
 msgstr "_Desblokeatu"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:751
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:712
 msgid "You have the Caps Lock key on."
 msgstr "Maiuskulen blokeoaren tekla aktibatuta dago."
 
@@ -999,13 +1003,13 @@ msgstr "Hartutako pantaila-argazkia"
 
 #. translators:
 #. * The device has been disabled
-#: gvc/gvc/gvc-mixer-control.c:1892
+#: gvc/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Desgaituta"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1899
+#: gvc/gvc/gvc-mixer-control.c:1907
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1014,14 +1018,14 @@ msgstr[1] "%u irteera"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1909
+#: gvc/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "Sarrera %u"
 msgstr[1] "%u sarrera"
 
-#: gvc/gvc/gvc-mixer-control.c:2766
+#: gvc/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sistemaren soinuak"
 
