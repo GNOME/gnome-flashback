@@ -270,6 +270,9 @@ append_devices (SiBluetooth *self,
 
           case BLUETOOTH_TYPE_HEADSET:
           case BLUETOOTH_TYPE_HEADPHONES:
+#ifdef HAVE_BLUETOOTH_TYPE_SPEAKERS
+          case BLUETOOTH_TYPE_SPEAKERS:
+#endif
           case BLUETOOTH_TYPE_OTHER_AUDIO:
             item = si_desktop_menu_item_new (_("Sound Settings"),
                                              "gnome-sound-panel.desktop");

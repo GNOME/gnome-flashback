@@ -331,6 +331,23 @@ PKG_CHECK_MODULES([SYSTEM_INDICATORS], [
   upower-glib
 ])
 
+save_CFLAGS="$CFLAGS"
+CFLAGS=$SYSTEM_INDICATORS_CFLAGS
+AC_MSG_CHECKING([for BLUETOOTH_TYPE_SPEAKERS])
+AC_COMPILE_IFELSE([
+  AC_LANG_PROGRAM([
+    #include <bluetooth-client.h>
+  ], [
+    int type = BLUETOOTH_TYPE_SPEAKERS;
+  ])
+], [
+  AC_MSG_RESULT([yes])
+  AC_DEFINE([HAVE_BLUETOOTH_TYPE_SPEAKERS], [1], [xxx])
+], [
+  AC_MSG_RESULT([no])
+])
+CFLAGS="$save_CFLAGS"
+
 dnl **************************************************************************
 dnl Compiz session
 dnl **************************************************************************
