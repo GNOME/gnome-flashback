@@ -113,7 +113,6 @@ get_state_text (SiPower *self)
                               hours, minutes, percentage);
     }
 
-  /* coverity[dead_error_line] */
   return NULL;
 }
 
