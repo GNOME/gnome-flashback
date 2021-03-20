@@ -1259,41 +1259,6 @@ gf_bg_set_surface_as_root (GdkScreen       *screen,
 	gdk_x11_display_ungrab (gdk_screen_get_display (screen));
 }
 
-GnomeBGCrossfade *
-gf_bg_set_surface_as_root_with_crossfade (GdkScreen       *screen,
-                                          cairo_surface_t *surface)
-{
-	GdkDisplay *display;
-	GdkWindow *root_window;
-	cairo_surface_t *old_surface;
-	int      width, height;
-	GnomeBGCrossfade *fade;
-
-	g_return_val_if_fail (screen != NULL, NULL);
-	g_return_val_if_fail (surface != NULL, NULL);
-
-	root_window = gdk_screen_get_root_window (screen);
-
-	width = gdk_screen_get_width (screen);
-	height = gdk_screen_get_height (screen);
-
-	fade = gnome_bg_crossfade_new (width, height);
-
-	display = gdk_screen_get_display (screen);
-	gdk_x11_display_grab (display);
-	old_surface = gf_bg_get_surface_from_root (screen);
-	gf_bg_set_root_pixmap_id (screen, surface);
-	gnome_bg_crossfade_set_start_surface (fade, old_surface);
-	cairo_surface_destroy (old_surface);
-	gnome_bg_crossfade_set_end_surface (fade, surface);
-	gdk_display_flush (display);
-	gdk_x11_display_ungrab (display);
-
-	gnome_bg_crossfade_start (fade, root_window);
-
-	return fade;
-}
-
 /* Implementation of the pixbuf cache */
 struct _SlideShow
 {

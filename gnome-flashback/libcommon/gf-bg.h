@@ -24,8 +24,6 @@
 #include <gdk/gdk.h>
 #include <gio/gio.h>
 #include <gdesktop-enums.h>
-#include <libgnome-desktop/gnome-bg-crossfade.h>
-#include <gdesktop-enums.h>
 
 G_BEGIN_DECLS
 
@@ -56,8 +54,6 @@ cairo_surface_t *gf_bg_create_surface           (GfBG                  *bg,
 void             gf_bg_set_surface_as_root      (GdkScreen             *screen,
 						 cairo_surface_t       *surface);
 
-GnomeBGCrossfade *gf_bg_set_surface_as_root_with_crossfade    (GdkScreen *screen,
-                                                              cairo_surface_t *surface);
 cairo_surface_t *gf_bg_get_surface_from_root (GdkScreen *screen);
 
 GdkRGBA *gf_bg_get_average_color_from_surface (cairo_surface_t *surface);
