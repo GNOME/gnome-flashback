@@ -911,18 +911,6 @@ gf_bg_draw_at_scale (GfBG      *bg,
 	}
 }
 
-void
-gf_bg_draw (GfBG      *bg,
-            GdkPixbuf *dest,
-            GdkScreen *screen,
-            gboolean   is_root)
-{
-	if (!bg)
-		return;
-
-	gf_bg_draw_at_scale (bg, dest, 1, screen, is_root);
-}
-
 static void
 gf_bg_get_pixmap_size (GfBG *bg,
                        int   width,

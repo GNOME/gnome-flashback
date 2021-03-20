@@ -51,11 +51,6 @@ void             gf_bg_set_rgba                 (GfBG                  *bg,
 						 GdkRGBA               *primary,
 						 GdkRGBA               *secondary);
 
-/* Drawing */
-void             gf_bg_draw                     (GfBG                  *bg,
-						 GdkPixbuf             *dest,
-						 GdkScreen	       *screen,
-                                                 gboolean               is_root);
 cairo_surface_t *gf_bg_create_surface           (GfBG                  *bg,
 						 GdkWindow             *window,
 						 int                    width,
