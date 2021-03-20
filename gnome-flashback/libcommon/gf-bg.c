@@ -1014,43 +1014,6 @@ gf_bg_create_surface (GfBG      *bg,
 	return surface;
 }
 
-gboolean
-gf_bg_is_dark (GfBG *bg,
-               int   width,
-               int   height)
-{
-	GdkRGBA color;
-	gdouble intensity;
-	GdkPixbuf *pixbuf;
-	
-	g_return_val_if_fail (bg != NULL, FALSE);
-	
-	if (bg->color_type == G_DESKTOP_BACKGROUND_SHADING_SOLID) {
-		color = bg->primary;
-	} else {
-		color.red = (bg->primary.red + bg->secondary.red) / 2;
-		color.green = (bg->primary.green + bg->secondary.green) / 2;
-		color.blue = (bg->primary.blue + bg->secondary.blue) / 2;
-	}
-	pixbuf = get_pixbuf_for_size (bg, -1, width, height);
-	if (pixbuf) {
-		GdkRGBA average;
-
-		pixbuf_average_value (pixbuf, &average);
-		
-		color.red = color.red * (1.0 - average.alpha) + average.red * average.alpha;
-		color.green = color.green * (1.0 - average.alpha) + average.green * average.alpha;
-		color.blue = color.blue * (1.0 - average.alpha) + average.blue * average.alpha;
-		g_object_unref (pixbuf);
-	}
-	
-	intensity = color.red * 77 +
-		    color.green * 150 +
-		    color.blue * 28;
-	
-	return intensity < 160; /* biased slightly to be dark */
-}
-
 /* 
  * Create a persistent pixmap. We create a separate display
  * and set the closedown mode on it to RetainPermanent.

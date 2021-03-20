@@ -52,9 +52,6 @@ cairo_surface_t *gf_bg_create_surface           (GfBG                  *bg,
 						 int                    width,
 						 int                    height,
 						 gboolean               root);
-gboolean         gf_bg_is_dark                  (GfBG                  *bg,
-                                                 int                    dest_width,
-						 int                    dest_height);
 
 void             gf_bg_set_surface_as_root      (GdkScreen             *screen,
 						 cairo_surface_t       *surface);
