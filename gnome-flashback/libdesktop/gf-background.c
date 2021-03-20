@@ -18,8 +18,8 @@
 #include "config.h"
 #include "gf-background.h"
 
-#include <libcommon/gf-background-utils.h>
-#include <libgnome-desktop/gnome-bg.h>
+#include "libcommon/gf-background-utils.h"
+#include "libcommon/gf-bg.h"
 
 #include "gf-desktop-window.h"
 
@@ -45,7 +45,7 @@ struct _GfBackground
   GSettings       *settings1;
   GSettings       *settings2;
 
-  GnomeBG         *bg;
+  GfBG            *bg;
 
   guint            change_id;
 
@@ -97,7 +97,7 @@ fade_cb (gpointer user_data)
   FadeData *fade;
   double current_time;
   double percent_done;
-  GdkDisplay *display;
+  GdkScreen *screen;
 
   self = GF_BACKGROUND (user_data);
   fade = self->fade_data;
@@ -129,8 +129,8 @@ fade_cb (gpointer user_data)
 
   g_clear_pointer (&self->fade_data, free_fade_data);
 
-  display = gtk_widget_get_display (self->window);
-  gf_background_surface_set_as_root (display, self->surface);
+  screen = gtk_widget_get_screen (self->window);
+  gf_bg_set_surface_as_root (screen, self->surface);
 
   g_signal_emit (self, background_signals[CHANGED], 0);
 
@@ -170,11 +170,7 @@ change (GfBackground *self,
                                                            width,
                                                            height);
 
-      data->end = gf_background_surface_create (display,
-                                                self->bg,
-                                                root,
-                                                width,
-                                                height);
+      data->end = gf_bg_create_surface (self->bg, root, width, height, TRUE);
 
       data->start_time = g_get_real_time () / (double) G_USEC_PER_SEC;
       data->total_duration = .75;
@@ -186,13 +182,13 @@ change (GfBackground *self,
   else
     {
       g_clear_pointer (&self->surface, cairo_surface_destroy);
-      self->surface = gf_background_surface_create (display,
-                                                    self->bg,
-                                                    root,
-                                                    width,
-                                                    height);
+      self->surface = gf_bg_create_surface (self->bg,
+                                            root,
+                                            width,
+                                            height,
+                                            TRUE);
 
-      gf_background_surface_set_as_root (display, self->surface);
+      gf_bg_set_surface_as_root (screen, self->surface);
 
       g_signal_emit (self, background_signals[CHANGED], 0);
     }
@@ -275,13 +271,13 @@ change_event_cb (GSettings    *settings,
                  gint          n_keys,
                  GfBackground *self)
 {
-  gnome_bg_load_from_preferences (self->bg, self->settings1);
+  gf_bg_load_from_preferences (self->bg, self->settings1);
 
   return TRUE;
 }
 
 static void
-changed_cb (GnomeBG      *bg,
+changed_cb (GfBG         *bg,
             GfBackground *self)
 {
   gboolean fade;
@@ -291,7 +287,7 @@ changed_cb (GnomeBG      *bg,
 }
 
 static void
-transitioned_cb (GnomeBG      *bg,
+transitioned_cb (GfBG         *bg,
                  GfBackground *self)
 {
   queue_change (self, FALSE);
@@ -309,7 +305,7 @@ gf_background_constructed (GObject *object)
   self->settings1 = g_settings_new ("org.gnome.desktop.background");
   self->settings2 = g_settings_new ("org.gnome.gnome-flashback.desktop.background");
 
-  self->bg = gnome_bg_new ();
+  self->bg = gf_bg_new ();
 
   g_signal_connect_object (self->window, "draw",
                            G_CALLBACK (draw_cb),
@@ -331,7 +327,7 @@ gf_background_constructed (GObject *object)
                     G_CALLBACK (transitioned_cb),
                     self);
 
-  gnome_bg_load_from_preferences (self->bg, self->settings1);
+  gf_bg_load_from_preferences (self->bg, self->settings1);
 }
 
 static void
@@ -449,5 +445,5 @@ gf_background_new (GtkWidget *window)
 GdkRGBA *
 gf_background_get_average_color (GfBackground *self)
 {
-  return gf_background_surface_get_average_color (self->surface);
+  return gf_bg_get_average_color_from_surface (self->surface);
 }
