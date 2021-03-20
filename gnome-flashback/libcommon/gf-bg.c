@@ -45,7 +45,6 @@ Author: Soren Sandmann <sandmann@redhat.com>
 #include <cairo.h>
 #include <cairo-xlib.h>
 
-#define GNOME_DESKTOP_USE_UNSTABLE_API
 #include "gnome-bg-slide-show.h"
 #include "gnome-bg-crossfade.h"
 
