@@ -85,7 +85,7 @@ set_background (GfRootBackground *self)
 
   surface = gf_bg_create_surface (self->bg, root, width, height, TRUE);
 
-  gf_bg_set_surface_as_root (screen, surface);
+  gf_bg_set_surface_as_root (display, surface);
   cairo_surface_destroy (surface);
 }
 

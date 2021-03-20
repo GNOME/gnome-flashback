@@ -95,7 +95,6 @@ fade_cb (gpointer user_data)
   FadeData *fade;
   double current_time;
   double percent_done;
-  GdkScreen *screen;
 
   self = GF_BACKGROUND (user_data);
   fade = self->fade_data;
@@ -127,8 +126,8 @@ fade_cb (gpointer user_data)
 
   g_clear_pointer (&self->fade_data, free_fade_data);
 
-  screen = gtk_widget_get_screen (self->window);
-  gf_bg_set_surface_as_root (screen, self->surface);
+  gf_bg_set_surface_as_root (gtk_widget_get_display (self->window),
+                             self->surface);
 
   g_signal_emit (self, background_signals[CHANGED], 0);
 
@@ -184,7 +183,7 @@ change (GfBackground *self,
                                             height,
                                             TRUE);
 
-      gf_bg_set_surface_as_root (screen, self->surface);
+      gf_bg_set_surface_as_root (display, self->surface);
 
       g_signal_emit (self, background_signals[CHANGED], 0);
     }

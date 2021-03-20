@@ -56,7 +56,7 @@ cairo_surface_t *gf_bg_create_surface                 (GfBG                     
                                                        int                        height,
                                                        gboolean                   root);
 
-void             gf_bg_set_surface_as_root            (GdkScreen                 *screen,
+void             gf_bg_set_surface_as_root            (GdkDisplay                *display,
                                                        cairo_surface_t           *surface);
 
 cairo_surface_t *gf_bg_get_surface_from_root          (GdkDisplay                *display,

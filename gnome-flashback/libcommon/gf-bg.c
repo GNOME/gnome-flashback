@@ -1998,31 +1998,32 @@ gf_bg_create_surface (GfBG      *self,
 }
 
 void
-gf_bg_set_surface_as_root (GdkScreen       *screen,
+gf_bg_set_surface_as_root (GdkDisplay      *display,
                            cairo_surface_t *surface)
 {
-  Display *display;
+  GdkScreen *screen;
+  Display *xdisplay;
   int screen_num;
 
-  g_return_if_fail (screen != NULL);
   g_return_if_fail (surface != NULL);
   g_return_if_fail (cairo_surface_get_type (surface) == CAIRO_SURFACE_TYPE_XLIB);
 
+  screen = gdk_display_get_default_screen (display);
   screen_num = gdk_screen_get_number (screen);
 
-  display = GDK_DISPLAY_XDISPLAY (gdk_screen_get_display (screen));
+  xdisplay = gdk_x11_display_get_xdisplay (display);
 
-  gdk_x11_display_grab (gdk_screen_get_display (screen));
+  gdk_x11_display_grab (display);
 
   gf_bg_set_root_pixmap_id (screen, surface);
 
-  XSetWindowBackgroundPixmap (display,
-                              RootWindow (display, screen_num),
+  XSetWindowBackgroundPixmap (xdisplay,
+                              RootWindow (xdisplay, screen_num),
                               cairo_xlib_surface_get_drawable (surface));
-  XClearWindow (display, RootWindow (display, screen_num));
+  XClearWindow (xdisplay, RootWindow (xdisplay, screen_num));
 
-  gdk_display_flush (gdk_screen_get_display (screen));
-  gdk_x11_display_ungrab (gdk_screen_get_display (screen));
+  gdk_display_flush (display);
+  gdk_x11_display_ungrab (display);
 }
 
 cairo_surface_t *
