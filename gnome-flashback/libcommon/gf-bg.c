@@ -2085,3 +2085,9 @@ read_slideshow_file (const char *filename,
 
         return show;
 }
+
+GdkRGBA *
+gf_bg_get_average_color_from_surface (cairo_surface_t *surface)
+{
+  return cairo_surface_get_user_data (surface, &average_color_key);
+}

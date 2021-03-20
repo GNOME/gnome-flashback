@@ -67,6 +67,8 @@ GnomeBGCrossfade *gf_bg_set_surface_as_root_with_crossfade    (GdkScreen *screen
                                                               cairo_surface_t *surface);
 cairo_surface_t *gf_bg_get_surface_from_root (GdkScreen *screen);
 
+GdkRGBA *gf_bg_get_average_color_from_surface (cairo_surface_t *surface);
+
 G_END_DECLS
 
 #endif
