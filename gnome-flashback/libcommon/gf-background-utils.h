@@ -29,8 +29,6 @@ cairo_surface_t *gf_background_surface_get_from_root     (GdkDisplay      *displ
 void             gf_background_surface_set_as_root       (GdkDisplay      *display,
                                                           cairo_surface_t *surface);
 
-GdkRGBA         *gf_background_surface_get_average_color (cairo_surface_t *surface);
-
 G_END_DECLS
 
 #endif

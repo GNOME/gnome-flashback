@@ -358,9 +358,3 @@ gf_background_surface_set_as_root (GdkDisplay      *display,
 
   gdk_x11_display_ungrab (display);
 }
-
-GdkRGBA *
-gf_background_surface_get_average_color (cairo_surface_t *surface)
-{
-  return cairo_surface_get_user_data (surface, &average_color_key);
-}
