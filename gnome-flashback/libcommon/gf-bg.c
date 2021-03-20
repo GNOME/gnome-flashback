@@ -676,24 +676,31 @@ draw_color (GfBG      *bg,
 }
 
 static void
-draw_color_each_monitor (GfBG      *bg,
-                         GdkPixbuf *dest,
-                         GdkScreen *screen,
-                         gint       scale)
+draw_color_each_monitor (GfBG       *bg,
+                         GdkPixbuf  *dest,
+                         GdkDisplay *display,
+                         gint        scale)
 {
-	GdkRectangle rect;
-	gint num_monitors;
-	int monitor;
+  int n_monitors;
+  int i;
 
-	num_monitors = gdk_screen_get_n_monitors (screen);
-	for (monitor = 0; monitor < num_monitors; monitor++) {
-		gdk_screen_get_monitor_geometry (screen, monitor, &rect);
-		rect.x *= scale;
-		rect.y *= scale;
-		rect.width *= scale;
-		rect.height *= scale;
-		draw_color_area (bg, dest, &rect);
-	}
+  n_monitors = gdk_display_get_n_monitors (display);
+
+  for (i = 0; i < n_monitors; i++)
+    {
+      GdkMonitor *monitor;
+      GdkRectangle geometry;
+
+      monitor = gdk_display_get_monitor (display, i);
+      gdk_monitor_get_geometry (monitor, &geometry);
+
+      geometry.x *= scale;
+      geometry.y *= scale;
+      geometry.width *= scale;
+      geometry.height *= scale;
+
+      draw_color_area (bg, dest, &geometry);
+    }
 }
 
 static GdkPixbuf *
@@ -858,52 +865,61 @@ draw_once (GfBG      *bg,
 }
 
 static void
-draw_each_monitor (GfBG      *bg,
-                   GdkPixbuf *dest,
-                   GdkScreen *screen,
-                   gint       scale)
+draw_each_monitor (GfBG       *bg,
+                   GdkPixbuf  *dest,
+                   GdkDisplay *display,
+                   gint        scale)
 {
-	GdkRectangle rect;
-	gint num_monitors;
-	int monitor;
+  int n_monitors;
+  int i;
 
-	num_monitors = gdk_screen_get_n_monitors (screen);
-	for (monitor = 0; monitor < num_monitors; monitor++) {
-		GdkPixbuf *pixbuf;
-		gdk_screen_get_monitor_geometry (screen, monitor, &rect);
-		rect.x *= scale;
-		rect.y *= scale;
-		rect.width *= scale;
-		rect.height *= scale;
-		pixbuf = get_pixbuf_for_size (bg, monitor, rect.width, rect.height);
-		if (pixbuf) {
-			draw_image_area (bg,
-					 monitor,
-					 pixbuf,
-					 dest, &rect);
-			g_object_unref (pixbuf);
-		}
-	}
+  n_monitors = gdk_display_get_n_monitors (display);
+
+  for (i = 0; i < n_monitors; i++)
+    {
+      GdkMonitor *monitor;
+      GdkRectangle geometry;
+      GdkPixbuf *pixbuf;
+
+      monitor = gdk_display_get_monitor (display, i);
+      gdk_monitor_get_geometry (monitor, &geometry);
+
+      geometry.x *= scale;
+      geometry.y *= scale;
+      geometry.width *= scale;
+      geometry.height *= scale;
+
+      pixbuf = get_pixbuf_for_size (bg, i, geometry.width, geometry.height);
+
+      if (pixbuf != NULL)
+        {
+          draw_image_area (bg, i, pixbuf, dest, &geometry);
+          g_object_unref (pixbuf);
+        }
+    }
 }
 
 static void
-gf_bg_draw_at_scale (GfBG      *bg,
-                     GdkPixbuf *dest,
-                     gint       scale,
-                     GdkScreen *screen,
-                     gboolean   is_root)
+gf_bg_draw_at_scale (GfBG       *bg,
+                     GdkPixbuf  *dest,
+                     gint        scale,
+                     GdkDisplay *display,
+                     gboolean    is_root)
 {
-	if (is_root && (bg->placement != G_DESKTOP_BACKGROUND_STYLE_SPANNED)) {
-		draw_color_each_monitor (bg, dest, screen, scale);
-		if (bg->placement != G_DESKTOP_BACKGROUND_STYLE_NONE) {
-			draw_each_monitor (bg, dest, screen, scale);
-		}
-	} else {
-		draw_color (bg, dest);
-		if (bg->placement != G_DESKTOP_BACKGROUND_STYLE_NONE) {
-			draw_once (bg, dest);
-		}
-	}
+  if (is_root && (bg->placement != G_DESKTOP_BACKGROUND_STYLE_SPANNED))
+    {
+      draw_color_each_monitor (bg, dest, display, scale);
+
+      if (bg->placement != G_DESKTOP_BACKGROUND_STYLE_NONE)
+        draw_each_monitor (bg, dest, display, scale);
+    }
+  else
+    {
+      draw_color (bg, dest);
+
+      if (bg->placement != G_DESKTOP_BACKGROUND_STYLE_NONE)
+        draw_once (bg, dest);
+    }
 }
 
 static void
@@ -993,7 +1009,7 @@ gf_bg_create_surface (GfBG      *bg,
 		
 		pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8,
 					 scale * width, scale * height);
-		gf_bg_draw_at_scale (bg, pixbuf, scale, gdk_window_get_screen (window), root);
+		gf_bg_draw_at_scale (bg, pixbuf, scale, gdk_window_get_display (window), root);
 		pixbuf_average_value (pixbuf, &average);
 
 		pixbuf_surface = gdk_cairo_surface_create_from_pixbuf (pixbuf, 0, window);
