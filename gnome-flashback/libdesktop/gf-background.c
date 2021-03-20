@@ -18,10 +18,8 @@
 #include "config.h"
 #include "gf-background.h"
 
-#include "libcommon/gf-background-utils.h"
-#include "libcommon/gf-bg.h"
-
 #include "gf-desktop-window.h"
+#include "libcommon/gf-bg.h"
 
 typedef struct
 {
@@ -166,9 +164,7 @@ change (GfBackground *self,
       if (self->surface != NULL)
         data->start = cairo_surface_reference (self->surface);
       else
-        data->start = gf_background_surface_get_from_root (display,
-                                                           width,
-                                                           height);
+        data->start = gf_bg_get_surface_from_root (display, width, height);
 
       data->end = gf_bg_create_surface (self->bg, root, width, height, TRUE);
 

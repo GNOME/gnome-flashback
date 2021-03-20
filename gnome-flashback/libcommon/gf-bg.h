@@ -1,5 +1,6 @@
 /*
  * Copyright 2007, Red Hat, Inc.
+ * Copyright 2019-2021 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,6 +58,10 @@ cairo_surface_t *gf_bg_create_surface                 (GfBG                     
 
 void             gf_bg_set_surface_as_root            (GdkScreen                 *screen,
                                                        cairo_surface_t           *surface);
+
+cairo_surface_t *gf_bg_get_surface_from_root          (GdkDisplay                *display,
+                                                       int                        width,
+                                                       int                        height);
 
 GdkRGBA         *gf_bg_get_average_color_from_surface (cairo_surface_t           *surface);
 

@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2000 Eazel, Inc.
  * Copyright (C) 2007-2008 Red Hat, Inc.
+ * Copyright (C) 2019-2021 Alberts Muktupāvels
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1586,6 +1587,83 @@ pixbuf_tile (GdkPixbuf *src, GdkPixbuf *dest)
 	}
 }
 
+static gboolean
+is_valid_pixmap (GdkDisplay *display,
+                 Pixmap      pixmap)
+{
+  Display *xdisplay;
+  Window root_return;
+  int x_return;
+  int y_return;
+  unsigned int width_return;
+  unsigned int height_return;
+  unsigned int border_width_return;
+  unsigned int depth_return;
+  Status status;
+
+  xdisplay = gdk_x11_display_get_xdisplay (display);
+
+  gdk_x11_display_error_trap_push (display);
+
+  status = XGetGeometry (xdisplay, pixmap, &root_return,
+                         &x_return, &y_return, &width_return, &height_return,
+                         &border_width_return, &depth_return);
+
+  if (gdk_x11_display_error_trap_pop (display) != 0 || status == 0)
+    return FALSE;
+
+  return TRUE;
+}
+
+static Pixmap
+get_root_pixmap (GdkDisplay *display)
+{
+  Display *xdisplay;
+  Atom xrootpmap_id_atom;
+  int result;
+  Atom actual_type;
+  int actual_format;
+  unsigned long n_items;
+  unsigned long bytes_after;
+  unsigned char *prop;
+  Pixmap pixmap;
+
+  xdisplay = gdk_x11_display_get_xdisplay (display);
+  xrootpmap_id_atom = XInternAtom (xdisplay, "_XROOTPMAP_ID", False);
+  prop = NULL;
+
+  result = XGetWindowProperty (xdisplay,
+                               XDefaultRootWindow (xdisplay),
+                               xrootpmap_id_atom,
+                               0l,
+                               1l,
+                               False,
+                               XA_PIXMAP,
+                               &actual_type,
+                               &actual_format,
+                               &n_items,
+                               &bytes_after,
+                               &prop);
+
+  if (result != Success ||
+      actual_type != XA_PIXMAP ||
+      actual_format != 32 ||
+      n_items != 1)
+    {
+      XFree (prop);
+
+      return None;
+    }
+
+  pixmap = *(Pixmap *) prop;
+  XFree (prop);
+
+  if (!is_valid_pixmap (display, pixmap))
+    return None;
+
+  return pixmap;
+}
+
 static void
 gf_bg_dispose (GObject *object)
 {
@@ -1945,6 +2023,77 @@ gf_bg_set_surface_as_root (GdkScreen       *screen,
 
   gdk_display_flush (gdk_screen_get_display (screen));
   gdk_x11_display_ungrab (gdk_screen_get_display (screen));
+}
+
+cairo_surface_t *
+gf_bg_get_surface_from_root (GdkDisplay *display,
+                             int         width,
+                             int         height)
+{
+  Display *xdisplay;
+  Pixmap root_pixmap;
+  GdkScreen *screen;
+  GdkWindow *root;
+  int scale;
+  cairo_surface_t *pixmap_surface;
+  cairo_surface_t *surface;
+
+  xdisplay = gdk_x11_display_get_xdisplay (display);
+
+  root_pixmap = get_root_pixmap (display);
+
+  screen = gdk_display_get_default_screen (display);
+  root = gdk_screen_get_root_window (screen);
+  scale = gdk_window_get_scale_factor (root);
+
+  pixmap_surface = NULL;
+  surface = NULL;
+
+  if (root_pixmap != None)
+    {
+      Visual *xvisual;
+
+      xvisual = DefaultVisual (xdisplay, DefaultScreen (xdisplay));
+
+      pixmap_surface = cairo_xlib_surface_create (xdisplay,
+                                                  root_pixmap,
+                                                  xvisual,
+                                                  width * scale,
+                                                  height * scale);
+    }
+
+  if (pixmap_surface != NULL)
+    {
+      cairo_t *cr;
+
+      surface = cairo_surface_create_similar (pixmap_surface,
+                                              CAIRO_CONTENT_COLOR,
+                                              width * scale,
+                                              height * scale);
+
+      cr = cairo_create (surface);
+      cairo_set_source_surface (cr, pixmap_surface, 0, 0);
+      cairo_surface_destroy (pixmap_surface);
+
+      cairo_paint (cr);
+
+      if (cairo_status (cr) != CAIRO_STATUS_SUCCESS)
+        g_clear_pointer (&surface, cairo_surface_destroy);
+
+      cairo_destroy (cr);
+    }
+
+  if (surface != NULL)
+    {
+      cairo_surface_set_device_scale (surface, scale, scale);
+
+      return surface;
+    }
+
+  return gdk_window_create_similar_surface (root,
+                                            CAIRO_CONTENT_COLOR,
+                                            width,
+                                            height);
 }
 
 GdkRGBA *

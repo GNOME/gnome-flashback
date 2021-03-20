@@ -19,13 +19,12 @@
 #include "gf-desktop-window.h"
 
 #include <gdk/gdkx.h>
-#include <libcommon/gf-background-utils.h>
-#include <libgnome-desktop/gnome-bg.h>
 #include <glib/gi18n.h>
 #include <X11/Xatom.h>
 
 #include "gf-background.h"
 #include "gf-icon-view.h"
+#include "libcommon/gf-bg.h"
 
 struct _GfDesktopWindow
 {
@@ -211,9 +210,9 @@ ensure_surface (GfDesktopWindow *self)
 
   display = gtk_widget_get_display (widget);
 
-  self->surface = gf_background_surface_get_from_root (display,
-                                                       self->width,
-                                                       self->height);
+  self->surface = gf_bg_get_surface_from_root (display,
+                                               self->width,
+                                               self->height);
 
   gtk_widget_queue_draw (widget);
 }
