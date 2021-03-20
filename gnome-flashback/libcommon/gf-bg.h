@@ -33,58 +33,44 @@
 
 G_BEGIN_DECLS
 
-#define GNOME_TYPE_BG            (gnome_bg_get_type ())
-#define GNOME_BG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GNOME_TYPE_BG, GnomeBG))
-#define GNOME_BG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GNOME_TYPE_BG, GnomeBGClass))
-#define GNOME_IS_BG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GNOME_TYPE_BG))
-#define GNOME_IS_BG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GNOME_TYPE_BG))
-#define GNOME_BG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GNOME_TYPE_BG, GnomeBGClass))
+#define GF_TYPE_BG (gf_bg_get_type ())
+G_DECLARE_FINAL_TYPE (GfBG, gf_bg, GF, BG, GObject)
 
-typedef struct _GnomeBG GnomeBG;
-typedef struct _GnomeBGClass GnomeBGClass;
-
-G_DEFINE_AUTOPTR_CLEANUP_FUNC(GnomeBG, g_object_unref)
-
-GType            gnome_bg_get_type              (void);
-GnomeBG *        gnome_bg_new                   (void);
-void             gnome_bg_load_from_preferences (GnomeBG               *bg,
+GfBG *           gf_bg_new                      (void);
+void             gf_bg_load_from_preferences    (GfBG                  *bg,
 						 GSettings             *settings);
-void             gnome_bg_save_to_preferences   (GnomeBG               *bg,
+void             gf_bg_save_to_preferences      (GfBG                  *bg,
 						 GSettings             *settings);
 /* Setters */
-void             gnome_bg_set_filename          (GnomeBG               *bg,
+void             gf_bg_set_filename             (GfBG                  *bg,
 						 const char            *filename);
-void             gnome_bg_set_placement         (GnomeBG               *bg,
+void             gf_bg_set_placement            (GfBG                  *bg,
 						 GDesktopBackgroundStyle placement);
-void             gnome_bg_set_rgba              (GnomeBG               *bg,
+void             gf_bg_set_rgba                 (GfBG                  *bg,
 						 GDesktopBackgroundShading type,
 						 GdkRGBA               *primary,
 						 GdkRGBA               *secondary);
 
 /* Drawing */
-void             gnome_bg_draw                  (GnomeBG               *bg,
+void             gf_bg_draw                     (GfBG                  *bg,
 						 GdkPixbuf             *dest,
 						 GdkScreen	       *screen,
                                                  gboolean               is_root);
-cairo_surface_t *gnome_bg_create_surface        (GnomeBG               *bg,
+cairo_surface_t *gf_bg_create_surface           (GfBG                  *bg,
 						 GdkWindow             *window,
 						 int                    width,
 						 int                    height,
 						 gboolean               root);
-gboolean         gnome_bg_is_dark               (GnomeBG               *bg,
+gboolean         gf_bg_is_dark                  (GfBG                  *bg,
                                                  int                    dest_width,
 						 int                    dest_height);
 
-/* Set a surface as root - not a GnomeBG method. At some point
- * if we decide to stabilize the API then we may want to make
- * these object methods, drop gnome_bg_create_surface, etc.
- */
-void             gnome_bg_set_surface_as_root   (GdkScreen             *screen,
+void             gf_bg_set_surface_as_root      (GdkScreen             *screen,
 						 cairo_surface_t       *surface);
 
-GnomeBGCrossfade *gnome_bg_set_surface_as_root_with_crossfade (GdkScreen *screen,
+GnomeBGCrossfade *gf_bg_set_surface_as_root_with_crossfade    (GdkScreen *screen,
                                                               cairo_surface_t *surface);
-cairo_surface_t *gnome_bg_get_surface_from_root (GdkScreen *screen);
+cairo_surface_t *gf_bg_get_surface_from_root (GdkScreen *screen);
 
 G_END_DECLS
 

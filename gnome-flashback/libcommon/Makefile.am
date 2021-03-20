@@ -9,6 +9,7 @@ libcommon_la_CPPFLAGS = \
 	-DG_LOG_USE_STRUCTURED=1 \
 	-DGNOME_DESKTOP_USE_UNSTABLE_API \
 	-I$(top_builddir)/gnome-flashback/libcommon \
+	-Wno-error=deprecated-declarations \
 	$(NULL)
 
 libcommon_la_CFLAGS = \
@@ -20,6 +21,8 @@ libcommon_la_CFLAGS = \
 libcommon_la_SOURCES = \
 	gf-background-utils.c \
 	gf-background-utils.h \
+	gf-bg.c \
+	gf-bg.h \
 	gf-keybindings.c \
 	gf-keybindings.h \
 	gf-popup-window.c \

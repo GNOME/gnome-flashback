@@ -45,8 +45,7 @@ Author: Soren Sandmann <sandmann@redhat.com>
 #include <cairo.h>
 #include <cairo-xlib.h>
 
-#include "gnome-bg-slide-show.h"
-#include "gnome-bg-crossfade.h"
+#include <libgnome-desktop/gnome-bg-slide-show.h>
 
 #define BG_KEY_PRIMARY_COLOR      "primary-color"
 #define BG_KEY_SECONDARY_COLOR    "secondary-color"
@@ -62,10 +61,7 @@ Author: Soren Sandmann <sandmann@redhat.com>
 typedef struct FileCacheEntry FileCacheEntry;
 #define CACHE_SIZE 4
 
-/*
- *   Implementation of the GnomeBG class
- */
-struct _GnomeBG
+struct _GfBG
 {
 	GObject                 parent_instance;
 	char *			filename;
@@ -89,11 +85,6 @@ struct _GnomeBG
 	GList *		        file_cache;
 };
 
-struct _GnomeBGClass
-{
-	GObjectClass parent_class;
-};
-
 enum {
 	CHANGED,
 	TRANSITIONED,
@@ -104,7 +95,7 @@ static const cairo_user_data_key_t average_color_key;
 
 static guint signals[N_SIGNALS] = { 0 };
 
-G_DEFINE_TYPE (GnomeBG, gnome_bg, G_TYPE_OBJECT)
+G_DEFINE_TYPE (GfBG, gf_bg, G_TYPE_OBJECT)
 
 static cairo_surface_t *make_root_pixmap     (GdkScreen  *screen,
                                               gint        width,
@@ -137,15 +128,15 @@ static void       pixbuf_blend         (GdkPixbuf  *src,
 					double      alpha);
 
 /* Cache */
-static GdkPixbuf *get_pixbuf_for_size  (GnomeBG               *bg,
+static GdkPixbuf *get_pixbuf_for_size  (GfBG                  *bg,
 					gint                   num_monitor,
 					int                    width,
 					int                    height);
-static void       clear_cache          (GnomeBG               *bg);
-static gboolean   is_different         (GnomeBG               *bg,
+static void       clear_cache          (GfBG                  *bg);
+static gboolean   is_different         (GfBG                  *bg,
 					const char            *filename);
 static time_t     get_mtime            (const char            *filename);
-static GnomeBGSlideShow * get_as_slideshow    (GnomeBG               *bg,
+static GnomeBGSlideShow * get_as_slideshow    (GfBG                  *bg,
                                                const char 	      *filename);
 static GnomeBGSlideShow *read_slideshow_file (const char *filename,
 				       GError     **err);
@@ -173,7 +164,7 @@ color_to_string (const GdkRGBA *color)
 }
 
 static gboolean
-do_changed (GnomeBG *bg)
+do_changed (GfBG *bg)
 {
 	gboolean ignore_pending_change;
 	bg->changed_id = 0;
@@ -190,7 +181,7 @@ do_changed (GnomeBG *bg)
 }
 
 static void
-queue_changed (GnomeBG *bg)
+queue_changed (GfBG *bg)
 {
 	if (bg->changed_id > 0) {
 		g_source_remove (bg->changed_id);
@@ -212,7 +203,7 @@ queue_changed (GnomeBG *bg)
 }
 
 static gboolean
-do_transitioned (GnomeBG *bg)
+do_transitioned (GfBG *bg)
 {
 	bg->transitioned_id = 0;
 
@@ -227,7 +218,7 @@ do_transitioned (GnomeBG *bg)
 }
 
 static void
-queue_transitioned (GnomeBG *bg)
+queue_transitioned (GfBG *bg)
 {
 	if (bg->transitioned_id > 0) {
 		g_source_remove (bg->transitioned_id);
@@ -274,8 +265,8 @@ bg_gsettings_mapping (GVariant *value,
 }
 
 void
-gnome_bg_load_from_preferences (GnomeBG   *bg,
-				GSettings *settings)
+gf_bg_load_from_preferences (GfBG      *bg,
+                             GSettings *settings)
 {
 	char    *tmp;
 	char    *filename;
@@ -283,7 +274,7 @@ gnome_bg_load_from_preferences (GnomeBG   *bg,
 	GdkRGBA c1, c2;
 	GDesktopBackgroundStyle placement;
 
-	g_return_if_fail (GNOME_IS_BG (bg));
+	g_return_if_fail (GF_IS_BG (bg));
 	g_return_if_fail (G_IS_SETTINGS (settings));
 
 	/* Filename */
@@ -304,22 +295,22 @@ gnome_bg_load_from_preferences (GnomeBG   *bg,
 	/* Placement */
 	placement = g_settings_get_enum (settings, BG_KEY_PICTURE_PLACEMENT);
 
-	gnome_bg_set_rgba (bg, ctype, &c1, &c2);
-	gnome_bg_set_placement (bg, placement);
-	gnome_bg_set_filename (bg, filename);
+	gf_bg_set_rgba (bg, ctype, &c1, &c2);
+	gf_bg_set_placement (bg, placement);
+	gf_bg_set_filename (bg, filename);
 
 	g_free (filename);
 }
 
 void
-gnome_bg_save_to_preferences (GnomeBG   *bg,
-			      GSettings *settings)
+gf_bg_save_to_preferences (GfBG      *bg,
+                           GSettings *settings)
 {
 	gchar *primary;
 	gchar *secondary;
 	gchar *uri;
 
-	g_return_if_fail (GNOME_IS_BG (bg));
+	g_return_if_fail (GF_IS_BG (bg));
 	g_return_if_fail (G_IS_SETTINGS (settings));
 
 	primary = color_to_string (&bg->primary);
@@ -348,14 +339,14 @@ gnome_bg_save_to_preferences (GnomeBG   *bg,
 
 
 static void
-gnome_bg_init (GnomeBG *bg)
+gf_bg_init (GfBG *bg)
 {
 }
 
 static void
-gnome_bg_dispose (GObject *object)
+gf_bg_dispose (GObject *object)
 {
-	GnomeBG *bg = GNOME_BG (object);
+	GfBG *bg = GF_BG (object);
 
 	if (bg->file_monitor) {
 		g_object_unref (bg->file_monitor);
@@ -364,13 +355,13 @@ gnome_bg_dispose (GObject *object)
 
 	clear_cache (bg);
 
-	G_OBJECT_CLASS (gnome_bg_parent_class)->dispose (object);
+	G_OBJECT_CLASS (gf_bg_parent_class)->dispose (object);
 }
 
 static void
-gnome_bg_finalize (GObject *object)
+gf_bg_finalize (GObject *object)
 {
-	GnomeBG *bg = GNOME_BG (object);
+	GfBG *bg = GF_BG (object);
 
 	if (bg->changed_id != 0) {
 		g_source_remove (bg->changed_id);
@@ -390,16 +381,16 @@ gnome_bg_finalize (GObject *object)
 	g_free (bg->filename);
 	bg->filename = NULL;
 
-	G_OBJECT_CLASS (gnome_bg_parent_class)->finalize (object);
+	G_OBJECT_CLASS (gf_bg_parent_class)->finalize (object);
 }
 
 static void
-gnome_bg_class_init (GnomeBGClass *klass)
+gf_bg_class_init (GfBGClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-	object_class->dispose = gnome_bg_dispose;
-	object_class->finalize = gnome_bg_finalize;
+	object_class->dispose = gf_bg_dispose;
+	object_class->finalize = gf_bg_finalize;
 
 	signals[CHANGED] = g_signal_new ("changed",
 					 G_OBJECT_CLASS_TYPE (object_class),
@@ -418,17 +409,17 @@ gnome_bg_class_init (GnomeBGClass *klass)
 					 G_TYPE_NONE, 0);
 }
 
-GnomeBG *
-gnome_bg_new (void)
+GfBG *
+gf_bg_new (void)
 {
-	return g_object_new (GNOME_TYPE_BG, NULL);
+	return g_object_new (GF_TYPE_BG, NULL);
 }
 
 void
-gnome_bg_set_rgba (GnomeBG *bg,
-		   GDesktopBackgroundShading type,
-		   GdkRGBA *primary,
-		   GdkRGBA *secondary)
+gf_bg_set_rgba (GfBG                      *bg,
+                GDesktopBackgroundShading  type,
+                GdkRGBA                   *primary,
+                GdkRGBA                   *secondary)
 {
 	g_return_if_fail (bg != NULL);
 	g_return_if_fail (primary != NULL);
@@ -448,8 +439,8 @@ gnome_bg_set_rgba (GnomeBG *bg,
 }
 
 void
-gnome_bg_set_placement (GnomeBG                 *bg,
-			GDesktopBackgroundStyle  placement)
+gf_bg_set_placement (GfBG                    *bg,
+                     GDesktopBackgroundStyle  placement)
 {
 	g_return_if_fail (bg != NULL);
 	
@@ -549,11 +540,11 @@ cache_file_is_valid (const char *filename,
 }
 
 static void
-refresh_cache_file (GnomeBG     *bg,
-		    GdkPixbuf   *new_pixbuf,
-		    gint         num_monitor,
-		    gint         width,
-		    gint         height)
+refresh_cache_file (GfBG      *bg,
+                    GdkPixbuf *new_pixbuf,
+                    gint       num_monitor,
+                    gint       width,
+                    gint       height)
 {
 	gchar           *cache_filename;
 	gchar           *cache_dir;
@@ -599,15 +590,15 @@ file_changed (GFileMonitor *file_monitor,
 	      GFileMonitorEvent event_type,
 	      gpointer user_data)
 {
-	GnomeBG *bg = GNOME_BG (user_data);
+	GfBG *bg = GF_BG (user_data);
 
 	clear_cache (bg);
 	queue_changed (bg);
 }
 
 void
-gnome_bg_set_filename (GnomeBG     *bg,
-		       const char  *filename)
+gf_bg_set_filename (GfBG       *bg,
+                    const char *filename)
 {
 	g_return_if_fail (bg != NULL);
 	
@@ -639,9 +630,9 @@ gnome_bg_set_filename (GnomeBG     *bg,
 }
 
 static void
-draw_color_area (GnomeBG *bg,
-		 GdkPixbuf *dest,
-		 GdkRectangle *rect)
+draw_color_area (GfBG         *bg,
+                 GdkPixbuf    *dest,
+                 GdkRectangle *rect)
 {
 	guint32 pixel;
         GdkRectangle extent;
@@ -678,8 +669,8 @@ draw_color_area (GnomeBG *bg,
 }
 
 static void
-draw_color (GnomeBG *bg,
-	    GdkPixbuf *dest)
+draw_color (GfBG      *bg,
+            GdkPixbuf *dest)
 {
 	GdkRectangle rect;
 	rect.x = 0;
@@ -690,10 +681,10 @@ draw_color (GnomeBG *bg,
 }
 
 static void
-draw_color_each_monitor (GnomeBG *bg,
-			 GdkPixbuf *dest,
-			 GdkScreen *screen,
-			 gint scale)
+draw_color_each_monitor (GfBG      *bg,
+                         GdkPixbuf *dest,
+                         GdkScreen *screen,
+                         gint       scale)
 {
 	GdkRectangle rect;
 	gint num_monitors;
@@ -796,11 +787,11 @@ get_scaled_pixbuf (GDesktopBackgroundStyle placement,
 }
 
 static void
-draw_image_area (GnomeBG         *bg,
-		 gint             num_monitor,
-		 GdkPixbuf       *pixbuf,
-		 GdkPixbuf       *dest,
-		 GdkRectangle    *area)
+draw_image_area (GfBG         *bg,
+                 gint          num_monitor,
+                 GdkPixbuf    *pixbuf,
+                 GdkPixbuf    *dest,
+                 GdkRectangle *area)
 {
 	int dest_width = area->width;
 	int dest_height = area->height;
@@ -837,8 +828,8 @@ draw_image_area (GnomeBG         *bg,
 }
 
 static void
-draw_once (GnomeBG   *bg,
-	   GdkPixbuf *dest)
+draw_once (GfBG      *bg,
+           GdkPixbuf *dest)
 {
 	GdkRectangle rect;
 	GdkPixbuf   *pixbuf;
@@ -872,10 +863,10 @@ draw_once (GnomeBG   *bg,
 }
 
 static void
-draw_each_monitor (GnomeBG   *bg,
-		   GdkPixbuf *dest,
-		   GdkScreen *screen,
-		   gint       scale)
+draw_each_monitor (GfBG      *bg,
+                   GdkPixbuf *dest,
+                   GdkScreen *screen,
+                   gint       scale)
 {
 	GdkRectangle rect;
 	gint num_monitors;
@@ -901,11 +892,11 @@ draw_each_monitor (GnomeBG   *bg,
 }
 
 static void
-gnome_bg_draw_at_scale (GnomeBG   *bg,
-                        GdkPixbuf *dest,
-                        gint       scale,
-                        GdkScreen *screen,
-                        gboolean   is_root)
+gf_bg_draw_at_scale (GfBG      *bg,
+                     GdkPixbuf *dest,
+                     gint       scale,
+                     GdkScreen *screen,
+                     gboolean   is_root)
 {
 	if (is_root && (bg->placement != G_DESKTOP_BACKGROUND_STYLE_SPANNED)) {
 		draw_color_each_monitor (bg, dest, screen, scale);
@@ -921,23 +912,23 @@ gnome_bg_draw_at_scale (GnomeBG   *bg,
 }
 
 void
-gnome_bg_draw (GnomeBG *bg,
-	       GdkPixbuf *dest,
-	       GdkScreen *screen,
-	       gboolean is_root)
+gf_bg_draw (GfBG      *bg,
+            GdkPixbuf *dest,
+            GdkScreen *screen,
+            gboolean   is_root)
 {
 	if (!bg)
 		return;
 
-	gnome_bg_draw_at_scale (bg, dest, 1, screen, is_root);
+	gf_bg_draw_at_scale (bg, dest, 1, screen, is_root);
 }
 
 static void
-gnome_bg_get_pixmap_size (GnomeBG   *bg,
-			  int        width,
-			  int        height,
-			  int       *pixmap_width,
-			  int       *pixmap_height)
+gf_bg_get_pixmap_size (GfBG *bg,
+                       int   width,
+                       int   height,
+                       int  *pixmap_width,
+                       int  *pixmap_height)
 {
 	int dummy;
 	
@@ -966,27 +957,12 @@ gnome_bg_get_pixmap_size (GnomeBG   *bg,
 	}
 }
 
-/**
- * gnome_bg_create_surface:
- * @bg: GnomeBG 
- * @window: 
- * @width: 
- * @height:
- * @root:
- *
- * Create a surface that can be set as background for @window. If @is_root is
- * TRUE, the surface created will be created by a temporary X server connection
- * so that if someone calls XKillClient on it, it won't affect the application
- * who created it.
- *
- * Returns: %NULL on error (e.g. out of X connections)
- **/
 cairo_surface_t *
-gnome_bg_create_surface (GnomeBG	    *bg,
-		 	 GdkWindow   *window,
-			 int	     width,
-			 int	     height,
-			 gboolean     root)
+gf_bg_create_surface (GfBG      *bg,
+                      GdkWindow *window,
+                      int        width,
+                      int        height,
+                      gboolean   root)
 {
 	gint scale;
 	int pm_width, pm_height;
@@ -1007,7 +983,7 @@ gnome_bg_create_surface (GnomeBG	    *bg,
         }
 
 	/* has the side effect of loading and caching pixbuf only when in tile mode */
-	gnome_bg_get_pixmap_size (bg, width, height, &pm_width, &pm_height);
+	gf_bg_get_pixmap_size (bg, width, height, &pm_width, &pm_height);
 	
 	if (root) {
 		surface = make_root_pixmap (gdk_window_get_screen (window),
@@ -1034,7 +1010,7 @@ gnome_bg_create_surface (GnomeBG	    *bg,
 		
 		pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8,
 					 scale * width, scale * height);
-		gnome_bg_draw_at_scale (bg, pixbuf, scale, gdk_window_get_screen (window), root);
+		gf_bg_draw_at_scale (bg, pixbuf, scale, gdk_window_get_screen (window), root);
 		pixbuf_average_value (pixbuf, &average);
 
 		pixbuf_surface = gdk_cairo_surface_create_from_pixbuf (pixbuf, 0, window);
@@ -1055,14 +1031,10 @@ gnome_bg_create_surface (GnomeBG	    *bg,
 	return surface;
 }
 
-
-/* determine if a background is darker or lighter than average, to help
- * clients know what colors to draw on top with
- */
 gboolean
-gnome_bg_is_dark (GnomeBG *bg,
-		  int      width,
-		  int      height)
+gf_bg_is_dark (GfBG *bg,
+               int   width,
+               int   height)
 {
 	GdkRGBA color;
 	gdouble intensity;
@@ -1147,20 +1119,8 @@ make_root_pixmap (GdkScreen *screen, gint width, gint height)
 	return surface;
 }
 
-/**
- * gnome_bg_get_surface_from_root:
- * @screen: a #GdkScreen
- *
- * This function queries the _XROOTPMAP_ID property from
- * the root window associated with @screen to determine
- * the current root window background pixmap and returns
- * a copy of it. If the _XROOTPMAP_ID is not set, then
- * a black surface is returned.
- *
- * Return value: a #cairo_surface_t if successful or %NULL
- **/
 cairo_surface_t *
-gnome_bg_get_surface_from_root (GdkScreen *screen)
+gf_bg_get_surface_from_root (GdkScreen *screen)
 {
 	int result;
 	gint format;
@@ -1249,8 +1209,8 @@ gnome_bg_get_surface_from_root (GdkScreen *screen)
 }
 
 static void
-gnome_bg_set_root_pixmap_id (GdkScreen       *screen,
-			     cairo_surface_t *surface)
+gf_bg_set_root_pixmap_id (GdkScreen       *screen,
+                          cairo_surface_t *surface)
 {
 	int      result;
 	gint     format;
@@ -1326,21 +1286,9 @@ gnome_bg_set_root_pixmap_id (GdkScreen       *screen,
 	}
 }
 
-/**
- * gnome_bg_set_surface_as_root:
- * @screen: the #GdkScreen to change root background on
- * @surface: the #cairo_surface_t to set root background from.
- *   Must be an xlib surface backing a pixmap.
- *
- * Set the root pixmap, and properties pointing to it. We
- * do this atomically with a server grab to make sure that
- * we won't leak the pixmap if somebody else it setting
- * it at the same time. (This assumes that they follow the
- * same conventions we do).  @surface should come from a call
- * to gnome_bg_create_surface().
- **/
 void
-gnome_bg_set_surface_as_root (GdkScreen *screen, cairo_surface_t *surface)
+gf_bg_set_surface_as_root (GdkScreen       *screen,
+                           cairo_surface_t *surface)
 {
 	Display *display;
 	int      screen_num;
@@ -1355,7 +1303,7 @@ gnome_bg_set_surface_as_root (GdkScreen *screen, cairo_surface_t *surface)
 
 	gdk_x11_display_grab (gdk_screen_get_display (screen));
 
-	gnome_bg_set_root_pixmap_id (screen, surface);
+	gf_bg_set_root_pixmap_id (screen, surface);
 
 	XSetWindowBackgroundPixmap (display, RootWindow (display, screen_num),
 				    cairo_xlib_surface_get_drawable (surface));
@@ -1365,21 +1313,9 @@ gnome_bg_set_surface_as_root (GdkScreen *screen, cairo_surface_t *surface)
 	gdk_x11_display_ungrab (gdk_screen_get_display (screen));
 }
 
-/**
- * gnome_bg_set_surface_as_root_with_crossfade:
- * @screen: the #GdkScreen to change root background on
- * @surface: the cairo xlib surface to set root background from
- *
- * Set the root pixmap, and properties pointing to it.
- * This function differs from gnome_bg_set_surface_as_root()
- * in that it adds a subtle crossfade animation from the
- * current root pixmap to the new one.
- *
- * Return value: (transfer full): a #GnomeBGCrossfade object
- **/
 GnomeBGCrossfade *
-gnome_bg_set_surface_as_root_with_crossfade (GdkScreen       *screen,
-		 			     cairo_surface_t *surface)
+gf_bg_set_surface_as_root_with_crossfade (GdkScreen       *screen,
+                                          cairo_surface_t *surface)
 {
 	GdkDisplay *display;
 	GdkWindow *root_window;
@@ -1399,8 +1335,8 @@ gnome_bg_set_surface_as_root_with_crossfade (GdkScreen       *screen,
 
 	display = gdk_screen_get_display (screen);
 	gdk_x11_display_grab (display);
-	old_surface = gnome_bg_get_surface_from_root (screen);
-	gnome_bg_set_root_pixmap_id (screen, surface);
+	old_surface = gf_bg_get_surface_from_root (screen);
+	gf_bg_set_root_pixmap_id (screen, surface);
 	gnome_bg_crossfade_set_start_surface (fade, old_surface);
 	cairo_surface_destroy (old_surface);
 	gnome_bg_crossfade_set_end_surface (fade, surface);
@@ -1490,7 +1426,7 @@ file_cache_entry_delete (FileCacheEntry *ent)
 }
 
 static void
-bound_cache (GnomeBG *bg)
+bound_cache (GfBG *bg)
 {
       while (g_list_length (bg->file_cache) >= CACHE_SIZE) {
 	      GList *last_link = g_list_last (bg->file_cache);
@@ -1503,7 +1439,9 @@ bound_cache (GnomeBG *bg)
 }
 
 static const FileCacheEntry *
-file_cache_lookup (GnomeBG *bg, FileType type, const char *filename)
+file_cache_lookup (GfBG       *bg,
+                   FileType    type,
+                   const char *filename)
 {
 	GList *list;
 
@@ -1520,9 +1458,9 @@ file_cache_lookup (GnomeBG *bg, FileType type, const char *filename)
 }
 
 static FileCacheEntry *
-file_cache_entry_new (GnomeBG *bg,
-		      FileType type,
-		      const char *filename)
+file_cache_entry_new (GfBG       *bg,
+                      FileType    type,
+                      const char *filename)
 {
 	FileCacheEntry *ent = g_new0 (FileCacheEntry, 1);
 
@@ -1539,29 +1477,29 @@ file_cache_entry_new (GnomeBG *bg,
 }
 
 static void
-file_cache_add_pixbuf (GnomeBG *bg,
-		       const char *filename,
-		       GdkPixbuf *pixbuf)
+file_cache_add_pixbuf (GfBG       *bg,
+                       const char *filename,
+                       GdkPixbuf  *pixbuf)
 {
 	FileCacheEntry *ent = file_cache_entry_new (bg, PIXBUF, filename);
 	ent->u.pixbuf = g_object_ref (pixbuf);
 }
 
 static void
-file_cache_add_slide_show (GnomeBG *bg,
-			   const char *filename,
-			   GnomeBGSlideShow *show)
+file_cache_add_slide_show (GfBG             *bg,
+                           const char       *filename,
+                           GnomeBGSlideShow *show)
 {
 	FileCacheEntry *ent = file_cache_entry_new (bg, SLIDESHOW, filename);
 	ent->u.slideshow = g_object_ref (show);
 }
 
 static GdkPixbuf *
-load_from_cache_file (GnomeBG    *bg,
-		      const char *filename,
-		      gint        num_monitor,
-		      gint        best_width,
-		      gint        best_height)
+load_from_cache_file (GfBG       *bg,
+                      const char *filename,
+                      gint        num_monitor,
+                      gint        best_width,
+                      gint        best_height)
 {
 	GdkPixbuf *pixbuf = NULL;
 	gchar *cache_filename;
@@ -1575,11 +1513,11 @@ load_from_cache_file (GnomeBG    *bg,
 }
 
 static GdkPixbuf *
-get_as_pixbuf_for_size (GnomeBG    *bg,
-			const char *filename,
-			gint        num_monitor,
-			gint        best_width,
-			gint        best_height)
+get_as_pixbuf_for_size (GfBG       *bg,
+                        const char *filename,
+                        gint        num_monitor,
+                        gint        best_width,
+                        gint        best_height)
 {
 	const FileCacheEntry *ent;
 	if ((ent = file_cache_lookup (bg, PIXBUF, filename))) {
@@ -1625,7 +1563,8 @@ get_as_pixbuf_for_size (GnomeBG    *bg,
 }
 
 static GnomeBGSlideShow *
-get_as_slideshow (GnomeBG *bg, const char *filename)
+get_as_slideshow (GfBG       *bg,
+                  const char *filename)
 {
 	const FileCacheEntry *ent;
 	if ((ent = file_cache_lookup (bg, SLIDESHOW, filename))) {
@@ -1644,7 +1583,7 @@ get_as_slideshow (GnomeBG *bg, const char *filename)
 static gboolean
 blow_expensive_caches (gpointer data)
 {
-	GnomeBG *bg = data;
+	GfBG *bg = data;
 	GList *list, *next;
 	
 	bg->blow_caches_id = 0;
@@ -1669,7 +1608,7 @@ blow_expensive_caches (gpointer data)
 }
 
 static void
-blow_expensive_caches_in_idle (GnomeBG *bg)
+blow_expensive_caches_in_idle (GfBG *bg)
 {
 	if (bg->blow_caches_id == 0) {
 		bg->blow_caches_id =
@@ -1682,7 +1621,7 @@ blow_expensive_caches_in_idle (GnomeBG *bg)
 static gboolean
 on_timeout (gpointer data)
 {
-	GnomeBG *bg = data;
+	GfBG *bg = data;
 
 	bg->timeout_id = 0;
 	
@@ -1717,7 +1656,7 @@ get_slide_timeout (gboolean is_fixed,
 }
 
 static void
-ensure_timeout (GnomeBG *bg,
+ensure_timeout (GfBG    *bg,
                 gdouble  timeout)
 {
 	if (!bg->timeout_id) {
@@ -1755,10 +1694,10 @@ get_mtime (const char *filename)
 }
 
 static GdkPixbuf *
-get_pixbuf_for_size (GnomeBG *bg,
-		     gint num_monitor,
-		     gint best_width,
-		     gint best_height)
+get_pixbuf_for_size (GfBG *bg,
+                     gint  num_monitor,
+                     gint  best_width,
+                     gint  best_height)
 {
 	guint time_until_next_change;
 	gboolean hit_cache = FALSE;
@@ -1838,8 +1777,8 @@ get_pixbuf_for_size (GnomeBG *bg,
 }
 
 static gboolean
-is_different (GnomeBG    *bg,
-	      const char *filename)
+is_different (GfBG       *bg,
+              const char *filename)
 {
 	if (!filename && bg->filename) {
 		return TRUE;
@@ -1864,7 +1803,7 @@ is_different (GnomeBG    *bg,
 }
 
 static void
-clear_cache (GnomeBG *bg)
+clear_cache (GfBG *bg)
 {
 	GList *list;
 
