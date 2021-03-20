@@ -18,9 +18,9 @@
 #include "config.h"
 #include "gf-root-background.h"
 
+#include "libcommon/gf-bg.h"
+
 #include <gtk/gtk.h>
-#include <libcommon/gf-background-utils.h>
-#include <libgnome-desktop/gnome-bg.h>
 
 struct _GfRootBackground
 {
@@ -32,7 +32,7 @@ struct _GfRootBackground
 
   guint      change_idle_id;
 
-  GnomeBG   *bg;
+  GfBG      *bg;
 
   GSettings *settings;
 };
@@ -83,13 +83,9 @@ set_background (GfRootBackground *self)
 
   get_display_size (display, &width, &height);
 
-  surface = gf_background_surface_create (display,
-                                          self->bg,
-                                          root,
-                                          width,
-                                          height);
+  surface = gf_bg_create_surface (self->bg, root, width, height, TRUE);
 
-  gf_background_surface_set_as_root (display, surface);
+  gf_bg_set_surface_as_root (screen, surface);
   cairo_surface_destroy (surface);
 }
 
@@ -99,20 +95,20 @@ change_event_cb (GSettings        *settings,
                  gint              n_keys,
                  GfRootBackground *self)
 {
-  gnome_bg_load_from_preferences (self->bg, self->settings);
+  gf_bg_load_from_preferences (self->bg, self->settings);
 
   return TRUE;
 }
 
 static void
-changed_cb (GnomeBG          *bg,
+changed_cb (GfBG             *bg,
             GfRootBackground *self)
 {
   set_background (self);
 }
 
 static void
-transitioned_cb (GnomeBG          *bg,
+transitioned_cb (GfBG             *bg,
                  GfRootBackground *self)
 {
   set_background (self);
@@ -218,7 +214,7 @@ gf_root_background_init (GfRootBackground *self)
     g_signal_connect (screen, "size-changed",
                       G_CALLBACK (size_changed_cb), self);
 
-  self->bg = gnome_bg_new ();
+  self->bg = gf_bg_new ();
 
   g_signal_connect (self->bg, "changed",
                     G_CALLBACK (changed_cb), self);
@@ -232,7 +228,7 @@ gf_root_background_init (GfRootBackground *self)
     g_signal_connect (self->settings, "change-event",
                       G_CALLBACK (change_event_cb), self);
 
-  gnome_bg_load_from_preferences (self->bg, self->settings);
+  gf_bg_load_from_preferences (self->bg, self->settings);
 }
 
 GfRootBackground *
