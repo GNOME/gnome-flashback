@@ -257,7 +257,7 @@ filter_func (GdkXEvent *xevent,
           ensure_surface (self);
         }
     }
-  else if (x->xproperty.atom != color_atom)
+  else if (x->xproperty.atom == color_atom)
     {
       update_representative_color (self);
     }
