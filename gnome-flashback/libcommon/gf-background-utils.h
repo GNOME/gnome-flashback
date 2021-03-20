@@ -18,15 +18,9 @@
 #ifndef GF_BACKGROUND_UTILS_H
 #define GF_BACKGROUND_UTILS_H
 
-#include <libgnome-desktop/gnome-bg.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
-
-cairo_surface_t *gf_background_surface_create            (GdkDisplay      *display,
-                                                          GnomeBG         *bg,
-                                                          GdkWindow       *window,
-                                                          int              width,
-                                                          int              height);
 
 cairo_surface_t *gf_background_surface_get_from_root     (GdkDisplay      *display,
                                                           int              width,
