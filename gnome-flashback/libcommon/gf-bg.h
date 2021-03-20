@@ -30,31 +30,35 @@ G_BEGIN_DECLS
 #define GF_TYPE_BG (gf_bg_get_type ())
 G_DECLARE_FINAL_TYPE (GfBG, gf_bg, GF, BG, GObject)
 
-GfBG *           gf_bg_new                      (void);
-void             gf_bg_load_from_preferences    (GfBG                  *bg,
-						 GSettings             *settings);
-void             gf_bg_save_to_preferences      (GfBG                  *bg,
-						 GSettings             *settings);
-/* Setters */
-void             gf_bg_set_filename             (GfBG                  *bg,
-						 const char            *filename);
-void             gf_bg_set_placement            (GfBG                  *bg,
-						 GDesktopBackgroundStyle placement);
-void             gf_bg_set_rgba                 (GfBG                  *bg,
-						 GDesktopBackgroundShading type,
-						 GdkRGBA               *primary,
-						 GdkRGBA               *secondary);
+GfBG            *gf_bg_new                            (void);
 
-cairo_surface_t *gf_bg_create_surface           (GfBG                  *bg,
-						 GdkWindow             *window,
-						 int                    width,
-						 int                    height,
-						 gboolean               root);
+void             gf_bg_load_from_preferences          (GfBG                      *self,
+                                                       GSettings                 *settings);
 
-void             gf_bg_set_surface_as_root      (GdkScreen             *screen,
-						 cairo_surface_t       *surface);
+void             gf_bg_save_to_preferences            (GfBG                      *self,
+                                                       GSettings                 *settings);
 
-GdkRGBA *gf_bg_get_average_color_from_surface (cairo_surface_t *surface);
+void             gf_bg_set_filename                   (GfBG                      *self,
+                                                       const char                *filename);
+
+void             gf_bg_set_placement                  (GfBG                      *self,
+                                                       GDesktopBackgroundStyle    placement);
+
+void             gf_bg_set_rgba                       (GfBG                      *self,
+                                                       GDesktopBackgroundShading  type,
+                                                       GdkRGBA                   *primary,
+                                                       GdkRGBA                   *secondary);
+
+cairo_surface_t *gf_bg_create_surface                 (GfBG                      *self,
+                                                       GdkWindow                 *window,
+                                                       int                        width,
+                                                       int                        height,
+                                                       gboolean                   root);
+
+void             gf_bg_set_surface_as_root            (GdkScreen                 *screen,
+                                                       cairo_surface_t           *surface);
+
+GdkRGBA         *gf_bg_get_average_color_from_surface (cairo_surface_t           *surface);
 
 G_END_DECLS
 

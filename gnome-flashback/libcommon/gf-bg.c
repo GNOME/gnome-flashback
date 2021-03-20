@@ -92,13 +92,6 @@ static guint signals[N_SIGNALS] = { 0 };
 
 G_DEFINE_TYPE (GfBG, gf_bg, G_TYPE_OBJECT)
 
-static cairo_surface_t *make_root_pixmap     (GdkScreen  *screen,
-                                              gint        width,
-                                              gint        height);
-
-/* Pixbuf utils */
-static void       pixbuf_average_value (GdkPixbuf  *pixbuf,
-                                        GdkRGBA    *result);
 static GdkPixbuf *pixbuf_scale_to_fit  (GdkPixbuf  *src,
 					int         max_width,
 					int         max_height);
@@ -122,19 +115,12 @@ static void       pixbuf_blend         (GdkPixbuf  *src,
 					int         dest_y,
 					double      alpha);
 
-/* Cache */
 static GdkPixbuf *get_pixbuf_for_size  (GfBG                  *bg,
 					gint                   num_monitor,
 					int                    width,
 					int                    height);
 static void       clear_cache          (GfBG                  *bg);
-static gboolean   is_different         (GfBG                  *bg,
-					const char            *filename);
 static time_t     get_mtime            (const char            *filename);
-static GnomeBGSlideShow * get_as_slideshow    (GfBG                  *bg,
-                                               const char 	      *filename);
-static GnomeBGSlideShow *read_slideshow_file (const char *filename,
-				       GError     **err);
 
 static void
 color_from_string (const char *string,
@@ -242,193 +228,6 @@ bg_gsettings_mapping (GVariant *value,
 	}
 
 	return FALSE;
-}
-
-void
-gf_bg_load_from_preferences (GfBG      *bg,
-                             GSettings *settings)
-{
-	char    *tmp;
-	char    *filename;
-	GDesktopBackgroundShading ctype;
-	GdkRGBA c1, c2;
-	GDesktopBackgroundStyle placement;
-
-	g_return_if_fail (GF_IS_BG (bg));
-	g_return_if_fail (G_IS_SETTINGS (settings));
-
-	/* Filename */
-	filename = g_settings_get_mapped (settings, BG_KEY_PICTURE_URI, bg_gsettings_mapping, NULL);
-
-	/* Colors */
-	tmp = g_settings_get_string (settings, BG_KEY_PRIMARY_COLOR);
-	color_from_string (tmp, &c1);
-	g_free (tmp);
-
-	tmp = g_settings_get_string (settings, BG_KEY_SECONDARY_COLOR);
-	color_from_string (tmp, &c2);
-	g_free (tmp);
-
-	/* Color type */
-	ctype = g_settings_get_enum (settings, BG_KEY_COLOR_TYPE);
-
-	/* Placement */
-	placement = g_settings_get_enum (settings, BG_KEY_PICTURE_PLACEMENT);
-
-	gf_bg_set_rgba (bg, ctype, &c1, &c2);
-	gf_bg_set_placement (bg, placement);
-	gf_bg_set_filename (bg, filename);
-
-	g_free (filename);
-}
-
-void
-gf_bg_save_to_preferences (GfBG      *bg,
-                           GSettings *settings)
-{
-	gchar *primary;
-	gchar *secondary;
-	gchar *uri;
-
-	g_return_if_fail (GF_IS_BG (bg));
-	g_return_if_fail (G_IS_SETTINGS (settings));
-
-	primary = color_to_string (&bg->primary);
-	secondary = color_to_string (&bg->secondary);
-
-	g_settings_delay (settings);
-
-	uri = NULL;
-	if (bg->filename != NULL)
-		uri = g_filename_to_uri (bg->filename, NULL, NULL);
-	if (uri == NULL)
-		uri = g_strdup ("");
-	g_settings_set_string (settings, BG_KEY_PICTURE_URI, uri);
-	g_settings_set_string (settings, BG_KEY_PRIMARY_COLOR, primary);
-	g_settings_set_string (settings, BG_KEY_SECONDARY_COLOR, secondary);
-	g_settings_set_enum (settings, BG_KEY_COLOR_TYPE, bg->color_type);
-	g_settings_set_enum (settings, BG_KEY_PICTURE_PLACEMENT, bg->placement);
-
-	/* Apply changes atomically. */
-	g_settings_apply (settings);
-
-	g_free (primary);
-	g_free (secondary);
-	g_free (uri);
-}
-
-
-static void
-gf_bg_init (GfBG *bg)
-{
-}
-
-static void
-gf_bg_dispose (GObject *object)
-{
-	GfBG *bg = GF_BG (object);
-
-	if (bg->file_monitor) {
-		g_object_unref (bg->file_monitor);
-		bg->file_monitor = NULL;
-	}
-
-	clear_cache (bg);
-
-	G_OBJECT_CLASS (gf_bg_parent_class)->dispose (object);
-}
-
-static void
-gf_bg_finalize (GObject *object)
-{
-	GfBG *bg = GF_BG (object);
-
-	if (bg->changed_id != 0) {
-		g_source_remove (bg->changed_id);
-		bg->changed_id = 0;
-	}
-
-	if (bg->transitioned_id != 0) {
-		g_source_remove (bg->transitioned_id);
-		bg->transitioned_id = 0;
-	}
-	
-	if (bg->blow_caches_id != 0) {
-		g_source_remove (bg->blow_caches_id);
-		bg->blow_caches_id = 0;
-	}
-	
-	g_free (bg->filename);
-	bg->filename = NULL;
-
-	G_OBJECT_CLASS (gf_bg_parent_class)->finalize (object);
-}
-
-static void
-gf_bg_class_init (GfBGClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-	object_class->dispose = gf_bg_dispose;
-	object_class->finalize = gf_bg_finalize;
-
-	signals[CHANGED] = g_signal_new ("changed",
-					 G_OBJECT_CLASS_TYPE (object_class),
-					 G_SIGNAL_RUN_LAST,
-					 0,
-					 NULL, NULL,
-					 g_cclosure_marshal_VOID__VOID,
-					 G_TYPE_NONE, 0);
-
-	signals[TRANSITIONED] = g_signal_new ("transitioned",
-					 G_OBJECT_CLASS_TYPE (object_class),
-					 G_SIGNAL_RUN_LAST,
-					 0,
-					 NULL, NULL,
-					 g_cclosure_marshal_VOID__VOID,
-					 G_TYPE_NONE, 0);
-}
-
-GfBG *
-gf_bg_new (void)
-{
-	return g_object_new (GF_TYPE_BG, NULL);
-}
-
-void
-gf_bg_set_rgba (GfBG                      *bg,
-                GDesktopBackgroundShading  type,
-                GdkRGBA                   *primary,
-                GdkRGBA                   *secondary)
-{
-	g_return_if_fail (bg != NULL);
-	g_return_if_fail (primary != NULL);
-
-	if (bg->color_type != type			||
-	    !gdk_rgba_equal (&bg->primary, primary)			||
-	    (secondary && !gdk_rgba_equal (&bg->secondary, secondary))) {
-
-		bg->color_type = type;
-		bg->primary = *primary;
-		if (secondary) {
-			bg->secondary = *secondary;
-		}
-
-		queue_changed (bg);
-	}
-}
-
-void
-gf_bg_set_placement (GfBG                    *bg,
-                     GDesktopBackgroundStyle  placement)
-{
-	g_return_if_fail (bg != NULL);
-	
-	if (bg->placement != placement) {
-		bg->placement = placement;
-		
-		queue_changed (bg);
-	}
 }
 
 static inline gchar *
@@ -574,39 +373,6 @@ file_changed (GFileMonitor *file_monitor,
 
 	clear_cache (bg);
 	queue_changed (bg);
-}
-
-void
-gf_bg_set_filename (GfBG       *bg,
-                    const char *filename)
-{
-	g_return_if_fail (bg != NULL);
-	
-	if (is_different (bg, filename)) {
-		g_free (bg->filename);
-		
-		bg->filename = g_strdup (filename);
-		bg->file_mtime = get_mtime (bg->filename);
-
-		if (bg->file_monitor) {
-			g_object_unref (bg->file_monitor);
-			bg->file_monitor = NULL;
-		}
-
-		if (bg->filename) {
-			GFile *f = g_file_new_for_path (bg->filename);
-			
-			bg->file_monitor = g_file_monitor_file (f, 0, NULL, NULL);
-			g_signal_connect (bg->file_monitor, "changed",
-					  G_CALLBACK (file_changed), bg);
-
-			g_object_unref (f);
-		}
-		
-		clear_cache (bg);
-		
-		queue_changed (bg);
-	}
 }
 
 static void
@@ -941,80 +707,6 @@ gf_bg_get_pixmap_size (GfBG *bg,
 	}
 }
 
-cairo_surface_t *
-gf_bg_create_surface (GfBG      *bg,
-                      GdkWindow *window,
-                      int        width,
-                      int        height,
-                      gboolean   root)
-{
-	gint scale;
-	int pm_width, pm_height;
-	cairo_surface_t *surface;
-	GdkRGBA average;
-	cairo_t *cr;
-	
-	g_return_val_if_fail (bg != NULL, NULL);
-	g_return_val_if_fail (window != NULL, NULL);
-
-	scale = gdk_window_get_scale_factor (window);
-
-        if (bg->pixbuf_cache &&
-            gdk_pixbuf_get_width (bg->pixbuf_cache) != width &&
-            gdk_pixbuf_get_height (bg->pixbuf_cache) != height) {
-                g_object_unref (bg->pixbuf_cache);
-                bg->pixbuf_cache = NULL;
-        }
-
-	/* has the side effect of loading and caching pixbuf only when in tile mode */
-	gf_bg_get_pixmap_size (bg, width, height, &pm_width, &pm_height);
-	
-	if (root) {
-		surface = make_root_pixmap (gdk_window_get_screen (window),
-					    scale * pm_width,  scale * pm_height);
-		cairo_surface_set_device_scale (surface, scale, scale);
-	}
-	else {
-		surface = gdk_window_create_similar_surface (window,
-                                                             CAIRO_CONTENT_COLOR,
-                                                             pm_width, pm_height);
-	}
-
-	if (surface == NULL)
-		return NULL;
-
-	cr = cairo_create (surface);
-	if (!bg->filename && bg->color_type == G_DESKTOP_BACKGROUND_SHADING_SOLID) {
-		gdk_cairo_set_source_rgba (cr, &(bg->primary));
-		average = bg->primary;
-	}
-	else {
-		GdkPixbuf *pixbuf;
-		cairo_surface_t *pixbuf_surface;
-		
-		pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8,
-					 scale * width, scale * height);
-		gf_bg_draw_at_scale (bg, pixbuf, scale, gdk_window_get_display (window), root);
-		pixbuf_average_value (pixbuf, &average);
-
-		pixbuf_surface = gdk_cairo_surface_create_from_pixbuf (pixbuf, 0, window);
-		cairo_set_source_surface (cr, pixbuf_surface, 0, 0);
-
-		cairo_surface_destroy (pixbuf_surface);
-		g_object_unref (pixbuf);
-	}
-
-	cairo_paint (cr);
-	
-	cairo_destroy (cr);
-
-	cairo_surface_set_user_data (surface, &average_color_key,
-	                             gdk_rgba_copy (&average),
-	                             (cairo_destroy_func_t) gdk_rgba_free);
-
-	return surface;
-}
-
 /* 
  * Create a persistent pixmap. We create a separate display
  * and set the closedown mode on it to RetainPermanent.
@@ -1142,33 +834,6 @@ gf_bg_set_root_pixmap_id (GdkScreen       *screen,
 		XDeleteProperty (display, RootWindow (display, screen_num),
 		                 gdk_x11_get_xatom_by_name ("_GNOME_BACKGROUND_REPRESENTATIVE_COLORS"));
 	}
-}
-
-void
-gf_bg_set_surface_as_root (GdkScreen       *screen,
-                           cairo_surface_t *surface)
-{
-	Display *display;
-	int      screen_num;
-
-	g_return_if_fail (screen != NULL);
-	g_return_if_fail (surface != NULL);
-	g_return_if_fail (cairo_surface_get_type (surface) == CAIRO_SURFACE_TYPE_XLIB);
-
-	screen_num = gdk_screen_get_number (screen);
-
-	display = GDK_DISPLAY_XDISPLAY (gdk_screen_get_display (screen));
-
-	gdk_x11_display_grab (gdk_screen_get_display (screen));
-
-	gf_bg_set_root_pixmap_id (screen, surface);
-
-	XSetWindowBackgroundPixmap (display, RootWindow (display, screen_num),
-				    cairo_xlib_surface_get_drawable (surface));
-	XClearWindow (display, RootWindow (display, screen_num));
-
-	gdk_display_flush (gdk_screen_get_display (screen));
-	gdk_x11_display_ungrab (gdk_screen_get_display (screen));
 }
 
 /* Implementation of the pixbuf cache */
@@ -1383,6 +1048,23 @@ get_as_pixbuf_for_size (GfBG       *bg,
 
 		return pixbuf;
 	}
+}
+
+static GnomeBGSlideShow *
+read_slideshow_file (const char  *filename,
+                     GError     **err)
+{
+  GnomeBGSlideShow *show;
+
+  show = gnome_bg_slide_show_new (filename);
+
+  if (!gnome_bg_slide_show_load (show, err))
+    {
+      g_object_unref (show);
+      return NULL;
+    }
+
+  return show;
 }
 
 static GnomeBGSlideShow *
@@ -1653,7 +1335,6 @@ clear_cache (GfBG *bg)
 	}
 }
 
-/* Pixbuf utilities */
 static void
 pixbuf_average_value (GdkPixbuf *pixbuf,
                       GdkRGBA   *result)
@@ -1905,20 +1586,365 @@ pixbuf_tile (GdkPixbuf *src, GdkPixbuf *dest)
 	}
 }
 
-static GnomeBGSlideShow *
-read_slideshow_file (const char *filename,
-		     GError     **err)
+static void
+gf_bg_dispose (GObject *object)
 {
-        GnomeBGSlideShow *show;
+  GfBG *self;
 
-        show = gnome_bg_slide_show_new (filename);
+  self = GF_BG (object);
 
-        if (!gnome_bg_slide_show_load (show, err)) {
-            g_object_unref (show);
-            return NULL;
-        }
+  g_clear_object (&self->file_monitor);
 
-        return show;
+  clear_cache (self);
+
+  G_OBJECT_CLASS (gf_bg_parent_class)->dispose (object);
+}
+
+static void
+gf_bg_finalize (GObject *object)
+{
+  GfBG *self;
+
+  self = GF_BG (object);
+
+  if (self->changed_id != 0)
+    {
+      g_source_remove (self->changed_id);
+      self->changed_id = 0;
+    }
+
+  if (self->transitioned_id != 0)
+    {
+      g_source_remove (self->transitioned_id);
+      self->transitioned_id = 0;
+    }
+
+  if (self->blow_caches_id != 0)
+    {
+      g_source_remove (self->blow_caches_id);
+      self->blow_caches_id = 0;
+    }
+
+  g_clear_pointer (&self->filename, g_free);
+
+  G_OBJECT_CLASS (gf_bg_parent_class)->finalize (object);
+}
+
+static void
+gf_bg_class_init (GfBGClass *self_class)
+{
+  GObjectClass *object_class;
+
+  object_class = G_OBJECT_CLASS (self_class);
+
+  object_class->dispose = gf_bg_dispose;
+  object_class->finalize = gf_bg_finalize;
+
+  signals[CHANGED] =
+    g_signal_new ("changed",
+                  G_OBJECT_CLASS_TYPE (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0);
+
+  signals[TRANSITIONED] =
+    g_signal_new ("transitioned",
+                  G_OBJECT_CLASS_TYPE (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0);
+}
+
+static void
+gf_bg_init (GfBG *self)
+{
+}
+
+GfBG *
+gf_bg_new (void)
+{
+  return g_object_new (GF_TYPE_BG, NULL);
+}
+
+void
+gf_bg_load_from_preferences (GfBG      *self,
+                             GSettings *settings)
+{
+  char *tmp;
+  char *filename;
+  GDesktopBackgroundShading ctype;
+  GdkRGBA c1;
+  GdkRGBA c2;
+  GDesktopBackgroundStyle placement;
+
+  g_return_if_fail (GF_IS_BG (self));
+  g_return_if_fail (G_IS_SETTINGS (settings));
+
+  /* Filename */
+  filename = g_settings_get_mapped (settings,
+                                    BG_KEY_PICTURE_URI,
+                                    bg_gsettings_mapping,
+                                    NULL);
+
+  /* Colors */
+  tmp = g_settings_get_string (settings, BG_KEY_PRIMARY_COLOR);
+  color_from_string (tmp, &c1);
+  g_free (tmp);
+
+  tmp = g_settings_get_string (settings, BG_KEY_SECONDARY_COLOR);
+  color_from_string (tmp, &c2);
+  g_free (tmp);
+
+  /* Color type */
+  ctype = g_settings_get_enum (settings, BG_KEY_COLOR_TYPE);
+
+  /* Placement */
+  placement = g_settings_get_enum (settings, BG_KEY_PICTURE_PLACEMENT);
+
+  gf_bg_set_rgba (self, ctype, &c1, &c2);
+  gf_bg_set_placement (self, placement);
+  gf_bg_set_filename (self, filename);
+
+  g_free (filename);
+}
+
+void
+gf_bg_save_to_preferences (GfBG      *self,
+                           GSettings *settings)
+{
+  gchar *primary;
+  gchar *secondary;
+  gchar *uri;
+
+  g_return_if_fail (GF_IS_BG (self));
+  g_return_if_fail (G_IS_SETTINGS (settings));
+
+  primary = color_to_string (&self->primary);
+  secondary = color_to_string (&self->secondary);
+
+  g_settings_delay (settings);
+
+  uri = NULL;
+
+  if (self->filename != NULL)
+    uri = g_filename_to_uri (self->filename, NULL, NULL);
+
+  if (uri == NULL)
+    uri = g_strdup ("");
+
+  g_settings_set_string (settings, BG_KEY_PICTURE_URI, uri);
+  g_settings_set_string (settings, BG_KEY_PRIMARY_COLOR, primary);
+  g_settings_set_string (settings, BG_KEY_SECONDARY_COLOR, secondary);
+  g_settings_set_enum (settings, BG_KEY_COLOR_TYPE, self->color_type);
+  g_settings_set_enum (settings, BG_KEY_PICTURE_PLACEMENT, self->placement);
+
+  /* Apply changes atomically. */
+  g_settings_apply (settings);
+
+  g_free (primary);
+  g_free (secondary);
+  g_free (uri);
+}
+
+void
+gf_bg_set_filename (GfBG       *self,
+                    const char *filename)
+{
+  g_return_if_fail (self != NULL);
+
+  if (!is_different (self, filename))
+    return;
+
+  g_free (self->filename);
+
+  self->filename = g_strdup (filename);
+  self->file_mtime = get_mtime (self->filename);
+
+  g_clear_object (&self->file_monitor);
+
+  if (self->filename != NULL)
+    {
+      GFile *f;
+
+      f = g_file_new_for_path (self->filename);
+      self->file_monitor = g_file_monitor_file (f, 0, NULL, NULL);
+      g_object_unref (f);
+
+      g_signal_connect (self->file_monitor,
+                        "changed",
+                        G_CALLBACK (file_changed),
+                        self);
+    }
+
+  clear_cache (self);
+  queue_changed (self);
+}
+
+void
+gf_bg_set_placement (GfBG                    *self,
+                     GDesktopBackgroundStyle  placement)
+{
+  g_return_if_fail (self != NULL);
+
+  if (self->placement != placement)
+    {
+      self->placement = placement;
+
+      queue_changed (self);
+    }
+}
+
+void
+gf_bg_set_rgba (GfBG                      *self,
+                GDesktopBackgroundShading  type,
+                GdkRGBA                   *primary,
+                GdkRGBA                   *secondary)
+{
+  g_return_if_fail (self != NULL);
+  g_return_if_fail (primary != NULL);
+
+  if (self->color_type != type ||
+      !gdk_rgba_equal (&self->primary, primary) ||
+      (secondary != NULL && !gdk_rgba_equal (&self->secondary, secondary)))
+    {
+      self->color_type = type;
+      self->primary = *primary;
+
+      if (secondary != NULL)
+        self->secondary = *secondary;
+
+      queue_changed (self);
+    }
+}
+
+cairo_surface_t *
+gf_bg_create_surface (GfBG      *self,
+                      GdkWindow *window,
+                      int        width,
+                      int        height,
+                      gboolean   root)
+{
+  gint scale;
+  int pm_width;
+  int pm_height;
+  cairo_surface_t *surface;
+  GdkRGBA average;
+  cairo_t *cr;
+
+  g_return_val_if_fail (self != NULL, NULL);
+  g_return_val_if_fail (window != NULL, NULL);
+
+  scale = gdk_window_get_scale_factor (window);
+
+  if (self->pixbuf_cache &&
+      gdk_pixbuf_get_width (self->pixbuf_cache) != width &&
+      gdk_pixbuf_get_height (self->pixbuf_cache) != height)
+    {
+      g_object_unref (self->pixbuf_cache);
+      self->pixbuf_cache = NULL;
+    }
+
+  /* has the side effect of loading and caching pixbuf only when in tile mode */
+  gf_bg_get_pixmap_size (self, width, height, &pm_width, &pm_height);
+
+  if (root)
+    {
+      surface = make_root_pixmap (gdk_window_get_screen (window),
+                                  scale * pm_width,
+                                  scale * pm_height);
+
+      cairo_surface_set_device_scale (surface, scale, scale);
+    }
+  else
+    {
+      surface = gdk_window_create_similar_surface (window,
+                                                   CAIRO_CONTENT_COLOR,
+                                                   pm_width,
+                                                   pm_height);
+    }
+
+  if (surface == NULL)
+    return NULL;
+
+  cr = cairo_create (surface);
+
+  if (self->filename == NULL &&
+      self->color_type == G_DESKTOP_BACKGROUND_SHADING_SOLID)
+    {
+      gdk_cairo_set_source_rgba (cr, &self->primary);
+      average = self->primary;
+    }
+  else
+    {
+      GdkPixbuf *pixbuf;
+      cairo_surface_t *pixbuf_surface;
+
+      pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
+                               FALSE,
+                               8,
+                               scale * width,
+                               scale * height);
+
+      gf_bg_draw_at_scale (self,
+                           pixbuf,
+                           scale,
+                           gdk_window_get_display (window),
+                           root);
+
+      pixbuf_average_value (pixbuf, &average);
+
+      pixbuf_surface = gdk_cairo_surface_create_from_pixbuf (pixbuf, 0, window);
+      cairo_set_source_surface (cr, pixbuf_surface, 0, 0);
+
+      cairo_surface_destroy (pixbuf_surface);
+      g_object_unref (pixbuf);
+    }
+
+  cairo_paint (cr);
+  cairo_destroy (cr);
+
+  cairo_surface_set_user_data (surface,
+                               &average_color_key,
+                               gdk_rgba_copy (&average),
+                               (cairo_destroy_func_t) gdk_rgba_free);
+
+  return surface;
+}
+
+void
+gf_bg_set_surface_as_root (GdkScreen       *screen,
+                           cairo_surface_t *surface)
+{
+  Display *display;
+  int screen_num;
+
+  g_return_if_fail (screen != NULL);
+  g_return_if_fail (surface != NULL);
+  g_return_if_fail (cairo_surface_get_type (surface) == CAIRO_SURFACE_TYPE_XLIB);
+
+  screen_num = gdk_screen_get_number (screen);
+
+  display = GDK_DISPLAY_XDISPLAY (gdk_screen_get_display (screen));
+
+  gdk_x11_display_grab (gdk_screen_get_display (screen));
+
+  gf_bg_set_root_pixmap_id (screen, surface);
+
+  XSetWindowBackgroundPixmap (display,
+                              RootWindow (display, screen_num),
+                              cairo_xlib_surface_get_drawable (surface));
+  XClearWindow (display, RootWindow (display, screen_num));
+
+  gdk_display_flush (gdk_screen_get_display (screen));
+  gdk_x11_display_ungrab (gdk_screen_get_display (screen));
 }
 
 GdkRGBA *
