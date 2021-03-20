@@ -22,8 +22,8 @@
    Author: Soren Sandmann <sandmann@redhat.com>
 */
 
-#ifndef __GNOME_BG_H__
-#define __GNOME_BG_H__
+#ifndef GF_BG_H
+#define GF_BG_H
 
 #ifndef GNOME_DESKTOP_USE_UNSTABLE_API
 #error    GnomeBG is unstable API. You must define GNOME_DESKTOP_USE_UNSTABLE_API before including gnome-bg.h

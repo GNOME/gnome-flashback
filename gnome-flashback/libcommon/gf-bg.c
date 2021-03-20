@@ -27,6 +27,9 @@ Author: Soren Sandmann <sandmann@redhat.com>
 
 */
 
+#include "config.h"
+#include "gf-bg.h"
+
 #include <string.h>
 #include <math.h>
 #include <stdarg.h>
@@ -43,7 +46,6 @@ Author: Soren Sandmann <sandmann@redhat.com>
 #include <cairo-xlib.h>
 
 #define GNOME_DESKTOP_USE_UNSTABLE_API
-#include "gnome-bg.h"
 #include "gnome-bg-slide-show.h"
 #include "gnome-bg-crossfade.h"
 
