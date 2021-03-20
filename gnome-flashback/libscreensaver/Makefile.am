@@ -9,6 +9,7 @@ libscreensaver_la_CPPFLAGS = \
 	-DG_LOG_USE_STRUCTURED=1 \
 	-DGNOME_DESKTOP_USE_UNSTABLE_API \
 	-I$(top_builddir)/backends \
+	-I$(top_builddir)/gnome-flashback/libcommon \
 	-I$(top_builddir)/gnome-flashback/libinput-sources \
 	-I$(top_builddir)/gnome-flashback/libscreensaver \
 	-I$(top_srcdir) \
@@ -62,6 +63,7 @@ libscreensaver_la_LDFLAGS = \
 libscreensaver_la_LIBADD = \
 	$(top_builddir)/dbus/libdbus.la \
 	$(top_builddir)/backends/libbackends.la \
+	$(top_builddir)/gnome-flashback/libcommon/libcommon.la \
 	$(top_builddir)/gnome-flashback/libinput-sources/libinput-sources.la \
 	$(SCREENSAVER_LIBS) \
 	$(NULL)

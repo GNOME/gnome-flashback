@@ -23,16 +23,15 @@
 #include "config.h"
 #include "gf-manager.h"
 
-#include <libgnome-desktop/gnome-bg.h>
-
 #include "gf-window.h"
+#include "libcommon/gf-bg.h"
 
 struct _GfManager
 {
   GObject           parent;
 
   GSettings        *settings;
-  GnomeBG          *bg;
+  GfBG             *bg;
 
   GfGrab           *grab;
   GfFade           *fade;
@@ -223,25 +222,18 @@ apply_background (GfManager *self,
 
   g_debug ("Creating background: size %dx%d", rect.width, rect.height);
 
-#ifdef HAVE_GNOME_DESKTOP_3_35_4
-  surface = gnome_bg_create_surface (self->bg,
-                                     gtk_widget_get_window (GTK_WIDGET (window)),
-                                     rect.width,
-                                     rect.height);
-#else
-  surface = gnome_bg_create_surface (self->bg,
-                                     gtk_widget_get_window (GTK_WIDGET (window)),
-                                     rect.width,
-                                     rect.height,
-                                     FALSE);
-#endif
+  surface = gf_bg_create_surface (self->bg,
+                                  gtk_widget_get_window (GTK_WIDGET (window)),
+                                  rect.width,
+                                  rect.height,
+                                  FALSE);
 
   gf_window_set_background (window, surface);
   cairo_surface_destroy (surface);
 }
 
 static void
-bg_changed_cb (GnomeBG   *bg,
+bg_changed_cb (GfBG      *bg,
                GfManager *self)
 {
   GSList *l;
@@ -258,7 +250,7 @@ settings_change_event_cb (GSettings *settings,
                           gint       n_keys,
                           GfManager *self)
 {
-  gnome_bg_load_from_preferences (self->bg, self->settings);
+  gf_bg_load_from_preferences (self->bg, self->settings);
 
   return FALSE;
 }
@@ -688,7 +680,7 @@ static void
 gf_manager_init (GfManager *self)
 {
   self->settings = g_settings_new ("org.gnome.desktop.screensaver");
-  self->bg = gnome_bg_new ();
+  self->bg = gf_bg_new ();
 
   g_signal_connect (self->bg, "changed",
                     G_CALLBACK (bg_changed_cb),
@@ -698,7 +690,7 @@ gf_manager_init (GfManager *self)
                     G_CALLBACK (settings_change_event_cb),
                     self);
 
-  gnome_bg_load_from_preferences (self->bg, self->settings);
+  gf_bg_load_from_preferences (self->bg, self->settings);
 }
 
 GfManager *
