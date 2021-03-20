@@ -29,24 +29,26 @@
 
 struct _GfDesktopWindow
 {
-  GtkWindow        parent;
+  GtkWindow         parent;
 
-  gboolean         draw_background;
-  GfBackground    *background;
-  gboolean         event_filter_added;
-  cairo_surface_t *surface;
+  GfMonitorManager *monitor_manager;
 
-  gboolean         show_icons;
-  GtkWidget       *icon_view;
+  gboolean          draw_background;
+  GfBackground     *background;
+  gboolean          event_filter_added;
+  cairo_surface_t  *surface;
 
-  int              width;
-  int              height;
+  gboolean          show_icons;
+  GtkWidget        *icon_view;
 
-  guint            move_resize_id;
+  int               width;
+  int               height;
 
-  gboolean         ready;
+  guint             move_resize_id;
 
-  GdkRGBA         *representative_color;
+  gboolean          ready;
+
+  GdkRGBA          *representative_color;
 };
 
 enum
@@ -830,6 +832,13 @@ gf_desktop_window_new (gboolean   draw_background,
     }
 
   return window;
+}
+
+void
+gf_desktop_window_set_monitor_manager (GfDesktopWindow  *self,
+                                       GfMonitorManager *monitor_manager)
+{
+  self->monitor_manager = monitor_manager;
 }
 
 gboolean

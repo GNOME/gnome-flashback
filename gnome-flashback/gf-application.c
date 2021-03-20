@@ -228,6 +228,9 @@ settings_changed (GSettings   *settings,
 
 #undef SETTING_CHANGED
 
+  if (application->desktop)
+    gf_desktop_set_monitor_manager (application->desktop, monitor_manager);
+
   if (application->input_settings)
     gf_input_settings_set_monitor_manager (application->input_settings,
                                            monitor_manager);

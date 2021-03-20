@@ -18,6 +18,7 @@
 #ifndef GF_DESKTOP_WINDOW_H
 #define GF_DESKTOP_WINDOW_H
 
+#include "backends/gf-monitor-manager.h"
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
@@ -26,15 +27,18 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (GfDesktopWindow, gf_desktop_window,
                       GF, DESKTOP_WINDOW, GtkWindow)
 
-GtkWidget *gf_desktop_window_new        (gboolean          draw_background,
-                                         gboolean          show_icons,
-                                         GError          **error);
+GtkWidget *gf_desktop_window_new                 (gboolean           draw_background,
+                                                  gboolean           show_icons,
+                                                  GError           **error);
 
-gboolean   gf_desktop_window_is_ready   (GfDesktopWindow  *self);
+void       gf_desktop_window_set_monitor_manager (GfDesktopWindow   *self,
+                                                  GfMonitorManager  *monitor_manager);
 
-int        gf_desktop_window_get_width  (GfDesktopWindow  *self);
+gboolean   gf_desktop_window_is_ready            (GfDesktopWindow   *self);
 
-int        gf_desktop_window_get_height (GfDesktopWindow  *self);
+int        gf_desktop_window_get_width           (GfDesktopWindow   *self);
+
+int        gf_desktop_window_get_height          (GfDesktopWindow   *self);
 
 G_END_DECLS
 

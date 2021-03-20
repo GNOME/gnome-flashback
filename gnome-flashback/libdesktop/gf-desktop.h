@@ -18,14 +18,17 @@
 #ifndef GF_DESKTOP_H
 #define GF_DESKTOP_H
 
-#include <glib-object.h>
+#include "backends/gf-monitor-manager.h"
 
 G_BEGIN_DECLS
 
 #define GF_TYPE_DESKTOP (gf_desktop_get_type ())
 G_DECLARE_FINAL_TYPE (GfDesktop, gf_desktop, GF, DESKTOP, GObject)
 
-GfDesktop *gf_desktop_new (void);
+GfDesktop *gf_desktop_new                 (void);
+
+void       gf_desktop_set_monitor_manager (GfDesktop        *self,
+                                           GfMonitorManager *monitor_manager);
 
 G_END_DECLS
 

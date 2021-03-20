@@ -105,3 +105,14 @@ gf_desktop_new (void)
 {
   return g_object_new (GF_TYPE_DESKTOP, NULL);
 }
+
+void
+gf_desktop_set_monitor_manager (GfDesktop        *self,
+                                GfMonitorManager *monitor_manager)
+{
+  if (self->window == NULL)
+    return;
+
+  gf_desktop_window_set_monitor_manager (GF_DESKTOP_WINDOW (self->window),
+                                         monitor_manager);
+}
