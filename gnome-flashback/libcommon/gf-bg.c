@@ -60,12 +60,6 @@ Author: Soren Sandmann <sandmann@redhat.com>
    in the slideshow is less than 60 seconds away */
 #define KEEP_EXPENSIVE_CACHE_SECS 60
 
-/* This is the size of the GdkRGB dither matrix, in order to avoid
- * bad dithering when tiling the gradient
- */
-#define GRADIENT_PIXMAP_TILE_SIZE 128
-#define THUMBNAIL_SIZE 256
-
 typedef struct FileCacheEntry FileCacheEntry;
 #define CACHE_SIZE 4
 
@@ -143,13 +137,6 @@ static void       pixbuf_blend         (GdkPixbuf  *src,
 					int         dest_y,
 					double      alpha);
 
-/* Thumbnail utilities */
-static GdkPixbuf *create_thumbnail_for_filename (GnomeDesktopThumbnailFactory *factory,
-						 const char            *filename);
-static gboolean   get_thumb_annotations (GdkPixbuf             *thumb,
-					 int                   *orig_width,
-					 int                   *orig_height);
-
 /* Cache */
 static GdkPixbuf *get_pixbuf_for_size  (GnomeBG               *bg,
 					gint                   num_monitor,
@@ -159,12 +146,6 @@ static void       clear_cache          (GnomeBG               *bg);
 static gboolean   is_different         (GnomeBG               *bg,
 					const char            *filename);
 static time_t     get_mtime            (const char            *filename);
-static GdkPixbuf *create_img_thumbnail (GnomeBG               *bg,
-					GnomeDesktopThumbnailFactory *factory,
-					GdkScreen             *screen,
-					int                    dest_width,
-					int                    dest_height,
-					int		       frame_num);
 static GnomeBGSlideShow * get_as_slideshow    (GnomeBG               *bg,
                                                const char 	      *filename);
 static GnomeBGSlideShow *read_slideshow_file (const char *filename,
@@ -478,40 +459,6 @@ gnome_bg_set_placement (GnomeBG                 *bg,
 		
 		queue_changed (bg);
 	}
-}
-
-GDesktopBackgroundStyle
-gnome_bg_get_placement (GnomeBG *bg)
-{
-	g_return_val_if_fail (bg != NULL, -1);
-
-	return bg->placement;
-}
-
-void
-gnome_bg_get_rgba (GnomeBG                   *bg,
-		   GDesktopBackgroundShading *type,
-		   GdkRGBA                   *primary,
-		   GdkRGBA                   *secondary)
-{
-	g_return_if_fail (bg != NULL);
-
-	if (type)
-		*type = bg->color_type;
-
-	if (primary)
-		*primary = bg->primary;
-
-	if (secondary)
-		*secondary = bg->secondary;
-}
-
-const gchar *
-gnome_bg_get_filename (GnomeBG *bg)
-{
-	g_return_val_if_fail (bg != NULL, NULL);
-
-	return bg->filename;
 }
 
 static inline gchar *
@@ -891,21 +838,6 @@ draw_image_area (GnomeBG         *bg,
 }
 
 static void
-draw_image_for_thumb (GnomeBG       *bg,
-	    GdkPixbuf               *pixbuf,
-	    GdkPixbuf               *dest)
-{
-	GdkRectangle rect;
-
-	rect.x = 0;
-	rect.y = 0;
-	rect.width = gdk_pixbuf_get_width (dest);
-	rect.height = gdk_pixbuf_get_height (dest);
-
-	draw_image_area (bg, -1, pixbuf, dest, &rect);
-}
-
-static void
 draw_once (GnomeBG   *bg,
 	   GdkPixbuf *dest)
 {
@@ -999,25 +931,6 @@ gnome_bg_draw (GnomeBG *bg,
 		return;
 
 	gnome_bg_draw_at_scale (bg, dest, 1, screen, is_root);
-}
-
-gboolean
-gnome_bg_has_multiple_sizes (GnomeBG *bg)
-{
-	GnomeBGSlideShow *show;
-	gboolean ret;
-
-	g_return_val_if_fail (bg != NULL, FALSE);
-
-	ret = FALSE;
-
-	show = get_as_slideshow (bg, bg->filename);
-	if (show) {
-		ret = gnome_bg_slide_show_get_has_multiple_sizes (show);
-		g_object_unref (show);
-	}
-
-	return ret;
 }
 
 static void
@@ -1233,116 +1146,6 @@ make_root_pixmap (GdkScreen *screen, gint width, gint height)
 					     width, height);
 
 	return surface;
-}
-
-static gboolean
-get_original_size (const char *filename,
-		   int        *orig_width,
-		   int        *orig_height)
-{
-	gboolean result;
-
-        if (gdk_pixbuf_get_file_info (filename, orig_width, orig_height))
-		result = TRUE;
-	else
-		result = FALSE;
-
-	return result;
-}
-
-static const char *
-get_filename_for_size (GnomeBG *bg, gint best_width, gint best_height)
-{
-	GnomeBGSlideShow *show;
-        const char *file = NULL;
-
-	if (!bg->filename)
-		return NULL;
-
-	show = get_as_slideshow (bg, bg->filename);
-	if (!show) {
-		return bg->filename;
-	}
-
-        gnome_bg_slide_show_get_current_slide (show, best_width, best_height, NULL, NULL, NULL, &file, NULL);
-        g_object_unref (show);
-
-        return file;
-}
-
-gboolean
-gnome_bg_get_image_size (GnomeBG	       *bg,
-			 GnomeDesktopThumbnailFactory *factory,
-			 int                    best_width,
-			 int                    best_height,
-			 int		       *width,
-			 int		       *height)
-{
-	GdkPixbuf *thumb;
-	gboolean result = FALSE;
-	const gchar *filename;
-	
-	g_return_val_if_fail (bg != NULL, FALSE);
-	g_return_val_if_fail (factory != NULL, FALSE);
-	
-	if (!bg->filename)
-		return FALSE;
-	
-	filename = get_filename_for_size (bg, best_width, best_height);
-	thumb = create_thumbnail_for_filename (factory, filename);
-	if (thumb) {
-		if (get_thumb_annotations (thumb, width, height))
-			result = TRUE;
-		
-		g_object_unref (thumb);
-	}
-
-	if (!result) {
-		if (get_original_size (filename, width, height))
-			result = TRUE;
-	}
-
-	return result;
-}
-
-static double
-fit_factor (int from_width, int from_height,
-	    int to_width,   int to_height)
-{
-	return MIN (to_width  / (double) from_width, to_height / (double) from_height);
-}
-
-/**
- * gnome_bg_create_thumbnail:
- *
- * Returns: (transfer full): a #GdkPixbuf showing the background as a thumbnail
- */
-GdkPixbuf *
-gnome_bg_create_thumbnail (GnomeBG               *bg,
-		           GnomeDesktopThumbnailFactory *factory,
-			   GdkScreen             *screen,
-			   int                    dest_width,
-			   int                    dest_height)
-{
-	GdkPixbuf *result;
-	GdkPixbuf *thumb;
-	
-	g_return_val_if_fail (bg != NULL, NULL);
-	
-	result = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, dest_width, dest_height);
-	
-	draw_color (bg, result);
-	
-	if (bg->placement != G_DESKTOP_BACKGROUND_STYLE_NONE) {
-		thumb = create_img_thumbnail (bg, factory, screen, dest_width, dest_height, -1);
-		
-		if (thumb) {
-			draw_image_for_thumb (bg, thumb, result);
-			g_object_unref (thumb);
-		}
-	}
-	
-	return result;
 }
 
 /**
@@ -1655,8 +1458,7 @@ blend (GdkPixbuf *p1,
 
 typedef	enum {
 	PIXBUF,
-	SLIDESHOW,
-	THUMBNAIL
+	SLIDESHOW
 } FileType;
 
 struct FileCacheEntry
@@ -1666,7 +1468,6 @@ struct FileCacheEntry
 	union {
 		GdkPixbuf *pixbuf;
 		GnomeBGSlideShow *slideshow;
-		GdkPixbuf *thumbnail;
 	} u;
 };
 
@@ -1681,9 +1482,6 @@ file_cache_entry_delete (FileCacheEntry *ent)
 		break;
 	case SLIDESHOW:
 		g_object_unref (ent->u.slideshow);
-		break;
-	case THUMBNAIL:
-		g_object_unref (ent->u.thumbnail);
 		break;
 	default:
 		break;
@@ -1748,15 +1546,6 @@ file_cache_add_pixbuf (GnomeBG *bg,
 {
 	FileCacheEntry *ent = file_cache_entry_new (bg, PIXBUF, filename);
 	ent->u.pixbuf = g_object_ref (pixbuf);
-}
-
-static void
-file_cache_add_thumbnail (GnomeBG *bg,
-			  const char *filename,
-			  GdkPixbuf *pixbuf)
-{
-	FileCacheEntry *ent = file_cache_entry_new (bg, THUMBNAIL, filename);
-	ent->u.thumbnail = g_object_ref (pixbuf);
 }
 
 static void
@@ -1850,23 +1639,6 @@ get_as_slideshow (GnomeBG *bg, const char *filename)
 			file_cache_add_slide_show (bg, filename, show);
 
 		return show;
-	}
-}
-
-static GdkPixbuf *
-get_as_thumbnail (GnomeBG *bg, GnomeDesktopThumbnailFactory *factory, const char *filename)
-{
-	const FileCacheEntry *ent;
-	if ((ent = file_cache_lookup (bg, THUMBNAIL, filename))) {
-		return g_object_ref (ent->u.thumbnail);
-	}
-	else {
-		GdkPixbuf *thumb = create_thumbnail_for_filename (factory, filename);
-
-		if (thumb)
-			file_cache_add_thumbnail (bg, filename, thumb);
-
-		return thumb;
 	}
 }
 
@@ -1981,183 +1753,6 @@ get_mtime (const char *filename)
 	}
 	
 	return mtime;
-}
-
-static GdkPixbuf *
-scale_thumbnail (GDesktopBackgroundStyle placement,
-		 const char *filename,
-		 GdkPixbuf *thumb,
-		 GdkScreen *screen,
-		 int	    dest_width,
-		 int	    dest_height)
-{
-	int o_width;
-	int o_height;
-	
-	if (placement != G_DESKTOP_BACKGROUND_STYLE_WALLPAPER &&
-	    placement != G_DESKTOP_BACKGROUND_STYLE_CENTERED) {
-		
-		/* In this case, the pixbuf will be scaled to fit the screen anyway,
-		 * so just return the pixbuf here
-		 */
-		return g_object_ref (thumb);
-	}
-	
-	if (get_thumb_annotations (thumb, &o_width, &o_height)		||
-	    (filename && get_original_size (filename, &o_width, &o_height))) {
-		
-		int scr_height = gdk_screen_get_height (screen);
-		int scr_width = gdk_screen_get_width (screen);
-		int thumb_width = gdk_pixbuf_get_width (thumb);
-		int thumb_height = gdk_pixbuf_get_height (thumb);
-		double screen_to_dest = fit_factor (scr_width, scr_height,
-						    dest_width, dest_height);
-		double thumb_to_orig  = fit_factor (thumb_width, thumb_height,
-						    o_width, o_height);
-		double f = thumb_to_orig * screen_to_dest;
-		int new_width, new_height;
-		
-		new_width = floor (thumb_width * f + 0.5);
-		new_height = floor (thumb_height * f + 0.5);
-
-		if (placement == G_DESKTOP_BACKGROUND_STYLE_WALLPAPER) {
-			/* Heuristic to make sure tiles don't become so small that
-			 * they turn into a blur.
-			 *
-			 * This is strictly speaking incorrect, but the resulting
-			 * thumbnail gives a much better idea what the background
-			 * will actually look like.
-			 */
-			
-			if ((new_width < 32 || new_height < 32) &&
-			    (new_width < o_width / 4 || new_height < o_height / 4)) {
-				new_width = o_width / 4;
-				new_height = o_height / 4;
-			}
-		}
-			
-		thumb = gdk_pixbuf_scale_simple (thumb, new_width, new_height,
-						 GDK_INTERP_BILINEAR);
-	}
-	else
-		g_object_ref (thumb);
-	
-	return thumb;
-}
-
-/* frame_num determines which slide to thumbnail.
- * -1 means 'current slide'.
- */
-static GdkPixbuf *
-create_img_thumbnail (GnomeBG                      *bg,
-		      GnomeDesktopThumbnailFactory *factory,
-		      GdkScreen                    *screen,
-		      int                           dest_width,
-		      int                           dest_height,
-		      int                           frame_num)
-{
-	if (bg->filename) {
-		GdkPixbuf *thumb;
-
-		thumb = get_as_thumbnail (bg, factory, bg->filename);
-
-		if (thumb) {
-			GdkPixbuf *result;
-			result = scale_thumbnail (bg->placement,
-						  bg->filename,
-						  thumb,
-						  screen,
-						  dest_width,
-						  dest_height);
-			g_object_unref (thumb);
-			return result;
-		}
-		else {
-			GnomeBGSlideShow *show = get_as_slideshow (bg, bg->filename);
-
-			if (show) {
-				double alpha;
-				double duration;
-                                gboolean is_fixed;
-                                const char *file1;
-                                const char *file2;
-                                GdkPixbuf *tmp;
-
-				if (frame_num == -1)
-					gnome_bg_slide_show_get_current_slide (show,
-                                                                               dest_width,
-                                                                               dest_height,
-                                                                               &alpha,
-                                                                               &duration,
-                                                                               &is_fixed,
-                                                                               &file1,
-                                                                               &file2);
-				else
-					gnome_bg_slide_show_get_slide (show,
-                                                                       frame_num,
-                                                                       dest_width,
-                                                                       dest_height,
-                                                                       &alpha,
-                                                                       &duration,
-                                                                       &is_fixed,
-                                                                       &file1,
-                                                                       &file2);
-
-				if (is_fixed) {
-					tmp = get_as_thumbnail (bg, factory, file1);
-					if (tmp) {
-						thumb = scale_thumbnail (bg->placement,
-									 file1,
-									 tmp,
-									 screen,
-									 dest_width,
-									 dest_height);
-						g_object_unref (tmp);
-					}
-				}
-				else {
-					GdkPixbuf *p1, *p2;
-					p1 = get_as_thumbnail (bg, factory, file1);
-					p2 = get_as_thumbnail (bg, factory, file2);
-
-					if (p1 && p2) {
-						GdkPixbuf *thumb1, *thumb2;
-
-						thumb1 = scale_thumbnail (bg->placement,
-									  file1,
-									  p1,
-									  screen,
-									  dest_width,
-									  dest_height);
-
-						thumb2 = scale_thumbnail (bg->placement,
-									  file2,
-									  p2,
-									  screen,
-									  dest_width,
-									  dest_height);
-
-						thumb = blend (thumb1, thumb2, alpha);
-
-						g_object_unref (thumb1);
-						g_object_unref (thumb2);
-					}
-					if (p1)
-						g_object_unref (p1);
-					if (p2)
-						g_object_unref (p2);
-				}
-
-				ensure_timeout (bg, (guint)get_slide_timeout (is_fixed, duration));
-
-				g_object_unref (show);
-			}
-		}
-
-		return thumb;
-	}
-
-	return NULL;
 }
 
 static GdkPixbuf *
@@ -2564,175 +2159,3 @@ read_slideshow_file (const char *filename,
 
         return show;
 }
-
-/* Thumbnail utilities */
-static GdkPixbuf *
-create_thumbnail_for_filename (GnomeDesktopThumbnailFactory *factory,
-			       const char            *filename)
-{
-	char *thumb;
-	time_t mtime;
-	GdkPixbuf *orig, *result = NULL;
-	char *uri;
-	
-	mtime = get_mtime (filename);
-	
-	if (mtime == (time_t)-1)
-		return NULL;
-	
-	uri = g_filename_to_uri (filename, NULL, NULL);
-	
-	if (uri == NULL)
-		return NULL;
-	
-	thumb = gnome_desktop_thumbnail_factory_lookup (factory, uri, mtime);
-	
-	if (thumb) {
-		result = gdk_pixbuf_new_from_file (thumb, NULL);
-		g_free (thumb);
-	}
-	else {
-		orig = gdk_pixbuf_new_from_file (filename, NULL);
-		if (orig) {
-			int orig_width, orig_height;
-			GdkPixbuf *rotated;
-
-			rotated = gdk_pixbuf_apply_embedded_orientation (orig);
-			if (rotated != NULL) {
-				g_object_unref (orig);
-				orig = rotated;
-			}
-
-			orig_width = gdk_pixbuf_get_width (orig);
-			orig_height = gdk_pixbuf_get_height (orig);
-			
-			result = pixbuf_scale_to_fit (orig, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
-			
-			g_object_set_data_full (G_OBJECT (result), "gnome-thumbnail-height",
-						g_strdup_printf ("%d", orig_height), g_free);
-			g_object_set_data_full (G_OBJECT (result), "gnome-thumbnail-width",
-						g_strdup_printf ("%d", orig_width), g_free);
-			
-			g_object_unref (orig);
-			
-			gnome_desktop_thumbnail_factory_save_thumbnail (factory, result, uri, mtime);
-		}
-		else {
-			gnome_desktop_thumbnail_factory_create_failed_thumbnail (factory, uri, mtime);
-		}
-	}
-
-	g_free (uri);
-
-	return result;
-}
-
-static gboolean
-get_thumb_annotations (GdkPixbuf *thumb,
-		       int	 *orig_width,
-		       int	 *orig_height)
-{
-	char *end;
-	const char *wstr, *hstr;
-	
-	wstr = gdk_pixbuf_get_option (thumb, "tEXt::Thumb::Image::Width");
-	hstr = gdk_pixbuf_get_option (thumb, "tEXt::Thumb::Image::Height");
-	
-	if (hstr && wstr) {
-		*orig_width = strtol (wstr, &end, 10);
-		if (*end != 0)
-			return FALSE;
-		
-		*orig_height = strtol (hstr, &end, 10);
-		if (*end != 0)
-			return FALSE;
-		
-		return TRUE;
-	}
-	
-	return FALSE;
-}
-
-/*
- * Returns whether the background is a slideshow.
- */
-gboolean
-gnome_bg_changes_with_time (GnomeBG *bg)
-{
-	GnomeBGSlideShow *show;
-	gboolean ret = FALSE;
-
-	g_return_val_if_fail (bg != NULL, FALSE);
-
-	if (!bg->filename)
-		return FALSE;
-
-	show = get_as_slideshow (bg, bg->filename);
-	if (show) {
-		ret = gnome_bg_slide_show_get_num_slides (show) > 1;
-		g_object_unref (show);
-	}
-
-	return ret;
-}
-
-/**
- * gnome_bg_create_frame_thumbnail:
- *
- * Creates a thumbnail for a certain frame, where 'frame' is somewhat
- * vaguely defined as 'suitable point to show while single-stepping
- * through the slideshow'.
- *
- * Returns: (transfer full): the newly created thumbnail or
- * or NULL if frame_num is out of bounds.
- */
-GdkPixbuf *
-gnome_bg_create_frame_thumbnail (GnomeBG			*bg,
-				 GnomeDesktopThumbnailFactory	*factory,
-				 GdkScreen			*screen,
-				 int				 dest_width,
-				 int				 dest_height,
-				 int				 frame_num)
-{
-	GnomeBGSlideShow *show;
-	GdkPixbuf *result;
-	GdkPixbuf *thumb;
-        int skipped;
-        gboolean is_fixed;
-
-	g_return_val_if_fail (bg != NULL, FALSE);
-
-	show = get_as_slideshow (bg, bg->filename);
-
-	if (!show)
-		return NULL;
-
-
-	if (frame_num < 0 || frame_num >= gnome_bg_slide_show_get_num_slides (show))
-		return NULL;
-
-
-        gnome_bg_slide_show_get_slide (show, frame_num, dest_width, dest_height, NULL, NULL, &is_fixed, NULL, NULL);
-
-	skipped = 0;
-        while (!is_fixed) {
-            skipped++;
-            gnome_bg_slide_show_get_slide (show, frame_num, dest_width, dest_height, NULL, NULL, &is_fixed, NULL, NULL);
-        }
-
-	result = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, dest_width, dest_height);
-
-	draw_color (bg, result);
-
-	if (bg->placement != G_DESKTOP_BACKGROUND_STYLE_NONE) {
-		thumb = create_img_thumbnail (bg, factory, screen, dest_width, dest_height, frame_num + skipped);
-
-		if (thumb) {
-			draw_image_for_thumb (bg, thumb, result);
-			g_object_unref (thumb);
-		}
-	}
-
-	return result;
-}
-

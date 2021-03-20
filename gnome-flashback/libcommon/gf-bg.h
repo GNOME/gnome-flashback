@@ -32,7 +32,6 @@
 #include <gdk/gdk.h>
 #include <gio/gio.h>
 #include <gdesktop-enums.h>
-#include <libgnome-desktop/gnome-desktop-thumbnail.h>
 #include <libgnome-desktop/gnome-bg-crossfade.h>
 #include <gdesktop-enums.h>
 
@@ -66,15 +65,7 @@ void             gnome_bg_set_rgba              (GnomeBG               *bg,
 						 GdkRGBA               *primary,
 						 GdkRGBA               *secondary);
 
-/* Getters */
-GDesktopBackgroundStyle gnome_bg_get_placement  (GnomeBG               *bg);
-void		 gnome_bg_get_rgba              (GnomeBG               *bg,
-						 GDesktopBackgroundShading *type,
-						 GdkRGBA               *primary,
-						 GdkRGBA               *secondary);
-const gchar *    gnome_bg_get_filename          (GnomeBG               *bg);
-
-/* Drawing and thumbnailing */
+/* Drawing */
 void             gnome_bg_draw                  (GnomeBG               *bg,
 						 GdkPixbuf             *dest,
 						 GdkScreen	       *screen,
@@ -84,28 +75,9 @@ cairo_surface_t *gnome_bg_create_surface        (GnomeBG               *bg,
 						 int                    width,
 						 int                    height,
 						 gboolean               root);
-gboolean         gnome_bg_get_image_size        (GnomeBG               *bg,
-						 GnomeDesktopThumbnailFactory *factory,
-                                                 int                    best_width,
-                                                 int                    best_height,
-						 int                   *width,
-						 int                   *height);
-GdkPixbuf *      gnome_bg_create_thumbnail      (GnomeBG               *bg,
-						 GnomeDesktopThumbnailFactory *factory,
-						 GdkScreen             *screen,
-						 int                    dest_width,
-						 int                    dest_height);
 gboolean         gnome_bg_is_dark               (GnomeBG               *bg,
                                                  int                    dest_width,
 						 int                    dest_height);
-gboolean         gnome_bg_has_multiple_sizes    (GnomeBG               *bg);
-gboolean         gnome_bg_changes_with_time     (GnomeBG               *bg);
-GdkPixbuf *      gnome_bg_create_frame_thumbnail (GnomeBG              *bg,
-						 GnomeDesktopThumbnailFactory *factory,
-						 GdkScreen             *screen,
-						 int                    dest_width,
-						 int                    dest_height,
-						 int                    frame_num);
 
 /* Set a surface as root - not a GnomeBG method. At some point
  * if we decide to stabilize the API then we may want to make
