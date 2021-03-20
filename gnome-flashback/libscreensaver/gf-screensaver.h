@@ -18,18 +18,21 @@
 #ifndef GF_SCREENSAVER_H
 #define GF_SCREENSAVER_H
 
-#include <glib-object.h>
-#include <libinput-sources/gf-input-sources.h>
+#include "backends/gf-monitor-manager.h"
+#include "libinput-sources/gf-input-sources.h"
 
 G_BEGIN_DECLS
 
 #define GF_TYPE_SCREENSAVER gf_screensaver_get_type ()
 G_DECLARE_FINAL_TYPE (GfScreensaver, gf_screensaver, GF, SCREENSAVER, GObject)
 
-GfScreensaver *gf_screensaver_new               (void);
+GfScreensaver *gf_screensaver_new                 (void);
 
-void           gf_screensaver_set_input_sources (GfScreensaver  *self,
-                                                 GfInputSources *input_sources);
+void           gf_screensaver_set_monitor_manager (GfScreensaver    *self,
+                                                   GfMonitorManager *monitor_manager);
+
+void           gf_screensaver_set_input_sources   (GfScreensaver    *self,
+                                                   GfInputSources   *input_sources);
 
 G_END_DECLS
 

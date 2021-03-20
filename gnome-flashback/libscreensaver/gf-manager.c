@@ -29,37 +29,39 @@
 
 struct _GfManager
 {
-  GObject         parent;
+  GObject           parent;
 
-  GSettings      *settings;
-  GnomeBG        *bg;
+  GSettings        *settings;
+  GnomeBG          *bg;
 
-  GfGrab         *grab;
-  GfFade         *fade;
+  GfGrab           *grab;
+  GfFade           *fade;
 
-  GfInputSources *input_sources;
+  GfMonitorManager *monitor_manager;
 
-  GSList         *windows;
+  GfInputSources   *input_sources;
 
-  gboolean        active;
+  GSList           *windows;
 
-  gboolean        lock_active;
+  gboolean          active;
 
-  gboolean        lock_enabled;
+  gboolean          lock_active;
 
-  glong           lock_timeout;
+  gboolean          lock_enabled;
 
-  gboolean        user_switch_enabled;
+  glong             lock_timeout;
 
-  time_t          activate_time;
+  gboolean          user_switch_enabled;
 
-  guint           lock_timeout_id;
-  guint           unfade_timeout_id;
+  time_t            activate_time;
 
-  gboolean        dialog_up;
+  guint             lock_timeout_id;
+  guint             unfade_timeout_id;
 
-  gulong          monitor_added_id;
-  gulong          monitor_removed_id;
+  gboolean          dialog_up;
+
+  gulong            monitor_added_id;
+  gulong            monitor_removed_id;
 };
 
 enum
@@ -707,6 +709,13 @@ gf_manager_new (GfGrab *grab,
                        "grab", grab,
                        "fade", fade,
                        NULL);
+}
+
+void
+gf_manager_set_monitor_manager (GfManager        *self,
+                                GfMonitorManager *monitor_manager)
+{
+  self->monitor_manager = monitor_manager;
 }
 
 void

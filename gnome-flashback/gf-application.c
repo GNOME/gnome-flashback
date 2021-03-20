@@ -234,6 +234,9 @@ settings_changed (GSettings   *settings,
 
   if (application->screensaver)
     {
+      gf_screensaver_set_monitor_manager (application->screensaver,
+                                          monitor_manager);
+
       gf_screensaver_set_input_sources (application->screensaver,
                                         application->input_sources);
     }

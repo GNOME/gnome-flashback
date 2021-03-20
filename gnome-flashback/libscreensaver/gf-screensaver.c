@@ -376,6 +376,13 @@ gf_screensaver_new (void)
 }
 
 void
+gf_screensaver_set_monitor_manager (GfScreensaver    *self,
+                                    GfMonitorManager *monitor_manager)
+{
+  gf_manager_set_monitor_manager (self->manager, monitor_manager);
+}
+
+void
 gf_screensaver_set_input_sources (GfScreensaver  *self,
                                   GfInputSources *input_sources)
 {
