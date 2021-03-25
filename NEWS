@@ -1,3 +1,8 @@
+Version 3.40.0
+==============
+- Fix background drawing when using spanned or wallpaper option. (#66)
+- Updated translations.
+
 Version 3.38.0
 ==============
 - Configure systemd session using a drop-in.
