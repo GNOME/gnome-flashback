@@ -7,7 +7,6 @@ size=24
 expand=true
 orientation=bottom
 size=24
-y-bottom=0
 
 [Object menu-bar]
 object-iid=org.gnome.gnome-panel.menu::menu-bar
