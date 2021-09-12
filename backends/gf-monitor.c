@@ -226,8 +226,9 @@ gf_monitor_mode_spec_equals (GfMonitorModeSpec *spec,
 }
 
 static float
-calculate_scale (GfMonitor     *monitor,
-                 GfMonitorMode *monitor_mode)
+calculate_scale (GfMonitor                 *monitor,
+                 GfMonitorMode             *monitor_mode,
+                 GfMonitorScalesConstraint  constraints)
 {
   gint resolution_width, resolution_height;
   gint width_mm, height_mm;
@@ -1052,8 +1053,9 @@ gf_monitor_calculate_crtc_pos (GfMonitor          *monitor,
 }
 
 gfloat
-gf_monitor_calculate_mode_scale (GfMonitor     *monitor,
-                                 GfMonitorMode *monitor_mode)
+gf_monitor_calculate_mode_scale (GfMonitor                 *monitor,
+                                 GfMonitorMode             *monitor_mode,
+                                 GfMonitorScalesConstraint  constraints)
 {
   GfMonitorPrivate *priv;
   GfMonitorManager *monitor_manager;
@@ -1070,7 +1072,7 @@ gf_monitor_calculate_mode_scale (GfMonitor     *monitor,
   if (gf_settings_get_global_scaling_factor (settings, &global_scaling_factor))
     return global_scaling_factor;
 
-  return calculate_scale (monitor, monitor_mode);
+  return calculate_scale (monitor, monitor_mode, constraints);
 }
 
 gfloat *

@@ -1239,10 +1239,13 @@ gf_finish_monitors_config_migration (GfMonitorManager  *monitor_manager,
 {
   GfMonitorConfigManager *config_manager;
   GfMonitorConfigStore *config_store;
+  GfLogicalMonitorLayoutMode layout_mode;
   GList *l;
 
   config_manager = monitor_manager->config_manager;
   config_store = gf_monitor_config_manager_get_store (config_manager);
+
+  layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
 
   for (l = config->logical_monitor_configs; l; l = l->next)
     {
@@ -1268,12 +1271,15 @@ gf_finish_monitors_config_migration (GfMonitorManager  *monitor_manager,
           return FALSE;
         }
 
-      scale = gf_monitor_calculate_mode_scale (monitor, monitor_mode);
+      scale = gf_monitor_manager_calculate_monitor_mode_scale (monitor_manager,
+                                                               layout_mode,
+                                                               monitor,
+                                                               monitor_mode);
 
       logical_monitor_config->scale = scale;
     }
 
-  config->layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
+  config->layout_mode = layout_mode;
   config->flags &= ~GF_MONITORS_CONFIG_FLAG_MIGRATED;
 
   if (!gf_verify_monitors_config (config, monitor_manager, error))

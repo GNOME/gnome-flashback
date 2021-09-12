@@ -326,7 +326,9 @@ calculate_monitor_scale (GfMonitorManager *manager,
   GfMonitorMode *monitor_mode;
 
   monitor_mode = gf_monitor_get_current_mode (monitor);
-  return gf_monitor_manager_calculate_monitor_mode_scale (manager, monitor,
+  return gf_monitor_manager_calculate_monitor_mode_scale (manager,
+                                                          manager->layout_mode,
+                                                          monitor,
                                                           monitor_mode);
 }
 
@@ -1642,6 +1644,7 @@ gf_monitor_manager_handle_get_current_state (GfDBusDisplayConfig   *skeleton,
 
           preferred_scale =
             gf_monitor_manager_calculate_monitor_mode_scale (manager,
+                                                             manager->layout_mode,
                                                              monitor,
                                                              monitor_mode);
 
@@ -2609,15 +2612,19 @@ gf_monitor_manager_update_logical_state_derived (GfMonitorManager *manager,
 }
 
 gfloat
-gf_monitor_manager_calculate_monitor_mode_scale (GfMonitorManager *manager,
-                                                 GfMonitor        *monitor,
-                                                 GfMonitorMode    *monitor_mode)
+gf_monitor_manager_calculate_monitor_mode_scale (GfMonitorManager           *manager,
+                                                 GfLogicalMonitorLayoutMode  layout_mode,
+                                                 GfMonitor                  *monitor,
+                                                 GfMonitorMode              *monitor_mode)
 {
   GfMonitorManagerClass *manager_class;
 
   manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
 
-  return manager_class->calculate_monitor_mode_scale (manager, monitor, monitor_mode);
+  return manager_class->calculate_monitor_mode_scale (manager,
+                                                      layout_mode,
+                                                      monitor,
+                                                      monitor_mode);
 }
 
 gfloat *

@@ -110,9 +110,10 @@ gf_monitor_manager_kms_is_transform_handled (GfMonitorManager   *manager,
 }
 
 static gfloat
-gf_monitor_manager_kms_calculate_monitor_mode_scale (GfMonitorManager *manager,
-                                                     GfMonitor        *monitor,
-                                                     GfMonitorMode    *monitor_mode)
+gf_monitor_manager_kms_calculate_monitor_mode_scale (GfMonitorManager           *manager,
+                                                     GfLogicalMonitorLayoutMode  layout_mode,
+                                                     GfMonitor                  *monitor,
+                                                     GfMonitorMode              *monitor_mode)
 {
   return 1.0;
 }

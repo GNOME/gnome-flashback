@@ -1048,11 +1048,16 @@ gf_monitor_manager_xrandr_is_transform_handled (GfMonitorManager   *manager,
 }
 
 static gfloat
-gf_monitor_manager_xrandr_calculate_monitor_mode_scale (GfMonitorManager *manager,
-                                                        GfMonitor        *monitor,
-                                                        GfMonitorMode    *monitor_mode)
+gf_monitor_manager_xrandr_calculate_monitor_mode_scale (GfMonitorManager           *manager,
+                                                        GfLogicalMonitorLayoutMode  layout_mode,
+                                                        GfMonitor                  *monitor,
+                                                        GfMonitorMode              *monitor_mode)
 {
-  return gf_monitor_calculate_mode_scale (monitor, monitor_mode);
+  GfMonitorScalesConstraint constraints;
+
+  constraints = GF_MONITOR_SCALES_CONSTRAINT_NO_FRAC;
+
+  return gf_monitor_calculate_mode_scale (monitor, monitor_mode, constraints);
 }
 
 static gfloat *

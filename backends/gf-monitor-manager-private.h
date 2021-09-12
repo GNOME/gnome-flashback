@@ -121,6 +121,7 @@ typedef struct
                                                                  GfMonitorTransform           transform);
 
   gfloat                       (* calculate_monitor_mode_scale) (GfMonitorManager            *manager,
+                                                                 GfLogicalMonitorLayoutMode   layout_mode,
                                                                  GfMonitor                   *monitor,
                                                                  GfMonitorMode               *monitor_mode);
 
@@ -187,6 +188,7 @@ void                        gf_monitor_manager_update_logical_state_derived (GfM
                                                                              GfMonitorsConfig            *config);
 
 gfloat                      gf_monitor_manager_calculate_monitor_mode_scale (GfMonitorManager            *manager,
+                                                                             GfLogicalMonitorLayoutMode   layout_mode,
                                                                              GfMonitor                   *monitor,
                                                                              GfMonitorMode               *monitor_mode);
 

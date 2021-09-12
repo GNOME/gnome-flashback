@@ -219,6 +219,7 @@ create_preferred_logical_monitor_config (GfMonitorManager           *monitor_man
     scale = primary_logical_monitor_config->scale;
   else
     scale = gf_monitor_manager_calculate_monitor_mode_scale (monitor_manager,
+                                                             layout_mode,
                                                              monitor, mode);
 
   switch (layout_mode)
@@ -276,6 +277,7 @@ create_for_switch_config_all_mirror (GfMonitorConfigManager *config_manager)
   GList *l;
   GfMonitorsConfig *monitors_config;
 
+  layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
   monitors = gf_monitor_manager_get_monitors (monitor_manager);
   monitor = monitors->data;
   modes = gf_monitor_get_modes (monitor);
@@ -347,7 +349,11 @@ create_for_switch_config_all_mirror (GfMonitorConfigManager *config_manager)
       if (!mode)
         continue;
 
-      scale = gf_monitor_manager_calculate_monitor_mode_scale (monitor_manager, l_monitor, mode);
+      scale = gf_monitor_manager_calculate_monitor_mode_scale (monitor_manager,
+                                                               layout_mode,
+                                                               l_monitor,
+                                                               mode);
+
       best_scale = MAX (best_scale, scale);
       monitor_configs = g_list_prepend (monitor_configs, gf_monitor_config_new (l_monitor, mode));
     }
@@ -365,7 +371,6 @@ create_for_switch_config_all_mirror (GfMonitorConfigManager *config_manager)
   };
 
   logical_monitor_configs = g_list_append (NULL, logical_monitor_config);
-  layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
 
   monitors_config = gf_monitors_config_new (monitor_manager,
                                             logical_monitor_configs,

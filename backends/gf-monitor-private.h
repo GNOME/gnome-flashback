@@ -204,7 +204,8 @@ void                gf_monitor_calculate_crtc_pos         (GfMonitor            
                                                            gint                       *out_y);
 
 gfloat              gf_monitor_calculate_mode_scale       (GfMonitor                  *monitor,
-                                                           GfMonitorMode              *monitor_mode);
+                                                           GfMonitorMode              *monitor_mode,
+                                                           GfMonitorScalesConstraint   constraints);
 
 gfloat             *gf_monitor_calculate_supported_scales (GfMonitor                  *monitor,
                                                            GfMonitorMode              *monitor_mode,
