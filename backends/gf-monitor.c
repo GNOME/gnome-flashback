@@ -1097,28 +1097,28 @@ gf_monitor_calculate_supported_scales (GfMonitor                 *monitor,
        i <= ceilf (MAXIMUM_SCALE_FACTOR);
        i++)
     {
-      for (j = 0; j < SCALE_FACTORS_PER_INTEGER; j++)
+      if (constraints & GF_MONITOR_SCALES_CONSTRAINT_NO_FRAC)
         {
-          gfloat scale;
-          gfloat scale_value = i + j * SCALE_FACTORS_STEPS;
-
-          if (constraints & GF_MONITOR_SCALES_CONSTRAINT_NO_FRAC)
+          if (is_scale_valid_for_size (width, height, i))
             {
-              if (fmodf (scale_value, 1.0) != 0.0f ||
-                  !is_scale_valid_for_size (width, height, scale_value))
-                continue;
-
-              scale = scale_value;
+              float scale = i;
+              g_array_append_val (supported_scales, scale);
             }
-          else
+        }
+      else
+        {
+          for (j = 0; j < SCALE_FACTORS_PER_INTEGER; j++)
             {
+              gfloat scale;
+              gfloat scale_value = i + j * SCALE_FACTORS_STEPS;
+
               scale = get_closest_scale_factor_for_resolution (width,
                                                                height,
                                                                scale_value);
-            }
 
-          if (scale > 0.0f)
-            g_array_append_val (supported_scales, scale);
+              if (scale > 0.0f)
+                g_array_append_val (supported_scales, scale);
+            }
         }
     }
 
