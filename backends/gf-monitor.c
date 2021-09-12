@@ -242,7 +242,7 @@ calculate_scale (GfMonitor                 *monitor,
                                   &resolution_height);
 
   if (resolution_height < HIDPI_MIN_HEIGHT)
-    goto out;
+    return scale;
 
   /* 4K TV */
   switch (gf_monitor_get_connector_type (monitor))
@@ -250,7 +250,7 @@ calculate_scale (GfMonitor                 *monitor,
       case GF_CONNECTOR_TYPE_HDMIA:
       case GF_CONNECTOR_TYPE_HDMIB:
         if (resolution_width < SMALLEST_4K_WIDTH)
-          goto out;
+          return scale;
         break;
 
       case GF_CONNECTOR_TYPE_Unknown:
@@ -278,7 +278,7 @@ calculate_scale (GfMonitor                 *monitor,
    * physical size.
    */
   if (gf_monitor_has_aspect_as_size (monitor))
-    goto out;
+    return scale;
 
   if (width_mm > 0 && height_mm > 0)
     {
@@ -295,7 +295,6 @@ calculate_scale (GfMonitor                 *monitor,
         scale = 2.0;
     }
 
-out:
   return scale;
 }
 
@@ -333,7 +332,7 @@ get_closest_scale_factor_for_resolution (gfloat width,
   best_scale = 0;
 
   if (!is_scale_valid_for_size (width, height, scale))
-    goto out;
+    return best_scale;
 
   if (fmodf (width, scale) == 0.0f && fmodf (height, scale) == 0.0f)
     return scale;
@@ -358,7 +357,7 @@ get_closest_scale_factor_for_resolution (gfloat width,
               current_scale < MINIMUM_SCALE_FACTOR ||
               current_scale > MAXIMUM_SCALE_FACTOR)
             {
-              goto out;
+              return best_scale;
             }
 
           if (floorf (scaled_h) == scaled_h)
@@ -374,7 +373,6 @@ get_closest_scale_factor_for_resolution (gfloat width,
     }
   while (!found_one);
 
-out:
   return best_scale;
 }
 
