@@ -64,9 +64,6 @@ struct _GfMonitorManagerXrandr
   GHashTable       *tiled_monitor_atoms;
 
   Time              last_xrandr_set_timestamp;
-
-  gfloat           *supported_scales;
-  gint              n_supported_scales;
 };
 
 typedef struct
@@ -75,97 +72,6 @@ typedef struct
 } GfMonitorData;
 
 G_DEFINE_TYPE (GfMonitorManagerXrandr, gf_monitor_manager_xrandr, GF_TYPE_MONITOR_MANAGER)
-
-static void
-add_supported_scale (GArray *supported_scales,
-                     gfloat  scale)
-{
-  guint i;
-
-  for (i = 0; i < supported_scales->len; i++)
-    {
-      gfloat supported_scale;
-
-      supported_scale = g_array_index (supported_scales, gfloat, i);
-
-      if (scale == supported_scale)
-        return;
-    }
-
-  g_array_append_val (supported_scales, scale);
-}
-
-static gint
-compare_scales (gconstpointer a,
-                gconstpointer b)
-{
-  gfloat f = *(gfloat *) a - *(gfloat *) b;
-
-  if (f < 0)
-    return -1;
-
-  if (f > 0)
-    return 1;
-
-  return 0;
-}
-
-static void
-ensure_supported_monitor_scales (GfMonitorManager *manager)
-{
-  GfMonitorManagerXrandr *xrandr;
-  GfMonitorScalesConstraint constraints;
-  GArray *supported_scales;
-  GList *l;
-
-  xrandr = GF_MONITOR_MANAGER_XRANDR (manager);
-
-  if (xrandr->supported_scales)
-    return;
-
-  constraints = GF_MONITOR_SCALES_CONSTRAINT_NO_FRAC;
-  supported_scales = g_array_new (FALSE, FALSE, sizeof (gfloat));
-
-  for (l = manager->monitors; l; l = l->next)
-    {
-      GfMonitor *monitor;
-      GfMonitorMode *monitor_mode;
-      gfloat *monitor_scales;
-      gint n_monitor_scales;
-      gint i;
-
-      monitor = l->data;
-      monitor_mode = gf_monitor_get_preferred_mode (monitor);
-      monitor_scales = gf_monitor_calculate_supported_scales (monitor,
-                                                              monitor_mode,
-                                                              constraints,
-                                                              &n_monitor_scales);
-
-      for (i = 0; i < n_monitor_scales; i++)
-        {
-          add_supported_scale (supported_scales, monitor_scales[i]);
-        }
-
-      g_array_sort (supported_scales, compare_scales);
-      g_free (monitor_scales);
-    }
-
-  xrandr->supported_scales = (gfloat *) supported_scales->data;
-  xrandr->n_supported_scales = supported_scales->len;
-  g_array_free (supported_scales, FALSE);
-}
-
-static void
-gf_monitor_manager_xrandr_rebuild_derived (GfMonitorManager *manager,
-                                           GfMonitorsConfig *config)
-{
-  GfMonitorManagerXrandr *xrandr;
-
-  xrandr = GF_MONITOR_MANAGER_XRANDR (manager);
-
-  g_clear_pointer (&xrandr->supported_scales, g_free);
-  gf_monitor_manager_rebuild_derived (manager, config);
-}
 
 static gboolean
 xrandr_set_crtc_config (GfMonitorManagerXrandr *xrandr,
@@ -728,18 +634,6 @@ gf_monitor_manager_xrandr_dispose (GObject *object)
   G_OBJECT_CLASS (gf_monitor_manager_xrandr_parent_class)->dispose (object);
 }
 
-static void
-gf_monitor_manager_xrandr_finalize (GObject *object)
-{
-  GfMonitorManagerXrandr *xrandr;
-
-  xrandr = GF_MONITOR_MANAGER_XRANDR (object);
-
-  g_clear_pointer (&xrandr->supported_scales, g_free);
-
-  G_OBJECT_CLASS (gf_monitor_manager_xrandr_parent_class)->finalize (object);
-}
-
 static GBytes *
 gf_monitor_manager_xrandr_read_edid (GfMonitorManager *manager,
                                      GfOutput         *output)
@@ -827,7 +721,7 @@ gf_monitor_manager_xrandr_apply_monitors_config (GfMonitorManager        *manage
 
   if (!config)
     {
-      gf_monitor_manager_xrandr_rebuild_derived (manager, NULL);
+      gf_monitor_manager_rebuild_derived (manager, NULL);
       return TRUE;
     }
 
@@ -861,7 +755,7 @@ gf_monitor_manager_xrandr_apply_monitors_config (GfMonitorManager        *manage
         }
       else
         {
-          gf_monitor_manager_xrandr_rebuild_derived (manager, config);
+          gf_monitor_manager_rebuild_derived (manager, config);
         }
     }
 
@@ -1067,15 +961,14 @@ gf_monitor_manager_xrandr_calculate_supported_scales (GfMonitorManager          
                                                       GfMonitorMode              *monitor_mode,
                                                       gint                       *n_supported_scales)
 {
-  GfMonitorManagerXrandr *xrandr;
+  GfMonitorScalesConstraint constraints;
 
-  xrandr = GF_MONITOR_MANAGER_XRANDR (manager);
+  constraints = GF_MONITOR_SCALES_CONSTRAINT_NO_FRAC;
 
-  ensure_supported_monitor_scales (manager);
-
-  *n_supported_scales = xrandr->n_supported_scales;
-  return g_memdup2 (xrandr->supported_scales,
-                    xrandr->n_supported_scales * sizeof (gfloat));
+  return gf_monitor_calculate_supported_scales (monitor,
+                                                monitor_mode,
+                                                constraints,
+                                                n_supported_scales);
 }
 
 static GfMonitorManagerCapability
@@ -1118,7 +1011,6 @@ gf_monitor_manager_xrandr_class_init (GfMonitorManagerXrandrClass *xrandr_class)
 
   object_class->constructed = gf_monitor_manager_xrandr_constructed;
   object_class->dispose = gf_monitor_manager_xrandr_dispose;
-  object_class->finalize = gf_monitor_manager_xrandr_finalize;
 
   manager_class->read_edid = gf_monitor_manager_xrandr_read_edid;
   manager_class->read_current_state = gf_monitor_manager_xrandr_read_current_state;
@@ -1197,7 +1089,7 @@ gf_monitor_manager_xrandr_handle_xevent (GfMonitorManagerXrandr *xrandr,
           config = gf_monitor_config_manager_get_current (config_manager);
         }
 
-      gf_monitor_manager_xrandr_rebuild_derived (manager, config);
+      gf_monitor_manager_rebuild_derived (manager, config);
     }
 
   return TRUE;

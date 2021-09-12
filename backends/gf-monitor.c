@@ -306,6 +306,18 @@ is_logical_size_large_enough (gint width,
   return width * height >= MINIMUM_LOGICAL_AREA;
 }
 
+static gboolean
+is_scale_valid_for_size (float width,
+                         float height,
+                         float scale)
+{
+  if (scale < MINIMUM_SCALE_FACTOR || scale > MAXIMUM_SCALE_FACTOR)
+    return FALSE;
+
+  return is_logical_size_large_enough (floorf (width / scale),
+                                       floorf (height / scale));
+}
+
 static gfloat
 get_closest_scale_factor_for_resolution (gfloat width,
                                          gfloat height,
@@ -319,20 +331,16 @@ get_closest_scale_factor_for_resolution (gfloat width,
   gboolean found_one;
 
   best_scale = 0;
-  scaled_w = width / scale;
-  scaled_h = height / scale;
 
-  if (scale < MINIMUM_SCALE_FACTOR ||
-      scale > MAXIMUM_SCALE_FACTOR ||
-      !is_logical_size_large_enough (floorf (scaled_w), floorf (scaled_h)))
+  if (!is_scale_valid_for_size (width, height, scale))
     goto out;
 
-  if (floorf (scaled_w) == scaled_w && floorf (scaled_h) == scaled_h)
+  if (fmodf (width, scale) == 0.0f && fmodf (height, scale) == 0.0f)
     return scale;
 
   i = 0;
   found_one = FALSE;
-  base_scaled_w = floorf (scaled_w);
+  base_scaled_w = floorf (width / scale);
 
   do
     {
@@ -1094,15 +1102,20 @@ gf_monitor_calculate_supported_scales (GfMonitor                 *monitor,
           gfloat scale;
           gfloat scale_value = i + j * SCALE_FACTORS_STEPS;
 
-          if ((constraints & GF_MONITOR_SCALES_CONSTRAINT_NO_FRAC) &&
-              fmodf (scale_value, 1.0) != 0.0f)
+          if (constraints & GF_MONITOR_SCALES_CONSTRAINT_NO_FRAC)
             {
-              continue;
-            }
+              if (fmodf (scale_value, 1.0) != 0.0f ||
+                  !is_scale_valid_for_size (width, height, scale_value))
+                continue;
 
-          scale = get_closest_scale_factor_for_resolution (width,
-                                                           height,
-                                                           scale_value);
+              scale = scale_value;
+            }
+          else
+            {
+              scale = get_closest_scale_factor_for_resolution (width,
+                                                               height,
+                                                               scale_value);
+            }
 
           if (scale > 0.0f)
             g_array_append_val (supported_scales, scale);
