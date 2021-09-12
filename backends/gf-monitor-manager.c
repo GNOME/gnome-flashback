@@ -215,6 +215,48 @@ get_active_monitor (GfMonitorManager *manager)
 }
 
 static gboolean
+is_global_scale_matching_in_config (GfMonitorsConfig *config,
+                                    float             scale)
+{
+  GList *l;
+
+  for (l = config->logical_monitor_configs; l; l = l->next)
+    {
+      GfLogicalMonitorConfig *logical_monitor_config = l->data;
+
+      if (!G_APPROX_VALUE (logical_monitor_config->scale, scale, FLT_EPSILON))
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
+is_scale_supported_for_config (GfMonitorManager *self,
+                               GfMonitorsConfig *config,
+                               GfMonitor        *monitor,
+                               GfMonitorMode    *monitor_mode,
+                               float             scale)
+
+{
+  if (gf_monitor_manager_is_scale_supported (self,
+                                             config->layout_mode,
+                                             monitor,
+                                             monitor_mode,
+                                             scale))
+    {
+      if (gf_monitor_manager_get_capabilities (self) &
+          GF_MONITOR_MANAGER_CAPABILITY_GLOBAL_SCALE_REQUIRED)
+        return is_global_scale_matching_in_config (config, scale);
+
+      return TRUE;
+    }
+
+  return FALSE;
+
+}
+
+static gboolean
 gf_monitor_manager_is_config_applicable (GfMonitorManager  *manager,
                                          GfMonitorsConfig  *config,
                                          GError           **error)
@@ -256,8 +298,11 @@ gf_monitor_manager_is_config_applicable (GfMonitorManager  *manager,
               return FALSE;
             }
 
-          if (!gf_monitor_manager_is_scale_supported (manager, config->layout_mode,
-                                                      monitor, monitor_mode, scale))
+          if (!is_scale_supported_for_config (manager,
+                                              config,
+                                              monitor,
+                                              monitor_mode,
+                                              scale))
             {
               g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                            "Scale not supported by backend");
