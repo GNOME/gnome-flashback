@@ -357,11 +357,19 @@ static gfloat
 derive_configured_global_scale (GfMonitorManager *manager,
                                 GfMonitorsConfig *config)
 {
-  GfLogicalMonitorConfig *logical_monitor_config;
+  GList *l;
 
-  logical_monitor_config = config->logical_monitor_configs->data;
+  for (l = config->logical_monitor_configs; l; l = l->next)
+    {
+      GfLogicalMonitorConfig *monitor_config;
 
-  return logical_monitor_config->scale;
+      monitor_config = l->data;
+
+      if (is_global_scale_matching_in_config (config, monitor_config->scale))
+        return monitor_config->scale;
+    }
+
+  return 1.0f;
 }
 
 static gfloat
