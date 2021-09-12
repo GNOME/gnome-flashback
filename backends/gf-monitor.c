@@ -34,6 +34,7 @@
 #include "gf-settings-private.h"
 
 #define SCALE_FACTORS_PER_INTEGER 4
+#define SCALE_FACTORS_STEPS (1.0f / (float) SCALE_FACTORS_PER_INTEGER)
 #define MINIMUM_SCALE_FACTOR 1.0f
 #define MAXIMUM_SCALE_FACTOR 4.0f
 #define MINIMUM_LOGICAL_AREA (800 * 480)
@@ -308,15 +309,13 @@ is_logical_size_large_enough (gint width,
 static gfloat
 get_closest_scale_factor_for_resolution (gfloat width,
                                          gfloat height,
-                                         gfloat scale,
-                                         gfloat scale_step)
+                                         gfloat scale)
 {
   guint i, j;
   gfloat scaled_h;
   gfloat scaled_w;
   gfloat best_scale;
   gint base_scaled_w;
-  gboolean limit_exceeded;
   gboolean found_one;
 
   best_scale = 0;
@@ -333,12 +332,10 @@ get_closest_scale_factor_for_resolution (gfloat width,
 
   i = 0;
   found_one = FALSE;
-  limit_exceeded = FALSE;
   base_scaled_w = floorf (scaled_w);
 
   do
     {
-
       for (j = 0; j < 2; j++)
         {
           gfloat current_scale;
@@ -348,13 +345,12 @@ get_closest_scale_factor_for_resolution (gfloat width,
           current_scale = width / scaled_w;
           scaled_h = height / current_scale;
 
-          if (current_scale >= scale + scale_step ||
-              current_scale <= scale - scale_step ||
+          if (current_scale >= scale + SCALE_FACTORS_STEPS ||
+              current_scale <= scale - SCALE_FACTORS_STEPS ||
               current_scale < MINIMUM_SCALE_FACTOR ||
               current_scale > MAXIMUM_SCALE_FACTOR)
             {
-              limit_exceeded = TRUE;
-              continue;
+              goto out;
             }
 
           if (floorf (scaled_h) == scaled_h)
@@ -368,7 +364,7 @@ get_closest_scale_factor_for_resolution (gfloat width,
 
       i++;
     }
-  while (!found_one && !limit_exceeded);
+  while (!found_one);
 
 out:
   return best_scale;
@@ -1083,10 +1079,8 @@ gf_monitor_calculate_supported_scales (GfMonitor                 *monitor,
 {
   guint i, j;
   gint width, height;
-  gfloat scale_steps;
   GArray *supported_scales;
 
-  scale_steps = 1.0f / SCALE_FACTORS_PER_INTEGER;
   supported_scales = g_array_new (FALSE, FALSE, sizeof (gfloat));
 
   gf_monitor_mode_get_resolution (monitor_mode, &width, &height);
@@ -1098,7 +1092,7 @@ gf_monitor_calculate_supported_scales (GfMonitor                 *monitor,
       for (j = 0; j < SCALE_FACTORS_PER_INTEGER; j++)
         {
           gfloat scale;
-          gfloat scale_value = i + j * scale_steps;
+          gfloat scale_value = i + j * SCALE_FACTORS_STEPS;
 
           if ((constraints & GF_MONITOR_SCALES_CONSTRAINT_NO_FRAC) &&
               fmodf (scale_value, 1.0) != 0.0f)
@@ -1108,8 +1102,7 @@ gf_monitor_calculate_supported_scales (GfMonitor                 *monitor,
 
           scale = get_closest_scale_factor_for_resolution (width,
                                                            height,
-                                                           scale_value,
-                                                           scale_steps);
+                                                           scale_value);
 
           if (scale > 0.0f)
             g_array_append_val (supported_scales, scale);
