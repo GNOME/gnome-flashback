@@ -39,11 +39,15 @@ typedef struct
 
   GfMonitorManager     *monitor_manager;
 
+  UpClient             *up_client;
+  gboolean              lid_is_closed;
+
   GList                *gpus;
 } GfBackendPrivate;
 
 enum
 {
+  LID_IS_CLOSED_CHANGED,
   GPU_ADDED,
 
   LAST_SIGNAL
@@ -64,6 +68,29 @@ create_monitor_manager (GfBackend  *backend,
                         GError    **error)
 {
   return GF_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend, error);
+}
+
+static void
+lid_is_closed_changed_cb (UpClient   *client,
+                          GParamSpec *pspec,
+                          GfBackend  *self)
+{
+  GfBackendPrivate *priv;
+  gboolean lid_is_closed;
+
+  priv = gf_backend_get_instance_private (self);
+
+  lid_is_closed = up_client_get_lid_is_closed (priv->up_client);
+
+  if (priv->lid_is_closed == lid_is_closed)
+    return;
+
+  priv->lid_is_closed = lid_is_closed;
+
+  g_signal_emit (self,
+                 backend_signals[LID_IS_CLOSED_CHANGED],
+                 0,
+                 priv->lid_is_closed);
 }
 
 static gboolean
@@ -93,6 +120,46 @@ initable_iface_init (GInitableIface *initable_iface)
   initable_iface->init = gf_backend_initable_init;
 }
 
+static gboolean
+gf_backend_real_is_lid_closed (GfBackend *self)
+{
+  GfBackendPrivate *priv;
+
+  priv = gf_backend_get_instance_private (self);
+
+  if (priv->up_client == NULL)
+    return FALSE;
+
+  return priv->lid_is_closed;
+}
+
+static void
+gf_backend_constructed (GObject *object)
+{
+  GfBackend *self;
+  GfBackendClass *self_class;
+  GfBackendPrivate *priv;
+
+  self = GF_BACKEND (object);
+  self_class = GF_BACKEND_GET_CLASS (self);
+  priv = gf_backend_get_instance_private (self);
+
+  if (self_class->is_lid_closed != gf_backend_real_is_lid_closed)
+    return;
+
+  priv->up_client = up_client_new ();
+
+  if (priv->up_client != NULL)
+    {
+      g_signal_connect (priv->up_client,
+                        "notify::lid-is-closed",
+                        G_CALLBACK (lid_is_closed_changed_cb),
+                        self);
+
+      priv->lid_is_closed = up_client_get_lid_is_closed (priv->up_client);
+    }
+}
+
 static void
 gf_backend_dispose (GObject *object)
 {
@@ -118,6 +185,8 @@ gf_backend_finalize (GObject *object)
   self = GF_BACKEND (object);
   priv = gf_backend_get_instance_private (self);
 
+  g_clear_object (&priv->up_client);
+
   g_list_free_full (priv->gpus, g_object_unref);
 
   G_OBJECT_CLASS (gf_backend_parent_class)->finalize (object);
@@ -140,10 +209,24 @@ gf_backend_class_init (GfBackendClass *backend_class)
 
   object_class = G_OBJECT_CLASS (backend_class);
 
+  object_class->constructed = gf_backend_constructed;
   object_class->dispose = gf_backend_dispose;
   object_class->finalize = gf_backend_finalize;
 
   backend_class->post_init = gf_backend_real_post_init;
+  backend_class->is_lid_closed = gf_backend_real_is_lid_closed;
+
+  backend_signals[LID_IS_CLOSED_CHANGED] =
+    g_signal_new ("lid-is-closed-changed",
+                  G_TYPE_FROM_CLASS (backend_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL,
+                  NULL,
+                  NULL,
+                  G_TYPE_NONE,
+                  1,
+                  G_TYPE_BOOLEAN);
 
   backend_signals[GPU_ADDED] =
     g_signal_new ("gpu-added",
@@ -235,6 +318,12 @@ gf_backend_get_settings (GfBackend *backend)
 void
 gf_backend_monitors_changed (GfBackend *backend)
 {
+}
+
+gboolean
+gf_backend_is_lid_closed (GfBackend *self)
+{
+  return GF_BACKEND_GET_CLASS (self)->is_lid_closed (self);
 }
 
 void

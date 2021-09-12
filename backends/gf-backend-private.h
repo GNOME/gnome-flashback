@@ -26,6 +26,8 @@
 #ifndef GF_BACKEND_PRIVATE_H
 #define GF_BACKEND_PRIVATE_H
 
+#include <libupower-glib/upower.h>
+
 #include "gf-backend.h"
 #include "gf-monitor-manager-private.h"
 #include "gf-monitor-manager-types-private.h"
@@ -42,6 +44,9 @@ struct _GfBackendClass
 
   GfMonitorManager * (* create_monitor_manager) (GfBackend  *backend,
                                                  GError    **error);
+
+  gboolean           (* is_lid_closed)          (GfBackend  *self);
+
 };
 
 GfOrientationManager *gf_backend_get_orientation_manager (GfBackend *backend);
@@ -49,6 +54,8 @@ GfOrientationManager *gf_backend_get_orientation_manager (GfBackend *backend);
 GfSettings           *gf_backend_get_settings            (GfBackend *backend);
 
 void                  gf_backend_monitors_changed        (GfBackend *backend);
+
+gboolean              gf_backend_is_lid_closed           (GfBackend *self);
 
 void                  gf_backend_add_gpu                 (GfBackend *self,
                                                           GfGpu     *gpu);

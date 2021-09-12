@@ -26,7 +26,6 @@
 #define GF_MONITOR_MANAGER_PRIVATE_H
 
 #include <libgnome-desktop/gnome-pnp-ids.h>
-#include <libupower-glib/upower.h>
 
 #include "gf-backend-private.h"
 #include "gf-dbus-display-config.h"
@@ -70,8 +69,6 @@ struct _GfMonitorManager
   GfMonitorConfigManager      *config_manager;
 
   GnomePnpIds                 *pnp_ids;
-  UpClient                    *up_client;
-  gboolean                     lid_is_closed;
 
   GfMonitorSwitchConfigType    current_switch_config;
 };
@@ -82,8 +79,6 @@ typedef struct
 
   GBytes                     * (* read_edid)                    (GfMonitorManager            *manager,
                                                                  GfOutput                    *output);
-
-  gboolean                     (* is_lid_closed)                (GfMonitorManager            *manager);
 
   void                         (* read_current_state)           (GfMonitorManager            *manager);
 
@@ -190,8 +185,6 @@ GfMonitorsConfig           *gf_monitor_manager_ensure_configured            (GfM
 
 void                        gf_monitor_manager_update_logical_state_derived (GfMonitorManager            *manager,
                                                                              GfMonitorsConfig            *config);
-
-gboolean                    gf_monitor_manager_is_lid_closed                (GfMonitorManager            *manager);
 
 gfloat                      gf_monitor_manager_calculate_monitor_mode_scale (GfMonitorManager            *manager,
                                                                              GfMonitor                   *monitor,

@@ -29,6 +29,16 @@
 G_DEFINE_TYPE (GfMonitorsConfig, gf_monitors_config, G_TYPE_OBJECT)
 
 static gboolean
+is_lid_closed (GfMonitorManager *monitor_manager)
+{
+  GfBackend *backend;
+
+  backend = gf_monitor_manager_get_backend (monitor_manager);
+
+  return gf_backend_is_lid_closed (backend);
+}
+
+static gboolean
 has_adjacent_neighbour (GfMonitorsConfig       *config,
                         GfLogicalMonitorConfig *logical_monitor_config)
 {
@@ -170,7 +180,7 @@ gf_monitors_config_new (GfMonitorManager           *monitor_manager,
       GfMonitor *monitor = l->data;
       GfMonitorSpec *monitor_spec;
 
-      if (gf_monitor_manager_is_lid_closed (monitor_manager) &&
+      if (is_lid_closed (monitor_manager) &&
           gf_monitor_is_laptop_panel (monitor))
         continue;
 

@@ -219,7 +219,10 @@ gf_monitor_manager_is_config_applicable (GfMonitorManager  *manager,
                                          GfMonitorsConfig  *config,
                                          GError           **error)
 {
+  GfMonitorManagerPrivate *priv;
   GList *l;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
 
   for (l = config->logical_monitor_configs; l; l = l->next)
     {
@@ -263,7 +266,7 @@ gf_monitor_manager_is_config_applicable (GfMonitorManager  *manager,
             }
 
           if (gf_monitor_is_laptop_panel (monitor) &&
-              gf_monitor_manager_is_lid_closed (manager))
+              gf_backend_is_lid_closed (priv->backend))
             {
               g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                            "Refusing to activate a closed laptop panel");
@@ -2008,15 +2011,6 @@ gf_monitor_manager_real_read_edid (GfMonitorManager *manager,
   return NULL;
 }
 
-static gboolean
-gf_monitor_manager_real_is_lid_closed (GfMonitorManager *manager)
-{
-  if (!manager->up_client)
-    return FALSE;
-
-  return manager->lid_is_closed;
-}
-
 static void
 gf_monitor_manager_real_read_current_state (GfMonitorManager *manager)
 {
@@ -2043,52 +2037,27 @@ gf_monitor_manager_real_read_current_state (GfMonitorManager *manager)
 }
 
 static void
-lid_is_closed_changed (UpClient   *client,
-                       GParamSpec *pspec,
-                       gpointer    user_data)
+lid_is_closed_changed_cb (GfBackend        *backend,
+                          GParamSpec       *pspec,
+                          GfMonitorManager *self)
 {
-  GfMonitorManager *manager;
-  gboolean lid_is_closed;
-
-  manager = user_data;
-  lid_is_closed = up_client_get_lid_is_closed (manager->up_client);
-
-  if (lid_is_closed == manager->lid_is_closed)
-    return;
-
-  manager->lid_is_closed = lid_is_closed;
-  gf_monitor_manager_ensure_configured (manager);
+  gf_monitor_manager_ensure_configured (self);
 }
 
 static void
 gf_monitor_manager_constructed (GObject *object)
 {
   GfMonitorManager *manager;
-  GfMonitorManagerClass *manager_class;
   GfMonitorManagerPrivate *priv;
   GfOrientationManager *orientation_manager;
 
   manager = GF_MONITOR_MANAGER (object);
-  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
   priv = gf_monitor_manager_get_instance_private (manager);
 
   G_OBJECT_CLASS (gf_monitor_manager_parent_class)->constructed (object);
 
   manager->display_config = gf_dbus_display_config_skeleton_new ();
   monitor_manager_setup_dbus_config_handlers (manager);
-
-  if (manager_class->is_lid_closed == gf_monitor_manager_real_is_lid_closed)
-    {
-      manager->up_client = up_client_new ();
-
-      if (manager->up_client)
-        {
-          g_signal_connect_object (manager->up_client, "notify::lid-is-closed",
-                                   G_CALLBACK (lid_is_closed_changed), manager, 0);
-
-          manager->lid_is_closed = up_client_get_lid_is_closed (manager->up_client);
-        }
-    }
 
   g_signal_connect_object (manager->display_config, "notify::power-save-mode",
                            G_CALLBACK (power_save_mode_changed), manager,
@@ -2103,6 +2072,12 @@ gf_monitor_manager_constructed (GObject *object)
                            G_CALLBACK (update_panel_orientation_managed),
                            manager,
                            G_CONNECT_SWAPPED);
+
+  g_signal_connect_object (priv->backend,
+                           "lid-is-closed-changed",
+                           G_CALLBACK (lid_is_closed_changed_cb),
+                           manager,
+                           0);
 
   manager->current_switch_config = GF_MONITOR_SWITCH_CONFIG_UNKNOWN;
 
@@ -2134,7 +2109,6 @@ gf_monitor_manager_dispose (GObject *object)
 
   g_clear_object (&manager->display_config);
   g_clear_object (&manager->config_manager);
-  g_clear_object (&manager->up_client);
 
   priv->backend = NULL;
 
@@ -2274,7 +2248,6 @@ gf_monitor_manager_class_init (GfMonitorManagerClass *manager_class)
   object_class->set_property = gf_monitor_manager_set_property;
 
   manager_class->read_edid = gf_monitor_manager_real_read_edid;
-  manager_class->is_lid_closed = gf_monitor_manager_real_is_lid_closed;
   manager_class->read_current_state = gf_monitor_manager_real_read_current_state;
 
   gf_monitor_manager_install_properties (object_class);
@@ -2624,12 +2597,6 @@ gf_monitor_manager_update_logical_state_derived (GfMonitorManager *manager,
   gf_monitor_manager_rebuild_logical_monitors_derived (manager, config);
 }
 
-gboolean
-gf_monitor_manager_is_lid_closed (GfMonitorManager *manager)
-{
-  return GF_MONITOR_MANAGER_GET_CLASS (manager)->is_lid_closed (manager);
-}
-
 gfloat
 gf_monitor_manager_calculate_monitor_mode_scale (GfMonitorManager *manager,
                                                  GfMonitor        *monitor,
@@ -2800,7 +2767,11 @@ gf_monitor_manager_get_switch_config (GfMonitorManager *manager)
 gboolean
 gf_monitor_manager_can_switch_config (GfMonitorManager *manager)
 {
-  return (!gf_monitor_manager_is_lid_closed (manager) &&
+  GfMonitorManagerPrivate *priv;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
+
+  return (!gf_backend_is_lid_closed (priv->backend) &&
           g_list_length (manager->monitors) > 1);
 }
 

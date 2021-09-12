@@ -109,6 +109,16 @@ find_monitor_with_highest_preferred_resolution (GfMonitorManager *monitor_manage
   return largest_monitor;
 }
 
+static gboolean
+is_lid_closed (GfMonitorManager *monitor_manager)
+{
+  GfBackend *backend;
+
+  backend = gf_monitor_manager_get_backend (monitor_manager);
+
+  return gf_backend_is_lid_closed (backend);
+}
+
 /*
  * Try to find the primary monitor. The priority of classification is:
  *
@@ -124,7 +134,7 @@ find_primary_monitor (GfMonitorManager *monitor_manager)
 {
   GfMonitor *monitor;
 
-  if (gf_monitor_manager_is_lid_closed (monitor_manager))
+  if (is_lid_closed (monitor_manager))
     {
       monitor = gf_monitor_manager_get_primary_monitor (monitor_manager);
       if (monitor && !gf_monitor_is_laptop_panel (monitor))
@@ -922,7 +932,7 @@ gf_create_monitors_config_key_for_current_state (GfMonitorManager *monitor_manag
         {
           laptop_monitor_spec = gf_monitor_get_spec (monitor);
 
-          if (gf_monitor_manager_is_lid_closed (monitor_manager))
+          if (is_lid_closed (monitor_manager))
             continue;
         }
 
@@ -1153,7 +1163,7 @@ gf_monitor_config_manager_create_linear (GfMonitorConfigManager *config_manager)
         continue;
 
       if (gf_monitor_is_laptop_panel (monitor) &&
-          gf_monitor_manager_is_lid_closed (monitor_manager))
+          is_lid_closed (monitor_manager))
         continue;
 
       logical_monitor_config = create_preferred_logical_monitor_config (monitor_manager,
