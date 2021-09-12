@@ -664,7 +664,8 @@ update_panel_orientation_managed (GfMonitorManager *self)
   priv = gf_monitor_manager_get_instance_private (self);
 
   orientation_manager = gf_backend_get_orientation_manager (priv->backend);
-  panel_orientation_managed = gf_orientation_manager_has_accelerometer (orientation_manager);
+  panel_orientation_managed = gf_orientation_manager_has_accelerometer (orientation_manager) &&
+                              gf_monitor_manager_get_laptop_panel (self);
 
   if (self->panel_orientation_managed == panel_orientation_managed)
     return;
@@ -1187,6 +1188,8 @@ rebuild_monitors (GfMonitorManager *manager)
             }
         }
     }
+
+  update_panel_orientation_managed (manager);
 }
 
 static GList *
