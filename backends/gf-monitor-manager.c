@@ -501,15 +501,12 @@ gf_monitor_manager_apply_monitors_config (GfMonitorManager        *manager,
 }
 
 static void
-orientation_changed (GfOrientationManager *orientation_manager,
-                     GfMonitorManager     *manager)
+handle_orientation_change (GfOrientationManager *orientation_manager,
+                           GfMonitorManager     *manager)
 {
   GfMonitorTransform transform;
   GError *error = NULL;
   GfMonitorsConfig *config;
-
-  if (!manager->panel_orientation_managed)
-    return;
 
   switch (gf_orientation_manager_get_orientation (orientation_manager))
     {
@@ -547,6 +544,16 @@ orientation_changed (GfOrientationManager *orientation_manager,
     }
 
   g_object_unref (config);
+}
+
+static void
+orientation_changed (GfOrientationManager *orientation_manager,
+                     GfMonitorManager     *self)
+{
+  if (!self->panel_orientation_managed)
+    return;
+
+  handle_orientation_change (orientation_manager, self);
 }
 
 static void
