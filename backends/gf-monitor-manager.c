@@ -208,12 +208,6 @@ find_monitor (GfMonitorManager *monitor_manager,
   return NULL;
 }
 
-static GfMonitor *
-get_active_monitor (GfMonitorManager *manager)
-{
-  return find_monitor (manager, gf_monitor_is_active);
-}
-
 static gboolean
 is_global_scale_matching_in_config (GfMonitorsConfig *config,
                                     float             scale)
@@ -385,20 +379,69 @@ calculate_monitor_scale (GfMonitorManager *manager,
                                                           monitor_mode);
 }
 
+static gboolean
+is_scale_supported_by_other_monitors (GfMonitorManager *manager,
+                                      GfMonitor        *not_this_one,
+                                      float             scale)
+{
+  GList *l;
+
+  for (l = manager->monitors; l; l = l->next)
+    {
+      GfMonitor *monitor = l->data;
+      GfMonitorMode *mode;
+
+      if (monitor == not_this_one || !gf_monitor_is_active (monitor))
+        continue;
+
+      mode = gf_monitor_get_current_mode (monitor);
+      if (!gf_monitor_manager_is_scale_supported (manager,
+                                                  manager->layout_mode,
+                                                  monitor,
+                                                  mode,
+                                                  scale))
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
 static gfloat
 derive_calculated_global_scale (GfMonitorManager *manager)
 {
   GfMonitor *monitor;
+  float scale;
+  GList *l;
 
   monitor = gf_monitor_manager_get_primary_monitor (manager);
+  scale = 1.0f;
 
-  if (!monitor || !gf_monitor_is_active (monitor))
-    monitor = get_active_monitor (manager);
+  if (monitor != NULL && gf_monitor_is_active (monitor))
+    {
+      scale = calculate_monitor_scale (manager, monitor);
+      if (is_scale_supported_by_other_monitors (manager, monitor, scale))
+        return scale;
+    }
 
-  if (!monitor)
-    return 1.0;
+  for (l = manager->monitors; l; l = l->next)
+    {
+      GfMonitor *other_monitor;
+      float monitor_scale;
 
-  return calculate_monitor_scale (manager, monitor);
+      other_monitor = l->data;
+
+      if (other_monitor == monitor || !gf_monitor_is_active (other_monitor))
+        continue;
+
+      monitor_scale = calculate_monitor_scale (manager, other_monitor);
+
+      if (is_scale_supported_by_other_monitors (manager,
+                                                other_monitor,
+                                                monitor_scale))
+        scale = MAX (scale, monitor_scale);
+    }
+
+  return scale;
 }
 
 static GfLogicalMonitor *
