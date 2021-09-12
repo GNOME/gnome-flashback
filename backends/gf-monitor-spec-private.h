@@ -36,6 +36,8 @@ struct _GfMonitorSpec
 
 GfMonitorSpec *gf_monitor_spec_clone   (GfMonitorSpec  *spec);
 
+guint          gf_monitor_spec_hash    (gconstpointer   key);
+
 gboolean       gf_monitor_spec_equals  (GfMonitorSpec  *spec,
                                         GfMonitorSpec  *other_spec);
 

@@ -41,6 +41,17 @@ gf_monitor_spec_clone (GfMonitorSpec *spec)
   return new_spec;
 }
 
+guint
+gf_monitor_spec_hash (gconstpointer key)
+{
+  const GfMonitorSpec *monitor_spec = key;
+
+  return (g_str_hash (monitor_spec->connector) +
+          g_str_hash (monitor_spec->vendor) +
+          g_str_hash (monitor_spec->product) +
+          g_str_hash (monitor_spec->serial));
+}
+
 gboolean
 gf_monitor_spec_equals (GfMonitorSpec *spec,
                         GfMonitorSpec *other_spec)
