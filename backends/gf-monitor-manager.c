@@ -578,6 +578,10 @@ update_panel_orientation_managed (GfMonitorManager *self)
 
   gf_dbus_display_config_set_panel_orientation_managed (self->display_config,
                                                         panel_orientation_managed);
+
+  /* The orientation may have changed while it was unmanaged */
+  if (panel_orientation_managed)
+    handle_orientation_change (orientation_manager, self);
 }
 
 static void
