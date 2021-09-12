@@ -26,8 +26,6 @@
 #ifndef GF_BACKEND_PRIVATE_H
 #define GF_BACKEND_PRIVATE_H
 
-#include <libupower-glib/upower.h>
-
 #include "gf-backend.h"
 #include "gf-monitor-manager-private.h"
 #include "gf-monitor-manager-types-private.h"

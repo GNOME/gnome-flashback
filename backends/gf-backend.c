@@ -39,7 +39,8 @@ typedef struct
 
   GfMonitorManager     *monitor_manager;
 
-  UpClient             *up_client;
+  guint                 upower_watch_id;
+  GDBusProxy           *upower_proxy;
   gboolean              lid_is_closed;
 
   GList                *gpus;
@@ -71,16 +72,26 @@ create_monitor_manager (GfBackend  *backend,
 }
 
 static void
-lid_is_closed_changed_cb (UpClient   *client,
-                          GParamSpec *pspec,
-                          GfBackend  *self)
+upower_properties_changed_cb (GDBusProxy *proxy,
+                              GVariant   *changed_properties,
+                              GStrv       invalidated_properties,
+                              GfBackend  *self)
 {
   GfBackendPrivate *priv;
+  GVariant *v;
   gboolean lid_is_closed;
 
   priv = gf_backend_get_instance_private (self);
 
-  lid_is_closed = up_client_get_lid_is_closed (priv->up_client);
+  v = g_variant_lookup_value (changed_properties,
+                              "LidIsClosed",
+                              G_VARIANT_TYPE_BOOLEAN);
+
+  if (v == NULL)
+    return;
+
+  lid_is_closed = g_variant_get_boolean (v);
+  g_variant_unref (v);
 
   if (priv->lid_is_closed == lid_is_closed)
     return;
@@ -91,6 +102,91 @@ lid_is_closed_changed_cb (UpClient   *client,
                  backend_signals[LID_IS_CLOSED_CHANGED],
                  0,
                  priv->lid_is_closed);
+}
+
+static void
+upower_ready_cb (GObject      *source_object,
+                 GAsyncResult *res,
+                 gpointer      user_data)
+{
+  GError *error;
+  GDBusProxy *proxy;
+  GfBackend *self;
+  GfBackendPrivate *priv;
+  GVariant *v;
+
+  error = NULL;
+  proxy = g_dbus_proxy_new_finish (res, &error);
+
+  if (proxy == NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Failed to create UPower proxy: %s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  self = GF_BACKEND (user_data);
+  priv = gf_backend_get_instance_private (self);
+
+  priv->upower_proxy = proxy;
+
+  g_signal_connect (proxy,
+                    "g-properties-changed",
+                    G_CALLBACK (upower_properties_changed_cb),
+                    self);
+
+  v = g_dbus_proxy_get_cached_property (proxy, "LidIsClosed");
+
+  if (v == NULL)
+    return;
+
+  priv->lid_is_closed = g_variant_get_boolean (v);
+  g_variant_unref (v);
+
+  if (priv->lid_is_closed)
+    {
+      g_signal_emit (self,
+                     backend_signals[LID_IS_CLOSED_CHANGED],
+                     0,
+                     priv->lid_is_closed);
+    }
+}
+
+static void
+upower_appeared_cb (GDBusConnection *connection,
+                    const char      *name,
+                    const char      *name_owner,
+                    gpointer         user_data)
+{
+  GfBackend *self;
+
+  self = GF_BACKEND (user_data);
+
+  g_dbus_proxy_new (connection,
+                    G_DBUS_PROXY_FLAGS_NONE,
+                    NULL,
+                    "org.freedesktop.UPower",
+                    "/org/freedesktop/UPower",
+                    "org.freedesktop.UPower",
+                    NULL,
+                    upower_ready_cb,
+                    self);
+}
+
+static void
+upower_vanished_cb (GDBusConnection *connection,
+                    const char      *name,
+                    gpointer         user_data)
+{
+  GfBackend *self;
+  GfBackendPrivate *priv;
+
+  self = GF_BACKEND (user_data);
+  priv = gf_backend_get_instance_private (self);
+
+  g_clear_object (&priv->upower_proxy);
 }
 
 static gboolean
@@ -127,9 +223,6 @@ gf_backend_real_is_lid_closed (GfBackend *self)
 
   priv = gf_backend_get_instance_private (self);
 
-  if (priv->up_client == NULL)
-    return FALSE;
-
   return priv->lid_is_closed;
 }
 
@@ -147,17 +240,13 @@ gf_backend_constructed (GObject *object)
   if (self_class->is_lid_closed != gf_backend_real_is_lid_closed)
     return;
 
-  priv->up_client = up_client_new ();
-
-  if (priv->up_client != NULL)
-    {
-      g_signal_connect (priv->up_client,
-                        "notify::lid-is-closed",
-                        G_CALLBACK (lid_is_closed_changed_cb),
-                        self);
-
-      priv->lid_is_closed = up_client_get_lid_is_closed (priv->up_client);
-    }
+  priv->upower_watch_id = g_bus_watch_name (G_BUS_TYPE_SYSTEM,
+                                            "org.freedesktop.UPower",
+                                            G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                            upower_appeared_cb,
+                                            upower_vanished_cb,
+                                            self,
+                                            NULL);
 }
 
 static void
@@ -185,7 +274,13 @@ gf_backend_finalize (GObject *object)
   self = GF_BACKEND (object);
   priv = gf_backend_get_instance_private (self);
 
-  g_clear_object (&priv->up_client);
+  if (priv->upower_watch_id != 0)
+    {
+      g_bus_unwatch_name (priv->upower_watch_id);
+      priv->upower_watch_id = 0;
+    }
+
+  g_clear_object (&priv->upower_proxy);
 
   g_list_free_full (priv->gpus, g_object_unref);
 
