@@ -54,6 +54,8 @@ typedef struct
   guint        persistent_timeout_id;
 
   GfPowerSave  power_save_mode;
+
+  gboolean     initial_orient_change_done;
 } GfMonitorManagerPrivate;
 
 typedef gboolean (* MonitorMatchFunc) (GfMonitor *monitor);
@@ -644,10 +646,64 @@ handle_orientation_change (GfOrientationManager *orientation_manager,
   g_object_unref (config);
 }
 
+/*
+ * Special case for tablets with a native portrait mode and a keyboard dock,
+ * where the device gets docked in landscape mode. For this combo to work
+ * properly with gnome-flashback starting while the tablet is docked, we need
+ * to take the accelerometer reported orientation into account (at
+ * gnome-flashback startup) even if there is a tablet-mode-switch which
+ * indicates that the device is NOT in tablet-mode (because it is docked).
+ */
+static gboolean
+handle_initial_orientation_change (GfOrientationManager *orientation_manager,
+                                   GfMonitorManager     *self)
+{
+  GfMonitor *monitor;
+  GfMonitorMode *mode;
+  int width;
+  int height;
+
+  /*
+   * This is a workaround to ignore the tablet mode switch on the initial
+   * config of devices with a native portrait mode panel. The touchscreen and
+   * accelerometer requirements for applying the orientation must still be met.
+   */
+  if (!gf_orientation_manager_has_accelerometer (orientation_manager))
+    return FALSE;
+
+  /* Check for a portrait mode panel */
+  monitor = gf_monitor_manager_get_laptop_panel (self);
+
+  if (monitor == NULL)
+    return FALSE;
+
+  mode = gf_monitor_get_preferred_mode (monitor);
+  gf_monitor_mode_get_resolution (mode, &width, &height);
+
+  if (width > height)
+    return FALSE;
+
+  handle_orientation_change (orientation_manager, self);
+
+  return TRUE;
+}
+
 static void
 orientation_changed (GfOrientationManager *orientation_manager,
                      GfMonitorManager     *self)
 {
+  GfMonitorManagerPrivate *priv;
+
+  priv = gf_monitor_manager_get_instance_private (self);
+
+  if (!priv->initial_orient_change_done)
+    {
+      priv->initial_orient_change_done = TRUE;
+
+      if (handle_initial_orientation_change (orientation_manager, self))
+        return;
+    }
+
   if (!self->panel_orientation_managed)
     return;
 
