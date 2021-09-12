@@ -318,9 +318,10 @@ is_scale_valid_for_size (float width,
 }
 
 static gfloat
-get_closest_scale_factor_for_resolution (gfloat width,
-                                         gfloat height,
-                                         gfloat scale)
+get_closest_scale_factor_for_resolution (float width,
+                                         float height,
+                                         float scale,
+                                         float threshold)
 {
   guint i, j;
   gfloat scaled_h;
@@ -352,8 +353,8 @@ get_closest_scale_factor_for_resolution (gfloat width,
           current_scale = width / scaled_w;
           scaled_h = height / current_scale;
 
-          if (current_scale >= scale + SCALE_FACTORS_STEPS ||
-              current_scale <= scale - SCALE_FACTORS_STEPS ||
+          if (current_scale >= scale + threshold ||
+              current_scale <= scale - threshold ||
               current_scale < MINIMUM_SCALE_FACTOR ||
               current_scale > MAXIMUM_SCALE_FACTOR)
             {
@@ -1105,6 +1106,14 @@ gf_monitor_calculate_supported_scales (GfMonitor                 *monitor,
         }
       else
         {
+          float max_bound;
+
+          if (i == floorf (MINIMUM_SCALE_FACTOR) ||
+              i == ceilf (MAXIMUM_SCALE_FACTOR))
+            max_bound = SCALE_FACTORS_STEPS;
+          else
+            max_bound = SCALE_FACTORS_STEPS / 2.0f;
+
           for (j = 0; j < SCALE_FACTORS_PER_INTEGER; j++)
             {
               gfloat scale;
@@ -1112,7 +1121,8 @@ gf_monitor_calculate_supported_scales (GfMonitor                 *monitor,
 
               scale = get_closest_scale_factor_for_resolution (width,
                                                                height,
-                                                               scale_value);
+                                                               scale_value,
+                                                               max_bound);
 
               if (scale > 0.0f)
                 g_array_append_val (supported_scales, scale);
