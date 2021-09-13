@@ -1,3 +1,6 @@
+[org.gnome.desktop.wm.keybindings:GNOME-Flashback]
+panel-main-menu=['<Alt>F1']
+
 [org.gnome.desktop.wm.preferences:GNOME-Flashback]
 button-layout='appmenu:minimize,maximize,close'
 
