@@ -1303,6 +1303,23 @@ gf_monitor_config_manager_create_suggested (GfMonitorConfigManager *config_manag
       region = g_list_prepend (region, &logical_monitor_config->layout);
     }
 
+  for (l = region; region->next && l; l = l->next)
+    {
+      GfRectangle *rect = l->data;
+
+      if (!gf_rectangle_is_adjacent_to_any_in_region (region, rect))
+        {
+          g_warning ("Suggested monitor config has monitors with no neighbors, "
+                     "rejecting");
+
+          g_list_free (region);
+          g_list_free_full (logical_monitor_configs,
+                            (GDestroyNotify) gf_logical_monitor_config_free);
+
+          return NULL;
+        }
+    }
+
   g_list_free (region);
 
   if (!logical_monitor_configs)
