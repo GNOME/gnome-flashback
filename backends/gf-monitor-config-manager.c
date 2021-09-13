@@ -263,27 +263,17 @@ create_preferred_logical_monitor_config (GfMonitorManager           *monitor_man
                                          GfMonitor                  *monitor,
                                          int                         x,
                                          int                         y,
-                                         GfLogicalMonitorConfig     *primary_logical_monitor_config,
+                                         float                       scale,
                                          GfLogicalMonitorLayoutMode  layout_mode)
 {
   GfMonitorMode *mode;
   int width, height;
-  float scale;
   GfMonitorTransform transform;
   GfMonitorConfig *monitor_config;
   GfLogicalMonitorConfig *logical_monitor_config;
 
   mode = gf_monitor_get_preferred_mode (monitor);
   gf_monitor_mode_get_resolution (mode, &width, &height);
-
-  if ((gf_monitor_manager_get_capabilities (monitor_manager) &
-       GF_MONITOR_MANAGER_CAPABILITY_GLOBAL_SCALE_REQUIRED) &&
-      primary_logical_monitor_config)
-    scale = primary_logical_monitor_config->scale;
-  else
-    scale = gf_monitor_manager_calculate_monitor_mode_scale (monitor_manager,
-                                                             layout_mode,
-                                                             monitor, mode);
 
   switch (layout_mode)
     {
@@ -493,6 +483,35 @@ verify_suggested_monitors_config (GList *logical_monitor_configs)
   return TRUE;
 }
 
+static float
+compute_scale_for_monitor (GfMonitorManager *monitor_manager,
+                           GfMonitor        *monitor,
+                           GfMonitor        *primary_monitor)
+
+{
+  GfMonitor *target_monitor;
+  GfMonitorManagerCapability capabilities;
+  GfLogicalMonitorLayoutMode layout_mode;
+  GfMonitorMode *monitor_mode;
+
+  target_monitor = monitor;
+  capabilities = gf_monitor_manager_get_capabilities (monitor_manager);
+
+  if ((capabilities & GF_MONITOR_MANAGER_CAPABILITY_GLOBAL_SCALE_REQUIRED) &&
+      primary_monitor != NULL)
+    {
+      target_monitor = primary_monitor;
+    }
+
+  layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
+  monitor_mode = gf_monitor_get_preferred_mode (target_monitor);
+
+  return gf_monitor_manager_calculate_monitor_mode_scale (monitor_manager,
+                                                          layout_mode,
+                                                          target_monitor,
+                                                          monitor_mode);
+}
+
 static GfMonitorsConfig *
 create_monitors_config (GfMonitorConfigManager *config_manager,
                         MonitorMatchRule        match_rule,
@@ -505,6 +524,7 @@ create_monitors_config (GfMonitorConfigManager *config_manager,
   GfLogicalMonitorLayoutMode layout_mode;
   gboolean has_suggested_position;
   GList *logical_monitor_configs;
+  float scale;
   int x, y;
   GList *monitors;
   GList *l;
@@ -532,9 +552,12 @@ create_monitors_config (GfMonitorConfigManager *config_manager,
         break;
     }
 
+  scale = compute_scale_for_monitor (monitor_manager, primary_monitor, NULL);
   primary_logical_monitor_config = create_preferred_logical_monitor_config (monitor_manager,
                                                                             primary_monitor,
-                                                                            x, y, NULL,
+                                                                            x,
+                                                                            y,
+                                                                            scale,
                                                                             layout_mode);
 
   primary_logical_monitor_config->is_primary = TRUE;
@@ -568,9 +591,15 @@ create_monitors_config (GfMonitorConfigManager *config_manager,
             break;
         }
 
+      scale = compute_scale_for_monitor (monitor_manager,
+                                         monitor,
+                                         primary_monitor);
+
       logical_monitor_config = create_preferred_logical_monitor_config (monitor_manager,
-                                                                        monitor, x, y,
-                                                                        primary_logical_monitor_config,
+                                                                        monitor,
+                                                                        x,
+                                                                        y,
+                                                                        scale,
                                                                         layout_mode);
 
       logical_monitor_configs = g_list_append (logical_monitor_configs, logical_monitor_config);
