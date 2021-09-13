@@ -157,8 +157,11 @@ gf_monitor_normal_get_suggested_position (GfMonitor *monitor,
   if (output_info->suggested_x < 0 && output_info->suggested_y < 0)
     return FALSE;
 
-  *x = output_info->suggested_x;
-  *y = output_info->suggested_y;
+  if (x != NULL)
+    *x = output_info->suggested_x;
+
+  if (y != NULL)
+    *y = output_info->suggested_y;
 
   return TRUE;
 }
