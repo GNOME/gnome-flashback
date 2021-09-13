@@ -2292,6 +2292,12 @@ gf_monitor_manager_dispose (GObject *object)
       priv->bus_name_id = 0;
     }
 
+  if (priv->persistent_timeout_id != 0)
+    {
+      g_source_remove (priv->persistent_timeout_id);
+      priv->persistent_timeout_id = 0;
+    }
+
   g_clear_object (&manager->display_config);
   g_clear_object (&manager->config_manager);
 
