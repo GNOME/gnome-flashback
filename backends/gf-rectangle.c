@@ -90,6 +90,26 @@ gf_rectangle_overlaps_with_region (const GList       *spanning_rects,
 }
 
 gboolean
+gf_rectangle_is_adjacent_to_any_in_region (const GList *spanning_rects,
+                                           GfRectangle *rect)
+{
+  const GList *l;
+
+  for (l = spanning_rects; l; l = l->next)
+    {
+      GfRectangle *other = (GfRectangle *) l->data;
+
+      if (rect == other || gf_rectangle_equal (rect, other))
+        continue;
+
+      if (gf_rectangle_is_adjacent_to (rect, other))
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+gboolean
 gf_rectangle_is_adjacent_to (const GfRectangle *rect,
                              const GfRectangle *other)
 {
