@@ -51,8 +51,16 @@ typedef enum
   MONITOR_MATCH_EXTERNAL = (1 << 0),
   MONITOR_MATCH_BUILTIN = (1 << 1),
   MONITOR_MATCH_VISIBLE = (1 << 2),
-  MONITOR_MATCH_WITH_SUGGESTED_POSITION = (1 << 3)
+  MONITOR_MATCH_WITH_SUGGESTED_POSITION = (1 << 3),
+  MONITOR_MATCH_PRIMARY = (1 << 4),
+  MONITOR_MATCH_ALLOW_FALLBACK = (1 << 5)
 } MonitorMatchRule;
+
+typedef enum
+{
+  MONITOR_POSITIONING_LINEAR,
+  MONITOR_POSITIONING_SUGGESTED,
+} MonitorPositioningMode;
 
 struct _GfMonitorConfigManager
 {
@@ -208,8 +216,6 @@ find_primary_monitor (GfMonitorManager *monitor_manager,
 {
   GfMonitor *monitor;
 
-  match_rule |= MONITOR_MATCH_VISIBLE;
-
   monitor = gf_monitor_manager_get_primary_monitor (monitor_manager);
 
   if (monitor_matches_rule (monitor, monitor_manager, match_rule))
@@ -226,8 +232,11 @@ find_primary_monitor (GfMonitorManager *monitor_manager,
   if (monitor != NULL)
     return monitor;
 
-  return find_monitor_with_highest_preferred_resolution (monitor_manager,
-                                                         MONITOR_MATCH_ALL);
+  if (match_rule & MONITOR_MATCH_ALLOW_FALLBACK)
+    return find_monitor_with_highest_preferred_resolution (monitor_manager,
+                                                           MONITOR_MATCH_ALL);
+
+  return NULL;
 }
 
 static GfMonitorTransform
@@ -438,86 +447,196 @@ create_for_switch_config_all_mirror (GfMonitorConfigManager *config_manager)
   return monitors_config;
 }
 
+static gboolean
+verify_suggested_monitors_config (GList *logical_monitor_configs)
+{
+  GList *region;
+  GList *l;
+
+  region = NULL;
+
+  for (l = logical_monitor_configs; l; l = l->next)
+    {
+      GfLogicalMonitorConfig *logical_monitor_config = l->data;
+      GfRectangle *rect = &logical_monitor_config->layout;
+
+      if (gf_rectangle_overlaps_with_region (region, rect))
+        {
+          g_warning ("Suggested monitor config has overlapping region, "
+                      "rejecting");
+
+          g_list_free (region);
+
+          return FALSE;
+        }
+
+      region = g_list_prepend (region, rect);
+    }
+
+  for (l = region; region->next && l; l = l->next)
+    {
+      GfRectangle *rect = l->data;
+
+      if (!gf_rectangle_is_adjacent_to_any_in_region (region, rect))
+        {
+          g_warning ("Suggested monitor config has monitors with no "
+                      "neighbors, rejecting");
+
+          g_list_free (region);
+
+          return FALSE;
+        }
+    }
+
+  g_list_free (region);
+
+  return TRUE;
+}
+
 static GfMonitorsConfig *
-create_for_switch_config_external (GfMonitorConfigManager *config_manager)
+create_monitors_config (GfMonitorConfigManager *config_manager,
+                        MonitorMatchRule        match_rule,
+                        MonitorPositioningMode  positioning,
+                        GfMonitorsConfigFlag    config_flags)
 {
   GfMonitorManager *monitor_manager = config_manager->monitor_manager;
-  GList *logical_monitor_configs = NULL;
-  int x = 0;
+  GfLogicalMonitorConfig *primary_logical_monitor_config = NULL;
+  GfMonitor *primary_monitor;
   GfLogicalMonitorLayoutMode layout_mode;
+  gboolean has_suggested_position;
+  GList *logical_monitor_configs;
+  int x, y;
   GList *monitors;
   GList *l;
-  GfMonitorsConfig *monitors_config;
+
+  primary_monitor = find_primary_monitor (monitor_manager,
+                                          match_rule | MONITOR_MATCH_VISIBLE);
+
+  if (!primary_monitor)
+    return NULL;
 
   layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
 
-  monitors = find_monitors (monitor_manager, MONITOR_MATCH_EXTERNAL);
+  switch (positioning)
+    {
+      case MONITOR_POSITIONING_SUGGESTED:
+        has_suggested_position = gf_monitor_get_suggested_position (primary_monitor,
+                                                                    &x,
+                                                                    &y);
+        g_assert (has_suggested_position);
+        break;
+
+      case MONITOR_POSITIONING_LINEAR:
+      default:
+        x = y = 0;
+        break;
+    }
+
+  primary_logical_monitor_config = create_preferred_logical_monitor_config (monitor_manager,
+                                                                            primary_monitor,
+                                                                            x, y, NULL,
+                                                                            layout_mode);
+
+  primary_logical_monitor_config->is_primary = TRUE;
+  logical_monitor_configs = g_list_append (NULL, primary_logical_monitor_config);
+
+  monitors = NULL;
+  if (!(match_rule & MONITOR_MATCH_PRIMARY))
+    monitors = find_monitors (monitor_manager, match_rule);
+
+  x = primary_logical_monitor_config->layout.width;
 
   for (l = monitors; l; l = l->next)
     {
       GfMonitor *monitor = l->data;
       GfLogicalMonitorConfig *logical_monitor_config;
 
+      if (monitor == primary_monitor)
+        continue;
+
+      switch (positioning)
+        {
+          case MONITOR_POSITIONING_SUGGESTED:
+            has_suggested_position = gf_monitor_get_suggested_position (monitor,
+                                                                        &x,
+                                                                        &y);
+            g_assert (has_suggested_position);
+            break;
+
+          case MONITOR_POSITIONING_LINEAR:
+          default:
+            break;
+        }
+
       logical_monitor_config = create_preferred_logical_monitor_config (monitor_manager,
-                                                                        monitor, x, 0, NULL,
+                                                                        monitor, x, y,
+                                                                        primary_logical_monitor_config,
                                                                         layout_mode);
 
-      logical_monitor_configs = g_list_append (logical_monitor_configs,
-                                               logical_monitor_config);
-
-      if (x == 0)
-        logical_monitor_config->is_primary = TRUE;
+      logical_monitor_configs = g_list_append (logical_monitor_configs, logical_monitor_config);
 
       x += logical_monitor_config->layout.width;
     }
 
   g_clear_pointer (&monitors, g_list_free);
 
-  monitors_config = gf_monitors_config_new (monitor_manager,
-                                            logical_monitor_configs,
-                                            layout_mode,
-                                            GF_MONITORS_CONFIG_FLAG_NONE);
+  if (positioning == MONITOR_POSITIONING_SUGGESTED)
+    {
+      if (!verify_suggested_monitors_config (logical_monitor_configs))
+        {
+          g_list_free_full (logical_monitor_configs,
+                            (GDestroyNotify) gf_logical_monitor_config_free);
 
-  if (monitors_config)
-    gf_monitors_config_set_switch_config (monitors_config,
-                                          GF_MONITOR_SWITCH_CONFIG_EXTERNAL);
+          return NULL;
+        }
+    }
+
+  return gf_monitors_config_new (monitor_manager,
+                                 logical_monitor_configs,
+                                 layout_mode,
+                                 config_flags);
+}
+
+static GfMonitorsConfig *
+create_monitors_switch_config (GfMonitorConfigManager    *config_manager,
+                               MonitorMatchRule           match_rule,
+                               MonitorPositioningMode     positioning,
+                               GfMonitorsConfigFlag       config_flags,
+                               GfMonitorSwitchConfigType  switch_config)
+{
+  GfMonitorsConfig *monitors_config;
+
+  monitors_config = create_monitors_config (config_manager,
+                                            match_rule,
+                                            positioning,
+                                            config_flags);
+
+  if (monitors_config == NULL)
+    return NULL;
+
+  gf_monitors_config_set_switch_config (monitors_config, switch_config);
 
   return monitors_config;
 }
 
 static GfMonitorsConfig *
+create_for_switch_config_external (GfMonitorConfigManager *config_manager)
+{
+  return create_monitors_switch_config (config_manager,
+                                        MONITOR_MATCH_EXTERNAL,
+                                        MONITOR_POSITIONING_LINEAR,
+                                        GF_MONITORS_CONFIG_FLAG_NONE,
+                                        GF_MONITOR_SWITCH_CONFIG_EXTERNAL);
+}
+
+static GfMonitorsConfig *
 create_for_switch_config_builtin (GfMonitorConfigManager *config_manager)
 {
-  GfMonitorManager *monitor_manager = config_manager->monitor_manager;
-  GfLogicalMonitorLayoutMode layout_mode;
-  GList *logical_monitor_configs;
-  GfLogicalMonitorConfig *primary_logical_monitor_config;
-  GfMonitor *monitor;
-  GfMonitorsConfig *monitors_config;
-
-  monitor = gf_monitor_manager_get_laptop_panel (monitor_manager);
-  if (!monitor)
-    return NULL;
-
-  layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
-
-  primary_logical_monitor_config = create_preferred_logical_monitor_config (monitor_manager,
-                                                                            monitor, 0, 0, NULL,
-                                                                            layout_mode);
-
-  primary_logical_monitor_config->is_primary = TRUE;
-  logical_monitor_configs = g_list_append (NULL, primary_logical_monitor_config);
-
-  monitors_config = gf_monitors_config_new (monitor_manager,
-                                            logical_monitor_configs,
-                                            layout_mode,
-                                            GF_MONITORS_CONFIG_FLAG_NONE);
-
-  if (monitors_config)
-    gf_monitors_config_set_switch_config (monitors_config,
-                                          GF_MONITOR_SWITCH_CONFIG_BUILTIN);
-
-  return monitors_config;
+  return create_monitors_switch_config (config_manager,
+                                        MONITOR_MATCH_BUILTIN,
+                                        MONITOR_POSITIONING_LINEAR,
+                                        GF_MONITORS_CONFIG_FLAG_NONE,
+                                        GF_MONITOR_SWITCH_CONFIG_BUILTIN);
 }
 
 static GList *
@@ -1202,189 +1321,30 @@ gf_monitor_config_manager_get_stored (GfMonitorConfigManager *config_manager)
 GfMonitorsConfig *
 gf_monitor_config_manager_create_linear (GfMonitorConfigManager *config_manager)
 {
-  GfMonitorManager *monitor_manager = config_manager->monitor_manager;
-  GList *logical_monitor_configs;
-  GfMonitor *primary_monitor;
-  GfLogicalMonitorLayoutMode layout_mode;
-  GfLogicalMonitorConfig *primary_logical_monitor_config;
-  int x;
-  GList *monitors;
-  GList *l;
-  GfMonitorsConfig *monitors_config;
-
-  primary_monitor = find_primary_monitor (monitor_manager,
-                                          MONITOR_MATCH_VISIBLE);
-
-  if (!primary_monitor)
-    return NULL;
-
-  layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
-
-  primary_logical_monitor_config = create_preferred_logical_monitor_config (monitor_manager,
-                                                                            primary_monitor,
-                                                                            0, 0, NULL,
-                                                                            layout_mode);
-
-  primary_logical_monitor_config->is_primary = TRUE;
-  logical_monitor_configs = g_list_append (NULL, primary_logical_monitor_config);
-
-  x = primary_logical_monitor_config->layout.width;
-  monitors = find_monitors (monitor_manager, MONITOR_MATCH_VISIBLE);
-
-  for (l = monitors; l; l = l->next)
-    {
-      GfMonitor *monitor = l->data;
-      GfLogicalMonitorConfig *logical_monitor_config;
-
-      if (monitor == primary_monitor)
-        continue;
-
-      logical_monitor_config = create_preferred_logical_monitor_config (monitor_manager,
-                                                                        monitor, x, 0,
-                                                                        primary_logical_monitor_config,
-                                                                        layout_mode);
-
-      logical_monitor_configs = g_list_append (logical_monitor_configs,
-                                               logical_monitor_config);
-
-      x += logical_monitor_config->layout.width;
-    }
-
-  g_clear_pointer (&monitors, g_list_free);
-
-  monitors_config = gf_monitors_config_new (monitor_manager,
-                                            logical_monitor_configs,
-                                            layout_mode,
-                                            GF_MONITORS_CONFIG_FLAG_NONE);
-
-  if (monitors_config)
-    gf_monitors_config_set_switch_config (monitors_config,
-                                          GF_MONITOR_SWITCH_CONFIG_ALL_LINEAR);
-
-  return monitors_config;
+  return create_monitors_config (config_manager,
+                                 MONITOR_MATCH_VISIBLE |
+                                 MONITOR_MATCH_ALLOW_FALLBACK,
+                                 MONITOR_POSITIONING_LINEAR,
+                                 GF_MONITORS_CONFIG_FLAG_NONE);
 }
 
 GfMonitorsConfig *
 gf_monitor_config_manager_create_fallback (GfMonitorConfigManager *config_manager)
 {
-  GfMonitorManager *monitor_manager = config_manager->monitor_manager;
-  GfMonitor *primary_monitor;
-  GList *logical_monitor_configs;
-  GfLogicalMonitorLayoutMode layout_mode;
-  GfLogicalMonitorConfig *primary_logical_monitor_config;
-
-  primary_monitor = find_primary_monitor (monitor_manager, MONITOR_MATCH_ALL);
-  if (!primary_monitor)
-    return NULL;
-
-  layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
-
-  primary_logical_monitor_config = create_preferred_logical_monitor_config (monitor_manager,
-                                                                            primary_monitor,
-                                                                            0, 0, NULL,
-                                                                            layout_mode);
-
-  primary_logical_monitor_config->is_primary = TRUE;
-  logical_monitor_configs = g_list_append (NULL, primary_logical_monitor_config);
-
-  return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
-                                 layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
+  return create_monitors_config (config_manager,
+                                 MONITOR_MATCH_PRIMARY |
+                                 MONITOR_MATCH_ALLOW_FALLBACK,
+                                 MONITOR_POSITIONING_LINEAR,
+                                 GF_MONITORS_CONFIG_FLAG_NONE);
 }
 
 GfMonitorsConfig *
 gf_monitor_config_manager_create_suggested (GfMonitorConfigManager *config_manager)
 {
-  GfMonitorManager *monitor_manager = config_manager->monitor_manager;
-  GfLogicalMonitorConfig *primary_logical_monitor_config = NULL;
-  GfMonitor *primary_monitor;
-  GfLogicalMonitorLayoutMode layout_mode;
-  GList *logical_monitor_configs;
-  GList *region;
-  int x, y;
-  GList *monitors;
-  GList *l;
-
-  primary_monitor = find_primary_monitor (monitor_manager,
-                                          MONITOR_MATCH_WITH_SUGGESTED_POSITION);
-
-  if (!primary_monitor)
-    return NULL;
-
-  if (!gf_monitor_get_suggested_position (primary_monitor, &x, &y))
-    return NULL;
-
-  layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
-
-  primary_logical_monitor_config = create_preferred_logical_monitor_config (monitor_manager,
-                                                                            primary_monitor,
-                                                                            x, y, NULL,
-                                                                            layout_mode);
-
-  primary_logical_monitor_config->is_primary = TRUE;
-  logical_monitor_configs = g_list_append (NULL, primary_logical_monitor_config);
-  region = g_list_prepend (NULL, &primary_logical_monitor_config->layout);
-
-  monitors = find_monitors (monitor_manager,
-                            MONITOR_MATCH_WITH_SUGGESTED_POSITION);
-
-  for (l = monitors; l; l = l->next)
-    {
-      GfMonitor *monitor = l->data;
-      GfLogicalMonitorConfig *logical_monitor_config;
-
-      if (monitor == primary_monitor)
-        continue;
-
-      gf_monitor_get_suggested_position (monitor, &x, &y);
-
-      logical_monitor_config = create_preferred_logical_monitor_config (monitor_manager,
-                                                                        monitor, x, y,
-                                                                        primary_logical_monitor_config,
-                                                                        layout_mode);
-
-      logical_monitor_configs = g_list_append (logical_monitor_configs, logical_monitor_config);
-
-      if (gf_rectangle_overlaps_with_region (region, &logical_monitor_config->layout))
-        {
-          g_warning ("Suggested monitor config has overlapping region, rejecting");
-          g_list_free (region);
-          g_list_free_full (logical_monitor_configs,
-                            (GDestroyNotify) gf_logical_monitor_config_free);
-
-          g_clear_pointer (&monitors, g_list_free);
-
-          return NULL;
-        }
-
-      region = g_list_prepend (region, &logical_monitor_config->layout);
-    }
-
-  g_clear_pointer (&monitors, g_list_free);
-
-  for (l = region; region->next && l; l = l->next)
-    {
-      GfRectangle *rect = l->data;
-
-      if (!gf_rectangle_is_adjacent_to_any_in_region (region, rect))
-        {
-          g_warning ("Suggested monitor config has monitors with no neighbors, "
-                     "rejecting");
-
-          g_list_free (region);
-          g_list_free_full (logical_monitor_configs,
-                            (GDestroyNotify) gf_logical_monitor_config_free);
-
-          return NULL;
-        }
-    }
-
-  g_list_free (region);
-
-  if (!logical_monitor_configs)
-    return NULL;
-
-  return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
-                                 layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
+  return create_monitors_config (config_manager,
+                                 MONITOR_MATCH_WITH_SUGGESTED_POSITION,
+                                 MONITOR_POSITIONING_SUGGESTED,
+                                 GF_MONITORS_CONFIG_FLAG_NONE);
 }
 
 GfMonitorsConfig *
