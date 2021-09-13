@@ -547,7 +547,7 @@ find_logical_config_for_builtin_monitor (GfMonitorConfigManager *config_manager,
 
   panel = gf_monitor_manager_get_laptop_panel (config_manager->monitor_manager);
 
-  if (panel == NULL || !gf_monitor_is_active (panel))
+  if (panel == NULL)
     return NULL;
 
   for (l = logical_monitor_configs; l; l = l->next)
@@ -567,7 +567,15 @@ find_logical_config_for_builtin_monitor (GfMonitorConfigManager *config_manager,
       monitor_config = logical_monitor_config->monitor_configs->data;
       if (gf_monitor_spec_equals (gf_monitor_get_spec (panel),
                                   monitor_config->monitor_spec))
-        return logical_monitor_config;
+        {
+          GfMonitorMode *mode;
+
+          mode = gf_monitor_get_mode_from_spec (panel,
+                                                monitor_config->mode_spec);
+
+          if (mode != NULL)
+            return logical_monitor_config;
+        }
     }
 
   return NULL;
