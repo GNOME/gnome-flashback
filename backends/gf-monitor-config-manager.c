@@ -186,6 +186,7 @@ get_monitor_transform (GfMonitorManager *monitor_manager,
 {
   GfBackend *backend;
   GfOrientationManager *orientation_manager;
+  GfOrientation orientation;
 
   if (!gf_monitor_is_laptop_panel (monitor) ||
       !gf_monitor_manager_get_panel_orientation_managed (monitor_manager))
@@ -193,23 +194,9 @@ get_monitor_transform (GfMonitorManager *monitor_manager,
 
   backend = gf_monitor_manager_get_backend (monitor_manager);
   orientation_manager = gf_backend_get_orientation_manager (backend);
+  orientation = gf_orientation_manager_get_orientation (orientation_manager);
 
-  switch (gf_orientation_manager_get_orientation (orientation_manager))
-    {
-      case GF_ORIENTATION_BOTTOM_UP:
-        return GF_MONITOR_TRANSFORM_180;
-
-      case GF_ORIENTATION_LEFT_UP:
-        return GF_MONITOR_TRANSFORM_90;
-
-      case GF_ORIENTATION_RIGHT_UP:
-        return GF_MONITOR_TRANSFORM_270;
-
-      case GF_ORIENTATION_UNDEFINED:
-      case GF_ORIENTATION_NORMAL:
-      default:
-        return GF_MONITOR_TRANSFORM_NORMAL;
-    }
+  return gf_monitor_transform_from_orientation (orientation);
 }
 
 static GfLogicalMonitorConfig *

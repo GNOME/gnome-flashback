@@ -604,6 +604,7 @@ static void
 handle_orientation_change (GfOrientationManager *orientation_manager,
                            GfMonitorManager     *manager)
 {
+  GfOrientation orientation;
   GfMonitorTransform transform;
   GError *error = NULL;
   GfMonitorsConfig *config;
@@ -617,25 +618,8 @@ handle_orientation_change (GfOrientationManager *orientation_manager,
   if (!gf_monitor_is_active (laptop_panel))
     return;
 
-  switch (gf_orientation_manager_get_orientation (orientation_manager))
-    {
-      case GF_ORIENTATION_NORMAL:
-        transform = GF_MONITOR_TRANSFORM_NORMAL;
-        break;
-      case GF_ORIENTATION_BOTTOM_UP:
-        transform = GF_MONITOR_TRANSFORM_180;
-        break;
-      case GF_ORIENTATION_LEFT_UP:
-        transform = GF_MONITOR_TRANSFORM_90;
-        break;
-      case GF_ORIENTATION_RIGHT_UP:
-        transform = GF_MONITOR_TRANSFORM_270;
-        break;
-
-      case GF_ORIENTATION_UNDEFINED:
-      default:
-        return;
-    }
+  orientation = gf_orientation_manager_get_orientation (orientation_manager);
+  transform = gf_monitor_transform_from_orientation (orientation);
 
   laptop_logical_monitor = gf_monitor_get_logical_monitor (laptop_panel);
   if (gf_logical_monitor_get_transform (laptop_logical_monitor) == transform)

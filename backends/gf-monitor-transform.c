@@ -19,6 +19,29 @@
 #include "gf-monitor-transform.h"
 
 GfMonitorTransform
+gf_monitor_transform_from_orientation (GfOrientation orientation)
+{
+  switch (orientation)
+    {
+      case GF_ORIENTATION_BOTTOM_UP:
+        return GF_MONITOR_TRANSFORM_180;
+
+      case GF_ORIENTATION_LEFT_UP:
+        return GF_MONITOR_TRANSFORM_90;
+
+      case GF_ORIENTATION_RIGHT_UP:
+        return GF_MONITOR_TRANSFORM_270;
+
+      case GF_ORIENTATION_UNDEFINED:
+      case GF_ORIENTATION_NORMAL:
+      default:
+        break;
+    }
+
+  return GF_MONITOR_TRANSFORM_NORMAL;
+}
+
+GfMonitorTransform
 gf_monitor_transform_invert (GfMonitorTransform transform)
 {
   GfMonitorTransform inverted_transform;
