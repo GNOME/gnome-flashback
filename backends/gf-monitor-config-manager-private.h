@@ -52,7 +52,11 @@ GfMonitorsConfig       *gf_monitor_config_manager_create_fallback           (GfM
 GfMonitorsConfig       *gf_monitor_config_manager_create_suggested          (GfMonitorConfigManager      *config_manager);
 
 GfMonitorsConfig       *gf_monitor_config_manager_create_for_orientation    (GfMonitorConfigManager      *config_manager,
+                                                                             GfMonitorsConfig            *base_config,
                                                                              GfMonitorTransform           transform);
+
+GfMonitorsConfig       *gf_monitor_config_manager_create_for_builtin_orientation (GfMonitorConfigManager *config_manager,
+                                                                                  GfMonitorsConfig       *base_config);
 
 GfMonitorsConfig       *gf_monitor_config_manager_create_for_rotate_monitor (GfMonitorConfigManager      *config_manager);
 

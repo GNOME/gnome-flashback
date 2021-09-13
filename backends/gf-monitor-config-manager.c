@@ -559,6 +559,7 @@ find_logical_config_for_builtin_display_rotation (GfMonitorConfigManager *config
 
 static GfMonitorsConfig *
 create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
+                                     GfMonitorsConfig       *base_config,
                                      gboolean                rotate,
                                      GfMonitorTransform      transform)
 {
@@ -570,10 +571,9 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
   GfLogicalMonitorLayoutMode layout_mode;
   GList *current_monitor_configs;
 
-  if (!config_manager->current_config)
-    return NULL;
+  g_return_val_if_fail (base_config, NULL);
 
-  current_configs = config_manager->current_config->logical_monitor_configs;
+  current_configs = base_config->logical_monitor_configs;
   current_logical_monitor_config = find_logical_config_for_builtin_display_rotation (config_manager,
                                                                                      current_configs);
 
@@ -600,7 +600,7 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
   if (current_logical_monitor_config->transform == transform)
     return NULL;
 
-  current_monitor_configs = config_manager->current_config->logical_monitor_configs;
+  current_monitor_configs = base_config->logical_monitor_configs;
   logical_monitor_configs = clone_logical_monitor_config_list (current_monitor_configs);
 
   logical_monitor_config = find_logical_config_for_builtin_display_rotation (config_manager,
@@ -616,7 +616,7 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
       logical_monitor_config->layout.height = temp;
     }
 
-  layout_mode = config_manager->current_config->layout_mode;
+  layout_mode = base_config->layout_mode;
 
   return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
                                  layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
@@ -1295,15 +1295,45 @@ gf_monitor_config_manager_create_suggested (GfMonitorConfigManager *config_manag
 
 GfMonitorsConfig *
 gf_monitor_config_manager_create_for_orientation (GfMonitorConfigManager *config_manager,
+                                                  GfMonitorsConfig       *base_config,
                                                   GfMonitorTransform      transform)
 {
-  return create_for_builtin_display_rotation (config_manager, FALSE, transform);
+  return create_for_builtin_display_rotation (config_manager,
+                                              base_config,
+                                              FALSE,
+                                              transform);
+}
+
+GfMonitorsConfig *
+gf_monitor_config_manager_create_for_builtin_orientation (GfMonitorConfigManager *config_manager,
+                                                          GfMonitorsConfig       *base_config)
+{
+  GfMonitorManager *monitor_manager;
+  gboolean panel_orientation_managed;
+  GfMonitorTransform current_transform;
+  GfMonitor *laptop_panel;
+
+  monitor_manager = config_manager->monitor_manager;
+  panel_orientation_managed = gf_monitor_manager_get_panel_orientation_managed (monitor_manager);
+
+  g_return_val_if_fail (panel_orientation_managed, NULL);
+
+  laptop_panel = gf_monitor_manager_get_laptop_panel (monitor_manager);
+  current_transform = get_monitor_transform (monitor_manager, laptop_panel);
+
+  return create_for_builtin_display_rotation (config_manager,
+                                              base_config,
+                                              FALSE,
+                                              current_transform);
 }
 
 GfMonitorsConfig *
 gf_monitor_config_manager_create_for_rotate_monitor (GfMonitorConfigManager *config_manager)
 {
-  return create_for_builtin_display_rotation (config_manager, TRUE, GF_MONITOR_TRANSFORM_NORMAL);
+  return create_for_builtin_display_rotation (config_manager,
+                                              config_manager->current_config,
+                                              TRUE,
+                                              GF_MONITOR_TRANSFORM_NORMAL);
 }
 
 GfMonitorsConfig *

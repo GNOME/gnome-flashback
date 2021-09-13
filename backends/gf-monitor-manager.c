@@ -609,6 +609,7 @@ handle_orientation_change (GfOrientationManager *orientation_manager,
   GfMonitorsConfig *config;
   GfMonitor *laptop_panel;
   GfLogicalMonitor *laptop_logical_monitor;
+  GfMonitorsConfig *current_config;
 
   laptop_panel = gf_monitor_manager_get_laptop_panel (manager);
   g_return_if_fail (laptop_panel);
@@ -640,7 +641,9 @@ handle_orientation_change (GfOrientationManager *orientation_manager,
   if (gf_logical_monitor_get_transform (laptop_logical_monitor) == transform)
     return;
 
+  current_config = gf_monitor_config_manager_get_current (manager->config_manager);
   config = gf_monitor_config_manager_create_for_orientation (manager->config_manager,
+                                                             current_config,
                                                              transform);
 
   if (!config)
@@ -762,6 +765,20 @@ restore_previous_config (GfMonitorManager *manager)
     {
       GfMonitorsConfigMethod method;
       GError *error;
+
+      if (manager->panel_orientation_managed)
+        {
+          GfMonitorsConfig *oriented_config;
+
+          oriented_config = gf_monitor_config_manager_create_for_builtin_orientation (manager->config_manager,
+                                                                                      previous_config);
+
+          if (oriented_config != NULL)
+            {
+              g_object_unref (previous_config);
+              previous_config = oriented_config;
+            }
+        }
 
       method = GF_MONITORS_CONFIG_METHOD_TEMPORARY;
       error = NULL;
@@ -2653,10 +2670,25 @@ gf_monitor_manager_ensure_configured (GfMonitorManager *manager)
 
       if (config)
         {
+          GfMonitorsConfig *oriented_config;
+
+          oriented_config = NULL;
+
+          if (manager->panel_orientation_managed)
+            {
+              oriented_config = gf_monitor_config_manager_create_for_builtin_orientation (manager->config_manager,
+                                                                                          config);
+
+              if (oriented_config != NULL)
+                config = oriented_config;
+            }
+
           if (!gf_monitor_manager_apply_monitors_config (manager, config,
                                                          method, &error))
             {
               config = NULL;
+              g_clear_object (&oriented_config);
+
               g_warning ("Failed to use stored monitor configuration: %s",
                          error->message);
               g_clear_error (&error);
@@ -2664,6 +2696,41 @@ gf_monitor_manager_ensure_configured (GfMonitorManager *manager)
           else
             {
               g_object_ref (config);
+              g_clear_object (&oriented_config);
+              goto done;
+            }
+        }
+    }
+
+  if (manager->panel_orientation_managed)
+    {
+      GfMonitorsConfig *current_config;
+
+      current_config = gf_monitor_config_manager_get_current (manager->config_manager);
+
+      if (current_config != NULL)
+        {
+          config = gf_monitor_config_manager_create_for_builtin_orientation (manager->config_manager,
+                                                                             current_config);
+        }
+    }
+
+  if (config != NULL)
+    {
+      if (gf_monitor_manager_is_config_complete (manager, config))
+        {
+          if (!gf_monitor_manager_apply_monitors_config (manager,
+                                                         config,
+                                                         method,
+                                                         &error))
+            {
+              g_clear_object (&config);
+              g_warning ("Failed to use current monitor configuration: %s",
+                         error->message);
+              g_clear_error (&error);
+            }
+          else
+            {
               goto done;
             }
         }
