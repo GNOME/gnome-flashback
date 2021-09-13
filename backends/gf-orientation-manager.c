@@ -35,6 +35,7 @@ struct _GfOrientationManager
   GCancellable  *cancellable;
 
   guint          iio_watch_id;
+  guint          sync_idle_id;
   GDBusProxy    *iio_proxy;
   GfOrientation  prev_orientation;
   GfOrientation  curr_orientation;
@@ -144,6 +145,28 @@ sync_state (GfOrientationManager *manager)
   g_signal_emit (manager, manager_signals[ORIENTATION_CHANGED], 0);
 }
 
+static gboolean
+sync_state_cb (gpointer user_data)
+{
+  GfOrientationManager *self;
+
+  self = user_data;
+  self->sync_idle_id = 0;
+
+  sync_state (self);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+queue_sync_state (GfOrientationManager *self)
+{
+  if (self->sync_idle_id != 0)
+    return;
+
+  self->sync_idle_id = g_idle_add (sync_state_cb, self);
+}
+
 static void
 orientation_lock_changed_cb (GSettings   *settings,
                              const gchar *key,
@@ -153,7 +176,7 @@ orientation_lock_changed_cb (GSettings   *settings,
 
   manager = GF_ORIENTATION_MANAGER (user_data);
 
-  sync_state (manager);
+  queue_sync_state (manager);
 }
 
 static void
@@ -166,7 +189,7 @@ iio_properties_changed_cb (GDBusProxy *proxy,
 
   manager = GF_ORIENTATION_MANAGER (user_data);
 
-  sync_state (manager);
+  queue_sync_state (manager);
 }
 
 static void
@@ -289,6 +312,12 @@ gf_orientation_manager_dispose (GObject *object)
     {
       g_bus_unwatch_name (manager->iio_watch_id);
       manager->iio_watch_id = 0;
+    }
+
+  if (manager->sync_idle_id != 0)
+    {
+      g_source_remove (manager->sync_idle_id);
+      manager->sync_idle_id = 0;
     }
 
   g_clear_object (&manager->iio_proxy);
