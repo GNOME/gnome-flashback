@@ -120,6 +120,8 @@ gf_monitors_config_finalize (GObject *object)
 
   config = GF_MONITORS_CONFIG (object);
 
+  g_clear_object (&config->parent_config);
+
   gf_monitors_config_key_free (config->key);
   g_list_free_full (config->logical_monitor_configs,
                     (GDestroyNotify) gf_logical_monitor_config_free);
@@ -197,6 +199,16 @@ gf_monitors_config_new (GfMonitorManager           *monitor_manager,
   return gf_monitors_config_new_full (logical_monitor_configs,
                                       disabled_monitor_specs,
                                       layout_mode, flags);
+}
+
+void
+gf_monitors_config_set_parent_config (GfMonitorsConfig *config,
+                                      GfMonitorsConfig *parent_config)
+{
+  g_assert (config != parent_config);
+  g_assert (parent_config == NULL || parent_config->parent_config != config);
+
+  g_set_object (&config->parent_config, parent_config);
 }
 
 GfMonitorSwitchConfigType

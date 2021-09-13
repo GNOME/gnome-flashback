@@ -642,6 +642,9 @@ handle_orientation_change (GfOrientationManager *orientation_manager,
     return;
 
   current_config = gf_monitor_config_manager_get_current (manager->config_manager);
+  if (current_config == NULL)
+    return;
+
   config = gf_monitor_config_manager_create_for_orientation (manager->config_manager,
                                                              current_config,
                                                              transform);
@@ -2756,7 +2759,21 @@ gf_monitor_manager_ensure_configured (GfMonitorManager *manager)
   config = gf_monitor_config_manager_get_previous (manager->config_manager);
   if (config)
     {
+      GfMonitorsConfig *oriented_config;
+
+      oriented_config = NULL;
+
+      if (manager->panel_orientation_managed)
+        {
+          oriented_config = gf_monitor_config_manager_create_for_builtin_orientation (manager->config_manager,
+                                                                                      config);
+
+          if (oriented_config != NULL)
+            config = oriented_config;
+        }
+
       config = g_object_ref (config);
+      g_clear_object (&oriented_config);
 
       if (gf_monitor_manager_is_config_complete (manager, config))
         {

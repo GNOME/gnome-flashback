@@ -65,6 +65,22 @@ struct _GfMonitorConfigManager
 
 G_DEFINE_TYPE (GfMonitorConfigManager, gf_monitor_config_manager, G_TYPE_OBJECT)
 
+static GfMonitorsConfig *
+get_root_config (GfMonitorsConfig *config)
+{
+  if (config->parent_config == NULL)
+    return config;
+
+  return get_root_config (config->parent_config);
+}
+
+static gboolean
+has_same_root_config (GfMonitorsConfig *config_a,
+                      GfMonitorsConfig *config_b)
+{
+  return get_root_config (config_a) == get_root_config (config_b);
+}
+
 static void
 history_unref (gpointer data,
                gpointer user_data)
@@ -567,6 +583,7 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
   GfMonitorManager *monitor_manager = config_manager->monitor_manager;
   GfLogicalMonitorConfig *logical_monitor_config;
   GfLogicalMonitorConfig *current_logical_monitor_config;
+  GfMonitorsConfig *config;
   GList *logical_monitor_configs;
   GList *current_configs;
   GfLogicalMonitorLayoutMode layout_mode;
@@ -619,8 +636,14 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
 
   layout_mode = base_config->layout_mode;
 
-  return gf_monitors_config_new (monitor_manager, logical_monitor_configs,
-                                 layout_mode, GF_MONITORS_CONFIG_FLAG_NONE);
+  config = gf_monitors_config_new (monitor_manager,
+                                   logical_monitor_configs,
+                                   layout_mode,
+                                   GF_MONITORS_CONFIG_FLAG_NONE);
+
+  gf_monitors_config_set_parent_config (config, base_config);
+
+  return config;
 }
 
 static gboolean
@@ -1331,6 +1354,9 @@ gf_monitor_config_manager_create_for_builtin_orientation (GfMonitorConfigManager
 GfMonitorsConfig *
 gf_monitor_config_manager_create_for_rotate_monitor (GfMonitorConfigManager *config_manager)
 {
+  if (config_manager->current_config == NULL)
+    return NULL;
+
   return create_for_builtin_display_rotation (config_manager,
                                               config_manager->current_config,
                                               TRUE,
@@ -1381,7 +1407,21 @@ void
 gf_monitor_config_manager_set_current (GfMonitorConfigManager *config_manager,
                                        GfMonitorsConfig       *config)
 {
-  if (config_manager->current_config)
+  GfMonitorsConfig *current_config;
+  gboolean overrides_current;
+
+  current_config = config_manager->current_config;
+  overrides_current = FALSE;
+
+  if (config != NULL &&
+      current_config != NULL &&
+      has_same_root_config (config, current_config))
+    {
+      overrides_current = gf_monitors_config_key_equal (config->key,
+                                                        current_config->key);
+    }
+
+  if (current_config != NULL && !overrides_current)
     {
       g_queue_push_head (&config_manager->config_history,
                          g_object_ref (config_manager->current_config));

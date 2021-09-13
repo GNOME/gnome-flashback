@@ -42,6 +42,8 @@ struct _GfMonitorsConfig
 {
   GObject                     parent;
 
+  GfMonitorsConfig           *parent_config;
+
   GfMonitorsConfigKey        *key;
   GList                      *logical_monitor_configs;
 
@@ -67,6 +69,9 @@ GfMonitorsConfig          *gf_monitors_config_new               (GfMonitorManage
                                                                  GList                       *logical_monitor_configs,
                                                                  GfLogicalMonitorLayoutMode   layout_mode,
                                                                  GfMonitorsConfigFlag         flags);
+
+void                       gf_monitors_config_set_parent_config (GfMonitorsConfig            *config,
+                                                                 GfMonitorsConfig            *parent_config);
 
 GfMonitorSwitchConfigType  gf_monitors_config_get_switch_config (GfMonitorsConfig            *config);
 
