@@ -171,7 +171,8 @@ get_monitor_transform (GfMonitorManager *monitor_manager,
   GfBackend *backend;
   GfOrientationManager *orientation_manager;
 
-  if (!gf_monitor_is_laptop_panel (monitor))
+  if (!gf_monitor_is_laptop_panel (monitor) ||
+      !gf_monitor_manager_get_panel_orientation_managed (monitor_manager))
     return GF_MONITOR_TRANSFORM_NORMAL;
 
   backend = gf_monitor_manager_get_backend (monitor_manager);
