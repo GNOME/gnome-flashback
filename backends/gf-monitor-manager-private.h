@@ -222,6 +222,9 @@ GfPowerSave                 gf_monitor_manager_get_power_save_mode          (GfM
 void                        gf_monitor_manager_power_save_mode_changed      (GfMonitorManager            *manager,
                                                                              GfPowerSave                  mode);
 
+gboolean                    gf_monitor_manager_is_monitor_visible           (GfMonitorManager            *manager,
+                                                                             GfMonitor                   *monitor);
+
 G_END_DECLS
 
 #endif

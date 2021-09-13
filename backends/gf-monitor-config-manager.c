@@ -1505,3 +1505,10 @@ gf_monitor_config_manager_save_current (GfMonitorConfigManager *config_manager)
   gf_monitor_config_store_add (config_manager->config_store,
                                config_manager->current_config);
 }
+
+gboolean
+gf_monitor_manager_is_monitor_visible (GfMonitorManager *monitor_manager,
+                                       GfMonitor        *monitor)
+{
+  return monitor_matches_rule (monitor, monitor_manager, MONITOR_MATCH_VISIBLE);
+}
