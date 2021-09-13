@@ -539,8 +539,8 @@ clone_logical_monitor_config_list (GList *configs_in)
 }
 
 static GfLogicalMonitorConfig *
-find_logical_config_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
-                                                  GList                  *logical_monitor_configs)
+find_logical_config_for_builtin_monitor (GfMonitorConfigManager *config_manager,
+                                         GList                  *logical_monitor_configs)
 {
   GfMonitor *panel;
   GList *l;
@@ -592,8 +592,8 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
   g_return_val_if_fail (base_config, NULL);
 
   current_configs = base_config->logical_monitor_configs;
-  current_logical_monitor_config = find_logical_config_for_builtin_display_rotation (config_manager,
-                                                                                     current_configs);
+  current_logical_monitor_config = find_logical_config_for_builtin_monitor (config_manager,
+                                                                            current_configs);
 
   if (!current_logical_monitor_config)
     return NULL;
@@ -621,8 +621,8 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
   current_monitor_configs = base_config->logical_monitor_configs;
   logical_monitor_configs = clone_logical_monitor_config_list (current_monitor_configs);
 
-  logical_monitor_config = find_logical_config_for_builtin_display_rotation (config_manager,
-                                                                             logical_monitor_configs);
+  logical_monitor_config = find_logical_config_for_builtin_monitor (config_manager,
+                                                                    logical_monitor_configs);
   logical_monitor_config->transform = transform;
 
   if (gf_monitor_transform_is_rotated (current_logical_monitor_config->transform) !=
