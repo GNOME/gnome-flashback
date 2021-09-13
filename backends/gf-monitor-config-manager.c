@@ -48,7 +48,10 @@ typedef struct
 typedef enum
 {
   MONITOR_MATCH_ALL = 0,
-  MONITOR_MATCH_EXTERNAL = (1 << 0)
+  MONITOR_MATCH_EXTERNAL = (1 << 0),
+  MONITOR_MATCH_BUILTIN = (1 << 1),
+  MONITOR_MATCH_VISIBLE = (1 << 2),
+  MONITOR_MATCH_WITH_SUGGESTED_POSITION = (1 << 3)
 } MonitorMatchRule;
 
 struct _GfMonitorConfigManager
@@ -88,6 +91,73 @@ history_unref (gpointer data,
   g_object_unref (data);
 }
 
+static gboolean
+is_lid_closed (GfMonitorManager *monitor_manager)
+{
+  GfBackend *backend;
+
+  backend = gf_monitor_manager_get_backend (monitor_manager);
+
+  return gf_backend_is_lid_closed (backend);
+}
+
+static gboolean
+monitor_matches_rule (GfMonitor        *monitor,
+                      GfMonitorManager *monitor_manager,
+                      MonitorMatchRule  match_rule)
+{
+  if (monitor == NULL)
+    return FALSE;
+
+  if (match_rule & MONITOR_MATCH_BUILTIN)
+    {
+      if (!gf_monitor_is_laptop_panel (monitor))
+        return FALSE;
+    }
+  else if (match_rule & MONITOR_MATCH_EXTERNAL)
+    {
+      if (gf_monitor_is_laptop_panel (monitor))
+        return FALSE;
+    }
+
+  if (match_rule & MONITOR_MATCH_VISIBLE)
+    {
+      if (gf_monitor_is_laptop_panel (monitor) &&
+          is_lid_closed (monitor_manager))
+        return FALSE;
+    }
+
+  if (match_rule & MONITOR_MATCH_WITH_SUGGESTED_POSITION)
+    {
+      if (!gf_monitor_get_suggested_position (monitor, NULL, NULL))
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
+static GList *
+find_monitors (GfMonitorManager *monitor_manager,
+               MonitorMatchRule  match_rule)
+{
+  GList *result;
+  GList *monitors;
+  GList *l;
+
+  result = NULL;
+  monitors = gf_monitor_manager_get_monitors (monitor_manager);
+
+  for (l = g_list_last (monitors); l; l = l->prev)
+    {
+      GfMonitor *monitor = l->data;
+
+      if (monitor_matches_rule (monitor, monitor_manager, match_rule))
+        result = g_list_prepend (result, monitor);
+    }
+
+  return result;
+}
+
 static GfMonitor *
 find_monitor_with_highest_preferred_resolution (GfMonitorManager *monitor_manager,
                                                 MonitorMatchRule  match_rule)
@@ -97,19 +167,14 @@ find_monitor_with_highest_preferred_resolution (GfMonitorManager *monitor_manage
   int largest_area = 0;
   GfMonitor *largest_monitor = NULL;
 
-  monitors = gf_monitor_manager_get_monitors (monitor_manager);
+  monitors = find_monitors (monitor_manager, match_rule);
+
   for (l = monitors; l; l = l->next)
     {
       GfMonitor *monitor = l->data;
       GfMonitorMode *mode;
       int width, height;
       int area;
-
-      if (match_rule & MONITOR_MATCH_EXTERNAL)
-        {
-          if (gf_monitor_is_laptop_panel (monitor))
-            continue;
-        }
 
       mode = gf_monitor_get_preferred_mode (monitor);
       gf_monitor_mode_get_resolution (mode, &width, &height);
@@ -122,17 +187,9 @@ find_monitor_with_highest_preferred_resolution (GfMonitorManager *monitor_manage
         }
     }
 
+  g_clear_pointer (&monitors, g_list_free);
+
   return largest_monitor;
-}
-
-static gboolean
-is_lid_closed (GfMonitorManager *monitor_manager)
-{
-  GfBackend *backend;
-
-  backend = gf_monitor_manager_get_backend (monitor_manager);
-
-  return gf_backend_is_lid_closed (backend);
 }
 
 /*
@@ -146,38 +203,31 @@ is_lid_closed (GfMonitorManager *monitor_manager)
  * alternatives, except if no other alternatives exist.
  */
 static GfMonitor *
-find_primary_monitor (GfMonitorManager *monitor_manager)
+find_primary_monitor (GfMonitorManager *monitor_manager,
+                      MonitorMatchRule  match_rule)
 {
   GfMonitor *monitor;
 
-  if (is_lid_closed (monitor_manager))
-    {
-      monitor = gf_monitor_manager_get_primary_monitor (monitor_manager);
-      if (monitor && !gf_monitor_is_laptop_panel (monitor))
-        return monitor;
+  match_rule |= MONITOR_MATCH_VISIBLE;
 
-      monitor = find_monitor_with_highest_preferred_resolution (monitor_manager,
-                                                                MONITOR_MATCH_EXTERNAL);
+  monitor = gf_monitor_manager_get_primary_monitor (monitor_manager);
 
-      if (monitor)
-        return monitor;
+  if (monitor_matches_rule (monitor, monitor_manager, match_rule))
+    return monitor;
 
-      return find_monitor_with_highest_preferred_resolution (monitor_manager,
-                                                             MONITOR_MATCH_ALL);
-    }
-  else
-    {
-      monitor = gf_monitor_manager_get_primary_monitor (monitor_manager);
-      if (monitor)
-        return monitor;
+  monitor = gf_monitor_manager_get_laptop_panel (monitor_manager);
 
-      monitor = gf_monitor_manager_get_laptop_panel (monitor_manager);
-      if (monitor)
-        return monitor;
+  if (monitor_matches_rule (monitor, monitor_manager, match_rule))
+    return monitor;
 
-      return find_monitor_with_highest_preferred_resolution (monitor_manager,
-                                                             MONITOR_MATCH_ALL);
-    }
+  monitor = find_monitor_with_highest_preferred_resolution (monitor_manager,
+                                                            match_rule);
+
+  if (monitor != NULL)
+    return monitor;
+
+  return find_monitor_with_highest_preferred_resolution (monitor_manager,
+                                                         MONITOR_MATCH_ALL);
 }
 
 static GfMonitorTransform
@@ -401,14 +451,12 @@ create_for_switch_config_external (GfMonitorConfigManager *config_manager)
 
   layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
 
-  monitors = gf_monitor_manager_get_monitors (monitor_manager);
+  monitors = find_monitors (monitor_manager, MONITOR_MATCH_EXTERNAL);
+
   for (l = monitors; l; l = l->next)
     {
       GfMonitor *monitor = l->data;
       GfLogicalMonitorConfig *logical_monitor_config;
-
-      if (gf_monitor_is_laptop_panel (monitor))
-        continue;
 
       logical_monitor_config = create_preferred_logical_monitor_config (monitor_manager,
                                                                         monitor, x, 0, NULL,
@@ -422,6 +470,8 @@ create_for_switch_config_external (GfMonitorConfigManager *config_manager)
 
       x += logical_monitor_config->layout.width;
     }
+
+  g_clear_pointer (&monitors, g_list_free);
 
   monitors_config = gf_monitors_config_new (monitor_manager,
                                             logical_monitor_configs,
@@ -1162,7 +1212,9 @@ gf_monitor_config_manager_create_linear (GfMonitorConfigManager *config_manager)
   GList *l;
   GfMonitorsConfig *monitors_config;
 
-  primary_monitor = find_primary_monitor (monitor_manager);
+  primary_monitor = find_primary_monitor (monitor_manager,
+                                          MONITOR_MATCH_VISIBLE);
+
   if (!primary_monitor)
     return NULL;
 
@@ -1177,17 +1229,14 @@ gf_monitor_config_manager_create_linear (GfMonitorConfigManager *config_manager)
   logical_monitor_configs = g_list_append (NULL, primary_logical_monitor_config);
 
   x = primary_logical_monitor_config->layout.width;
-  monitors = gf_monitor_manager_get_monitors (monitor_manager);
+  monitors = find_monitors (monitor_manager, MONITOR_MATCH_VISIBLE);
+
   for (l = monitors; l; l = l->next)
     {
       GfMonitor *monitor = l->data;
       GfLogicalMonitorConfig *logical_monitor_config;
 
       if (monitor == primary_monitor)
-        continue;
-
-      if (gf_monitor_is_laptop_panel (monitor) &&
-          is_lid_closed (monitor_manager))
         continue;
 
       logical_monitor_config = create_preferred_logical_monitor_config (monitor_manager,
@@ -1200,6 +1249,8 @@ gf_monitor_config_manager_create_linear (GfMonitorConfigManager *config_manager)
 
       x += logical_monitor_config->layout.width;
     }
+
+  g_clear_pointer (&monitors, g_list_free);
 
   monitors_config = gf_monitors_config_new (monitor_manager,
                                             logical_monitor_configs,
@@ -1222,7 +1273,7 @@ gf_monitor_config_manager_create_fallback (GfMonitorConfigManager *config_manage
   GfLogicalMonitorLayoutMode layout_mode;
   GfLogicalMonitorConfig *primary_logical_monitor_config;
 
-  primary_monitor = find_primary_monitor (monitor_manager);
+  primary_monitor = find_primary_monitor (monitor_manager, MONITOR_MATCH_ALL);
   if (!primary_monitor)
     return NULL;
 
@@ -1253,7 +1304,9 @@ gf_monitor_config_manager_create_suggested (GfMonitorConfigManager *config_manag
   GList *monitors;
   GList *l;
 
-  primary_monitor = find_primary_monitor (monitor_manager);
+  primary_monitor = find_primary_monitor (monitor_manager,
+                                          MONITOR_MATCH_WITH_SUGGESTED_POSITION);
+
   if (!primary_monitor)
     return NULL;
 
@@ -1271,7 +1324,9 @@ gf_monitor_config_manager_create_suggested (GfMonitorConfigManager *config_manag
   logical_monitor_configs = g_list_append (NULL, primary_logical_monitor_config);
   region = g_list_prepend (NULL, &primary_logical_monitor_config->layout);
 
-  monitors = gf_monitor_manager_get_monitors (monitor_manager);
+  monitors = find_monitors (monitor_manager,
+                            MONITOR_MATCH_WITH_SUGGESTED_POSITION);
+
   for (l = monitors; l; l = l->next)
     {
       GfMonitor *monitor = l->data;
@@ -1280,8 +1335,7 @@ gf_monitor_config_manager_create_suggested (GfMonitorConfigManager *config_manag
       if (monitor == primary_monitor)
         continue;
 
-      if (!gf_monitor_get_suggested_position (monitor, &x, &y))
-        continue;
+      gf_monitor_get_suggested_position (monitor, &x, &y);
 
       logical_monitor_config = create_preferred_logical_monitor_config (monitor_manager,
                                                                         monitor, x, y,
@@ -1297,11 +1351,15 @@ gf_monitor_config_manager_create_suggested (GfMonitorConfigManager *config_manag
           g_list_free_full (logical_monitor_configs,
                             (GDestroyNotify) gf_logical_monitor_config_free);
 
+          g_clear_pointer (&monitors, g_list_free);
+
           return NULL;
         }
 
       region = g_list_prepend (region, &logical_monitor_config->layout);
     }
+
+  g_clear_pointer (&monitors, g_list_free);
 
   for (l = region; region->next && l; l = l->next)
     {
