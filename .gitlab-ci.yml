@@ -46,7 +46,7 @@ variables:
                   xkb-data
 
 menu:
-  image: ubuntu:hirsute
+  image: ubuntu:devel
   stage: validate
   except:
     - tags
@@ -59,7 +59,7 @@ menu:
       data/menus/gnome-flashback-applications.menu
 
 ubuntu:
-  image: ubuntu:hirsute
+  image: ubuntu:devel
   stage: build
   except:
     - tags
@@ -72,7 +72,7 @@ ubuntu:
     - make distcheck
 
 coverity:
-  image: ubuntu:hirsute
+  image: ubuntu:devel
   stage: analysis
   when: manual
   before_script:
