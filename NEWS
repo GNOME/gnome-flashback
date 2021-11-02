@@ -1,3 +1,8 @@
+Version 3.42.0
+==============
+- Changes/fixes to monitor manager from mutter.
+- Updated translations.
+
 Version 3.40.0
 ==============
 - Fix background drawing when using spanned or wallpaper option. (#66)
