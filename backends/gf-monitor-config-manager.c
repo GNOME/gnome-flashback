@@ -539,6 +539,7 @@ create_monitors_config (GfMonitorConfigManager *config_manager,
 
   x = y = 0;
   layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
+  logical_monitor_configs = NULL;
 
   monitors = NULL;
   if (!(match_rule & MONITOR_MATCH_PRIMARY))
