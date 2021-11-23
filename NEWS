@@ -1,3 +1,7 @@
+Version 3.42.1
+==============
+- Fix crash in monitor manager. (!41)
+
 Version 3.42.0
 ==============
 - Changes/fixes to monitor manager from mutter.
