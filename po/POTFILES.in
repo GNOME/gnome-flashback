@@ -6,6 +6,7 @@ data/autostart/gnome-flashback-clipboard.desktop.in.in
 data/autostart/gnome-flashback-nm-applet.desktop.in
 data/directories/X-GNOME-Flashback-Settings.directory.desktop.in
 data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in
+data/keybindings/50-gnome-flashback-screenshots.xml
 data/schemas/org.gnome.gnome-flashback.gschema.xml
 data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml
 data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml

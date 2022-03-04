@@ -304,6 +304,13 @@ AM_CONDITIONAL([ENABLE_SYSTEMD_SESSION], [test "x$enable_systemd_session" = "xye
 AC_SUBST([HIDDEN_UNDER_SYSTEMD])
 
 dnl **************************************************************************
+dnl Keybindings
+dnl **************************************************************************
+
+GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
+AC_SUBST([GNOME_KEYBINDINGS_KEYSDIR])
+
+dnl **************************************************************************
 dnl System indicators
 dnl **************************************************************************
 
@@ -417,6 +424,7 @@ AC_CONFIG_FILES([
   data/compizconfig/Makefile
   data/directories/Makefile
   data/gnome-panel/Makefile
+  data/keybindings/Makefile
   data/menus/Makefile
   data/schemas/Makefile
   data/sessions/Makefile

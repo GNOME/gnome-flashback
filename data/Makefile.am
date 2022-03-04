@@ -6,6 +6,7 @@ SUBDIRS = \
 	compizconfig \
 	directories \
 	gnome-panel \
+	keybindings \
 	menus \
 	schemas \
 	sessions \

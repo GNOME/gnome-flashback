@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<KeyListEntries schema="org.gnome.gnome-flashback.keybindings"
+                group="system"
+                name="Screenshots"
+                wm_name="GNOME Flashback"
+                package="gnome-flashback">
+
+	<!-- translators: $PICTURES will be replaced by the name of the XDG Pictures directory -->
+	<KeyListEntry name="screenshot"
+	              description="Save a screenshot to $PICTURES" />
+
+	<!-- translators: $PICTURES will be replaced by the name of the XDG Pictures directory -->
+	<KeyListEntry name="window-screenshot"
+	              description="Save a screenshot of a window to $PICTURES" />
+
+	<!-- translators: $PICTURES will be replaced by the name of the XDG Pictures directory -->
+	<KeyListEntry name="area-screenshot"
+	              description="Save a screenshot of an area to $PICTURES" />
+
+	<KeyListEntry name="screenshot-clip"
+	              description="Copy a screenshot to clipboard" />
+
+	<KeyListEntry name="window-screenshot-clip"
+	              description="Copy a screenshot of a window to clipboard" />
+
+	<KeyListEntry name="area-screenshot-clip"
+	              description="Copy a screenshot of an area to clipboard" />
+
+	<KeyListEntry name="screencast"
+	              description="Record a short screencast" />
+
+</KeyListEntries>
