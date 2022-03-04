@@ -10,6 +10,7 @@ data/schemas/org.gnome.gnome-flashback.gschema.xml
 data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml
 data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml
 data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml
+data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml
 data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml
 data/ui/gf-confirm-display-change-dialog.ui
 data/xsessions/gnome-flashback-compiz.desktop.in.in

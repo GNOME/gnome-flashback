@@ -13,6 +13,7 @@ gsettings_SCHEMAS = \
 	org.gnome.gnome-flashback.desktop.gschema.xml \
 	org.gnome.gnome-flashback.desktop.background.gschema.xml \
 	org.gnome.gnome-flashback.desktop.icons.gschema.xml \
+	org.gnome.gnome-flashback.keybindings.gschema.xml \
 	org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml \
 	$(NULL)
 

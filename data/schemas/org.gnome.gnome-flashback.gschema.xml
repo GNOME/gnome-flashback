@@ -98,5 +98,6 @@
     </key>
 
     <child schema="org.gnome.gnome-flashback.desktop" name="desktop" />
+    <child schema="org.gnome.gnome-flashback.keybindings" name="keybindings" />
   </schema>
 </schemalist>
