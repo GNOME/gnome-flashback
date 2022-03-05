@@ -31,9 +31,6 @@ G_DECLARE_DERIVABLE_TYPE (GsdMediaKeysManager, gsd_media_keys_manager, GSD, MEDI
 struct _GsdMediaKeysManagerClass
 {
         GObjectClass   parent_class;
-        void          (* media_player_key_pressed) (GsdMediaKeysManager *manager,
-                                                    const char          *application,
-                                                    const char          *key);
 };
 
 GsdMediaKeysManager * gsd_media_keys_manager_new                       (void);
