@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-03-05 08:08+0000\n"
-"PO-Revision-Date: 2022-03-05 10:32+0200\n"
+"POT-Creation-Date: 2022-03-05 09:59+0000\n"
+"PO-Revision-Date: 2022-03-05 14:14+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -45,6 +45,23 @@ msgctxt ""
 msgid "%s %s"
 msgstr "%s %s"
 
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#: daemons/media-keys/gsd-media-keys-manager.c:551
+#, no-c-format
+msgid "Screencast from %d %t.webm"
+msgstr ""
+"Запис з екрана від %d %t.webm"
+
+#. translators: this is the name of the file that gets made up
+#. * with the screenshot
+#: daemons/media-keys/gsd-screenshot-utils.c:240
+#, c-format
+#| msgid "Screenshots"
+msgid "Screenshot from %s"
+msgstr "Знімок екрана від %s"
+
 #: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME Flashback"
@@ -54,7 +71,6 @@ msgid "Clipboard (GNOME Flashback)"
 msgstr "Буфер обміну даними (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
-#| msgid "Clipboard (GNOME Flashback)"
 msgid "MediaKeys (GNOME Flashback)"
 msgstr "Мультимедійні клавіші (GNOME Flashback)"
 
