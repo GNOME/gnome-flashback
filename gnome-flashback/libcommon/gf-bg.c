@@ -291,8 +291,10 @@ cleanup_cache_for_monitor (gchar *cache_dir,
 		path = g_build_filename (cache_dir, file, NULL);
 		/* purge files with same monitor id */
 		if (g_str_has_prefix (file, monitor_prefix) &&
-		    g_file_test (path, G_FILE_TEST_IS_REGULAR))
-			g_unlink (path);
+		    g_file_test (path, G_FILE_TEST_IS_REGULAR)) {
+			if (g_unlink (path) != 0)
+				g_warning ("Failed to delete %s", path);
+		}
 
 		g_free (path);
 
@@ -343,7 +345,8 @@ refresh_cache_file (GfBG      *bg,
 
 		if (format != NULL) {
 			if (!g_file_test (cache_dir, G_FILE_TEST_IS_DIR)) {
-				g_mkdir_with_parents (cache_dir, 0700);
+				if (g_mkdir_with_parents (cache_dir, 0700) != 0)
+					g_warning ("Failed to mkdir %s", cache_dir);
 			} else {
 				cleanup_cache_for_monitor (cache_dir, num_monitor);
 			}
@@ -389,7 +392,8 @@ draw_color_area (GfBG         *bg,
         extent.width = gdk_pixbuf_get_width (dest);
         extent.height = gdk_pixbuf_get_height (dest);
 
-        gdk_rectangle_intersect (rect, &extent, rect);
+        if (!gdk_rectangle_intersect (rect, &extent, rect))
+                return;
 	
 	switch (bg->color_type) {
 	case G_DESKTOP_BACKGROUND_SHADING_SOLID:
