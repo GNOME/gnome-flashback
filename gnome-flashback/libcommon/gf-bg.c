@@ -1241,12 +1241,12 @@ pixbuf_average_value (GdkPixbuf *pixbuf,
 				a = *p++;
 				
 				a_total += a;
-				r_total += r * a;
-				g_total += g * a;
-				b_total += b * a;
+				r_total += (guint64) r * a;
+				g_total += (guint64) g * a;
+				b_total += (guint64) b * a;
 			}
 		}
-		dividend = height * width * 0xFF;
+		dividend = (guint64) height * width * 0xFF;
 		a_total *= 0xFF;
 	} else {
 		for (row = 0; row < height; row++) {
@@ -1261,7 +1261,7 @@ pixbuf_average_value (GdkPixbuf *pixbuf,
 				b_total += b;
 			}
 		}
-		dividend = height * width;
+		dividend = (guint64) height * width;
 		a_total = dividend * 0xFF;
 	}
 
