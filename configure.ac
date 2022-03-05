@@ -192,6 +192,11 @@ PKG_CHECK_MODULES([INPUT_SOURCES], [
   xkeyboard-config
 ])
 
+PKG_CHECK_MODULES([MEDIA_KEYS], [
+  glib-2.0 >= $GLIB_REQUIRED
+  gtk+-3.0 >= $GTK_REQUIRED
+])
+
 PKG_CHECK_MODULES([NOTIFICATIONS], [
   gdk-pixbuf-2.0 >= $GDK_PIXBUF_REQUIRED
   gio-unix-2.0 >= $GLIB_REQUIRED
@@ -440,6 +445,7 @@ AC_CONFIG_FILES([
 
   daemons/Makefile
   daemons/clipboard/Makefile
+  daemons/media-keys/Makefile
 
   gnome-flashback/Makefile
   gnome-flashback/liba11y-keyboard/Makefile
