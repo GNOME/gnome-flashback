@@ -18,21 +18,49 @@
 #include "config.h"
 #include "gf-media-keys.h"
 
+#include "gsd-media-keys-manager.h"
+
 struct _GfMediaKeys
 {
-  GObject parent;
+  GObject              parent;
+
+  GsdMediaKeysManager *manager;
 };
 
 G_DEFINE_TYPE (GfMediaKeys, gf_media_keys, G_TYPE_OBJECT)
 
 static void
+gf_media_keys_dispose (GObject *object)
+{
+  GfMediaKeys *self;
+
+  self = GF_MEDIA_KEYS (object);
+
+  if (self->manager != NULL)
+    {
+      gsd_media_keys_manager_stop (self->manager);
+      g_clear_object (&self->manager);
+    }
+
+  G_OBJECT_CLASS (gf_media_keys_parent_class)->dispose (object);
+}
+
+static void
 gf_media_keys_class_init (GfMediaKeysClass *self_class)
 {
+  GObjectClass *object_class;
+
+  object_class = G_OBJECT_CLASS (self_class);
+
+  object_class->dispose = gf_media_keys_dispose;
 }
 
 static void
 gf_media_keys_init (GfMediaKeys *self)
 {
+  self->manager = gsd_media_keys_manager_new ();
+
+  gsd_media_keys_manager_start (self->manager, NULL);
 }
 
 GfMediaKeys *

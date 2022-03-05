@@ -22,7 +22,7 @@
 #include "shell-action-modes.h"
 #include "media-keys.h"
 
-#define SETTINGS_BINDING_DIR "org.gnome.settings-daemon.plugins.media-keys"
+#define SETTINGS_BINDING_DIR "org.gnome.gnome-flashback.keybindings"
 
 #define SCREENSAVER_MODE SHELL_ACTION_MODE_ALL & ~SHELL_ACTION_MODE_UNLOCK_SCREEN
 #define NO_LOCK_MODE SCREENSAVER_MODE & ~SHELL_ACTION_MODE_LOCK_SCREEN

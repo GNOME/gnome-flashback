@@ -277,6 +277,7 @@ gsd_screenshot_take (MediaKeyType key_type)
     case AREA_SCREENSHOT_CLIP_KEY:
       ctx->type = SCREENSHOT_TYPE_AREA;
       break;
+    case SCREENCAST_KEY:
     default:
       g_assert_not_reached ();
       break;

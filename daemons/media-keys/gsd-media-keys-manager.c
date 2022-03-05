@@ -19,6 +19,7 @@
  */
 
 #include "config.h"
+#include "gsd-media-keys-manager.h"
 
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -26,10 +27,9 @@
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 
-#include "gsd-media-keys-manager.h"
-
-#include "shortcuts-list.h"
+#include "dbus/gf-shell-gen.h"
 #include "gsd-screenshot-utils.h"
+#include "shortcuts-list.h"
 
 #define SHELL_DBUS_NAME "org.gnome.Shell"
 #define SHELL_DBUS_PATH "/org/gnome/Shell"
@@ -67,8 +67,8 @@ typedef struct
         GPtrArray       *keys;
 
         /* Shell stuff */
-        GsdShell        *shell_proxy;
-        ShellKeyGrabber *key_grabber;
+        GfShellGen      *shell_proxy;
+        GfShellGen      *key_grabber;
         GCancellable    *grab_cancellable;
         GHashTable      *keys_to_sync;
         guint            keys_sync_source_id;
@@ -90,8 +90,6 @@ static void     keys_sync_queue                    (GsdMediaKeysManager *manager
 static void     keys_sync_continue                 (GsdMediaKeysManager *manager);
 
 G_DEFINE_TYPE_WITH_PRIVATE (GsdMediaKeysManager, gsd_media_keys_manager, G_TYPE_OBJECT)
-
-static gpointer manager_object = NULL;
 
 static void
 media_key_unref (MediaKey *key)
@@ -203,12 +201,12 @@ ungrab_accelerators_complete (GObject      *object,
         g_autoptr(GrabUngrabData) data = user_data;
         gboolean success = FALSE;
         g_autoptr(GError) error = NULL;
-        gint i;
+        guint i;
 
         g_debug ("Ungrab call completed!");
 
-        if (!shell_key_grabber_call_ungrab_accelerators_finish (SHELL_KEY_GRABBER (object),
-                                                                &success, result, &error)) {
+        if (!gf_shell_gen_call_ungrab_accelerators_finish (GF_SHELL_GEN (object),
+                                                           &success, result, &error)) {
                 g_warning ("Failed to ungrab accelerators: %s", error->message);
 
                 if (g_error_matches (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD)) {
@@ -250,12 +248,12 @@ grab_accelerators_complete (GObject      *object,
         g_autoptr(GrabUngrabData) data = user_data;
         g_autoptr(GVariant) actions = NULL;
         g_autoptr(GError) error = NULL;
-        gint i;
+        guint i;
 
         g_debug ("Grab call completed!");
 
-        if (!shell_key_grabber_call_grab_accelerators_finish (SHELL_KEY_GRABBER (object),
-                                                              &actions, result, &error)) {
+        if (!gf_shell_gen_call_grab_accelerators_finish (GF_SHELL_GEN (object),
+                                                         &actions, result, &error)) {
                 g_warning ("Failed to grab accelerators: %s", error->message);
 
                 if (g_error_matches (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD)) {
@@ -278,11 +276,11 @@ grab_accelerators_complete (GObject      *object,
         if (data->cancelled) {
                 g_debug ("Doing an immediate ungrab on the grabbed accelerators!");
 
-                shell_key_grabber_call_ungrab_accelerators (SHELL_KEY_GRABBER (object),
-                                                            actions,
-                                                            NULL,
-                                                            ungrab_accelerators_complete,
-                                                            g_steal_pointer (&data));
+                gf_shell_gen_call_ungrab_accelerators (GF_SHELL_GEN (object),
+                                                       actions,
+                                                       NULL,
+                                                       ungrab_accelerators_complete,
+                                                       g_steal_pointer (&data));
 
                 return;
         }
@@ -345,7 +343,7 @@ keys_sync_continue (GsdMediaKeysManager *manager)
         while (g_hash_table_iter_next (&iter, (gpointer*) &key, NULL)) {
                 g_auto(GStrv) bindings = NULL;
                 gchar **pos = NULL;
-                gint i;
+                guint i;
 
                 for (i = 0; i < key->accel_ids->len; i++) {
                         g_variant_builder_add (&ungrab_builder, "u", g_array_index (key->accel_ids, guint, i));
@@ -381,21 +379,21 @@ keys_sync_continue (GsdMediaKeysManager *manager)
         if (need_ungrab) {
                 data->keys = g_steal_pointer (&keys_being_ungrabbed);
 
-                shell_key_grabber_call_ungrab_accelerators (priv->key_grabber,
-                                                            g_variant_builder_end (&ungrab_builder),
-                                                            NULL,
-                                                            ungrab_accelerators_complete,
-                                                            g_steal_pointer (&data));
+                gf_shell_gen_call_ungrab_accelerators (priv->key_grabber,
+                                                       g_variant_builder_end (&ungrab_builder),
+                                                       NULL,
+                                                       ungrab_accelerators_complete,
+                                                       g_steal_pointer (&data));
         } else {
                 data->keys = g_steal_pointer (&keys_being_grabbed);
 
                 g_hash_table_remove_all (priv->keys_to_sync);
 
-                shell_key_grabber_call_grab_accelerators (priv->key_grabber,
-                                                          g_variant_builder_end (&grab_builder),
-                                                          NULL,
-                                                          grab_accelerators_complete,
-                                                          g_steal_pointer (&data));
+                gf_shell_gen_call_grab_accelerators (priv->key_grabber,
+                                                     g_variant_builder_end (&grab_builder),
+                                                     NULL,
+                                                     grab_accelerators_complete,
+                                                     g_steal_pointer (&data));
         }
 }
 
@@ -412,7 +410,7 @@ keys_sync_start (gpointer user_data)
         return G_SOURCE_REMOVE;
 }
 
-void
+static void
 keys_sync_queue (GsdMediaKeysManager *manager, gboolean immediate, gboolean retry)
 {
         GsdMediaKeysManagerPrivate *priv = GSD_MEDIA_KEYS_MANAGER_GET_PRIVATE (manager);
@@ -454,7 +452,7 @@ gsettings_changed_cb (GSettings           *settings,
                       GsdMediaKeysManager *manager)
 {
 	GsdMediaKeysManagerPrivate *priv = GSD_MEDIA_KEYS_MANAGER_GET_PRIVATE (manager);
-        int      i;
+        guint i;
 
         /* Give up if we don't have proxy to the shell */
         if (!priv->key_grabber)
@@ -503,7 +501,7 @@ add_key (GsdMediaKeysManager *manager, guint i)
 static void
 init_kbd (GsdMediaKeysManager *manager)
 {
-        int i;
+        guint i;
 
         for (i = 0; i < G_N_ELEMENTS (media_keys); i++)
                 add_key (manager, i);
@@ -582,12 +580,9 @@ do_screencast_action (GsdMediaKeysManager *manager)
 
 static gboolean
 do_action (GsdMediaKeysManager *manager,
-           const gchar         *device_node,
-           guint                mode,
-           MediaKeyType         type,
-           gint64               timestamp)
+           MediaKeyType         type)
 {
-        g_debug ("Launching action for key type '%d' (on device node %s)", type, device_node);
+        g_debug ("Launching action for key type '%d'", type);
 
         switch (type) {
         case SCREENSHOT_KEY:
@@ -601,41 +596,23 @@ do_action (GsdMediaKeysManager *manager,
         case SCREENCAST_KEY:
                 do_screencast_action (manager);
                 break;
+        default:
+                break;
         }
 
         return FALSE;
 }
 
 static void
-on_accelerator_activated (ShellKeyGrabber     *grabber,
+on_accelerator_activated (GfShellGen          *grabber,
                           guint                accel_id,
                           GVariant            *parameters,
                           GsdMediaKeysManager *manager)
 {
         GsdMediaKeysManagerPrivate *priv = GSD_MEDIA_KEYS_MANAGER_GET_PRIVATE (manager);
-        GVariantDict dict;
         guint i;
-        guint deviceid;
-        gchar *device_node;
-        guint timestamp;
-        guint mode;
 
-        g_variant_dict_init (&dict, parameters);
-
-        if (!g_variant_dict_lookup (&dict, "device-id", "u", &deviceid))
-              deviceid = 0;
-        if (!g_variant_dict_lookup (&dict, "device-node", "s", &device_node))
-              device_node = NULL;
-        if (!g_variant_dict_lookup (&dict, "timestamp", "u", &timestamp))
-              timestamp = GDK_CURRENT_TIME;
-        if (!g_variant_dict_lookup (&dict, "action-mode", "u", &mode))
-              mode = 0;
-
-	if (!device_node && !gnome_settings_is_wayland ())
-              device_node = xdevice_get_device_node (deviceid);
-
-        g_debug ("Received accel id %u (device-id: %u, timestamp: %u, mode: 0x%X)",
-                 accel_id, deviceid, timestamp, mode);
+        g_debug ("Received accel id %u", accel_id);
 
         for (i = 0; i < priv->keys->len; i++) {
                 MediaKey *key;
@@ -650,14 +627,11 @@ on_accelerator_activated (ShellKeyGrabber     *grabber,
                 if (j >= key->accel_ids->len)
                         continue;
 
-                do_action (manager, device_node, mode, key->key_type, timestamp);
-
-                g_free (device_node);
+                do_action (manager, key->key_type);
                 return;
         }
 
         g_warning ("Could not find accelerator for accel id %u", accel_id);
-        g_free (device_node);
 }
 
 static void
@@ -688,7 +662,7 @@ on_key_grabber_ready (GObject      *source,
         GsdMediaKeysManagerPrivate *priv = GSD_MEDIA_KEYS_MANAGER_GET_PRIVATE (manager);
         GError *error = NULL;
 
-        priv->key_grabber = shell_key_grabber_proxy_new_for_bus_finish (result, &error);
+        priv->key_grabber = gf_shell_gen_proxy_new_for_bus_finish (result, &error);
 
         if (!priv->key_grabber) {
                 if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
@@ -719,14 +693,36 @@ shell_presence_changed (GsdMediaKeysManager *manager)
         g_clear_object (&priv->screencast_proxy);
 
         if (name_owner) {
-                shell_key_grabber_proxy_new_for_bus (G_BUS_TYPE_SESSION,
-                                                     0,
-                                                     name_owner,
-                                                     SHELL_DBUS_PATH,
-                                                     priv->grab_cancellable,
-                                                     on_key_grabber_ready, manager);
+                gf_shell_gen_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+                                                0,
+                                                name_owner,
+                                                SHELL_DBUS_PATH,
+                                                priv->grab_cancellable,
+                                                on_key_grabber_ready, manager);
                 g_free (name_owner);
         }
+}
+
+static GfShellGen *
+get_shell_proxy (void)
+{
+        GfShellGen *shell_proxy;
+        GError *error;
+
+        error =  NULL;
+        shell_proxy = gf_shell_gen_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                                           G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
+                                                           G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
+                                                           SHELL_DBUS_NAME,
+                                                           SHELL_DBUS_PATH,
+                                                           NULL,
+                                                           &error);
+        if (error) {
+                g_warning ("Failed to connect to the shell: %s", error->message);
+                g_error_free (error);
+        }
+
+        return shell_proxy;
 }
 
 static gboolean
@@ -744,7 +740,7 @@ start_media_keys_idle_cb (GsdMediaKeysManager *manager)
         priv->grab_cancellable = g_cancellable_new ();
         priv->screencast_cancellable = g_cancellable_new ();
 
-        priv->shell_proxy = gnome_settings_bus_get_shell_proxy ();
+        priv->shell_proxy = get_shell_proxy ();
         g_signal_connect_swapped (priv->shell_proxy, "notify::g-name-owner",
                                   G_CALLBACK (shell_presence_changed), manager);
         shell_presence_changed (manager);
@@ -857,13 +853,5 @@ gsd_media_keys_manager_finalize (GObject *object)
 GsdMediaKeysManager *
 gsd_media_keys_manager_new (void)
 {
-        if (manager_object != NULL) {
-                g_object_ref (manager_object);
-        } else {
-                manager_object = g_object_new (GSD_TYPE_MEDIA_KEYS_MANAGER, NULL);
-                g_object_add_weak_pointer (manager_object,
-                                           (gpointer *) &manager_object);
-        }
-
-        return GSD_MEDIA_KEYS_MANAGER (manager_object);
+        return g_object_new (GSD_TYPE_MEDIA_KEYS_MANAGER, NULL);
 }

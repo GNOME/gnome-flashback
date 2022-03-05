@@ -20,6 +20,13 @@ gnome_flashback_media_keys_SOURCES = \
 	gf-media-keys-main.c \
 	gf-media-keys.c \
 	gf-media-keys.h \
+	gsd-media-keys-manager.c \
+	gsd-media-keys-manager.h \
+	gsd-screenshot-utils.c \
+	gsd-screenshot-utils.h \
+	media-keys.h \
+	shell-action-modes.h \
+	shortcuts-list.h \
 	$(NULL)
 
 gnome_flashback_media_keys_LDFLAGS = \
