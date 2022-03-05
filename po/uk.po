@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-03-04 22:36+0000\n"
-"PO-Revision-Date: 2022-03-05 09:44+0200\n"
+"POT-Creation-Date: 2022-03-05 08:08+0000\n"
+"PO-Revision-Date: 2022-03-05 10:32+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -52,6 +52,11 @@ msgstr "GNOME Flashback"
 #: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Буфер обміну даними (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
+#| msgid "Clipboard (GNOME Flashback)"
+msgid "MediaKeys (GNOME Flashback)"
+msgstr "Мультимедійні клавіші (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
@@ -99,41 +104,34 @@ msgstr "Знімки екрана"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:10
 msgid "Save a screenshot to $PICTURES"
-msgstr ""
-"Зберегти знімок екрана у $PICTURES"
+msgstr "Зберегти знімок екрана у $PICTURES"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:14
 msgid "Save a screenshot of a window to $PICTURES"
-msgstr ""
-"Зберегти знімок вікна в $PICTURES"
+msgstr "Зберегти знімок вікна в $PICTURES"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:18
 msgid "Save a screenshot of an area to $PICTURES"
-msgstr ""
-"Зберегти знімок ділянки у $PICTURES"
+msgstr "Зберегти знімок ділянки у $PICTURES"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:21
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:23
 msgid "Copy a screenshot to clipboard"
-msgstr ""
-"Копіювати знімок до буфера"
+msgstr "Копіювати знімок до буфера"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:24
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:29
 msgid "Copy a screenshot of a window to clipboard"
-msgstr ""
-"Копіювати знімок вікна у буфер"
+msgstr "Копіювати знімок вікна у буфер"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:27
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:35
 msgid "Copy a screenshot of an area to clipboard"
-msgstr ""
-"Копіювати знімок ділянки у буфер"
+msgstr "Копіювати знімок ділянки у буфер"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:30
 msgid "Record a short screencast"
-msgstr ""
-"Записати короткий відеозапис"
+msgstr "Записати короткий відеозапис"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
 msgid "a11y-keyboard"
@@ -408,64 +406,52 @@ msgstr ""
 "яка посилається на смітник."
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:5
-#| msgid "Screenshots"
 msgid "Take a screenshot"
 msgstr "Створення знімка екрана"
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:6
 msgid "Binding to take a screenshot."
-msgstr ""
-"Прив'язування для знімку екрана."
+msgstr "Прив'язування для знімку екрана."
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:11
 msgid "Take a screenshot of a window"
-msgstr ""
-"Зробити знімок вікна"
+msgstr "Зробити знімок вікна"
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:12
 msgid "Binding to take a screenshot of a window."
-msgstr ""
-"Прив'язування для знімку вікна."
+msgstr "Прив'язування для знімку вікна."
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:17
 msgid "Take a screenshot of an area"
-msgstr ""
-"Зробити знімок ділянки"
+msgstr "Зробити знімок ділянки"
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:18
 msgid "Binding to take a screenshot of an area."
-msgstr ""
-"Прив'язування для знімку ділянки."
+msgstr "Прив'язування для знімку ділянки."
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:24
 msgid "Binding to copy a screenshot to clipboard."
-msgstr ""
-"Прив'язування для копіювання знімку в буфер."
+msgstr "Прив'язування для копіювання знімку в буфер."
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:30
 msgid "Binding to copy a screenshot of a window to clipboard."
-msgstr ""
-"Прив'язування для копіювання знімку вікна у буфер."
+msgstr "Прив'язування для копіювання знімку вікна у буфер."
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:36
 msgid "Binding to copy a screenshot of an area to clipboard."
-msgstr ""
-"Прив'язування для копіювання знімку ділянки у буфер."
+msgstr "Прив'язування для копіювання знімку ділянки у буфер."
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:41
 msgid "Record a short video of the screen"
-msgstr ""
-"Записати короткий відеозапис екрана"
+msgstr "Записати короткий відеозапис екрана"
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:42
 msgid "Binding to record a short video of the screen"
-msgstr ""
-"Прив'язка для запису короткого відео подій не екрані"
+msgstr "Прив'язка для запису короткого відео подій не екрані"
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:47
 msgid "Maximum length of screen recordings"
-msgstr ""
-"Максимальна тривалість записів з екрана"
+msgstr "Максимальна тривалість записів з екрана"
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:48
 msgid ""
