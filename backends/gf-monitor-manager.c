@@ -33,6 +33,7 @@
 #include "gf-crtc-private.h"
 #include "gf-logical-monitor-private.h"
 #include "gf-monitor-config-manager-private.h"
+#include "gf-monitor-config-store-private.h"
 #include "gf-monitor-manager-private.h"
 #include "gf-monitor-normal-private.h"
 #include "gf-monitor-private.h"
@@ -1989,6 +1990,8 @@ gf_monitor_manager_handle_apply_monitors_config (GfDBusDisplayConfig   *skeleton
                                                  GVariant              *properties_variant,
                                                  GfMonitorManager      *manager)
 {
+  GfMonitorConfigStore *config_store;
+  const GfMonitorConfigPolicy *policy;
   GfMonitorManagerCapability capabilities;
   GVariant *layout_mode_variant;
   GfLogicalMonitorLayoutMode layout_mode;
@@ -2002,6 +2005,17 @@ gf_monitor_manager_handle_apply_monitors_config (GfDBusDisplayConfig   *skeleton
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_ACCESS_DENIED,
                                              "The requested configuration is based on stale information");
+      return TRUE;
+    }
+
+  config_store = gf_monitor_config_manager_get_store (manager->config_manager);
+  policy = gf_monitor_config_store_get_policy (config_store);
+
+  if (!policy->enable_dbus)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Monitor configuration via D-Bus is disabled");
       return TRUE;
     }
 
@@ -2465,6 +2479,8 @@ gf_monitor_manager_setup (GfMonitorManager *manager)
 {
   GfMonitorManagerPrivate *priv;
   GfMonitorManagerClass *manager_class;
+  GfMonitorConfigStore *config_store;
+  const GfMonitorConfigPolicy *policy;
 
   priv = gf_monitor_manager_get_instance_private (manager);
   manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
@@ -2475,6 +2491,12 @@ gf_monitor_manager_setup (GfMonitorManager *manager)
 
   gf_monitor_manager_read_current_state (manager);
   manager_class->ensure_initial_config (manager);
+
+  config_store = gf_monitor_config_manager_get_store (manager->config_manager);
+  policy = gf_monitor_config_store_get_policy (config_store);
+
+  gf_dbus_display_config_set_apply_monitors_config_allowed (manager->display_config,
+                                                            policy->enable_dbus);
 
   priv->in_init = FALSE;
 }
