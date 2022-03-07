@@ -22,6 +22,7 @@
 
 #include "gf-application.h"
 #include "gf-confirm-display-change-dialog.h"
+#include "gf-wm.h"
 #include "backends/gf-backend.h"
 #include "liba11y-keyboard/gf-a11y-keyboard.h"
 #include "libaudio-device-selection/gf-audio-device-selection.h"
@@ -43,6 +44,8 @@
 struct _GfApplication
 {
   GObject                  parent;
+
+  GfWm                    *wm;
 
   GfBackend               *backend;
 
@@ -285,6 +288,7 @@ gf_application_dispose (GObject *object)
   g_clear_pointer (&application->display_change_dialog, gtk_widget_destroy);
 
   g_clear_object (&application->backend);
+  g_clear_object (&application->wm);
 
   G_OBJECT_CLASS (gf_application_parent_class)->dispose (object);
 }
@@ -324,6 +328,8 @@ gf_application_init (GfApplication *application)
 {
   GtkSettings *settings;
   GfMonitorManager *monitor_manager;
+
+  application->wm = gf_wm_new ();
 
   application->backend = gf_backend_new (GF_BACKEND_TYPE_X11_CM);
 

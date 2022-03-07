@@ -47,6 +47,8 @@ gnome_flashback_SOURCES = \
 	gf-main.c \
 	gf-session.c \
 	gf-session.h \
+	gf-wm.c \
+	gf-wm.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 
