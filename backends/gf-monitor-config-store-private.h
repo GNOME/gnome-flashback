@@ -44,11 +44,14 @@ void                  gf_monitor_config_store_remove              (GfMonitorConf
 gboolean              gf_monitor_config_store_set_custom          (GfMonitorConfigStore  *config_store,
                                                                    const gchar           *read_path,
                                                                    const gchar           *write_path,
+                                                                   GfMonitorsConfigFlag   flags,
                                                                    GError               **error);
 
 gint                  gf_monitor_config_store_get_config_count    (GfMonitorConfigStore  *config_store);
 
 GfMonitorManager     *gf_monitor_config_store_get_monitor_manager (GfMonitorConfigStore  *config_store);
+
+void                  gf_monitor_config_store_reset               (GfMonitorConfigStore  *config_store);
 
 G_END_DECLS
 
