@@ -4,49 +4,65 @@
 # Mingye Wang <arthur2e5@aosc.xyz>, 2016.
 # Aron Xu <happyaron.xu@gmail.com>, 2017.
 # Dingzhong Chen <wsxy162@gmail.com>, 2016-2020.
+# lumingzh <lumingzh@qq.com>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2020-06-27 21:07+0000\n"
-"PO-Revision-Date: 2020-10-05 03:11+0800\n"
-"Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
+"POT-Creation-Date: 2022-03-13 02:56+0000\n"
+"PO-Revision-Date: 2022-04-13 21:08+0800\n"
+"Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: Gtranslator 3.36.0\n"
+"X-Generator: Gtranslator 42.0\n"
 
-#: backends/gf-monitor.c:133
+#: backends/gf-monitor.c:134
 msgid "Built-in display"
 msgstr "内建显示器"
 
-#: backends/gf-monitor.c:167
+#: backends/gf-monitor.c:168
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
 msgid "Unknown"
 msgstr "未知"
 
-#: backends/gf-monitor.c:169
+#: backends/gf-monitor.c:170
 msgid "Unknown Display"
 msgstr "未知显示器"
 
-#: backends/gf-monitor.c:178
+#: backends/gf-monitor.c:179
 #, c-format
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: backends/gf-monitor.c:192
+#: backends/gf-monitor.c:193
 #, c-format
 msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
 "inches could not be calculated, e.g. Dell U2414H"
 msgid "%s %s"
 msgstr "%s %s"
+
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#: daemons/media-keys/gsd-media-keys-manager.c:551
+#, no-c-format
+msgid "Screencast from %d %t.webm"
+msgstr "录屏于 %d %t.webm"
+
+#. translators: this is the name of the file that gets made up
+#. * with the screenshot
+#: daemons/media-keys/gsd-screenshot-utils.c:240
+#, c-format
+msgid "Screenshot from %s"
+msgstr "截图于 %s"
 
 #: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
@@ -55,6 +71,10 @@ msgstr "GNOME Flashback"
 #: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
 msgid "Clipboard (GNOME Flashback)"
 msgstr "剪贴板（GNOME Flashback）"
+
+#: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
+msgid "MediaKeys (GNOME Flashback)"
+msgstr "媒体键（GNOME Flashback）"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
@@ -96,8 +116,43 @@ msgstr "改变系统设置（影响所有用户）"
 msgid "preferences-system"
 msgstr "preferences-system"
 
+#: data/keybindings/50-gnome-flashback-screenshots.xml:6
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
+msgid "Screenshots"
+msgstr "截屏"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:10
+msgid "Save a screenshot to $PICTURES"
+msgstr "保存截图至 $PICTURES"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:14
+msgid "Save a screenshot of a window to $PICTURES"
+msgstr "保存窗口截图至 $PICTURES"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:18
+msgid "Save a screenshot of an area to $PICTURES"
+msgstr "保存区域截图至 $PICTURES"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:21
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:23
+msgid "Copy a screenshot to clipboard"
+msgstr "复制截图至剪贴板"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:24
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:29
+msgid "Copy a screenshot of a window to clipboard"
+msgstr "复制窗口截图至剪贴板"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:27
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:35
+msgid "Copy a screenshot of an area to clipboard"
+msgstr "复制区域截图至剪贴板"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:30
+msgid "Record a short screencast"
+msgstr "录制简短录屏"
+
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
-#| msgid "Keyboard"
 msgid "a11y-keyboard"
 msgstr "a11y-keyboard"
 
@@ -126,7 +181,7 @@ msgid "Clipboard"
 msgstr "剪贴板"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:27
-#: gnome-flashback/libdesktop/gf-desktop-window.c:823
+#: gnome-flashback/libdesktop/gf-desktop-window.c:824
 msgid "Desktop"
 msgstr "桌面"
 
@@ -207,10 +262,6 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
 msgstr "若为真，GNOME Flashback 应用程序将作为屏幕保护程序运行。"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
-msgid "Screenshots"
-msgstr "截屏"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 msgid ""
@@ -341,6 +392,60 @@ msgid ""
 "If this is set to true, an icon linking to the trash will be put on the "
 "desktop."
 msgstr "如果设为 true，会在桌面上放置一个链接到回收站的图标。"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:5
+msgid "Take a screenshot"
+msgstr "截图"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:6
+msgid "Binding to take a screenshot."
+msgstr "截图的按键绑定。"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:11
+msgid "Take a screenshot of a window"
+msgstr "对窗口进行截图"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:12
+msgid "Binding to take a screenshot of a window."
+msgstr "窗口截图的按键绑定。"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:17
+msgid "Take a screenshot of an area"
+msgstr "对区域进行截图"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:18
+msgid "Binding to take a screenshot of an area."
+msgstr "区域截图的按键绑定。"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:24
+msgid "Binding to copy a screenshot to clipboard."
+msgstr "复制截图至剪贴板的按键绑定。"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:30
+msgid "Binding to copy a screenshot of a window to clipboard."
+msgstr "复制窗口截图至剪贴板的按键绑定。"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:36
+msgid "Binding to copy a screenshot of an area to clipboard."
+msgstr "复制区域截图至剪贴板的按键绑定。"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:41
+msgid "Record a short video of the screen"
+msgstr "对屏幕录制简短视频"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:42
+msgid "Binding to record a short video of the screen"
+msgstr "简短录屏的按键绑定"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:47
+msgid "Maximum length of screen recordings"
+msgstr "屏幕录制的最大时长"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:48
+msgid ""
+"The maximum length of single screen cast recordings in seconds or 0 for "
+"unlimited"
+msgstr "单次屏幕录制以秒为单位的最大时长或设 0 为无限制"
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
@@ -497,7 +602,7 @@ msgid "What kind of device did you plug in?"
 msgstr "您插入了哪种设备？"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
-#: system-indicators/si-bluetooth.c:274 system-indicators/si-volume.c:446
+#: system-indicators/si-bluetooth.c:277 system-indicators/si-volume.c:446
 msgid "Sound Settings"
 msgstr "声音设置"
 
@@ -762,78 +867,78 @@ msgid "Rename"
 msgstr "重命名"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:514
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:739
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:750
 msgid "Log Out"
 msgstr "注销"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:518
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr "点击注销以退出应用程序并登出系统。"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s 将在 %d 秒后自动注销。"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:743
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:537
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:754
 msgid "Power Off"
 msgstr "关闭电源"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:529
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:540
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "点击关闭电源以退出应用程序并关闭系统的电源。"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:531
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:542
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "系统将在 %d 秒后自动关闭电源。"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:538
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:747
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:549
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:758
 msgid "Restart"
 msgstr "重新启动"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:541
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:552
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "点击重启以退出应用程序并重新启动系统。"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:543
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:554
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "系统将在 %d 秒后自动重启。"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:550
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:751
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:561
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:762
 msgid "Hibernate"
 msgstr "休眠"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:551
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:562
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
 msgstr[0] "系统将在 %d 秒后自动休眠。"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:558
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:755
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:569
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:766
 msgid "Suspend"
 msgstr "睡眠"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:559
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:570
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
 msgstr[0] "系统将在 %d 秒后自动睡眠。"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:566
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:759
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:577
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:770
 msgid "Hybrid Sleep"
 msgstr "混合式睡眠"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:567
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:578
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
@@ -853,20 +958,20 @@ msgstr "正在等待这些应用程序完成。中端它们可能导致数据丢
 msgid "Lock Screen"
 msgstr "锁屏"
 
-#: gnome-flashback/libnotifications/gf-bubble.c:563
-#: gnome-flashback/libnotifications/gf-bubble.c:567
+#: gnome-flashback/libnotifications/gf-bubble.c:549
+#: gnome-flashback/libnotifications/gf-bubble.c:553
 #: gnome-flashback/libnotifications/nd-notification-box.c:320
 #: gnome-flashback/libnotifications/nd-notification-box.c:322
 msgid "Closes the notification."
 msgstr "关闭此通知。"
 
-#: gnome-flashback/libnotifications/gf-bubble.c:587
-#: gnome-flashback/libnotifications/gf-bubble.c:618
+#: gnome-flashback/libnotifications/gf-bubble.c:573
+#: gnome-flashback/libnotifications/gf-bubble.c:604
 #: gnome-flashback/libnotifications/nd-notification-box.c:338
 msgid "Notification summary text."
 msgstr "通知概要文本。"
 
-#: gnome-flashback/libnotifications/gf-bubble.c:637
+#: gnome-flashback/libnotifications/gf-bubble.c:623
 msgid "Notification"
 msgstr "通知"
 
@@ -897,7 +1002,7 @@ msgstr "用于 %s 的密码(_P)："
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:104
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:370
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:366
 msgid "_Password:"
 msgstr "密码(_P)："
 
@@ -981,27 +1086,27 @@ msgstr "你的帐号设有时间限制，已超过限定时间。"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "抱歉，密码有误。请重试。"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:181
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:177
 msgid "Failed to switch to greeter!"
 msgstr "切换欢迎屏幕失败！"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:255
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:251
 msgid "Time has expired."
 msgstr "时间已到期。"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:506
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:467
 msgid "Checking…"
 msgstr "正在检查……"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:531
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:492
 msgid "S_witch User…"
 msgstr "切换用户(_S)…"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:540
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:501
 msgid "_Unlock"
 msgstr "解锁(_U)"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:751
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:712
 msgid "You have the Caps Lock key on."
 msgstr "你的大写锁定键正打开着。"
 
@@ -1011,13 +1116,13 @@ msgstr "已截屏"
 
 #. translators:
 #. * The device has been disabled
-#: gvc/gvc/gvc-mixer-control.c:1892
+#: gvc/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "已禁用"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1899
+#: gvc/gvc/gvc-mixer-control.c:1907
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1025,13 +1130,13 @@ msgstr[0] "%u 输出"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1909
+#: gvc/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u 输入"
 
-#: gvc/gvc/gvc-mixer-control.c:2766
+#: gvc/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "系统声音"
 
@@ -1055,17 +1160,17 @@ msgstr "键盘设置"
 msgid "Mouse & Touchpad Settings"
 msgstr "鼠标和触摸板设置"
 
-#: system-indicators/si-bluetooth.c:328
+#: system-indicators/si-bluetooth.c:331
 msgid "Bluetooth Settings"
 msgstr "蓝牙设置"
 
-#: system-indicators/si-bluetooth.c:448
+#: system-indicators/si-bluetooth.c:451
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d 个已连接设备"
 
-#: system-indicators/si-bluetooth.c:455
+#: system-indicators/si-bluetooth.c:458
 msgid "Not Connected"
 msgstr "未连接"
 
@@ -1079,11 +1184,11 @@ msgstr "缺少桌面文件“%s”！"
 msgid "Failed to start “%s”: %s"
 msgstr "启动“%s”失败：%s"
 
-#: system-indicators/si-input-sources.c:852
+#: system-indicators/si-input-sources.c:859
 msgid "Show Keyboard Layout"
 msgstr "显示键盘布局"
 
-#: system-indicators/si-input-sources.c:883
+#: system-indicators/si-input-sources.c:890
 msgid "Region & Language Settings"
 msgstr "区域与语言设置"
 
@@ -1157,9 +1262,6 @@ msgstr "静音"
 
 #~ msgid "GNOME Flashback Initialization"
 #~ msgstr "GNOME Flashback 初始化"
-
-#~ msgid "Screensaver (GNOME Flashback)"
-#~ msgstr "屏保 (GNOME Flashback)"
 
 #~ msgid "Launch screensaver and locker program"
 #~ msgstr "启动屏幕保护和锁屏程序"
