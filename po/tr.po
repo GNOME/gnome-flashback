@@ -1,19 +1,19 @@
 # Turkish translation for gnome-flashback
-# Copyright (C) 2015-2019 gnome-flashback'S COPYRIGHT HOLDER
+# Copyright (C) 2015-2022 gnome-flashback'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
 #
 # Simge Sezgin <simgesezgin88@gmail.com>, 2015.
 # Necdet Yücel <necdetyucel@gmail.com>, 2015.
 # Serdar Sağlam <teknomobil@yandex.com>, 2019.
-# Sabri Ünal <libreajans@gmail.com>, 2019-2020.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2019-2020.
+# Sabri Ünal <libreajans@gmail.com>, 2019, 2020, 2022.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2019, 2020, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2020-06-27 21:07+0000\n"
-"PO-Revision-Date: 2020-09-06 01:50+0300\n"
+"POT-Creation-Date: 2022-04-15 17:19+0000\n"
+"PO-Revision-Date: 2022-04-30 21:34+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -21,36 +21,51 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 3.0.1\n"
 "X-POOTLE-MTIME: 1432972725.000000\n"
 
-#: backends/gf-monitor.c:133
+#: backends/gf-monitor.c:134
 msgid "Built-in display"
 msgstr "Dahili ekran"
 
-#: backends/gf-monitor.c:167
+#: backends/gf-monitor.c:168
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
-#: backends/gf-monitor.c:169
+#: backends/gf-monitor.c:170
 msgid "Unknown Display"
 msgstr "Bilinmeyen Ekran"
 
-#: backends/gf-monitor.c:178
+#: backends/gf-monitor.c:179
 #, c-format
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: backends/gf-monitor.c:192
+#: backends/gf-monitor.c:193
 #, c-format
 msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
 "inches could not be calculated, e.g. Dell U2414H"
 msgid "%s %s"
 msgstr "%s %s"
+
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#: daemons/media-keys/gsd-media-keys-manager.c:551
+#, no-c-format
+msgid "Screencast from %d %t.webm"
+msgstr "Ekran kaydı - %d %t.webm"
+
+#. translators: this is the name of the file that gets made up
+#. * with the screenshot
+#: daemons/media-keys/gsd-screenshot-utils.c:240
+#, c-format
+msgid "Screenshot from %s"
+msgstr "Ekran görüntüsü %s"
 
 #: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
@@ -59,6 +74,10 @@ msgstr "GNOME Flashback"
 #: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Pano (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
+msgid "MediaKeys (GNOME Flashback)"
+msgstr "MediaKeys (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
@@ -102,6 +121,42 @@ msgstr "Sistem geneli ayarları değiştir (tüm kullanıcıları etkiler)"
 msgid "preferences-system"
 msgstr "preferences-system"
 
+#: data/keybindings/50-gnome-flashback-screenshots.xml:6
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
+msgid "Screenshots"
+msgstr "Ekran alıntısı"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:10
+msgid "Save a screenshot to $PICTURES"
+msgstr "Ekran görüntüsünü $PICTURES dizinine kaydet"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:14
+msgid "Save a screenshot of a window to $PICTURES"
+msgstr "Ekran görüntüsünü $PICTURES dizinine kaydet"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:18
+msgid "Save a screenshot of an area to $PICTURES"
+msgstr "Alanın ekran görüntüsünü $PICTURES dizinine kaydet"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:21
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:23
+msgid "Copy a screenshot to clipboard"
+msgstr "Ekran görüntüsünü panoya kopyala"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:24
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:29
+msgid "Copy a screenshot of a window to clipboard"
+msgstr "Pencerenin ekran görüntüsünü panoya kopyala"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:27
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:35
+msgid "Copy a screenshot of an area to clipboard"
+msgstr "Alanın ekran görüntüsünü panoya kopyala"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:30
+msgid "Record a short screencast"
+msgstr "Kısa ekran yayını kaydet"
+
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
 msgid "a11y-keyboard"
 msgstr "a11y-klavye"
@@ -135,7 +190,7 @@ msgid "Clipboard"
 msgstr "Pano"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:27
-#: gnome-flashback/libdesktop/gf-desktop-window.c:823
+#: gnome-flashback/libdesktop/gf-desktop-window.c:824
 msgid "Desktop"
 msgstr "Masaüstü"
 
@@ -227,10 +282,6 @@ msgid ""
 msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması, ekran koruyucu olarak "
 "kullanılacaktır."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
-msgid "Screenshots"
-msgstr "Ekran alıntısı"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 msgid ""
@@ -375,6 +426,60 @@ msgid ""
 "desktop."
 msgstr ""
 "Eğer doğru olarak ayarlanırsa çöpe bağlanan simge masaüstüne koyulacaktır."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:5
+msgid "Take a screenshot"
+msgstr "Ekran görüntüsü al"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:6
+msgid "Binding to take a screenshot."
+msgstr "Ekran görüntüsü almak için kısayol."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:11
+msgid "Take a screenshot of a window"
+msgstr "Pencerenin ekran görüntüsünü al"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:12
+msgid "Binding to take a screenshot of a window."
+msgstr "Pencerenin ekran görüntüsünü almak için kısayol."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:17
+msgid "Take a screenshot of an area"
+msgstr "Alanın ekran görüntüsünü al"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:18
+msgid "Binding to take a screenshot of an area."
+msgstr "Alanın ekran görüntüsünü almak için kısayol."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:24
+msgid "Binding to copy a screenshot to clipboard."
+msgstr "Ekran görüntüsünü panoya kopyalamak için kısayol."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:30
+msgid "Binding to copy a screenshot of a window to clipboard."
+msgstr "Pencerenin ekrang görüntüsünü panoya kopyalamak için kısayol."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:36
+msgid "Binding to copy a screenshot of an area to clipboard."
+msgstr "Alanın ekran görüntüsünü panoya kopyalamak için kısayol."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:41
+msgid "Record a short video of the screen"
+msgstr "Ekranın kısa videosunu kaydet"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:42
+msgid "Binding to record a short video of the screen"
+msgstr "Ekranın kısa videosunu kaydetmek için kısayol"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:47
+msgid "Maximum length of screen recordings"
+msgstr "Ekran kaydının en çok uzunluğu"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:48
+msgid ""
+"The maximum length of single screen cast recordings in seconds or 0 for "
+"unlimited"
+msgstr "Ekran yayın kaydının saniye türünden uzunluğu, sınırsız için 0"
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
@@ -532,7 +637,7 @@ msgid "What kind of device did you plug in?"
 msgstr "Ne tür aygıt taktınız?"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
-#: system-indicators/si-bluetooth.c:274 system-indicators/si-volume.c:446
+#: system-indicators/si-bluetooth.c:277 system-indicators/si-volume.c:446
 msgid "Sound Settings"
 msgstr "Ses Ayarları"
 
@@ -799,81 +904,81 @@ msgid "Rename"
 msgstr "Yeniden adlandır"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:514
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:739
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:750
 msgid "Log Out"
 msgstr "Oturumu Kapat"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:518
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Bu uygulamalardan çıkmak ve sistem oturumunu kapatmak için Çıkış tıklayın."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s oturumu %d saniye içinde kendiliğinden kapatılacak."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:743
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:537
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:754
 msgid "Power Off"
 msgstr "Kapat"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:529
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:540
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "Bu uygulamadan çıkmak ve sistemi kapatmak için Kapatı tıklayın."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:531
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:542
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Sistem %d saniye içinde kendiliğinden kapatılacak."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:538
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:747
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:549
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:758
 msgid "Restart"
 msgstr "Yeniden başlat"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:541
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:552
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Bu uygulamalardan çıkmak ve sistemi yeniden başlatmak için Yeniden Başlatı "
 "tıklayın."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:543
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:554
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Sistem %d saniye içinde kendiliğinden yeniden başlatılacak."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:550
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:751
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:561
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:762
 msgid "Hibernate"
 msgstr "Uyku Kipi"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:551
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:562
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
 msgstr[0] "Sistem %d saniye içinde kendiliğinden uyku kipine geçecek."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:558
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:755
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:569
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:766
 msgid "Suspend"
 msgstr "Askıya Al"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:559
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:570
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
 msgstr[0] "Sistem %d saniye içinde kendiliğinden askıya alınacak."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:566
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:759
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:577
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:770
 msgid "Hybrid Sleep"
 msgstr "Karma Uyku"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:567
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:578
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
@@ -895,20 +1000,20 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Ekranı Kilitle"
 
-#: gnome-flashback/libnotifications/gf-bubble.c:563
-#: gnome-flashback/libnotifications/gf-bubble.c:567
+#: gnome-flashback/libnotifications/gf-bubble.c:549
+#: gnome-flashback/libnotifications/gf-bubble.c:553
 #: gnome-flashback/libnotifications/nd-notification-box.c:320
 #: gnome-flashback/libnotifications/nd-notification-box.c:322
 msgid "Closes the notification."
 msgstr "Bildirimi kapatır."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:587
-#: gnome-flashback/libnotifications/gf-bubble.c:618
+#: gnome-flashback/libnotifications/gf-bubble.c:573
+#: gnome-flashback/libnotifications/gf-bubble.c:604
 #: gnome-flashback/libnotifications/nd-notification-box.c:338
 msgid "Notification summary text."
 msgstr "Bildirim özeti metni."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:637
+#: gnome-flashback/libnotifications/gf-bubble.c:623
 msgid "Notification"
 msgstr "Bildirim"
 
@@ -939,7 +1044,7 @@ msgstr "%s _Parolası:"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:104
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:370
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:366
 msgid "_Password:"
 msgstr "_Parola:"
 
@@ -1029,27 +1134,27 @@ msgstr "Hesabınıza verilen zaman sınırı şu an doldu."
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Üzgünüm ama işe yaramadı. Lütfen yeniden deneyin."
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:181
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:177
 msgid "Failed to switch to greeter!"
 msgstr "Karşılama penceresine geçilemedi!"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:255
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:251
 msgid "Time has expired."
 msgstr "Süre doldu."
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:506
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:467
 msgid "Checking…"
 msgstr "Denetleniyor…"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:531
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:492
 msgid "S_witch User…"
 msgstr "Kullanıcı _Değiştir…"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:540
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:501
 msgid "_Unlock"
 msgstr "_Kilidini Aç"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:751
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:712
 msgid "You have the Caps Lock key on."
 msgstr "Caps Lock tuşunuz açık durumda."
 
@@ -1059,13 +1164,13 @@ msgstr "Ekran görüntüsü alındı"
 
 #. translators:
 #. * The device has been disabled
-#: gvc/gvc/gvc-mixer-control.c:1892
+#: gvc/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Devre dışı"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1899
+#: gvc/gvc/gvc-mixer-control.c:1907
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1073,13 +1178,13 @@ msgstr[0] "%u Çıktı"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1909
+#: gvc/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Girdi"
 
-#: gvc/gvc/gvc-mixer-control.c:2766
+#: gvc/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
 
@@ -1103,17 +1208,17 @@ msgstr "Klavye Ayarları"
 msgid "Mouse & Touchpad Settings"
 msgstr "Fare ve Dokunmatik Yüzey Ayarları"
 
-#: system-indicators/si-bluetooth.c:328
+#: system-indicators/si-bluetooth.c:331
 msgid "Bluetooth Settings"
 msgstr "Bluetooth Ayarları"
 
-#: system-indicators/si-bluetooth.c:448
+#: system-indicators/si-bluetooth.c:451
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d Aygıt Bağlı"
 
-#: system-indicators/si-bluetooth.c:455
+#: system-indicators/si-bluetooth.c:458
 msgid "Not Connected"
 msgstr "Bağlı Değil"
 
@@ -1127,11 +1232,11 @@ msgstr "Masaüstü dosyası “%s” bulunamadı!"
 msgid "Failed to start “%s”: %s"
 msgstr "“%s” başlatılamadı: %s"
 
-#: system-indicators/si-input-sources.c:852
+#: system-indicators/si-input-sources.c:859
 msgid "Show Keyboard Layout"
 msgstr "Klavye Düzenini Göster"
 
-#: system-indicators/si-input-sources.c:883
+#: system-indicators/si-input-sources.c:890
 msgid "Region & Language Settings"
 msgstr "Bölge ve Dil Ayarları"
 
@@ -1202,9 +1307,6 @@ msgstr "Çıktı"
 #: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Sessiz"
-
-#~ msgid "Screensaver (GNOME Flashback)"
-#~ msgstr "Ekran koruyucu (GNOME Flashback)"
 
 #~ msgid "Launch screensaver and locker program"
 #~ msgstr "Ekran koruyucuyu başlat ve programı kilitle"
