@@ -293,6 +293,15 @@ PKG_CHECK_EXISTS([pango >= 1.44.0],
                            [Define if Pango is 1.44.0 or newer]))
 
 dnl **************************************************************************
+dnl Check if we have gnome-desktop 43.alpha or newer
+dnl **************************************************************************
+
+PKG_CHECK_EXISTS([gnome-desktop-3.0 >= 43.alpha],
+                 AC_DEFINE([HAVE_GNOME_DESKTOP_43_ALPHA], [1],
+                           [Define if gnome-desktop is 43.alpha or newer]))
+
+
+dnl **************************************************************************
 dnl Systemd session
 dnl **************************************************************************
 

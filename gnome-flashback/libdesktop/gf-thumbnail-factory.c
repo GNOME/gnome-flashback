@@ -122,24 +122,49 @@ load_icon_in_thread (GTask        *task,
       return;
     }
 
+#ifdef HAVE_GNOME_DESKTOP_43_ALPHA
+  pixbuf = gnome_desktop_thumbnail_factory_generate_thumbnail (data->self->factory,
+                                                               data->uri,
+                                                               data->content_type,
+                                                               NULL,
+                                                               NULL);
+#else
   pixbuf = gnome_desktop_thumbnail_factory_generate_thumbnail (data->self->factory,
                                                                data->uri,
                                                                data->content_type);
+#endif
 
   if (pixbuf != NULL)
     {
+#ifdef HAVE_GNOME_DESKTOP_43_ALPHA
+      gnome_desktop_thumbnail_factory_save_thumbnail (data->self->factory,
+                                                      pixbuf,
+                                                      data->uri,
+                                                      data->time_modified,
+                                                      NULL,
+                                                      NULL);
+#else
       gnome_desktop_thumbnail_factory_save_thumbnail (data->self->factory,
                                                       pixbuf,
                                                       data->uri,
                                                       data->time_modified);
+#endif
 
       g_task_return_pointer (task, pixbuf, g_object_unref);
       return;
     }
 
+#ifdef HAVE_GNOME_DESKTOP_43_ALPHA
+  gnome_desktop_thumbnail_factory_create_failed_thumbnail (data->self->factory,
+                                                           data->uri,
+                                                           data->time_modified,
+                                                           NULL,
+                                                           NULL);
+#else
   gnome_desktop_thumbnail_factory_create_failed_thumbnail (data->self->factory,
                                                            data->uri,
                                                            data->time_modified);
+#endif
 
   g_task_return_new_error (task,
                            GF_THUMBNAIL_ERROR,
