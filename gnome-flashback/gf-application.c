@@ -29,7 +29,6 @@
 #include "libautomount-manager/gsd-automount-manager.h"
 #include "libdesktop/gf-desktop.h"
 #include "libend-session-dialog/gf-end-session-dialog.h"
-#include "libidle-monitor/flashback-idle-monitor.h"
 #include "libinput-settings/gf-input-settings.h"
 #include "libinput-sources/gf-input-sources.h"
 #include "libnotifications/gf-notifications.h"
@@ -56,7 +55,6 @@ struct _GfApplication
   GtkStyleProvider        *provider;
 
   GsdAutomountManager     *automount;
-  FlashbackIdleMonitor    *idle_monitor;
   FlashbackPolkit         *polkit;
   FlashbackShell          *shell;
   GfA11yKeyboard          *a11y_keyboard;
@@ -213,7 +211,6 @@ settings_changed (GSettings   *settings,
     }
 
   SETTING_CHANGED (automount, "automount-manager", gsd_automount_manager_new)
-  SETTING_CHANGED (idle_monitor, "idle-monitor", flashback_idle_monitor_new)
   SETTING_CHANGED (polkit, "polkit", flashback_polkit_new)
   SETTING_CHANGED (shell, "shell", flashback_shell_new)
   SETTING_CHANGED (a11y_keyboard, "a11y-keyboard", gf_a11y_keyboard_new)
@@ -269,7 +266,6 @@ gf_application_dispose (GObject *object)
   g_clear_object (&application->provider);
 
   g_clear_object (&application->automount);
-  g_clear_object (&application->idle_monitor);
   g_clear_object (&application->polkit);
   g_clear_object (&application->shell);
   g_clear_object (&application->a11y_keyboard);

@@ -7,7 +7,6 @@ SUBDIRS = \
 	libcommon \
 	libdesktop \
 	libend-session-dialog \
-	libidle-monitor \
 	libinput-settings \
 	libinput-sources \
 	libnotifications \
@@ -65,7 +64,6 @@ gnome_flashback_LDADD = \
 	$(top_builddir)/gnome-flashback/libautomount-manager/libautomount-manager.la \
 	$(top_builddir)/gnome-flashback/libdesktop/libdesktop.la \
 	$(top_builddir)/gnome-flashback/libend-session-dialog/libend-session-dialog.la \
-	$(top_builddir)/gnome-flashback/libidle-monitor/libidle-monitor.la \
 	$(top_builddir)/gnome-flashback/libinput-settings/libinput-settings.la \
 	$(top_builddir)/gnome-flashback/libinput-sources/libinput-sources.la \
 	$(top_builddir)/gnome-flashback/libnotifications/libnotifications.la \

@@ -1,24 +1,26 @@
 NULL =
 
-noinst_LTLIBRARIES = \
-	libidle-monitor.la \
+libexec_PROGRAMS = \
+	gnome-flashback-idle-monitor \
 	$(NULL)
 
-libidle_monitor_la_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"idle-monitor\" \
+gnome_flashback_idle_monitor_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"gnome-flashback-idle-monitor\" \
 	-DG_LOG_USE_STRUCTURED=1 \
+	-I$(top_builddir)/daemons/idle-monitor \
+	-I$(top_srcdir) \
 	$(NULL)
 
-libidle_monitor_la_CFLAGS = \
+gnome_flashback_idle_monitor_CFLAGS = \
 	$(IDLE_MONITOR_CFLAGS) \
 	$(WARN_CFLAGS) \
 	$(AM_CFLAGS) \
-	-I$(top_builddir)/gnome-flashback/libidle-monitor \
 	$(NULL)
 
-libidle_monitor_la_SOURCES = \
+gnome_flashback_idle_monitor_SOURCES = \
 	flashback-idle-monitor.c \
 	flashback-idle-monitor.h \
+	gf-idle-monitor-main.c \
 	meta-dbus-idle-monitor.c \
 	meta-dbus-idle-monitor.h \
 	meta-backend.c \
@@ -29,12 +31,13 @@ libidle_monitor_la_SOURCES = \
 	meta-idle-monitor-xsync.h \
 	$(NULL)
 
-libidle_monitor_la_LDFLAGS = \
+gnome_flashback_idle_monitor_LDFLAGS = \
 	$(WARN_LDFLAGS) \
 	$(AM_LDFLAGS) \
 	$(NULL)
 
-libidle_monitor_la_LIBADD = \
+gnome_flashback_idle_monitor_LDADD = \
+	$(top_builddir)/dbus/libdbus.la \
 	$(IDLE_MONITOR_LIBS) \
 	$(NULL)
 

@@ -454,6 +454,7 @@ AC_CONFIG_FILES([
 
   daemons/Makefile
   daemons/clipboard/Makefile
+  daemons/idle-monitor/Makefile
   daemons/media-keys/Makefile
 
   gnome-flashback/Makefile
@@ -463,7 +464,6 @@ AC_CONFIG_FILES([
   gnome-flashback/libcommon/Makefile
   gnome-flashback/libdesktop/Makefile
   gnome-flashback/libend-session-dialog/Makefile
-  gnome-flashback/libidle-monitor/Makefile
   gnome-flashback/libinput-settings/Makefile
   gnome-flashback/libinput-sources/Makefile
   gnome-flashback/libnotifications/Makefile

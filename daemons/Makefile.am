@@ -2,6 +2,7 @@ NULL =
 
 SUBDIRS = \
 	clipboard \
+	idle-monitor \
 	media-keys \
 	$(NULL)
 
