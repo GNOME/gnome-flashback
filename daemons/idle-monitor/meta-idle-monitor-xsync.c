@@ -103,37 +103,24 @@ set_alarm_enabled (Display    *dpy,
   XSyncChangeAlarm (dpy, alarm, XSyncCAEvents, &attr);
 }
 
-static char *
-counter_name_for_device (int device_id)
-{
-  if (device_id > 0)
-    return g_strdup_printf ("DEVICEIDLETIME %d", device_id);
-
-  return g_strdup ("IDLETIME");
-}
-
 static XSyncCounter
 find_idletime_counter (MetaIdleMonitorXSync *monitor_xsync)
 {
-  MetaIdleMonitor *monitor = META_IDLE_MONITOR (monitor_xsync);
   int		      i;
   int		      ncounters;
   XSyncSystemCounter *counters;
   XSyncCounter        counter = None;
-  char               *counter_name;
 
-  counter_name = counter_name_for_device (monitor->device_id);
   counters = XSyncListSystemCounters (monitor_xsync->display, &ncounters);
   for (i = 0; i < ncounters; i++)
     {
-      if (counters[i].name != NULL && strcmp (counters[i].name, counter_name) == 0)
+      if (counters[i].name != NULL && strcmp (counters[i].name, "IDLETIME") == 0)
         {
           counter = counters[i].counter;
           break;
         }
     }
   XSyncFreeSystemCounterList (counters);
-  g_free (counter_name);
 
   return counter;
 }

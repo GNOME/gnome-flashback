@@ -26,7 +26,6 @@
 #include <X11/extensions/sync.h>
 
 #include "flashback-idle-monitor.h"
-#include "meta-backend.h"
 #include "meta-idle-monitor.h"
 #include "meta-idle-monitor-xsync.h"
 #include "meta-dbus-idle-monitor.h"
@@ -34,6 +33,8 @@
 struct _FlashbackIdleMonitor
 {
   GObject                   parent;
+
+  MetaIdleMonitor          *monitor;
 
   gint                      dbus_name_id;
 
@@ -219,89 +220,21 @@ create_monitor_skeleton (GDBusObjectManagerServer *server,
 }
 
 static void
-on_device_added (GdkSeat   *seat,
-                 GdkDevice *device,
-                 gpointer   user_data)
-{
-  FlashbackIdleMonitor *idle_monitor;
-  MetaIdleMonitor *monitor;
-  gint device_id;
-  gchar *path;
-
-  idle_monitor = FLASHBACK_IDLE_MONITOR (user_data);
-
-  device_id = gdk_x11_device_get_id (device);
-  monitor = meta_idle_monitor_get_for_device (device_id);
-  path = g_strdup_printf ("/org/gnome/Mutter/IdleMonitor/Device%d", device_id);
-
-  create_monitor_skeleton (idle_monitor->server, monitor, path);
-  g_free (path);
-}
-
-static void
-on_device_removed (GdkSeat   *seat,
-                   GdkDevice *device,
-                   gpointer   user_data)
-{
-  FlashbackIdleMonitor *monitor;
-  gint device_id;
-  gchar *path;
-
-  monitor = FLASHBACK_IDLE_MONITOR (user_data);
-
-  device_id = gdk_x11_device_get_id (device);
-  path = g_strdup_printf ("/org/gnome/Mutter/IdleMonitor/Device%d", device_id);
-
-  g_dbus_object_manager_server_unexport (monitor->server, path);
-  g_free (path);
-}
-
-static void
 on_bus_acquired (GDBusConnection *connection,
                  const char      *name,
                  gpointer         user_data)
 {
   FlashbackIdleMonitor *idle_monitor;
   const gchar *server_path;
-  MetaIdleMonitor *monitor;
   const gchar *core_path;
-  GdkDisplay *display;
-  GdkSeat *seat;
-  GList *devices;
-  GList *iter;
 
   idle_monitor = FLASHBACK_IDLE_MONITOR (user_data);
 
   server_path = "/org/gnome/Mutter/IdleMonitor";
   idle_monitor->server = g_dbus_object_manager_server_new (server_path);
 
-  monitor = meta_idle_monitor_get_core ();
   core_path = "/org/gnome/Mutter/IdleMonitor/Core";
-  create_monitor_skeleton (idle_monitor->server, monitor, core_path);
-
-  display = gdk_display_get_default ();
-  seat = gdk_display_get_default_seat (display);
-  devices = NULL;
-
-  devices = g_list_append (devices, gdk_seat_get_pointer (seat));
-  devices = g_list_append (devices, gdk_seat_get_keyboard (seat));
-  devices = g_list_concat (devices, gdk_seat_get_slaves (seat, GDK_SEAT_CAPABILITY_ALL));
-
-  for (iter = devices; iter; iter = iter->next)
-    {
-      GdkDevice *device;
-
-      device = (GdkDevice *) iter->data;
-
-      on_device_added (seat, device, idle_monitor);
-    }
-
-  g_list_free (devices);
-
-  g_signal_connect_object (seat, "device-added",
-                           G_CALLBACK (on_device_added), idle_monitor, 0);
-  g_signal_connect_object (seat, "device-removed",
-                           G_CALLBACK (on_device_removed), idle_monitor, 0);
+  create_monitor_skeleton (idle_monitor->server, idle_monitor->monitor, core_path);
 
   g_dbus_object_manager_server_set_connection (idle_monitor->server, connection);
 }
@@ -326,22 +259,15 @@ filter_func (GdkXEvent *xevent,
              gpointer   user_data)
 {
   FlashbackIdleMonitor *monitor;
-  MetaBackend *backend;
   XEvent *xev;
-  gint i;
 
   monitor = FLASHBACK_IDLE_MONITOR (user_data);
-  backend = meta_get_backend ();
   xev = (XEvent *) xevent;
 
   if (xev->type == (monitor->xsync_event_base + XSyncAlarmNotify))
     {
-      for (i = 0; i <= backend->device_id_max; i++)
-        {
-          if (backend->device_monitors[i])
-            meta_idle_monitor_xsync_handle_xevent (backend->device_monitors[i],
-                                                   (XSyncAlarmNotifyEvent*) xev);
-        }
+      meta_idle_monitor_xsync_handle_xevent (monitor->monitor,
+                                             (XSyncAlarmNotifyEvent*) xev);
     }
 
   return GDK_FILTER_CONTINUE;
@@ -351,10 +277,6 @@ static void
 flashback_idle_monitor_dispose (GObject *object)
 {
   FlashbackIdleMonitor *monitor;
-  GdkDisplay *display;
-  GdkSeat *seat;
-  GList *devices;
-  GList *iter;
   const gchar *core_path;
 
   monitor = FLASHBACK_IDLE_MONITOR (object);
@@ -364,25 +286,6 @@ flashback_idle_monitor_dispose (GObject *object)
       g_bus_unown_name (monitor->dbus_name_id);
       monitor->dbus_name_id = 0;
     }
-
-  display = gdk_display_get_default ();
-  seat = gdk_display_get_default_seat (display);
-  devices = NULL;
-
-  devices = g_list_append (devices, gdk_seat_get_pointer (seat));
-  devices = g_list_append (devices, gdk_seat_get_keyboard (seat));
-  devices = g_list_concat (devices, gdk_seat_get_slaves (seat, GDK_SEAT_CAPABILITY_ALL));
-
-  for (iter = devices; iter; iter = iter->next)
-    {
-      GdkDevice *device;
-
-      device = (GdkDevice *) iter->data;
-
-      on_device_removed (seat, device, monitor);
-    }
-
-  g_list_free (devices);
 
   core_path = "/org/gnome/Mutter/IdleMonitor/Core";
   g_dbus_object_manager_server_unexport (monitor->server, core_path);
@@ -401,6 +304,8 @@ flashback_idle_monitor_finalize (GObject *object)
 
   gdk_window_remove_filter (NULL, (GdkFilterFunc) filter_func, monitor);
 
+  g_object_unref (monitor->monitor);
+
   G_OBJECT_CLASS (flashback_idle_monitor_parent_class)->finalize (object);
 }
 
@@ -413,6 +318,8 @@ flashback_idle_monitor_init (FlashbackIdleMonitor *monitor)
   gint error_base;
   gint major;
   gint minor;
+
+  monitor->monitor = g_object_new (META_TYPE_IDLE_MONITOR_XSYNC, NULL);
 
   monitor->dbus_name_id = g_bus_own_name (G_BUS_TYPE_SESSION,
                                           "org.gnome.Mutter.IdleMonitor",

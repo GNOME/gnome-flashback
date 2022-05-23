@@ -23,8 +23,6 @@ gnome_flashback_idle_monitor_SOURCES = \
 	gf-idle-monitor-main.c \
 	meta-dbus-idle-monitor.c \
 	meta-dbus-idle-monitor.h \
-	meta-backend.c \
-	meta-backend.h \
 	meta-idle-monitor.c \
 	meta-idle-monitor.h \
 	meta-idle-monitor-xsync.c \

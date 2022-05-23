@@ -52,7 +52,6 @@ struct _MetaIdleMonitor
   GObject parent_instance;
 
   GHashTable *watches;
-  int device_id;
 };
 
 struct _MetaIdleMonitorClass
@@ -68,9 +67,6 @@ struct _MetaIdleMonitorClass
 };
 
 GType meta_idle_monitor_get_type (void);
-
-MetaIdleMonitor *meta_idle_monitor_get_core (void);
-MetaIdleMonitor *meta_idle_monitor_get_for_device (int device_id);
 
 guint         meta_idle_monitor_add_idle_watch        (MetaIdleMonitor          *monitor,
 						       guint64                   interval_msec,

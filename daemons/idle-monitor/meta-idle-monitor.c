@@ -30,18 +30,8 @@
 
 #include "meta-idle-monitor.h"
 #include "meta-idle-monitor-xsync.h"
-#include "meta-backend.h"
 
 G_STATIC_ASSERT(sizeof(unsigned long) == sizeof(gpointer));
-
-enum
-{
-  PROP_0,
-  PROP_DEVICE_ID,
-  PROP_LAST,
-};
-
-static GParamSpec *obj_props[PROP_LAST];
 
 G_DEFINE_TYPE (MetaIdleMonitor, meta_idle_monitor, G_TYPE_OBJECT)
 
@@ -84,97 +74,16 @@ meta_idle_monitor_dispose (GObject *object)
 }
 
 static void
-meta_idle_monitor_get_property (GObject    *object,
-                                guint       prop_id,
-                                GValue     *value,
-                                GParamSpec *pspec)
-{
-  MetaIdleMonitor *monitor = META_IDLE_MONITOR (object);
-
-  switch (prop_id)
-    {
-    case PROP_DEVICE_ID:
-      g_value_set_int (value, monitor->device_id);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-    }
-}
-
-static void
-meta_idle_monitor_set_property (GObject      *object,
-                                guint         prop_id,
-                                const GValue *value,
-                                GParamSpec   *pspec)
-{
-  MetaIdleMonitor *monitor = META_IDLE_MONITOR (object);
-  switch (prop_id)
-    {
-    case PROP_DEVICE_ID:
-      monitor->device_id = g_value_get_int (value);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-    }
-}
-
-static void
 meta_idle_monitor_class_init (MetaIdleMonitorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->dispose = meta_idle_monitor_dispose;
-  object_class->get_property = meta_idle_monitor_get_property;
-  object_class->set_property = meta_idle_monitor_set_property;
-
-  /**
-   * MetaIdleMonitor:device_id:
-   *
-   * The device to listen to idletime on.
-   */
-  obj_props[PROP_DEVICE_ID] =
-    g_param_spec_int ("device-id",
-                      "Device ID",
-                      "The device to listen to idletime on",
-                      0, 255, 0,
-                      G_PARAM_STATIC_STRINGS | G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
-  g_object_class_install_property (object_class, PROP_DEVICE_ID, obj_props[PROP_DEVICE_ID]);
 }
 
 static void
 meta_idle_monitor_init (MetaIdleMonitor *monitor)
 {
-}
-
-/**
- * meta_idle_monitor_get_core:
- *
- * Returns: (transfer none): the #MetaIdleMonitor that tracks the server-global
- * idletime for all devices. To track device-specific idletime,
- * use meta_idle_monitor_get_for_device().
- */
-MetaIdleMonitor *
-meta_idle_monitor_get_core (void)
-{
-  MetaBackend *backend = meta_get_backend ();
-  return meta_backend_get_idle_monitor (backend, 0);
-}
-
-/**
- * meta_idle_monitor_get_for_device:
- * @device_id: the device to get the idle time for.
- *
- * Returns: (transfer none): a new #MetaIdleMonitor that tracks the
- * device-specific idletime for @device. To track server-global idletime
- * for all devices, use meta_idle_monitor_get_core().
- */
-MetaIdleMonitor *
-meta_idle_monitor_get_for_device (gint device_id)
-{
-  MetaBackend *backend = meta_get_backend ();
-  return meta_backend_get_idle_monitor (backend, device_id);
 }
 
 static MetaIdleMonitorWatch *
