@@ -7,15 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-03-05 09:59+0000\n"
-"PO-Revision-Date: 2022-03-05 14:14+0200\n"
+"POT-Creation-Date: 2022-05-23 13:21+0000\n"
+"PO-Revision-Date: 2022-05-23 22:48+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Lokalize 20.12.0\n"
 
 #: backends/gf-monitor.c:134
@@ -33,7 +34,8 @@ msgstr "Невідомий екран"
 
 #: backends/gf-monitor.c:179
 #, c-format
-msgctxt "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
+msgctxt ""
+"This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
@@ -51,14 +53,12 @@ msgstr "%s %s"
 #: daemons/media-keys/gsd-media-keys-manager.c:551
 #, no-c-format
 msgid "Screencast from %d %t.webm"
-msgstr ""
-"Запис з екрана від %d %t.webm"
+msgstr "Запис з екрана від %d %t.webm"
 
 #. translators: this is the name of the file that gets made up
 #. * with the screenshot
 #: daemons/media-keys/gsd-screenshot-utils.c:240
 #, c-format
-#| msgid "Screenshots"
 msgid "Screenshot from %s"
 msgstr "Знімок екрана від %s"
 
@@ -69,6 +69,11 @@ msgstr "GNOME Flashback"
 #: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Буфер обміну даними (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
+#| msgid "Network (GNOME Flashback)"
+msgid "Idle Monitor (GNOME Flashback)"
+msgstr "Монітор бездіяльності (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
 msgid "MediaKeys (GNOME Flashback)"
@@ -82,11 +87,6 @@ msgstr "Мережа (GNOME Flashback)"
 msgid "Manage your network connections"
 msgstr "Керуйте вашими мережевими з'єднаннями"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
-msgid "nm-device-wireless"
-msgstr "nm-device-wireless"
-
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
 msgstr "Параметри"
@@ -95,11 +95,6 @@ msgstr "Параметри"
 msgid "Personal preferences"
 msgstr "Особисті параметри"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
-msgid "preferences-desktop"
-msgstr "preferences-desktop"
-
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
 msgstr "Адміністрування"
@@ -107,11 +102,6 @@ msgstr "Адміністрування"
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
 msgid "Change system-wide settings (affects all users)"
 msgstr "Змінити загальносистемні параметри (стосуються усіх користувачів)"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
-msgid "preferences-system"
-msgstr "preferences-system"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:6
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
@@ -1001,8 +991,7 @@ msgstr[0] ""
 "Система автоматично перейде у режим гібридного сну через %d секунду."
 msgstr[1] ""
 "Система автоматично перейде у режим гібридного сну через %d секунди."
-msgstr[2] ""
-"Система автоматично перейде у режим гібридного сну через %d секунд."
+msgstr[2] "Система автоматично перейде у режим гібридного сну через %d секунд."
 msgstr[3] ""
 "Система автоматично перейде у режим гібридного сну через %d секунду."
 
@@ -1337,3 +1326,12 @@ msgstr "Вихід"
 #: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Вимкнено звук"
+
+#~ msgid "nm-device-wireless"
+#~ msgstr "nm-device-wireless"
+
+#~ msgid "preferences-desktop"
+#~ msgstr "preferences-desktop"
+
+#~ msgid "preferences-system"
+#~ msgstr "preferences-system"
