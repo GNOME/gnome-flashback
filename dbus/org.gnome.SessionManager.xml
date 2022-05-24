@@ -24,5 +24,7 @@
       <arg name="running" direction="out" type="b" />
     </method>
 
+    <property name="InhibitedActions" type="u" access="read" />
+
   </interface>
 </node>

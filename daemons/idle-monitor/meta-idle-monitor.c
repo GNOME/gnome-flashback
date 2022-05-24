@@ -28,15 +28,21 @@
 
 #include <string.h>
 
+#include "dbus/gf-session-manager-gen.h"
 #include "meta-idle-monitor.h"
+
+#define GSM_INHIBITOR_FLAG_IDLE 1 << 3
 
 struct _MetaIdleMonitor
 {
-  GObject       parent;
+  GObject              parent;
 
-  GHashTable   *watches;
+  GHashTable          *watches;
 
-  guint64       last_event_time;
+  guint64              last_event_time;
+
+  GfSessionManagerGen *session_manager;
+  gboolean             inhibited;
 };
 
 typedef struct
@@ -53,6 +59,89 @@ typedef struct
 G_STATIC_ASSERT(sizeof(unsigned long) == sizeof(gpointer));
 
 G_DEFINE_TYPE (MetaIdleMonitor, meta_idle_monitor, G_TYPE_OBJECT)
+
+static void
+update_inhibited_watch (gpointer key,
+                        gpointer value,
+                        gpointer user_data)
+{
+  MetaIdleMonitor *self;
+  MetaIdleMonitorWatch *watch;
+
+  self = user_data;
+  watch = value;
+
+  if (watch->timeout_source == NULL)
+    return;
+
+  if (self->inhibited)
+    {
+      g_source_set_ready_time (watch->timeout_source, -1);
+    }
+  else
+    {
+      g_source_set_ready_time (watch->timeout_source,
+                               self->last_event_time +
+                               watch->timeout_msec * 1000);
+    }
+}
+
+static void
+inhibited_actions_changed_cb (GfSessionManagerGen *session_manager,
+                              GParamSpec          *pspec,
+                              MetaIdleMonitor     *self)
+{
+  guint actions;
+
+  actions = gf_session_manager_gen_get_inhibited_actions (session_manager);
+
+  if ((actions & GSM_INHIBITOR_FLAG_IDLE) != GSM_INHIBITOR_FLAG_IDLE)
+    {
+      self->last_event_time = g_get_monotonic_time ();
+      self->inhibited = FALSE;
+    }
+  else
+    {
+      self->inhibited = TRUE;
+    }
+
+  g_hash_table_foreach (self->watches,
+                        update_inhibited_watch,
+                        self);
+}
+
+static void
+session_manager_ready_cb (GObject      *source_object,
+                          GAsyncResult *res,
+                          gpointer      user_data)
+{
+  GError *error;
+  GfSessionManagerGen *session_manager;
+  MetaIdleMonitor *self;
+
+  error = NULL;
+  session_manager = gf_session_manager_gen_proxy_new_for_bus_finish (res,
+                                                                     &error);
+
+  if (error != NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Failed to get session manager proxy: %s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  self = META_IDLE_MONITOR (user_data);
+  self->session_manager = session_manager;
+
+  g_signal_connect (self->session_manager,
+                    "notify::inhibited-actions",
+                    G_CALLBACK (inhibited_actions_changed_cb),
+                    self);
+
+  inhibited_actions_changed_cb (self->session_manager, NULL, self);
+}
 
 static void
 meta_idle_monitor_watch_fire (MetaIdleMonitorWatch *watch)
@@ -100,6 +189,7 @@ meta_idle_monitor_dispose (GObject *object)
   MetaIdleMonitor *monitor = META_IDLE_MONITOR (object);
 
   g_clear_pointer (&monitor->watches, g_hash_table_destroy);
+  g_clear_object (&monitor->session_manager);
 
   G_OBJECT_CLASS (meta_idle_monitor_parent_class)->dispose (object);
 }
@@ -117,6 +207,15 @@ meta_idle_monitor_init (MetaIdleMonitor *monitor)
 {
   monitor->watches = g_hash_table_new_full (NULL, NULL, NULL, free_watch);
   monitor->last_event_time = g_get_monotonic_time ();
+
+  gf_session_manager_gen_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+                                            G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS |
+                                            G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
+                                            "org.gnome.SessionManager",
+                                            "/org/gnome/SessionManager",
+                                            NULL,
+                                            session_manager_ready_cb,
+                                            monitor);
 }
 
 static guint32
@@ -180,9 +279,13 @@ make_watch (MetaIdleMonitor           *monitor,
       source = g_source_new (&idle_monitor_source_funcs, sizeof (GSource));
 
       g_source_set_callback (source, NULL, watch, NULL);
-      g_source_set_ready_time (source,
-                               monitor->last_event_time +
-                               timeout_msec * 1000);
+
+      if (!monitor->inhibited)
+        {
+          g_source_set_ready_time (source,
+                                   monitor->last_event_time +
+                                   timeout_msec * 1000);
+        }
 
       g_source_attach (source, NULL);
       g_source_unref (source);
@@ -332,9 +435,16 @@ meta_idle_monitor_reset_idletime (MetaIdleMonitor *self)
         }
       else
         {
-          g_source_set_ready_time (watch->timeout_source,
-                                   self->last_event_time +
-                                   watch->timeout_msec * 1000);
+          if (self->inhibited)
+            {
+              g_source_set_ready_time (watch->timeout_source, -1);
+            }
+          else
+            {
+              g_source_set_ready_time (watch->timeout_source,
+                                       self->last_event_time +
+                                       watch->timeout_msec * 1000);
+            }
         }
     }
 
