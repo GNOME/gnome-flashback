@@ -18,7 +18,6 @@
 #include "config.h"
 
 #include <glib-unix.h>
-#include <gtk/gtk.h>
 #include <stdlib.h>
 
 #include "dbus/gf-session-manager-gen.h"
@@ -190,8 +189,6 @@ main (int argc,
   autostart_id = g_getenv ("DESKTOP_AUTOSTART_ID");
   startup_id = g_strdup (autostart_id != NULL ? autostart_id : "");
   g_unsetenv ("DESKTOP_AUTOSTART_ID");
-
-  gtk_init (&argc, &argv);
 
   loop = g_main_loop_new (NULL, FALSE);
   idle_monitor = flashback_idle_monitor_new ();

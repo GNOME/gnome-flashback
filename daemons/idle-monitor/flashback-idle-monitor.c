@@ -21,8 +21,7 @@
 
 #include "config.h"
 
-#include <gdk/gdk.h>
-#include <gdk/gdkx.h>
+#include <stdint.h>
 #include <X11/Xlib.h>
 #include <X11/extensions/sync.h>
 
@@ -30,11 +29,22 @@
 #include "meta-idle-monitor.h"
 #include "meta-dbus-idle-monitor.h"
 
+typedef struct
+{
+  GSource               source;
+  GPollFD               event_poll_fd;
+
+  FlashbackIdleMonitor *monitor;
+} XEventSource;
+
 struct _FlashbackIdleMonitor
 {
   GObject                   parent;
 
   Display                  *xdisplay;
+
+  GSource                  *source;
+
   XSyncCounter              counter;
   XSyncAlarm                user_active_alarm;
 
@@ -283,21 +293,87 @@ handle_alarm_notify (FlashbackIdleMonitor  *self,
   meta_idle_monitor_reset_idletime (self->monitor);
 }
 
-static GdkFilterReturn
-filter_func (GdkXEvent *xevent,
-             GdkEvent  *event,
-             gpointer   user_data)
+static void
+handle_xevent (FlashbackIdleMonitor *monitor,
+               XEvent               *xevent)
 {
+  if (xevent->type == (monitor->xsync_event_base + XSyncAlarmNotify))
+    handle_alarm_notify (monitor, (XSyncAlarmNotifyEvent *) xevent);
+}
+
+static gboolean
+x_event_source_prepare (GSource *source,
+                        int     *timeout)
+{
+  XEventSource *x_source;
   FlashbackIdleMonitor *monitor;
-  XEvent *xev;
 
-  monitor = FLASHBACK_IDLE_MONITOR (user_data);
-  xev = (XEvent *) xevent;
+  x_source = (XEventSource *) source;
+  monitor = x_source->monitor;
 
-  if (xev->type == (monitor->xsync_event_base + XSyncAlarmNotify))
-    handle_alarm_notify (monitor, (XSyncAlarmNotifyEvent *) xev);
+  *timeout = -1;
 
-  return GDK_FILTER_CONTINUE;
+  return XPending (monitor->xdisplay);
+}
+
+static gboolean
+x_event_source_check (GSource *source)
+{
+  XEventSource *x_source;
+  FlashbackIdleMonitor *monitor;
+
+  x_source = (XEventSource *) source;
+  monitor = x_source->monitor;
+
+  return XPending (monitor->xdisplay);
+}
+
+static gboolean
+x_event_source_dispatch (GSource     *source,
+                         GSourceFunc  callback,
+                         gpointer     user_data)
+{
+  XEventSource *x_source;
+  FlashbackIdleMonitor *monitor;
+
+  x_source = (XEventSource *) source;
+  monitor = x_source->monitor;
+
+  while (XPending (monitor->xdisplay))
+    {
+      XEvent event;
+
+      XNextEvent (monitor->xdisplay, &event);
+      handle_xevent (monitor, &event);
+    }
+
+  return TRUE;
+}
+
+static GSourceFuncs x_event_funcs =
+  {
+    x_event_source_prepare,
+    x_event_source_check,
+    x_event_source_dispatch,
+  };
+
+static GSource *
+x_event_source_new (FlashbackIdleMonitor *monitor)
+{
+  GSource *source;
+  XEventSource *x_source;
+
+  source = g_source_new (&x_event_funcs, sizeof (XEventSource));
+
+  x_source = (XEventSource *) source;
+  x_source->event_poll_fd.fd = ConnectionNumber (monitor->xdisplay);
+  x_source->event_poll_fd.events = G_IO_IN;
+  x_source->monitor = monitor;
+
+  g_source_add_poll (source, &x_source->event_poll_fd);
+  g_source_attach (source, NULL);
+
+  return source;
 }
 
 static void
@@ -384,8 +460,6 @@ flashback_idle_monitor_finalize (GObject *object)
 
   monitor = FLASHBACK_IDLE_MONITOR (object);
 
-  gdk_window_remove_filter (NULL, (GdkFilterFunc) filter_func, monitor);
-
   if (monitor->user_active_alarm != None)
     {
       XSyncDestroyAlarm (monitor->xdisplay, monitor->user_active_alarm);
@@ -394,17 +468,47 @@ flashback_idle_monitor_finalize (GObject *object)
 
   g_object_unref (monitor->monitor);
 
+  if (monitor->source != NULL)
+    {
+      g_source_unref (monitor->source);
+      monitor->source = NULL;
+    }
+
+  if (monitor->xdisplay != NULL)
+    {
+      XCloseDisplay (monitor->xdisplay);
+      monitor->xdisplay = NULL;
+    }
+
   G_OBJECT_CLASS (flashback_idle_monitor_parent_class)->finalize (object);
 }
 
 static void
 flashback_idle_monitor_init (FlashbackIdleMonitor *monitor)
 {
-  GdkDisplay *display;
+  const char *display;
   gint event_base;
   gint error_base;
   gint major;
   gint minor;
+
+  display = g_getenv ("DISPLAY");
+
+  if (display == NULL)
+    {
+      g_critical ("Unable to open display, DISPLAY not set");
+      return;
+    }
+
+  monitor->xdisplay = XOpenDisplay (display);
+
+  if (monitor->xdisplay == NULL)
+    {
+      g_critical ("Unable to open display '%s'", display);
+      return;
+    }
+
+  monitor->source = x_event_source_new (monitor);
 
   monitor->monitor = g_object_new (META_TYPE_IDLE_MONITOR,
                                    NULL);
@@ -417,9 +521,6 @@ flashback_idle_monitor_init (FlashbackIdleMonitor *monitor)
                                           (GBusNameAcquiredCallback) on_name_acquired,
                                           (GBusNameLostCallback) on_name_lost,
                                           monitor, NULL);
-
-  display = gdk_display_get_default ();
-  monitor->xdisplay = gdk_x11_display_get_xdisplay (display);
 
   if (!XSyncQueryExtension (monitor->xdisplay, &event_base, &error_base))
     {
@@ -447,8 +548,6 @@ flashback_idle_monitor_init (FlashbackIdleMonitor *monitor)
                                                  XSyncNegativeTransition,
                                                  1,
                                                  TRUE);
-
-  gdk_window_add_filter (NULL, (GdkFilterFunc) filter_func, monitor);
 }
 
 static void
