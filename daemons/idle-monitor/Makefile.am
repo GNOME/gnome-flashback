@@ -25,8 +25,6 @@ gnome_flashback_idle_monitor_SOURCES = \
 	meta-dbus-idle-monitor.h \
 	meta-idle-monitor.c \
 	meta-idle-monitor.h \
-	meta-idle-monitor-xsync.c \
-	meta-idle-monitor-xsync.h \
 	$(NULL)
 
 gnome_flashback_idle_monitor_LDFLAGS = \

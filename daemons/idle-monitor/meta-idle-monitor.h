@@ -19,6 +19,8 @@
 #define META_IDLE_MONITOR_H
 
 #include <glib-object.h>
+#include <X11/Xlib.h>
+#include <X11/extensions/sync.h>
 
 #define META_TYPE_IDLE_MONITOR            (meta_idle_monitor_get_type ())
 #define META_IDLE_MONITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_IDLE_MONITOR, MetaIdleMonitor))
@@ -43,30 +45,20 @@ typedef struct
   GDestroyNotify            notify;
   guint64                   timeout_msec;
   int                       idle_source_id;
+  XSyncAlarm                xalarm;
 } MetaIdleMonitorWatch;
 
 void _meta_idle_monitor_watch_fire (MetaIdleMonitorWatch *watch);
 
-struct _MetaIdleMonitor
-{
-  GObject parent_instance;
-
-  GHashTable *watches;
-};
-
 struct _MetaIdleMonitorClass
 {
   GObjectClass parent_class;
-
-  gint64 (*get_idletime) (MetaIdleMonitor *monitor);
-  MetaIdleMonitorWatch * (*make_watch) (MetaIdleMonitor           *monitor,
-                                        guint64                    timeout_msec,
-                                        MetaIdleMonitorWatchFunc   callback,
-                                        gpointer                   user_data,
-                                        GDestroyNotify             notify);
 };
 
 GType meta_idle_monitor_get_type (void);
+
+void          meta_idle_monitor_handle_xevent         (MetaIdleMonitor          *self,
+                                                       XSyncAlarmNotifyEvent    *xevent);
 
 guint         meta_idle_monitor_add_idle_watch        (MetaIdleMonitor          *monitor,
 						       guint64                   interval_msec,

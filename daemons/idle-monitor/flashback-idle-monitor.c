@@ -27,7 +27,6 @@
 
 #include "flashback-idle-monitor.h"
 #include "meta-idle-monitor.h"
-#include "meta-idle-monitor-xsync.h"
 #include "meta-dbus-idle-monitor.h"
 
 struct _FlashbackIdleMonitor
@@ -266,8 +265,8 @@ filter_func (GdkXEvent *xevent,
 
   if (xev->type == (monitor->xsync_event_base + XSyncAlarmNotify))
     {
-      meta_idle_monitor_xsync_handle_xevent (monitor->monitor,
-                                             (XSyncAlarmNotifyEvent*) xev);
+      meta_idle_monitor_handle_xevent (monitor->monitor,
+                                       (XSyncAlarmNotifyEvent*) xev);
     }
 
   return GDK_FILTER_CONTINUE;
@@ -319,7 +318,8 @@ flashback_idle_monitor_init (FlashbackIdleMonitor *monitor)
   gint major;
   gint minor;
 
-  monitor->monitor = g_object_new (META_TYPE_IDLE_MONITOR_XSYNC, NULL);
+  monitor->monitor = g_object_new (META_TYPE_IDLE_MONITOR,
+                                   NULL);
 
   monitor->dbus_name_id = g_bus_own_name (G_BUS_TYPE_SESSION,
                                           "org.gnome.Mutter.IdleMonitor",
