@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-03-05 09:59+0000\n"
-"PO-Revision-Date: 2022-03-05 18:02+0100\n"
+"POT-Creation-Date: 2022-05-23 13:21+0000\n"
+"PO-Revision-Date: 2022-05-23 17:17+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -70,6 +70,10 @@ msgstr "GNOME Flashback"
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Urklipp (GNOME Flashback)"
 
+#: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
+msgid "Idle Monitor (GNOME Flashback)"
+msgstr "Inaktivitetsövervakare (GNOME Flashback)"
+
 #: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
 msgid "MediaKeys (GNOME Flashback)"
 msgstr "Mediatangenter (GNOME Flashback)"
@@ -82,11 +86,6 @@ msgstr "Nätverk (GNOME Flashback)"
 msgid "Manage your network connections"
 msgstr "Hantera dina nätverksanslutningar"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
-msgid "nm-device-wireless"
-msgstr "nm-device-wireless"
-
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
 msgstr "Inställningar"
@@ -95,11 +94,6 @@ msgstr "Inställningar"
 msgid "Personal preferences"
 msgstr "Personliga inställningar"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
-msgid "preferences-desktop"
-msgstr "preferences-desktop"
-
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
 msgstr "Administration"
@@ -107,11 +101,6 @@ msgstr "Administration"
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
 msgid "Change system-wide settings (affects all users)"
 msgstr "Ändra systeminställningar (påverkar alla användare)"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
-msgid "preferences-system"
-msgstr "preferences-system"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:6
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
@@ -1317,6 +1306,15 @@ msgstr "Utmatning"
 #: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Tystad"
+
+#~ msgid "nm-device-wireless"
+#~ msgstr "nm-device-wireless"
+
+#~ msgid "preferences-desktop"
+#~ msgstr "preferences-desktop"
+
+#~ msgid "preferences-system"
+#~ msgstr "preferences-system"
 
 #~ msgid "Launch screensaver and locker program"
 #~ msgstr "Kör skärmsläckaren och låsprogrammet"
