@@ -36,20 +36,6 @@ typedef void (*MetaIdleMonitorWatchFunc) (MetaIdleMonitor *monitor,
                                           guint            watch_id,
                                           gpointer         user_data);
 
-typedef struct
-{
-  MetaIdleMonitor          *monitor;
-  guint	                    id;
-  MetaIdleMonitorWatchFunc  callback;
-  gpointer		    user_data;
-  GDestroyNotify            notify;
-  guint64                   timeout_msec;
-  int                       idle_source_id;
-  XSyncAlarm                xalarm;
-} MetaIdleMonitorWatch;
-
-void _meta_idle_monitor_watch_fire (MetaIdleMonitorWatch *watch);
-
 struct _MetaIdleMonitorClass
 {
   GObjectClass parent_class;

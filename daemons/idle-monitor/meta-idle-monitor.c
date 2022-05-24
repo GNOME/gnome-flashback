@@ -43,12 +43,24 @@ struct _MetaIdleMonitor
   XSyncAlarm    user_active_alarm;
 };
 
+typedef struct
+{
+  MetaIdleMonitor          *monitor;
+  guint                     id;
+  MetaIdleMonitorWatchFunc  callback;
+  gpointer                  user_data;
+  GDestroyNotify            notify;
+  guint64                   timeout_msec;
+  int                       idle_source_id;
+  XSyncAlarm                xalarm;
+} MetaIdleMonitorWatch;
+
 G_STATIC_ASSERT(sizeof(unsigned long) == sizeof(gpointer));
 
 G_DEFINE_TYPE (MetaIdleMonitor, meta_idle_monitor, G_TYPE_OBJECT)
 
-void
-_meta_idle_monitor_watch_fire (MetaIdleMonitorWatch *watch)
+static void
+meta_idle_monitor_watch_fire (MetaIdleMonitorWatch *watch)
 {
   MetaIdleMonitor *monitor;
   guint id;
@@ -242,7 +254,7 @@ check_x11_watches (MetaIdleMonitor *self,
       watch = g_hash_table_lookup (self->watches, GUINT_TO_POINTER (watch_id));
 
       if (watch && watch->xalarm == alarm)
-        _meta_idle_monitor_watch_fire (watch);
+        meta_idle_monitor_watch_fire (watch);
     }
 
   g_list_free (watch_ids);
@@ -313,7 +325,7 @@ fire_watch_idle (gpointer data)
   MetaIdleMonitorWatch *watch = data;
 
   watch->idle_source_id = 0;
-  _meta_idle_monitor_watch_fire (watch);
+  meta_idle_monitor_watch_fire (watch);
 
   return FALSE;
 }
