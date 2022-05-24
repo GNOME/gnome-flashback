@@ -19,8 +19,6 @@
 #define META_IDLE_MONITOR_H
 
 #include <glib-object.h>
-#include <X11/Xlib.h>
-#include <X11/extensions/sync.h>
 
 #define META_TYPE_IDLE_MONITOR            (meta_idle_monitor_get_type ())
 #define META_IDLE_MONITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_IDLE_MONITOR, MetaIdleMonitor))
@@ -43,9 +41,6 @@ struct _MetaIdleMonitorClass
 
 GType meta_idle_monitor_get_type (void);
 
-void          meta_idle_monitor_handle_xevent         (MetaIdleMonitor          *self,
-                                                       XSyncAlarmNotifyEvent    *xevent);
-
 guint         meta_idle_monitor_add_idle_watch        (MetaIdleMonitor          *monitor,
 						       guint64                   interval_msec,
 						       MetaIdleMonitorWatchFunc  callback,
@@ -60,5 +55,7 @@ guint         meta_idle_monitor_add_user_active_watch (MetaIdleMonitor          
 void          meta_idle_monitor_remove_watch          (MetaIdleMonitor          *monitor,
 						       guint                     id);
 gint64        meta_idle_monitor_get_idletime          (MetaIdleMonitor          *monitor);
+
+void          meta_idle_monitor_reset_idletime        (MetaIdleMonitor          *monitor);
 
 #endif

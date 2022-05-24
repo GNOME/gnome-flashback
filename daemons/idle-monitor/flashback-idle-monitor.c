@@ -23,6 +23,7 @@
 
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
+#include <X11/Xlib.h>
 #include <X11/extensions/sync.h>
 
 #include "flashback-idle-monitor.h"
@@ -32,6 +33,10 @@
 struct _FlashbackIdleMonitor
 {
   GObject                   parent;
+
+  Display                  *xdisplay;
+  XSyncCounter              counter;
+  XSyncAlarm                user_active_alarm;
 
   MetaIdleMonitor          *monitor;
 
@@ -252,6 +257,32 @@ on_name_lost (GDBusConnection *connection,
 {
 }
 
+static void
+ensure_alarm_rescheduled (Display    *dpy,
+                          XSyncAlarm  alarm)
+{
+  XSyncAlarmAttributes attr;
+
+  /* Some versions of Xorg have an issue where alarms aren't
+   * always rescheduled. Calling XSyncChangeAlarm, even
+   * without any attributes, will reschedule the alarm.
+   */
+  XSyncChangeAlarm (dpy, alarm, 0, &attr);
+}
+
+static void
+handle_alarm_notify (FlashbackIdleMonitor  *self,
+                     XSyncAlarmNotifyEvent *alarm_event)
+{
+  if (alarm_event->state != XSyncAlarmActive ||
+      alarm_event->alarm != self->user_active_alarm)
+    return;
+
+  ensure_alarm_rescheduled (self->xdisplay, self->user_active_alarm);
+
+  meta_idle_monitor_reset_idletime (self->monitor);
+}
+
 static GdkFilterReturn
 filter_func (GdkXEvent *xevent,
              GdkEvent  *event,
@@ -264,12 +295,64 @@ filter_func (GdkXEvent *xevent,
   xev = (XEvent *) xevent;
 
   if (xev->type == (monitor->xsync_event_base + XSyncAlarmNotify))
-    {
-      meta_idle_monitor_handle_xevent (monitor->monitor,
-                                       (XSyncAlarmNotifyEvent*) xev);
-    }
+    handle_alarm_notify (monitor, (XSyncAlarmNotifyEvent *) xev);
 
   return GDK_FILTER_CONTINUE;
+}
+
+static void
+uint64_to_xsync_value (uint64_t    value,
+                       XSyncValue *xsync_value)
+{
+  XSyncIntsToValue (xsync_value, value & 0xffffffff, value >> 32);
+}
+
+static XSyncAlarm
+_xsync_alarm_set (FlashbackIdleMonitor *self,
+                  XSyncTestType         test_type,
+                  guint64               interval,
+                  gboolean              want_events)
+{
+  XSyncAlarmAttributes attr;
+  XSyncValue delta;
+  guint flags;
+
+  flags = XSyncCACounter | XSyncCAValueType | XSyncCATestType |
+          XSyncCAValue | XSyncCADelta | XSyncCAEvents;
+
+  XSyncIntToValue (&delta, 0);
+  attr.trigger.counter = self->counter;
+  attr.trigger.value_type = XSyncAbsolute;
+  attr.trigger.test_type = test_type;
+  attr.delta = delta;
+  attr.events = want_events;
+
+  uint64_to_xsync_value (interval, &attr.trigger.wait_value);
+
+  return XSyncCreateAlarm (self->xdisplay, flags, &attr);
+}
+
+static XSyncCounter
+find_idletime_counter (FlashbackIdleMonitor *self)
+{
+  int i;
+  int ncounters;
+  XSyncSystemCounter *counters;
+  XSyncCounter counter = None;
+
+  counters = XSyncListSystemCounters (self->xdisplay, &ncounters);
+  for (i = 0; i < ncounters; i++)
+    {
+      if (g_strcmp0 (counters[i].name, "IDLETIME") == 0)
+        {
+          counter = counters[i].counter;
+          break;
+        }
+    }
+
+  XSyncFreeSystemCounterList (counters);
+
+  return counter;
 }
 
 static void
@@ -303,6 +386,12 @@ flashback_idle_monitor_finalize (GObject *object)
 
   gdk_window_remove_filter (NULL, (GdkFilterFunc) filter_func, monitor);
 
+  if (monitor->user_active_alarm != None)
+    {
+      XSyncDestroyAlarm (monitor->xdisplay, monitor->user_active_alarm);
+      monitor->user_active_alarm = None;
+    }
+
   g_object_unref (monitor->monitor);
 
   G_OBJECT_CLASS (flashback_idle_monitor_parent_class)->finalize (object);
@@ -312,7 +401,6 @@ static void
 flashback_idle_monitor_init (FlashbackIdleMonitor *monitor)
 {
   GdkDisplay *display;
-  Display *xdisplay;
   gint event_base;
   gint error_base;
   gint major;
@@ -331,16 +419,34 @@ flashback_idle_monitor_init (FlashbackIdleMonitor *monitor)
                                           monitor, NULL);
 
   display = gdk_display_get_default ();
-  xdisplay = gdk_x11_display_get_xdisplay (display);
+  monitor->xdisplay = gdk_x11_display_get_xdisplay (display);
 
-  if (!XSyncQueryExtension (xdisplay, &event_base, &error_base))
-    g_critical ("Could not query XSync extension");
+  if (!XSyncQueryExtension (monitor->xdisplay, &event_base, &error_base))
+    {
+      g_critical ("Could not query XSync extension");
+      return;
+    }
 
   monitor->xsync_event_base = event_base;
   monitor->xsync_error_base = error_base;
 
-  if (!XSyncInitialize (xdisplay, &major, &minor))
-    g_critical ("Could not initialize XSync");
+  if (!XSyncInitialize (monitor->xdisplay, &major, &minor))
+    {
+      g_critical ("Could not initialize XSync");
+      return;
+    }
+
+  monitor->counter = find_idletime_counter (monitor);
+  if (monitor->counter == None)
+    {
+      g_critical ("IDLETIME counter not found");
+      return;
+    }
+
+  monitor->user_active_alarm = _xsync_alarm_set (monitor,
+                                                 XSyncNegativeTransition,
+                                                 1,
+                                                 TRUE);
 
   gdk_window_add_filter (NULL, (GdkFilterFunc) filter_func, monitor);
 }
