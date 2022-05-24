@@ -73,6 +73,31 @@ handle_get_idletime (MetaDBusIdleMonitor   *skeleton,
   return TRUE;
 }
 
+static gboolean
+handle_reset_idletime (MetaDBusIdleMonitor   *skeleton,
+                       GDBusMethodInvocation *invocation,
+                       MetaIdleMonitor       *monitor)
+{
+  if (g_getenv ("MUTTER_DEBUG_RESET_IDLETIME") == NULL)
+    {
+      const char *message;
+
+      message = "This method is for testing purposes only. "
+                "MUTTER_DEBUG_RESET_IDLETIME must be set to use it!";
+
+      g_dbus_method_invocation_return_error_literal (invocation,
+                                                     G_DBUS_ERROR,
+                                                     G_DBUS_ERROR_UNKNOWN_METHOD,
+                                                     message);
+      return TRUE;
+    }
+
+  meta_idle_monitor_reset_idletime (monitor);
+  meta_dbus_idle_monitor_complete_reset_idletime (skeleton, invocation);
+
+  return TRUE;
+}
+
 typedef struct {
   MetaDBusIdleMonitor *dbus_monitor;
   MetaIdleMonitor *monitor;
@@ -222,6 +247,8 @@ create_monitor_skeleton (GDBusObjectManagerServer *server,
                            G_CALLBACK (handle_remove_watch), monitor, 0);
   g_signal_connect_object (skeleton, "handle-get-idletime",
                            G_CALLBACK (handle_get_idletime), monitor, 0);
+  g_signal_connect_object (skeleton, "handle-reset-idletime",
+                           G_CALLBACK (handle_reset_idletime), monitor, 0);
 
   object = g_dbus_object_skeleton_new (path);
   g_dbus_object_skeleton_add_interface (object,
