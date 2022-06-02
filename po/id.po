@@ -2,14 +2,14 @@
 # Copyright (C) 2014 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
 # Andika Triwidada <andika@gmail.com>, 2014, 2019, 2020.
-# Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017, 2018, 2019.
+# Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017, 2018, 2019, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback gnome-3-36\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2020-04-28 12:05+0000\n"
-"PO-Revision-Date: 2020-05-14 16:49+0700\n"
+"POT-Creation-Date: 2022-05-22 20:32+0000\n"
+"PO-Revision-Date: 2022-06-02 09:49+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -17,35 +17,50 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural= n!=1;\n"
-"X-Generator: Poedit 2.3.1\n"
+"X-Generator: Poedit 3.0.1\n"
 
-#: backends/gf-monitor.c:133
+#: backends/gf-monitor.c:134
 msgid "Built-in display"
 msgstr "Tampilan bawaan"
 
-#: backends/gf-monitor.c:167
+#: backends/gf-monitor.c:168
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
 msgid "Unknown"
 msgstr "Tak diketahui"
 
-#: backends/gf-monitor.c:169
+#: backends/gf-monitor.c:170
 msgid "Unknown Display"
 msgstr "Tampilan Tak Dikenal"
 
-#: backends/gf-monitor.c:178
+#: backends/gf-monitor.c:179
 #, c-format
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: backends/gf-monitor.c:192
+#: backends/gf-monitor.c:193
 #, c-format
 msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
 "inches could not be calculated, e.g. Dell U2414H"
 msgid "%s %s"
 msgstr "%s %s"
+
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#: daemons/media-keys/gsd-media-keys-manager.c:551
+#, no-c-format
+msgid "Screencast from %d %t.webm"
+msgstr "Screencast dari %d %t.webm"
+
+#. translators: this is the name of the file that gets made up
+#. * with the screenshot
+#: daemons/media-keys/gsd-screenshot-utils.c:240
+#, c-format
+msgid "Screenshot from %s"
+msgstr "Cuplikan layar dari %s"
 
 #: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
@@ -55,6 +70,10 @@ msgstr "GNOME Flashback"
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Papan Klip (GNOME Flashback)"
 
+#: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
+msgid "MediaKeys (GNOME Flashback)"
+msgstr "MediaKeys (GNOME Flashback)"
+
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
 msgstr "Jaringan (GNOME Flashback)"
@@ -62,11 +81,6 @@ msgstr "Jaringan (GNOME Flashback)"
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:4
 msgid "Manage your network connections"
 msgstr "Kelola koneksi jaringan Anda"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
-msgid "nm-device-wireless"
-msgstr "nm-device-wireless"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -76,11 +90,6 @@ msgstr "Preferensi"
 msgid "Personal preferences"
 msgstr "Preferensi pribadi"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
-msgid "preferences-desktop"
-msgstr "preferences-desktop"
-
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
 msgstr "Administrasi"
@@ -89,10 +98,41 @@ msgstr "Administrasi"
 msgid "Change system-wide settings (affects all users)"
 msgstr "Ubah pengaturan seluruh sistem (memengaruhi semua pengguna)"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
-msgid "preferences-system"
-msgstr "preferences-system"
+#: data/keybindings/50-gnome-flashback-screenshots.xml:6
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
+msgid "Screenshots"
+msgstr "Cuplikan Layar"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:10
+msgid "Save a screenshot to $PICTURES"
+msgstr "Simpan cuplikan layar ke $PICTURES"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:14
+msgid "Save a screenshot of a window to $PICTURES"
+msgstr "Simpan cuplikan layar dari suatu jendela ke $PICTURES"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:18
+msgid "Save a screenshot of an area to $PICTURES"
+msgstr "Simpan cuplikan layar dari suatu daerah ke $PICTURES"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:21
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:23
+msgid "Copy a screenshot to clipboard"
+msgstr "Salin cuplikan layar ke papan klip"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:24
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:29
+msgid "Copy a screenshot of a window to clipboard"
+msgstr "Salin cuplikan layar dari suatu jendela ke papan klip"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:27
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:35
+msgid "Copy a screenshot of an area to clipboard"
+msgstr "Salin cuplikan layar dari suatu daerah ke papan klip"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:30
+msgid "Record a short screencast"
+msgstr "Rekam suatu screencast singkat"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
 msgid "a11y-keyboard"
@@ -127,7 +167,7 @@ msgid "Clipboard"
 msgstr "Papan Klip"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:27
-#: gnome-flashback/libdesktop/gf-desktop-window.c:823
+#: gnome-flashback/libdesktop/gf-desktop-window.c:824
 msgid "Desktop"
 msgstr "Desktop"
 
@@ -219,10 +259,6 @@ msgid ""
 msgstr ""
 "Bila diisi true, aplikasi GNOME Flashback akan dipakai sebagai screensaver."
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
-msgid "Screenshots"
-msgstr "Cuplikan Layar"
-
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
@@ -294,7 +330,7 @@ msgid "The size of desktop icons."
 msgstr "Ukuran ikon desktop."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
-#: gnome-flashback/libdesktop/gf-icon-view.c:1237
+#: gnome-flashback/libdesktop/gf-icon-view.c:1332
 msgid "Placement"
 msgstr "Penempatan"
 
@@ -307,7 +343,7 @@ msgstr ""
 "\"free\". Ini mengontrol bagaimana ikon ditempatkan di desktop."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
-#: gnome-flashback/libdesktop/gf-icon-view.c:1243
+#: gnome-flashback/libdesktop/gf-icon-view.c:1338
 msgid "Sort by"
 msgstr "Urut berdasarkan"
 
@@ -366,6 +402,62 @@ msgid ""
 msgstr ""
 "Bila diisi true, ikon yang menautkan ke tong sampah akan diletakkan di "
 "desktop."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:5
+msgid "Take a screenshot"
+msgstr "Ambil cuplikan layar"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:6
+msgid "Binding to take a screenshot."
+msgstr "Pengaitan ke mengambil cuplikan layar."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:11
+msgid "Take a screenshot of a window"
+msgstr "Ambil cuplikan layar dari suatu jendela"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:12
+msgid "Binding to take a screenshot of a window."
+msgstr "Pengaitan ke mengambil cuplikan layar dari suatu jendela."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:17
+msgid "Take a screenshot of an area"
+msgstr "Ambil cuplikan layar dari suatu daerah"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:18
+msgid "Binding to take a screenshot of an area."
+msgstr "Pengaitan ke mengambil cuplikan layar dari suatu wilayah."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:24
+msgid "Binding to copy a screenshot to clipboard."
+msgstr "Pengaitan ke menyalin cuplikan layar ke papan klip."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:30
+msgid "Binding to copy a screenshot of a window to clipboard."
+msgstr "Pengaitan ke menyalin cuplikan layar dari suatu jendela ke papan klip."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:36
+msgid "Binding to copy a screenshot of an area to clipboard."
+msgstr "Pengaitan ke menyalin cuplikan layar dari suatu wilayah ke papan klip."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:41
+msgid "Record a short video of the screen"
+msgstr "Rekam video pendek atas layar"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:42
+msgid "Binding to record a short video of the screen"
+msgstr "Mengikat untuk merekam video singkat layar"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:47
+msgid "Maximum length of screen recordings"
+msgstr "Panjang maksimal rekaman layar"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:48
+msgid ""
+"The maximum length of single screen cast recordings in seconds or 0 for "
+"unlimited"
+msgstr ""
+"Panjang maksimum rekaman pemotretan satu layar dalam hitungan detik atau 0 "
+"untuk tidak terbatas"
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
@@ -525,7 +617,7 @@ msgid "What kind of device did you plug in?"
 msgstr "Perangkat apa yang Anda tancapkan?"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
-#: system-indicators/si-bluetooth.c:274 system-indicators/si-volume.c:446
+#: system-indicators/si-bluetooth.c:277 system-indicators/si-volume.c:446
 msgid "Sound Settings"
 msgstr "Pengaturan Suara"
 
@@ -671,7 +763,7 @@ msgid "_Unmount"
 msgstr "_Lepas Kait"
 
 #: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
-#: gnome-flashback/libdesktop/gf-icon-view.c:1225
+#: gnome-flashback/libdesktop/gf-icon-view.c:1320
 msgid "New Folder"
 msgstr "Folder Baru"
 
@@ -688,100 +780,100 @@ msgstr "Nama folder"
 msgid "Home"
 msgstr "Beranda"
 
-#: gnome-flashback/libdesktop/gf-icon.c:524
+#: gnome-flashback/libdesktop/gf-icon.c:508
 msgid "Open"
 msgstr "Buka"
 
-#: gnome-flashback/libdesktop/gf-icon.c:560
+#: gnome-flashback/libdesktop/gf-icon.c:544
 msgid "Move to Trash"
 msgstr "Pindahkan ke Tong Sampah"
 
-#: gnome-flashback/libdesktop/gf-icon.c:580
+#: gnome-flashback/libdesktop/gf-icon.c:564
 msgid "Rename..."
 msgstr "Ubah Nama..."
 
-#: gnome-flashback/libdesktop/gf-icon.c:600
+#: gnome-flashback/libdesktop/gf-icon.c:587
 msgid "Empty Trash"
 msgstr "Kosongkan Tong Sampah"
 
-#: gnome-flashback/libdesktop/gf-icon.c:614
+#: gnome-flashback/libdesktop/gf-icon.c:601
 msgid "Properties"
 msgstr "Properti"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1001
+#: gnome-flashback/libdesktop/gf-icon-view.c:1096
 msgid "Auto arrange icons"
 msgstr "Ikon tertata otomatis"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1005
+#: gnome-flashback/libdesktop/gf-icon-view.c:1100
 msgid "Align icons to grid"
 msgstr "Ratakan ikon ke kisi"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1009
+#: gnome-flashback/libdesktop/gf-icon-view.c:1104
 msgctxt "Free placement of icons"
 msgid "Free"
 msgstr "Bebas"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1129
+#: gnome-flashback/libdesktop/gf-icon-view.c:1224
 msgid "Name"
 msgstr "Nama"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1133
+#: gnome-flashback/libdesktop/gf-icon-view.c:1228
 msgid "Date modified"
 msgstr "Tanggal diubah"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1137
+#: gnome-flashback/libdesktop/gf-icon-view.c:1232
 msgid "Size"
 msgstr "Ukuran"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1253
+#: gnome-flashback/libdesktop/gf-icon-view.c:1348
 msgid "Change Background"
 msgstr "Ubah Latar Belakang"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1261
+#: gnome-flashback/libdesktop/gf-icon-view.c:1356
 msgid "Display Settings"
 msgstr "Pengaturan Tampilan"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:1273
+#: gnome-flashback/libdesktop/gf-icon-view.c:1368
 msgid "Open Terminal"
 msgstr "Buka Terminal"
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3061
+#: gnome-flashback/libdesktop/gf-icon-view.c:3215
 msgid "Folder names cannot contain “/”."
 msgstr "Nama folder tidak boleh mengandung \"/\"."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3063
+#: gnome-flashback/libdesktop/gf-icon-view.c:3217
 msgid "File names cannot contain “/”."
 msgstr "Nama berkas tidak boleh mengandung \"/\"."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3070
+#: gnome-flashback/libdesktop/gf-icon-view.c:3224
 msgid "A folder cannot be called “.”."
 msgstr "Folder tidak dapat bernama \".\"."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3072
+#: gnome-flashback/libdesktop/gf-icon-view.c:3226
 msgid "A file cannot be called “.”."
 msgstr "Berkas tak boleh bernama \".\"."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3079
+#: gnome-flashback/libdesktop/gf-icon-view.c:3233
 msgid "A folder cannot be called “..”."
 msgstr "Folder tidak dapat bernama \"..\"."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3081
+#: gnome-flashback/libdesktop/gf-icon-view.c:3235
 msgid "A file cannot be called “..”."
 msgstr "Berkas tak boleh bernama \"..\"."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3097
+#: gnome-flashback/libdesktop/gf-icon-view.c:3251
 msgid "A folder with that name already exists."
 msgstr "Folder dengan nama itu sudah ada."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3099
+#: gnome-flashback/libdesktop/gf-icon-view.c:3253
 msgid "A file with that name already exists."
 msgstr "Berkas dengan nama itu sudah ada."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3110
+#: gnome-flashback/libdesktop/gf-icon-view.c:3264
 msgid "Folders with “.” at the beginning of their name are hidden."
 msgstr "Folder dengan \".\" di awal nama mereka disembunyikan."
 
-#: gnome-flashback/libdesktop/gf-icon-view.c:3112
+#: gnome-flashback/libdesktop/gf-icon-view.c:3266
 msgid "Files with “.” at the beginning of their name are hidden."
 msgstr "Berkas dengan \".\" di awal nama mereka disembunyikan."
 
@@ -794,88 +886,88 @@ msgid "Rename"
 msgstr "Ganti Nama"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:514
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:739
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:750
 msgid "Log Out"
 msgstr "Log Keluar"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:518
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Klik Log Keluar untuk keluar dari aplikasi-aplikasi ini dan log keluar dari "
 "sistem."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s akan otomatis dilog-keluarkan dalam %d detik."
 msgstr[1] "%s akan otomatis dilog-keluarkan dalam %d detik."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:743
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:537
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:754
 msgid "Power Off"
 msgstr "Matikan"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:529
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:540
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 "Klik Matikan untuk keluar dari aplikasi-aplikasi ini dan mematikan sistem."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:531
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:542
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Sistem akan otomatis dimatikan dalam %d detik."
 msgstr[1] "Sistem akan otomatis dimatikan dalam %d detik."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:538
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:747
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:549
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:758
 msgid "Restart"
 msgstr "Start Ulang"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:541
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:552
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Klik Mulai Ulang untuk keluar dari aplikasi-aplikasi ini dan memulai ulang "
 "sistem."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:543
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:554
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Sistem akan otomatis dimulai ulang dalam %d detik."
 msgstr[1] "Sistem akan otomatis dimulai ulang dalam %d detik."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:550
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:751
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:561
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:762
 msgid "Hibernate"
 msgstr "Hibernasi"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:551
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:562
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
 msgstr[0] "Sistem akan otomatis dihibernasi dalam %d detik."
 msgstr[1] "Sistem akan otomatis dihibernasi dalam %d detik."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:558
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:755
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:569
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:766
 msgid "Suspend"
 msgstr "Suspensi"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:559
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:570
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
 msgstr[0] "Sistem akan otomatis disuspensi dalam %d detik."
 msgstr[1] "Sistem akan otomatis disuspensi dalam %d detik."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:566
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:759
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:577
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:770
 msgid "Hybrid Sleep"
 msgstr "Tidur Hibrida"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:567
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:578
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
@@ -898,20 +990,20 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Kunci Layar"
 
-#: gnome-flashback/libnotifications/gf-bubble.c:563
-#: gnome-flashback/libnotifications/gf-bubble.c:567
+#: gnome-flashback/libnotifications/gf-bubble.c:549
+#: gnome-flashback/libnotifications/gf-bubble.c:553
 #: gnome-flashback/libnotifications/nd-notification-box.c:320
 #: gnome-flashback/libnotifications/nd-notification-box.c:322
 msgid "Closes the notification."
 msgstr "Menutup notifikasi."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:587
-#: gnome-flashback/libnotifications/gf-bubble.c:618
+#: gnome-flashback/libnotifications/gf-bubble.c:573
+#: gnome-flashback/libnotifications/gf-bubble.c:604
 #: gnome-flashback/libnotifications/nd-notification-box.c:338
 msgid "Notification summary text."
 msgstr "Teks ringkasan notifikasi."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:637
+#: gnome-flashback/libnotifications/gf-bubble.c:623
 msgid "Notification"
 msgstr "Pemberitahuan"
 
@@ -942,7 +1034,7 @@ msgstr "_Sandi bagi %s:"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:104
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:370
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:366
 msgid "_Password:"
 msgstr "_Sandi:"
 
@@ -1031,27 +1123,27 @@ msgstr "Akun Anda diberi batas waktu yang sekarang telah berlalu."
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Maaf, itu tidak berhasil. Silakan coba lagi."
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:181
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:177
 msgid "Failed to switch to greeter!"
 msgstr "Gagal beralih ke penyapa!"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:255
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:251
 msgid "Time has expired."
 msgstr "Waktu telah habis."
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:506
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:467
 msgid "Checking…"
 msgstr "Memeriksa…"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:531
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:492
 msgid "S_witch User…"
 msgstr "_Berganti Pengguna…"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:540
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:501
 msgid "_Unlock"
 msgstr "B_uka kunci"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:751
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:712
 msgid "You have the Caps Lock key on."
 msgstr "Tombol Caps Lock menyala."
 
@@ -1061,13 +1153,13 @@ msgstr "Cuplikan layar diambil"
 
 #. translators:
 #. * The device has been disabled
-#: gvc/gvc/gvc-mixer-control.c:1892
+#: gvc/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Dinonaktifkan"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1899
+#: gvc/gvc/gvc-mixer-control.c:1907
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1076,14 +1168,14 @@ msgstr[1] "%u Keluaran"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1909
+#: gvc/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Masukan"
 msgstr[1] "%u Masukan"
 
-#: gvc/gvc/gvc-mixer-control.c:2766
+#: gvc/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Suara Sistem"
 
@@ -1107,18 +1199,18 @@ msgstr "Pengaturan Papan Ketik"
 msgid "Mouse & Touchpad Settings"
 msgstr "Pengaturan Tetikus & Touchpad"
 
-#: system-indicators/si-bluetooth.c:328
+#: system-indicators/si-bluetooth.c:331
 msgid "Bluetooth Settings"
 msgstr "Pengaturan Bluetooth"
 
-#: system-indicators/si-bluetooth.c:448
+#: system-indicators/si-bluetooth.c:451
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d Perangkat Tersambung"
 msgstr[1] "%d Perangkat Tersambung"
 
-#: system-indicators/si-bluetooth.c:455
+#: system-indicators/si-bluetooth.c:458
 msgid "Not Connected"
 msgstr "Tidak Terhubung"
 
@@ -1132,11 +1224,11 @@ msgstr "Berkas desktop \"%s\" hilang!"
 msgid "Failed to start “%s”: %s"
 msgstr "Gagal memulai \"%s\": %s"
 
-#: system-indicators/si-input-sources.c:852
+#: system-indicators/si-input-sources.c:859
 msgid "Show Keyboard Layout"
 msgstr "Tampilkan Tata Letak Papan Tik"
 
-#: system-indicators/si-input-sources.c:883
+#: system-indicators/si-input-sources.c:890
 msgid "Region & Language Settings"
 msgstr "Pengaturan Wilayah & Bahasa"
 
@@ -1207,3 +1299,12 @@ msgstr "Keluaran"
 #: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Senyap"
+
+#~ msgid "nm-device-wireless"
+#~ msgstr "nm-device-wireless"
+
+#~ msgid "preferences-desktop"
+#~ msgstr "preferences-desktop"
+
+#~ msgid "preferences-system"
+#~ msgstr "preferences-system"
