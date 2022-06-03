@@ -274,9 +274,12 @@ gf_wm_init (GfWm *self)
 {
   GdkDisplay *display;
   Display *xdisplay;
+  Window xroot;
+  XWindowAttributes attrs;
 
   display = gdk_display_get_default ();
   xdisplay = gdk_x11_display_get_xdisplay (display);
+  xroot = DefaultRootWindow (xdisplay);
 
   self->wm_check_atom = XInternAtom (xdisplay,
                                      "_NET_SUPPORTING_WM_CHECK",
@@ -286,7 +289,9 @@ gf_wm_init (GfWm *self)
   self->utf8_string_atom = XInternAtom (xdisplay, "UTF8_STRING", False);
 
   gdk_window_add_filter (NULL, event_filter_cb, self);
-  XSelectInput (xdisplay, GDK_ROOT_WINDOW (), PropertyChangeMask);
+
+  XGetWindowAttributes (xdisplay, xroot, &attrs);
+  XSelectInput (xdisplay, xroot, PropertyChangeMask | attrs.your_event_mask);
   XSync (xdisplay, False);
 
   update_wm_check (self);
