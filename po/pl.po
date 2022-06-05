@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-03-05 09:59+0000\n"
-"PO-Revision-Date: 2022-03-06 12:39+0100\n"
+"POT-Creation-Date: 2022-05-23 13:21+0000\n"
+"PO-Revision-Date: 2022-06-05 14:22+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -70,6 +70,10 @@ msgstr "Tradycyjne środowisko GNOME"
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Schowek (Tradycyjne środowisko GNOME)"
 
+#: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
+msgid "Idle Monitor (GNOME Flashback)"
+msgstr "Monitorowanie bezczynności (Tradycyjne środowisko GNOME)"
+
 #: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
 msgid "MediaKeys (GNOME Flashback)"
 msgstr "Klawisze multimedialne (Tradycyjne środowisko GNOME)"
@@ -82,11 +86,6 @@ msgstr "Sieć (Tradycyjne środowisko GNOME)"
 msgid "Manage your network connections"
 msgstr "Zarządzanie połączeniami sieciowymi"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
-msgid "nm-device-wireless"
-msgstr "nm-device-wireless"
-
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
 msgstr "Preferencje"
@@ -95,11 +94,6 @@ msgstr "Preferencje"
 msgid "Personal preferences"
 msgstr "Preferencje osobiste"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
-msgid "preferences-desktop"
-msgstr "preferences-desktop"
-
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
 msgstr "Administracja"
@@ -107,11 +101,6 @@ msgstr "Administracja"
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
 msgid "Change system-wide settings (affects all users)"
 msgstr "Zmienianie ustawień systemowych (dla wszystkich użytkowników)"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
-msgid "preferences-system"
-msgstr "preferences-system"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:6
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
