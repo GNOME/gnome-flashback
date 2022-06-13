@@ -36,8 +36,6 @@
 #define INFO_VERSION PACKAGE_VERSION
 #define INFO_SPEC_VERSION "1.2"
 
-#define MAX_NOTIFICATIONS 20
-
 struct _NdDaemon
 {
   GObject               parent;
@@ -168,23 +166,10 @@ handle_notify_cb (GfFdNotificationsGen  *object,
                   gpointer               user_data)
 {
   NdDaemon *daemon;
-  const gchar *error_name;
-  const gchar *error_message;
   NdNotification *notification;
   gint new_id;
 
   daemon = ND_DAEMON (user_data);
-
-  if (nd_queue_length (daemon->queue) > MAX_NOTIFICATIONS)
-    {
-      error_name = "org.freedesktop.Notifications.MaxNotificationsExceeded";
-      error_message = _("Exceeded maximum number of notifications");
-
-      g_dbus_method_invocation_return_dbus_error (invocation, error_name,
-                                                  error_message);
-
-      return TRUE;
-    }
 
   if (replaces_id > 0)
     {
