@@ -2,21 +2,22 @@
 # Copyright © 2014 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
 # Марко М. Костић <marko.m.kostic@gmail.com>, 2019.
-# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2014–2022.
+# Мирослав Николић <miroslavnikolić@rocketmail.com>, 2014–2022.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-03-13 02:56+0000\n"
-"PO-Revision-Date: 2022-03-14 08:44+0200\n"
-"Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
-"Language-Team: Serbian <gnome-sr@googlegroups.org>\n"
+"POT-Creation-Date: 2022-06-13 08:29+0000\n"
+"PO-Revision-Date: 2022-06-18 09:16+0200\n"
+"Last-Translator: Мирослав Николић <miroslavnikolić@rocketmail.com>\n"
+"Language-Team: Serbian <српски <gnome-sr@googlegroups.org>>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
-"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
 "X-Project-Style: gnome\n"
 
 #: backends/gf-monitor.c:134
@@ -59,7 +60,6 @@ msgstr "Запис екрана од „%d %t.webm“"
 #. * with the screenshot
 #: daemons/media-keys/gsd-screenshot-utils.c:240
 #, c-format
-#| msgid "Screenshots"
 msgid "Screenshot from %s"
 msgstr "Снимак екрана од „%s“"
 
@@ -71,8 +71,12 @@ msgstr "Стари Гном"
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Остава (Стари Гном)"
 
+#: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
+#| msgid "Network (GNOME Flashback)"
+msgid "Idle Monitor (GNOME Flashback)"
+msgstr "Праћење мировања (Стари Гном)"
+
 #: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
-#| msgid "Screensaver (GNOME Flashback)"
 msgid "MediaKeys (GNOME Flashback)"
 msgstr "Медијски тастери (Стари Гном)"
 
@@ -84,11 +88,6 @@ msgstr "Мрежа (Стари Гном)"
 msgid "Manage your network connections"
 msgstr "Управљајте мрежним повезивањима"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
-msgid "nm-device-wireless"
-msgstr "nm-device-wireless"
-
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
 msgstr "Поставке"
@@ -97,11 +96,6 @@ msgstr "Поставке"
 msgid "Personal preferences"
 msgstr "Личне поставке"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
-msgid "preferences-desktop"
-msgstr "preferences-desktop"
-
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
 msgstr "Администрација"
@@ -109,11 +103,6 @@ msgstr "Администрација"
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
 msgid "Change system-wide settings (affects all users)"
 msgstr "Измените подешавања свеопштег система (утиче на све кориснике)"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
-msgid "preferences-system"
-msgstr "preferences-system"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:6
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
@@ -423,7 +412,6 @@ msgstr ""
 "радну површину."
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:5
-#| msgid "Screenshots"
 msgid "Take a screenshot"
 msgstr "Прави снимак екрана"
 
@@ -1036,13 +1024,9 @@ msgstr "Текст сажетка обавештења."
 msgid "Notification"
 msgstr "Обавештење"
 
-#: gnome-flashback/libnotifications/nd-daemon.c:100
+#: gnome-flashback/libnotifications/nd-daemon.c:98
 msgid "Invalid notification identifier"
 msgstr "Неисправан одредник обавештења"
-
-#: gnome-flashback/libnotifications/nd-daemon.c:181
-msgid "Exceeded maximum number of notifications"
-msgstr "Превазиђен је највећи број обавештења"
 
 #: gnome-flashback/libnotifications/nd-notification-box.c:358
 msgid "Notification body text."
@@ -1334,6 +1318,18 @@ msgstr "Излаз"
 #: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Утишан"
+
+#~ msgid "nm-device-wireless"
+#~ msgstr "nm-device-wireless"
+
+#~ msgid "preferences-desktop"
+#~ msgstr "preferences-desktop"
+
+#~ msgid "preferences-system"
+#~ msgstr "preferences-system"
+
+#~ msgid "Exceeded maximum number of notifications"
+#~ msgstr "Превазиђен је највећи број обавештења"
 
 #~ msgid "Launch screensaver and locker program"
 #~ msgstr "Покрените чувара екрана и програм закључавања"
