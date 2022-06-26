@@ -1,19 +1,19 @@
 # Brazilian Portuguese translation for gnome-flashback.
-# Copyright (C) 2020 gnome-flashback's COPYRIGHT HOLDER
+# Copyright (C) 2022 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
 # Felipe Braga <fbobraga@gmail.com>, 2015.
 # Isaac Ferreira Filho <isaacmob@riseup.net>, 2017.
-# Rafael Fontenelle <rafaelff@gnome.org>, 2014-2020.
 # Enrico Nicoletto <hiko@duck.com>, 2014, 2017, 2022.
 # Matheus Barbosa <mdpb.matheus@gmail.com>, 2022.
+# Rafael Fontenelle <rafaelff@gnome.org>, 2014-2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-03-05 09:59+0000\n"
-"PO-Revision-Date: 2022-03-06 20:17-0300\n"
-"Last-Translator: Matheus Barbosa <mdpb.matheus@gmail.com>\n"
+"POT-Creation-Date: 2022-06-13 08:29+0000\n"
+"PO-Revision-Date: 2022-06-26 07:58-0300\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -63,7 +63,6 @@ msgstr "Gravação de tela de %d %t.webm"
 #. * with the screenshot
 #: daemons/media-keys/gsd-screenshot-utils.c:240
 #, c-format
-#| msgid "Screenshots"
 msgid "Screenshot from %s"
 msgstr "Capturas de tela de %s"
 
@@ -75,8 +74,12 @@ msgstr "GNOME Flashback"
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Área de transferência (GNOME Flashback)"
 
+#: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
+#| msgid "Network (GNOME Flashback)"
+msgid "Idle Monitor (GNOME Flashback)"
+msgstr "Monitor ocioso (GNOME Flashback)"
+
 #: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
-#| msgid "Screensaver (GNOME Flashback)"
 msgid "MediaKeys (GNOME Flashback)"
 msgstr "Atalhos de mídia (GNOME Flashback)"
 
@@ -88,11 +91,6 @@ msgstr "Rede (GNOME Flashback)"
 msgid "Manage your network connections"
 msgstr "Gerencie suas conexões de rede"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
-msgid "nm-device-wireless"
-msgstr "nm-device-wireless"
-
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
 msgstr "Preferências"
@@ -101,11 +99,6 @@ msgstr "Preferências"
 msgid "Personal preferences"
 msgstr "Preferências pessoais"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
-msgid "preferences-desktop"
-msgstr "preferences-desktop"
-
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
 msgstr "Administração"
@@ -113,11 +106,6 @@ msgstr "Administração"
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
 msgid "Change system-wide settings (affects all users)"
 msgstr "Altere configurações de todo o sistema (afeta todos os usuários)"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
-msgid "preferences-system"
-msgstr "preferences-system"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:6
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
@@ -1029,13 +1017,9 @@ msgstr "Texto do resumo da notificação."
 msgid "Notification"
 msgstr "Notificação"
 
-#: gnome-flashback/libnotifications/nd-daemon.c:100
+#: gnome-flashback/libnotifications/nd-daemon.c:98
 msgid "Invalid notification identifier"
 msgstr "Identificador da notificação inválido"
-
-#: gnome-flashback/libnotifications/nd-daemon.c:181
-msgid "Exceeded maximum number of notifications"
-msgstr "Excedido o número máximo de notificações"
 
 #: gnome-flashback/libnotifications/nd-notification-box.c:358
 msgid "Notification body text."
@@ -1320,6 +1304,18 @@ msgstr "Saída"
 #: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Mudo"
+
+#~ msgid "nm-device-wireless"
+#~ msgstr "nm-device-wireless"
+
+#~ msgid "preferences-desktop"
+#~ msgstr "preferences-desktop"
+
+#~ msgid "preferences-system"
+#~ msgstr "preferences-system"
+
+#~ msgid "Exceeded maximum number of notifications"
+#~ msgstr "Excedido o número máximo de notificações"
 
 #~ msgid "Launch screensaver and locker program"
 #~ msgstr "Inicie o programa de proteção e de bloqueio de tela"
