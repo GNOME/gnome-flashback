@@ -376,6 +376,9 @@ apply_crtc_assignments (GfMonitorManager    *manager,
       gf_crtc_unset_config (crtc);
     }
 
+  if (n_crtcs == 0)
+    goto out;
+
   g_assert (width > 0 && height > 0);
   /* The 'physical size' of an X screen is meaningless if that screen
    * can consist of many monitors. So just pick a size that make the
@@ -477,6 +480,7 @@ apply_crtc_assignments (GfMonitorManager    *manager,
       gf_output_unassign_crtc (output);
     }
 
+out:
   XUngrabServer (xrandr->xdisplay);
   XFlush (xrandr->xdisplay);
 
@@ -721,6 +725,9 @@ gf_monitor_manager_xrandr_apply_monitors_config (GfMonitorManager        *manage
 
   if (!config)
     {
+      if (!manager->in_init)
+        apply_crtc_assignments (manager, TRUE, NULL, 0, NULL, 0);
+
       gf_monitor_manager_rebuild_derived (manager, NULL);
       return TRUE;
     }
