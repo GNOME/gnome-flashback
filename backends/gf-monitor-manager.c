@@ -48,8 +48,6 @@ typedef struct
 {
   GfBackend   *backend;
 
-  gboolean     in_init;
-
   guint        bus_name_id;
 
   guint        persistent_timeout_id;
@@ -343,11 +341,7 @@ gf_monitor_manager_is_config_complete (GfMonitorManager *manager,
 static gboolean
 should_use_stored_config (GfMonitorManager *manager)
 {
-  GfMonitorManagerPrivate *priv;
-
-  priv = gf_monitor_manager_get_instance_private (manager);
-
-  return (priv->in_init || !gf_monitor_manager_has_hotplug_mode_update (manager));
+  return (manager->in_init || !gf_monitor_manager_has_hotplug_mode_update (manager));
 }
 
 static gfloat
@@ -2477,15 +2471,13 @@ gf_monitor_manager_get_backend (GfMonitorManager *manager)
 void
 gf_monitor_manager_setup (GfMonitorManager *manager)
 {
-  GfMonitorManagerPrivate *priv;
   GfMonitorManagerClass *manager_class;
   GfMonitorConfigStore *config_store;
   const GfMonitorConfigPolicy *policy;
 
-  priv = gf_monitor_manager_get_instance_private (manager);
   manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
 
-  priv->in_init = TRUE;
+  manager->in_init = TRUE;
 
   manager->config_manager = gf_monitor_config_manager_new (manager);
 
@@ -2498,21 +2490,18 @@ gf_monitor_manager_setup (GfMonitorManager *manager)
   gf_dbus_display_config_set_apply_monitors_config_allowed (manager->display_config,
                                                             policy->enable_dbus);
 
-  priv->in_init = FALSE;
+  manager->in_init = FALSE;
 }
 
 void
 gf_monitor_manager_rebuild_derived (GfMonitorManager *manager,
                                     GfMonitorsConfig *config)
 {
-  GfMonitorManagerPrivate *priv;
   GList *old_logical_monitors;
-
-  priv = gf_monitor_manager_get_instance_private (manager);
 
   gf_monitor_manager_update_monitor_modes_derived (manager);
 
-  if (priv->in_init)
+  if (manager->in_init)
     return;
 
   old_logical_monitors = manager->logical_monitors;

@@ -52,6 +52,8 @@ struct _GfMonitorManager
 
   GfDBusDisplayConfig         *display_config;
 
+  gboolean                     in_init;
+
   guint                        serial;
 
   GfLogicalMonitorLayoutMode   layout_mode;
