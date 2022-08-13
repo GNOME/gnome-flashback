@@ -378,6 +378,17 @@ get_closest_scale_factor_for_resolution (float width,
 }
 
 static void
+unset_monitor (gpointer data,
+               gpointer user_data)
+{
+  GfOutput *output;
+
+  output = GF_OUTPUT (data);
+
+  gf_output_unset_monitor (output);
+}
+
+static void
 gf_monitor_dispose (GObject *object)
 {
   GfMonitor *monitor;
@@ -388,6 +399,7 @@ gf_monitor_dispose (GObject *object)
 
   if (priv->outputs)
     {
+      g_list_foreach (priv->outputs, unset_monitor, NULL);
       g_list_free_full (priv->outputs, g_object_unref);
       priv->outputs = NULL;
     }

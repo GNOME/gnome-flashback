@@ -66,6 +66,8 @@ GfMonitor          *gf_output_get_monitor               (GfOutput               
 void                gf_output_set_monitor               (GfOutput                 *self,
                                                          GfMonitor                *monitor);
 
+void                gf_output_unset_monitor             (GfOutput                 *self);
+
 const char         *gf_output_get_name                  (GfOutput                 *self);
 
 void                gf_output_assign_crtc               (GfOutput                 *self,

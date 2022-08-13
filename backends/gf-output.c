@@ -269,6 +269,18 @@ gf_output_set_monitor (GfOutput  *self,
   priv->monitor = monitor;
 }
 
+void
+gf_output_unset_monitor (GfOutput *self)
+{
+  GfOutputPrivate *priv;
+
+  priv = gf_output_get_instance_private (self);
+
+  g_warn_if_fail (priv->monitor);
+
+  priv->monitor = NULL;
+}
+
 const char *
 gf_output_get_name (GfOutput *self)
 {
