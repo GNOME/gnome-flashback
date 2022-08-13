@@ -603,6 +603,7 @@ handle_orientation_change (GfOrientationManager *orientation_manager,
 {
   GfOrientation orientation;
   GfMonitorTransform transform;
+  GfMonitorTransform panel_transform;
   GError *error = NULL;
   GfMonitorsConfig *config;
   GfMonitor *laptop_panel;
@@ -619,7 +620,9 @@ handle_orientation_change (GfOrientationManager *orientation_manager,
   transform = gf_monitor_transform_from_orientation (orientation);
 
   laptop_logical_monitor = gf_monitor_get_logical_monitor (laptop_panel);
-  if (gf_logical_monitor_get_transform (laptop_logical_monitor) == transform)
+  panel_transform = gf_monitor_crtc_to_logical_transform (laptop_panel, transform);
+
+  if (gf_logical_monitor_get_transform (laptop_logical_monitor) == panel_transform)
     return;
 
   current_config = gf_monitor_config_manager_get_current (manager->config_manager);
