@@ -1243,7 +1243,7 @@ rebuild_monitors (GfMonitorManager *manager)
                 {
                   GfMonitorTiled *monitor_tiled;
 
-                  monitor_tiled = gf_monitor_tiled_new (gpu, manager, output);
+                  monitor_tiled = gf_monitor_tiled_new (manager, output);
                   manager->monitors = g_list_append (manager->monitors, monitor_tiled);
                 }
             }
@@ -1251,7 +1251,7 @@ rebuild_monitors (GfMonitorManager *manager)
             {
               GfMonitorNormal *monitor_normal;
 
-              monitor_normal = gf_monitor_normal_new (gpu, output);
+              monitor_normal = gf_monitor_normal_new (manager, output);
               manager->monitors = g_list_append (manager->monitors, monitor_normal);
             }
         }

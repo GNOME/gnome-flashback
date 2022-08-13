@@ -751,18 +751,19 @@ gf_monitor_tiled_init (GfMonitorTiled *tiled)
 }
 
 GfMonitorTiled *
-gf_monitor_tiled_new (GfGpu            *gpu,
-                      GfMonitorManager *monitor_manager,
+gf_monitor_tiled_new (GfMonitorManager *monitor_manager,
                       GfOutput         *output)
 {
   const GfOutputInfo *output_info;
+  GfBackend *backend;
   GfMonitorTiled *tiled;
   GfMonitor *monitor;
 
   output_info = gf_output_get_info (output);
 
+  backend = gf_monitor_manager_get_backend (monitor_manager);
   tiled = g_object_new (GF_TYPE_MONITOR_TILED,
-                        "gpu", gpu,
+                        "backend", backend,
                         NULL);
 
   monitor = GF_MONITOR (tiled);
@@ -773,7 +774,7 @@ gf_monitor_tiled_new (GfGpu            *gpu,
   gf_monitor_set_winsys_id (monitor, gf_output_get_id (output));
 
   tiled->origin_output = output;
-  add_tiled_monitor_outputs (gpu, tiled);
+  add_tiled_monitor_outputs (gf_output_get_gpu (output), tiled);
 
   tiled->main_output = find_untiled_output (tiled);
 

@@ -54,7 +54,7 @@
 
 typedef struct
 {
-  GfGpu            *gpu;
+  GfBackend        *backend;
 
   GList            *outputs;
   GList            *modes;
@@ -85,7 +85,7 @@ enum
 {
   PROP_0,
 
-  PROP_GPU,
+  PROP_BACKEND,
 
   LAST_PROP
 };
@@ -426,8 +426,8 @@ gf_monitor_get_property (GObject    *object,
 
   switch (property_id)
     {
-      case PROP_GPU:
-        g_value_set_object (value, priv->gpu);
+      case PROP_BACKEND:
+        g_value_set_object (value, priv->backend);
         break;
 
       default:
@@ -450,8 +450,8 @@ gf_monitor_set_property (GObject      *object,
 
   switch (property_id)
     {
-      case PROP_GPU:
-        priv->gpu = g_value_get_object (value);
+      case PROP_BACKEND:
+        priv->backend = g_value_get_object (value);
         break;
 
       default:
@@ -463,11 +463,11 @@ gf_monitor_set_property (GObject      *object,
 static void
 gf_monitor_install_properties (GObjectClass *object_class)
 {
-  monitor_properties[PROP_GPU] =
-    g_param_spec_object ("gpu",
-                         "GfGpu",
-                         "GfGpu",
-                         GF_TYPE_GPU,
+  monitor_properties[PROP_BACKEND] =
+    g_param_spec_object ("backend",
+                         "GfBackend",
+                         "GfBackend",
+                         GF_TYPE_BACKEND,
                          G_PARAM_READWRITE |
                          G_PARAM_STATIC_STRINGS |
                          G_PARAM_CONSTRUCT_ONLY);
@@ -501,27 +501,25 @@ gf_monitor_init (GfMonitor *monitor)
   priv->mode_ids = g_hash_table_new (g_str_hash, g_str_equal);
 }
 
-GfGpu *
-gf_monitor_get_gpu (GfMonitor *monitor)
+GfBackend *
+gf_monitor_get_backend (GfMonitor *monitor)
 {
   GfMonitorPrivate *priv;
 
   priv = gf_monitor_get_instance_private (monitor);
 
-  return priv->gpu;
+  return priv->backend;
 }
 
 void
 gf_monitor_make_display_name (GfMonitor *monitor)
 {
   GfMonitorPrivate *priv;
-  GfBackend *backend;
   GfMonitorManager *manager;
 
   priv = gf_monitor_get_instance_private (monitor);
 
-  backend = gf_gpu_get_backend (priv->gpu);
-  manager = gf_backend_get_monitor_manager (backend);
+  manager = gf_backend_get_monitor_manager (priv->backend);
 
   g_free (priv->display_name);
   priv->display_name = make_display_name (monitor, manager);
@@ -1061,16 +1059,11 @@ gf_monitor_calculate_mode_scale (GfMonitor                 *monitor,
                                  GfMonitorScalesConstraint  constraints)
 {
   GfMonitorPrivate *priv;
-  GfMonitorManager *monitor_manager;
-  GfBackend *backend;
   GfSettings *settings;
   gint global_scaling_factor;
 
   priv = gf_monitor_get_instance_private (monitor);
-  backend = gf_gpu_get_backend (priv->gpu);
-  monitor_manager = gf_backend_get_monitor_manager (backend);
-  backend = gf_monitor_manager_get_backend (monitor_manager);
-  settings = gf_backend_get_settings (backend);
+  settings = gf_backend_get_settings (priv->backend);
 
   if (gf_settings_get_global_scaling_factor (settings, &global_scaling_factor))
     return global_scaling_factor;

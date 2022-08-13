@@ -30,8 +30,8 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (GfMonitorNormal, gf_monitor_normal,
                       GF, MONITOR_NORMAL, GfMonitor)
 
-GfMonitorNormal *gf_monitor_normal_new (GfGpu    *gpu,
-                                        GfOutput *output);
+GfMonitorNormal *gf_monitor_normal_new (GfMonitorManager *monitor_manager,
+                                        GfOutput         *output);
 
 G_END_DECLS
 

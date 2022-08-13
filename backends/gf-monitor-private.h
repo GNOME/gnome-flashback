@@ -92,7 +92,7 @@ struct _GfMonitorClass
                                           gint               *height);
 };
 
-GfGpu              *gf_monitor_get_gpu                    (GfMonitor                  *monitor);
+GfBackend          *gf_monitor_get_backend                (GfMonitor                  *self);
 
 void                gf_monitor_make_display_name          (GfMonitor                  *monitor);
 
