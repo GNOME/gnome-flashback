@@ -1298,6 +1298,71 @@ combine_gpu_lists (GfMonitorManager *manager,
   return list;
 }
 
+static void
+gf_monitor_manager_get_crtc_gamma (GfMonitorManager  *self,
+                                   GfCrtc            *crtc,
+                                   gsize             *size,
+                                   gushort          **red,
+                                   gushort          **green,
+                                   gushort          **blue)
+{
+  GfMonitorManagerClass *manager_class;
+
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (self);
+
+  if (manager_class->get_crtc_gamma)
+    {
+      manager_class->get_crtc_gamma (self, crtc, size, red, green, blue);
+    }
+  else
+    {
+      if (size)
+        *size = 0;
+
+      if (red)
+        *red = NULL;
+
+      if (green)
+        *green = NULL;
+
+      if (blue)
+        *blue = NULL;
+    }
+}
+
+static gboolean
+is_night_light_supported (GfMonitorManager *self)
+{
+  GfMonitorManagerPrivate *priv;
+  GList *l;
+
+  priv = gf_monitor_manager_get_instance_private (self);
+
+  for (l = gf_backend_get_gpus (priv->backend); l; l = l->next)
+    {
+      GfGpu *gpu = l->data;
+      GList *l_crtc;
+
+      for (l_crtc = gf_gpu_get_crtcs (gpu); l_crtc; l_crtc = l_crtc->next)
+        {
+          GfCrtc *crtc = l_crtc->data;
+          size_t gamma_lut_size;
+
+          gf_monitor_manager_get_crtc_gamma (self,
+                                             crtc,
+                                             &gamma_lut_size,
+                                             NULL,
+                                             NULL,
+                                             NULL);
+
+          if (gamma_lut_size > 0)
+            return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
 static gboolean
 gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
                                          GDBusMethodInvocation *invocation,
@@ -1624,7 +1689,6 @@ gf_monitor_manager_handle_get_crtc_gamma (GfDBusDisplayConfig   *skeleton,
                                           guint                  crtc_id,
                                           GfMonitorManager      *manager)
 {
-  GfMonitorManagerClass *manager_class;
   GList *combined_crtcs;
   GfCrtc *crtc;
   gsize size;
@@ -1637,8 +1701,6 @@ gf_monitor_manager_handle_get_crtc_gamma (GfDBusDisplayConfig   *skeleton,
   GVariant *red_v;
   GVariant *green_v;
   GVariant *blue_v;
-
-  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
 
   if (serial != manager->serial)
     {
@@ -1662,15 +1724,7 @@ gf_monitor_manager_handle_get_crtc_gamma (GfDBusDisplayConfig   *skeleton,
   crtc = g_list_nth_data (combined_crtcs, crtc_id);
   g_list_free (combined_crtcs);
 
-  if (manager_class->get_crtc_gamma)
-    {
-      manager_class->get_crtc_gamma (manager, crtc, &size, &red, &green, &blue);
-    }
-  else
-    {
-      size = 0;
-      red = green = blue = NULL;
-    }
+  gf_monitor_manager_get_crtc_gamma (manager, crtc, &size, &red, &green, &blue);
 
   red_bytes = g_bytes_new_take (red, size * sizeof (gushort));
   green_bytes = g_bytes_new_take (green, size * sizeof (gushort));
@@ -2558,6 +2612,7 @@ gf_monitor_manager_setup (GfMonitorManager *manager)
   GfMonitorManagerClass *manager_class;
   GfMonitorConfigStore *config_store;
   const GfMonitorConfigPolicy *policy;
+  gboolean night_light_supported;
 
   manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
 
@@ -2573,6 +2628,11 @@ gf_monitor_manager_setup (GfMonitorManager *manager)
 
   gf_dbus_display_config_set_apply_monitors_config_allowed (manager->display_config,
                                                             policy->enable_dbus);
+
+  night_light_supported = is_night_light_supported (manager);
+
+  gf_dbus_display_config_set_night_light_supported (manager->display_config,
+                                                    night_light_supported);
 
   manager->in_init = FALSE;
 }

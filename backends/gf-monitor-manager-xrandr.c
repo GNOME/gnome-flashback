@@ -831,10 +831,17 @@ gf_monitor_manager_xrandr_get_crtc_gamma (GfMonitorManager  *manager,
   xrandr = GF_MONITOR_MANAGER_XRANDR (manager);
   gamma = XRRGetCrtcGamma (xrandr->xdisplay, (XID) gf_crtc_get_id (crtc));
 
-  *size = gamma->size;
-  *red = g_memdup2 (gamma->red, sizeof (gushort) * gamma->size);
-  *green = g_memdup2 (gamma->green, sizeof (gushort) * gamma->size);
-  *blue = g_memdup2 (gamma->blue, sizeof (gushort) * gamma->size);
+  if (size)
+    *size = gamma->size;
+
+  if (red)
+    *red = g_memdup2 (gamma->red, sizeof (gushort) * gamma->size);
+
+  if (green)
+    *green = g_memdup2 (gamma->green, sizeof (gushort) * gamma->size);
+
+  if (blue)
+    *blue = g_memdup2 (gamma->blue, sizeof (gushort) * gamma->size);
 
   XRRFreeGamma (gamma);
 }
