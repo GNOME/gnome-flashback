@@ -28,6 +28,7 @@ G_BEGIN_DECLS
 typedef struct _GfEdidInfo GfEdidInfo;
 typedef struct _GfEdidTiming GfEdidTiming;
 typedef struct _GfEdidDetailedTiming GfEdidDetailedTiming;
+typedef struct _GfEdidHdrStaticMetadata GfEdidHdrStaticMetadata;
 
 typedef enum
 {
@@ -72,6 +73,19 @@ typedef enum
   GF_EDID_COLORIMETRY_ICTCP       = (1 << 15),
 } GfEdidColorimetry;
 
+typedef enum
+{
+  GF_EDID_TF_TRADITIONAL_GAMMA_SDR = (1 << 0),
+  GF_EDID_TF_TRADITIONAL_GAMMA_HDR = (1 << 1),
+  GF_EDID_TF_PQ                    = (1 << 2),
+  GF_EDID_TF_HLG                   = (1 << 3),
+} GfEdidTransferFunction;
+
+typedef enum
+{
+  GF_EDID_STATIC_METADATA_TYPE1 = 0,
+} GfEdidStaticMetadataType;
+
 struct _GfEdidTiming
 {
   int width;
@@ -115,6 +129,16 @@ struct _GfEdidDetailedTiming
       int    negative_hsync;
     } digital;
   } connector;
+};
+
+struct _GfEdidHdrStaticMetadata
+{
+  int                      available;
+  int                      max_luminance;
+  int                      min_luminance;
+  int                      max_fal;
+  GfEdidTransferFunction   tf;
+  GfEdidStaticMetadataType sm;
 };
 
 struct _GfEdidInfo
@@ -201,6 +225,7 @@ struct _GfEdidInfo
   char           dsc_string[14];        /* Unspecified ASCII data */
 
   GfEdidColorimetry colorimetry;
+  GfEdidHdrStaticMetadata hdr_static_metadata;
 };
 
 GfEdidInfo *gf_edid_info_new_parse (const uint8_t *data);
