@@ -56,6 +56,11 @@ struct _FlashbackIdleMonitor
   gint                      xsync_error_base;
 
   GDBusObjectManagerServer *server;
+
+  guint                     upower_watch_id;
+  GDBusProxy               *upower_proxy;
+  gboolean                  lid_is_closed;
+  gboolean                  on_battery;
 };
 
 G_DEFINE_TYPE (FlashbackIdleMonitor, flashback_idle_monitor, G_TYPE_OBJECT)
@@ -459,6 +464,135 @@ find_idletime_counter (FlashbackIdleMonitor *self)
 }
 
 static void
+upower_properties_changed_cb (GDBusProxy           *proxy,
+                              GVariant             *changed_properties,
+                              GStrv                 invalidated_properties,
+                              FlashbackIdleMonitor *self)
+{
+  gboolean reset_idle_time;
+  GVariant *v;
+
+  reset_idle_time = FALSE;
+
+  v = g_variant_lookup_value (changed_properties,
+                              "LidIsClosed",
+                              G_VARIANT_TYPE_BOOLEAN);
+
+  if (v != NULL)
+    {
+      gboolean lid_is_closed;
+
+      lid_is_closed = g_variant_get_boolean (v);
+      g_variant_unref (v);
+
+      if (lid_is_closed != self->lid_is_closed)
+        {
+          self->lid_is_closed = lid_is_closed;
+
+          if (!lid_is_closed)
+            reset_idle_time = TRUE;
+        }
+    }
+
+  v = g_variant_lookup_value (changed_properties,
+                              "OnBattery",
+                              G_VARIANT_TYPE_BOOLEAN);
+
+  if (v != NULL)
+    {
+      gboolean on_battery;
+
+      on_battery = g_variant_get_boolean (v);
+      g_variant_unref (v);
+
+      if (on_battery != self->on_battery)
+        {
+          self->on_battery = on_battery;
+          reset_idle_time = TRUE;
+        }
+    }
+
+  if (reset_idle_time)
+    meta_idle_monitor_reset_idletime (self->monitor);
+}
+
+static void
+upower_ready_cb (GObject      *source_object,
+                 GAsyncResult *res,
+                 gpointer      user_data)
+{
+  GError *error;
+  GDBusProxy *proxy;
+  FlashbackIdleMonitor *self;
+  GVariant *v;
+
+  error = NULL;
+  proxy = g_dbus_proxy_new_finish (res, &error);
+
+  if (proxy == NULL)
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Failed to create UPower proxy: %s", error->message);
+
+      g_error_free (error);
+      return;
+    }
+
+  self = FLASHBACK_IDLE_MONITOR (user_data);
+  self->upower_proxy = proxy;
+
+  g_signal_connect (proxy,
+                    "g-properties-changed",
+                    G_CALLBACK (upower_properties_changed_cb),
+                    self);
+
+  v = g_dbus_proxy_get_cached_property (proxy, "LidIsClosed");
+
+  if (v != NULL)
+    {
+      self->lid_is_closed = g_variant_get_boolean (v);
+      g_variant_unref (v);
+    }
+
+  v = g_dbus_proxy_get_cached_property (proxy, "OnBattery");
+
+  if (v)
+    {
+      self->on_battery = g_variant_get_boolean (v);
+      g_variant_unref (v);
+    }
+}
+
+static void
+upower_appeared_cb (GDBusConnection *connection,
+                    const char      *name,
+                    const char      *name_owner,
+                    gpointer         user_data)
+{
+  g_dbus_proxy_new (connection,
+                    G_DBUS_PROXY_FLAGS_NONE,
+                    NULL,
+                    "org.freedesktop.UPower",
+                    "/org/freedesktop/UPower",
+                    "org.freedesktop.UPower",
+                    NULL,
+                    upower_ready_cb,
+                    user_data);
+}
+
+static void
+upower_vanished_cb (GDBusConnection *connection,
+                    const char      *name,
+                    gpointer         user_data)
+{
+  FlashbackIdleMonitor *self;
+
+  self = FLASHBACK_IDLE_MONITOR (user_data);
+
+  g_clear_object (&self->upower_proxy);
+}
+
+static void
 flashback_idle_monitor_dispose (GObject *object)
 {
   FlashbackIdleMonitor *monitor;
@@ -506,6 +640,14 @@ flashback_idle_monitor_finalize (GObject *object)
       XCloseDisplay (monitor->xdisplay);
       monitor->xdisplay = NULL;
     }
+
+  if (monitor->upower_watch_id != 0)
+    {
+      g_bus_unwatch_name (monitor->upower_watch_id);
+      monitor->upower_watch_id = 0;
+    }
+
+  g_clear_object (&monitor->upower_proxy);
 
   G_OBJECT_CLASS (flashback_idle_monitor_parent_class)->finalize (object);
 }
@@ -575,6 +717,14 @@ flashback_idle_monitor_init (FlashbackIdleMonitor *monitor)
                                                  XSyncNegativeTransition,
                                                  1,
                                                  TRUE);
+
+  monitor->upower_watch_id = g_bus_watch_name (G_BUS_TYPE_SYSTEM,
+                                               "org.freedesktop.UPower",
+                                               G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                               upower_appeared_cb,
+                                               upower_vanished_cb,
+                                               monitor,
+                                               NULL);
 }
 
 static void
