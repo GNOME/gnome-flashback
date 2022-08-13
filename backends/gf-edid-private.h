@@ -58,6 +58,20 @@ typedef enum
   GF_EDID_STEREO_TYPE_SIDE_BY_SIDE
 } GfEdidStereoType;
 
+typedef enum
+{
+  GF_EDID_COLORIMETRY_XVYCC601    = (1 << 0),
+  GF_EDID_COLORIMETRY_XVYCC709    = (1 << 1),
+  GF_EDID_COLORIMETRY_SYCC601     = (1 << 2),
+  GF_EDID_COLORIMETRY_OPYCC601    = (1 << 3),
+  GF_EDID_COLORIMETRY_OPRGB       = (1 << 4),
+  GF_EDID_COLORIMETRY_BT2020CYCC  = (1 << 5),
+  GF_EDID_COLORIMETRY_BT2020YCC   = (1 << 6),
+  GF_EDID_COLORIMETRY_BT2020RGB   = (1 << 7),
+  GF_EDID_COLORIMETRY_ST2113RGB   = (1 << 14),
+  GF_EDID_COLORIMETRY_ICTCP       = (1 << 15),
+} GfEdidColorimetry;
+
 struct _GfEdidTiming
 {
   int width;
@@ -185,6 +199,8 @@ struct _GfEdidInfo
   char           dsc_serial_number[14];
   char           dsc_product_name[14];
   char           dsc_string[14];        /* Unspecified ASCII data */
+
+  GfEdidColorimetry colorimetry;
 };
 
 GfEdidInfo *gf_edid_info_new_parse (const uint8_t *data);

@@ -43,6 +43,7 @@
 #define EDID_EXT_CTA_DESCRIPTOR_OFFSET_ADDR               0x02
 #define EDID_EXT_CTA_DATA_BLOCK_OFFSET                    0x04
 #define EDID_EXT_CTA_TAG_EXTENDED                         0x07
+#define EDID_EXT_CTA_TAG_EXTENDED_COLORIMETRY             0x0705
 
 static int
 get_bit (int in, int bit)
@@ -558,6 +559,15 @@ decode_descriptors (const uint8_t *edid,
 }
 
 static gboolean
+decode_ext_cta_colorimetry (const uint8_t *data_block,
+                            GfEdidInfo    *info)
+{
+  /* CTA-861-H: Table 78 - Colorimetry Data Block (CDB) */
+  info->colorimetry = (data_block[3] << 8) + data_block[2];
+  return TRUE;
+}
+
+static gboolean
 decode_ext_cta (const uint8_t *cta_block,
                 GfEdidInfo    *info)
 {
@@ -603,6 +613,11 @@ decode_ext_cta (const uint8_t *cta_block,
 
       switch (tag)
         {
+          case EDID_EXT_CTA_TAG_EXTENDED_COLORIMETRY:
+            if (!decode_ext_cta_colorimetry (data_block, info))
+              return FALSE;
+            break;
+
           default:
             break;
         }
