@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2017 Red Hat
  * Copyright (C) 2019 Alberts Muktupāvels
+ * Copyright (C) 2020 NVIDIA CORPORATION
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +42,9 @@ void           gf_output_xrandr_apply_mode       (GfOutputXrandr *self);
 
 void           gf_output_xrandr_change_backlight (GfOutputXrandr *self,
                                                   int             value);
+
+void           gf_output_xrandr_set_ctm          (GfOutputXrandr    *self,
+                                                  const GfOutputCtm *ctm);
 
 G_END_DECLS
 

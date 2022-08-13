@@ -4,6 +4,7 @@
  * Copyright (C) 2004-2006 Elijah Newren
  * Copyright (C) 2013 Red Hat Inc.
  * Copyright (C) 2017-2020 Alberts Muktupāvels
+ * Copyright (C) 2020 NVIDIA CORPORATION
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,6 +72,7 @@ typedef struct
   int                  backlight_max;
 
   gboolean             supports_underscanning;
+  gboolean             supports_color_transform;
 
   /* Get a new preferred mode on hotplug events, to handle
    * dynamic guest resizing

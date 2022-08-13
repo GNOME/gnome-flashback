@@ -7,6 +7,7 @@
  * Copyright (C) 2004-2006 Elijah Newren
  * Copyright (C) 2013 Red Hat Inc.
  * Copyright (C) 2017-2019 Alberts Muktupāvels
+ * Copyright (C) 2020 NVIDIA CORPORATION
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1008,6 +1009,13 @@ gf_monitor_manager_xrandr_get_default_layout_mode (GfMonitorManager *manager)
 }
 
 static void
+gf_monitor_manager_xrandr_set_output_ctm (GfOutput          *output,
+                                          const GfOutputCtm *ctm)
+{
+  gf_output_xrandr_set_ctm (GF_OUTPUT_XRANDR (output), ctm);
+}
+
+static void
 gf_monitor_manager_xrandr_class_init (GfMonitorManagerXrandrClass *xrandr_class)
 {
   GObjectClass *object_class;
@@ -1035,6 +1043,7 @@ gf_monitor_manager_xrandr_class_init (GfMonitorManagerXrandrClass *xrandr_class)
   manager_class->get_capabilities = gf_monitor_manager_xrandr_get_capabilities;
   manager_class->get_max_screen_size = gf_monitor_manager_xrandr_get_max_screen_size;
   manager_class->get_default_layout_mode = gf_monitor_manager_xrandr_get_default_layout_mode;
+  manager_class->set_output_ctm = gf_monitor_manager_xrandr_set_output_ctm;
 }
 
 static void

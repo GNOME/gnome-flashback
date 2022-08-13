@@ -43,6 +43,7 @@ typedef struct _GfGpu GfGpu;
 
 typedef struct _GfCrtc GfCrtc;
 typedef struct _GfOutput GfOutput;
+typedef struct _GfOutputCtm GfOutputCtm;
 typedef struct _GfCrtcMode GfCrtcMode;
 
 G_END_DECLS

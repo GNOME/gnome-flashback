@@ -7,6 +7,7 @@
  * Copyright (C) 2004-2006 Elijah Newren
  * Copyright (C) 2013-2017 Red Hat Inc.
  * Copyright (C) 2017-2019 Alberts Muktupāvels
+ * Copyright (C) 2020 NVIDIA CORPORATION
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,10 +37,28 @@
 
 struct _GfOutputXrandr
 {
-  GfOutput parent;
+  GfOutput    parent;
+
+  gboolean    ctm_initialized;
+  GfOutputCtm ctm;
 };
 
 G_DEFINE_TYPE (GfOutputXrandr, gf_output_xrandr, GF_TYPE_OUTPUT)
+
+static gboolean
+ctm_is_equal (const GfOutputCtm *ctm1,
+              const GfOutputCtm *ctm2)
+{
+  int i;
+
+  for (i = 0; i < 9; i++)
+    {
+      if (ctm1->matrix[i] != ctm2->matrix[i])
+        return FALSE;
+    }
+
+  return TRUE;
+}
 
 static Display *
 xdisplay_from_gpu (GfGpu *gpu)
@@ -705,6 +724,35 @@ output_get_supports_underscanning_xrandr (Display  *xdisplay,
   return supports_underscanning;
 }
 
+static gboolean
+output_get_supports_color_transform_xrandr (Display  *xdisplay,
+                                            RROutput  output_id)
+{
+  Atom atom, actual_type;
+  int actual_format;
+  unsigned long nitems, bytes_after;
+  unsigned char *buffer;
+
+  atom = XInternAtom (xdisplay, "CTM", False);
+  buffer = NULL;
+
+  XRRGetOutputProperty (xdisplay,
+                        (XID) output_id,
+                        atom,
+                        0, G_MAXLONG, False, False, XA_INTEGER,
+                        &actual_type, &actual_format,
+                        &nitems, &bytes_after, &buffer);
+
+  XFree (buffer);
+
+  /* X's CTM property is 9 64-bit integers represented as an array of 18
+   * 32-bit integers.
+   */
+  return (actual_type == XA_INTEGER &&
+          actual_format == 32 &&
+          nitems == 18);
+}
+
 static int
 normalize_backlight (GfOutput *output,
                      gint      hw_value)
@@ -872,6 +920,9 @@ gf_output_xrandr_new (GfGpuXrandr   *gpu_xrandr,
 
   output_info->supports_underscanning = output_get_supports_underscanning_xrandr (xdisplay,
                                                                                   output_id);
+  output_info->supports_color_transform = output_get_supports_color_transform_xrandr (xdisplay,
+                                                                                      output_id);
+
   output_info_init_backlight_limits_xrandr (output_info, xdisplay, output_id);
 
   output = g_object_new (GF_TYPE_OUTPUT_XRANDR,
@@ -976,4 +1027,30 @@ gf_output_xrandr_change_backlight (GfOutputXrandr *self,
 
   /* We're not selecting for property notifies, so update the value immediately */
   gf_output_set_backlight (output, normalize_backlight (output, hw_value));
+}
+
+void
+gf_output_xrandr_set_ctm (GfOutputXrandr    *self,
+                          const GfOutputCtm *ctm)
+{
+  if (!self->ctm_initialized || !ctm_is_equal (ctm, &self->ctm))
+    {
+      GfOutput *output;
+      Display *xdisplay;
+      Atom ctm_atom;
+
+      output = GF_OUTPUT (self);
+
+      xdisplay = xdisplay_from_output (output);
+      ctm_atom = XInternAtom (xdisplay, "CTM", False);
+
+      xcb_randr_change_output_property (XGetXCBConnection (xdisplay),
+                                        (XID) gf_output_get_id (output),
+                                        ctm_atom, XCB_ATOM_INTEGER, 32,
+                                        XCB_PROP_MODE_REPLACE,
+                                        18, &ctm->matrix);
+
+      self->ctm_initialized = TRUE;
+      self->ctm = *ctm;
+    }
 }

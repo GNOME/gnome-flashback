@@ -7,6 +7,7 @@
  * Copyright (C) 2004-2006 Elijah Newren
  * Copyright (C) 2013 Red Hat Inc.
  * Copyright (C) 2017-2019 Alberts Muktupāvels
+ * Copyright (C) 2020 NVIDIA CORPORATION
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1373,6 +1374,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
       const char *connector_type_name;
       gboolean is_underscanning;
       gboolean supports_underscanning;
+      gboolean supports_color_transform;
 
       output = l->data;
       output_info = gf_output_get_info (output);
@@ -1420,6 +1422,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
       is_underscanning = gf_output_is_underscanning (output);
       connector_type_name = get_connector_type_name (output_info->connector_type);
       supports_underscanning = output_info->supports_underscanning;
+      supports_color_transform = output_info->supports_color_transform;
 
       g_variant_builder_init (&properties, G_VARIANT_TYPE ("a{sv}"));
       g_variant_builder_add (&properties, "{sv}", "vendor",
@@ -1448,6 +1451,8 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
                              g_variant_new_boolean (is_underscanning));
       g_variant_builder_add (&properties, "{sv}", "supports-underscanning",
                              g_variant_new_boolean (supports_underscanning));
+      g_variant_builder_add (&properties, "{sv}", "supports-color-transform",
+                             g_variant_new_boolean (supports_color_transform));
 
       edid = manager_class->read_edid (manager, output);
 
@@ -2133,6 +2138,67 @@ gf_monitor_manager_handle_apply_monitors_config (GfDBusDisplayConfig   *skeleton
   return TRUE;
 }
 
+static gboolean
+gf_monitor_manager_handle_set_output_ctm (GfDBusDisplayConfig   *skeleton,
+                                          GDBusMethodInvocation *invocation,
+                                          guint                  serial,
+                                          guint                  output_id,
+                                          GVariant              *ctm_var,
+                                          GfMonitorManager      *self)
+{
+  GfMonitorManagerClass *manager_class;
+  GList *combined_outputs;
+  GfOutput *output;
+  GfOutputCtm ctm;
+  int i;
+
+  if (serial != self->serial)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "The requested configuration is based on stale information");
+      return TRUE;
+    }
+
+  combined_outputs = combine_gpu_lists (self, gf_gpu_get_outputs);
+
+  if (output_id >= g_list_length (combined_outputs))
+    {
+      g_list_free (combined_outputs);
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Invalid output id");
+      return TRUE;
+    }
+
+  output = g_list_nth_data (combined_outputs, output_id);
+  g_list_free (combined_outputs);
+
+  if (g_variant_n_children (ctm_var) != 9)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Unexpected color transform matrix variant length");
+      return TRUE;
+    }
+
+  for (i = 0; i < 9; i++)
+    {
+      GVariant *tmp = g_variant_get_child_value (ctm_var, i);
+      ctm.matrix[i] = g_variant_get_uint64 (tmp);
+      g_variant_unref (tmp);
+    }
+
+  manager_class = GF_MONITOR_MANAGER_GET_CLASS (self);
+
+  if (manager_class->set_output_ctm != NULL)
+    manager_class->set_output_ctm (output, &ctm);
+
+  gf_dbus_display_config_complete_set_output_ctm (skeleton, invocation);
+
+  return TRUE;
+}
+
 static void
 monitor_manager_setup_dbus_config_handlers (GfMonitorManager *manager)
 {
@@ -2153,6 +2219,9 @@ monitor_manager_setup_dbus_config_handlers (GfMonitorManager *manager)
                            manager, 0);
   g_signal_connect_object (manager->display_config, "handle-apply-monitors-config",
                            G_CALLBACK (gf_monitor_manager_handle_apply_monitors_config),
+                           manager, 0);
+  g_signal_connect_object (manager->display_config, "handle-set-output-ctm",
+                           G_CALLBACK (gf_monitor_manager_handle_set_output_ctm),
                            manager, 0);
 }
 

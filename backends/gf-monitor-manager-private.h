@@ -4,6 +4,7 @@
  * Copyright (C) 2004-2006 Elijah Newren
  * Copyright (C) 2013 Red Hat Inc.
  * Copyright (C) 2017-2019 Alberts Muktupāvels
+ * Copyright (C) 2020 NVIDIA CORPORATION
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -140,6 +141,9 @@ typedef struct
                                                                  gint                        *max_height);
 
   GfLogicalMonitorLayoutMode   (* get_default_layout_mode)      (GfMonitorManager            *manager);
+
+  void                         (* set_output_ctm)               (GfOutput                    *output,
+                                                                 const GfOutputCtm           *ctm);
 } GfMonitorManagerClass;
 
 GType                       gf_monitor_manager_get_type                     (void);
