@@ -18,6 +18,36 @@
 #include "config.h"
 #include "gf-monitor-transform.h"
 
+static GfMonitorTransform
+gf_monitor_transform_flip (GfMonitorTransform transform)
+{
+  switch (transform)
+    {
+      case GF_MONITOR_TRANSFORM_NORMAL:
+        return GF_MONITOR_TRANSFORM_FLIPPED;
+      case GF_MONITOR_TRANSFORM_90:
+        return GF_MONITOR_TRANSFORM_FLIPPED_270;
+      case GF_MONITOR_TRANSFORM_180:
+        return GF_MONITOR_TRANSFORM_FLIPPED_180;
+      case GF_MONITOR_TRANSFORM_270:
+        return GF_MONITOR_TRANSFORM_FLIPPED_90;
+      case GF_MONITOR_TRANSFORM_FLIPPED:
+        return GF_MONITOR_TRANSFORM_NORMAL;
+      case GF_MONITOR_TRANSFORM_FLIPPED_90:
+        return GF_MONITOR_TRANSFORM_270;
+      case GF_MONITOR_TRANSFORM_FLIPPED_180:
+        return GF_MONITOR_TRANSFORM_180;
+      case GF_MONITOR_TRANSFORM_FLIPPED_270:
+        return GF_MONITOR_TRANSFORM_90;
+
+      default:
+        break;
+    }
+
+  g_assert_not_reached ();
+  return 0;
+}
+
 GfMonitorTransform
 gf_monitor_transform_from_orientation (GfOrientation orientation)
 {
@@ -78,11 +108,21 @@ gf_monitor_transform_transform (GfMonitorTransform transform,
                                 GfMonitorTransform other)
 {
   GfMonitorTransform new_transform;
+  gboolean needs_flip;
 
-  new_transform = (transform + other) % GF_MONITOR_TRANSFORM_FLIPPED;
+  if (gf_monitor_transform_is_flipped (other))
+    new_transform = gf_monitor_transform_flip (transform);
+  else
+    new_transform = transform;
 
-  if (gf_monitor_transform_is_flipped (transform) !=
-      gf_monitor_transform_is_flipped (other))
+  needs_flip = FALSE;
+  if (gf_monitor_transform_is_flipped (new_transform))
+    needs_flip = TRUE;
+
+  new_transform += other;
+  new_transform %= GF_MONITOR_TRANSFORM_FLIPPED;
+
+  if (needs_flip)
     new_transform += GF_MONITOR_TRANSFORM_FLIPPED;
 
   return new_transform;
