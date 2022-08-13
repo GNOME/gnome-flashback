@@ -26,6 +26,8 @@
 #include "config.h"
 #include "gf-monitor-manager-kms-private.h"
 
+#include <gio/gio.h>
+
 struct _GfMonitorManagerKms
 {
   GfMonitorManager parent;

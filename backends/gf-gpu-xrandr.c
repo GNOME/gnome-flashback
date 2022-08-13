@@ -25,6 +25,7 @@
 #include "config.h"
 #include "gf-gpu-xrandr-private.h"
 
+#include <gio/gio.h>
 #include <X11/extensions/dpms.h>
 #include <X11/Xlibint.h>
 

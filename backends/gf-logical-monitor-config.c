@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <gio/gio.h>
 #include <math.h>
 
 #include "gf-logical-monitor-config-private.h"

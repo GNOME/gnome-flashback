@@ -20,6 +20,9 @@
  */
 
 #include "config.h"
+
+#include <gio/gio.h>
+
 #include "gf-logical-monitor-config-private.h"
 #include "gf-monitor-config-private.h"
 #include "gf-monitor-spec-private.h"

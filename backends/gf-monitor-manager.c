@@ -32,6 +32,7 @@
 #include <string.h>
 
 #include "gf-crtc-private.h"
+#include "gf-dbus-display-config.h"
 #include "gf-logical-monitor-private.h"
 #include "gf-monitor-config-manager-private.h"
 #include "gf-monitor-config-store-private.h"

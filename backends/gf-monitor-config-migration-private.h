@@ -22,6 +22,8 @@
 #ifndef GF_MONITOR_CONFIG_MIGRATION_PRIVATE_H
 #define GF_MONITOR_CONFIG_MIGRATION_PRIVATE_H
 
+#include <gio/gio.h>
+
 #include "gf-monitors-config-private.h"
 
 G_BEGIN_DECLS

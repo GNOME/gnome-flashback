@@ -29,7 +29,6 @@
 #include <libgnome-desktop/gnome-pnp-ids.h>
 
 #include "gf-backend-private.h"
-#include "gf-dbus-display-config.h"
 #include "gf-display-config-shared.h"
 #include "gf-monitor-manager-enums-private.h"
 #include "gf-monitor-manager-types-private.h"
