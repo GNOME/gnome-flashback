@@ -47,7 +47,7 @@ get_bits (int in,
 }
 
 static int
-decode_header (const uchar *edid)
+decode_header (const uint8_t *edid)
 {
   if (memcmp (edid, "\x00\xff\xff\xff\xff\xff\xff\x00", 8) == 0)
     return TRUE;
@@ -55,8 +55,8 @@ decode_header (const uchar *edid)
 }
 
 static int
-decode_vendor_and_product_identification (const uchar *edid,
-                                          MonitorInfo *info)
+decode_vendor_and_product_identification (const uint8_t *edid,
+                                          GfEdidInfo    *info)
 {
   int is_model_year;
 
@@ -110,8 +110,8 @@ decode_vendor_and_product_identification (const uchar *edid,
 }
 
 static int
-decode_edid_version (const uchar *edid,
-                     MonitorInfo *info)
+decode_edid_version (const uint8_t *edid,
+                     GfEdidInfo    *info)
 {
   info->major_version = edid[0x12];
   info->minor_version = edid[0x13];
@@ -120,8 +120,8 @@ decode_edid_version (const uchar *edid,
 }
 
 static int
-decode_display_parameters (const uchar *edid,
-                           MonitorInfo *info)
+decode_display_parameters (const uint8_t *edid,
+                           GfEdidInfo    *info)
 {
   /* Digital vs Analog */
   info->is_digital = get_bit (edid[0x14], 7);
@@ -135,9 +135,14 @@ decode_display_parameters (const uchar *edid,
           -1, 6, 8, 10, 12, 14, 16, -1
         };
 
-      static const Interface interfaces[6] =
+      static const GfEdidInterface interfaces[6] =
         {
-          UNDEFINED, DVI, HDMI_A, HDMI_B, MDDI, DISPLAY_PORT
+          GF_EDID_INTERFACE_UNDEFINED,
+          GF_EDID_INTERFACE_DVI,
+          GF_EDID_INTERFACE_HDMI_A,
+          GF_EDID_INTERFACE_HDMI_B,
+          GF_EDID_INTERFACE_MDDI,
+          GF_EDID_INTERFACE_DISPLAY_PORT
         };
 
       bits = get_bits (edid[0x14], 4, 6);
@@ -148,7 +153,7 @@ decode_display_parameters (const uchar *edid,
       if (bits <= 5)
         info->connector.digital.interface = interfaces[bits];
       else
-        info->connector.digital.interface = UNDEFINED;
+        info->connector.digital.interface = GF_EDID_INTERFACE_UNDEFINED;
     }
   else
     {
@@ -223,9 +228,12 @@ decode_display_parameters (const uchar *edid,
   else
     {
       int bits = get_bits (edid[0x18], 3, 4);
-      ColorType color_type[4] =
+      GfEdidColorType color_type[4] =
         {
-          MONOCHROME, RGB, OTHER_COLOR, UNDEFINED_COLOR
+          GF_EDID_COLOR_TYPE_MONOCHROME,
+          GF_EDID_COLOR_TYPE_RGB,
+          GF_EDID_COLOR_TYPE_OTHER_COLOR,
+          GF_EDID_COLOR_TYPE_UNDEFINED
         };
 
       info->connector.analog.color_type = color_type[bits];
@@ -257,8 +265,8 @@ decode_fraction (int high,
 }
 
 static int
-decode_color_characteristics (const uchar *edid,
-                              MonitorInfo *info)
+decode_color_characteristics (const uint8_t *edid,
+                              GfEdidInfo    *info)
 {
   info->red_x = decode_fraction (edid[0x1b], get_bits (edid[0x19], 6, 7));
   info->red_y = decode_fraction (edid[0x1c], get_bits (edid[0x19], 5, 4));
@@ -273,10 +281,10 @@ decode_color_characteristics (const uchar *edid,
 }
 
 static int
-decode_established_timings (const uchar *edid,
-                            MonitorInfo *info)
+decode_established_timings (const uint8_t *edid,
+                            GfEdidInfo    *info)
 {
-  static const Timing established[][8] =
+  static const GfEdidTiming established[][8] =
     {
       {
         { 800, 600, 60 },
@@ -328,8 +336,8 @@ decode_established_timings (const uchar *edid,
 }
 
 static int
-decode_standard_timings (const uchar *edid,
-                         MonitorInfo *info)
+decode_standard_timings (const uint8_t *edid,
+                         GfEdidInfo    *info)
 {
   int i;
 
@@ -362,9 +370,9 @@ decode_standard_timings (const uchar *edid,
 }
 
 static void
-decode_lf_string (const uchar *s,
-                  int          n_chars,
-                  char        *result)
+decode_lf_string (const uint8_t *s,
+                  int            n_chars,
+                  char          *result)
 {
   int i;
   for (i = 0; i < n_chars; ++i)
@@ -387,8 +395,8 @@ decode_lf_string (const uchar *s,
 }
 
 static void
-decode_display_descriptor (const uchar *desc,
-                           MonitorInfo *info)
+decode_display_descriptor (const uint8_t *desc,
+                           GfEdidInfo    *info)
 {
   switch (desc[0x03])
     {
@@ -427,15 +435,22 @@ decode_display_descriptor (const uchar *desc,
 }
 
 static void
-decode_detailed_timing (const uchar    *timing,
-                        DetailedTiming *detailed)
+decode_detailed_timing (const uint8_t        *timing,
+                        GfEdidDetailedTiming *detailed)
 {
   int bits;
-  StereoType stereo[] =
+  GfEdidStereoType stereo[] =
     {
-      NO_STEREO, NO_STEREO, FIELD_RIGHT, FIELD_LEFT,
-      TWO_WAY_RIGHT_ON_EVEN, TWO_WAY_LEFT_ON_EVEN,
-      FOUR_WAY_INTERLEAVED, SIDE_BY_SIDE
+      GF_EDID_STEREO_TYPE_NO_STEREO,
+      GF_EDID_STEREO_TYPE_NO_STEREO,
+      GF_EDID_STEREO_TYPE_FIELD_RIGHT,
+      GF_EDID_STEREO_TYPE_FIELD_LEFT,
+
+      GF_EDID_STEREO_TYPE_TWO_WAY_RIGHT_ON_EVEN,
+      GF_EDID_STEREO_TYPE_TWO_WAY_LEFT_ON_EVEN,
+
+      GF_EDID_STEREO_TYPE_FOUR_WAY_INTERLEAVED,
+      GF_EDID_STEREO_TYPE_SIDE_BY_SIDE
     };
 
   detailed->pixel_clock = (timing[0x00] | timing[0x01] << 8) * 10000;
@@ -488,8 +503,8 @@ decode_detailed_timing (const uchar    *timing,
 }
 
 static int
-decode_descriptors (const uchar *edid,
-                    MonitorInfo *info)
+decode_descriptors (const uint8_t *edid,
+                    GfEdidInfo    *info)
 {
   int i;
   int timing_idx;
@@ -516,11 +531,11 @@ decode_descriptors (const uchar *edid,
 }
 
 static void
-decode_check_sum (const uchar *edid,
-                  MonitorInfo *info)
+decode_check_sum (const uint8_t *edid,
+                  GfEdidInfo    *info)
 {
   int i;
-  uchar check = 0;
+  uint8_t check = 0;
 
   for (i = 0; i < 128; ++i)
     check += edid[i];
@@ -528,10 +543,12 @@ decode_check_sum (const uchar *edid,
   info->checksum = check;
 }
 
-MonitorInfo *
-decode_edid (const uchar *edid)
+GfEdidInfo *
+gf_edid_info_new_parse (const uint8_t *edid)
 {
-  MonitorInfo *info = g_new0 (MonitorInfo, 1);
+  GfEdidInfo *info;
+
+  info = g_new0 (GfEdidInfo, 1);
 
   decode_check_sum (edid, info);
 

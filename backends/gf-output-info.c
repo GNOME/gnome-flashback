@@ -72,7 +72,7 @@ void
 gf_output_info_parse_edid (GfOutputInfo *output_info,
                            GBytes       *edid)
 {
-  MonitorInfo *parsed_edid;
+  GfEdidInfo *parsed_edid;
   gsize len;
 
   if (!edid)
@@ -83,7 +83,7 @@ gf_output_info_parse_edid (GfOutputInfo *output_info,
       return;
     }
 
-  parsed_edid = decode_edid (g_bytes_get_data (edid, &len));
+  parsed_edid = gf_edid_info_new_parse (g_bytes_get_data (edid, &len));
   if (parsed_edid)
     {
       output_info->vendor = g_strndup (parsed_edid->manufacturer_code, 4);

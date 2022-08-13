@@ -21,51 +21,51 @@
 #define GF_EDID_PRIVATE_H
 
 #include <glib.h>
+#include <stdint.h>
 
 G_BEGIN_DECLS
 
-typedef unsigned char uchar;
-typedef struct MonitorInfo MonitorInfo;
-typedef struct Timing Timing;
-typedef struct DetailedTiming DetailedTiming;
+typedef struct _GfEdidInfo GfEdidInfo;
+typedef struct _GfEdidTiming GfEdidTiming;
+typedef struct _GfEdidDetailedTiming GfEdidDetailedTiming;
 
 typedef enum
 {
-  UNDEFINED,
-  DVI,
-  HDMI_A,
-  HDMI_B,
-  MDDI,
-  DISPLAY_PORT
-} Interface;
+  GF_EDID_INTERFACE_UNDEFINED,
+  GF_EDID_INTERFACE_DVI,
+  GF_EDID_INTERFACE_HDMI_A,
+  GF_EDID_INTERFACE_HDMI_B,
+  GF_EDID_INTERFACE_MDDI,
+  GF_EDID_INTERFACE_DISPLAY_PORT
+} GfEdidInterface;
 
 typedef enum
 {
-  UNDEFINED_COLOR,
-  MONOCHROME,
-  RGB,
-  OTHER_COLOR
-} ColorType;
+  GF_EDID_COLOR_TYPE_UNDEFINED,
+  GF_EDID_COLOR_TYPE_MONOCHROME,
+  GF_EDID_COLOR_TYPE_RGB,
+  GF_EDID_COLOR_TYPE_OTHER_COLOR
+} GfEdidColorType;
 
 typedef enum
 {
-  NO_STEREO,
-  FIELD_RIGHT,
-  FIELD_LEFT,
-  TWO_WAY_RIGHT_ON_EVEN,
-  TWO_WAY_LEFT_ON_EVEN,
-  FOUR_WAY_INTERLEAVED,
-  SIDE_BY_SIDE
-} StereoType;
+  GF_EDID_STEREO_TYPE_NO_STEREO,
+  GF_EDID_STEREO_TYPE_FIELD_RIGHT,
+  GF_EDID_STEREO_TYPE_FIELD_LEFT,
+  GF_EDID_STEREO_TYPE_TWO_WAY_RIGHT_ON_EVEN,
+  GF_EDID_STEREO_TYPE_TWO_WAY_LEFT_ON_EVEN,
+  GF_EDID_STEREO_TYPE_FOUR_WAY_INTERLEAVED,
+  GF_EDID_STEREO_TYPE_SIDE_BY_SIDE
+} GfEdidStereoType;
 
-struct Timing
+struct _GfEdidTiming
 {
   int width;
   int height;
   int frequency;
 };
 
-struct DetailedTiming
+struct _GfEdidDetailedTiming
 {
   int        pixel_clock;
   int        h_addr;
@@ -81,7 +81,7 @@ struct DetailedTiming
   int        right_border;
   int        top_border;
   int        interlaced;
-  StereoType stereo;
+  GfEdidStereoType stereo;
 
   int        digital_sync;
   union
@@ -103,7 +103,7 @@ struct DetailedTiming
   } connector;
 };
 
-struct MonitorInfo
+struct _GfEdidInfo
 {
   int            checksum;
   char           manufacturer_code[4];
@@ -124,7 +124,7 @@ struct MonitorInfo
     struct
     {
       int        bits_per_primary;
-      Interface  interface;
+      GfEdidInterface interface;
       int        rgb444;
       int        ycrcb444;
       int        ycrcb422;
@@ -142,7 +142,7 @@ struct MonitorInfo
       int        composite_sync_on_h;
       int        composite_sync_on_green;
       int        serration_on_vsync;
-      ColorType  color_type;
+      GfEdidColorType color_type;
     } analog;
   } connector;
 
@@ -169,17 +169,17 @@ struct MonitorInfo
   double         white_x;
   double         white_y;
 
-  Timing         established[24];       /* Terminated by 0x0x0 */
-  Timing         standard[8];
+  GfEdidTiming   established[24];       /* Terminated by 0x0x0 */
+  GfEdidTiming   standard[8];
 
   int            n_detailed_timings;
-  DetailedTiming detailed_timings[4];   /* If monitor has a preferred
-                                         * mode, it is the first one
-                                         * (whether it has, is
-                                         * determined by the
-                                         * preferred_timing_includes
-                                         * bit.
-                                         */
+  GfEdidDetailedTiming detailed_timings[4]; /* If monitor has a preferred
+                                             * mode, it is the first one
+                                             * (whether it has, is
+                                             * determined by the
+                                             * preferred_timing_includes
+                                             * bit.
+                                             */
 
   /* Optional product description */
   char           dsc_serial_number[14];
@@ -187,7 +187,7 @@ struct MonitorInfo
   char           dsc_string[14];        /* Unspecified ASCII data */
 };
 
-MonitorInfo *decode_edid (const uchar *data);
+GfEdidInfo *gf_edid_info_new_parse (const uint8_t *data);
 
 G_END_DECLS
 
