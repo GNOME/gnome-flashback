@@ -1,3 +1,9 @@
+Version 3.45.1
+==============
+- Adapt to gnome-desktop API changes.
+- Move idle monitor to separate process.
+- Updated translations.
+
 Version 3.44.0
 ==============
 - Updated translations.
