@@ -344,7 +344,7 @@ PKG_CHECK_EXISTS([gnome-bluetooth-1.0], [
   found_gnome_bluetooth="yes"
   PKG_CHECK_MODULES([GNOME_BLUETOOTH], [gnome-bluetooth-1.0])
   AC_DEFINE([HAVE_GNOME_BLUETOOTH], [1],
-            [Define if gnome-desktop is 43.alpha or newer])
+            [Define if libgnome-bluetooth is available])
 ], [
   found_gnome_bluetooth="no"
 ])
