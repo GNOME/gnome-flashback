@@ -368,6 +368,10 @@ gf_output_is_laptop (GfOutput *output)
       case GF_CONNECTOR_TYPE_HDMIB:
       case GF_CONNECTOR_TYPE_TV:
       case GF_CONNECTOR_TYPE_VIRTUAL:
+      case GF_CONNECTOR_TYPE_DPI:
+      case GF_CONNECTOR_TYPE_WRITEBACK:
+      case GF_CONNECTOR_TYPE_SPI:
+      case GF_CONNECTOR_TYPE_USB:
       default:
         break;
     }

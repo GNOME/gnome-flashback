@@ -269,6 +269,10 @@ calculate_scale (GfMonitor                 *monitor,
       case GF_CONNECTOR_TYPE_eDP:
       case GF_CONNECTOR_TYPE_VIRTUAL:
       case GF_CONNECTOR_TYPE_DSI:
+      case GF_CONNECTOR_TYPE_DPI:
+      case GF_CONNECTOR_TYPE_WRITEBACK:
+      case GF_CONNECTOR_TYPE_SPI:
+      case GF_CONNECTOR_TYPE_USB:
       default:
         break;
     }
@@ -804,6 +808,10 @@ gf_monitor_is_laptop_panel (GfMonitor *monitor)
       case GF_CONNECTOR_TYPE_DisplayPort:
       case GF_CONNECTOR_TYPE_TV:
       case GF_CONNECTOR_TYPE_VIRTUAL:
+      case GF_CONNECTOR_TYPE_DPI:
+      case GF_CONNECTOR_TYPE_WRITEBACK:
+      case GF_CONNECTOR_TYPE_SPI:
+      case GF_CONNECTOR_TYPE_USB:
       default:
         break;
     }

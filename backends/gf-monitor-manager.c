@@ -1195,6 +1195,10 @@ get_connector_type_name (GfConnectorType connector_type)
       case GF_CONNECTOR_TYPE_eDP: return "eDP";
       case GF_CONNECTOR_TYPE_VIRTUAL: return "VIRTUAL";
       case GF_CONNECTOR_TYPE_DSI: return "DSI";
+      case GF_CONNECTOR_TYPE_DPI: return "DPI";
+      case GF_CONNECTOR_TYPE_WRITEBACK: return "WRITEBACK";
+      case GF_CONNECTOR_TYPE_SPI: return "SPI";
+      case GF_CONNECTOR_TYPE_USB: return "USB";
       default: g_assert_not_reached ();
     }
 
