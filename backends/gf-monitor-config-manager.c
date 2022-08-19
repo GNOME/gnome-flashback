@@ -340,17 +340,96 @@ create_preferred_logical_monitor_config (GfMonitorManager           *monitor_man
   return logical_monitor_config;
 }
 
+static GfLogicalMonitorConfig *
+find_monitor_config (GfMonitorsConfig *config,
+                     GfMonitor        *monitor,
+                     GfMonitorMode    *monitor_mode)
+{
+  int mode_width;
+  int mode_height;
+  GList *l;
+
+  gf_monitor_mode_get_resolution (monitor_mode, &mode_width, &mode_height);
+
+  for (l = config->logical_monitor_configs; l; l = l->next)
+    {
+      GfLogicalMonitorConfig *logical_monitor_config;
+      GList *l_monitor;
+
+      logical_monitor_config = l->data;
+
+      for (l_monitor = logical_monitor_config->monitor_configs; l_monitor; l_monitor = l_monitor->next)
+        {
+          GfMonitorConfig *monitor_config;
+          GfMonitorModeSpec *mode_spec;
+
+          monitor_config = l_monitor->data;
+          mode_spec = gf_monitor_mode_get_spec (monitor_mode);
+
+          if (gf_monitor_spec_equals (gf_monitor_get_spec (monitor), monitor_config->monitor_spec) &&
+              gf_monitor_mode_spec_has_similar_size (mode_spec, monitor_config->mode_spec))
+            return logical_monitor_config;
+        }
+    }
+
+  return NULL;
+}
+
+static gboolean
+get_last_scale_for_monitor (GfMonitorConfigManager *config_manager,
+                            GfMonitor              *monitor,
+                            GfMonitorMode          *monitor_mode,
+                            float                  *out_scale)
+{
+  GList *configs;
+  GList *l;
+
+  configs = NULL;
+
+  if (config_manager->current_config != NULL)
+    configs = g_list_append (configs, config_manager->current_config);
+
+  configs = g_list_concat (configs, g_list_copy (config_manager->config_history.head));
+
+  for (l = configs; l; l = l->next)
+    {
+      GfMonitorsConfig *config;
+      GfLogicalMonitorConfig *logical_monitor_config;
+
+      config = l->data;
+      logical_monitor_config = find_monitor_config (config,
+                                                    monitor,
+                                                    monitor_mode);
+
+      if (logical_monitor_config != NULL)
+        {
+          *out_scale = logical_monitor_config->scale;
+          g_list_free (configs);
+
+          return TRUE;
+        }
+    }
+
+  g_list_free (configs);
+
+  return FALSE;
+}
+
+
 static float
-compute_scale_for_monitor (GfMonitorManager *monitor_manager,
-                           GfMonitor        *monitor,
-                           GfMonitor        *primary_monitor)
+compute_scale_for_monitor (GfMonitorConfigManager *config_manager,
+                           GfMonitor              *monitor,
+                           GfMonitor              *primary_monitor)
 
 {
+  GfMonitorManager *monitor_manager;
   GfMonitor *target_monitor;
   GfMonitorManagerCapability capabilities;
   GfLogicalMonitorLayoutMode layout_mode;
   GfMonitorMode *monitor_mode;
+  float scale;
 
+  monitor_manager = config_manager->monitor_manager;
   target_monitor = monitor;
   capabilities = gf_monitor_manager_get_capabilities (monitor_manager);
 
@@ -362,6 +441,12 @@ compute_scale_for_monitor (GfMonitorManager *monitor_manager,
 
   layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
   monitor_mode = gf_monitor_get_preferred_mode (target_monitor);
+
+  if (get_last_scale_for_monitor (config_manager,
+                                  target_monitor,
+                                  monitor_mode,
+                                  &scale))
+    return scale;
 
   return gf_monitor_manager_calculate_monitor_mode_scale (monitor_manager,
                                                           layout_mode,
@@ -466,7 +551,7 @@ create_for_switch_config_all_mirror (GfMonitorConfigManager *config_manager)
       if (!mode)
         continue;
 
-      scale = compute_scale_for_monitor (monitor_manager,
+      scale = compute_scale_for_monitor (config_manager,
                                          l_monitor,
                                          primary_monitor);
 
@@ -609,7 +694,7 @@ create_monitors_config (GfMonitorConfigManager *config_manager,
             break;
         }
 
-      scale = compute_scale_for_monitor (monitor_manager,
+      scale = compute_scale_for_monitor (config_manager,
                                          monitor,
                                          primary_monitor);
 
