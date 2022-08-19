@@ -1184,7 +1184,7 @@ assign_monitor_crtcs (GfMonitorManager        *manager,
   if (!monitor_mode)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Invalid mode %dx%d (%f) for monitor '%s %s'",
+                   "Invalid mode %dx%d (%.3f) for monitor '%s %s'",
                    monitor_mode_spec->width, monitor_mode_spec->height,
                    (gdouble) monitor_mode_spec->refresh_rate,
                    monitor_spec->vendor, monitor_spec->product);
