@@ -1602,12 +1602,15 @@ append_monitors (GString *buffer,
     {
       GfMonitorConfig *monitor_config;
       GfMonitorModeSpec *mode_spec;
-      gchar rate_str[G_ASCII_DTOSTR_BUF_SIZE];
+      char rate_str[G_ASCII_DTOSTR_BUF_SIZE];
 
       monitor_config = l->data;
       mode_spec = monitor_config->mode_spec;
 
-      g_ascii_dtostr (rate_str, sizeof (rate_str), mode_spec->refresh_rate);
+      g_ascii_formatd (rate_str,
+                       sizeof (rate_str),
+                       "%.3f",
+                       mode_spec->refresh_rate);
 
       g_string_append (buffer, "      <monitor>\n");
       append_monitor_spec (buffer, monitor_config->monitor_spec, "        ");
