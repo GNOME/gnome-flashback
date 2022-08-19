@@ -355,6 +355,8 @@ create_for_switch_config_all_mirror (GfMonitorConfigManager *config_manager)
   GList *monitors;
   GList *l;
   GfMonitorsConfig *monitors_config;
+  int width;
+  int height;
 
   layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
   monitors = gf_monitor_manager_get_monitors (monitor_manager);
@@ -437,13 +439,20 @@ create_for_switch_config_all_mirror (GfMonitorConfigManager *config_manager)
       monitor_configs = g_list_prepend (monitor_configs, gf_monitor_config_new (l_monitor, mode));
     }
 
+  scale_logical_monitor_width (layout_mode,
+                               best_scale,
+                               common_mode_w,
+                               common_mode_h,
+                               &width,
+                               &height);
+
   logical_monitor_config = g_new0 (GfLogicalMonitorConfig, 1);
   *logical_monitor_config = (GfLogicalMonitorConfig) {
     .layout = (GfRectangle) {
       .x = 0,
       .y = 0,
-      .width = common_mode_w,
-      .height = common_mode_h
+      .width = width,
+      .height = height
     },
     .scale = best_scale,
     .monitor_configs = monitor_configs
