@@ -966,6 +966,25 @@ gf_monitor_get_mode_from_id (GfMonitor   *monitor,
   return g_hash_table_lookup (priv->mode_ids, monitor_mode_id);
 }
 
+gboolean
+gf_monitor_mode_spec_has_similar_size (GfMonitorModeSpec *monitor_mode_spec,
+                                       GfMonitorModeSpec *other_monitor_mode_spec)
+{
+  const float target_ratio = 1.0;
+  /* The a size difference of 15% means e.g. 4K modes matches other 4K modes,
+   * FHD (2K) modes other FHD modes, and HD modes other HD modes, but not each
+   * other.
+   */
+  const float epsilon = 0.15;
+
+  return G_APPROX_VALUE (((float) monitor_mode_spec->width /
+                          other_monitor_mode_spec->width) *
+                         ((float) monitor_mode_spec->height /
+                          other_monitor_mode_spec->height),
+                         target_ratio,
+                         epsilon);
+}
+
 GfMonitorMode *
 gf_monitor_get_mode_from_spec (GfMonitor         *monitor,
                                GfMonitorModeSpec *monitor_mode_spec)

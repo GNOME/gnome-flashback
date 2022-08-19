@@ -182,6 +182,9 @@ GfLogicalMonitor   *gf_monitor_get_logical_monitor        (GfMonitor            
 GfMonitorMode      *gf_monitor_get_mode_from_id           (GfMonitor                  *monitor,
                                                            const gchar                *monitor_mode_id);
 
+gboolean            gf_monitor_mode_spec_has_similar_size (GfMonitorModeSpec          *monitor_mode_spec,
+                                                           GfMonitorModeSpec          *other_monitor_mode_spec);
+
 GfMonitorMode      *gf_monitor_get_mode_from_spec         (GfMonitor                  *monitor,
                                                            GfMonitorModeSpec          *monitor_mode_spec);
 
