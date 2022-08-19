@@ -455,7 +455,8 @@ create_for_switch_config_all_mirror (GfMonitorConfigManager *config_manager)
       .height = height
     },
     .scale = best_scale,
-    .monitor_configs = monitor_configs
+    .monitor_configs = monitor_configs,
+    .is_primary = TRUE
   };
 
   logical_monitor_configs = g_list_append (NULL, logical_monitor_config);
