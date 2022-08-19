@@ -715,13 +715,14 @@ gchar *
 gf_monitor_mode_spec_generate_id (GfMonitorModeSpec *spec)
 {
   gboolean is_interlaced;
-  gchar refresh_rate[G_ASCII_DTOSTR_BUF_SIZE];
 
   is_interlaced = !!(spec->flags & GF_CRTC_MODE_FLAG_INTERLACE);
-  g_ascii_dtostr (refresh_rate, G_ASCII_DTOSTR_BUF_SIZE, spec->refresh_rate);
 
-  return g_strdup_printf ("%dx%d%s@%s", spec->width, spec->height,
-                          is_interlaced ? "i" : "", refresh_rate);
+  return g_strdup_printf ("%dx%d%s@%.3f",
+                          spec->width,
+                          spec->height,
+                          is_interlaced ? "i" : "",
+                          (double) spec->refresh_rate);
 }
 
 GfMonitorSpec *
