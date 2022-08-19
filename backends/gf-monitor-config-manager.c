@@ -262,6 +262,33 @@ get_monitor_transform (GfMonitorManager *monitor_manager,
   return gf_monitor_transform_from_orientation (orientation);
 }
 
+static void
+scale_logical_monitor_width (GfLogicalMonitorLayoutMode  layout_mode,
+                             float                       scale,
+                             int                         mode_width,
+                             int                         mode_height,
+                             int                        *width,
+                             int                        *height)
+{
+  switch (layout_mode)
+    {
+      case GF_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
+        *width = (int) roundf (mode_width / scale);
+        *height = (int) roundf (mode_height / scale);
+        return;
+
+      case GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
+        *width = mode_width;
+        *height = mode_height;
+        return;
+
+      default:
+        break;
+    }
+
+  g_assert_not_reached ();
+}
+
 static GfLogicalMonitorConfig *
 create_preferred_logical_monitor_config (GfMonitorManager           *monitor_manager,
                                          GfMonitor                  *monitor,
@@ -279,17 +306,12 @@ create_preferred_logical_monitor_config (GfMonitorManager           *monitor_man
   mode = gf_monitor_get_preferred_mode (monitor);
   gf_monitor_mode_get_resolution (mode, &width, &height);
 
-  switch (layout_mode)
-    {
-      case GF_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
-        width = (int) roundf (width / scale);
-        height = (int) roundf (height / scale);
-        break;
-
-      case GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
-      default:
-        break;
-    }
+  scale_logical_monitor_width (layout_mode,
+                               scale,
+                               width,
+                               height,
+                               &width,
+                               &height);
 
   monitor_config = gf_monitor_config_new (monitor, mode);
   transform = get_monitor_transform (monitor_manager, monitor);
