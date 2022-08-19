@@ -340,10 +340,40 @@ create_preferred_logical_monitor_config (GfMonitorManager           *monitor_man
   return logical_monitor_config;
 }
 
+static float
+compute_scale_for_monitor (GfMonitorManager *monitor_manager,
+                           GfMonitor        *monitor,
+                           GfMonitor        *primary_monitor)
+
+{
+  GfMonitor *target_monitor;
+  GfMonitorManagerCapability capabilities;
+  GfLogicalMonitorLayoutMode layout_mode;
+  GfMonitorMode *monitor_mode;
+
+  target_monitor = monitor;
+  capabilities = gf_monitor_manager_get_capabilities (monitor_manager);
+
+  if ((capabilities & GF_MONITOR_MANAGER_CAPABILITY_GLOBAL_SCALE_REQUIRED) &&
+      primary_monitor != NULL)
+    {
+      target_monitor = primary_monitor;
+    }
+
+  layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
+  monitor_mode = gf_monitor_get_preferred_mode (target_monitor);
+
+  return gf_monitor_manager_calculate_monitor_mode_scale (monitor_manager,
+                                                          layout_mode,
+                                                          target_monitor,
+                                                          monitor_mode);
+}
+
 static GfMonitorsConfig *
 create_for_switch_config_all_mirror (GfMonitorConfigManager *config_manager)
 {
   GfMonitorManager *monitor_manager = config_manager->monitor_manager;
+  GfMonitor *primary_monitor;
   GfLogicalMonitorLayoutMode layout_mode;
   GfLogicalMonitorConfig *logical_monitor_config = NULL;
   GList *logical_monitor_configs;
@@ -357,6 +387,12 @@ create_for_switch_config_all_mirror (GfMonitorConfigManager *config_manager)
   GfMonitorsConfig *monitors_config;
   int width;
   int height;
+
+  primary_monitor = find_primary_monitor (monitor_manager,
+                                          MONITOR_MATCH_ALLOW_FALLBACK);
+
+  if (primary_monitor == NULL)
+    return NULL;
 
   layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
   monitors = gf_monitor_manager_get_monitors (monitor_manager);
@@ -430,10 +466,9 @@ create_for_switch_config_all_mirror (GfMonitorConfigManager *config_manager)
       if (!mode)
         continue;
 
-      scale = gf_monitor_manager_calculate_monitor_mode_scale (monitor_manager,
-                                                               layout_mode,
-                                                               l_monitor,
-                                                               mode);
+      scale = compute_scale_for_monitor (monitor_manager,
+                                         l_monitor,
+                                         primary_monitor);
 
       best_scale = MAX (best_scale, scale);
       monitor_configs = g_list_prepend (monitor_configs, gf_monitor_config_new (l_monitor, mode));
@@ -517,35 +552,6 @@ verify_suggested_monitors_config (GList *logical_monitor_configs)
   g_list_free (region);
 
   return TRUE;
-}
-
-static float
-compute_scale_for_monitor (GfMonitorManager *monitor_manager,
-                           GfMonitor        *monitor,
-                           GfMonitor        *primary_monitor)
-
-{
-  GfMonitor *target_monitor;
-  GfMonitorManagerCapability capabilities;
-  GfLogicalMonitorLayoutMode layout_mode;
-  GfMonitorMode *monitor_mode;
-
-  target_monitor = monitor;
-  capabilities = gf_monitor_manager_get_capabilities (monitor_manager);
-
-  if ((capabilities & GF_MONITOR_MANAGER_CAPABILITY_GLOBAL_SCALE_REQUIRED) &&
-      primary_monitor != NULL)
-    {
-      target_monitor = primary_monitor;
-    }
-
-  layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
-  monitor_mode = gf_monitor_get_preferred_mode (target_monitor);
-
-  return gf_monitor_manager_calculate_monitor_mode_scale (monitor_manager,
-                                                          layout_mode,
-                                                          target_monitor,
-                                                          monitor_mode);
 }
 
 static GfMonitorsConfig *
