@@ -139,6 +139,9 @@ gboolean            gf_monitor_supports_underscanning     (GfMonitor            
 
 gboolean            gf_monitor_is_underscanning           (GfMonitor                  *monitor);
 
+gboolean            gf_monitor_get_max_bpc                (GfMonitor                  *self,
+                                                           unsigned int               *max_bpc);
+
 gboolean            gf_monitor_is_laptop_panel            (GfMonitor                  *monitor);
 
 gboolean            gf_monitor_is_same_as                 (GfMonitor                  *monitor,

@@ -45,6 +45,8 @@ typedef struct
   gboolean  is_primary;
   gboolean  is_presentation;
   gboolean  is_underscanning;
+  gboolean  has_max_bpc;
+  unsigned  int max_bpc;
 } GfOutputAssignment;
 
 #define GF_TYPE_OUTPUT (gf_output_get_type ())
@@ -91,6 +93,9 @@ gboolean            gf_output_is_primary                (GfOutput               
 gboolean            gf_output_is_presentation           (GfOutput                 *self);
 
 gboolean            gf_output_is_underscanning          (GfOutput                 *self);
+
+gboolean            gf_output_get_max_bpc               (GfOutput                 *self,
+                                                         unsigned int             *max_bpc);
 
 void                gf_output_set_backlight             (GfOutput                 *self,
                                                          int                       backlight);

@@ -49,6 +49,9 @@ typedef struct
 
   gboolean      is_underscanning;
 
+  gboolean      has_max_bpc;
+  unsigned int  max_bpc;
+
   int           backlight;
 } GfOutputPrivate;
 
@@ -311,6 +314,11 @@ gf_output_assign_crtc (GfOutput                 *self,
   priv->is_primary = output_assignment->is_primary;
   priv->is_presentation = output_assignment->is_presentation;
   priv->is_underscanning = output_assignment->is_underscanning;
+
+  priv->has_max_bpc = output_assignment->has_max_bpc;
+
+  if (priv->has_max_bpc)
+    priv->max_bpc = output_assignment->max_bpc;
 }
 
 void
@@ -437,6 +445,20 @@ gf_output_is_underscanning (GfOutput *self)
   priv = gf_output_get_instance_private (self);
 
   return priv->is_underscanning;
+}
+
+gboolean
+gf_output_get_max_bpc (GfOutput     *self,
+                       unsigned int *max_bpc)
+{
+  GfOutputPrivate *priv;
+
+  priv = gf_output_get_instance_private (self);
+
+  if (priv->has_max_bpc && max_bpc != NULL)
+    *max_bpc = priv->max_bpc;
+
+  return priv->has_max_bpc;
 }
 
 void

@@ -31,6 +31,8 @@ typedef struct
   GfMonitorSpec     *monitor_spec;
   GfMonitorModeSpec *mode_spec;
   gboolean           enable_underscanning;
+  gboolean           has_max_bpc;
+  unsigned int       max_bpc;
 } GfMonitorConfig;
 
 GfMonitorConfig *gf_monitor_config_new    (GfMonitor        *monitor,

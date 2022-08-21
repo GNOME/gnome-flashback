@@ -791,7 +791,9 @@ clone_monitor_config_list (GList *configs_in)
       *config_out = (GfMonitorConfig) {
         .monitor_spec = gf_monitor_spec_clone (config_in->monitor_spec),
         .mode_spec = g_memdup2 (config_in->mode_spec, sizeof (GfMonitorModeSpec)),
-        .enable_underscanning = config_in->enable_underscanning
+        .enable_underscanning = config_in->enable_underscanning,
+        .has_max_bpc = config_in->has_max_bpc,
+        .max_bpc = config_in->max_bpc
       };
 
       configs_out = g_list_append (configs_out, config_out);
@@ -1145,7 +1147,9 @@ assign_monitor_crtc (GfMonitor          *monitor,
     .output = output,
     .is_primary = assign_output_as_primary,
     .is_presentation = assign_output_as_presentation,
-    .is_underscanning = data->monitor_config->enable_underscanning
+    .is_underscanning = data->monitor_config->enable_underscanning,
+    .has_max_bpc = data->monitor_config->has_max_bpc,
+    .max_bpc = data->monitor_config->max_bpc
   };
 
   g_ptr_array_add (data->crtc_assignments, crtc_assignment);

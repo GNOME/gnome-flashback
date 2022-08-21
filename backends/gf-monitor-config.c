@@ -42,6 +42,8 @@ gf_monitor_config_new (GfMonitor     *monitor,
   config->mode_spec = g_memdup2 (mode_spec, sizeof (GfMonitorModeSpec));
   config->enable_underscanning = gf_monitor_is_underscanning (monitor);
 
+  config->has_max_bpc = gf_monitor_get_max_bpc (monitor, &config->max_bpc);
+
   return config;
 }
 

@@ -154,6 +154,25 @@ output_set_underscanning_xrandr (GfOutput *output,
     }
 }
 
+static void
+output_set_max_bpc_xrandr (GfOutput     *output,
+                           unsigned int  max_bpc)
+{
+  Display *xdisplay;
+  Atom prop;
+  uint32_t value;
+
+  xdisplay = xdisplay_from_output (output);
+  prop = XInternAtom (xdisplay, "max bpc", False);
+  value = max_bpc;
+
+  xcb_randr_change_output_property (XGetXCBConnection (xdisplay),
+                                    (XID) gf_output_get_id (output),
+                                    prop, XCB_ATOM_INTEGER, 32,
+                                    XCB_PROP_MODE_REPLACE,
+                                    1, &value);
+}
+
 static guint8 *
 get_edid_property (Display  *xdisplay,
                    RROutput  output,
@@ -638,6 +657,52 @@ output_get_boolean_property (GfOutput    *output,
 }
 
 static gboolean
+output_get_max_bpc_xrandr (GfOutput   *output,
+                           unsigned int *max_bpc)
+{
+  Display *xdisplay;
+  Atom atom;
+  Atom actual_type;
+  int actual_format;
+  unsigned long nitems;
+  unsigned long bytes_after;
+  unsigned char *buffer;
+
+  xdisplay = xdisplay_from_output (output);
+  atom = XInternAtom (xdisplay, "max bpc", False);
+  buffer = NULL;
+
+  XRRGetOutputProperty (xdisplay,
+                        (XID) gf_output_get_id (output),
+                        atom,
+                        0,
+                        G_MAXLONG,
+                        False,
+                        False,
+                        XCB_ATOM_INTEGER,
+                        &actual_type,
+                        &actual_format,
+                        &nitems,
+                        &bytes_after,
+                        &buffer);
+
+  if (actual_type != XCB_ATOM_INTEGER || actual_format != 32 || nitems < 1)
+    {
+      if (buffer != NULL)
+        XFree (buffer);
+
+      return FALSE;
+    }
+
+  if (max_bpc)
+    *max_bpc = *((uint32_t*) buffer);
+
+  XFree (buffer);
+
+  return TRUE;
+}
+
+static gboolean
 output_get_presentation_xrandr (GfOutput *output)
 {
   return output_get_boolean_property (output, "_GNOME_FLASHBACK_PRESENTATION_OUTPUT");
@@ -722,6 +787,44 @@ output_get_supports_underscanning_xrandr (Display  *xdisplay,
   XFree (property_info);
 
   return supports_underscanning;
+}
+
+static gboolean
+output_get_max_bpc_range_xrandr (Display      *xdisplay,
+                                 RROutput      output_id,
+                                 unsigned int *min,
+                                 unsigned int *max)
+{
+  Atom atom;
+  XRRPropertyInfo *property_info;
+  long *values;
+
+  if (!output_get_property_exists (xdisplay, output_id, "max bpc"))
+    return FALSE;
+
+  atom = XInternAtom (xdisplay, "max bpc", False);
+  property_info = XRRQueryOutputProperty (xdisplay, (XID) output_id, atom);
+
+  if (property_info == NULL)
+    return FALSE;
+
+  if (property_info->num_values != 2)
+    {
+      XFree (property_info);
+      return FALSE;
+    }
+
+  values = (long *) property_info->values;
+
+  if (min)
+    *min = values[0];
+
+  if (max)
+    *max = values[1];
+
+  XFree (property_info);
+
+  return TRUE;
 }
 
 static gboolean
@@ -920,6 +1023,12 @@ gf_output_xrandr_new (GfGpuXrandr   *gpu_xrandr,
 
   output_info->supports_underscanning = output_get_supports_underscanning_xrandr (xdisplay,
                                                                                   output_id);
+
+  output_get_max_bpc_range_xrandr (xdisplay,
+                                   output_id,
+                                   &output_info->max_bpc_min,
+                                   &output_info->max_bpc_max);
+
   output_info->supports_color_transform = output_get_supports_color_transform_xrandr (xdisplay,
                                                                                       output_id);
 
@@ -935,12 +1044,16 @@ gf_output_xrandr_new (GfGpuXrandr   *gpu_xrandr,
   if (assigned_crtc)
     {
       GfOutputAssignment output_assignment;
+      gboolean has_max_bpc;
 
       output_assignment = (GfOutputAssignment) {
         .is_primary = (XID) gf_output_get_id (output) == primary_output,
         .is_presentation = output_get_presentation_xrandr (output),
         .is_underscanning = output_get_underscanning_xrandr (output),
       };
+
+      has_max_bpc = output_get_max_bpc_xrandr (output, &output_assignment.max_bpc);
+      output_assignment.has_max_bpc = has_max_bpc;
 
       gf_output_assign_crtc (output, assigned_crtc, &output_assignment);
     }
@@ -983,9 +1096,12 @@ gf_output_xrandr_apply_mode (GfOutputXrandr *self)
 {
   GfOutput *output;
   Display *xdisplay;
+  const GfOutputInfo *output_info;
+  unsigned int max_bpc;
 
   output = GF_OUTPUT (self);
   xdisplay = xdisplay_from_output (output);
+  output_info = gf_output_get_info (output);
 
   if (gf_output_is_primary (output))
     {
@@ -995,10 +1111,17 @@ gf_output_xrandr_apply_mode (GfOutputXrandr *self)
 
   output_set_presentation_xrandr (output, gf_output_is_presentation (output));
 
-  if (gf_output_get_info (output)->supports_underscanning)
+  if (output_info->supports_underscanning)
     {
       output_set_underscanning_xrandr (output,
                                        gf_output_is_underscanning (output));
+    }
+
+  if (gf_output_get_max_bpc (output, &max_bpc) &&
+      max_bpc >= output_info->max_bpc_min &&
+      max_bpc <= output_info->max_bpc_max)
+    {
+      output_set_max_bpc_xrandr (output, max_bpc);
     }
 }
 

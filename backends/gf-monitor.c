@@ -782,6 +782,17 @@ gf_monitor_is_underscanning (GfMonitor *monitor)
 }
 
 gboolean
+gf_monitor_get_max_bpc (GfMonitor    *self,
+                        unsigned int *max_bpc)
+{
+  GfOutput *output;
+
+  output = gf_monitor_get_main_output (self);
+
+  return gf_output_get_max_bpc (output, max_bpc);
+}
+
+gboolean
 gf_monitor_is_laptop_panel (GfMonitor *monitor)
 {
   const GfOutputInfo *output_info;

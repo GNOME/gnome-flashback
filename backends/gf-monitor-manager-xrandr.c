@@ -141,6 +141,7 @@ is_output_assignment_changed (GfOutput            *output,
   for (i = 0; i < n_output_assignments; i++)
     {
       GfOutputAssignment *output_assignment;
+      unsigned int max_bpc;
 
       output_assignment = output_assignments[i];
 
@@ -155,6 +156,17 @@ is_output_assignment_changed (GfOutput            *output,
 
       if (gf_output_is_underscanning (output) != output_assignment->is_underscanning)
         return TRUE;
+
+      if (gf_output_get_max_bpc (output, &max_bpc))
+        {
+          if (!output_assignment->has_max_bpc ||
+              max_bpc != output_assignment->max_bpc)
+            return TRUE;
+        }
+      else if (output_assignment->has_max_bpc)
+        {
+          return TRUE;
+        }
 
       output_is_found = TRUE;
     }
