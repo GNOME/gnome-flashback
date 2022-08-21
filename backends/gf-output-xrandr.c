@@ -750,12 +750,14 @@ output_get_supports_underscanning_xrandr (Display  *xdisplay,
   Atom atom, actual_type;
   gint actual_format, i;
   gulong nitems, bytes_after;
-  guchar *buffer;
+  unsigned char *buffer;
   XRRPropertyInfo *property_info;
   Atom *values;
   gboolean supports_underscanning = FALSE;
 
   atom = XInternAtom (xdisplay, "underscan", False);
+  buffer = NULL;
+
   XRRGetOutputProperty (xdisplay, (XID) output_id, atom,
                         0, G_MAXLONG, False, False, XA_ATOM,
                         &actual_type, &actual_format,
@@ -768,6 +770,8 @@ output_get_supports_underscanning_xrandr (Display  *xdisplay,
 
       return FALSE;
     }
+
+  XFree (buffer);
 
   property_info = XRRQueryOutputProperty (xdisplay, (XID) output_id, atom);
   values = (Atom *) property_info->values;
