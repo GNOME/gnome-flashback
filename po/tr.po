@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-04-15 17:19+0000\n"
-"PO-Revision-Date: 2022-04-30 21:34+0300\n"
+"POT-Creation-Date: 2022-08-14 14:30+0000\n"
+"PO-Revision-Date: 2022-08-21 04:28+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -24,27 +24,27 @@ msgstr ""
 "X-Generator: Poedit 3.0.1\n"
 "X-POOTLE-MTIME: 1432972725.000000\n"
 
-#: backends/gf-monitor.c:134
+#: backends/gf-monitor.c:135
 msgid "Built-in display"
-msgstr "Dahili ekran"
+msgstr "Yerleşik ekran"
 
-#: backends/gf-monitor.c:168
+#: backends/gf-monitor.c:169
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
-#: backends/gf-monitor.c:170
+#: backends/gf-monitor.c:171
 msgid "Unknown Display"
 msgstr "Bilinmeyen Ekran"
 
-#: backends/gf-monitor.c:179
+#: backends/gf-monitor.c:180
 #, c-format
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: backends/gf-monitor.c:193
+#: backends/gf-monitor.c:194
 #, c-format
 msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
@@ -58,7 +58,7 @@ msgstr "%s %s"
 #: daemons/media-keys/gsd-media-keys-manager.c:551
 #, no-c-format
 msgid "Screencast from %d %t.webm"
-msgstr "Ekran kaydı - %d %t.webm"
+msgstr "Ekran yayını - %d %t.webm"
 
 #. translators: this is the name of the file that gets made up
 #. * with the screenshot
@@ -75,9 +75,13 @@ msgstr "GNOME Flashback"
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Pano (GNOME Flashback)"
 
+#: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
+msgid "Idle Monitor (GNOME Flashback)"
+msgstr "Boşluk Gözlemcisi (GNOME Flashback)"
+
 #: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
 msgid "MediaKeys (GNOME Flashback)"
-msgstr "MediaKeys (GNOME Flashback)"
+msgstr "Ortam Tuşları (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
@@ -87,12 +91,6 @@ msgstr "Ağ (GNOME Flashback)"
 msgid "Manage your network connections"
 msgstr "Ağ bağlantılarını yönet"
 
-# Çevirmeyin!
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
-msgid "nm-device-wireless"
-msgstr "nm-device-wireless"
-
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
 msgstr "Tercihler"
@@ -100,12 +98,6 @@ msgstr "Tercihler"
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:5
 msgid "Personal preferences"
 msgstr "Kişisel tercihler"
-
-# Çevirmeyin!
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
-msgid "preferences-desktop"
-msgstr "preferences-desktop"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
@@ -115,16 +107,10 @@ msgstr "Yönetici"
 msgid "Change system-wide settings (affects all users)"
 msgstr "Sistem geneli ayarları değiştir (tüm kullanıcıları etkiler)"
 
-# Çevirmeyin!
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
-msgid "preferences-system"
-msgstr "preferences-system"
-
 #: data/keybindings/50-gnome-flashback-screenshots.xml:6
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
 msgid "Screenshots"
-msgstr "Ekran alıntısı"
+msgstr "Ekran görüntüsü"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:10
 msgid "Save a screenshot to $PICTURES"
@@ -132,7 +118,7 @@ msgstr "Ekran görüntüsünü $PICTURES dizinine kaydet"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:14
 msgid "Save a screenshot of a window to $PICTURES"
-msgstr "Ekran görüntüsünü $PICTURES dizinine kaydet"
+msgstr "Pencerenin ekran görüntüsünü $PICTURES dizinine kaydet"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:18
 msgid "Save a screenshot of an area to $PICTURES"
@@ -171,7 +157,7 @@ msgid ""
 "audio device selection dialog."
 msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması ses aygıtı seçim "
-"iletişimini sağlamak için kullanılacaktır."
+"iletişimini sağlamada kullanılacaktır."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:16
 msgid "Automount manager"
@@ -183,7 +169,7 @@ msgid ""
 "removable media."
 msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması çıkarılabilir ortamı "
-"kendiliğinden bağlamak için kullanılacaktır."
+"kendiliğinden bağlamada kullanılacaktır."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:22
 msgid "Clipboard"
@@ -208,7 +194,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "Idle monitor"
-msgstr "Ekran boşta"
+msgstr "Boşluk gözlemcisi"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
 msgid ""
@@ -216,7 +202,7 @@ msgid ""
 "activity monitoring."
 msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması kullanıcı etkinliği "
-"izlemek için kullanılacaktır."
+"izlemede kullanılacaktır."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "Input settings"
@@ -232,7 +218,7 @@ msgid ""
 "keyboard layouts and input methods."
 msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması klavye düzenlerini ve "
-"giriş yöntemlerini yönetmek için kullanılacaktır."
+"giriş yöntemlerini yönetmede kullanılacaktır."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
 msgid "Notification daemon"
@@ -243,8 +229,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
 msgstr ""
-"Doğru olarak seçilirse, GNOME Flashback uygulaması bildirimleri yönetmek "
-"için kullanılacaktır."
+"Doğru olarak seçilirse, GNOME Flashback uygulaması bildirimleri yönetmede "
+"kullanılacaktır."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid "Authentication agent for polkit"
@@ -261,14 +247,14 @@ msgstr "Kök arka planı"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
 msgid "Screencasts"
-msgstr "Ekran paylaşımı"
+msgstr "Ekran yayınları"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
 msgstr ""
-"Doğru olarak seçilirse, GNOME Flashback uygulaması ekranı kaydetmek için "
+"Doğru olarak seçilirse, GNOME Flashback uygulaması ekranı kaydetmede "
 "kullanılacaktır."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
@@ -289,7 +275,7 @@ msgid ""
 "screenshots."
 msgstr ""
 "Doğru olarak seçilirse, GNOME Flashback uygulaması, ekran görüntülerini "
-"almak için kullanılacaktır."
+"almada kullanılacaktır."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid "Shell"
@@ -299,7 +285,7 @@ msgstr "Kabuk"
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr ""
-"Doğru olarak seçilirse, GNOME Flashback uygulaması Kabuk olarak "
+"Doğru olarak seçilirse, GNOME Flashback uygulaması kabuk olarak "
 "kullanılacaktır."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
@@ -342,7 +328,7 @@ msgid ""
 "background."
 msgstr ""
 "Doğru olarak seçilirse, masaüstü arka planını değiştirmek için soldurma "
-"efekti kullanılacaktır."
+"etkisi kullanılacaktır."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:5
 msgid "Icon size"
@@ -414,7 +400,7 @@ msgid ""
 "the desktop."
 msgstr ""
 "Eğer doğru olarak ayarlanırsa ev klasörüne bağlanan simge masaüstüne "
-"koyulacaktır."
+"konacaktır."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:50
 msgid "Show trash icon"
@@ -425,7 +411,7 @@ msgid ""
 "If this is set to true, an icon linking to the trash will be put on the "
 "desktop."
 msgstr ""
-"Eğer doğru olarak ayarlanırsa çöpe bağlanan simge masaüstüne koyulacaktır."
+"Eğer doğru olarak ayarlanırsa çöpe bağlanan simge masaüstüne konacaktır."
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:5
 msgid "Take a screenshot"
@@ -483,7 +469,7 @@ msgstr "Ekran yayın kaydının saniye türünden uzunluğu, sınırsız için 0
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
-msgstr "Kullanılabilirse IBus simgesi kullan"
+msgstr "Oluyorsa IBus simgesi kullan"
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:10
 msgid "Icon background color"
@@ -667,7 +653,7 @@ msgstr "Ne yapılacağını sor"
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:345
 msgid "Do Nothing"
-msgstr "Hiçbir şey yapma"
+msgstr "Bir Şey Yapma"
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:351
 msgid "Open Folder"
@@ -685,19 +671,19 @@ msgstr "%p bağı kaldırılamıyor"
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:709
 msgid "You have just inserted an Audio CD."
-msgstr "Az önce Ses CD'si eklediniz."
+msgstr "Az önce Ses CD’si eklediniz."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:711
 msgid "You have just inserted an Audio DVD."
-msgstr "Az önce Ses DVD'si eklediniz."
+msgstr "Az önce Ses DVD’si eklediniz."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:713
 msgid "You have just inserted a Video DVD."
-msgstr "Az önce Video DVD'si taktınız."
+msgstr "Az önce Video DVD’si taktınız."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:715
 msgid "You have just inserted a Video CD."
-msgstr "Az önce Video CD'si taktınız."
+msgstr "Az önce Video CD’si taktınız."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:717
 msgid "You have just inserted a Super Video CD."
@@ -721,11 +707,11 @@ msgstr "Az önce boş HD DVD taktınız."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:727
 msgid "You have just inserted a Photo CD."
-msgstr "Az önce Fotoğraf CD'si taktınız."
+msgstr "Az önce Fotoğraf CD’si taktınız."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:729
 msgid "You have just inserted a Picture CD."
-msgstr "Az önce Resim CD'si taktınız."
+msgstr "Az önce Resim CD’si taktınız."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:731
 msgid "You have just inserted a medium with digital photos."
@@ -761,7 +747,7 @@ msgstr ""
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:776
 msgid "_Always perform this action"
-msgstr "Bu eylemi _her zaman uygula"
+msgstr "Bu eylemi _hep uygula"
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:785
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
@@ -926,7 +912,7 @@ msgstr "Kapat"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:540
 msgid "Click Power Off to quit these applications and power off the system."
-msgstr "Bu uygulamadan çıkmak ve sistemi kapatmak için Kapatı tıklayın."
+msgstr "Bu uygulamadan çıkmak ve sistemi kapatmak için Kapat’a tıklayın."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:542
 #, c-format
@@ -942,7 +928,7 @@ msgstr "Yeniden başlat"
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:552
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
-"Bu uygulamalardan çıkmak ve sistemi yeniden başlatmak için Yeniden Başlatı "
+"Bu uygulamalardan çıkmak ve sistemi yeniden başlatmak için Yeniden Başlat’a "
 "tıklayın."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:554
@@ -954,13 +940,13 @@ msgstr[0] "Sistem %d saniye içinde kendiliğinden yeniden başlatılacak."
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:561
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:762
 msgid "Hibernate"
-msgstr "Uyku Kipi"
+msgstr "Derin Uyku"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:562
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
-msgstr[0] "Sistem %d saniye içinde kendiliğinden uyku kipine geçecek."
+msgstr[0] "Sistem %d saniye içinde kendiliğinden derin uykuya geçecek."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:569
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:766
@@ -993,8 +979,8 @@ msgid ""
 "Waiting for these applications to finish. Interrupting them can lead to loss "
 "of data."
 msgstr ""
-"Uygulamaların işlemlerinin bitmesi için bekleniyor. Uygulamaların kesilmesi "
-"veri kayıplarına neden olabilir."
+"Uygulamaların işlemlerinin bitmesi bekleniyor. Uygulamaların kesilmesi "
+"veri yitimine neden olabilir."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
 msgid "Lock Screen"
@@ -1017,13 +1003,9 @@ msgstr "Bildirim özeti metni."
 msgid "Notification"
 msgstr "Bildirim"
 
-#: gnome-flashback/libnotifications/nd-daemon.c:100
+#: gnome-flashback/libnotifications/nd-daemon.c:98
 msgid "Invalid notification identifier"
 msgstr "Tanımlanmamış bildirim"
-
-#: gnome-flashback/libnotifications/nd-daemon.c:181
-msgid "Exceeded maximum number of notifications"
-msgstr "Azami sayıda bildirime ulaşıldı"
 
 #: gnome-flashback/libnotifications/nd-notification-box.c:358
 msgid "Notification body text."
@@ -1054,7 +1036,7 @@ msgstr "Kimlik doğrulama girişiminiz başarısız oldu. Lütfen yeniden deneyi
 
 #: gnome-flashback/libpolkit/flashback-listener.c:139
 msgid "Authentication dialog was dismissed by the user"
-msgstr "Kimlik doğrulama penceresi kullanıcı tarafından kapatıldı"
+msgstr "Kimlik doğrulama penceresi kullanıcıca kapatıldı"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.c:202
 msgid ""
@@ -1225,7 +1207,7 @@ msgstr "Bağlı Değil"
 #: system-indicators/si-desktop-menu-item.c:80
 #, c-format
 msgid "Desktop file “%s” is missing!"
-msgstr "Masaüstü dosyası “%s” bulunamadı!"
+msgstr "“%s” masaüstü dosyası bulunamadı!"
 
 #: system-indicators/si-desktop-menu-item.c:95
 #, c-format
@@ -1250,7 +1232,7 @@ msgstr "Uygulamacık sistem belirteçleri içerir"
 
 #: system-indicators/si-power.c:63
 msgid "UPS"
-msgstr "Güç Kaynağı (UPS)"
+msgstr "Kesintisiz Güç Kaynağı (UPS)"
 
 #: system-indicators/si-power.c:65
 msgid "Battery"
@@ -1307,110 +1289,3 @@ msgstr "Çıktı"
 #: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Sessiz"
-
-#~ msgid "Launch screensaver and locker program"
-#~ msgstr "Ekran koruyucuyu başlat ve programı kilitle"
-
-# Çevirmeyin!
-#~ msgid "preferences-desktop-screensaver"
-#~ msgstr "preferences-desktop-screensaver"
-
-#~ msgid "Bluetooth applet"
-#~ msgstr "Bluetooth uygulaması"
-
-#~ msgid ""
-#~ "If set to true, then GNOME Flashback application will be used to show a "
-#~ "Bluetooth applet."
-#~ msgstr ""
-#~ "Doğru olarak seçilirse, GNOME Flashback uygulaması Bluetooth uygulamasını "
-#~ "göstermek için kullanılacaktır."
-
-#~ msgid "Power applet"
-#~ msgstr "Güç uygulaması"
-
-#~ msgid ""
-#~ "If set to true, then GNOME Flashback application will be used to show a "
-#~ "power applet."
-#~ msgstr ""
-#~ "Doğru olarak seçilirse, GNOME Flashback uygulaması, bir güç uygulamasını "
-#~ "göstermek için kullanılacaktır."
-
-#~ msgid "Sound applet"
-#~ msgstr "Ses uygulaması"
-
-#~ msgid ""
-#~ "If set to true, then GNOME Flashback application will be used to show a "
-#~ "sound applet. This is the same sound applet that used to be a part of "
-#~ "GNOME Control Center."
-#~ msgstr ""
-#~ "Doğru olarak seçilirse, GNOME Flashback uygulaması, bir ses uygulamasını "
-#~ "göstermek için kullanılacaktır. Bu GNOME kontrol merkezinin bir parçası "
-#~ "olarak kullanılan aynı ses uygulamasıdır."
-
-#~ msgid "Symbolic"
-#~ msgstr "Simgesel"
-
-#~ msgid "Enable debugging code"
-#~ msgstr "Hata ayıklama kodunu etkinleştir"
-
-#~ msgid "Bluetooth active"
-#~ msgstr "Bluetooth etkin"
-
-#~ msgid "Bluetooth disabled"
-#~ msgstr "Bluetooth devre dışı"
-
-#~ msgid "Keyboard"
-#~ msgstr "Klavye"
-
-#~ msgid "Sound Output Volume"
-#~ msgstr "Ses Çıkış Hacmi"
-
-#~ msgid "Microphone Volume"
-#~ msgstr "Mikrofon Sesi"
-
-#~ msgctxt "volume"
-#~ msgid "100%"
-#~ msgstr "%100"
-
-#~ msgctxt "volume"
-#~ msgid "Unamplified"
-#~ msgstr "Yükseltilmemiş"
-
-#~ msgid "_Sound Preferences"
-#~ msgstr "_Ses Tercihleri"
-
-#~ msgid "GNOME Flashback Initialization"
-#~ msgstr "GNOME Flashback Başlatılıyor"
-
-#~ msgid "Initialize GNOME Flashback session"
-#~ msgstr "GNOME Flashback oturumunu başlat"
-
-#, fuzzy
-#~| msgid "Display config"
-#~ msgid "Display configuration"
-#~ msgstr "Ekran yapılandırması"
-
-#, fuzzy
-#~| msgid ""
-#~| "If set to true, then GNOME Flashback application will be used to provide "
-#~| "display configuration."
-#~ msgid ""
-#~ "If set to true, then GNOME Flashback application will be used to provide "
-#~ "the display configuration."
-#~ msgstr ""
-#~ "Eğer doğru olarak ayarlarsanız, GNOME Flashback uygulaması ekran "
-#~ "yapılandırmasını sağlamak için kullanılacaktır."
-
-#, fuzzy
-#~| msgid ""
-#~| "If set to true, then GNOME Flashback application will be used for key "
-#~| "grabbing."
-#~ msgid ""
-#~ "If set to true, then GNOME Flashback application will use workarounds to "
-#~ "fix bugs."
-#~ msgstr ""
-#~ "Eğer doğru olarak ayarlanırsa, GNOME Flashback uygulaması anahtar "
-#~ "aktarmak için kullanılacaktır."
-
-#~ msgid "Key grabber"
-#~ msgstr "Anahtar aktarıcı"
