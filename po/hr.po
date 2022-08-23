@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-08-22 01:32+0000\n"
-"PO-Revision-Date: 2022-08-23 22:32+0200\n"
+"POT-Creation-Date: 2022-08-23 20:34+0000\n"
+"PO-Revision-Date: 2022-08-23 22:36+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -19,27 +19,27 @@ msgstr ""
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 3.1.1\n"
 
-#: backends/gf-monitor.c:135
+#: backends/gf-monitor.c:134
 msgid "Built-in display"
 msgstr "Ugrađeni zaslon"
 
-#: backends/gf-monitor.c:169
+#: backends/gf-monitor.c:168
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
 msgid "Unknown"
 msgstr "Nepoznat"
 
-#: backends/gf-monitor.c:171
+#: backends/gf-monitor.c:170
 msgid "Unknown Display"
 msgstr "Nepoznat zaslon"
 
-#: backends/gf-monitor.c:180
+#: backends/gf-monitor.c:179
 #, c-format
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: backends/gf-monitor.c:194
+#: backends/gf-monitor.c:193
 #, c-format
 msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
@@ -69,10 +69,6 @@ msgstr "GNOME Flashback"
 #: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Međuspremnik (GNOME Flashback)"
-
-#: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
-msgid "Idle Monitor (GNOME Flashback)"
-msgstr "Nadgledanje u mirovanju (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
 msgid "MediaKeys (GNOME Flashback)"
@@ -985,7 +981,7 @@ msgstr[2] "Sustav će automatski hibridno spavati za %d sekundi."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:29
 msgid "Some programs are still running:"
-msgstr "Pojedine aplikacije su još uvijek pokrenute."
+msgstr "Pojedine aplikacije su još uvijek pokrenute:"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:78
 msgid ""
@@ -1016,9 +1012,13 @@ msgstr "Tekst sažetka obavijesti."
 msgid "Notification"
 msgstr "Obavijest"
 
-#: gnome-flashback/libnotifications/nd-daemon.c:98
+#: gnome-flashback/libnotifications/nd-daemon.c:100
 msgid "Invalid notification identifier"
 msgstr "Nevaljan identfikator obavijesti"
+
+#: gnome-flashback/libnotifications/nd-daemon.c:181
+msgid "Exceeded maximum number of notifications"
+msgstr "Dostignut je najveći broj obavijesti"
 
 #: gnome-flashback/libnotifications/nd-notification-box.c:358
 msgid "Notification body text."
@@ -1306,3 +1306,6 @@ msgstr "Izlaz"
 #: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Utišano"
+
+#~ msgid "Idle Monitor (GNOME Flashback)"
+#~ msgstr "Nadgledanje u mirovanju (GNOME Flashback)"
