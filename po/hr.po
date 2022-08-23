@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
 "POT-Creation-Date: 2022-08-22 01:32+0000\n"
-"PO-Revision-Date: 2022-08-23 22:32+0200\n"
+"PO-Revision-Date: 2022-08-23 22:37+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -985,7 +985,7 @@ msgstr[2] "Sustav će automatski hibridno spavati za %d sekundi."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:29
 msgid "Some programs are still running:"
-msgstr "Pojedine aplikacije su još uvijek pokrenute."
+msgstr "Pojedine aplikacije su još uvijek pokrenute:"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:78
 msgid ""
