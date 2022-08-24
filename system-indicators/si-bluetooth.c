@@ -18,11 +18,23 @@
 #include "config.h"
 #include "si-bluetooth.h"
 
-#include <bluetooth-client.h>
 #include <glib/gi18n-lib.h>
 
 #include "dbus/gf-sd-rfkill-gen.h"
 #include "si-desktop-menu-item.h"
+
+typedef enum
+{
+  BLUETOOTH_TYPE_HEADSET = 1 << 5,
+  BLUETOOTH_TYPE_HEADPHONES = 1 << 6,
+  BLUETOOTH_TYPE_OTHER_AUDIO = 1 << 7,
+  BLUETOOTH_TYPE_KEYBOARD = 1 << 8,
+  BLUETOOTH_TYPE_MOUSE = 1 << 9,
+  BLUETOOTH_TYPE_SPEAKERS = 1 << 20
+} BluetoothType;
+
+typedef struct _BluetoothClient BluetoothClient;
+typedef struct _BluetoothDevice BluetoothDevice;
 
 struct _SiBluetooth
 {
@@ -31,7 +43,7 @@ struct _SiBluetooth
   GtkWidget       *menu;
 
   BluetoothClient *client;
-  GtkTreeModel    *model;
+  GListModel      *devices;
 
   guint            bus_name_id;
 
@@ -41,6 +53,25 @@ struct _SiBluetooth
 };
 
 G_DEFINE_TYPE (SiBluetooth, si_bluetooth, SI_TYPE_INDICATOR)
+
+extern BluetoothClient *
+bluetooth_client_new (void);
+
+extern GListStore *
+bluetooth_client_get_devices (BluetoothClient *client);
+
+extern void
+bluetooth_client_connect_service (BluetoothClient     *client,
+                                  const char          *path,
+                                  gboolean             connect,
+                                  GCancellable        *cancellable,
+                                  GAsyncReadyCallback  callback,
+                                  gpointer             user_data);
+
+extern gboolean
+bluetooth_client_connect_service_finish (BluetoothClient *client,
+                                         GAsyncResult    *res,
+                                         GError         **error);
 
 static gboolean
 is_airplane_mode (SiBluetooth *self)
@@ -112,7 +143,7 @@ connect_done_cb (GObject      *source_object,
   GError *error;
 
   error = NULL;
-  bluetooth_client_connect_service_finish (BLUETOOTH_CLIENT (source_object),
+  bluetooth_client_connect_service_finish ((BluetoothClient *) source_object,
                                            res,
                                            &error);
 
@@ -173,25 +204,24 @@ connect_cb (GtkMenuItem *item,
 }
 
 static void
-append_devices (SiBluetooth *self,
-                GtkTreeIter *adapter,
-                int          n_devices)
+append_devices (SiBluetooth *self)
 {
   GtkWidget *separator;
-  gboolean valid;
-  GtkTreeIter iter;
+  guint n_items;
+  guint i;
 
-  if (is_airplane_mode (self) || n_devices == 0)
+  if (is_airplane_mode (self))
     return;
 
   separator = gtk_separator_menu_item_new ();
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), separator);
   gtk_widget_show (separator);
 
-  valid = gtk_tree_model_iter_children (self->model, &iter, adapter);
+  n_items = g_list_model_get_n_items (self->devices);
 
-  while (valid)
+  for (i = 0; i < n_items; i++)
     {
+      BluetoothDevice *device;
       GDBusProxy *proxy;
       char *name;
       BluetoothType type;
@@ -200,12 +230,14 @@ append_devices (SiBluetooth *self,
       GtkWidget *menu;
       char *path;
 
-      gtk_tree_model_get (self->model, &iter,
-                          BLUETOOTH_COLUMN_PROXY, &proxy,
-                          BLUETOOTH_COLUMN_NAME, &name,
-                          BLUETOOTH_COLUMN_TYPE, &type,
-                          BLUETOOTH_COLUMN_CONNECTED, &is_connected,
-                          -1);
+      device = g_list_model_get_item (self->devices, i);
+
+      g_object_get (device,
+                    "proxy", &proxy,
+                    "name", &name,
+                    "type", &type,
+                    "connected", &is_connected,
+                    NULL);
 
       item = gtk_menu_item_new_with_label (name);
       g_free (name);
@@ -270,9 +302,7 @@ append_devices (SiBluetooth *self,
 
           case BLUETOOTH_TYPE_HEADSET:
           case BLUETOOTH_TYPE_HEADPHONES:
-#ifdef HAVE_BLUETOOTH_TYPE_SPEAKERS
           case BLUETOOTH_TYPE_SPEAKERS:
-#endif
           case BLUETOOTH_TYPE_OTHER_AUDIO:
             item = si_desktop_menu_item_new (_("Sound Settings"),
                                              "gnome-sound-panel.desktop");
@@ -281,26 +311,11 @@ append_devices (SiBluetooth *self,
             gtk_widget_show (item);
             break;
 
-          case BLUETOOTH_TYPE_ANY:
-          case BLUETOOTH_TYPE_PHONE:
-          case BLUETOOTH_TYPE_MODEM:
-          case BLUETOOTH_TYPE_COMPUTER:
-          case BLUETOOTH_TYPE_NETWORK:
-          case BLUETOOTH_TYPE_CAMERA:
-          case BLUETOOTH_TYPE_PRINTER:
-          case BLUETOOTH_TYPE_JOYPAD:
-          case BLUETOOTH_TYPE_TABLET:
-          case BLUETOOTH_TYPE_VIDEO:
-          case BLUETOOTH_TYPE_REMOTE_CONTROL:
-          case BLUETOOTH_TYPE_SCANNER:
-          case BLUETOOTH_TYPE_DISPLAY:
-          case BLUETOOTH_TYPE_WEARABLE:
-          case BLUETOOTH_TYPE_TOY:
           default:
             break;
         }
 
-      valid = gtk_tree_model_iter_next (self->model , &iter);
+      g_object_unref (device);
     }
 }
 
@@ -312,9 +327,7 @@ remove_item_cb (GtkWidget *widget,
 }
 
 static void
-update_indicator_menu (SiBluetooth *self,
-                       GtkTreeIter *adapter,
-                       int          n_devices)
+update_indicator_menu (SiBluetooth *self)
 {
   GtkWidget *separator;
   GtkWidget *item;
@@ -322,7 +335,7 @@ update_indicator_menu (SiBluetooth *self,
   gtk_container_foreach (GTK_CONTAINER (self->menu), remove_item_cb, NULL);
 
   append_main_items (self);
-  append_devices (self, adapter, n_devices);
+  append_devices (self);
 
   separator = gtk_separator_menu_item_new ();
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), separator);
@@ -361,56 +374,33 @@ update_indicator_icon (SiBluetooth *self)
   si_indicator_set_icon_name (SI_INDICATOR (self), icon_name);
 }
 
-static GtkTreeIter *
-get_default_adapter (SiBluetooth *self)
-{
-  gboolean valid;
-  GtkTreeIter iter;
-
-  valid = gtk_tree_model_get_iter_first (self->model, &iter);
-
-  while (valid)
-    {
-      gboolean is_default;
-
-      gtk_tree_model_get (self->model, &iter,
-                          BLUETOOTH_COLUMN_DEFAULT, &is_default,
-                          -1);
-
-      if (is_default)
-        return gtk_tree_iter_copy (&iter);
-
-      valid = gtk_tree_model_iter_next (self->model , &iter);
-    }
-
-  return NULL;
-}
-
 static void
 get_n_devices (SiBluetooth *self,
-               GtkTreeIter *adapter,
                int         *n_devices,
                int         *n_connected_devices)
 {
-  gboolean valid;
-  GtkTreeIter iter;
+  guint n_items;
+  guint i;
 
   *n_devices = 0;
   *n_connected_devices = 0;
 
-  valid = gtk_tree_model_iter_children (self->model, &iter, adapter);
+  n_items = g_list_model_get_n_items (self->devices);
 
-  while (valid)
+  for (i = 0; i < n_items; i++)
     {
+      BluetoothDevice *device;
       gboolean is_connected;
       gboolean is_paired;
       gboolean is_trusted;
 
-      gtk_tree_model_get (self->model, &iter,
-                          BLUETOOTH_COLUMN_CONNECTED, &is_connected,
-                          BLUETOOTH_COLUMN_PAIRED, &is_paired,
-                          BLUETOOTH_COLUMN_TRUSTED, &is_trusted,
-                          -1);
+      device = g_list_model_get_item (self->devices, i);
+
+      g_object_get (device,
+                    "connected", &is_connected,
+                    "paired", &is_paired,
+                    "trusted", &is_trusted,
+                    NULL);
 
       if (is_connected)
         (*n_connected_devices)++;
@@ -418,7 +408,7 @@ get_n_devices (SiBluetooth *self,
       if (is_paired || is_trusted)
         (*n_devices)++;
 
-      valid = gtk_tree_model_iter_next (self->model , &iter);
+      g_object_unref (device);
     }
 }
 
@@ -426,25 +416,22 @@ static void
 update_indicator (SiBluetooth *self)
 {
   GtkWidget *menu_item;
-  GtkTreeIter *adapter;
   int n_devices;
   int n_connected_devices;
   char *tooltip;
 
   menu_item = si_indicator_get_menu_item (SI_INDICATOR (self));
-  adapter = get_default_adapter (self);
 
-  if (adapter == NULL)
+  get_n_devices (self, &n_devices, &n_connected_devices);
+
+  if (n_devices == 0)
     {
       gtk_widget_hide (menu_item);
       return;
     }
 
-  get_n_devices (self, adapter, &n_devices, &n_connected_devices);
-
   update_indicator_icon (self);
-  update_indicator_menu (self, adapter, n_devices);
-  gtk_tree_iter_free (adapter);
+  update_indicator_menu (self);
 
   if (n_connected_devices > 0)
     {
@@ -464,27 +451,11 @@ update_indicator (SiBluetooth *self)
 }
 
 static void
-row_changed_cb (GtkTreeModel *tree_model,
-                GtkTreePath  *path,
-                GtkTreeIter  *iter,
-                SiBluetooth  *self)
-{
-  update_indicator (self);
-}
-
-static void
-row_inserted_cb (GtkTreeModel *tree_model,
-                 GtkTreePath  *path,
-                 GtkTreeIter  *iter,
-                 SiBluetooth  *self)
-{
-  update_indicator (self);
-}
-
-static void
-row_deleted_cb (GtkTreeModel *tree_model,
-                GtkTreePath  *path,
-                SiBluetooth  *self)
+items_changed_cb (GListModel  *model,
+                  guint        position,
+                  guint        removed,
+                  guint        added,
+                  SiBluetooth *self)
 {
   update_indicator (self);
 }
@@ -592,21 +563,11 @@ si_bluetooth_constructed (GObject *object)
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), self->menu);
 
   self->client = bluetooth_client_new ();
-  self->model = bluetooth_client_get_model (self->client);
+  self->devices = G_LIST_MODEL (bluetooth_client_get_devices (self->client));
 
-  g_signal_connect (self->model,
-                    "row-changed",
-                    G_CALLBACK (row_changed_cb),
-                    self);
-
-  g_signal_connect (self->model,
-                    "row-inserted",
-                    G_CALLBACK (row_inserted_cb),
-                    self);
-
-  g_signal_connect (self->model,
-                    "row-deleted",
-                    G_CALLBACK (row_deleted_cb),
+  g_signal_connect (self->devices,
+                    "items-changed",
+                    G_CALLBACK (items_changed_cb),
                     self);
 
   applet = si_indicator_get_applet (SI_INDICATOR (self));
@@ -638,7 +599,7 @@ si_bluetooth_dispose (GObject *object)
   g_clear_object (&self->rfkill);
 
   g_clear_object (&self->client);
-  g_clear_object (&self->model);
+  g_clear_object (&self->devices);
 
   G_OBJECT_CLASS (si_bluetooth_parent_class)->dispose (object);
 }

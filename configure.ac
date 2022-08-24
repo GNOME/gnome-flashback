@@ -340,33 +340,7 @@ PKG_CHECK_MODULES([SYSTEM_INDICATORS], [
   upower-glib
 ])
 
-PKG_CHECK_EXISTS([gnome-bluetooth-1.0], [
-  found_gnome_bluetooth="yes"
-  PKG_CHECK_MODULES([GNOME_BLUETOOTH], [gnome-bluetooth-1.0])
-  AC_DEFINE([HAVE_GNOME_BLUETOOTH], [1],
-            [Define if libgnome-bluetooth is available])
-], [
-  found_gnome_bluetooth="no"
-])
-
-AM_CONDITIONAL([HAVE_GNOME_BLUETOOTH], [test "x$found_gnome_bluetooth" = "xyes"])
-
-save_CFLAGS="$CFLAGS"
-CFLAGS=$GNOME_BLUETOOTH_CFLAGS
-AC_MSG_CHECKING([for BLUETOOTH_TYPE_SPEAKERS])
-AC_COMPILE_IFELSE([
-  AC_LANG_PROGRAM([
-    #include <bluetooth-client.h>
-  ], [
-    int type = BLUETOOTH_TYPE_SPEAKERS;
-  ])
-], [
-  AC_MSG_RESULT([yes])
-  AC_DEFINE([HAVE_BLUETOOTH_TYPE_SPEAKERS], [1], [xxx])
-], [
-  AC_MSG_RESULT([no])
-])
-CFLAGS="$save_CFLAGS"
+PKG_CHECK_MODULES([GNOME_BLUETOOTH], [gnome-bluetooth-3.0])
 
 dnl **************************************************************************
 dnl Compiz session

@@ -21,6 +21,8 @@ system_indicators_la_CFLAGS = \
 system_indicators_la_SOURCES = \
 	si-applet.c \
 	si-applet.h \
+	si-bluetooth.c \
+	si-bluetooth.h \
 	si-desktop-menu-item.c \
 	si-desktop-menu-item.h \
 	si-indicator.c \
@@ -40,6 +42,7 @@ system_indicators_la_LIBADD = \
 	$(top_builddir)/dbus/libdbus.la \
 	$(top_builddir)/gvc/libgvc.la \
 	$(SYSTEM_INDICATORS_LIBS) \
+	$(GNOME_BLUETOOTH_LIBS) \
 	$(LIBM) \
 	$(NULL)
 
@@ -48,20 +51,5 @@ system_indicators_la_LDFLAGS = \
 	$(WARN_LDFLAGS) \
 	$(AM_LDFLAGS) \
 	$(NULL)
-
-if HAVE_GNOME_BLUETOOTH
-system_indicators_la_SOURCES += \
-	si-bluetooth.c \
-	si-bluetooth.h \
-	$(NULL)
-
-system_indicators_la_CFLAGS += \
-	$(GNOME_BLUETOOTH_CFLAGS) \
-	$(NULL)
-
-system_indicators_la_LIBADD += \
-	$(GNOME_BLUETOOTH_LIBS) \
-	$(NULL)
-endif
 
 -include $(top_srcdir)/git.mk
