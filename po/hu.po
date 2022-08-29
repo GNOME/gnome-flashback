@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-03-13 02:56+0000\n"
-"PO-Revision-Date: 2022-03-19 23:17+0100\n"
+"POT-Creation-Date: 2022-07-27 15:55+0000\n"
+"PO-Revision-Date: 2022-08-30 00:48+0200\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -60,7 +60,6 @@ msgstr "Képernyőfelvétel ekkor: %d %t.webm"
 #. * with the screenshot
 #: daemons/media-keys/gsd-screenshot-utils.c:240
 #, c-format
-#| msgid "Screenshots"
 msgid "Screenshot from %s"
 msgstr "Képernyőkép ekkor: %s"
 
@@ -72,8 +71,12 @@ msgstr "GNOME Flashback"
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Vágólap (GNOME Flashback)"
 
+#: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
+#| msgid "Network (GNOME Flashback)"
+msgid "Idle Monitor (GNOME Flashback)"
+msgstr "Üresjárat-figyelő (GNOME Flashback)"
+
 #: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
-#| msgid "Clipboard (GNOME Flashback)"
 msgid "MediaKeys (GNOME Flashback)"
 msgstr "Médiabillentyűk (GNOME Flashback)"
 
@@ -85,11 +88,6 @@ msgstr "Hálózat (GNOME Flashback)"
 msgid "Manage your network connections"
 msgstr "Hálózati kapcsolatok kezelése"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
-msgid "nm-device-wireless"
-msgstr "nm-device-wireless"
-
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
 msgstr "Beállítások"
@@ -98,11 +96,6 @@ msgstr "Beállítások"
 msgid "Personal preferences"
 msgstr "Személyes beállítások"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
-msgid "preferences-desktop"
-msgstr "preferences-desktop"
-
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
 msgstr "Adminisztráció"
@@ -110,11 +103,6 @@ msgstr "Adminisztráció"
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
 msgid "Change system-wide settings (affects all users)"
 msgstr "Rendszerszintű beállítások módosítása (minden felhasználóra kihat)"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
-msgid "preferences-system"
-msgstr "preferences-system"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:6
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
@@ -203,7 +191,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "Idle monitor"
-msgstr "Üresjárat figyelő"
+msgstr "Üresjárat-figyelő"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
 msgid ""
@@ -426,7 +414,6 @@ msgstr ""
 "asztalra."
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:5
-#| msgid "Screenshots"
 msgid "Take a screenshot"
 msgstr "Képernyőkép készítése"
 
@@ -479,8 +466,8 @@ msgid ""
 "The maximum length of single screen cast recordings in seconds or 0 for "
 "unlimited"
 msgstr ""
-"Az önálló képernyőfelvételek rögzítésének legnagyobb hossza másodpercben vagy"
-" 0, ha korlátlan"
+"Az önálló képernyőfelvételek rögzítésének legnagyobb hossza másodpercben "
+"vagy 0, ha korlátlan"
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
@@ -1033,13 +1020,9 @@ msgstr "Értesítés összefoglaló szövege."
 msgid "Notification"
 msgstr "Értesítés"
 
-#: gnome-flashback/libnotifications/nd-daemon.c:100
+#: gnome-flashback/libnotifications/nd-daemon.c:98
 msgid "Invalid notification identifier"
 msgstr "Érvénytelen értesítésazonosító"
-
-#: gnome-flashback/libnotifications/nd-daemon.c:181
-msgid "Exceeded maximum number of notifications"
-msgstr "Az értesítések maximális száma túllépve"
 
 #: gnome-flashback/libnotifications/nd-notification-box.c:358
 msgid "Notification body text."
