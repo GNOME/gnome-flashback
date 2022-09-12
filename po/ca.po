@@ -865,14 +865,14 @@ msgstr[1] "El sistema hibernarà automàticament en %d segons."
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:558
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:755
 msgid "Suspend"
-msgstr "Atura temporalment"
+msgstr "Suspèn"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:559
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
-msgstr[0] "El sistema s'aturarà automàticament en %d segon."
-msgstr[1] "El sistema s'aturarà automàticament en %d segons."
+msgstr[0] "El sistema se suspendrà automàticament en %d segon."
+msgstr[1] "El sistema se suspendrà automàticament en %d segons."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:566
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:759
@@ -883,8 +883,8 @@ msgstr "Suspensió híbrida"
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
-msgstr[0] "El sistema se suspendrà automàticament en %d segon."
-msgstr[1] "El sistema se suspendrà automàticament en %d segons."
+msgstr[0] "El sistema entrarà en suspensió híbrida automàticament en %d segon."
+msgstr[1] "El sistema entrarà en suspensió híbrida automàticament en %d segons."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:29
 msgid "Some programs are still running:"
