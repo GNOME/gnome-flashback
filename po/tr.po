@@ -1,5 +1,5 @@
 # Turkish translation for gnome-flashback
-# Copyright (C) 2015-2022 gnome-flashback'S COPYRIGHT HOLDER
+# Copyright (C) 2015-2022 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
 #
 # Simge Sezgin <simgesezgin88@gmail.com>, 2015.
@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-08-14 14:30+0000\n"
+"POT-Creation-Date: 2022-08-23 20:38+0000\n"
 "PO-Revision-Date: 2022-08-21 04:28+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -979,8 +979,8 @@ msgid ""
 "Waiting for these applications to finish. Interrupting them can lead to loss "
 "of data."
 msgstr ""
-"Uygulamaların işlemlerinin bitmesi bekleniyor. Uygulamaların kesilmesi "
-"veri yitimine neden olabilir."
+"Uygulamaların işlemlerinin bitmesi bekleniyor. Uygulamaların kesilmesi veri "
+"yitimine neden olabilir."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
 msgid "Lock Screen"
