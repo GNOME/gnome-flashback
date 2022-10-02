@@ -90,7 +90,7 @@ dnl **************************************************************************
 
 GDK_PIXBUF_REQUIRED=2.32.2
 GTK_REQUIRED=3.22.0
-LIBGNOME_DESKTOP_REQUIRED=3.12.0
+LIBGNOME_DESKTOP_REQUIRED=43
 LIBGNOME_PANEL_REQUIRED=3.35.2
 CANBERRA_REQUIRED=0.13
 GLIB_REQUIRED=2.67.3
@@ -290,15 +290,6 @@ dnl **************************************************************************
 PKG_CHECK_EXISTS([pango >= 1.44.0],
                  AC_DEFINE([HAVE_PANGO144], [1],
                            [Define if Pango is 1.44.0 or newer]))
-
-dnl **************************************************************************
-dnl Check if we have gnome-desktop 43.alpha or newer
-dnl **************************************************************************
-
-PKG_CHECK_EXISTS([gnome-desktop-3.0 >= 43.alpha],
-                 AC_DEFINE([HAVE_GNOME_DESKTOP_43_ALPHA], [1],
-                           [Define if gnome-desktop is 43.alpha or newer]))
-
 
 dnl **************************************************************************
 dnl Systemd session
