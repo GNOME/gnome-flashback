@@ -1,3 +1,9 @@
+Version 3.46.0
+==============
+- Fix build with with gnome-desktop 43. (#83)
+- Port system indicators to gnome-bluetooth 42. (#80)
+- Updated translations.
+
 Version 3.45.1
 ==============
 - Adapt to gnome-desktop API changes.
