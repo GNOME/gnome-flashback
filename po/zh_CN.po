@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-03-13 02:56+0000\n"
-"PO-Revision-Date: 2022-04-13 21:08+0800\n"
+"POT-Creation-Date: 2022-07-27 15:55+0000\n"
+"PO-Revision-Date: 2022-10-12 10:47+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -72,6 +72,10 @@ msgstr "GNOME Flashback"
 msgid "Clipboard (GNOME Flashback)"
 msgstr "剪贴板（GNOME Flashback）"
 
+#: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
+msgid "Idle Monitor (GNOME Flashback)"
+msgstr "闲置监视器（GNOME Flashback）"
+
 #: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
 msgid "MediaKeys (GNOME Flashback)"
 msgstr "媒体键（GNOME Flashback）"
@@ -84,12 +88,6 @@ msgstr "网络（GNOME Flashback）"
 msgid "Manage your network connections"
 msgstr "管理您的网络连接"
 
-# 这是 msgid bug?
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
-msgid "nm-device-wireless"
-msgstr "nm-device-wireless"
-
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
 msgstr "首选项"
@@ -98,11 +96,6 @@ msgstr "首选项"
 msgid "Personal preferences"
 msgstr "个人首选项"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
-msgid "preferences-desktop"
-msgstr "preferences-desktop"
-
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
 msgstr "管理"
@@ -110,11 +103,6 @@ msgstr "管理"
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
 msgid "Change system-wide settings (affects all users)"
 msgstr "改变系统设置（影响所有用户）"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
-msgid "preferences-system"
-msgstr "preferences-system"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:6
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
@@ -975,13 +963,9 @@ msgstr "通知概要文本。"
 msgid "Notification"
 msgstr "通知"
 
-#: gnome-flashback/libnotifications/nd-daemon.c:100
+#: gnome-flashback/libnotifications/nd-daemon.c:98
 msgid "Invalid notification identifier"
 msgstr "无效的通知标识符"
-
-#: gnome-flashback/libnotifications/nd-daemon.c:181
-msgid "Exceeded maximum number of notifications"
-msgstr "超过了最大通知数目"
 
 #: gnome-flashback/libnotifications/nd-notification-box.c:358
 msgid "Notification body text."
@@ -1259,6 +1243,19 @@ msgstr "输出"
 #: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "静音"
+
+# 这是 msgid bug?
+#~ msgid "nm-device-wireless"
+#~ msgstr "nm-device-wireless"
+
+#~ msgid "preferences-desktop"
+#~ msgstr "preferences-desktop"
+
+#~ msgid "preferences-system"
+#~ msgstr "preferences-system"
+
+#~ msgid "Exceeded maximum number of notifications"
+#~ msgstr "超过了最大通知数目"
 
 #~ msgid "GNOME Flashback Initialization"
 #~ msgstr "GNOME Flashback 初始化"
