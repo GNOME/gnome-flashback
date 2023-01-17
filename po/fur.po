@@ -7,46 +7,61 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2020-06-27 21:07+0000\n"
-"PO-Revision-Date: 2021-01-25 17:41+0100\n"
-"Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
-"Language-Team: Friulian <fur@li.org>\n"
+"POT-Creation-Date: 2022-07-27 15:55+0000\n"
+"PO-Revision-Date: 2023-01-17 10:35+0000\n"
+"Last-Translator: Fabio T. <f.t.public@gmail.com>\n"
+"Language-Team: Friulian <f.t.public@gmail.com>\n"
 "Language: fur\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Editor: HaiPO 1.4 beta\n"
 "X-Generator: Poedit 2.4.2\n"
 
-#: backends/gf-monitor.c:133
+#: backends/gf-monitor.c:134
 msgid "Built-in display"
 msgstr "Display integrât"
 
-#: backends/gf-monitor.c:167
+#: backends/gf-monitor.c:168
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
 msgid "Unknown"
 msgstr "No cognossût"
 
-#: backends/gf-monitor.c:169
+#: backends/gf-monitor.c:170
 msgid "Unknown Display"
 msgstr "Display no cognossût"
 
-#: backends/gf-monitor.c:178
+#: backends/gf-monitor.c:179
 #, c-format
-#| msgid "%s %s"
 msgctxt ""
-"This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
+"This is a monitor vendor name, followed by a size in inches, like 'Dell "
+"15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: backends/gf-monitor.c:192
+#: backends/gf-monitor.c:193
 #, c-format
-#| msgid "%s %s"
 msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
 "inches could not be calculated, e.g. Dell U2414H"
 msgid "%s %s"
 msgstr "%s %s"
+
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#: daemons/media-keys/gsd-media-keys-manager.c:551
+#, no-c-format
+msgid "Screencast from %d %t.webm"
+msgstr "Trasmission schermi di %d %t.webm"
+
+#. translators: this is the name of the file that gets made up
+#. * with the screenshot
+#: daemons/media-keys/gsd-screenshot-utils.c:240
+#, c-format
+msgid "Screenshot from %s"
+msgstr "Schermade di %s"
 
 #: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
@@ -56,6 +71,14 @@ msgstr "GNOME Flashback"
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Notis (GNOME Flashback)"
 
+#: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
+msgid "Idle Monitor (GNOME Flashback)"
+msgstr "Visôr inatîf (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
+msgid "MediaKeys (GNOME Flashback)"
+msgstr "Tascj Multimediâi (GNOME Flashback)"
+
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
 msgstr "Rêt (GNOME Flashback)"
@@ -63,11 +86,6 @@ msgstr "Rêt (GNOME Flashback)"
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:4
 msgid "Manage your network connections"
 msgstr "Gjestìs lis conessions di rêt"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
-msgid "nm-device-wireless"
-msgstr "nm-device-wireless"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -77,26 +95,52 @@ msgstr "Preferencis"
 msgid "Personal preferences"
 msgstr "Preferencis personâls"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
-msgid "preferences-desktop"
-msgstr "preferences-desktop"
-
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
 msgstr "Aministrazion"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
 msgid "Change system-wide settings (affects all users)"
-msgstr "Cambie lis impostazions di dut il sisteme (al interesse ducj i utents)"
+msgstr ""
+"Cambie lis impostazions di dut il sisteme (al interesse ducj i utents)"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
-msgid "preferences-system"
-msgstr "preferences-system"
+#: data/keybindings/50-gnome-flashback-screenshots.xml:6
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
+msgid "Screenshots"
+msgstr "Schermadis"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:10
+msgid "Save a screenshot to $PICTURES"
+msgstr "Salve une schermade su $PICTURES"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:14
+msgid "Save a screenshot of a window to $PICTURES"
+msgstr "Salve une schermade di un barcon in $PICTURES"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:18
+msgid "Save a screenshot of an area to $PICTURES"
+msgstr "Salve une schermade di une aree in $PICTURES"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:21
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:23
+msgid "Copy a screenshot to clipboard"
+msgstr "Copie une schermade intes notis"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:24
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:29
+msgid "Copy a screenshot of a window to clipboard"
+msgstr "Copie une schermade di un barcon intes notis"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:27
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:35
+msgid "Copy a screenshot of an area to clipboard"
+msgstr "Copie une schermade di une aree intes notis"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:30
+msgid "Record a short screencast"
+msgstr "Regjistre une piçule trasmission di schermi"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
-#| msgid "Keyboard"
 msgid "a11y-keyboard"
 msgstr "a11y-keyboard"
 
@@ -106,11 +150,11 @@ msgstr "Selezion dispositîf audio"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
 msgid ""
-"If set to true, then GNOME Flashback application will be used to provide the "
-"audio device selection dialog."
+"If set to true, then GNOME Flashback application will be used to provide the"
+" audio device selection dialog."
 msgstr ""
-"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade "
-"par furnî il dialic di selezion dal dispositîf audio."
+"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade"
+" par furnî il dialic di selezion dal dispositîf audio."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:16
 msgid "Automount manager"
@@ -121,15 +165,15 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to automount "
 "removable media."
 msgstr ""
-"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade "
-"par montâ in automatic i supuarts estraibii."
+"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade"
+" par montâ in automatic i supuarts estraibii."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:22
 msgid "Clipboard"
 msgstr "Notis"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:27
-#: gnome-flashback/libdesktop/gf-desktop-window.c:823
+#: gnome-flashback/libdesktop/gf-desktop-window.c:824
 msgid "Desktop"
 msgstr "Scritori"
 
@@ -142,8 +186,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
 msgstr ""
-"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade "
-"par mostrâ il dialic di fin session."
+"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade"
+" par mostrâ il dialic di fin session."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "Idle monitor"
@@ -154,8 +198,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used for user "
 "activity monitoring."
 msgstr ""
-"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade "
-"pal monitorament de ativitât dal utent."
+"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade"
+" pal monitorament de ativitât dal utent."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "Input settings"
@@ -170,8 +214,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
 msgstr ""
-"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade "
-"par gjestî lis disposizions de tastiere e i metodis di input."
+"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade"
+" par gjestî lis disposizions de tastiere e i metodis di input."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
 msgid "Notification daemon"
@@ -182,8 +226,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
 msgstr ""
-"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade "
-"par gjestî lis notifichis."
+"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade"
+" par gjestî lis notifichis."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid "Authentication agent for polkit"
@@ -209,8 +253,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
 msgstr ""
-"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade "
-"par regjistrâ il schermi."
+"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade"
+" par regjistrâ il schermi."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
 msgid "Screensaver"
@@ -221,20 +265,16 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
 msgstr ""
-"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade "
-"come un salveschermi."
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
-msgid "Screenshots"
-msgstr "Schermadis"
+"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade"
+" come un salveschermi."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
 msgstr ""
-"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade "
-"par fâ caturis di schermi."
+"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade"
+" par fâ caturis di schermi."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid "Shell"
@@ -244,8 +284,8 @@ msgstr "Shell"
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr ""
-"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade "
-"come une shell."
+"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade"
+" come une shell."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
 msgid "Status Notifier Watcher"
@@ -256,8 +296,8 @@ msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
 msgstr ""
-"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade "
-"tant che Osservadôr dal notificadôr di stât."
+"Se metût a true (vêr), alore la aplicazion GNOME Flashback e vignarà doprade"
+" tant che Osservadôr dal notificadôr di stât."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:5
 msgid "Draw desktop background"
@@ -310,8 +350,8 @@ msgid ""
 "Can be one of \"auto-arrange-icons\", \"align-icons-to-grid\" or \"free\". "
 "It controls how icons are placed on desktop."
 msgstr ""
-"Al pues jessi un tra \"auto-arrange-icons\", \"align-icons-to-grid\" o \"free"
-"\". Al controle cemût che a vegnin plaçadis lis iconis sul scritori."
+"Al pues jessi un tra \"auto-arrange-icons\", \"align-icons-to-grid\" o "
+"\"free\". Al controle cemût che a vegnin plaçadis lis iconis sul scritori."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
 #: gnome-flashback/libdesktop/gf-icon-view.c:1338
@@ -320,12 +360,12 @@ msgstr "Ordene par"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:18
 msgid ""
-"Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons "
-"are sorted in \"auto-arrange-icons\" placement."
+"Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons"
+" are sorted in \"auto-arrange-icons\" placement."
 msgstr ""
 "Al pues jessi un tra \"name\", \"date-modified\" o \"size\". Al controle "
-"cemût che a vegnin ordenadis lis iconis intal plaçament \"auto-arrange-icons"
-"\"."
+"cemût che a vegnin ordenadis lis iconis intal plaçament \"auto-arrange-"
+"icons\"."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
 msgid "Extra text width"
@@ -374,6 +414,62 @@ msgid ""
 msgstr ""
 "Se chest al ven metût a true (vêr), e vignarà metude sul scritori une icone "
 "che si coleghe ae scovacere."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:5
+msgid "Take a screenshot"
+msgstr "Cature une schermade"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:6
+msgid "Binding to take a screenshot."
+msgstr "Associazion par fâ une cature di schermade."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:11
+msgid "Take a screenshot of a window"
+msgstr "Fâs une videade di un barcon"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:12
+msgid "Binding to take a screenshot of a window."
+msgstr "Associazion par fâ une videade di un barcon."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:17
+msgid "Take a screenshot of an area"
+msgstr "Fâs une videade di une aree"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:18
+msgid "Binding to take a screenshot of an area."
+msgstr "Associazion par fâ une videade di une aree."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:24
+msgid "Binding to copy a screenshot to clipboard."
+msgstr "Associazion par copiâ une cature di schermade intes notis."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:30
+msgid "Binding to copy a screenshot of a window to clipboard."
+msgstr "Associazion par copiâ une videade di un barcon intes notis."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:36
+msgid "Binding to copy a screenshot of an area to clipboard."
+msgstr "Associazion par copiâ une videade di une aree intes notis."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:41
+msgid "Record a short video of the screen"
+msgstr "Regjistre un piçul filmât dal schermi"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:42
+msgid "Binding to record a short video of the screen"
+msgstr "Associazion par regjistrâ un piçul filmât dal schermi"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:47
+msgid "Maximum length of screen recordings"
+msgstr "Massime lungjece des regjistrazions dal schermi"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:48
+msgid ""
+"The maximum length of single screen cast recordings in seconds or 0 for "
+"unlimited"
+msgstr ""
+"La massime lungjece des regjistrazions dal singul schermi in seconts o 0 par"
+" ilimitât"
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
@@ -454,8 +550,8 @@ msgstr "Tascj lents disativâts"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:298
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the "
-"Slow Keys feature, which affects the way your keyboard works."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the"
+" Slow Keys feature, which affects the way your keyboard works."
 msgstr ""
 "Tu âs apene tignût fracât par 8 seconts il tast Maiusc. Chê e je la scurte "
 "pe funzion tascj lents, che e determine il mût di lavorâ de tastiere."
@@ -536,7 +632,7 @@ msgid "What kind of device did you plug in?"
 msgstr "Ce gjenar di dispositîf âstu tacât?"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
-#: system-indicators/si-bluetooth.c:274 system-indicators/si-volume.c:446
+#: system-indicators/si-bluetooth.c:277 system-indicators/si-volume.c:446
 msgid "Sound Settings"
 msgstr "Impostazions suns"
 
@@ -805,88 +901,88 @@ msgid "Rename"
 msgstr "Cambie non"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:514
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:739
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:750
 msgid "Log Out"
 msgstr "Termine session"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:517
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:518
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Fâs clic su Termine session par jessî di chestis aplicazions e terminâ la "
 "session dal sisteme."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:519
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s al terminarà la session in automatic in %d secont."
 msgstr[1] "%s al terminarà la session in automatic in %d seconts."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:743
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:537
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:754
 msgid "Power Off"
 msgstr "Distude"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:529
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:540
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 "Fâs clic su Distude par jessî di chestis aplicazions e distudâ il sisteme."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:531
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:542
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Il sisteme si distudarà in automatic in %d secont."
 msgstr[1] "Il sisteme si distudarà in automatic in %d seconts."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:538
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:747
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:549
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:758
 msgid "Restart"
 msgstr "Torne invie"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:541
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:552
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Fâs clic su Torne invie par jessî di chestis aplicazions e tornâ a inviâ il "
 "sisteme."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:543
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:554
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Il sisteme al tornarà a inviâsi in automatic in %d secont."
 msgstr[1] "Il sisteme al tornarà a inviâsi in automatic in %d seconts."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:550
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:751
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:561
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:762
 msgid "Hibernate"
 msgstr "Iberne"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:551
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:562
 #, c-format
 msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
 msgstr[0] "Il sisteme si ibernarà in automatic in %d secont."
 msgstr[1] "Il sisteme si ibernarà in automatic in %d seconts."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:558
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:755
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:569
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:766
 msgid "Suspend"
 msgstr "Sospint"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:559
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:570
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
 msgstr[0] "Il sisteme si sospindarà in automatic in %d secont."
 msgstr[1] "Il sisteme si sospindarà in automatic in %d seconts."
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:566
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:759
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:577
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:770
 msgid "Hybrid Sleep"
 msgstr "Polse ibride"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:567
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:578
 #, c-format
 msgid "The system will hybrid sleep automatically in %d second."
 msgid_plural "The system will hybrid sleep automatically in %d seconds."
@@ -899,8 +995,8 @@ msgstr "Cualchi program al sta ancjemò zirant:"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:78
 msgid ""
-"Waiting for these applications to finish. Interrupting them can lead to loss "
-"of data."
+"Waiting for these applications to finish. Interrupting them can lead to loss"
+" of data."
 msgstr ""
 "Si spiete che chestis aplicazions a finedin. Se si lis interomp si podarès "
 "vê pierditis di dâts."
@@ -909,30 +1005,26 @@ msgstr ""
 msgid "Lock Screen"
 msgstr "Bloche schermi"
 
-#: gnome-flashback/libnotifications/gf-bubble.c:563
-#: gnome-flashback/libnotifications/gf-bubble.c:567
+#: gnome-flashback/libnotifications/gf-bubble.c:549
+#: gnome-flashback/libnotifications/gf-bubble.c:553
 #: gnome-flashback/libnotifications/nd-notification-box.c:320
 #: gnome-flashback/libnotifications/nd-notification-box.c:322
 msgid "Closes the notification."
 msgstr "Siere la notifiche."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:587
-#: gnome-flashback/libnotifications/gf-bubble.c:618
+#: gnome-flashback/libnotifications/gf-bubble.c:573
+#: gnome-flashback/libnotifications/gf-bubble.c:604
 #: gnome-flashback/libnotifications/nd-notification-box.c:338
 msgid "Notification summary text."
 msgstr "Test di sintesi de notifiche."
 
-#: gnome-flashback/libnotifications/gf-bubble.c:637
+#: gnome-flashback/libnotifications/gf-bubble.c:623
 msgid "Notification"
 msgstr "Notifiche"
 
-#: gnome-flashback/libnotifications/nd-daemon.c:100
+#: gnome-flashback/libnotifications/nd-daemon.c:98
 msgid "Invalid notification identifier"
 msgstr "Identificatôr di notifiche no valit"
-
-#: gnome-flashback/libnotifications/nd-daemon.c:181
-msgid "Exceeded maximum number of notifications"
-msgstr "Superât il massim numar di notifichis"
 
 #: gnome-flashback/libnotifications/nd-notification-box.c:358
 msgid "Notification body text."
@@ -953,7 +1045,7 @@ msgstr "_Password par %s:"
 
 #: gnome-flashback/libpolkit/flashback-authenticator.c:104
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:370
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:366
 msgid "_Password:"
 msgstr "_Password:"
 
@@ -1042,27 +1134,27 @@ msgstr "Il to account al veve un limit di timp che cumò al è passât."
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Mi displâs, no je lade drete. Torne prove."
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:181
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:177
 msgid "Failed to switch to greeter!"
 msgstr "No si è rivâts a passâ ae videade di benvignût!"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:255
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:251
 msgid "Time has expired."
 msgstr "Timp scjadût."
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:506
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:467
 msgid "Checking…"
 msgstr "Daûr a controlâ…"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:531
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:492
 msgid "S_witch User…"
 msgstr "C_ambie utent…"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:540
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:501
 msgid "_Unlock"
 msgstr "_Sbloche"
 
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:751
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:712
 msgid "You have the Caps Lock key on."
 msgstr "Il tast BlocMaiusc al è atîf."
 
@@ -1072,13 +1164,13 @@ msgstr "Videade caturade"
 
 #. translators:
 #. * The device has been disabled
-#: gvc/gvc/gvc-mixer-control.c:1892
+#: gvc/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Disabilitât"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1899
+#: gvc/gvc/gvc-mixer-control.c:1907
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1087,14 +1179,14 @@ msgstr[1] "%u Jessudis"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1909
+#: gvc/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Jentrade"
 msgstr[1] "%u Jentradis"
 
-#: gvc/gvc/gvc-mixer-control.c:2766
+#: gvc/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Suns di sisteme"
 
@@ -1118,18 +1210,18 @@ msgstr "Impostazions tastiere"
 msgid "Mouse & Touchpad Settings"
 msgstr "Impostazions mouse e touchpad"
 
-#: system-indicators/si-bluetooth.c:328
+#: system-indicators/si-bluetooth.c:331
 msgid "Bluetooth Settings"
 msgstr "Impostazions Bluetooth"
 
-#: system-indicators/si-bluetooth.c:448
+#: system-indicators/si-bluetooth.c:451
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d dispositîf tacât"
 msgstr[1] "%d dispositîfs tacâts"
 
-#: system-indicators/si-bluetooth.c:455
+#: system-indicators/si-bluetooth.c:458
 msgid "Not Connected"
 msgstr "No tacât"
 
@@ -1143,11 +1235,11 @@ msgstr "Al mancje il file dal scritori “%s”!"
 msgid "Failed to start “%s”: %s"
 msgstr "No si è rivâts a inviâ “%s”: %s"
 
-#: system-indicators/si-input-sources.c:852
+#: system-indicators/si-input-sources.c:859
 msgid "Show Keyboard Layout"
 msgstr "Mostre la disposizion de tastiere"
 
-#: system-indicators/si-input-sources.c:883
+#: system-indicators/si-input-sources.c:890
 msgid "Region & Language Settings"
 msgstr "Impostazions regjon e lenghe"
 
@@ -1219,11 +1311,20 @@ msgstr "Jessude"
 msgid "Muted"
 msgstr "Cidinât"
 
+#~ msgid "nm-device-wireless"
+#~ msgstr "nm-device-wireless"
+
+#~ msgid "preferences-desktop"
+#~ msgstr "preferences-desktop"
+
+#~ msgid "preferences-system"
+#~ msgstr "preferences-system"
+
+#~ msgid "Exceeded maximum number of notifications"
+#~ msgstr "Superât il massim numar di notifichis"
+
 #~ msgid "GNOME Flashback Initialization"
 #~ msgstr "Inizializazion di GNOME Flashback"
-
-#~ msgid "Screensaver (GNOME Flashback)"
-#~ msgstr "Salveschermi (GNOME Flashback)"
 
 #~ msgid "Launch screensaver and locker program"
 #~ msgstr "Invie il program di bloc e il salveschermi"
@@ -1245,8 +1346,8 @@ msgstr "Cidinât"
 #~ msgstr "Configurazion visôr"
 
 #~ msgid ""
-#~ "If set to true, then GNOME Flashback application will be used to provide "
-#~ "the display configuration."
+#~ "If set to true, then GNOME Flashback application will be used to provide the"
+#~ " display configuration."
 #~ msgstr ""
 #~ "Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade par "
 #~ "furnî la configurazion dal visôr."
@@ -1266,19 +1367,19 @@ msgstr "Cidinât"
 
 #~ msgid ""
 #~ "If set to true, then GNOME Flashback application will be used to show a "
-#~ "sound applet. This is the same sound applet that used to be a part of "
-#~ "GNOME Control Center."
+#~ "sound applet. This is the same sound applet that used to be a part of GNOME "
+#~ "Control Center."
 #~ msgstr ""
 #~ "Se metût a vêr, alore la aplicazion GNOME Flashback e vignarà doprade par "
-#~ "mostra une applet sun. Cheste e je la stesse applet sun che e jere part "
-#~ "dal Centri di Control di GNOME."
+#~ "mostra une applet sun. Cheste e je la stesse applet sun che e jere part dal "
+#~ "Centri di Control di GNOME."
 
 #~ msgid "Workarounds"
 #~ msgstr "Soluzions alternativis"
 
 #~ msgid ""
-#~ "If set to true, then GNOME Flashback application will use workarounds to "
-#~ "fix bugs."
+#~ "If set to true, then GNOME Flashback application will use workarounds to fix"
+#~ " bugs."
 #~ msgstr ""
 #~ "Se metût a vêr, alore la aplicazion GNOME Flashback e doprarà soluzions "
 #~ "alternativis par justâ erôrs."
