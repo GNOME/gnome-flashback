@@ -7,16 +7,16 @@
 # Wolfgang Stöggl <c72578@yahoo.de>, 2016.
 # Dmitry Shachnev <mitya57@ubuntu.com>, 2020.
 # Tim Sabsch <tim@sabsch.com>, 2020.
-# Jürgen Benvenuti <gastornis@posteo.org>, 2022.
+# Jürgen Benvenuti <gastornis@posteo.org>, 2022, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-08-23 20:36+0000\n"
-"PO-Revision-Date: 2022-10-21 17:13+0200\n"
+"POT-Creation-Date: 2023-01-25 18:52+0000\n"
+"PO-Revision-Date: 2023-01-26 16:36+0100\n"
 "Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
-"Language-Team: Deutsch <gnome-de@gnome.org>\n"
+"Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,27 +24,27 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.1.1\n"
 
-#: backends/gf-monitor.c:134
+#: backends/gf-monitor.c:135
 msgid "Built-in display"
 msgstr "Eingebauter Bildschirm"
 
-#: backends/gf-monitor.c:168
+#: backends/gf-monitor.c:169
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: backends/gf-monitor.c:170
+#: backends/gf-monitor.c:171
 msgid "Unknown Display"
 msgstr "Unbekannter Bildschirm"
 
-#: backends/gf-monitor.c:179
+#: backends/gf-monitor.c:180
 #, c-format
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: backends/gf-monitor.c:193
+#: backends/gf-monitor.c:194
 #, c-format
 msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
@@ -74,6 +74,10 @@ msgstr "GNOME Flashback"
 #: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Zwischenablage (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
+msgid "Idle Monitor (GNOME Flashback)"
+msgstr "Ruheüberwachung (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
 msgid "MediaKeys (GNOME Flashback)"
@@ -560,13 +564,13 @@ msgstr ""
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: system-indicators/si-bluetooth.c:85
+#: system-indicators/si-bluetooth.c:116
 msgid "Turn Off"
 msgstr "Ausschalten"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: system-indicators/si-bluetooth.c:99
+#: system-indicators/si-bluetooth.c:130
 msgid "Turn On"
 msgstr "Einschalten"
 
@@ -634,7 +638,7 @@ msgid "What kind of device did you plug in?"
 msgstr "Was für ein Gerät haben Sie angeschlossen?"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
-#: system-indicators/si-bluetooth.c:277 system-indicators/si-volume.c:446
+#: system-indicators/si-bluetooth.c:307 system-indicators/si-volume.c:446
 msgid "Sound Settings"
 msgstr "Klangeinstellungen"
 
@@ -1034,13 +1038,9 @@ msgstr "Zusammenfassungstext der Benachrichtigung."
 msgid "Notification"
 msgstr "Benachrichtigung"
 
-#: gnome-flashback/libnotifications/nd-daemon.c:100
+#: gnome-flashback/libnotifications/nd-daemon.c:98
 msgid "Invalid notification identifier"
 msgstr "Ungültiger Bezeichner der Benachrichtigung"
-
-#: gnome-flashback/libnotifications/nd-daemon.c:181
-msgid "Exceeded maximum number of notifications"
-msgstr "Maximale Anzahl der Benachrichtigungen wurde überschritten"
 
 #: gnome-flashback/libnotifications/nd-notification-box.c:358
 msgid "Notification body text."
@@ -1210,38 +1210,38 @@ msgstr[1] "%u Eingabegeräte"
 msgid "System Sounds"
 msgstr "Systemklänge"
 
-#: system-indicators/si-bluetooth.c:91
+#: system-indicators/si-bluetooth.c:122
 msgid "Send Files"
 msgstr "Dateien senden"
 
-#: system-indicators/si-bluetooth.c:228
+#: system-indicators/si-bluetooth.c:260
 msgid "Disconnect"
 msgstr "Trennen"
 
-#: system-indicators/si-bluetooth.c:241
+#: system-indicators/si-bluetooth.c:273
 msgid "Connect"
 msgstr "Verbinden"
 
-#: system-indicators/si-bluetooth.c:256
+#: system-indicators/si-bluetooth.c:288
 msgid "Keyboard Settings"
 msgstr "Tastatureinstellungen"
 
-#: system-indicators/si-bluetooth.c:264
+#: system-indicators/si-bluetooth.c:296
 msgid "Mouse & Touchpad Settings"
 msgstr "Maus- und Touchpad-Einstellungen"
 
-#: system-indicators/si-bluetooth.c:331
+#: system-indicators/si-bluetooth.c:344
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-Einstellungen"
 
-#: system-indicators/si-bluetooth.c:451
+#: system-indicators/si-bluetooth.c:438
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d verbundenes Gerät"
 msgstr[1] "%d verbundene Geräte"
 
-#: system-indicators/si-bluetooth.c:458
+#: system-indicators/si-bluetooth.c:445
 msgid "Not Connected"
 msgstr "Nicht verbunden"
 
@@ -1330,6 +1330,9 @@ msgstr "Ausgabegeräte"
 #: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Stummgeschaltet"
+
+#~ msgid "Exceeded maximum number of notifications"
+#~ msgstr "Maximale Anzahl der Benachrichtigungen wurde überschritten"
 
 #~ msgid "nm-device-wireless"
 #~ msgstr "nm-device-wireless"
