@@ -12,16 +12,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-08-23 20:38+0000\n"
-"PO-Revision-Date: 2022-08-21 04:28+0300\n"
-"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"POT-Creation-Date: 2023-01-25 18:52+0000\n"
+"PO-Revision-Date: 2023-03-06 23:59+0300\n"
+"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1.1\n"
 "X-POOTLE-MTIME: 1432972725.000000\n"
 
 #: backends/gf-monitor.c:135
@@ -349,8 +349,8 @@ msgid ""
 "It controls how icons are placed on desktop."
 msgstr ""
 "Şunlardan biri olabilir: \"auto-arrange-icons\" (simgeleri kendiliğinden "
-"düzenle), \"align-icons-to-grid\" (simgeleri ızgaraya hizala) veya \"free"
-"\" (serbest). Simgelerin masaüstünde nasıl yerleşeceğini denetler."
+"düzenle), \"align-icons-to-grid\" (simgeleri ızgaraya hizala) veya "
+"\"free\" (serbest). Simgelerin masaüstünde nasıl yerleşeceğini denetler."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
 #: gnome-flashback/libdesktop/gf-icon-view.c:1338
@@ -551,13 +551,13 @@ msgstr ""
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: system-indicators/si-bluetooth.c:85
+#: system-indicators/si-bluetooth.c:116
 msgid "Turn Off"
 msgstr "Kapat"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: system-indicators/si-bluetooth.c:99
+#: system-indicators/si-bluetooth.c:130
 msgid "Turn On"
 msgstr "Aç"
 
@@ -623,7 +623,7 @@ msgid "What kind of device did you plug in?"
 msgstr "Ne tür aygıt taktınız?"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
-#: system-indicators/si-bluetooth.c:277 system-indicators/si-volume.c:446
+#: system-indicators/si-bluetooth.c:307 system-indicators/si-volume.c:446
 msgid "Sound Settings"
 msgstr "Ses Ayarları"
 
@@ -1094,7 +1094,7 @@ msgstr "%s açmak için tıkla"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:8
 msgid "Authenticate"
-msgstr "Doğrula"
+msgstr "Kimlik Doğrula"
 
 #: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:53
 msgid "<big><b>Title</b></big>"
@@ -1170,37 +1170,37 @@ msgstr[0] "%u Girdi"
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
 
-#: system-indicators/si-bluetooth.c:91
+#: system-indicators/si-bluetooth.c:122
 msgid "Send Files"
 msgstr "Dosya Gönder"
 
-#: system-indicators/si-bluetooth.c:228
+#: system-indicators/si-bluetooth.c:260
 msgid "Disconnect"
 msgstr "Bağlantıyı Kes"
 
-#: system-indicators/si-bluetooth.c:241
+#: system-indicators/si-bluetooth.c:273
 msgid "Connect"
 msgstr "Bağlan"
 
-#: system-indicators/si-bluetooth.c:256
+#: system-indicators/si-bluetooth.c:288
 msgid "Keyboard Settings"
 msgstr "Klavye Ayarları"
 
-#: system-indicators/si-bluetooth.c:264
+#: system-indicators/si-bluetooth.c:296
 msgid "Mouse & Touchpad Settings"
 msgstr "Fare ve Dokunmatik Yüzey Ayarları"
 
-#: system-indicators/si-bluetooth.c:331
+#: system-indicators/si-bluetooth.c:344
 msgid "Bluetooth Settings"
 msgstr "Bluetooth Ayarları"
 
-#: system-indicators/si-bluetooth.c:451
+#: system-indicators/si-bluetooth.c:438
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d Aygıt Bağlı"
 
-#: system-indicators/si-bluetooth.c:458
+#: system-indicators/si-bluetooth.c:445
 msgid "Not Connected"
 msgstr "Bağlı Değil"
 
