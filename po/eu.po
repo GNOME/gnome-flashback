@@ -4,13 +4,13 @@
 #
 # Alexander Gabilondo <alexgabi@openmailbox.org>, 2017, 2019
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2017.
-# Asier Sarasua Garmendia <asiersarasua@ni.eus>, 2019, 2021, 2022.
+# Asier Sarasua Garmendia <asiersarasua@ni.eus>, 2019, 2021, 2022, 2023.
 #
 msgid ""
 msgstr "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-03-13 02:56+0000\n"
-"PO-Revision-Date: 2022-04-08 10:00+0100\n"
+"POT-Creation-Date: 2023-01-25 18:52+0000\n"
+"PO-Revision-Date: 2023-04-08 10:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -19,27 +19,27 @@ msgstr "Project-Id-Version: gnome-flashback master\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: backends/gf-monitor.c:134
+#: backends/gf-monitor.c:135
 msgid "Built-in display"
 msgstr "Bertako pantaila"
 
-#: backends/gf-monitor.c:168
+#: backends/gf-monitor.c:169
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
 msgid "Unknown"
 msgstr "Ezezaguna"
 
-#: backends/gf-monitor.c:170
+#: backends/gf-monitor.c:171
 msgid "Unknown Display"
 msgstr "Pantaila ezezaguna"
 
-#: backends/gf-monitor.c:179
+#: backends/gf-monitor.c:180
 #, c-format
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: backends/gf-monitor.c:193
+#: backends/gf-monitor.c:194
 #, c-format
 msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
@@ -70,6 +70,10 @@ msgstr "GNOME Flashback"
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Arbela (GNOME Flashback)"
 
+#: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
+msgid "Idle Monitor (GNOME Flashback)"
+msgstr "Monitore inaktiboa(GNOME Flashback)"
+
 #: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
 msgid "MediaKeys (GNOME Flashback)"
 msgstr "Multimedia-teklak (GNOME Flashback)"
@@ -82,11 +86,6 @@ msgstr "Sarea (GNOME Flashback)"
 msgid "Manage your network connections"
 msgstr "Kudeatu sareko konexioak"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
-msgid "nm-device-wireless"
-msgstr "nm-device-wireless"
-
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
 msgstr "Hobespenak"
@@ -95,11 +94,6 @@ msgstr "Hobespenak"
 msgid "Personal preferences"
 msgstr "Hobespen pertsonalak"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
-msgid "preferences-desktop"
-msgstr "preferences-desktop"
-
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
 msgstr "Administrazioa"
@@ -107,11 +101,6 @@ msgstr "Administrazioa"
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
 msgid "Change system-wide settings (affects all users)"
 msgstr "Aldatu sistema osoaren ezarpenak (erabiltzaile guztiei eragiten die)"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
-msgid "preferences-system"
-msgstr "preferences-system"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:6
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
@@ -522,13 +511,13 @@ msgstr "Shift teklari 8 segundo baino denbora gehiago eutsi diozu sakatuta. Hori
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: system-indicators/si-bluetooth.c:85
+#: system-indicators/si-bluetooth.c:116
 msgid "Turn Off"
 msgstr "Itzali"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: system-indicators/si-bluetooth.c:99
+#: system-indicators/si-bluetooth.c:130
 msgid "Turn On"
 msgstr "Piztu"
 
@@ -590,7 +579,7 @@ msgid "What kind of device did you plug in?"
 msgstr "Zer gailu mota konektatu duzu?"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
-#: system-indicators/si-bluetooth.c:277 system-indicators/si-volume.c:446
+#: system-indicators/si-bluetooth.c:307 system-indicators/si-volume.c:446
 msgid "Sound Settings"
 msgstr "Soinu-ezarpenak"
 
@@ -969,13 +958,9 @@ msgstr "Jakinarazpenaren laburpenaren testua."
 msgid "Notification"
 msgstr "Jakinarazpena"
 
-#: gnome-flashback/libnotifications/nd-daemon.c:100
+#: gnome-flashback/libnotifications/nd-daemon.c:98
 msgid "Invalid notification identifier"
 msgstr "Jakinarazpen-identifikatzaile baliogabea"
-
-#: gnome-flashback/libnotifications/nd-daemon.c:181
-msgid "Exceeded maximum number of notifications"
-msgstr "Gehieneko jakinarazpen kopurua gaindituta"
 
 #: gnome-flashback/libnotifications/nd-notification-box.c:358
 msgid "Notification body text."
@@ -1134,38 +1119,38 @@ msgstr[1] "%u sarrera"
 msgid "System Sounds"
 msgstr "Sistemaren soinuak"
 
-#: system-indicators/si-bluetooth.c:91
+#: system-indicators/si-bluetooth.c:122
 msgid "Send Files"
 msgstr "Bidali fitxategiak"
 
-#: system-indicators/si-bluetooth.c:228
+#: system-indicators/si-bluetooth.c:260
 msgid "Disconnect"
 msgstr "Deskonektatu"
 
-#: system-indicators/si-bluetooth.c:241
+#: system-indicators/si-bluetooth.c:273
 msgid "Connect"
 msgstr "Konektatu"
 
-#: system-indicators/si-bluetooth.c:256
+#: system-indicators/si-bluetooth.c:288
 msgid "Keyboard Settings"
 msgstr "Teklatuaren ezarpenak"
 
-#: system-indicators/si-bluetooth.c:264
+#: system-indicators/si-bluetooth.c:296
 msgid "Mouse & Touchpad Settings"
 msgstr "Saguaren eta ukipen-panelaren ezarpenak"
 
-#: system-indicators/si-bluetooth.c:331
+#: system-indicators/si-bluetooth.c:344
 msgid "Bluetooth Settings"
 msgstr "Bluetooth ezarpenak"
 
-#: system-indicators/si-bluetooth.c:451
+#: system-indicators/si-bluetooth.c:438
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "Gailu %d konektatuta"
 msgstr[1] "%d gailu konektatuta"
 
-#: system-indicators/si-bluetooth.c:458
+#: system-indicators/si-bluetooth.c:445
 msgid "Not Connected"
 msgstr "Konektatu gabe"
 
@@ -1254,6 +1239,18 @@ msgstr "Irteera"
 #: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Mutututa"
+
+#~ msgid "nm-device-wireless"
+#~ msgstr "nm-device-wireless"
+
+#~ msgid "preferences-desktop"
+#~ msgstr "preferences-desktop"
+
+#~ msgid "preferences-system"
+#~ msgstr "preferences-system"
+
+#~ msgid "Exceeded maximum number of notifications"
+#~ msgstr "Gehieneko jakinarazpen kopurua gaindituta"
 
 #~ msgid "GNOME Flashback Initialization"
 #~ msgstr "GNOME Flashback hasieratzea"
