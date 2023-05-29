@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2023-04-09 07:41+0000\n"
-"PO-Revision-Date: 2023-04-18 22:49+0300\n"
+"POT-Creation-Date: 2023-05-06 06:56+0000\n"
+"PO-Revision-Date: 2023-05-27 00:16+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -222,7 +222,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
 msgid "Notification daemon"
-msgstr "Bildirim yönetimi"
+msgstr "Bildirim art alan hizmeti"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
 msgid ""
