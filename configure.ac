@@ -45,7 +45,7 @@ dnl **************************************************************************
 dnl Initialize automake
 dnl **************************************************************************
 
-AM_INIT_AUTOMAKE([1.13 no-dist-gzip dist-xz subdir-objects tar-ustar -Wno-portability])
+AM_INIT_AUTOMAKE([1.16.4 no-dist-gzip dist-xz subdir-objects tar-ustar -Wno-portability])
 AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 
