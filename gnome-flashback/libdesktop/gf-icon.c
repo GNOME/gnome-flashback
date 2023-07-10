@@ -924,7 +924,11 @@ load_thumbnail (GfIcon *self)
   factory = gf_icon_view_get_thumbnail_factory (priv->icon_view);
 
   uri = g_file_get_uri (priv->file);
-  content_type = g_file_info_get_content_type (priv->info);
+
+  content_type = NULL;
+  if (g_file_info_has_attribute (priv->info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE))
+    content_type = g_file_info_get_content_type (priv->info);
+
   time_modified = gf_icon_get_time_modified (self);
 
   g_cancellable_cancel (priv->thumbnail_cancellable);
@@ -950,7 +954,10 @@ icon_refresh (GfIcon *self)
   const char *content_type;
 
   priv = gf_icon_get_instance_private (self);
-  content_type = g_file_info_get_content_type (priv->info);
+
+  content_type = NULL;
+  if (g_file_info_has_attribute (priv->info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE))
+    content_type = g_file_info_get_content_type (priv->info);
 
   g_clear_object (&priv->app_info);
 
@@ -1624,8 +1631,13 @@ gf_icon_is_hidden (GfIcon *self)
 
   priv = gf_icon_get_instance_private (self);
 
-  hidden = g_file_info_get_is_hidden (priv->info);
-  backup = g_file_info_get_is_backup (priv->info);
+  hidden = backup = FALSE;
+
+  if (g_file_info_has_attribute (priv->info, G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN))
+    hidden = g_file_info_get_is_hidden (priv->info);
+
+  if (g_file_info_has_attribute (priv->info, G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP))
+    backup = g_file_info_get_is_backup (priv->info);
 
   return hidden || backup;
 }
