@@ -19,7 +19,9 @@
 #include "si-applet.h"
 
 #include "gvc-mixer-control.h"
+#ifdef HAVE_GNOME_BLUETOOTH
 #include "si-bluetooth.h"
+#endif
 #include "si-input-sources.h"
 #include "si-menu-bar.h"
 #include "si-power.h"
@@ -33,7 +35,9 @@ struct _SiApplet
 
   GvcMixerControl *mixer_control;
 
+#ifdef HAVE_GNOME_BLUETOOTH
   SiIndicator     *bluetooth;
+#endif
   SiIndicator     *input_sources;
   SiIndicator     *power;
   SiIndicator     *volume_input;
@@ -73,6 +77,7 @@ append_power (SiApplet *self)
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu_bar), item);
 }
 
+#ifdef HAVE_GNOME_BLUETOOTH
 static void
 append_bluetooth (SiApplet *self)
 {
@@ -83,6 +88,7 @@ append_bluetooth (SiApplet *self)
   item = si_indicator_get_menu_item (self->bluetooth);
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu_bar), item);
 }
+#endif
 
 static void
 append_input_sources (SiApplet *self)
@@ -121,7 +127,9 @@ setup_applet (SiApplet *self)
 
   append_input_sources (self);
   append_volume (self);
+#ifdef HAVE_GNOME_BLUETOOTH
   append_bluetooth (self);
+#endif
   append_power (self);
 }
 
@@ -141,7 +149,9 @@ si_applet_dispose (GObject *object)
 
   g_clear_object (&self->mixer_control);
 
+#ifdef HAVE_GNOME_BLUETOOTH
   g_clear_object (&self->bluetooth);
+#endif
   g_clear_object (&self->input_sources);
   g_clear_object (&self->power);
   g_clear_object (&self->volume_input);
