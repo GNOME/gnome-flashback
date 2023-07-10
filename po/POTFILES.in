@@ -3,11 +3,16 @@
 backends/gf-monitor.c
 daemons/media-keys/gsd-media-keys-manager.c
 daemons/media-keys/gsd-screenshot-utils.c
+daemons/polkit/flashback-authenticator.c
+daemons/polkit/flashback-listener.c
+daemons/polkit/flashback-polkit-dialog.c
+daemons/polkit/flashback-polkit-dialog.ui
 data/applications/gnome-flashback.desktop.in.in
 data/autostart/gnome-flashback-clipboard.desktop.in.in
 data/autostart/gnome-flashback-idle-monitor.desktop.in.in
 data/autostart/gnome-flashback-media-keys.desktop.in.in
 data/autostart/gnome-flashback-nm-applet.desktop.in
+data/autostart/gnome-flashback-polkit.desktop.in.in
 data/directories/X-GNOME-Flashback-Settings.directory.desktop.in
 data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in
 data/keybindings/50-gnome-flashback-screenshots.xml
@@ -39,10 +44,6 @@ gnome-flashback/libnotifications/gf-bubble.c
 gnome-flashback/libnotifications/nd-daemon.c
 gnome-flashback/libnotifications/nd-notification-box.c
 gnome-flashback/libnotifications/nd-queue.c
-gnome-flashback/libpolkit/flashback-authenticator.c
-gnome-flashback/libpolkit/flashback-listener.c
-gnome-flashback/libpolkit/flashback-polkit-dialog.c
-gnome-flashback/libpolkit/flashback-polkit-dialog.ui
 gnome-flashback/libscreensaver/gf-auth.c
 gnome-flashback/libscreensaver/gf-unlock-dialog.c
 gnome-flashback/libscreenshot/gf-screenshot.c

@@ -10,7 +10,6 @@ SUBDIRS = \
 	libinput-settings \
 	libinput-sources \
 	libnotifications \
-	libpolkit \
 	libroot-background \
 	libscreencast \
 	libscreensaver \
@@ -67,7 +66,6 @@ gnome_flashback_LDADD = \
 	$(top_builddir)/gnome-flashback/libinput-settings/libinput-settings.la \
 	$(top_builddir)/gnome-flashback/libinput-sources/libinput-sources.la \
 	$(top_builddir)/gnome-flashback/libnotifications/libnotifications.la \
-	$(top_builddir)/gnome-flashback/libpolkit/libpolkit.la \
 	$(top_builddir)/gnome-flashback/libroot-background/libroot-background.la \
 	$(top_builddir)/gnome-flashback/libscreencast/libscreencast.la \
 	$(top_builddir)/gnome-flashback/libscreensaver/libscreensaver.la \

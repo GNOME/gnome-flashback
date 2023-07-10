@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gnome/gnome-flashback">
+    <file alias="flashback-polkit-dialog.ui" compressed="true">flashback-polkit-dialog.ui</file>
+  </gresource>
+</gresources>

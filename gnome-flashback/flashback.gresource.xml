@@ -14,6 +14,5 @@
   </gresource>
   <gresource prefix="/org/gnome/gnome-flashback">
     <file alias="gf-inhibit-dialog.ui" compressed="true">libend-session-dialog/gf-inhibit-dialog.ui</file>
-    <file alias="flashback-polkit-dialog.ui" compressed="true">libpolkit/flashback-polkit-dialog.ui</file>
   </gresource>
 </gresources>

@@ -32,7 +32,6 @@
 #include "libinput-settings/gf-input-settings.h"
 #include "libinput-sources/gf-input-sources.h"
 #include "libnotifications/gf-notifications.h"
-#include "libpolkit/flashback-polkit.h"
 #include "libroot-background/gf-root-background.h"
 #include "libscreencast/gf-screencast.h"
 #include "libscreensaver/gf-screensaver.h"
@@ -55,7 +54,6 @@ struct _GfApplication
   GtkStyleProvider        *provider;
 
   GsdAutomountManager     *automount;
-  FlashbackPolkit         *polkit;
   FlashbackShell          *shell;
   GfA11yKeyboard          *a11y_keyboard;
   GfAudioDeviceSelection  *audio_device_selection;
@@ -211,7 +209,6 @@ settings_changed (GSettings   *settings,
     }
 
   SETTING_CHANGED (automount, "automount-manager", gsd_automount_manager_new)
-  SETTING_CHANGED (polkit, "polkit", flashback_polkit_new)
   SETTING_CHANGED (shell, "shell", flashback_shell_new)
   SETTING_CHANGED (a11y_keyboard, "a11y-keyboard", gf_a11y_keyboard_new)
   SETTING_CHANGED (audio_device_selection, "audio-device-selection", gf_audio_device_selection_new)
@@ -266,7 +263,6 @@ gf_application_dispose (GObject *object)
   g_clear_object (&application->provider);
 
   g_clear_object (&application->automount);
-  g_clear_object (&application->polkit);
   g_clear_object (&application->shell);
   g_clear_object (&application->a11y_keyboard);
   g_clear_object (&application->audio_device_selection);

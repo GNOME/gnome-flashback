@@ -439,6 +439,7 @@ AC_CONFIG_FILES([
   daemons/clipboard/Makefile
   daemons/idle-monitor/Makefile
   daemons/media-keys/Makefile
+  daemons/polkit/Makefile
 
   gnome-flashback/Makefile
   gnome-flashback/liba11y-keyboard/Makefile
@@ -450,7 +451,6 @@ AC_CONFIG_FILES([
   gnome-flashback/libinput-settings/Makefile
   gnome-flashback/libinput-sources/Makefile
   gnome-flashback/libnotifications/Makefile
-  gnome-flashback/libpolkit/Makefile
   gnome-flashback/libroot-background/Makefile
   gnome-flashback/libscreencast/Makefile
   gnome-flashback/libscreensaver/Makefile

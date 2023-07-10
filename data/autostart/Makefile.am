@@ -6,6 +6,7 @@ autostart_DATA = \
 	gnome-flashback-idle-monitor.desktop \
 	gnome-flashback-media-keys.desktop \
 	gnome-flashback-nm-applet.desktop \
+	gnome-flashback-polkit.desktop \
 	$(NULL)
 
 %.desktop.in: %.desktop.in.in
@@ -20,6 +21,7 @@ EXTRA_DIST = \
 	gnome-flashback-idle-monitor.desktop.in.in \
 	gnome-flashback-media-keys.desktop.in.in \
 	gnome-flashback-nm-applet.desktop.in \
+	gnome-flashback-polkit.desktop.in.in \
 	$(NULL)
 
 CLEANFILES = \
@@ -30,6 +32,8 @@ CLEANFILES = \
 	gnome-flashback-media-keys.desktop.in \
 	gnome-flashback-media-keys.desktop \
 	gnome-flashback-nm-applet.desktop \
+	gnome-flashback-polkit.desktop.in \
+	gnome-flashback-polkit.desktop \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk
