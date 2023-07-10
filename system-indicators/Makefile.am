@@ -56,6 +56,7 @@ system_indicators_la_SOURCES += \
 	$(NULL)
 
 system_indicators_la_CFLAGS += \
+	-Wno-error=missing-include-dirs \
 	$(GNOME_BLUETOOTH_CFLAGS) \
 	$(NULL)
 
