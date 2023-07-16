@@ -2,14 +2,14 @@
 # Copyright (C) 2014 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
 # Andika Triwidada <andika@gmail.com>, 2014, 2019, 2020.
-# Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017, 2018, 2019, 2022.
+# Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017, 2018, 2019, 2022, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback gnome-3-36\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-10-25 16:07+0000\n"
-"PO-Revision-Date: 2022-11-16 11:31+0700\n"
+"POT-Creation-Date: 2023-07-10 21:56+0000\n"
+"PO-Revision-Date: 2023-07-16 07:47+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.2.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: backends/gf-monitor.c:135
 msgid "Built-in display"
@@ -34,13 +34,16 @@ msgstr "Tampilan Tak Dikenal"
 
 #: backends/gf-monitor.c:180
 #, c-format
-msgctxt "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
+msgctxt ""
+"This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
 #: backends/gf-monitor.c:194
 #, c-format
-msgctxt "This is a monitor vendor name followed by product/model name where size in inches could not be calculated, e.g. Dell U2414H"
+msgctxt ""
+"This is a monitor vendor name followed by product/model name where size in "
+"inches could not be calculated, e.g. Dell U2414H"
 msgid "%s %s"
 msgstr "%s %s"
 
@@ -58,6 +61,99 @@ msgstr "Screencast dari %d %t.webm"
 #, c-format
 msgid "Screenshot from %s"
 msgstr "Cuplikan layar dari %s"
+
+#: daemons/polkit/flashback-authenticator.c:100
+#, c-format
+msgid "_Password for %s:"
+msgstr "_Sandi bagi %s:"
+
+#: daemons/polkit/flashback-authenticator.c:104
+#: daemons/polkit/flashback-polkit-dialog.ui:99
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:366
+msgid "_Password:"
+msgstr "_Sandi:"
+
+#: daemons/polkit/flashback-authenticator.c:259
+msgid "Your authentication attempt was unsuccessful. Please try again."
+msgstr "Percobaan autentikasi Anda tidak berhasil. Harap coba lagi."
+
+#: daemons/polkit/flashback-listener.c:139
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Dialog autentikasi ditutup oleh pengguna"
+
+#: daemons/polkit/flashback-polkit-dialog.c:202
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as one of the users below is required to perform this action."
+msgstr ""
+"Suatu aplikasi mencoba melakukan aksi yang memerlukan hak khusus. "
+"Autentikasi sebagai salah satu pengguna di bawah diperlukan untuk "
+"melaksanakan aksi ini."
+
+#: daemons/polkit/flashback-polkit-dialog.c:212
+#: daemons/polkit/flashback-polkit-dialog.ui:68
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication is required to perform this action."
+msgstr ""
+"Suatu aplikasi mencoba melakukan aksi yang memerlukan hak khusus. "
+"Autentikasi diperlukan untuk melaksanakan aksi ini."
+
+#: daemons/polkit/flashback-polkit-dialog.c:217
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as the super user is required to perform this action."
+msgstr ""
+"Suatu aplikasi mencoba melakukan aksi yang memerlukan hak khusus. "
+"Autentikasi sebagai pengguna super diperlukan untuk melaksanakan aksi ini."
+
+#: daemons/polkit/flashback-polkit-dialog.c:386
+msgid "Select user..."
+msgstr "Pilih pengguna..."
+
+#: daemons/polkit/flashback-polkit-dialog.c:425
+#, c-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: daemons/polkit/flashback-polkit-dialog.c:600
+msgid "Action:"
+msgstr "Aksi:"
+
+#: daemons/polkit/flashback-polkit-dialog.c:603
+#, c-format
+msgid "Click to edit %s"
+msgstr "Klik untuk menyunting %s"
+
+#: daemons/polkit/flashback-polkit-dialog.c:611
+msgid "Vendor:"
+msgstr "Vendor:"
+
+#: daemons/polkit/flashback-polkit-dialog.c:614
+#, c-format
+msgid "Click to open %s"
+msgstr "Klik untuk membuka %s"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:8
+msgid "Authenticate"
+msgstr "Autentikasi"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:53
+msgid "<big><b>Title</b></big>"
+msgstr "<big><b>Judul</b></big>"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:192
+msgid "<small><b>_Details</b></small>"
+msgstr "<small><b>_Rincian</b></small>"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:213
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
+msgid "_Cancel"
+msgstr "_Batal"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:228
+msgid "_Authenticate"
+msgstr "Otentik_asikan"
 
 #: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
@@ -82,6 +178,10 @@ msgstr "Jaringan (GNOME Flashback)"
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:4
 msgid "Manage your network connections"
 msgstr "Kelola koneksi jaringan Anda"
+
+#: data/autostart/gnome-flashback-polkit.desktop.in.in:4
+msgid "Polkit (GNOME Flashback)"
+msgstr "Polkit (GNOME Flashback)"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -144,16 +244,24 @@ msgid "Audio device selection"
 msgstr "Pemilihan perangkat audio"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
-msgid "If set to true, then GNOME Flashback application will be used to provide the audio device selection dialog."
-msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menyediakan dialog pemilihan perangkat audio."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide the "
+"audio device selection dialog."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menyediakan "
+"dialog pemilihan perangkat audio."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:16
 msgid "Automount manager"
 msgstr "Manajer pengait otomatis"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
-msgid "If set to true, then GNOME Flashback application will be used to automount removable media."
-msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk mengait otomatis media lepas pasang."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to automount "
+"removable media."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk mengait "
+"otomatis media lepas pasang."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:22
 msgid "Clipboard"
@@ -169,16 +277,24 @@ msgid "End session dialog"
 msgstr "Dialog akhir sesi"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
-msgid "If set to true, then GNOME Flashback application will be used to show the end session dialog."
-msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menampilkan dialog akhir sesi."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show the "
+"end session dialog."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menampilkan "
+"dialog akhir sesi."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "Idle monitor"
 msgstr "Pemantauan menganggur"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
-msgid "If set to true, then GNOME Flashback application will be used for user activity monitoring."
-msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk pemantauan aktivitas pengguna."
+msgid ""
+"If set to true, then GNOME Flashback application will be used for user "
+"activity monitoring."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk pemantauan "
+"aktivitas pengguna."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "Input settings"
@@ -189,24 +305,34 @@ msgid "Keyboard layouts and input methods"
 msgstr "Tata letak papan tik dan metoda masukan"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
-msgid "If set to true, then GNOME Flashback application will be used to manage keyboard layouts and input methods."
-msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk mengelola tata letak papan tik dan metoda masukan."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"keyboard layouts and input methods."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk mengelola tata "
+"letak papan tik dan metoda masukan."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
 msgid "Notification daemon"
 msgstr "Daemon notifikasi"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
-msgid "If set to true, then GNOME Flashback application will be used to manage notifications."
-msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk mengelola notifikasi."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"notifications."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk mengelola "
+"notifikasi."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid "Authentication agent for polkit"
 msgstr "Agen autentikasi bagi polkit"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
-msgid "This is the same authentication agent that was provided by PolicyKit-gnome."
-msgstr "Ini adalah agen autentikasi yang sama yang disediakan oleh PolicyKit-gnome."
+msgid ""
+"This is the same authentication agent that was provided by PolicyKit-gnome."
+msgstr ""
+"Ini adalah agen autentikasi yang sama yang disediakan oleh PolicyKit-gnome."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
 msgid "Root background"
@@ -217,27 +343,38 @@ msgid "Screencasts"
 msgstr "Screencast"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
-msgid "If set to true, then GNOME Flashback application will be used to record the screen."
-msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk merekam layar."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to record the "
+"screen."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk merekam layar."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
 msgid "Screensaver"
 msgstr "Screensaver"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
-msgid "If set to true, then GNOME Flashback application will be used as a screensaver."
-msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai sebagai screensaver."
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a "
+"screensaver."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai sebagai screensaver."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
-msgid "If set to true, then GNOME Flashback application will be used to take screenshots."
-msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk mengambil cuplikan layar."
+msgid ""
+"If set to true, then GNOME Flashback application will be used to take "
+"screenshots."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk mengambil "
+"cuplikan layar."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid "Shell"
 msgstr "Shell"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
-msgid "If set to true, then GNOME Flashback application will be used as a shell."
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a shell."
 msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai sebagai shell."
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
@@ -245,8 +382,12 @@ msgid "Status Notifier Watcher"
 msgstr "Pengamat Pemberitahu Status"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
-msgid "If set to true, then GNOME Flashback application will be used as Status Notifier Watcher."
-msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai sebagai Pengamat Pemberitahu Status."
+msgid ""
+"If set to true, then GNOME Flashback application will be used as Status "
+"Notifier Watcher."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai sebagai Pengamat "
+"Pemberitahu Status."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:5
 msgid "Draw desktop background"
@@ -254,23 +395,32 @@ msgstr "Gambar latar belakang desktop"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:6
 msgid "If set to true, then GNOME Flashback will draw the desktop background."
-msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menggambar latar belakang desktop."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menggambar "
+"latar belakang desktop."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:11
 msgid "Show desktop icons"
 msgstr "Tampilkan ikon desktop"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:12
-msgid "If set to true, then GNOME Flashback will draw the icons on the desktop."
-msgstr "Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menggambar ikon pada desktop."
+msgid ""
+"If set to true, then GNOME Flashback will draw the icons on the desktop."
+msgstr ""
+"Bila diisi true, aplikasi GNOME Flashback akan dipakai untuk menggambar ikon "
+"pada desktop."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:5
 msgid "Fade the background on change"
 msgstr "Pudarkan latar belakang pada perubahan"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:6
-msgid "If set to true, then fade effect will be used to change the desktop background."
-msgstr "Bila diisi true, efek pudar akan dipakai untuk menggambar latar belakang desktop."
+msgid ""
+"If set to true, then fade effect will be used to change the desktop "
+"background."
+msgstr ""
+"Bila diisi true, efek pudar akan dipakai untuk menggambar latar belakang "
+"desktop."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:5
 msgid "Icon size"
@@ -286,8 +436,12 @@ msgid "Placement"
 msgstr "Penempatan"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:12
-msgid "Can be one of \"auto-arrange-icons\", \"align-icons-to-grid\" or \"free\". It controls how icons are placed on desktop."
-msgstr "Bisa salah satu dari \"auto-arrange-icons\", \"align-icons-to-grid\",a atau \"free\". Ini mengontrol bagaimana ikon ditempatkan di desktop."
+msgid ""
+"Can be one of \"auto-arrange-icons\", \"align-icons-to-grid\" or \"free\". "
+"It controls how icons are placed on desktop."
+msgstr ""
+"Bisa salah satu dari \"auto-arrange-icons\", \"align-icons-to-grid\",a atau "
+"\"free\". Ini mengontrol bagaimana ikon ditempatkan di desktop."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
 #: gnome-flashback/libdesktop/gf-icon-view.c:1338
@@ -295,8 +449,12 @@ msgid "Sort by"
 msgstr "Urut berdasarkan"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:18
-msgid "Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons are sorted in \"auto-arrange-icons\" placement."
-msgstr "Bisa salah satu dari \"name\", \"date-modified\", atau \"size\". Ini mengontrol bagaimana ikon diurutkan dalam penempatan \"auto-arrange-icons\"."
+msgid ""
+"Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons "
+"are sorted in \"auto-arrange-icons\" placement."
+msgstr ""
+"Bisa salah satu dari \"name\", \"date-modified\", atau \"size\". Ini "
+"mengontrol bagaimana ikon diurutkan dalam penempatan \"auto-arrange-icons\"."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
 msgid "Extra text width"
@@ -327,16 +485,24 @@ msgid "Show home icon"
 msgstr "Tampilkan ikon beranda"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:45
-msgid "If this is set to true, an icon linking to the home folder will be put on the desktop."
-msgstr "Bila diisi true, ikon yang menautkan ke folder rumah akan diletakkan di desktop."
+msgid ""
+"If this is set to true, an icon linking to the home folder will be put on "
+"the desktop."
+msgstr ""
+"Bila diisi true, ikon yang menautkan ke folder rumah akan diletakkan di "
+"desktop."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:50
 msgid "Show trash icon"
 msgstr "Tampilkan ikon tong sampah"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:51
-msgid "If this is set to true, an icon linking to the trash will be put on the desktop."
-msgstr "Bila diisi true, ikon yang menautkan ke tong sampah akan diletakkan di desktop."
+msgid ""
+"If this is set to true, an icon linking to the trash will be put on the "
+"desktop."
+msgstr ""
+"Bila diisi true, ikon yang menautkan ke tong sampah akan diletakkan di "
+"desktop."
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:5
 msgid "Take a screenshot"
@@ -387,8 +553,12 @@ msgid "Maximum length of screen recordings"
 msgstr "Panjang maksimum rekaman layar"
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:48
-msgid "The maximum length of single screen cast recordings in seconds or 0 for unlimited"
-msgstr "Panjang maksimum rekaman pemeran layar tunggal dalam hitungan detik atau 0 untuk tidak terbatas"
+msgid ""
+"The maximum length of single screen cast recordings in seconds or 0 for "
+"unlimited"
+msgstr ""
+"Panjang maksimum rekaman pemeran layar tunggal dalam hitungan detik atau 0 "
+"untuk tidak terbatas"
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
@@ -465,8 +635,12 @@ msgid "Slow Keys Turned Off"
 msgstr "Tombol Lambat Dimatikan"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:298
-msgid "You just held down the Shift key for 8 seconds. This is the shortcut for the Slow Keys feature, which affects the way your keyboard works."
-msgstr "Anda hanya menahan tombol Shift selama 8 detik. Ini adalah pintasan untuk fitur Tombol Lambat, yang mempengaruhi cara kerja papan tik Anda."
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Anda hanya menahan tombol Shift selama 8 detik. Ini adalah pintasan untuk "
+"fitur Tombol Lambat, yang mempengaruhi cara kerja papan tik Anda."
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
@@ -504,12 +678,22 @@ msgid "Sticky Keys Turned Off"
 msgstr "Tombol Lengket Dimatikan"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:383
-msgid "You just pressed the Shift key 5 times in a row.  This is the shortcut for the Sticky Keys feature, which affects the way your keyboard works."
-msgstr "Anda hanya menekan tombol Shift 5 kali berturut-turut.  Ini adalah pintasan untuk fitur Tombol Lengket, yang mempengaruhi cara kerja papan tik Anda."
+msgid ""
+"You just pressed the Shift key 5 times in a row.  This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Anda hanya menekan tombol Shift 5 kali berturut-turut.  Ini adalah pintasan "
+"untuk fitur Tombol Lengket, yang mempengaruhi cara kerja papan tik Anda."
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:385
-msgid "You just pressed two keys at once, or pressed the Shift key 5 times in a row. This turns off the Sticky Keys feature, which affects the way your keyboard works."
-msgstr "Anda hanya menekan dua tombol sekaligus, atau menekan tombol Shift 5 kali berturut-turut. Ini mematikan fitur Tombol Lengket, yang mempengaruhi cara kerja papan tik Anda."
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+"Anda hanya menekan dua tombol sekaligus, atau menekan tombol Shift 5 kali "
+"berturut-turut. Ini mematikan fitur Tombol Lengket, yang mempengaruhi cara "
+"kerja papan tik Anda."
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:109
 msgid "Headphones"
@@ -632,8 +816,12 @@ msgid "You have just inserted a digital audio player."
 msgstr "Anda baru saja memasukkan pemutar audio digital."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:735
-msgid "You have just inserted a medium with software intended to be automatically started."
-msgstr "Anda baru saya memasukkan medium dengan perangkat lunak yang dimaksudkan untuk secara otomatis mulai."
+msgid ""
+"You have just inserted a medium with software intended to be automatically "
+"started."
+msgstr ""
+"Anda baru saya memasukkan medium dengan perangkat lunak yang dimaksudkan "
+"untuk secara otomatis mulai."
 
 #. fallback to generic greeting
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:738
@@ -646,17 +834,16 @@ msgstr "Pilih aplikasi apa yang akan diluncurkan."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:749
 #, c-format
-msgid "Select how to open \"%s\" and whether to perform this action in the future for other media of type \"%s\"."
-msgstr "Pilih bagaimana membuka \"%s\" dan apakah melakukan aksi ini di masa mendatang bagi media lain bertipe \"%s\"."
+msgid ""
+"Select how to open \"%s\" and whether to perform this action in the future "
+"for other media of type \"%s\"."
+msgstr ""
+"Pilih bagaimana membuka \"%s\" dan apakah melakukan aksi ini di masa "
+"mendatang bagi media lain bertipe \"%s\"."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:776
 msgid "_Always perform this action"
 msgstr "Sel_alu lakukan aksi ini"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
-msgid "_Cancel"
-msgstr "_Batal"
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:786
 msgid "_OK"
@@ -800,7 +987,9 @@ msgstr "Log Keluar"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:518
 msgid "Click Log Out to quit these applications and log out of the system."
-msgstr "Klik Log Keluar untuk keluar dari aplikasi-aplikasi ini dan log keluar dari sistem."
+msgstr ""
+"Klik Log Keluar untuk keluar dari aplikasi-aplikasi ini dan log keluar dari "
+"sistem."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
 #, c-format
@@ -815,7 +1004,8 @@ msgstr "Matikan"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:540
 msgid "Click Power Off to quit these applications and power off the system."
-msgstr "Klik Matikan untuk keluar dari aplikasi-aplikasi ini dan mematikan sistem."
+msgstr ""
+"Klik Matikan untuk keluar dari aplikasi-aplikasi ini dan mematikan sistem."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:542
 #, c-format
@@ -830,7 +1020,9 @@ msgstr "Start Ulang"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:552
 msgid "Click Restart to quit these applications and restart the system."
-msgstr "Klik Mulai Ulang untuk keluar dari aplikasi-aplikasi ini dan memulai ulang sistem."
+msgstr ""
+"Klik Mulai Ulang untuk keluar dari aplikasi-aplikasi ini dan memulai ulang "
+"sistem."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:554
 #, c-format
@@ -876,8 +1068,12 @@ msgid "Some programs are still running:"
 msgstr "Beberapa program masih berjalan:"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:78
-msgid "Waiting for these applications to finish. Interrupting them can lead to loss of data."
-msgstr "Menunggu aplikasi-aplikasi ini berakhir. Menginterupsi mereka bisa menyebabkan kehilangan data."
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr ""
+"Menunggu aplikasi-aplikasi ini berakhir. Menginterupsi mereka bisa "
+"menyebabkan kehilangan data."
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
 msgid "Lock Screen"
@@ -915,81 +1111,6 @@ msgstr "Bersihkan semua notifikasi"
 #: gnome-flashback/libnotifications/nd-queue.c:846
 msgid "Notifications"
 msgstr "Notifikasi"
-
-#: gnome-flashback/libpolkit/flashback-authenticator.c:100
-#, c-format
-msgid "_Password for %s:"
-msgstr "_Sandi bagi %s:"
-
-#: gnome-flashback/libpolkit/flashback-authenticator.c:104
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:366
-msgid "_Password:"
-msgstr "_Sandi:"
-
-#: gnome-flashback/libpolkit/flashback-authenticator.c:259
-msgid "Your authentication attempt was unsuccessful. Please try again."
-msgstr "Percobaan autentikasi Anda tidak berhasil. Harap coba lagi."
-
-#: gnome-flashback/libpolkit/flashback-listener.c:139
-msgid "Authentication dialog was dismissed by the user"
-msgstr "Dialog autentikasi ditutup oleh pengguna"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:202
-msgid "An application is attempting to perform an action that requires privileges. Authentication as one of the users below is required to perform this action."
-msgstr "Suatu aplikasi mencoba melakukan aksi yang memerlukan hak khusus. Autentikasi sebagai salah satu pengguna di bawah diperlukan untuk melaksanakan aksi ini."
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
-msgid "An application is attempting to perform an action that requires privileges. Authentication is required to perform this action."
-msgstr "Suatu aplikasi mencoba melakukan aksi yang memerlukan hak khusus. Autentikasi diperlukan untuk melaksanakan aksi ini."
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:217
-msgid "An application is attempting to perform an action that requires privileges. Authentication as the super user is required to perform this action."
-msgstr "Suatu aplikasi mencoba melakukan aksi yang memerlukan hak khusus. Autentikasi sebagai pengguna super diperlukan untuk melaksanakan aksi ini."
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:386
-msgid "Select user..."
-msgstr "Pilih pengguna..."
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:425
-#, c-format
-msgid "%s (%s)"
-msgstr "%s (%s)"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:600
-msgid "Action:"
-msgstr "Aksi:"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:603
-#, c-format
-msgid "Click to edit %s"
-msgstr "Klik untuk menyunting %s"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:611
-msgid "Vendor:"
-msgstr "Vendor:"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:614
-#, c-format
-msgid "Click to open %s"
-msgstr "Klik untuk membuka %s"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:8
-msgid "Authenticate"
-msgstr "Autentikasi"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:53
-msgid "<big><b>Title</b></big>"
-msgstr "<big><b>Judul</b></big>"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:192
-msgid "<small><b>_Details</b></small>"
-msgstr "<small><b>_Rincian</b></small>"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:228
-msgid "_Authenticate"
-msgstr "Otentik_asikan"
 
 #: gnome-flashback/libscreensaver/gf-auth.c:421
 msgid "Your account was given a time limit that has now passed."
