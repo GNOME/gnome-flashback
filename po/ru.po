@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-09-21 07:15+0000\n"
-"PO-Revision-Date: 2022-09-28 22:01+1000\n"
+"POT-Creation-Date: 2023-07-10 21:56+0000\n"
+"PO-Revision-Date: 2023-08-07 19:50+1000\n"
 "Last-Translator: Ser82-png <asvmail.as@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -63,6 +63,100 @@ msgstr "Видеозапись с экрана от %d %t.webm"
 msgid "Screenshot from %s"
 msgstr "Снимки экрана от %s"
 
+#: daemons/polkit/flashback-authenticator.c:100
+#, c-format
+msgid "_Password for %s:"
+msgstr "_Пароль для %s:"
+
+#: daemons/polkit/flashback-authenticator.c:104
+#: daemons/polkit/flashback-polkit-dialog.ui:99
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:366
+msgid "_Password:"
+msgstr "_Пароль:"
+
+#: daemons/polkit/flashback-authenticator.c:259
+msgid "Your authentication attempt was unsuccessful. Please try again."
+msgstr "Попытка аутентификации не удалась. Попробуйте снова."
+
+#: daemons/polkit/flashback-listener.c:139
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Диалоговое окно аутентификации было отклонено пользователем"
+
+#: daemons/polkit/flashback-polkit-dialog.c:202
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as one of the users below is required to perform this action."
+msgstr ""
+"Приложение пытается выполнить действие, которое требует дополнительные права "
+"доступа. Для получения дополнительных прав доступа требуется аутентификация "
+"одной учётной записи пользователя из ниже указанных."
+
+#: daemons/polkit/flashback-polkit-dialog.c:212
+#: daemons/polkit/flashback-polkit-dialog.ui:68
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication is required to perform this action."
+msgstr ""
+"Приложение пытается выполнить действие, которое требует дополнительные права "
+"доступа. Для получения дополнительных прав доступа требуется аутентификация."
+
+#: daemons/polkit/flashback-polkit-dialog.c:217
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as the super user is required to perform this action."
+msgstr ""
+"Приложение пытается выполнить действие, которое требует дополнительные права "
+"доступа. Для получения дополнительных прав доступа требуется аутентификация "
+"учётной записи root."
+
+#: daemons/polkit/flashback-polkit-dialog.c:386
+msgid "Select user..."
+msgstr "Выбрать пользователя…"
+
+#: daemons/polkit/flashback-polkit-dialog.c:425
+#, c-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: daemons/polkit/flashback-polkit-dialog.c:600
+msgid "Action:"
+msgstr "Действие:"
+
+#: daemons/polkit/flashback-polkit-dialog.c:603
+#, c-format
+msgid "Click to edit %s"
+msgstr "Нажмите для изменения %s"
+
+#: daemons/polkit/flashback-polkit-dialog.c:611
+msgid "Vendor:"
+msgstr "Производитель:"
+
+#: daemons/polkit/flashback-polkit-dialog.c:614
+#, c-format
+msgid "Click to open %s"
+msgstr "Нажмите чтобы открыть %s"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:8
+msgid "Authenticate"
+msgstr "Авторизоваться"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:53
+msgid "<big><b>Title</b></big>"
+msgstr "<big><b>Название</b></big>"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:192
+msgid "<small><b>_Details</b></small>"
+msgstr "<small><b>_Подробности</b></small>"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:213
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
+msgid "_Cancel"
+msgstr "_Отменить"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:228
+msgid "_Authenticate"
+msgstr "_Авторизоваться"
+
 #: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME Flashback"
@@ -86,6 +180,11 @@ msgstr "Сеть (GNOME Flashback)"
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:4
 msgid "Manage your network connections"
 msgstr "Управление сетевыми подключениями"
+
+#: data/autostart/gnome-flashback-polkit.desktop.in.in:4
+#| msgid "Network (GNOME Flashback)"
+msgid "Polkit (GNOME Flashback)"
+msgstr "Polkit (GNOME Flashback)"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -240,7 +339,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
 msgid "Root background"
-msgstr "Корневой фон"
+msgstr "Фоновое изображение режима root"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
 msgid "Screencasts"
@@ -428,7 +527,7 @@ msgstr "Сделать снимок окна"
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:12
 msgid "Binding to take a screenshot of a window."
-msgstr "Привязка для снимка окна"
+msgstr "Привязка для снимка окна."
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:17
 msgid "Take a screenshot of an area"
@@ -759,11 +858,6 @@ msgstr ""
 msgid "_Always perform this action"
 msgstr "_Всегда выполнять это действие"
 
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
-msgid "_Cancel"
-msgstr "_Отменить"
-
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:786
 msgid "_OK"
 msgstr "_ОК"
@@ -1053,95 +1147,6 @@ msgstr "Очистить все уведомления"
 #: gnome-flashback/libnotifications/nd-queue.c:846
 msgid "Notifications"
 msgstr "Уведомления"
-
-#: gnome-flashback/libpolkit/flashback-authenticator.c:100
-#, c-format
-msgid "_Password for %s:"
-msgstr "_Пароль для %s:"
-
-#: gnome-flashback/libpolkit/flashback-authenticator.c:104
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:366
-msgid "_Password:"
-msgstr "_Пароль:"
-
-#: gnome-flashback/libpolkit/flashback-authenticator.c:259
-msgid "Your authentication attempt was unsuccessful. Please try again."
-msgstr "Попытка аутентификации не удалась. Попробуйте снова."
-
-#: gnome-flashback/libpolkit/flashback-listener.c:139
-msgid "Authentication dialog was dismissed by the user"
-msgstr "Диалоговое окно аутентификации было отклонено пользователем"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:202
-msgid ""
-"An application is attempting to perform an action that requires privileges. "
-"Authentication as one of the users below is required to perform this action."
-msgstr ""
-"Приложение пытается выполнить действие, которое требует дополнительные права "
-"доступа. Для получения дополнительных прав доступа требуется аутентификация "
-"одной учётной записи пользователя из ниже указанных."
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
-msgid ""
-"An application is attempting to perform an action that requires privileges. "
-"Authentication is required to perform this action."
-msgstr ""
-"Приложение пытается выполнить действие, которое требует дополнительные права "
-"доступа. Для получения дополнительных прав доступа требуется аутентификация."
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:217
-msgid ""
-"An application is attempting to perform an action that requires privileges. "
-"Authentication as the super user is required to perform this action."
-msgstr ""
-"Приложение пытается выполнить действие, которое требует дополнительные права "
-"доступа. Для получения дополнительных прав доступа требуется аутентификация "
-"учётной записи root."
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:386
-msgid "Select user..."
-msgstr "Выбрать пользователя…"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:425
-#, c-format
-msgid "%s (%s)"
-msgstr "%s (%s)"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:600
-msgid "Action:"
-msgstr "Действие:"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:603
-#, c-format
-msgid "Click to edit %s"
-msgstr "Нажмите для изменения %s"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:611
-msgid "Vendor:"
-msgstr "Производитель:"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:614
-#, c-format
-msgid "Click to open %s"
-msgstr "Нажмите чтобы открыть %s"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:8
-msgid "Authenticate"
-msgstr "Авторизоваться"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:53
-msgid "<big><b>Title</b></big>"
-msgstr "<big><b>Название</b></big>"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:192
-msgid "<small><b>_Details</b></small>"
-msgstr "<small><b>_Подробности</b></small>"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:228
-msgid "_Authenticate"
-msgstr "_Авторизоваться"
 
 #: gnome-flashback/libscreensaver/gf-auth.c:421
 msgid "Your account was given a time limit that has now passed."
