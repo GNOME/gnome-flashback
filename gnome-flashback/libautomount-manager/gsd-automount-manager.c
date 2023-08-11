@@ -241,11 +241,18 @@ volume_removed_callback (GVolumeMonitor *monitor,
                          GVolume *volume,
                          GsdAutomountManager *manager)
 {
+        GList *l;
+
         g_debug ("Volume %p removed, removing from the queue", volume);
 
         /* clear it from the queue, if present */
+        l = g_list_find (manager->priv->volume_queue, volume);
+        if (l == NULL)
+                return;
+
         manager->priv->volume_queue =
-                g_list_remove (manager->priv->volume_queue, volume);
+                g_list_remove_link (manager->priv->volume_queue, l);
+        g_list_free_full (l, g_object_unref);
 }
 
 static void
