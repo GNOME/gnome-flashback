@@ -205,19 +205,16 @@ check_volume_queue (GsdAutomountManager *manager)
         if (manager->priv->screensaver_active)
                 return;
 
-        l = manager->priv->volume_queue;
+        if (manager->priv->volume_queue == NULL)
+                return;
 
-        while (l != NULL) {
+        for (l = manager->priv->volume_queue; l != NULL; l = l->next) {
                 volume = l->data;
 
                 do_mount_volume (volume);
-                manager->priv->volume_queue =
-                        g_list_remove (manager->priv->volume_queue, volume);
-
-                g_object_unref (volume);
-                l = l->next;
         }
 
+        g_list_free_full (manager->priv->volume_queue, g_object_unref);
         manager->priv->volume_queue = NULL;
 }
 
