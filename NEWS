@@ -1,3 +1,9 @@
+Version 3.49.1
+==============
+- Fix crash in automount manager.
+- Move polkit to separate process.
+- Updated translations.
+
 Version 3.46.0
 ==============
 - Fix build with with gnome-desktop 43. (#83)
