@@ -7,38 +7,38 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-03-13 02:56+0000\n"
-"PO-Revision-Date: 2022-03-14 14:28+0100\n"
-"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"POT-Creation-Date: 2023-07-10 21:56+0000\n"
+"PO-Revision-Date: 2023-08-25 22:56+0200\n"
+"Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 3.3.2\n"
 
-#: backends/gf-monitor.c:134
+#: backends/gf-monitor.c:135
 msgid "Built-in display"
 msgstr "Vestavěný displej"
 
-#: backends/gf-monitor.c:168
+#: backends/gf-monitor.c:169
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: backends/gf-monitor.c:170
+#: backends/gf-monitor.c:171
 msgid "Unknown Display"
 msgstr "Neznámý displej"
 
-#: backends/gf-monitor.c:179
+#: backends/gf-monitor.c:180
 #, c-format
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: backends/gf-monitor.c:193
+#: backends/gf-monitor.c:194
 #, c-format
 msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
@@ -61,6 +61,98 @@ msgstr "Nahrávka obrazovky pořízený %d %s.webm"
 msgid "Screenshot from %s"
 msgstr "Snímek obrazovky pořízený %s"
 
+#: daemons/polkit/flashback-authenticator.c:100
+#, c-format
+msgid "_Password for %s:"
+msgstr "_Heslo pro uživatele %s:"
+
+#: daemons/polkit/flashback-authenticator.c:104
+#: daemons/polkit/flashback-polkit-dialog.ui:99
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:366
+msgid "_Password:"
+msgstr "_Heslo:"
+
+#: daemons/polkit/flashback-authenticator.c:259
+msgid "Your authentication attempt was unsuccessful. Please try again."
+msgstr "Váš pokus o ověření byl neúspěšný. Zkuste to prosím znovu."
+
+#: daemons/polkit/flashback-listener.c:139
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Ověřovací dialogové okno bylo zavřeno uživatelem"
+
+#: daemons/polkit/flashback-polkit-dialog.c:202
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as one of the users below is required to perform this action."
+msgstr ""
+"Některá aplikace se pokouší provést činnost, která vyžaduje oprávnění. K "
+"tomu je zapotřebí ověření jednoho z uživatelů níže."
+
+#: daemons/polkit/flashback-polkit-dialog.c:212
+#: daemons/polkit/flashback-polkit-dialog.ui:68
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication is required to perform this action."
+msgstr ""
+"Některá aplikace se pokouší provést činnost, která vyžaduje oprávnění. K "
+"tomu je zapotřebí ověření."
+
+#: daemons/polkit/flashback-polkit-dialog.c:217
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as the super user is required to perform this action."
+msgstr ""
+"Některá aplikace se pokouší provést činnost, která vyžaduje oprávnění. K "
+"tomu je zapotřebí ověření superuživatele."
+
+#: daemons/polkit/flashback-polkit-dialog.c:386
+msgid "Select user..."
+msgstr "Vybrat uživatele…"
+
+#: daemons/polkit/flashback-polkit-dialog.c:425
+#, c-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: daemons/polkit/flashback-polkit-dialog.c:600
+msgid "Action:"
+msgstr "Činnost:"
+
+#: daemons/polkit/flashback-polkit-dialog.c:603
+#, c-format
+msgid "Click to edit %s"
+msgstr "Kliknutím upravíte %s"
+
+#: daemons/polkit/flashback-polkit-dialog.c:611
+msgid "Vendor:"
+msgstr "Výrobce:"
+
+#: daemons/polkit/flashback-polkit-dialog.c:614
+#, c-format
+msgid "Click to open %s"
+msgstr "Kliknutím otevřete %s"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:8
+msgid "Authenticate"
+msgstr "Ověření"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:53
+msgid "<big><b>Title</b></big>"
+msgstr "<big><b>Název</b></big>"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:192
+msgid "<small><b>_Details</b></small>"
+msgstr "<small><b>Po_drobnosti</b></small>"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:213
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
+msgid "_Cancel"
+msgstr "_Zrušit"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:228
+msgid "_Authenticate"
+msgstr "_Ověřit"
+
 #: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME historické"
@@ -68,6 +160,10 @@ msgstr "GNOME historické"
 #: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Schránka (GNOME historické)"
+
+#: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
+msgid "Idle Monitor (GNOME Flashback)"
+msgstr "Sledování nečinnosti (GNOME historické)"
 
 #: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
 msgid "MediaKeys (GNOME Flashback)"
@@ -81,10 +177,9 @@ msgstr "Síť (GNOME historické)"
 msgid "Manage your network connections"
 msgstr "Spravujte svá síťová připojení"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
-msgid "nm-device-wireless"
-msgstr "nm-device-wireless"
+#: data/autostart/gnome-flashback-polkit.desktop.in.in:4
+msgid "Polkit (GNOME Flashback)"
+msgstr "Polkit (GNOME historické)"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -94,11 +189,6 @@ msgstr "Předvolby"
 msgid "Personal preferences"
 msgstr "Osobní předvolby"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
-msgid "preferences-desktop"
-msgstr "preferences-desktop"
-
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
 msgstr "Správa"
@@ -106,11 +196,6 @@ msgstr "Správa"
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
 msgid "Change system-wide settings (affects all users)"
 msgstr "Měňte nastavení pro celý systém (ovlivní všechny uživatele)"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
-msgid "preferences-system"
-msgstr "preferences-system"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:6
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
@@ -199,7 +284,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "Idle monitor"
-msgstr "Sledovat nežinnost"
+msgstr "Sledovat nečinnost"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
 msgid ""
@@ -559,13 +644,13 @@ msgstr ""
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: system-indicators/si-bluetooth.c:85
+#: system-indicators/si-bluetooth.c:116
 msgid "Turn Off"
 msgstr "Vypnout"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: system-indicators/si-bluetooth.c:99
+#: system-indicators/si-bluetooth.c:130
 msgid "Turn On"
 msgstr "Zapnout"
 
@@ -633,7 +718,7 @@ msgid "What kind of device did you plug in?"
 msgstr "Jaký druh zařízení jste připojili?"
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
-#: system-indicators/si-bluetooth.c:277 system-indicators/si-volume.c:446
+#: system-indicators/si-bluetooth.c:307 system-indicators/si-volume.c:446
 msgid "Sound Settings"
 msgstr "Nastavení zvuku"
 
@@ -760,11 +845,6 @@ msgstr ""
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:776
 msgid "_Always perform this action"
 msgstr "Vž_dy provést tuto činnost"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
-msgid "_Cancel"
-msgstr "_Zrušit"
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:786
 msgid "_OK"
@@ -1025,13 +1105,9 @@ msgstr "Souhrnný text upozornění."
 msgid "Notification"
 msgstr "Upozornění"
 
-#: gnome-flashback/libnotifications/nd-daemon.c:100
+#: gnome-flashback/libnotifications/nd-daemon.c:98
 msgid "Invalid notification identifier"
 msgstr "Neplatný identifikátor upozornění"
-
-#: gnome-flashback/libnotifications/nd-daemon.c:181
-msgid "Exceeded maximum number of notifications"
-msgstr "Byl překročen maximální počet upozornění."
 
 #: gnome-flashback/libnotifications/nd-notification-box.c:358
 msgid "Notification body text."
@@ -1044,93 +1120,6 @@ msgstr "Smazat všechna upozornění"
 #: gnome-flashback/libnotifications/nd-queue.c:846
 msgid "Notifications"
 msgstr "Upozornění"
-
-#: gnome-flashback/libpolkit/flashback-authenticator.c:100
-#, c-format
-msgid "_Password for %s:"
-msgstr "_Heslo pro uživatele %s:"
-
-#: gnome-flashback/libpolkit/flashback-authenticator.c:104
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:366
-msgid "_Password:"
-msgstr "_Heslo:"
-
-#: gnome-flashback/libpolkit/flashback-authenticator.c:259
-msgid "Your authentication attempt was unsuccessful. Please try again."
-msgstr "Váš pokus o ověření byl neúspěšný. Zkuste to prosím znovu."
-
-#: gnome-flashback/libpolkit/flashback-listener.c:139
-msgid "Authentication dialog was dismissed by the user"
-msgstr "Ověřovací dialogové okno bylo zavřeno uživatelem"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:202
-msgid ""
-"An application is attempting to perform an action that requires privileges. "
-"Authentication as one of the users below is required to perform this action."
-msgstr ""
-"Některá aplikace se pokouší provést činnost, která vyžaduje oprávnění. K "
-"tomu je zapotřebí ověření jednoho z uživatelů níže."
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
-msgid ""
-"An application is attempting to perform an action that requires privileges. "
-"Authentication is required to perform this action."
-msgstr ""
-"Některá aplikace se pokouší provést činnost, která vyžaduje oprávnění. K "
-"tomu je zapotřebí ověření."
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:217
-msgid ""
-"An application is attempting to perform an action that requires privileges. "
-"Authentication as the super user is required to perform this action."
-msgstr ""
-"Některá aplikace se pokouší provést činnost, která vyžaduje oprávnění. K "
-"tomu je zapotřebí ověření superuživatele."
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:386
-msgid "Select user..."
-msgstr "Vybrat uživatele…"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:425
-#, c-format
-msgid "%s (%s)"
-msgstr "%s (%s)"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:600
-msgid "Action:"
-msgstr "Činnost:"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:603
-#, c-format
-msgid "Click to edit %s"
-msgstr "Kliknutím upravíte %s"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:611
-msgid "Vendor:"
-msgstr "Výrobce:"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:614
-#, c-format
-msgid "Click to open %s"
-msgstr "Kliknutím otevřete %s"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:8
-msgid "Authenticate"
-msgstr "Ověření"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:53
-msgid "<big><b>Title</b></big>"
-msgstr "<big><b>Název</b></big>"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:192
-msgid "<small><b>_Details</b></small>"
-msgstr "<small><b>Po_drobnosti</b></small>"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:228
-msgid "_Authenticate"
-msgstr "_Ověřit"
 
 #: gnome-flashback/libscreensaver/gf-auth.c:421
 msgid "Your account was given a time limit that has now passed."
@@ -1198,31 +1187,31 @@ msgstr[2] "%u vstupů"
 msgid "System Sounds"
 msgstr "Systémové zvuky"
 
-#: system-indicators/si-bluetooth.c:91
+#: system-indicators/si-bluetooth.c:122
 msgid "Send Files"
 msgstr "Odeslat soubory"
 
-#: system-indicators/si-bluetooth.c:228
+#: system-indicators/si-bluetooth.c:260
 msgid "Disconnect"
 msgstr "Odpojit"
 
-#: system-indicators/si-bluetooth.c:241
+#: system-indicators/si-bluetooth.c:273
 msgid "Connect"
 msgstr "Připojit"
 
-#: system-indicators/si-bluetooth.c:256
+#: system-indicators/si-bluetooth.c:288
 msgid "Keyboard Settings"
 msgstr "Nastavení klávesnice"
 
-#: system-indicators/si-bluetooth.c:264
+#: system-indicators/si-bluetooth.c:296
 msgid "Mouse & Touchpad Settings"
 msgstr "Nastavení myši a touchpadu"
 
-#: system-indicators/si-bluetooth.c:331
+#: system-indicators/si-bluetooth.c:344
 msgid "Bluetooth Settings"
 msgstr "Nastavení Bluetooth"
 
-#: system-indicators/si-bluetooth.c:451
+#: system-indicators/si-bluetooth.c:438
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
@@ -1230,7 +1219,7 @@ msgstr[0] "%d připojené zařízení"
 msgstr[1] "%d připojená zařízení"
 msgstr[2] "%d připojených zařízení"
 
-#: system-indicators/si-bluetooth.c:458
+#: system-indicators/si-bluetooth.c:445
 msgid "Not Connected"
 msgstr "Nepřipojeno"
 
@@ -1319,3 +1308,15 @@ msgstr "Výstup"
 #: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Vypnutý zvuk"
+
+#~ msgid "nm-device-wireless"
+#~ msgstr "nm-device-wireless"
+
+#~ msgid "preferences-desktop"
+#~ msgstr "preferences-desktop"
+
+#~ msgid "preferences-system"
+#~ msgstr "preferences-system"
+
+#~ msgid "Exceeded maximum number of notifications"
+#~ msgstr "Byl překročen maximální počet upozornění."
