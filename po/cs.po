@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-03-13 02:56+0000\n"
-"PO-Revision-Date: 2022-03-14 14:28+0100\n"
-"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"POT-Creation-Date: 2023-01-25 18:52+0000\n"
+"PO-Revision-Date: 2023-08-25 22:58+0200\n"
+"Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #: backends/gf-monitor.c:134
 msgid "Built-in display"
@@ -81,11 +81,6 @@ msgstr "Síť (GNOME historické)"
 msgid "Manage your network connections"
 msgstr "Spravujte svá síťová připojení"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:6
-msgid "nm-device-wireless"
-msgstr "nm-device-wireless"
-
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
 msgstr "Předvolby"
@@ -94,11 +89,6 @@ msgstr "Předvolby"
 msgid "Personal preferences"
 msgstr "Osobní předvolby"
 
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:7
-msgid "preferences-desktop"
-msgstr "preferences-desktop"
-
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
 msgstr "Správa"
@@ -106,11 +96,6 @@ msgstr "Správa"
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
 msgid "Change system-wide settings (affects all users)"
 msgstr "Měňte nastavení pro celý systém (ovlivní všechny uživatele)"
-
-#. TRANSLATORS: Don't translate this text (this is icon name)
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:7
-msgid "preferences-system"
-msgstr "preferences-system"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:6
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
@@ -199,7 +184,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "Idle monitor"
-msgstr "Sledovat nežinnost"
+msgstr "Sledovat nečinnost"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
 msgid ""
@@ -1319,3 +1304,12 @@ msgstr "Výstup"
 #: system-indicators/si-volume.c:534
 msgid "Muted"
 msgstr "Vypnutý zvuk"
+
+#~ msgid "nm-device-wireless"
+#~ msgstr "nm-device-wireless"
+
+#~ msgid "preferences-desktop"
+#~ msgstr "preferences-desktop"
+
+#~ msgid "preferences-system"
+#~ msgstr "preferences-system"
