@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2023-07-16 11:43+0000\n"
-"PO-Revision-Date: 2023-07-17 04:03+0300\n"
+"POT-Creation-Date: 2023-08-28 09:14+0000\n"
+"PO-Revision-Date: 2023-10-16 00:23+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.4\n"
 "X-POOTLE-MTIME: 1432972725.000000\n"
 
 #: backends/gf-monitor.c:135
@@ -155,7 +155,7 @@ msgstr "<small><b>_Ayrıntılar</b></small>"
 #: daemons/polkit/flashback-polkit-dialog.ui:213
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:785
 msgid "_Cancel"
-msgstr "_İptal"
+msgstr "İ_ptal"
 
 #: daemons/polkit/flashback-polkit-dialog.ui:228
 msgid "_Authenticate"
@@ -740,7 +740,7 @@ msgstr "Bilinmeyen Ses Aygıtı"
 msgid "Unable to mount %s"
 msgstr "%s bağlanamadı"
 
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:288
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:292
 #, c-format
 msgid "Unable to open a folder for %s"
 msgstr "%s için klasör açılamıyor"
@@ -1150,13 +1150,13 @@ msgstr "Ekran görüntüsü alındı"
 
 #. translators:
 #. * The device has been disabled
-#: gvc/gvc/gvc-mixer-control.c:1900
+#: gvc/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Devre dışı"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1907
+#: gvc/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1164,13 +1164,13 @@ msgstr[0] "%u Çıktı"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1917
+#: gvc/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Girdi"
 
-#: gvc/gvc/gvc-mixer-control.c:2867
+#: gvc/gvc/gvc-mixer-control.c:2882
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
 
