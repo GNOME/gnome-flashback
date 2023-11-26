@@ -46,12 +46,12 @@ to display various system indicators such as:
 # Releases
 
 You may download gnome-flashback releases and updates from the
-[release server](http://download.gnome.org/sources/gnome-flashback/)
+[release server](https://download.gnome.org/sources/gnome-flashback/)
 
 # Discussions
 
 To discuss gnome-panel, you may use the
-[gnome-flashback-list](http://mail.gnome.org/mailman/listinfo/gnome-flashback-list) mailing list.
+[discussion forum](https://discourse.gnome.org/).
 
 # How to report bugs
 
