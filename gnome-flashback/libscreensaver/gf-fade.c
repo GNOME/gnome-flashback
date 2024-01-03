@@ -197,6 +197,8 @@ xf86_whack_gamma (GfFade *self,
   display = gdk_display_get_default ();
   xdisplay = gdk_x11_display_get_xdisplay (display);
 
+  gdk_x11_display_error_trap_push (display);
+
   if (self->info->size == 0)
     {
       XF86VidModeGamma g2;
@@ -245,6 +247,8 @@ xf86_whack_gamma (GfFade *self,
       g_free (g);
       g_free (b);
     }
+
+  gdk_x11_display_error_trap_pop_ignored (display);
 
   gdk_display_flush (display);
 }
