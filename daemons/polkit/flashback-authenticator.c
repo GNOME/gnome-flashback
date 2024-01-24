@@ -197,12 +197,12 @@ do_initiate (gpointer user_data)
   if (!flashback_polkit_dialog_run_until_user_is_selected (dialog))
     {
       authenticator->was_cancelled = TRUE;
+      authenticator->idle_id = 0;
 
       g_signal_emit_by_name (authenticator, "completed",
                              authenticator->gained_authorization,
                              authenticator->was_cancelled);
 
-      authenticator->idle_id = 0;
       return G_SOURCE_REMOVE;
     }
 
@@ -275,11 +275,12 @@ do_initiate (gpointer user_data)
       break;
     }
 
+  authenticator->idle_id = 0;
+
   g_signal_emit_by_name (authenticator, "completed",
                          authenticator->gained_authorization,
                          authenticator->was_cancelled);
 
-  authenticator->idle_id = 0;
   return G_SOURCE_REMOVE;
 }
 
