@@ -3,6 +3,7 @@ NULL =
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = \
 	gnome-flashback-clipboard.desktop \
+	gnome-flashback-geoclue-demo-agent.desktop \
 	gnome-flashback-idle-monitor.desktop \
 	gnome-flashback-media-keys.desktop \
 	gnome-flashback-nm-applet.desktop \
@@ -18,6 +19,7 @@ autostart_DATA = \
 
 EXTRA_DIST = \
 	gnome-flashback-clipboard.desktop.in.in \
+	gnome-flashback-geoclue-demo-agent.desktop.in.in \
 	gnome-flashback-idle-monitor.desktop.in.in \
 	gnome-flashback-media-keys.desktop.in.in \
 	gnome-flashback-nm-applet.desktop.in \
@@ -27,6 +29,8 @@ EXTRA_DIST = \
 CLEANFILES = \
 	gnome-flashback-clipboard.desktop.in \
 	gnome-flashback-clipboard.desktop \
+	gnome-flashback-geoclue-demo-agent.desktop.in \
+	gnome-flashback-geoclue-demo-agent.desktop \
 	gnome-flashback-idle-monitor.desktop.in \
 	gnome-flashback-idle-monitor.desktop \
 	gnome-flashback-media-keys.desktop.in \
