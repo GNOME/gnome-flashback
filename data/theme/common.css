@@ -1,13 +1,18 @@
 gf-screensaver-panel {
   font-weight: bold;
   padding: 4px 10px;
-  background: rgba (0, 0, 0, 0.8);
+  background: rgba (0, 0, 0, 0.5);
   color: #cccccc;
 }
 
 gf-screensaver-panel image,
 gf-screensaver-panel label {
   color: #cccccc;
+}
+
+gf-unlock-dialog,
+gf-unlock-dialog frame border {
+  border-radius: 10px;
 }
 
 gf-popup-window {
