@@ -53,6 +53,7 @@ struct _GfApplication
   gint                     bus_name;
 
   GSettings               *settings;
+  GSettings               *interface_settings;
 
   GtkStyleProvider        *provider;
 
@@ -137,12 +138,10 @@ is_theme_supported (const char        *theme_name,
 }
 
 static void
-theme_changed (GtkSettings *settings,
-               GParamSpec  *pspec,
-               gpointer     user_data)
+update_theme (GfApplication *application)
 {
-  GfApplication *application;
   GdkScreen *screen;
+  GtkSettings *settings;
   gchar *theme_name;
   gboolean prefer_dark;
   GfSupportedTheme *theme;
@@ -150,8 +149,8 @@ theme_changed (GtkSettings *settings,
   guint priority;
   GtkCssProvider *css;
 
-  application = GF_APPLICATION (user_data);
   screen = gdk_screen_get_default ();
+  settings = gtk_settings_get_default ();
 
   if (application->provider != NULL)
     {
@@ -184,6 +183,41 @@ theme_changed (GtkSettings *settings,
 
   g_free (theme_name);
   g_free (resource);
+}
+
+static void
+theme_changed (GtkSettings   *settings,
+               GParamSpec    *pspec,
+               GfApplication *application)
+{
+  update_theme (application);
+}
+
+static void
+color_scheme_changed (GSettings     *settings,
+                      const char    *key,
+                      GfApplication *application)
+{
+  char *color_scheme;
+
+  color_scheme = g_settings_get_string (application->interface_settings, "color-scheme");
+
+  if (g_strcmp0 (color_scheme, "prefer-dark") == 0)
+    {
+      g_object_set (gtk_settings_get_default (),
+                    "gtk-application-prefer-dark-theme",
+                    TRUE,
+                    NULL);
+    }
+  else
+    {
+      gtk_settings_reset_property (gtk_settings_get_default (),
+                                   "gtk-application-prefer-dark-theme");
+    }
+
+  g_free (color_scheme);
+
+  update_theme (application);
 }
 
 static void
@@ -262,6 +296,7 @@ gf_application_dispose (GObject *object)
     }
 
   g_clear_object (&application->settings);
+  g_clear_object (&application->interface_settings);
 
   g_clear_object (&application->provider);
 
@@ -336,14 +371,17 @@ gf_application_init (GfApplication *application)
                     G_CALLBACK (confirm_display_change_cb), application);
 
   application->settings = g_settings_new ("org.gnome.gnome-flashback");
+  application->interface_settings = g_settings_new ("org.gnome.desktop.interface");
   settings = gtk_settings_get_default ();
 
   g_signal_connect (application->settings, "changed",
                     G_CALLBACK (settings_changed), application);
   g_signal_connect (settings, "notify::gtk-theme-name",
                     G_CALLBACK (theme_changed), application);
+  g_signal_connect (application->interface_settings, "changed::color-scheme",
+                    G_CALLBACK (color_scheme_changed), application);
 
-  theme_changed (settings, NULL, application);
+  color_scheme_changed (application->interface_settings, NULL, application);
   settings_changed (application->settings, NULL, application);
 
   application->bus_name = g_bus_own_name (G_BUS_TYPE_SESSION,

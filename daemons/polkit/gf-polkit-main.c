@@ -180,18 +180,51 @@ session_manager_ready_cb (GObject      *source_object,
   g_object_unref (session_manager);
 }
 
+static void
+color_scheme_changed (GSettings  *interface_settings,
+                      const char *key,
+                      void       *user_data)
+{
+  char *color_scheme;
+
+  color_scheme = g_settings_get_string (interface_settings, "color-scheme");
+
+  if (g_strcmp0 (color_scheme, "prefer-dark") == 0)
+    {
+      g_object_set (gtk_settings_get_default (),
+                    "gtk-application-prefer-dark-theme",
+                    TRUE,
+                    NULL);
+    }
+  else
+    {
+      gtk_settings_reset_property (gtk_settings_get_default (),
+                                   "gtk-application-prefer-dark-theme");
+    }
+
+  g_free (color_scheme);
+}
+
 int
 main (int argc,
       char *argv[])
 {
   const char *autostart_id;
   FlashbackPolkit *polkit;
+  GSettings *interface_settings;
 
   autostart_id = g_getenv ("DESKTOP_AUTOSTART_ID");
   startup_id = g_strdup (autostart_id != NULL ? autostart_id : "");
   g_unsetenv ("DESKTOP_AUTOSTART_ID");
 
   gtk_init (&argc, &argv);
+
+  interface_settings = g_settings_new ("org.gnome.desktop.interface");
+
+  g_signal_connect (interface_settings, "changed::color-scheme",
+                    G_CALLBACK (color_scheme_changed), NULL);
+
+  color_scheme_changed (interface_settings, NULL, NULL);
 
   loop = g_main_loop_new (NULL, FALSE);
   polkit = flashback_polkit_new ();
@@ -212,6 +245,7 @@ main (int argc,
   g_main_loop_unref (loop);
 
   g_object_unref (polkit);
+  g_clear_object (&interface_settings);
   g_clear_object (&client_private);
   g_free (startup_id);
 
