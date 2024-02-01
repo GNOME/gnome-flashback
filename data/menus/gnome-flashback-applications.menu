@@ -64,6 +64,7 @@
     <Include>
       <And>
         <Category>Education</Category>
+        <Not><Category>Science</Category></Not>
       </And>
     </Include>
   </Menu> <!-- End Education -->
@@ -137,6 +138,17 @@
       </And>
     </Include>
   </Menu> <!-- End Office -->
+
+  <!-- Science -->
+  <Menu>
+    <Name>Science</Name>
+    <Directory>X-GNOME-Flashback-Science.directory</Directory>
+    <Include>
+      <And>
+        <Category>Science</Category>
+      </And>
+    </Include>
+  </Menu> <!-- End Science -->
 
   <!-- System Tools-->
   <Menu>

@@ -1,6 +1,7 @@
 NULL =
 
 directory_in_files = \
+	X-GNOME-Flashback-Science.directory.desktop.in \
 	X-GNOME-Flashback-Settings.directory.desktop.in \
 	X-GNOME-Flashback-Settings-System.directory.desktop.in \
 	$(NULL)
