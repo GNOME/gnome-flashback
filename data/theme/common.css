@@ -59,6 +59,7 @@ gf-icon {
 
 gf-icon label {
   border-radius: 3px;
+  text-shadow: 1px 1px black;
   padding: 2px;
 }
 
