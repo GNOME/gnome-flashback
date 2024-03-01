@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2023-08-25 20:57+0000\n"
-"PO-Revision-Date: 2023-08-28 12:43+0330\n"
+"POT-Creation-Date: 2023-08-28 09:14+0000\n"
+"PO-Revision-Date: 2024-03-01 18:56+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <fa@li.org>\n"
 "Language: fa\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: backends/gf-monitor.c:135
 msgid "Built-in display"
@@ -36,7 +36,7 @@ msgstr "نمایشگر ناشناس"
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
-msgstr ""
+msgstr "%s %s"
 
 #: backends/gf-monitor.c:194
 #, c-format
@@ -44,7 +44,7 @@ msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
 "inches could not be calculated, e.g. Dell U2414H"
 msgid "%s %s"
-msgstr ""
+msgstr "%s و %s"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
@@ -101,25 +101,25 @@ msgstr ""
 
 #: daemons/polkit/flashback-polkit-dialog.c:386
 msgid "Select user..."
-msgstr ""
+msgstr "گزینش کاربر…"
 
 #: daemons/polkit/flashback-polkit-dialog.c:425
 #, c-format
 msgid "%s (%s)"
-msgstr ""
+msgstr "%s (%s)"
 
 #: daemons/polkit/flashback-polkit-dialog.c:600
 msgid "Action:"
-msgstr ""
+msgstr "کنش:"
 
 #: daemons/polkit/flashback-polkit-dialog.c:603
 #, c-format
 msgid "Click to edit %s"
-msgstr ""
+msgstr "زدن برای ویرایش %s"
 
 #: daemons/polkit/flashback-polkit-dialog.c:611
 msgid "Vendor:"
-msgstr ""
+msgstr "سازنده:"
 
 #: daemons/polkit/flashback-polkit-dialog.c:614
 #, c-format
@@ -132,11 +132,11 @@ msgstr "تأیید هویت"
 
 #: daemons/polkit/flashback-polkit-dialog.ui:53
 msgid "<big><b>Title</b></big>"
-msgstr ""
+msgstr "<big><b>عنوان</b></big>"
 
 #: daemons/polkit/flashback-polkit-dialog.ui:192
 msgid "<small><b>_Details</b></small>"
-msgstr ""
+msgstr "<small><b>_جزییات</b></small>"
 
 #: daemons/polkit/flashback-polkit-dialog.ui:213
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:785
@@ -149,31 +149,31 @@ msgstr "_تصدیق هویت"
 
 #: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
-msgstr ""
+msgstr "گنوم قدیمی"
 
 #: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
 msgid "Clipboard (GNOME Flashback)"
-msgstr ""
+msgstr "تخته گیره (گنوم قدیمی)"
 
 #: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
 msgid "Idle Monitor (GNOME Flashback)"
-msgstr ""
+msgstr "پایشگر بی‌کاری (گنوم قدیمی)"
 
 #: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
 msgid "MediaKeys (GNOME Flashback)"
-msgstr ""
+msgstr "کلیدهای رسانه‌ای (گنوم قدیمی)"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Network (GNOME Flashback)"
-msgstr ""
+msgstr "شبکه (گنوم قدیمی)"
 
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:4
 msgid "Manage your network connections"
-msgstr ""
+msgstr "مدیریت اتّصال‌های شبکه‌ایتان"
 
 #: data/autostart/gnome-flashback-polkit.desktop.in.in:4
 msgid "Polkit (GNOME Flashback)"
-msgstr ""
+msgstr "جعبهٔ سیاست (گنوم قدیمی)"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -181,15 +181,15 @@ msgstr "ترجیحات"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:5
 msgid "Personal preferences"
-msgstr ""
+msgstr "ترجیخات شخصی"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Administration"
-msgstr ""
+msgstr "مدیریت"
 
 #: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
 msgid "Change system-wide settings (affects all users)"
-msgstr ""
+msgstr "تغییر تنظیمات گسترهٔ سامانه (تأثیر روی همهٔ کاربران)"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:6
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
@@ -198,30 +198,30 @@ msgstr "نماگرفت‌ها"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:10
 msgid "Save a screenshot to $PICTURES"
-msgstr ""
+msgstr "ذخیرهٔ نماگرفتی به $PICTURES"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:14
 msgid "Save a screenshot of a window to $PICTURES"
-msgstr ""
+msgstr "ذخیرهٔ نماگرفتی از پنجره به $PICTURES"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:18
 msgid "Save a screenshot of an area to $PICTURES"
-msgstr ""
+msgstr "ذخیرهٔ نماگرفتی از ناحیه به $PICTURES"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:21
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:23
 msgid "Copy a screenshot to clipboard"
-msgstr ""
+msgstr "رونوشت از نماگرفتی به تخته‌گیره"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:24
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:29
 msgid "Copy a screenshot of a window to clipboard"
-msgstr ""
+msgstr "رونوشت از نماگرفتی از پنجره به تخته‌گیره"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:27
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:35
 msgid "Copy a screenshot of an area to clipboard"
-msgstr ""
+msgstr "رونوشت از نماگرفتی از ناحیه به تخته‌گیره"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:30
 msgid "Record a short screencast"
@@ -229,11 +229,11 @@ msgstr "ضبط فیلم از نمایشگر"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
 msgid "a11y-keyboard"
-msgstr ""
+msgstr "صفحه‌کلید دسترسی‌پذیری"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:10
 msgid "Audio device selection"
-msgstr ""
+msgstr "گزینش افزارهٔ صوتی"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
 msgid ""
@@ -243,7 +243,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:16
 msgid "Automount manager"
-msgstr ""
+msgstr "مدی سوار کردن خودکار"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
 msgid ""
@@ -262,17 +262,17 @@ msgstr "میز‌کار"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:32
 msgid "End session dialog"
-msgstr ""
+msgstr "گفت‌وگوی پایان نشست"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
 msgid ""
-"If set to true, then GNOME Flashback application will be used to show the "
-"end session dialog."
+"If set to true, then GNOME Flashback application will be used to show the end "
+"session dialog."
 msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "Idle monitor"
-msgstr ""
+msgstr "پایشگر بی‌کاری"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
 msgid ""
@@ -282,11 +282,11 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "Input settings"
-msgstr ""
+msgstr "تنظمیات وروردی"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
 msgid "Keyboard layouts and input methods"
-msgstr ""
+msgstr "روش‌های ورودی و چینش صفحه‌کلید"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
 msgid ""
@@ -296,7 +296,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
 msgid "Notification daemon"
-msgstr ""
+msgstr "خدمت آگاهی"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
 msgid ""
@@ -315,7 +315,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
 msgid "Root background"
-msgstr ""
+msgstr "پس‌زمینهٔ ریشه"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
 msgid "Screencasts"
@@ -329,7 +329,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
 msgid "Screensaver"
-msgstr ""
+msgstr "محافظ صفحه"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
 msgid ""
@@ -345,7 +345,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
 msgid "Shell"
-msgstr ""
+msgstr "پوسته"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
 msgid ""
@@ -364,7 +364,7 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:5
 msgid "Draw desktop background"
-msgstr ""
+msgstr "کشیدن پس‌زمینهٔ میزکار"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:6
 msgid "If set to true, then GNOME Flashback will draw the desktop background."
@@ -372,16 +372,15 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:11
 msgid "Show desktop icons"
-msgstr ""
+msgstr "نمایش نقشک‌های میزکار"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:12
-msgid ""
-"If set to true, then GNOME Flashback will draw the icons on the desktop."
+msgid "If set to true, then GNOME Flashback will draw the icons on the desktop."
 msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:5
 msgid "Fade the background on change"
-msgstr ""
+msgstr "محوی پس‌زمینه هنگام دگرگونی"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:6
 msgid ""
@@ -395,17 +394,17 @@ msgstr "اندازهٔ نقشک"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:6
 msgid "The size of desktop icons."
-msgstr ""
+msgstr "اندازهٔ نقشک‌های میزکار."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
 #: gnome-flashback/libdesktop/gf-icon-view.c:1332
 msgid "Placement"
-msgstr ""
+msgstr "قرارگیری"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:12
 msgid ""
-"Can be one of \"auto-arrange-icons\", \"align-icons-to-grid\" or \"free\". "
-"It controls how icons are placed on desktop."
+"Can be one of \"auto-arrange-icons\", \"align-icons-to-grid\" or \"free\". It "
+"controls how icons are placed on desktop."
 msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
@@ -421,11 +420,11 @@ msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
 msgid "Extra text width"
-msgstr ""
+msgstr "پهنای متن اضافی"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:25
 msgid "Extra width for icon text."
-msgstr ""
+msgstr "پهنای اضافی برای متن نقشک."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:31
 msgid "Column spacing"
@@ -433,7 +432,7 @@ msgstr "فاصله‌گذاری ستون‌ها"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:32
 msgid "The amount of space between columns."
-msgstr ""
+msgstr "مقدار فضا بین ستون‌ها."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:38
 msgid "Row spacing"
@@ -441,21 +440,21 @@ msgstr "فاصله‌گذاری سطرها"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:39
 msgid "The amount of space between rows."
-msgstr ""
+msgstr "مقدار فضا بین ردیف‌ها."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:44
 msgid "Show home icon"
-msgstr ""
+msgstr "نمایشک نقشک خانه"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:45
 msgid ""
-"If this is set to true, an icon linking to the home folder will be put on "
-"the desktop."
+"If this is set to true, an icon linking to the home folder will be put on the "
+"desktop."
 msgstr ""
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:50
 msgid "Show trash icon"
-msgstr ""
+msgstr "نمایش نقشک زباله‌دان"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:51
 msgid ""
@@ -469,7 +468,7 @@ msgstr "گرفتن یک نماگرفت"
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:6
 msgid "Binding to take a screenshot."
-msgstr ""
+msgstr "ترکیب نماگرفت."
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:11
 msgid "Take a screenshot of a window"
@@ -477,7 +476,7 @@ msgstr "گرفتن نماگرفتی از یک پنچره"
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:12
 msgid "Binding to take a screenshot of a window."
-msgstr ""
+msgstr "ترکیب نماگرفت از پنجره."
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:17
 msgid "Take a screenshot of an area"
@@ -597,8 +596,8 @@ msgid ""
 "You just held down the Shift key for 8 seconds. This is the shortcut for the "
 "Slow Keys feature, which affects the way your keyboard works."
 msgstr ""
-"دکمهٔ تبدیل را ۸ ثانیه نگه داشتید. این میان‌بری برای ویژگی دکمه‌های آهسته است "
-"که بر نحوهٔ کار صفحه‌کلیدتان اثر می‌گذارد."
+"دکمهٔ تبدیل را ۸ ثانیه نگه داشتید. این میان‌بری برای ویژگی دکمه‌های آهسته است که "
+"بر نحوهٔ کار صفحه‌کلیدتان اثر می‌گذارد."
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
@@ -643,9 +642,9 @@ msgstr ""
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:385
 msgid ""
-"You just pressed two keys at once, or pressed the Shift key 5 times in a "
-"row. This turns off the Sticky Keys feature, which affects the way your "
-"keyboard works."
+"You just pressed two keys at once, or pressed the Shift key 5 times in a row. "
+"This turns off the Sticky Keys feature, which affects the way your keyboard "
+"works."
 msgstr ""
 "دو کلید را هم‌زمان فشرده یا کلید تبدیل را ۵ بار پشت سر هم زدید. این میان‌بری "
 "برای ویژگی کلید‌های چسبان است که بر نحوهٔ کار صفحه‌کلیدتان اثر می‌گذارد."
@@ -828,7 +827,7 @@ msgstr "خانه"
 
 #: gnome-flashback/libdesktop/gf-icon.c:508
 msgid "Open"
-msgstr ""
+msgstr "گشودن"
 
 #: gnome-flashback/libdesktop/gf-icon.c:544
 msgid "Move to Trash"
