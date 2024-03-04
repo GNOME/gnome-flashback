@@ -1,0 +1,16 @@
+<schemalist gettext-domain="gnome-flashback">
+  <enum id="org.gnome.gnome-flashback.notifications.location">
+    <value nick="top-left" value="0"/>
+    <value nick="top-right" value="1"/>
+    <value nick="bottom-left" value="2"/>
+    <value nick="bottom-right" value="3"/>
+  </enum>
+
+  <schema id="org.gnome.gnome-flashback.notifications" path="/org/gnome/gnome-flashback/notifications/">
+    <key name="location" enum="org.gnome.gnome-flashback.notifications.location">
+      <default>'top-right'</default>
+      <summary>Location of the notifications</summary>
+      <description>The corner of the screen where notifications will be shown.</description>
+    </key>
+  </schema>
+</schemalist>

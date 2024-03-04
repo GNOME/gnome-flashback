@@ -32,6 +32,7 @@ struct NdStackPrivate
         NdStackLocation location;
         GList          *bubbles;
         guint           update_id;
+        GSettings      *settings;
 };
 
 static void     nd_stack_finalize    (GObject       *object);
@@ -123,6 +124,14 @@ translate_coordinates (NdStackLocation stack_location,
 }
 
 static void
+location_changed_cb (GSettings     *settings,
+                     const char    *key,
+                     NdStack       *stack)
+{
+  stack->priv->location = g_settings_get_enum (stack->priv->settings, "location");
+}
+
+static void
 nd_stack_class_init (NdStackClass *klass)
 {
         GObjectClass   *object_class = G_OBJECT_CLASS (klass);
@@ -134,7 +143,11 @@ static void
 nd_stack_init (NdStack *stack)
 {
         stack->priv = nd_stack_get_instance_private (stack);
-        stack->priv->location = ND_STACK_LOCATION_DEFAULT;
+        stack->priv->settings = g_settings_new ("org.gnome.gnome-flashback.notifications");
+        stack->priv->location = g_settings_get_enum (stack->priv->settings, "location");
+
+        g_signal_connect (stack->priv->settings, "changed::location",
+                          G_CALLBACK (location_changed_cb), stack);
 }
 
 static void
@@ -148,6 +161,8 @@ nd_stack_finalize (GObject *object)
         stack = ND_STACK (object);
 
         g_return_if_fail (stack->priv != NULL);
+
+        g_clear_object (&stack->priv->settings);
 
         if (stack->priv->update_id != 0) {
                 g_source_remove (stack->priv->update_id);
