@@ -29,6 +29,8 @@ typedef struct
 
   GfAuthMessageType  type;
   char              *message;
+
+  unsigned int      *id;
 } GfMessageData;
 
 struct _GfAuth
@@ -45,7 +47,7 @@ struct _GfAuth
 
   GTask        *task;
 
-  guint         message_id;
+  GList        *message_ids;
 
   gboolean      awaits_response;
   char         *response;
@@ -150,12 +152,18 @@ message_cb (gpointer user_data)
 {
   GfMessageData *data;
   GfAuth *self;
+  GList *l;
 
   data = user_data;
   self = data->self;
 
   g_signal_emit (self, auth_signals[MESSAGE], 0, data->type, data->message);
-  self->message_id = 0;
+
+  l = g_list_find (self->message_ids, data->id);
+  g_assert (l != NULL);
+
+  self->message_ids = g_list_remove_link (self->message_ids, l);
+  g_list_free_full (l, g_free);
 
   return G_SOURCE_REMOVE;
 }
@@ -167,17 +175,20 @@ emit_message_idle (GfAuth     *self,
 {
   GfAuthMessageType message_type;
   GfMessageData *data;
+  unsigned int *message_id;
 
   message_type = message_type_from_msg_style (msg_style);
   data = gf_message_data_new (self, message_type, msg);
 
-  g_assert (self->message_id == 0);
-  self->message_id = g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
-                                      message_cb,
-                                      data,
-                                      gf_message_data_free);
+  message_id = data->id = g_new0 (guint, 1);
+  self->message_ids = g_list_append (self->message_ids, message_id);
 
-  g_source_set_name_by_id (self->message_id, "[gnome-flashback] message_cb");
+  *message_id = g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
+                                 message_cb,
+                                 data,
+                                 gf_message_data_free);
+
+  g_source_set_name_by_id (*message_id, "[gnome-flashback] message_cb");
 }
 
 static int
@@ -459,10 +470,15 @@ gf_auth_dispose (GObject *object)
 
   g_mutex_lock (&self->mutex);
 
-  if (self->message_id != 0)
+  if (self->message_ids != NULL)
     {
-      g_source_remove (self->message_id);
-      self->message_id = 0;
+      GList *l;
+
+      for (l = self->message_ids; l != NULL; l = l->next)
+        g_source_remove (*((unsigned int *) l->data));
+
+      g_list_free_full (self->message_ids, g_free);
+      self->message_ids = NULL;
     }
 
   g_assert (!self->awaits_response);
