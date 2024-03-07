@@ -2,13 +2,14 @@
 # Copyright (C) 2020 gnome-flashback's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-flashback package.
 #
-# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2022, 2023.
+# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2022, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2023-07-10 21:56+0000\n"
-"PO-Revision-Date: 2023-07-12 18:20+0300\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues/"
+"\n"
+"POT-Creation-Date: 2024-03-06 21:21+0000\n"
+"PO-Revision-Date: 2024-03-07 09:56+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Lokalize 20.12.0\n"
+"X-Generator: Lokalize 23.04.1\n"
 
 #: backends/gf-monitor.c:135
 msgid "Built-in display"
@@ -180,9 +181,17 @@ msgid "Manage your network connections"
 msgstr "Керуйте вашими мережевими з'єднаннями"
 
 #: data/autostart/gnome-flashback-polkit.desktop.in.in:4
-#| msgid "Network (GNOME Flashback)"
 msgid "Polkit (GNOME Flashback)"
 msgstr "Polkit (GNOME Flashback)"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:4
+msgid "Science"
+msgstr "Наука"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:5
+#| msgid "Notifications"
+msgid "Scientific applications"
+msgstr "Наукові програми"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -564,6 +573,15 @@ msgstr ""
 "Максимальна тривалість одинарного запису у секундах або 0, якщо тривалість "
 "не слід обмежувати"
 
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:12
+#| msgid "Closes the notification."
+msgid "Location of the notifications"
+msgstr "Розташування сповіщень"
+
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:13
+msgid "The corner of the screen where notifications will be shown."
+msgstr "Кут вікна, у якому буде показано сповіщення."
+
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
 msgstr "Використовувати піктограму IBus, якщо доступна"
@@ -742,7 +760,7 @@ msgstr "Невідомий аудіопристрій"
 msgid "Unable to mount %s"
 msgstr "Не вдалось змонтувати каталог %s"
 
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:288
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:292
 #, c-format
 msgid "Unable to open a folder for %s"
 msgstr "Не вдалося відкрити теку для %s"
@@ -1137,11 +1155,11 @@ msgstr "Вилучити усі сповіщення"
 msgid "Notifications"
 msgstr "Сповіщення"
 
-#: gnome-flashback/libscreensaver/gf-auth.c:421
+#: gnome-flashback/libscreensaver/gf-auth.c:432
 msgid "Your account was given a time limit that has now passed."
 msgstr "Ваш акаунт отримав обмеження часу, яке минуло."
 
-#: gnome-flashback/libscreensaver/gf-auth.c:425
+#: gnome-flashback/libscreensaver/gf-auth.c:436
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "На жаль, це не спрацювало. Будь ласка, спробуйте ще."
 
@@ -1175,13 +1193,13 @@ msgstr "Знімок отримано"
 
 #. translators:
 #. * The device has been disabled
-#: gvc/gvc/gvc-mixer-control.c:1900
+#: gvc/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Вимкнено"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1907
+#: gvc/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1192,7 +1210,7 @@ msgstr[3] "%u вивід"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1917
+#: gvc/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -1201,7 +1219,7 @@ msgstr[1] "%u входи"
 msgstr[2] "%u входів"
 msgstr[3] "%u вхід"
 
-#: gvc/gvc/gvc-mixer-control.c:2867
+#: gvc/gvc/gvc-mixer-control.c:2882
 msgid "System Sounds"
 msgstr "Системні звуки"
 
