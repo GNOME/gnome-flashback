@@ -6,9 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2023-07-10 21:56+0000\n"
-"PO-Revision-Date: 2023-08-25 22:56+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/"
+"issues/\n"
+"POT-Creation-Date: 2024-03-06 21:21+0000\n"
+"PO-Revision-Date: 2024-03-08 14:30+0100\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -16,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: backends/gf-monitor.c:135
 msgid "Built-in display"
@@ -180,6 +181,14 @@ msgstr "Spravujte svá síťová připojení"
 #: data/autostart/gnome-flashback-polkit.desktop.in.in:4
 msgid "Polkit (GNOME Flashback)"
 msgstr "Polkit (GNOME historické)"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:4
+msgid "Science"
+msgstr "Věda"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:5
+msgid "Scientific applications"
+msgstr "Vědecké aplikace"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -558,6 +567,14 @@ msgstr ""
 "Maximální délka jedné nahrávky dění na obrazovce v sekundách, 0 znamená bez "
 "omezení."
 
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:12
+msgid "Location of the notifications"
+msgstr "Umístění upozornění"
+
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:13
+msgid "The corner of the screen where notifications will be shown."
+msgstr "Roh obrazovky, kde se budou zobrazovat upozornění."
+
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
 msgstr "Používat ikonu IBus, pokud je dostupná"
@@ -737,7 +754,7 @@ msgstr "Neznámé zvukové zařízení"
 msgid "Unable to mount %s"
 msgstr "Nelze připojit %s"
 
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:288
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:292
 #, c-format
 msgid "Unable to open a folder for %s"
 msgstr "Nelze otevřít složku pro %s"
@@ -1121,11 +1138,11 @@ msgstr "Smazat všechna upozornění"
 msgid "Notifications"
 msgstr "Upozornění"
 
-#: gnome-flashback/libscreensaver/gf-auth.c:421
+#: gnome-flashback/libscreensaver/gf-auth.c:432
 msgid "Your account was given a time limit that has now passed."
 msgstr "Váš účet určit časové omezení, které nyní uběhlo."
 
-#: gnome-flashback/libscreensaver/gf-auth.c:425
+#: gnome-flashback/libscreensaver/gf-auth.c:436
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Omlouváme se, ale nefunguje to. Zkuste to prosím znovu."
 
@@ -1159,13 +1176,13 @@ msgstr "Byl pořízen snímky obrazovky"
 
 #. translators:
 #. * The device has been disabled
-#: gvc/gvc/gvc-mixer-control.c:1900
+#: gvc/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Zakázáno"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1907
+#: gvc/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1175,7 +1192,7 @@ msgstr[2] "%u výstupů"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1917
+#: gvc/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -1183,7 +1200,7 @@ msgstr[0] "%u vstup"
 msgstr[1] "%u vstupy"
 msgstr[2] "%u vstupů"
 
-#: gvc/gvc/gvc-mixer-control.c:2867
+#: gvc/gvc/gvc-mixer-control.c:2882
 msgid "System Sounds"
 msgstr "Systémové zvuky"
 
