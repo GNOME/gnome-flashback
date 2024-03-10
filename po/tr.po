@@ -11,17 +11,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2023-08-28 09:14+0000\n"
-"PO-Revision-Date: 2023-10-16 00:23+0300\n"
-"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/"
+"issues/\n"
+"POT-Creation-Date: 2024-03-06 21:21+0000\n"
+"PO-Revision-Date: 2024-03-09 10:03+0300\n"
+"Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.4\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-POOTLE-MTIME: 1432972725.000000\n"
 
 #: backends/gf-monitor.c:135
@@ -188,6 +189,14 @@ msgstr "Ağ bağlantılarını yönet"
 #: data/autostart/gnome-flashback-polkit.desktop.in.in:4
 msgid "Polkit (GNOME Flashback)"
 msgstr "Polkit (GNOME Flashback)"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:4
+msgid "Science"
+msgstr "Bilim"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:5
+msgid "Scientific applications"
+msgstr "Bilimsel uygulamalar"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -447,8 +456,8 @@ msgid ""
 "It controls how icons are placed on desktop."
 msgstr ""
 "Şunlardan biri olabilir: \"auto-arrange-icons\" (simgeleri kendiliğinden "
-"düzenle), \"align-icons-to-grid\" (simgeleri ızgaraya hizala) veya "
-"\"free\" (serbest). Simgelerin masaüstünde nasıl yerleşeceğini denetler."
+"düzenle), \"align-icons-to-grid\" (simgeleri ızgaraya hizala) veya \"free"
+"\" (serbest). Simgelerin masaüstünde nasıl yerleşeceğini denetler."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
 #: gnome-flashback/libdesktop/gf-icon-view.c:1338
@@ -564,6 +573,14 @@ msgid ""
 "The maximum length of single screen cast recordings in seconds or 0 for "
 "unlimited"
 msgstr "Ekran yayın kaydının saniye türünden uzunluğu, sınırsız için 0"
+
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:12
+msgid "Location of the notifications"
+msgstr "Bildirimlerin konumu"
+
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:13
+msgid "The corner of the screen where notifications will be shown."
+msgstr "Bildirimlerin gösterileceği ekran kenarı."
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
@@ -1112,11 +1129,11 @@ msgstr "Tüm bildirimleri temizle"
 msgid "Notifications"
 msgstr "Bildirimler"
 
-#: gnome-flashback/libscreensaver/gf-auth.c:421
+#: gnome-flashback/libscreensaver/gf-auth.c:432
 msgid "Your account was given a time limit that has now passed."
 msgstr "Hesabınıza verilen zaman sınırı şu an doldu."
 
-#: gnome-flashback/libscreensaver/gf-auth.c:425
+#: gnome-flashback/libscreensaver/gf-auth.c:436
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Üzgünüm ama işe yaramadı. Lütfen yeniden deneyin."
 
