@@ -6,39 +6,40 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2022-06-26 11:00+0000\n"
-"PO-Revision-Date: 2022-07-27 17:55+0200\n"
-"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/"
+"issues/\n"
+"POT-Creation-Date: 2024-03-06 21:21+0000\n"
+"PO-Revision-Date: 2024-03-10 15:57+0100\n"
+"Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: \n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.3.2\n"
 
-#: backends/gf-monitor.c:134
+#: backends/gf-monitor.c:135
 msgid "Built-in display"
 msgstr "ჩაშენებული ეკრანი"
 
-#: backends/gf-monitor.c:168
+#: backends/gf-monitor.c:169
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
 msgid "Unknown"
 msgstr "უცნობია"
 
-#: backends/gf-monitor.c:170
+#: backends/gf-monitor.c:171
 msgid "Unknown Display"
 msgstr "უცნობი ეკრანი"
 
-#: backends/gf-monitor.c:179
+#: backends/gf-monitor.c:180
 #, c-format
 msgctxt ""
 "This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
 msgid "%s %s"
 msgstr "%s %s"
 
-#: backends/gf-monitor.c:193
+#: backends/gf-monitor.c:194
 #, c-format
 msgctxt ""
 "This is a monitor vendor name followed by product/model name where size in "
@@ -60,6 +61,94 @@ msgstr "ეკრანის ვიდეოჩანაწერი %d %t-დ�
 #, c-format
 msgid "Screenshot from %s"
 msgstr "ეკრანის ანაბეჭდი %s-დან"
+
+#: daemons/polkit/flashback-authenticator.c:100
+#, c-format
+msgid "_Password for %s:"
+msgstr ""
+
+#: daemons/polkit/flashback-authenticator.c:104
+#: daemons/polkit/flashback-polkit-dialog.ui:99
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:366
+msgid "_Password:"
+msgstr "_პაროლი:"
+
+#: daemons/polkit/flashback-authenticator.c:259
+msgid "Your authentication attempt was unsuccessful. Please try again."
+msgstr ""
+
+#: daemons/polkit/flashback-listener.c:139
+msgid "Authentication dialog was dismissed by the user"
+msgstr "ავთენტიკაციის ფანჯარა დახურულია მომხმარებლის მიერ"
+
+#: daemons/polkit/flashback-polkit-dialog.c:202
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as one of the users below is required to perform this action."
+msgstr ""
+
+#: daemons/polkit/flashback-polkit-dialog.c:212
+#: daemons/polkit/flashback-polkit-dialog.ui:68
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication is required to perform this action."
+msgstr ""
+"აპლიკაცია ცდილობს შეასრულოს ქმედება, რომელსაც მეტი პრივილეგია ესაჭიროება, "
+"ვიდრე მას ამჟამად გააჩნია. ქმედების განსახორციელებლად ავთენტიკაციაა საჭირო."
+
+#: daemons/polkit/flashback-polkit-dialog.c:217
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as the super user is required to perform this action."
+msgstr ""
+
+#: daemons/polkit/flashback-polkit-dialog.c:386
+msgid "Select user..."
+msgstr ""
+
+#: daemons/polkit/flashback-polkit-dialog.c:425
+#, c-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: daemons/polkit/flashback-polkit-dialog.c:600
+msgid "Action:"
+msgstr "ქმედება:"
+
+#: daemons/polkit/flashback-polkit-dialog.c:603
+#, c-format
+msgid "Click to edit %s"
+msgstr ""
+
+#: daemons/polkit/flashback-polkit-dialog.c:611
+msgid "Vendor:"
+msgstr "გამყიდველი:"
+
+#: daemons/polkit/flashback-polkit-dialog.c:614
+#, c-format
+msgid "Click to open %s"
+msgstr ""
+
+#: daemons/polkit/flashback-polkit-dialog.ui:8
+msgid "Authenticate"
+msgstr "ავთენტიკაცია"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:53
+msgid "<big><b>Title</b></big>"
+msgstr ""
+
+#: daemons/polkit/flashback-polkit-dialog.ui:192
+msgid "<small><b>_Details</b></small>"
+msgstr "<small><b>_დეტალები</b></small>"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:213
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
+msgid "_Cancel"
+msgstr "_გაუქმება"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:228
+msgid "_Authenticate"
+msgstr "_ავთენტიკაცია"
 
 #: data/applications/gnome-flashback.desktop.in.in:4
 msgid "GNOME Flashback"
@@ -84,6 +173,18 @@ msgstr ""
 #: data/autostart/gnome-flashback-nm-applet.desktop.in:4
 msgid "Manage your network connections"
 msgstr "ქსელური შეერთებების მართვა"
+
+#: data/autostart/gnome-flashback-polkit.desktop.in.in:4
+msgid "Polkit (GNOME Flashback)"
+msgstr ""
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:4
+msgid "Science"
+msgstr "მეცნიერება"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:5
+msgid "Scientific applications"
+msgstr "სამეცნიერო აპლიკაციები"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -310,7 +411,7 @@ msgstr ""
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
 #: gnome-flashback/libdesktop/gf-icon-view.c:1332
 msgid "Placement"
-msgstr ""
+msgstr "განლაგება"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:12
 msgid ""
@@ -427,6 +528,14 @@ msgid ""
 "unlimited"
 msgstr ""
 
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:12
+msgid "Location of the notifications"
+msgstr ""
+
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:13
+msgid "The corner of the screen where notifications will be shown."
+msgstr ""
+
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
 msgstr ""
@@ -461,7 +570,7 @@ msgstr ""
 
 #: data/ui/gf-confirm-display-change-dialog.ui:144
 msgid "Confirm Changes"
-msgstr ""
+msgstr "ცვლილებების დადასტურება"
 
 #: data/xsessions/gnome-flashback-compiz.desktop.in.in:3
 msgid "GNOME Flashback (Compiz)"
@@ -492,7 +601,7 @@ msgstr ""
 
 #: gnome-flashback/gf-main.c:49
 msgid "Print version and exit"
-msgstr ""
+msgstr "ვერსიის გამოტანა და გასვლა"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:295
 msgid "Slow Keys Turned On"
@@ -512,13 +621,13 @@ msgstr ""
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: system-indicators/si-bluetooth.c:85
+#: system-indicators/si-bluetooth.c:116
 msgid "Turn Off"
 msgstr "გამორთვა"
 
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
 #: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: system-indicators/si-bluetooth.c:99
+#: system-indicators/si-bluetooth.c:130
 msgid "Turn On"
 msgstr "ჩართვა"
 
@@ -583,7 +692,7 @@ msgid "What kind of device did you plug in?"
 msgstr ""
 
 #: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
-#: system-indicators/si-bluetooth.c:277 system-indicators/si-volume.c:446
+#: system-indicators/si-bluetooth.c:307 system-indicators/si-volume.c:446
 msgid "Sound Settings"
 msgstr "ხმის მორგება"
 
@@ -600,9 +709,9 @@ msgstr ""
 #: gnome-flashback/libautomount-manager/gsd-automount-manager.c:175
 #, c-format
 msgid "Unable to mount %s"
-msgstr ""
+msgstr "შეუძლებელია მონტაჟი %s"
 
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:288
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:292
 #, c-format
 msgid "Unable to open a folder for %s"
 msgstr ""
@@ -631,70 +740,70 @@ msgstr ""
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:709
 msgid "You have just inserted an Audio CD."
-msgstr ""
+msgstr "ახლახანს აუდიო CD ჩადეთ."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:711
 msgid "You have just inserted an Audio DVD."
-msgstr ""
+msgstr "შეყვანილია აუდიო DVD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:713
 msgid "You have just inserted a Video DVD."
-msgstr ""
+msgstr "შეყვანილია Video DVD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:715
 msgid "You have just inserted a Video CD."
-msgstr ""
+msgstr "შეყვანილია Video CD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:717
 msgid "You have just inserted a Super Video CD."
-msgstr ""
+msgstr "შეყვანილია Super Video CD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:719
 msgid "You have just inserted a blank CD."
-msgstr ""
+msgstr "შეყვანილია ცარიელი CD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:721
 msgid "You have just inserted a blank DVD."
-msgstr ""
+msgstr "შეყვანილია ცარიელი DVD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:723
 msgid "You have just inserted a blank Blu-Ray disc."
-msgstr ""
+msgstr "შეყვანილია ცარიელი Blu-Ray დისკი."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:725
 msgid "You have just inserted a blank HD DVD."
-msgstr ""
+msgstr "შეყვანილია ცარიელი HD DVD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:727
 msgid "You have just inserted a Photo CD."
-msgstr ""
+msgstr "შეყვანილია ფოტო CD."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:729
 msgid "You have just inserted a Picture CD."
-msgstr ""
+msgstr "შეყვანილია Picture CD ტიპის დისკი."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:731
 msgid "You have just inserted a medium with digital photos."
-msgstr ""
+msgstr "თქვენს მიერ შეყვანილი მედია შეიცავს ციფრულ ფოტოებს."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:733
 msgid "You have just inserted a digital audio player."
-msgstr ""
+msgstr "თქვენს მიერ შეყვანილია ციფრული აუდიო დამკვრელი."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:735
 msgid ""
 "You have just inserted a medium with software intended to be automatically "
 "started."
-msgstr ""
+msgstr "თქვენს მიერ შეყვანილია მედია ავტო-გაშვებადი პროგრამით."
 
 #. fallback to generic greeting
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:738
 msgid "You have just inserted a medium."
-msgstr ""
+msgstr "თქვენს მიერ შეყვანილია მედია."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:740
 msgid "Choose what application to launch."
-msgstr ""
+msgstr "გასაშვები პროგრამის ამორჩევა."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:749
 #, c-format
@@ -702,15 +811,12 @@ msgid ""
 "Select how to open \"%s\" and whether to perform this action in the future "
 "for other media of type \"%s\"."
 msgstr ""
+"ამოირჩიეთ თუ როგორ უნდა გაიხსნას \"%s\" და გნებავთ თუ არა ამ მოქმედების "
+"ჩატარება მომავალშიც \"%s\"-ის ტიპის მოწყობილობების გახსნისას."
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:776
 msgid "_Always perform this action"
-msgstr ""
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:213
-msgid "_Cancel"
-msgstr "_გაუქმება"
+msgstr "ყოველთვის _ამ ქმედების ჩატარება"
 
 #: gnome-flashback/libautomount-manager/gsd-autorun.c:786
 msgid "_OK"
@@ -781,7 +887,7 @@ msgstr "სახელი"
 
 #: gnome-flashback/libdesktop/gf-icon-view.c:1228
 msgid "Date modified"
-msgstr ""
+msgstr "ცვლილების თარიღი"
 
 #: gnome-flashback/libdesktop/gf-icon-view.c:1232
 msgid "Size"
@@ -797,7 +903,7 @@ msgstr "ეკრანის მორგება"
 
 #: gnome-flashback/libdesktop/gf-icon-view.c:1368
 msgid "Open Terminal"
-msgstr ""
+msgstr "ტერმინალის გახსნა"
 
 #: gnome-flashback/libdesktop/gf-icon-view.c:3215
 msgid "Folder names cannot contain “/”."
@@ -805,7 +911,7 @@ msgstr "საქაღალდის სახელი არ შეიძლ
 
 #: gnome-flashback/libdesktop/gf-icon-view.c:3217
 msgid "File names cannot contain “/”."
-msgstr ""
+msgstr "ფაილის სახელი არ შეიძლება \"/\"-ს შეიცავდეს."
 
 #: gnome-flashback/libdesktop/gf-icon-view.c:3224
 msgid "A folder cannot be called “.”."
@@ -837,7 +943,7 @@ msgstr "საქაღალდეები, რომლის სახელ
 
 #: gnome-flashback/libdesktop/gf-icon-view.c:3266
 msgid "Files with “.” at the beginning of their name are hidden."
-msgstr ""
+msgstr "ფაილები, რომლის სახელიც \".\"-ით იწყება, დამალულია."
 
 #: gnome-flashback/libdesktop/gf-rename-popover.c:117
 msgid "File name"
@@ -978,92 +1084,11 @@ msgstr ""
 msgid "Notifications"
 msgstr "შეტყობინებები"
 
-#: gnome-flashback/libpolkit/flashback-authenticator.c:100
-#, c-format
-msgid "_Password for %s:"
-msgstr ""
-
-#: gnome-flashback/libpolkit/flashback-authenticator.c:104
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:99
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:366
-msgid "_Password:"
-msgstr "_პაროლი:"
-
-#: gnome-flashback/libpolkit/flashback-authenticator.c:259
-msgid "Your authentication attempt was unsuccessful. Please try again."
-msgstr ""
-
-#: gnome-flashback/libpolkit/flashback-listener.c:139
-msgid "Authentication dialog was dismissed by the user"
-msgstr "ავთენტიკაციის ფანჯარა დახურულია მომხმარებლის მიერ"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:202
-msgid ""
-"An application is attempting to perform an action that requires privileges. "
-"Authentication as one of the users below is required to perform this action."
-msgstr ""
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:212
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:68
-msgid ""
-"An application is attempting to perform an action that requires privileges. "
-"Authentication is required to perform this action."
-msgstr ""
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:217
-msgid ""
-"An application is attempting to perform an action that requires privileges. "
-"Authentication as the super user is required to perform this action."
-msgstr ""
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:386
-msgid "Select user..."
-msgstr ""
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:425
-#, c-format
-msgid "%s (%s)"
-msgstr "%s (%s)"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:600
-msgid "Action:"
-msgstr "ქმედება:"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:603
-#, c-format
-msgid "Click to edit %s"
-msgstr ""
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:611
-msgid "Vendor:"
-msgstr "გამყიდველი:"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.c:614
-#, c-format
-msgid "Click to open %s"
-msgstr ""
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:8
-msgid "Authenticate"
-msgstr "ავთენტიკაცია"
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:53
-msgid "<big><b>Title</b></big>"
-msgstr ""
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:192
-msgid "<small><b>_Details</b></small>"
-msgstr ""
-
-#: gnome-flashback/libpolkit/flashback-polkit-dialog.ui:228
-msgid "_Authenticate"
-msgstr "_ავთენტიკაცია"
-
-#: gnome-flashback/libscreensaver/gf-auth.c:421
+#: gnome-flashback/libscreensaver/gf-auth.c:432
 msgid "Your account was given a time limit that has now passed."
 msgstr ""
 
-#: gnome-flashback/libscreensaver/gf-auth.c:425
+#: gnome-flashback/libscreensaver/gf-auth.c:436
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "უკაცრავად, არ იმუშავა. კიდევ სცადეთ."
 
@@ -1073,7 +1098,7 @@ msgstr ""
 
 #: gnome-flashback/libscreensaver/gf-unlock-dialog.c:251
 msgid "Time has expired."
-msgstr ""
+msgstr "დრო ამოიწურა."
 
 #: gnome-flashback/libscreensaver/gf-unlock-dialog.c:467
 msgid "Checking…"
@@ -1081,7 +1106,7 @@ msgstr "შემოწმება…"
 
 #: gnome-flashback/libscreensaver/gf-unlock-dialog.c:492
 msgid "S_witch User…"
-msgstr ""
+msgstr "_მომხმარებლის გადართვა…"
 
 #: gnome-flashback/libscreensaver/gf-unlock-dialog.c:501
 msgid "_Unlock"
@@ -1089,7 +1114,7 @@ msgstr "_განბლოკვა"
 
 #: gnome-flashback/libscreensaver/gf-unlock-dialog.c:712
 msgid "You have the Caps Lock key on."
-msgstr ""
+msgstr "Caps Lock ჩართულია."
 
 #: gnome-flashback/libscreenshot/gf-screenshot.c:279
 msgid "Screenshot taken"
@@ -1097,13 +1122,13 @@ msgstr "ეკრანის ანაბეჭდი აღებულია"
 
 #. translators:
 #. * The device has been disabled
-#: gvc/gvc/gvc-mixer-control.c:1900
+#: gvc/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "გამორთულია"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1907
+#: gvc/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1112,49 +1137,49 @@ msgstr[1] "%u გამოტანა"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1917
+#: gvc/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u შეტანა"
 msgstr[1] "%u შეტანა"
 
-#: gvc/gvc/gvc-mixer-control.c:2867
+#: gvc/gvc/gvc-mixer-control.c:2882
 msgid "System Sounds"
 msgstr "სისტემური ხმები"
 
-#: system-indicators/si-bluetooth.c:91
+#: system-indicators/si-bluetooth.c:122
 msgid "Send Files"
-msgstr ""
+msgstr "ფაილების გაგზავნა"
 
-#: system-indicators/si-bluetooth.c:228
+#: system-indicators/si-bluetooth.c:260
 msgid "Disconnect"
 msgstr "გათიშვა"
 
-#: system-indicators/si-bluetooth.c:241
+#: system-indicators/si-bluetooth.c:273
 msgid "Connect"
 msgstr "დაკავშირება"
 
-#: system-indicators/si-bluetooth.c:256
+#: system-indicators/si-bluetooth.c:288
 msgid "Keyboard Settings"
 msgstr "კლავიატურის მორგება"
 
-#: system-indicators/si-bluetooth.c:264
+#: system-indicators/si-bluetooth.c:296
 msgid "Mouse & Touchpad Settings"
-msgstr ""
+msgstr "თაგუნას და თაჩპედის მორგება"
 
-#: system-indicators/si-bluetooth.c:331
+#: system-indicators/si-bluetooth.c:344
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-ის მორგება"
 
-#: system-indicators/si-bluetooth.c:451
+#: system-indicators/si-bluetooth.c:438
 #, c-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] ""
 msgstr[1] ""
 
-#: system-indicators/si-bluetooth.c:458
+#: system-indicators/si-bluetooth.c:445
 msgid "Not Connected"
 msgstr "დაკავშირებული არაა"
 
