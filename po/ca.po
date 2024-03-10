@@ -9,9 +9,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2023-08-20 11:39+0000\n"
-"PO-Revision-Date: 2023-08-23 17:14+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/"
+"issues/\n"
+"POT-Creation-Date: 2024-03-06 21:21+0000\n"
+"PO-Revision-Date: 2024-03-10 00:17+0100\n"
 "Last-Translator: Miquel-Àngel Burgos i Fradeja <miquel.angel.burgos@gmail."
 "com>, 2020\n"
 "Language-Team: Catalan (https://www.transifex.com/softcatala/teams/62837/"
@@ -186,6 +187,14 @@ msgstr "Gestioneu les connexions de xarxa"
 #: data/autostart/gnome-flashback-polkit.desktop.in.in:4
 msgid "Polkit (GNOME Flashback)"
 msgstr "Polkit (GNOME Flashback)"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:4
+msgid "Science"
+msgstr "Ciència"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:5
+msgid "Scientific applications"
+msgstr "Aplicacions científiques"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -565,6 +574,14 @@ msgid ""
 msgstr ""
 "La durada màxima d'un enregistrament de pantalla en segons, o 0 per no tenir "
 "límit"
+
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:12
+msgid "Location of the notifications"
+msgstr "Ubicació de les notificacions"
+
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:13
+msgid "The corner of the screen where notifications will be shown."
+msgstr "El racó de la pantalla on es mostraran les notificacions."
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
@@ -1125,11 +1142,11 @@ msgstr "Neteja totes les notificacions"
 msgid "Notifications"
 msgstr "Notificacions"
 
-#: gnome-flashback/libscreensaver/gf-auth.c:421
+#: gnome-flashback/libscreensaver/gf-auth.c:432
 msgid "Your account was given a time limit that has now passed."
 msgstr "S'ha esgotat el límit de temps del vostre compte."
 
-#: gnome-flashback/libscreensaver/gf-auth.c:425
+#: gnome-flashback/libscreensaver/gf-auth.c:436
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "S'ha produït un error. Torneu-ho a provar."
 
