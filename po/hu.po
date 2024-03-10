@@ -1,16 +1,16 @@
 # Hungarian translation for gnome-flashback.
-# Copyright (C) 2014, 2015, 2016, 2018, 2019, 2020, 2022, 2023 Free Software Foundation, Inc.
+# Copyright (C) 2014, 2015, 2016, 2018, 2019, 2020, 2022, 2023, 2024 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-flashback package.
 #
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2014, 2015, 2016.
-# Balázs Úr <ur.balazs at fsf dot hu>, 2014, 2015, 2018, 2019, 2020, 2022, 2023.
+# Balázs Úr <ur.balazs at fsf dot hu>, 2014, 2015, 2018, 2019, 2020, 2022, 2023, 2024.
 # Balázs Meskó <mesko.balazs at fsf dot hu>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2023-07-10 21:56+0000\n"
-"PO-Revision-Date: 2023-07-26 01:48+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues/\n"
+"POT-Creation-Date: 2024-03-06 21:21+0000\n"
+"PO-Revision-Date: 2024-03-10 22:30+0100\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <openscope at fsf dot hu>\n"
 "Language: hu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 23.04.1\n"
+"X-Generator: Lokalize 23.08.4\n"
 
 #: backends/gf-monitor.c:135
 msgid "Built-in display"
@@ -182,9 +182,17 @@ msgid "Manage your network connections"
 msgstr "Hálózati kapcsolatok kezelése"
 
 #: data/autostart/gnome-flashback-polkit.desktop.in.in:4
-#| msgid "Network (GNOME Flashback)"
 msgid "Polkit (GNOME Flashback)"
 msgstr "Polkit (GNOME Flashback)"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:4
+msgid "Science"
+msgstr "Tudomány"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:5
+#| msgid "Notifications"
+msgid "Scientific applications"
+msgstr "Tudományos alkalmazások"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -567,6 +575,15 @@ msgstr ""
 "Az önálló képernyőfelvételek rögzítésének legnagyobb hossza másodpercben "
 "vagy 0, ha korlátlan"
 
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:12
+#| msgid "Closes the notification."
+msgid "Location of the notifications"
+msgstr "Az értesítések helye"
+
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:13
+msgid "The corner of the screen where notifications will be shown."
+msgstr "A képernyő azon sarka, ahol az értesítések meg lesznek jelenítve."
+
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
 msgstr "IBus ikon használata, ha elérhető"
@@ -744,7 +761,7 @@ msgstr "Ismeretlen hangeszköz"
 msgid "Unable to mount %s"
 msgstr "A(z) %s nem csatolható"
 
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:288
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:292
 #, c-format
 msgid "Unable to open a folder for %s"
 msgstr "Nem nyitható meg mappa ehhez: %s"
@@ -1129,11 +1146,11 @@ msgstr "Minden értesítés törlése"
 msgid "Notifications"
 msgstr "Értesítések"
 
-#: gnome-flashback/libscreensaver/gf-auth.c:421
+#: gnome-flashback/libscreensaver/gf-auth.c:432
 msgid "Your account was given a time limit that has now passed."
 msgstr "A fiókjához időkorlát volt megadva, amely most lejárt."
 
-#: gnome-flashback/libscreensaver/gf-auth.c:425
+#: gnome-flashback/libscreensaver/gf-auth.c:436
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Sajnáljuk, ez nem működött. Próbálja újra."
 
@@ -1167,13 +1184,13 @@ msgstr "Képernyőkép készítve"
 
 #. translators:
 #. * The device has been disabled
-#: gvc/gvc/gvc-mixer-control.c:1900
+#: gvc/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Tiltva"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1907
+#: gvc/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1182,14 +1199,14 @@ msgstr[1] "%u kimenet"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1917
+#: gvc/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u bemenet"
 msgstr[1] "%u bemenet"
 
-#: gvc/gvc/gvc-mixer-control.c:2867
+#: gvc/gvc/gvc-mixer-control.c:2882
 msgid "System Sounds"
 msgstr "Rendszerhangok"
 
