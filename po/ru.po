@@ -7,9 +7,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2023-07-10 21:56+0000\n"
-"PO-Revision-Date: 2023-08-07 19:50+1000\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/"
+"issues/\n"
+"POT-Creation-Date: 2024-03-06 21:21+0000\n"
+"PO-Revision-Date: 2024-03-07 21:04+1000\n"
 "Last-Translator: Ser82-png <asvmail.as@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -182,9 +183,16 @@ msgid "Manage your network connections"
 msgstr "Управление сетевыми подключениями"
 
 #: data/autostart/gnome-flashback-polkit.desktop.in.in:4
-#| msgid "Network (GNOME Flashback)"
 msgid "Polkit (GNOME Flashback)"
 msgstr "Polkit (GNOME Flashback)"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:4
+msgid "Science"
+msgstr "Наука"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:5
+msgid "Scientific applications"
+msgstr "Научные приложения"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -569,6 +577,14 @@ msgstr ""
 "Максимальная продолжительность одной видеозаписи с экрана в секундах или 0, "
 "если продолжительность не следует ограничивать"
 
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:12
+msgid "Location of the notifications"
+msgstr "Расположение уведомлений"
+
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:13
+msgid "The corner of the screen where notifications will be shown."
+msgstr "Угол экрана, где будут отображаться уведомления."
+
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
 msgstr "Использовать значок IBus, если он доступен"
@@ -749,7 +765,7 @@ msgstr "Неизвестное аудиоустройство"
 msgid "Unable to mount %s"
 msgstr "Не удалось подключить %s"
 
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:288
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:292
 #, c-format
 msgid "Unable to open a folder for %s"
 msgstr "Не удалось открыть папку для %s"
@@ -1148,11 +1164,11 @@ msgstr "Очистить все уведомления"
 msgid "Notifications"
 msgstr "Уведомления"
 
-#: gnome-flashback/libscreensaver/gf-auth.c:421
+#: gnome-flashback/libscreensaver/gf-auth.c:432
 msgid "Your account was given a time limit that has now passed."
 msgstr "Вашей учётной записи был дан лимит времени, который теперь истёк."
 
-#: gnome-flashback/libscreensaver/gf-auth.c:425
+#: gnome-flashback/libscreensaver/gf-auth.c:436
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Это не сработало. Пожалуйста, попытайтесь ещё раз."
 
@@ -1186,13 +1202,13 @@ msgstr "Снимок экрана сделан"
 
 #. translators:
 #. * The device has been disabled
-#: gvc/gvc/gvc-mixer-control.c:1900
+#: gvc/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Устройство отключено"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1907
+#: gvc/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1202,7 +1218,7 @@ msgstr[2] "%u выходов"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1917
+#: gvc/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -1210,7 +1226,7 @@ msgstr[0] "%u вход"
 msgstr[1] "%u входа"
 msgstr[2] "%u входов"
 
-#: gvc/gvc/gvc-mixer-control.c:2867
+#: gvc/gvc/gvc-mixer-control.c:2882
 msgid "System Sounds"
 msgstr "Системные звуки"
 
