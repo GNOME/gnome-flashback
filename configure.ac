@@ -12,7 +12,7 @@ dnl Define bugzilla address
 dnl **************************************************************************
 
 m4_define([gf_bugzilla_url],
-          [https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-flashback])
+          [https://gitlab.gnome.org/GNOME/gnome-flashback/-/issues/])
 
 dnl **************************************************************************
 dnl Initialize autoconf
