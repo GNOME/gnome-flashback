@@ -1,3 +1,11 @@
+Version 3.52.0
+==============
+- Fix crash in screensaver / unlock dialog. (#79)
+- Add Science menu category. (!56)
+- Allow configure notification location. (!59)
+- Avoid crash on gamma change. (!50)
+- Updated translations.
+
 Version 3.50.0
 ==============
 - Updated translations.
