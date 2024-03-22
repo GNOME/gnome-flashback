@@ -1,7 +1,5 @@
 NULL =
 
-if ENABLE_SYSTEMD_SESSION
-
 service_in_files = gnome-flashback.service.in
 service_files = $(service_in_files:.service.in=.service)
 
@@ -50,8 +48,6 @@ systemd_compiz_session_DATA = \
 CLEANFILES += \
 	$(systemd_compiz_session_DATA) \
 	$(NULL)
-endif
-
 endif
 
 EXTRA_DIST = \
