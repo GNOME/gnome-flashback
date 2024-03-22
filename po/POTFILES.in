@@ -7,7 +7,7 @@ daemons/polkit/flashback-authenticator.c
 daemons/polkit/flashback-listener.c
 daemons/polkit/flashback-polkit-dialog.c
 daemons/polkit/flashback-polkit-dialog.ui
-data/applications/gnome-flashback.desktop.in.in
+data/applications/gnome-flashback.desktop.in
 data/autostart/gnome-flashback-clipboard.desktop.in.in
 data/autostart/gnome-flashback-idle-monitor.desktop.in.in
 data/autostart/gnome-flashback-media-keys.desktop.in.in

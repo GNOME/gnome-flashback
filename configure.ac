@@ -292,22 +292,6 @@ PKG_CHECK_EXISTS([pango >= 1.44.0],
                            [Define if Pango is 1.44.0 or newer]))
 
 dnl **************************************************************************
-dnl Systemd session
-dnl **************************************************************************
-
-AC_ARG_ENABLE([systemd-session],
-              [AS_HELP_STRING([--enable-systemd-session], [enable systemd session support])],
-              [enable_systemd_session="$enableval"], [enable_systemd_session="yes"])
-
-HIDDEN_UNDER_SYSTEMD="false"
-AS_IF([test "x$enable_systemd_session" = "xyes"], [
-  HIDDEN_UNDER_SYSTEMD="true"
-])
-
-AM_CONDITIONAL([ENABLE_SYSTEMD_SESSION], [test "x$enable_systemd_session" = "xyes"])
-AC_SUBST([HIDDEN_UNDER_SYSTEMD])
-
-dnl **************************************************************************
 dnl Keybindings
 dnl **************************************************************************
 
