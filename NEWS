@@ -1,3 +1,9 @@
+Version 3.52.1
+==============
+- Add shadow for desktop icon text. (#89)
+- Remove --enable-systemd-session configure option. (#94)
+- Updated translations.
+
 Version 3.52.0
 ==============
 - Fix crash in screensaver / unlock dialog. (#79)
