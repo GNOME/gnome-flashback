@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues/"
 "\n"
-"POT-Creation-Date: 2024-03-06 21:21+0000\n"
-"PO-Revision-Date: 2024-03-07 09:56+0200\n"
+"POT-Creation-Date: 2024-03-23 10:19+0000\n"
+"PO-Revision-Date: 2024-03-23 22:37+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -156,13 +156,26 @@ msgstr "_Скасувати"
 msgid "_Authenticate"
 msgstr "_Автентифікуватись"
 
-#: data/applications/gnome-flashback.desktop.in.in:4
+#: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME Flashback"
 
 #: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Буфер обміну даними (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:3
+#| msgid "Idle Monitor (GNOME Flashback)"
+msgid "Geoclue Demo agent (GNOME Flashback)"
+msgstr "Демонстраційний агент геоприв'язки (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:4
+msgid "Demo geoclue agent"
+msgstr "Демонстраційний агент геоприв'язки"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:5
+msgid "geolocation;"
+msgstr "геопозиціювання;geolocation;"
 
 #: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
 msgid "Idle Monitor (GNOME Flashback)"
@@ -189,7 +202,6 @@ msgid "Science"
 msgstr "Наука"
 
 #: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:5
-#| msgid "Notifications"
 msgid "Scientific applications"
 msgstr "Наукові програми"
 
@@ -574,7 +586,6 @@ msgstr ""
 "не слід обмежувати"
 
 #: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:12
-#| msgid "Closes the notification."
 msgid "Location of the notifications"
 msgstr "Розташування сповіщень"
 
