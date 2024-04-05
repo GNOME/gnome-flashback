@@ -190,10 +190,10 @@ timeout_bubble (gpointer user_data)
 
   bubble = GF_BUBBLE (user_data);
   priv = gf_bubble_get_instance_private (bubble);
+  priv->timeout_id = 0;
 
   gtk_widget_destroy (GTK_WIDGET (bubble));
 
-  priv->timeout_id = 0;
   return G_SOURCE_REMOVE;
 }
 
