@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues/\n"
-"POT-Creation-Date: 2024-03-06 21:21+0000\n"
-"PO-Revision-Date: 2024-03-10 22:30+0100\n"
+"POT-Creation-Date: 2024-03-23 10:19+0000\n"
+"PO-Revision-Date: 2024-06-28 15:43+0200\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <openscope at fsf dot hu>\n"
 "Language: hu\n"
@@ -157,13 +157,26 @@ msgstr "_Mégse"
 msgid "_Authenticate"
 msgstr "_Hitelesítés"
 
-#: data/applications/gnome-flashback.desktop.in.in:4
+#: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME Flashback"
 
 #: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Vágólap (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:3
+#| msgid "Idle Monitor (GNOME Flashback)"
+msgid "Geoclue Demo agent (GNOME Flashback)"
+msgstr "Geoclue-bemutatóügynök (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:4
+msgid "Demo geoclue agent"
+msgstr "Bemutató geoclue-ügynök"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:5
+msgid "geolocation;"
+msgstr "helymeghatározás;"
 
 #: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
 msgid "Idle Monitor (GNOME Flashback)"
@@ -190,7 +203,6 @@ msgid "Science"
 msgstr "Tudomány"
 
 #: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:5
-#| msgid "Notifications"
 msgid "Scientific applications"
 msgstr "Tudományos alkalmazások"
 
@@ -576,7 +588,6 @@ msgstr ""
 "vagy 0, ha korlátlan"
 
 #: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:12
-#| msgid "Closes the notification."
 msgid "Location of the notifications"
 msgstr "Az értesítések helye"
 
