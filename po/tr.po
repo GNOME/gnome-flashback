@@ -5,17 +5,17 @@
 # Simge Sezgin <simgesezgin88@gmail.com>, 2015.
 # Necdet Yücel <necdetyucel@gmail.com>, 2015.
 # Serdar Sağlam <teknomobil@yandex.com>, 2019.
-# Sabri Ünal <libreajans@gmail.com>, 2019, 2020, 2022, 2023.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2019, 2020, 2022, 2023.
+# Sabri Ünal <yakushabb@gmail.com>, 2019, 2020, 2022, 2023.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2019, 2020, 2022, 2023, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/"
 "issues/\n"
-"POT-Creation-Date: 2024-03-06 21:21+0000\n"
-"PO-Revision-Date: 2024-03-09 10:03+0300\n"
-"Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
+"POT-Creation-Date: 2024-03-23 10:19+0000\n"
+"PO-Revision-Date: 2024-09-02 08:00+0300\n"
+"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -162,13 +162,25 @@ msgstr "İ_ptal"
 msgid "_Authenticate"
 msgstr "_Kimlik Doğrula"
 
-#: data/applications/gnome-flashback.desktop.in.in:4
+#: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME Flashback"
 
 #: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Pano (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:3
+msgid "Geoclue Demo agent (GNOME Flashback)"
+msgstr "Geoclue Örnek birimi (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:4
+msgid "Demo geoclue agent"
+msgstr "Örnek geoclue birimi"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:5
+msgid "geolocation;"
+msgstr "geolocation;"
 
 #: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
 msgid "Idle Monitor (GNOME Flashback)"
@@ -456,8 +468,8 @@ msgid ""
 "It controls how icons are placed on desktop."
 msgstr ""
 "Şunlardan biri olabilir: \"auto-arrange-icons\" (simgeleri kendiliğinden "
-"düzenle), \"align-icons-to-grid\" (simgeleri ızgaraya hizala) veya \"free"
-"\" (serbest). Simgelerin masaüstünde nasıl yerleşeceğini denetler."
+"düzenle), \"align-icons-to-grid\" (simgeleri ızgaraya hizala) veya "
+"\"free\" (serbest). Simgelerin masaüstünde nasıl yerleşeceğini denetler."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
 #: gnome-flashback/libdesktop/gf-icon-view.c:1338
