@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-flashback\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/"
 "issues/\n"
-"POT-Creation-Date: 2024-03-06 21:21+0000\n"
-"PO-Revision-Date: 2024-03-08 14:30+0100\n"
+"POT-Creation-Date: 2024-09-01 21:37+0000\n"
+"PO-Revision-Date: 2024-09-10 16:10+0200\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: backends/gf-monitor.c:135
 msgid "Built-in display"
@@ -154,13 +154,25 @@ msgstr "_Zrušit"
 msgid "_Authenticate"
 msgstr "_Ověřit"
 
-#: data/applications/gnome-flashback.desktop.in.in:4
+#: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
 msgstr "GNOME historické"
 
 #: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Schránka (GNOME historické)"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:3
+msgid "Geoclue Demo agent (GNOME Flashback)"
+msgstr "Ukázkový agent geoclue (GNOME historické)"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:4
+msgid "Demo geoclue agent"
+msgstr "Ukázkový agent geoclue"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:5
+msgid "geolocation;"
+msgstr "geolokace;"
 
 #: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
 msgid "Idle Monitor (GNOME Flashback)"
@@ -461,9 +473,9 @@ msgid ""
 "Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons "
 "are sorted in \"auto-arrange-icons\" placement."
 msgstr ""
-"Může být jedno z „name“ (název), „data-modified“ (datum změny) nebo "
-"„size“ (velikost). Řídí, jak jsou ikony seřazení, když jsou rozmístěné "
-"stylem „auto-arrange-icons“ (automaticky uspořádat)."
+"Může být jedno z „name“ (název), „data-modified“ (datum změny) nebo „size“ "
+"(velikost). Řídí, jak jsou ikony seřazení, když jsou rozmístěné stylem „auto-"
+"arrange-icons“ (automaticky uspořádat)."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
 msgid "Extra text width"
