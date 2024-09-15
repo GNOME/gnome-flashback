@@ -1,15 +1,16 @@
 # Polish translation for gnome-flashback.
-# Copyright © 2007-2023 the gnome-flashback authors.
+# Copyright © 2007-2024 the gnome-flashback authors.
 # This file is distributed under the same license as the gnome-flashback package.
-# Piotr Drąg <piotrdrag@gmail.com>, 2007-2023.
-# Aviary.pl <community-poland@mozilla.org>, 2010-2023.
+# Piotr Drąg <piotrdrag@gmail.com>, 2007-2024.
+# Aviary.pl <community-poland@mozilla.org>, 2010-2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/issues\n"
-"POT-Creation-Date: 2023-07-10 21:56+0000\n"
-"PO-Revision-Date: 2023-07-16 13:42+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/"
+"issues/\n"
+"POT-Creation-Date: 2024-09-01 21:37+0000\n"
+"PO-Revision-Date: 2024-09-15 15:17+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -154,13 +155,25 @@ msgstr "_Anuluj"
 msgid "_Authenticate"
 msgstr "_Uwierzytelnij"
 
-#: data/applications/gnome-flashback.desktop.in.in:4
+#: data/applications/gnome-flashback.desktop.in:4
 msgid "GNOME Flashback"
 msgstr "Tradycyjne środowisko GNOME"
 
 #: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
 msgid "Clipboard (GNOME Flashback)"
 msgstr "Schowek (Tradycyjne środowisko GNOME)"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:3
+msgid "Geoclue Demo agent (GNOME Flashback)"
+msgstr "Demonstracyjny agent GeoClue (Tradycyjne środowisko GNOME)"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:4
+msgid "Demo geoclue agent"
+msgstr "Demonstracyjny agent GeoClue"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:5
+msgid "geolocation;"
+msgstr "geolokalizacja;"
 
 #: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
 msgid "Idle Monitor (GNOME Flashback)"
@@ -181,6 +194,14 @@ msgstr "Zarządzanie połączeniami sieciowymi"
 #: data/autostart/gnome-flashback-polkit.desktop.in.in:4
 msgid "Polkit (GNOME Flashback)"
 msgstr "Uwierzytelnianie (Tradycyjne środowisko GNOME)"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:4
+msgid "Science"
+msgstr "Nauka"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:5
+msgid "Scientific applications"
+msgstr "Programy naukowe"
 
 #: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Preferences"
@@ -460,8 +481,8 @@ msgid ""
 "Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons "
 "are sorted in \"auto-arrange-icons\" placement."
 msgstr ""
-"Może wynosić „name” (nazwa), „date-modified” (data modyfikacji) lub "
-"„size” (rozmiar). Steruje sposobem porządkowania ikon w rozmieszczeniu „auto-"
+"Może wynosić „name” (nazwa), „date-modified” (data modyfikacji) lub „size” "
+"(rozmiar). Steruje sposobem porządkowania ikon w rozmieszczeniu „auto-"
 "arrange-icons”."
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
@@ -567,6 +588,14 @@ msgid ""
 msgstr ""
 "Maksymalna długość jednego nagrania ekranu w sekundach, 0 wyłącza "
 "ograniczenie"
+
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:12
+msgid "Location of the notifications"
+msgstr "Położenie powiadomień"
+
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:13
+msgid "The corner of the screen where notifications will be shown."
+msgstr "Róg ekranu, w którym będą wyświetlane powiadomienia."
 
 #: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
 msgid "Use IBus icon if available"
@@ -750,7 +779,7 @@ msgstr "Nieznane urządzenie dźwiękowe"
 msgid "Unable to mount %s"
 msgstr "Nie można zamontować %s"
 
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:288
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:292
 #, c-format
 msgid "Unable to open a folder for %s"
 msgstr "Nie można otworzyć katalogu dla %s"
@@ -1139,11 +1168,11 @@ msgstr "Wyczyść wszystkie powiadomienia"
 msgid "Notifications"
 msgstr "Powiadomienia"
 
-#: gnome-flashback/libscreensaver/gf-auth.c:421
+#: gnome-flashback/libscreensaver/gf-auth.c:432
 msgid "Your account was given a time limit that has now passed."
 msgstr "Konto ma nadane ograniczenie czasowe, które właśnie minęło."
 
-#: gnome-flashback/libscreensaver/gf-auth.c:425
+#: gnome-flashback/libscreensaver/gf-auth.c:436
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "To nie zadziałało. Proszę spróbować ponownie."
 
@@ -1177,13 +1206,13 @@ msgstr "Wykonano zrzut ekranu"
 
 #. translators:
 #. * The device has been disabled
-#: gvc/gvc/gvc-mixer-control.c:1900
+#: gvc/gvc/gvc-mixer-control.c:1908
 msgid "Disabled"
 msgstr "Wyłączone"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1907
+#: gvc/gvc/gvc-mixer-control.c:1915
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1193,7 +1222,7 @@ msgstr[2] "%u wyjść"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1917
+#: gvc/gvc/gvc-mixer-control.c:1925
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -1201,7 +1230,7 @@ msgstr[0] "%u wejście"
 msgstr[1] "%u wejścia"
 msgstr[2] "%u wejść"
 
-#: gvc/gvc/gvc-mixer-control.c:2867
+#: gvc/gvc/gvc-mixer-control.c:2882
 msgid "System Sounds"
 msgstr "Dźwięki systemu"
 
