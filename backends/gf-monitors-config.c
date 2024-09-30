@@ -121,8 +121,9 @@ gf_monitors_config_is_monitor_enabled (GfMonitorsConfig *config,
 }
 
 static GfMonitorsConfigKey *
-gf_monitors_config_key_new (GList *logical_monitor_configs,
-                            GList *disabled_monitor_specs)
+gf_monitors_config_key_new (GList                      *logical_monitor_configs,
+                            GList                      *disabled_monitor_specs,
+                            GfLogicalMonitorLayoutMode  layout_mode)
 {
   GfMonitorsConfigKey *config_key;
   GList *monitor_specs;
@@ -156,6 +157,7 @@ gf_monitors_config_key_new (GList *logical_monitor_configs,
 
   config_key = g_new0 (GfMonitorsConfigKey, 1);
   config_key->monitor_specs = monitor_specs;
+  config_key->layout_mode = layout_mode;
 
   return config_key;
 }
@@ -204,9 +206,10 @@ gf_monitors_config_new_full (GList                      *logical_monitor_configs
   config = g_object_new (GF_TYPE_MONITORS_CONFIG, NULL);
   config->logical_monitor_configs = logical_monitor_configs;
   config->disabled_monitor_specs = disabled_monitor_specs;
-  config->key = gf_monitors_config_key_new (logical_monitor_configs,
-                                            disabled_monitor_specs);
   config->layout_mode = layout_mode;
+  config->key = gf_monitors_config_key_new (logical_monitor_configs,
+                                            disabled_monitor_specs,
+                                            layout_mode);
   config->flags = flags;
   config->switch_config = GF_MONITOR_SWITCH_CONFIG_UNKNOWN;
 
@@ -278,7 +281,7 @@ gf_monitors_config_key_hash (gconstpointer data)
   GList *l;
 
   config_key = data;
-  hash = 0;
+  hash = config_key->layout_mode;
 
   for (l = config_key->monitor_specs; l; l = l->next)
     {
@@ -303,6 +306,9 @@ gf_monitors_config_key_equal (gconstpointer data_a,
 
   config_key_a = data_a;
   config_key_b = data_b;
+
+  if (config_key_a->layout_mode != config_key_b->layout_mode)
+    return FALSE;
 
   for (l_a = config_key_a->monitor_specs, l_b = config_key_b->monitor_specs;
        l_a && l_b;

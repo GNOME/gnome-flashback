@@ -1283,6 +1283,7 @@ gf_create_monitors_config_key_for_current_state (GfMonitorManager *monitor_manag
 
   config_key = g_new0 (GfMonitorsConfigKey, 1);
   config_key->monitor_specs = monitor_specs;
+  config_key->layout_mode = gf_monitor_manager_get_default_layout_mode (monitor_manager);
 
   return config_key;
 }

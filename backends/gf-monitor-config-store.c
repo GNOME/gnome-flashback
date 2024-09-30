@@ -129,6 +129,7 @@ typedef enum
   STATE_UNKNOWN,
   STATE_MONITORS,
   STATE_CONFIGURATION,
+  STATE_LAYOUT_MODE,
   STATE_LOGICAL_MONITOR,
   STATE_LOGICAL_MONITOR_X,
   STATE_LOGICAL_MONITOR_Y,
@@ -175,6 +176,8 @@ typedef struct
 
   ParserState             monitor_spec_parent_state;
 
+  gboolean                is_current_layout_mode_valid;
+  GfLogicalMonitorLayoutMode current_layout_mode;
   GList                  *current_logical_monitor_configs;
   GfMonitorSpec          *current_monitor_spec;
   gboolean                current_transform_flipped;
@@ -315,6 +318,7 @@ handle_start_element (GMarkupParseContext  *context,
           if (g_str_equal (element_name, "configuration"))
             {
               parser->state = STATE_CONFIGURATION;
+              parser->is_current_layout_mode_valid = FALSE;
             }
           else if (g_str_equal (element_name, "policy"))
             {
@@ -356,6 +360,10 @@ handle_start_element (GMarkupParseContext  *context,
 
               parser->state = STATE_LOGICAL_MONITOR;
             }
+          else if (g_str_equal (element_name, "layoutmode"))
+            {
+              parser->state = STATE_LAYOUT_MODE;
+            }
           else if (g_str_equal (element_name, "disabled"))
             {
               parser->state = STATE_DISABLED;
@@ -368,6 +376,13 @@ handle_start_element (GMarkupParseContext  *context,
                                      STATE_CONFIGURATION);
             }
 
+          return;
+        }
+
+      case STATE_LAYOUT_MODE:
+        {
+          g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+                       "Unexpected element '%s'", element_name);
           return;
         }
 
@@ -750,6 +765,7 @@ finish_monitor_spec (ConfigParser *parser)
       case STATE_UNKNOWN:
       case STATE_MONITORS:
       case STATE_CONFIGURATION:
+      case STATE_LAYOUT_MODE:
       case STATE_LOGICAL_MONITOR:
       case STATE_LOGICAL_MONITOR_X:
       case STATE_LOGICAL_MONITOR_Y:
@@ -926,6 +942,12 @@ handle_end_element (GMarkupParseContext  *context,
           return;
         }
 
+      case STATE_LAYOUT_MODE:
+        {
+          parser->state = STATE_CONFIGURATION;
+          return;
+        }
+
       case STATE_DISABLED:
         {
           g_assert (g_str_equal (element_name, "disabled"));
@@ -944,7 +966,10 @@ handle_end_element (GMarkupParseContext  *context,
 
           g_assert (g_str_equal (element_name, "configuration"));
 
-          layout_mode = gf_monitor_manager_get_default_layout_mode (store->monitor_manager);
+          layout_mode = parser->current_layout_mode;
+
+          if (!parser->is_current_layout_mode_valid)
+            layout_mode = gf_monitor_manager_get_default_layout_mode (store->monitor_manager);
 
           for (l = parser->current_logical_monitor_configs; l; l = l->next)
             {
@@ -1203,6 +1228,28 @@ handle_text (GMarkupParseContext  *context,
           if (!is_all_whitespace (text, text_len))
             g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
                          "Unexpected content at this point");
+          return;
+        }
+
+
+      case STATE_LAYOUT_MODE:
+        {
+          if (text_equals (text, text_len, "logical"))
+            {
+              parser->current_layout_mode = GF_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL;
+              parser->is_current_layout_mode_valid = TRUE;
+            }
+          else if (text_equals (text, text_len, "physical"))
+            {
+              parser->current_layout_mode = GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL;
+              parser->is_current_layout_mode_valid = TRUE;
+            }
+          else
+            {
+              g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                           "Invalid layout mode %.*s", (int)text_len, text);
+            }
+
           return;
         }
 
@@ -1673,6 +1720,20 @@ generate_config_xml (GfMonitorConfigStore *config_store)
         continue;
 
       g_string_append (buffer, "  <configuration>\n");
+
+      switch (config->layout_mode)
+        {
+          case GF_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
+            g_string_append (buffer, "    <layoutmode>logical</layoutmode>\n");
+            break;
+
+          case GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
+            g_string_append (buffer, "    <layoutmode>physical</layoutmode>\n");
+            break;
+
+          default:
+            break;
+        }
 
       for (l = config->logical_monitor_configs; l; l = l->next)
         {

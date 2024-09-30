@@ -29,6 +29,7 @@ G_BEGIN_DECLS
 typedef struct
 {
   GList *monitor_specs;
+  GfLogicalMonitorLayoutMode layout_mode;
 } GfMonitorsConfigKey;
 
 typedef enum
