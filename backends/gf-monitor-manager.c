@@ -135,6 +135,30 @@ calculate_viewport_matrix (GfMonitorManager *manager,
   return TRUE;
 }
 
+static int
+normalize_backlight (GfOutput *output,
+                     int       value)
+{
+  const GfOutputInfo *output_info;
+
+  output_info = gf_output_get_info (output);
+
+  return round ((double) (value - output_info->backlight_min) /
+                (output_info->backlight_max - output_info->backlight_min) * 100.0);
+}
+
+static int
+denormalize_backlight (GfOutput *output,
+                       int       normalized_value)
+{
+  const GfOutputInfo *output_info;
+
+  output_info = gf_output_get_info (output);
+
+  return (int) round ((double) normalized_value / 100.0 *
+                      (output_info->backlight_max + output_info->backlight_min));
+}
+
 static void
 power_save_mode_changed (GfMonitorManager *manager,
                          GParamSpec       *pspec,
@@ -1452,6 +1476,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
       GfCrtc *crtc;
       int crtc_index;
       int backlight;
+      int normalized_backlight;
       int min_backlight_step;
       gboolean is_primary;
       gboolean is_presentation;
@@ -1497,6 +1522,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
         }
 
       backlight = gf_output_get_backlight (output);
+      normalized_backlight = normalize_backlight (output, backlight);
       min_backlight_step =
         output_info->backlight_max - output_info->backlight_min
         ? 100 / (output_info->backlight_max - output_info->backlight_min)
@@ -1522,7 +1548,7 @@ gf_monitor_manager_handle_get_resources (GfDBusDisplayConfig   *skeleton,
       g_variant_builder_add (&properties, "{sv}", "display-name",
                              g_variant_new_string (output_info->name));
       g_variant_builder_add (&properties, "{sv}", "backlight",
-                             g_variant_new_int32 (backlight));
+                             g_variant_new_int32 (normalized_backlight));
       g_variant_builder_add (&properties, "{sv}", "min-backlight-step",
                              g_variant_new_int32 (min_backlight_step));
       g_variant_builder_add (&properties, "{sv}", "primary",
@@ -1622,16 +1648,14 @@ gf_monitor_manager_handle_change_backlight (GfDBusDisplayConfig   *skeleton,
                                             GDBusMethodInvocation *invocation,
                                             guint                  serial,
                                             guint                  output_index,
-                                            gint                   value,
+                                            int                    normalized_value,
                                             GfMonitorManager      *manager)
 {
-  GfMonitorManagerClass *manager_class;
   GList *combined_outputs;
   GfOutput *output;
   const GfOutputInfo *output_info;
-  int new_backlight;
-
-  manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
+  int value;
+  int renormalized_value;
 
   if (serial != manager->serial)
     {
@@ -1656,7 +1680,7 @@ gf_monitor_manager_handle_change_backlight (GfDBusDisplayConfig   *skeleton,
   output = g_list_nth_data (combined_outputs, output_index);
   g_list_free (combined_outputs);
 
-  if (value < 0 || value > 100)
+  if (normalized_value < 0 || normalized_value > 100)
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
@@ -1676,12 +1700,13 @@ gf_monitor_manager_handle_change_backlight (GfDBusDisplayConfig   *skeleton,
       return TRUE;
     }
 
-  manager_class->change_backlight (manager, output, value);
+  value = denormalize_backlight (output, normalized_value);
+  gf_output_set_backlight (output, value);
+  renormalized_value = normalize_backlight (output, value);
 
-  new_backlight = gf_output_get_backlight (output);
   gf_dbus_display_config_complete_change_backlight (skeleton,
                                                     invocation,
-                                                    new_backlight);
+                                                    renormalized_value);
 
   return TRUE;
 }

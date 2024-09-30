@@ -68,6 +68,15 @@ enum
 
 static GParamSpec *output_properties[LAST_PROP] = { NULL };
 
+enum
+{
+  BACKLIGHT_CHANGED,
+
+  LAST_SIGNAL
+};
+
+static unsigned int output_signals[LAST_SIGNAL] = { 0 };
+
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GfOutput, gf_output, G_TYPE_OBJECT)
 
 static void
@@ -205,6 +214,17 @@ gf_output_class_init (GfOutputClass *output_class)
 
   g_object_class_install_properties (object_class, LAST_PROP,
                                      output_properties);
+
+  output_signals[BACKLIGHT_CHANGED] =
+    g_signal_new ("backlight-changed",
+                  G_TYPE_FROM_CLASS (output_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL,
+                  NULL,
+                  NULL,
+                  G_TYPE_NONE,
+                  0);
 }
 
 static void
@@ -469,7 +489,12 @@ gf_output_set_backlight (GfOutput *self,
 
   priv = gf_output_get_instance_private (self);
 
+  g_return_if_fail (backlight >= priv->info->backlight_min);
+  g_return_if_fail (backlight <= priv->info->backlight_max);
+
   priv->backlight = backlight;
+
+  g_signal_emit (self, output_signals[BACKLIGHT_CHANGED], 0);
 }
 
 int

@@ -822,14 +822,6 @@ gf_monitor_manager_xrandr_set_power_save_mode (GfMonitorManager *manager,
 }
 
 static void
-gf_monitor_manager_xrandr_change_backlight (GfMonitorManager *manager,
-                                            GfOutput         *output,
-                                            gint              value)
-{
-  gf_output_xrandr_change_backlight (GF_OUTPUT_XRANDR (output), value);
-}
-
-static void
 gf_monitor_manager_xrandr_get_crtc_gamma (GfMonitorManager  *manager,
                                           GfCrtc            *crtc,
                                           gsize             *size,
@@ -1051,7 +1043,6 @@ gf_monitor_manager_xrandr_class_init (GfMonitorManagerXrandrClass *xrandr_class)
   manager_class->ensure_initial_config = gf_monitor_manager_xrandr_ensure_initial_config;
   manager_class->apply_monitors_config = gf_monitor_manager_xrandr_apply_monitors_config;
   manager_class->set_power_save_mode = gf_monitor_manager_xrandr_set_power_save_mode;
-  manager_class->change_backlight = gf_monitor_manager_xrandr_change_backlight;
   manager_class->get_crtc_gamma = gf_monitor_manager_xrandr_get_crtc_gamma;
   manager_class->set_crtc_gamma = gf_monitor_manager_xrandr_set_crtc_gamma;
   manager_class->tiled_monitor_added = gf_monitor_manager_xrandr_tiled_monitor_added;

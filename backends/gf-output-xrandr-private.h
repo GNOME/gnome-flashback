@@ -40,9 +40,6 @@ GBytes        *gf_output_xrandr_read_edid        (GfOutputXrandr *self);
 
 void           gf_output_xrandr_apply_mode       (GfOutputXrandr *self);
 
-void           gf_output_xrandr_change_backlight (GfOutputXrandr *self,
-                                                  int             value);
-
 void           gf_output_xrandr_set_ctm          (GfOutputXrandr    *self,
                                                   const GfOutputCtm *ctm);
 

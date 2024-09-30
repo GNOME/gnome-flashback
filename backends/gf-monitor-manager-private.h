@@ -94,10 +94,6 @@ typedef struct
   void                         (* set_power_save_mode)          (GfMonitorManager            *manager,
                                                                  GfPowerSave                  mode);
 
-  void                         (* change_backlight)             (GfMonitorManager            *manager,
-                                                                 GfOutput                    *output,
-                                                                 gint                         value);
-
   void                         (* get_crtc_gamma)               (GfMonitorManager            *manager,
                                                                  GfCrtc                      *crtc,
                                                                  gsize                       *size,

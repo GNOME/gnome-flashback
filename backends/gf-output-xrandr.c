@@ -81,6 +81,24 @@ xdisplay_from_output (GfOutput *output)
 }
 
 static void
+backlight_changed_cb (GfOutput *output)
+{
+  Display *xdisplay;
+  Atom atom;
+  int value;
+
+  xdisplay = xdisplay_from_output (output);
+  atom = XInternAtom (xdisplay, "Backlight", False);
+  value = gf_output_get_backlight (output);
+
+  xcb_randr_change_output_property (XGetXCBConnection (xdisplay),
+                                    (XID) gf_output_get_id (output),
+                                    atom, XCB_ATOM_INTEGER, 32,
+                                    XCB_PROP_MODE_REPLACE,
+                                    1, &value);
+}
+
+static void
 output_set_presentation_xrandr (GfOutput *output,
                                 gboolean  presentation)
 {
@@ -860,18 +878,6 @@ output_get_supports_color_transform_xrandr (Display  *xdisplay,
           nitems == 18);
 }
 
-static int
-normalize_backlight (GfOutput *output,
-                     gint      hw_value)
-{
-  const GfOutputInfo *output_info;
-
-  output_info = gf_output_get_info (output);
-
-  return round ((double) (hw_value - output_info->backlight_min) /
-                (output_info->backlight_max - output_info->backlight_min) * 100.0);
-}
-
 static gint
 output_get_backlight_xrandr (GfOutput *output)
 {
@@ -900,10 +906,7 @@ output_get_backlight_xrandr (GfOutput *output)
   value = ((gint*) buffer)[0];
   XFree (buffer);
 
-  if (value > 0)
-    return normalize_backlight (output, value);
-  else
-    return -1;
+  return value;
 }
 
 static void
@@ -1067,7 +1070,14 @@ gf_output_xrandr_new (GfGpuXrandr   *gpu_xrandr,
     }
 
   if (!(output_info->backlight_min == 0 && output_info->backlight_max == 0))
-    gf_output_set_backlight (output, output_get_backlight_xrandr (output));
+    {
+      gf_output_set_backlight (output, output_get_backlight_xrandr (output));
+
+      g_signal_connect (output,
+                        "backlight-changed",
+                        G_CALLBACK (backlight_changed_cb),
+                        NULL);
+    }
 
   if (output_info->n_modes == 0 || output_info->n_possible_crtcs == 0)
     {
@@ -1127,33 +1137,6 @@ gf_output_xrandr_apply_mode (GfOutputXrandr *self)
     {
       output_set_max_bpc_xrandr (output, max_bpc);
     }
-}
-
-void
-gf_output_xrandr_change_backlight (GfOutputXrandr *self,
-                                   int             value)
-{
-  GfOutput *output;
-  const GfOutputInfo *output_info;
-  Display *xdisplay;
-  gint hw_value;
-  Atom atom;
-
-  output = GF_OUTPUT (self);
-
-  output_info = gf_output_get_info (output);
-  xdisplay = xdisplay_from_output (output);
-  hw_value = round ((double) value / 100.0 * output_info->backlight_max + output_info->backlight_min);
-  atom = XInternAtom (xdisplay, "Backlight", False);
-
-  xcb_randr_change_output_property (XGetXCBConnection (xdisplay),
-                                    (XID) gf_output_get_id (output),
-                                    atom, XCB_ATOM_INTEGER, 32,
-                                    XCB_PROP_MODE_REPLACE,
-                                    1, &hw_value);
-
-  /* We're not selecting for property notifies, so update the value immediately */
-  gf_output_set_backlight (output, normalize_backlight (output, hw_value));
 }
 
 void
