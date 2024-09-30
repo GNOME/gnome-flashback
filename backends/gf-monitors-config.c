@@ -359,6 +359,12 @@ gf_verify_monitors_config (GfMonitorsConfig  *config,
     {
       GfLogicalMonitorConfig *logical_monitor_config = l->data;
 
+      if (!gf_verify_logical_monitor_config (logical_monitor_config,
+                                             config->layout_mode,
+                                             monitor_manager,
+                                             error))
+        return FALSE;
+
       if (global_scale_required)
         {
           GfLogicalMonitorConfig *prev_logical_monitor_config;
