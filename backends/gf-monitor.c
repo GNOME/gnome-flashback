@@ -1333,3 +1333,69 @@ gf_monitor_set_logical_monitor (GfMonitor        *monitor,
 
   priv->logical_monitor = logical_monitor;
 }
+
+gboolean
+gf_monitor_get_backlight_info (GfMonitor *self,
+                               int       *backlight_min,
+                               int       *backlight_max)
+{
+  GfOutput *main_output;
+  int value;
+
+  main_output = gf_monitor_get_main_output (self);
+  value = gf_output_get_backlight (main_output);
+
+  if (value >= 0)
+    {
+      const GfOutputInfo *output_info;
+
+      output_info = gf_output_get_info (main_output);
+
+      if (backlight_min)
+        *backlight_min = output_info->backlight_min;
+
+      if (backlight_max)
+        *backlight_max = output_info->backlight_max;
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+void
+gf_monitor_set_backlight (GfMonitor *self,
+                          int        value)
+{
+  GfMonitorPrivate *priv;
+  GList *l;
+
+  priv = gf_monitor_get_instance_private (self);
+
+  for (l = priv->outputs; l; l = l->next)
+    {
+      GfOutput *output;
+
+      output = l->data;
+
+      gf_output_set_backlight (output, value);
+    }
+}
+
+gboolean
+gf_monitor_get_backlight (GfMonitor *self,
+                          int       *value)
+{
+  if (gf_monitor_get_backlight_info (self, NULL, NULL))
+    {
+      GfOutput *main_output;
+
+      main_output = gf_monitor_get_main_output (self);
+
+      *value = gf_output_get_backlight (main_output);
+
+      return TRUE;
+    }
+
+  return FALSE;
+}

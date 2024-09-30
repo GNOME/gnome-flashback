@@ -252,6 +252,16 @@ gboolean            gf_monitor_has_aspect_as_size         (GfMonitor            
 void                gf_monitor_set_logical_monitor        (GfMonitor                  *monitor,
                                                            GfLogicalMonitor           *logical_monitor);
 
+gboolean            gf_monitor_get_backlight_info         (GfMonitor                  *self,
+                                                           int                        *backlight_min,
+                                                           int                        *backlight_max);
+
+void                gf_monitor_set_backlight              (GfMonitor                  *self,
+                                                           int                         value);
+
+gboolean            gf_monitor_get_backlight              (GfMonitor                  *self,
+                                                           int                        *value);
+
 G_END_DECLS
 
 #endif
