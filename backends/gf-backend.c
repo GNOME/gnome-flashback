@@ -237,6 +237,8 @@ gf_backend_constructed (GObject *object)
   self_class = GF_BACKEND_GET_CLASS (self);
   priv = gf_backend_get_instance_private (self);
 
+  G_OBJECT_CLASS (gf_backend_parent_class)->constructed (object);
+
   if (self_class->is_lid_closed != gf_backend_real_is_lid_closed)
     return;
 
