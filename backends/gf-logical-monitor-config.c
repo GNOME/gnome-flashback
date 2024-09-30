@@ -69,8 +69,14 @@ gf_verify_logical_monitor_config (GfLogicalMonitorConfig      *config,
                                   GError                     **error)
 {
   GList *l;
-  gint expected_mode_width = 0;
-  gint expected_mode_height = 0;
+  int layout_width;
+  int layout_height;
+  GfMonitorConfig *first_monitor_config;
+  int mode_width;
+  int mode_height;
+  int expected_mode_width;
+  int expected_mode_height;
+  float scale;
 
   if (config->layout.x < 0 || config->layout.y < 0)
     {
@@ -89,41 +95,87 @@ gf_verify_logical_monitor_config (GfLogicalMonitorConfig      *config,
       return FALSE;
     }
 
+  expected_mode_width = 0;
+  expected_mode_height = 0;
+  scale = config->scale;
+
+  first_monitor_config = config->monitor_configs->data;
+  mode_width = first_monitor_config->mode_spec->width;
+  mode_height = first_monitor_config->mode_spec->height;
+
+  for (l = config->monitor_configs; l; l = l->next)
+    {
+      GfMonitorConfig *monitor_config;
+
+      monitor_config = l->data;
+
+      if (monitor_config->mode_spec->width != mode_width ||
+          monitor_config->mode_spec->height != mode_height)
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       "Monitors modes in logical monitor not equal");
+          return FALSE;
+        }
+    }
+
   if (gf_monitor_transform_is_rotated (config->transform))
     {
-      expected_mode_width = config->layout.height;
-      expected_mode_height = config->layout.width;
+      layout_width = config->layout.height;
+      layout_height = config->layout.width;
     }
   else
     {
-      expected_mode_width = config->layout.width;
-      expected_mode_height = config->layout.height;
+      layout_width = config->layout.width;
+      layout_height = config->layout.height;
     }
 
   switch (layout_mode)
     {
       case GF_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
-        expected_mode_width = roundf (expected_mode_width * config->scale);
-        expected_mode_height = roundf (expected_mode_height * config->scale);
+        {
+          float scaled_width;
+          float scaled_height;
+
+          scaled_width = mode_width / scale;
+          scaled_height = mode_height / scale;
+
+          if (floorf (scaled_width) != scaled_width ||
+              floorf (scaled_height) != scaled_height)
+            {
+              g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Scaled logical monitor size is fractional");
+
+              return FALSE;
+            }
+
+          expected_mode_width = (int) roundf (layout_width * scale);
+          expected_mode_height = (int) roundf (layout_height * scale);
+        }
         break;
 
       case GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
+        if (!G_APPROX_VALUE (scale, roundf (scale), FLT_EPSILON))
+          {
+            g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                         "A fractional scale with physical layout mode not allowed");
+
+            return FALSE;
+          }
+
+        expected_mode_width = layout_width;
+        expected_mode_height = layout_height;
+        break;
+
       default:
         break;
     }
 
-  for (l = config->monitor_configs; l; l = l->next)
+  if (mode_width != expected_mode_width || mode_height != expected_mode_height)
     {
-      GfMonitorConfig *monitor_config = l->data;
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Monitor mode size doesn't match scaled monitor layout");
 
-      if (monitor_config->mode_spec->width != expected_mode_width ||
-          monitor_config->mode_spec->height != expected_mode_height)
-        {
-          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                       "Monitor modes in logical monitor conflict");
-
-          return FALSE;
-        }
+      return FALSE;
     }
 
   return TRUE;
