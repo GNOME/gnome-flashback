@@ -419,9 +419,9 @@
             * s: connector
             * s: monitor mode ID
             * a{sv}: monitor properties, including:
-                - "enable_underscanning" (b): enable monitor underscanning;
-                                              may only be set when underscanning
-                                              is supported (see GetCurrentState).
+                - "underscanning" (b): enable monitor underscanning;
+                                       may only be set when underscanning
+                                       is supported (see GetCurrentState).
 
         @properties may effect the global monitor configuration state. Possible
         properties are:
