@@ -50,6 +50,8 @@ libbackends_la_SOURCES = \
 	gf-monitor-config-private.h \
 	gf-monitor-config-store-private.h \
 	gf-monitor-config-store.c \
+	gf-monitor-config-utils.c \
+	gf-monitor-config-utils.h \
 	gf-monitor-config.c \
 	gf-monitor-manager-enums-private.h \
 	gf-monitor-manager-kms-private.h \

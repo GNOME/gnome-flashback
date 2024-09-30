@@ -28,6 +28,7 @@
 #include "gf-crtc-private.h"
 #include "gf-monitor-config-store-private.h"
 #include "gf-monitor-config-manager-private.h"
+#include "gf-monitor-config-utils.h"
 #include "gf-monitor-spec-private.h"
 #include "gf-output-private.h"
 #include "gf-rectangle-private.h"
@@ -772,63 +773,6 @@ create_for_switch_config_builtin (GfMonitorConfigManager *config_manager)
                                         GF_MONITOR_SWITCH_CONFIG_BUILTIN);
 }
 
-static GList *
-clone_monitor_config_list (GList *configs_in)
-{
-  GList *configs_out;
-  GList *l;
-
-  configs_out = NULL;
-
-  for (l = configs_in; l != NULL; l = l->next)
-    {
-      GfMonitorConfig *config_in;
-      GfMonitorConfig *config_out;
-
-      config_in = l->data;
-
-      config_out = g_new0 (GfMonitorConfig, 1);
-      *config_out = (GfMonitorConfig) {
-        .monitor_spec = gf_monitor_spec_clone (config_in->monitor_spec),
-        .mode_spec = g_memdup2 (config_in->mode_spec, sizeof (GfMonitorModeSpec)),
-        .enable_underscanning = config_in->enable_underscanning,
-        .has_max_bpc = config_in->has_max_bpc,
-        .max_bpc = config_in->max_bpc
-      };
-
-      configs_out = g_list_append (configs_out, config_out);
-    }
-
-  return configs_out;
-}
-
-static GList *
-clone_logical_monitor_config_list (GList *configs_in)
-{
-  GList *configs_out;
-  GList *l;
-
-  configs_out = NULL;
-
-  for (l = configs_in; l != NULL; l = l->next)
-    {
-      GfLogicalMonitorConfig *config_in;
-      GfLogicalMonitorConfig *config_out;
-      GList *config_list;
-
-      config_in = l->data;
-
-      config_out = g_memdup2 (config_in, sizeof (GfLogicalMonitorConfig));
-
-      config_list = clone_monitor_config_list (config_in->monitor_configs);
-      config_out->monitor_configs = config_list;
-
-      configs_out = g_list_append (configs_out, config_out);
-    }
-
-  return configs_out;
-}
-
 static GfLogicalMonitorConfig *
 find_logical_config_for_builtin_monitor (GfMonitorConfigManager *config_manager,
                                          GList                  *logical_monitor_configs)
@@ -918,7 +862,7 @@ create_for_builtin_display_rotation (GfMonitorConfigManager *config_manager,
     return NULL;
 
   current_monitor_configs = base_config->logical_monitor_configs;
-  logical_monitor_configs = clone_logical_monitor_config_list (current_monitor_configs);
+  logical_monitor_configs = gf_clone_logical_monitor_config_list (current_monitor_configs);
 
   logical_monitor_config = find_logical_config_for_builtin_monitor (config_manager,
                                                                     logical_monitor_configs);
