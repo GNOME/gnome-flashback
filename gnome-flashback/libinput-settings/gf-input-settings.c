@@ -116,13 +116,7 @@ get_property (GfInputSettings *settings,
   gdk_x11_display_error_trap_pop_ignored (display);
 
   if (rc == Success && type_ret == type && format_ret == format && nitems_ret >= nitems)
-    {
-      if (nitems_ret > nitems)
-        g_warning ("Property '%s' for device '%s' returned %lu items, expected %lu",
-                   property, gdk_device_get_name (device), nitems_ret, nitems);
-
-      return data_ret;
-    }
+    return data_ret;
 
   if (data_ret)
     XFree (data_ret);
