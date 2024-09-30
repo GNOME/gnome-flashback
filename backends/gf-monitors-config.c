@@ -31,19 +31,22 @@
 
 G_DEFINE_TYPE (GfMonitorsConfig, gf_monitors_config, G_TYPE_OBJECT)
 
-static gboolean
-has_adjacent_neighbour (GfMonitorsConfig       *config,
-                        GfLogicalMonitorConfig *logical_monitor_config)
+static GList *
+find_adjacent_neighbours (GList                  *logical_monitor_configs,
+                          GfLogicalMonitorConfig *logical_monitor_config)
 {
+  GList *adjacent_neighbors;
   GList *l;
 
-  if (!config->logical_monitor_configs->next)
+  adjacent_neighbors = NULL;
+
+  if (!logical_monitor_configs->next)
     {
-      g_assert (config->logical_monitor_configs->data == logical_monitor_config);
-      return TRUE;
+      g_assert (logical_monitor_configs->data == logical_monitor_config);
+      return NULL;
     }
 
-  for (l = config->logical_monitor_configs; l; l = l->next)
+  for (l = logical_monitor_configs; l; l = l->next)
     {
       GfLogicalMonitorConfig *other_logical_monitor_config = l->data;
 
@@ -52,10 +55,61 @@ has_adjacent_neighbour (GfMonitorsConfig       *config,
 
       if (gf_rectangle_is_adjacent_to (&logical_monitor_config->layout,
                                        &other_logical_monitor_config->layout))
-        return TRUE;
+        {
+          adjacent_neighbors = g_list_prepend (adjacent_neighbors,
+                                               other_logical_monitor_config);
+        }
     }
 
-  return FALSE;
+  return adjacent_neighbors;
+}
+
+static void
+traverse_new_neighbours (GList                  *logical_monitor_configs,
+                         GfLogicalMonitorConfig *logical_monitor_config,
+                         GHashTable             *neighbourhood)
+{
+  GList *adjacent_neighbours;
+  GList *l;
+
+  g_hash_table_add (neighbourhood, logical_monitor_config);
+
+  adjacent_neighbours = find_adjacent_neighbours (logical_monitor_configs,
+                                                  logical_monitor_config);
+
+  for (l = adjacent_neighbours; l; l = l->next)
+    {
+      GfLogicalMonitorConfig *neighbour;
+
+      neighbour = l->data;
+
+      if (g_hash_table_contains (neighbourhood, neighbour))
+        continue;
+
+      traverse_new_neighbours (logical_monitor_configs, neighbour, neighbourhood);
+    }
+
+  g_list_free (adjacent_neighbours);
+}
+
+static gboolean
+is_connected_to_all (GfLogicalMonitorConfig *logical_monitor_config,
+                     GList                  *logical_monitor_configs)
+{
+  GHashTable *neighbourhood;
+  gboolean is_connected_to_all;
+
+  neighbourhood = g_hash_table_new (NULL, NULL);
+
+  traverse_new_neighbours (logical_monitor_configs,
+                           logical_monitor_config,
+                           neighbourhood);
+
+  is_connected_to_all = g_hash_table_size (neighbourhood) == g_list_length (logical_monitor_configs);
+
+  g_hash_table_destroy (neighbourhood);
+
+  return is_connected_to_all;
 }
 
 static gboolean
@@ -300,6 +354,7 @@ gf_verify_monitors_config (GfMonitorsConfig  *config,
   min_y = INT_MAX;
   region = NULL;
   has_primary = FALSE;
+
   for (l = config->logical_monitor_configs; l; l = l->next)
     {
       GfLogicalMonitorConfig *logical_monitor_config = l->data;
@@ -343,7 +398,7 @@ gf_verify_monitors_config (GfMonitorsConfig  *config,
           has_primary = TRUE;
         }
 
-      if (!has_adjacent_neighbour (config, logical_monitor_config))
+      if (!is_connected_to_all (logical_monitor_config, config->logical_monitor_configs))
         {
           g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                        "Logical monitors not adjacent");
