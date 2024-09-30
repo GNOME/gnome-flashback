@@ -57,6 +57,8 @@ typedef struct
   GfPowerSave  power_save_mode;
 
   gboolean     initial_orient_change_done;
+
+  uint32_t     backlight_serial;
 } GfMonitorManagerPrivate;
 
 typedef gboolean (* MonitorMatchFunc) (GfMonitor *monitor);
@@ -203,6 +205,69 @@ gf_monitor_manager_update_monitor_modes_derived (GfMonitorManager *manager)
 }
 
 static void
+update_backlight (GfMonitorManager *self,
+                  gboolean          bump_serial)
+{
+  GfMonitorManagerPrivate *priv;
+  GVariantBuilder backlight_builder;
+  GVariant *backlight;
+  GList *l;
+
+  priv = gf_monitor_manager_get_instance_private (self);
+
+  if (bump_serial)
+    priv->backlight_serial++;
+
+  g_variant_builder_init (&backlight_builder, G_VARIANT_TYPE ("(uaa{sv})"));
+  g_variant_builder_add (&backlight_builder, "u", priv->backlight_serial);
+
+  g_variant_builder_open (&backlight_builder, G_VARIANT_TYPE ("aa{sv}"));
+
+  for (l = self->monitors; l; l = l->next)
+    {
+      GfMonitor *monitor;
+      const char *connector;
+      gboolean active;
+      int value;
+
+      monitor = GF_MONITOR (l->data);
+
+      if (!gf_monitor_is_laptop_panel (monitor))
+        continue;
+
+      g_variant_builder_open (&backlight_builder,
+                              G_VARIANT_TYPE_VARDICT);
+
+      connector = gf_monitor_get_connector (monitor);
+      active = gf_monitor_is_active (monitor);
+      g_variant_builder_add (&backlight_builder, "{sv}",
+                             "connector", g_variant_new_string (connector));
+      g_variant_builder_add (&backlight_builder, "{sv}",
+                             "active", g_variant_new_boolean (active));
+
+      if (gf_monitor_get_backlight (monitor, &value))
+        {
+          int min, max;
+
+          gf_monitor_get_backlight_info (monitor, &min, &max);
+          g_variant_builder_add (&backlight_builder, "{sv}",
+                                 "min", g_variant_new_int32 (min));
+          g_variant_builder_add (&backlight_builder, "{sv}",
+                                 "max", g_variant_new_int32 (max));
+          g_variant_builder_add (&backlight_builder, "{sv}",
+                                 "value", g_variant_new_int32 (value));
+        }
+
+      g_variant_builder_close (&backlight_builder);
+    }
+
+  g_variant_builder_close (&backlight_builder);
+  backlight = g_variant_builder_end (&backlight_builder);
+
+  gf_dbus_display_config_set_backlight (self->display_config, backlight);
+}
+
+static void
 gf_monitor_manager_notify_monitors_changed (GfMonitorManager *manager)
 {
   GfMonitorManagerPrivate *priv;
@@ -210,6 +275,8 @@ gf_monitor_manager_notify_monitors_changed (GfMonitorManager *manager)
   priv = gf_monitor_manager_get_instance_private (manager);
 
   gf_backend_monitors_changed (priv->backend);
+
+  update_backlight (manager, TRUE);
 
   g_signal_emit (manager, manager_signals[MONITORS_CHANGED], 0);
 
@@ -974,7 +1041,7 @@ derive_logical_monitor_size (GfMonitorConfig             *monitor_config,
 
 static GfMonitor *
 find_monitor_from_connector (GfMonitorManager *manager,
-                             gchar            *connector)
+                             const char       *connector)
 {
   GList *monitors;
   GList *l;
@@ -1704,9 +1771,71 @@ gf_monitor_manager_handle_change_backlight (GfDBusDisplayConfig   *skeleton,
   gf_output_set_backlight (output, value);
   renormalized_value = normalize_backlight (output, value);
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gf_dbus_display_config_complete_change_backlight (skeleton,
                                                     invocation,
                                                     renormalized_value);
+  G_GNUC_END_IGNORE_DEPRECATIONS
+
+  update_backlight (manager, FALSE);
+
+  return TRUE;
+}
+
+static gboolean
+gf_monitor_manager_handle_set_backlight (GfDBusDisplayConfig   *skeleton,
+                                         GDBusMethodInvocation *invocation,
+                                         uint32_t               serial,
+                                         const char *           connector,
+                                         int                    value,
+                                         GfMonitorManager      *manager)
+{
+  GfMonitorManagerPrivate *priv;
+  GfMonitor *monitor;
+  int backlight_min;
+  int backlight_max;
+
+  priv = gf_monitor_manager_get_instance_private (manager);
+
+  if (serial != priv->backlight_serial)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Invalid backlight serial");
+      return TRUE;
+    }
+
+  monitor = find_monitor_from_connector (manager, connector);
+
+  if (monitor == NULL)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Unknown monitor");
+      return TRUE;
+    }
+
+  if (!gf_monitor_get_backlight_info (monitor, &backlight_min, &backlight_max))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Monitor doesn't support changing backlight");
+      return TRUE;
+    }
+
+  if (value < backlight_min || value > backlight_max)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Invalid backlight value");
+      return TRUE;
+    }
+
+  gf_monitor_set_backlight (monitor, value);
+
+  gf_dbus_display_config_complete_set_backlight (skeleton, invocation);
+
+  update_backlight (manager, FALSE);
 
   return TRUE;
 }
@@ -2296,6 +2425,9 @@ monitor_manager_setup_dbus_config_handlers (GfMonitorManager *manager)
   g_signal_connect_object (manager->display_config, "handle-change-backlight",
                            G_CALLBACK (gf_monitor_manager_handle_change_backlight),
                            manager, 0);
+  g_signal_connect_object (manager->display_config, "handle-set-backlight",
+                           G_CALLBACK (gf_monitor_manager_handle_set_backlight),
+                           manager, 0);
   g_signal_connect_object (manager->display_config, "handle-get-crtc-gamma",
                            G_CALLBACK (gf_monitor_manager_handle_get_crtc_gamma),
                            manager, 0);
@@ -2652,6 +2784,10 @@ gf_monitor_manager_setup (GfMonitorManager *manager)
 
   gf_dbus_display_config_set_night_light_supported (manager->display_config,
                                                     night_light_supported);
+
+  gf_monitor_manager_notify_monitors_changed (manager);
+
+  update_backlight (manager, TRUE);
 
   manager->in_init = FALSE;
 }
