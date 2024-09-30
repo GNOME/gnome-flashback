@@ -695,8 +695,6 @@ gf_monitor_manager_apply_monitors_config (GfMonitorManager        *manager,
 {
   GfMonitorManagerClass *manager_class;
 
-  g_assert (!config || !(config->flags & GF_MONITORS_CONFIG_FLAG_MIGRATED));
-
   manager_class = GF_MONITOR_MANAGER_GET_CLASS (manager);
 
   if (!manager_class->apply_monitors_config (manager, config, method, error))

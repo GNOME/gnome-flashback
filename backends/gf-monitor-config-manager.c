@@ -22,12 +22,12 @@
 
 #include "config.h"
 
+#include <gio/gio.h>
 #include <math.h>
 
 #include "gf-crtc-private.h"
 #include "gf-monitor-config-store-private.h"
 #include "gf-monitor-config-manager-private.h"
-#include "gf-monitor-config-migration-private.h"
 #include "gf-monitor-spec-private.h"
 #include "gf-output-private.h"
 #include "gf-rectangle-private.h"
@@ -1428,7 +1428,6 @@ gf_monitor_config_manager_get_stored (GfMonitorConfigManager *config_manager)
   GfMonitorManager *monitor_manager = config_manager->monitor_manager;
   GfMonitorsConfigKey *config_key;
   GfMonitorsConfig *config;
-  GError *error = NULL;
 
   config_key = gf_create_monitors_config_key_for_current_state (monitor_manager);
   if (!config_key)
@@ -1436,21 +1435,6 @@ gf_monitor_config_manager_get_stored (GfMonitorConfigManager *config_manager)
 
   config = gf_monitor_config_store_lookup (config_manager->config_store, config_key);
   gf_monitors_config_key_free (config_key);
-
-  if (!config)
-    return NULL;
-
-  if (config->flags & GF_MONITORS_CONFIG_FLAG_MIGRATED)
-    {
-      if (!gf_finish_monitors_config_migration (monitor_manager, config, &error))
-        {
-          g_warning ("Failed to finish monitors config migration: %s", error->message);
-          g_error_free (error);
-
-          gf_monitor_config_store_remove (config_manager->config_store, config);
-          return NULL;
-        }
-    }
 
   return config;
 }

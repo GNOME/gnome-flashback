@@ -34,8 +34,7 @@ typedef struct
 typedef enum
 {
   GF_MONITORS_CONFIG_FLAG_NONE = 0,
-  GF_MONITORS_CONFIG_FLAG_MIGRATED = (1 << 0),
-  GF_MONITORS_CONFIG_FLAG_SYSTEM_CONFIG = (1 << 1)
+  GF_MONITORS_CONFIG_FLAG_SYSTEM_CONFIG = (1 << 0)
 } GfMonitorsConfigFlag;
 
 struct _GfMonitorsConfig
