@@ -45,6 +45,8 @@ gnome_flashback_SOURCES = \
 	gf-main.c \
 	gf-session.c \
 	gf-session.h \
+	gf-ui-scaling.c \
+	gf-ui-scaling.h \
 	gf-wm.c \
 	gf-wm.h \
 	$(BUILT_SOURCES) \
@@ -58,6 +60,7 @@ gnome_flashback_LDFLAGS = \
 gnome_flashback_LDADD = \
 	$(GNOME_FLASHBACK_LIBS) \
 	$(top_builddir)/backends/libbackends.la \
+	$(top_builddir)/dbus/libdbus.la \
 	$(top_builddir)/gnome-flashback/liba11y-keyboard/liba11y-keyboard.la \
 	$(top_builddir)/gnome-flashback/libaudio-device-selection/libaudio-device-selection.la \
 	$(top_builddir)/gnome-flashback/libautomount-manager/libautomount-manager.la \

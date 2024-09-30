@@ -49,8 +49,6 @@ struct _GfBackendClass
 
 GfOrientationManager *gf_backend_get_orientation_manager (GfBackend *backend);
 
-GfSettings           *gf_backend_get_settings            (GfBackend *backend);
-
 void                  gf_backend_monitors_changed        (GfBackend *backend);
 
 gboolean              gf_backend_is_lid_closed           (GfBackend *self);

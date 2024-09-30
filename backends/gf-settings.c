@@ -284,7 +284,7 @@ gf_settings_post_init (GfSettings *settings)
   update_ui_scaling_factor (settings);
 }
 
-gint
+int
 gf_settings_get_ui_scaling_factor (GfSettings *settings)
 {
   g_assert (settings->ui_scaling_factor != 0);

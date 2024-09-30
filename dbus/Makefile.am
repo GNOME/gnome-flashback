@@ -45,6 +45,14 @@ gf-audio-device-selection-gen.c: org.gnome.Shell.AudioDeviceSelection.xml
 		--generate-c-code gf-audio-device-selection-gen \
 		$(srcdir)/org.gnome.Shell.AudioDeviceSelection.xml
 
+gf-dbus-x11.h:
+gf-dbus-x11.c: org.gnome.Mutter.X11.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) \
+		--c-namespace GfDBus \
+		--generate-c-code gf-dbus-x11 \
+		--interface-prefix org.gnome.Mutter \
+		$(srcdir)/org.gnome.Mutter.X11.xml
+
 gf-dm-seat-gen.h:
 gf-dm-seat-gen.c: org.freedesktop.DisplayManager.Seat.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
@@ -184,6 +192,8 @@ BUILT_SOURCES = \
 	gf-accounts-user-gen.h \
 	gf-audio-device-selection-gen.c \
 	gf-audio-device-selection-gen.h \
+	gf-dbus-x11.c \
+	gf-dbus-x11.h \
 	gf-dm-seat-gen.c \
 	gf-dm-seat-gen.h \
 	gf-end-session-dialog-gen.c \
@@ -242,6 +252,7 @@ EXTRA_DIST = \
 	org.freedesktop.Notifications.xml \
 	org.freedesktop.UPower.Device.xml \
 	org.gnome.Flashback.InputSources.xml \
+	org.gnome.Mutter.X11.xml \
 	org.gnome.Nautilus.FileOperations2.xml \
 	org.gnome.ScreenSaver.xml \
 	org.gnome.SessionManager.ClientPrivate.xml \

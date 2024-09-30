@@ -22,6 +22,7 @@
 
 #include "gf-application.h"
 #include "gf-confirm-display-change-dialog.h"
+#include "gf-ui-scaling.h"
 #include "gf-wm.h"
 #include "backends/gf-backend.h"
 #include "liba11y-keyboard/gf-a11y-keyboard.h"
@@ -46,6 +47,8 @@ struct _GfApplication
   GfWm                    *wm;
 
   GfBackend               *backend;
+
+  GfUiScaling             *ui_scaling;
 
   gint                     bus_name;
 
@@ -279,6 +282,7 @@ gf_application_dispose (GObject *object)
 
   g_clear_pointer (&application->display_change_dialog, gtk_widget_destroy);
 
+  g_clear_object (&application->ui_scaling);
   g_clear_object (&application->backend);
   g_clear_object (&application->wm);
 
@@ -324,6 +328,8 @@ gf_application_init (GfApplication *application)
   application->wm = gf_wm_new ();
 
   application->backend = gf_backend_new (GF_BACKEND_TYPE_X11_CM);
+
+  application->ui_scaling = gf_ui_scaling_new (application->backend);
 
   monitor_manager = gf_backend_get_monitor_manager (application->backend);
   g_signal_connect (monitor_manager, "confirm-display-change",
