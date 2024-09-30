@@ -205,6 +205,34 @@ gf_monitor_manager_update_monitor_modes_derived (GfMonitorManager *manager)
 }
 
 static void
+update_has_external_monitor (GfMonitorManager *self)
+{
+  gboolean has_external_monitor;
+  GList *l;
+
+  has_external_monitor = FALSE;
+
+  for (l = gf_monitor_manager_get_monitors (self); l != NULL; l = l->next)
+    {
+      GfMonitor *monitor;
+
+      monitor = l->data;
+
+      if (gf_monitor_is_laptop_panel (monitor))
+        continue;
+
+      if (!gf_monitor_is_active (monitor))
+        continue;
+
+      has_external_monitor = TRUE;
+      break;
+    }
+
+  gf_dbus_display_config_set_has_external_monitor (self->display_config,
+                                                   has_external_monitor);
+}
+
+static void
 update_backlight (GfMonitorManager *self,
                   gboolean          bump_serial)
 {
@@ -276,6 +304,7 @@ gf_monitor_manager_notify_monitors_changed (GfMonitorManager *manager)
 
   gf_backend_monitors_changed (priv->backend);
 
+  update_has_external_monitor (manager);
   update_backlight (manager, TRUE);
 
   g_signal_emit (manager, manager_signals[MONITORS_CHANGED], 0);
@@ -2787,6 +2816,7 @@ gf_monitor_manager_setup (GfMonitorManager *manager)
 
   gf_monitor_manager_notify_monitors_changed (manager);
 
+  update_has_external_monitor (manager);
   update_backlight (manager, TRUE);
 
   manager->in_init = FALSE;

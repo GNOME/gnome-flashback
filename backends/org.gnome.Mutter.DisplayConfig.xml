@@ -451,5 +451,11 @@
       <arg name="ctm" direction="in" type="(ttttttttt)" />
     </method>
 
+    <!--
+        HasExternalmonitor:
+
+        True if there is an external monitor connected and activated.
+    -->
+    <property name="HasExternalMonitor" type="b" access="read" />
   </interface>
 </node>
