@@ -337,9 +337,6 @@ gf_get_closest_monitor_scale_factor_for_resolution (float width,
 
   best_scale = 0;
 
-  if (!is_scale_valid_for_size (width, height, scale))
-    return best_scale;
-
   if (fmodf (width, scale) == 0.0f && fmodf (height, scale) == 0.0f)
     return scale;
 
@@ -1163,6 +1160,9 @@ gf_monitor_calculate_supported_scales (GfMonitor                 *monitor,
             {
               gfloat scale;
               gfloat scale_value = i + j * SCALE_FACTORS_STEPS;
+
+              if (!is_scale_valid_for_size (width, height, scale_value))
+                continue;
 
               scale = gf_get_closest_monitor_scale_factor_for_resolution (width,
                                                                           height,
