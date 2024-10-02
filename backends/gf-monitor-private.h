@@ -217,6 +217,11 @@ gfloat             *gf_monitor_calculate_supported_scales (GfMonitor            
                                                            GfMonitorMode              *monitor_mode,
                                                            GfMonitorScalesConstraint   constraints,
                                                            gint                       *n_supported_scales);
+float
+gf_get_closest_monitor_scale_factor_for_resolution (float width,
+                                                    float height,
+                                                    float scale,
+                                                    float threshold);
 
 const gchar        *gf_monitor_mode_get_id                (GfMonitorMode              *monitor_mode);
 

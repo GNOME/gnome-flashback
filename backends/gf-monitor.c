@@ -322,11 +322,11 @@ is_scale_valid_for_size (float width,
                                        floorf (height / scale));
 }
 
-static gfloat
-get_closest_scale_factor_for_resolution (float width,
-                                         float height,
-                                         float scale,
-                                         float threshold)
+float
+gf_get_closest_monitor_scale_factor_for_resolution (float width,
+                                                    float height,
+                                                    float scale,
+                                                    float threshold)
 {
   guint i, j;
   gfloat scaled_h;
@@ -1164,10 +1164,10 @@ gf_monitor_calculate_supported_scales (GfMonitor                 *monitor,
               gfloat scale;
               gfloat scale_value = i + j * SCALE_FACTORS_STEPS;
 
-              scale = get_closest_scale_factor_for_resolution (width,
-                                                               height,
-                                                               scale_value,
-                                                               max_bound);
+              scale = gf_get_closest_monitor_scale_factor_for_resolution (width,
+                                                                          height,
+                                                                          scale_value,
+                                                                          max_bound);
 
               if (scale > 0.0f)
                 g_array_append_val (supported_scales, scale);
