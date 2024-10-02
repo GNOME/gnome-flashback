@@ -29,6 +29,7 @@
 #include "gf-monitor-config-manager-private.h"
 #include "gf-monitor-config-private.h"
 #include "gf-monitor-config-store-private.h"
+#include "gf-monitor-config-utils.h"
 #include "gf-monitor-spec-private.h"
 
 #define MONITORS_CONFIG_XML_FORMAT_VERSION 2
@@ -682,63 +683,6 @@ handle_start_element (GMarkupParseContext  *context,
     }
 }
 
-static gboolean
-derive_logical_monitor_layout (GfLogicalMonitorConfig      *logical_monitor_config,
-                               GfLogicalMonitorLayoutMode   layout_mode,
-                               GError                     **error)
-{
-  GfMonitorConfig *monitor_config;
-  gint mode_width, mode_height;
-  gint width = 0, height = 0;
-  GList *l;
-
-  monitor_config = logical_monitor_config->monitor_configs->data;
-  mode_width = monitor_config->mode_spec->width;
-  mode_height = monitor_config->mode_spec->height;
-
-  for (l = logical_monitor_config->monitor_configs->next; l; l = l->next)
-    {
-      monitor_config = l->data;
-
-      if (monitor_config->mode_spec->width != mode_width ||
-          monitor_config->mode_spec->height != mode_height)
-        {
-          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                       "Monitors in logical monitor incompatible");
-
-          return FALSE;
-        }
-    }
-
-  if (gf_monitor_transform_is_rotated (logical_monitor_config->transform))
-    {
-      width = mode_height;
-      height = mode_width;
-    }
-  else
-    {
-      width = mode_width;
-      height = mode_height;
-    }
-
-  switch (layout_mode)
-    {
-      case GF_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
-        width = roundf (width / logical_monitor_config->scale);
-        height = roundf (height / logical_monitor_config->scale);
-        break;
-
-      case GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
-      default:
-        break;
-    }
-
-  logical_monitor_config->layout.width = width;
-  logical_monitor_config->layout.height = height;
-
-  return TRUE;
-}
-
 static void
 finish_monitor_spec (ConfigParser *parser)
 {
@@ -795,6 +739,131 @@ finish_monitor_spec (ConfigParser *parser)
         g_assert_not_reached ();
         break;
     }
+}
+
+static void
+get_monitor_size_with_rotation (GfLogicalMonitorConfig *logical_monitor_config,
+                                unsigned int           *width_out,
+                                unsigned int           *height_out)
+{
+  GfMonitorConfig *monitor_config;
+
+  monitor_config = logical_monitor_config->monitor_configs->data;
+
+  if (gf_monitor_transform_is_rotated (logical_monitor_config->transform))
+    {
+      *width_out = monitor_config->mode_spec->height;
+      *height_out = monitor_config->mode_spec->width;
+    }
+  else
+    {
+      *width_out = monitor_config->mode_spec->width;
+      *height_out = monitor_config->mode_spec->height;
+    }
+}
+
+static void
+derive_logical_monitor_layouts (GList                      *logical_monitor_configs,
+                                GfLogicalMonitorLayoutMode  layout_mode)
+{
+  GList *l;
+
+  for (l = logical_monitor_configs; l; l = l->next)
+    {
+      GfLogicalMonitorConfig *logical_monitor_config;
+      unsigned int width;
+      unsigned int height;
+
+      logical_monitor_config = l->data;
+
+      get_monitor_size_with_rotation (logical_monitor_config, &width, &height);
+
+      if (layout_mode == GF_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL)
+        {
+          width = (int) roundf (width / logical_monitor_config->scale);
+          height = (int) roundf (height / logical_monitor_config->scale);
+        }
+
+      logical_monitor_config->layout.width = width;
+      logical_monitor_config->layout.height = height;
+    }
+}
+
+static gpointer
+copy_monitor_spec (gconstpointer src,
+                   gpointer      data)
+{
+  return gf_monitor_spec_clone ((GfMonitorSpec *) src);
+}
+
+static gboolean
+detect_layout_mode_configs (GfMonitorManager      *monitor_manager,
+                            GList                 *logical_monitor_configs,
+                            GList                 *disabled_monitor_specs,
+                            GfMonitorsConfigFlag   config_flags,
+                            GfMonitorsConfig     **physical_layout_mode_config,
+                            GfMonitorsConfig     **logical_layout_mode_config,
+                            GError               **error)
+{
+  GList *logical_monitor_configs_copy;
+  GList *disabled_monitor_specs_copy;
+  GfMonitorsConfig *physical_config;
+  GfMonitorsConfig *logical_config;
+  GError *local_error_physical;
+  GError *local_error_logical;
+
+  logical_monitor_configs_copy = gf_clone_logical_monitor_config_list (logical_monitor_configs);
+  disabled_monitor_specs_copy = g_list_copy_deep (disabled_monitor_specs,
+                                                  copy_monitor_spec,
+                                                  NULL);
+
+  derive_logical_monitor_layouts (logical_monitor_configs,
+                                  GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL);
+  physical_config = gf_monitors_config_new_full (logical_monitor_configs,
+                                                 disabled_monitor_specs,
+                                                 GF_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL,
+                                                 config_flags);
+
+  local_error_physical = NULL;
+
+  if (!gf_verify_monitors_config (physical_config,
+                                  monitor_manager,
+                                  &local_error_physical))
+    g_clear_object (&physical_config);
+
+  derive_logical_monitor_layouts (logical_monitor_configs_copy,
+                                  GF_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL);
+  logical_config = gf_monitors_config_new_full (logical_monitor_configs_copy,
+                                                disabled_monitor_specs_copy,
+                                                GF_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL,
+                                                config_flags);
+
+  local_error_logical = NULL;
+
+  if (!gf_verify_monitors_config (logical_config,
+                                  monitor_manager,
+                                  &local_error_logical))
+    g_clear_object (&logical_config);
+
+  if (physical_config == NULL && logical_config == NULL)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Detected neither physical (%s) nor logical (%s) layout mode",
+                   local_error_physical->message, local_error_logical->message);
+
+      g_error_free (local_error_physical);
+      g_error_free (local_error_logical);
+
+      return  FALSE;
+    }
+
+  *physical_layout_mode_config = physical_config;
+  *logical_layout_mode_config = logical_config;
+
+  g_clear_error (&local_error_physical);
+  g_clear_error (&local_error_logical);
+
+  return TRUE;
 }
 
 static void
@@ -960,7 +1029,6 @@ handle_end_element (GMarkupParseContext  *context,
         {
           GfMonitorConfigStore *store = parser->config_store;
           GfMonitorsConfig *config;
-          GList *l;
           GfLogicalMonitorLayoutMode layout_mode;
           GfMonitorsConfigFlag config_flags = GF_MONITORS_CONFIG_FLAG_NONE;
 
@@ -968,42 +1036,68 @@ handle_end_element (GMarkupParseContext  *context,
 
           layout_mode = parser->current_layout_mode;
 
-          if (!parser->is_current_layout_mode_valid)
-            layout_mode = gf_monitor_manager_get_default_layout_mode (store->monitor_manager);
-
-          for (l = parser->current_logical_monitor_configs; l; l = l->next)
-            {
-              GfLogicalMonitorConfig *logical_monitor_config = l->data;
-
-              if (!derive_logical_monitor_layout (logical_monitor_config,
-                                                  layout_mode,
-                                                  error))
-                return;
-
-              if (!gf_verify_logical_monitor_config (logical_monitor_config,
-                                                     layout_mode,
-                                                     store->monitor_manager,
-                                                     error))
-                return;
-            }
-
           config_flags |= parser->extra_config_flags;
 
-          config = gf_monitors_config_new_full (parser->current_logical_monitor_configs,
-                                                parser->current_disabled_monitor_specs,
-                                                layout_mode, config_flags);
-
-          parser->current_logical_monitor_configs = NULL;
-          parser->current_disabled_monitor_specs = NULL;
-
-          if (!gf_verify_monitors_config (config, store->monitor_manager, error))
+          if (!parser->is_current_layout_mode_valid)
             {
-              g_object_unref (config);
-              return;
-            }
+              GfMonitorsConfig *physical_layout_mode_config;
+              GfMonitorsConfig *logical_layout_mode_config;
 
-          g_hash_table_replace (parser->pending_configs,
-                                config->key, config);
+              if (!detect_layout_mode_configs (store->monitor_manager,
+                                               parser->current_logical_monitor_configs,
+                                               parser->current_disabled_monitor_specs,
+                                               config_flags,
+                                               &physical_layout_mode_config,
+                                               &logical_layout_mode_config,
+                                               error))
+                {
+                  parser->current_logical_monitor_configs = NULL;
+                  parser->current_disabled_monitor_specs = NULL;
+                  return;
+                }
+
+              parser->current_logical_monitor_configs = NULL;
+              parser->current_disabled_monitor_specs = NULL;
+
+              if (physical_layout_mode_config != NULL)
+                {
+                  g_hash_table_replace (parser->pending_configs,
+                                        physical_layout_mode_config->key,
+                                        physical_layout_mode_config);
+                }
+
+              if (logical_layout_mode_config != NULL)
+                {
+                  g_hash_table_replace (parser->pending_configs,
+                                        logical_layout_mode_config->key,
+                                        logical_layout_mode_config);
+                }
+            }
+          else
+            {
+              derive_logical_monitor_layouts (parser->current_logical_monitor_configs,
+                                              layout_mode);
+
+              config = gf_monitors_config_new_full (parser->current_logical_monitor_configs,
+                                                    parser->current_disabled_monitor_specs,
+                                                    layout_mode,
+                                                    config_flags);
+
+              parser->current_logical_monitor_configs = NULL;
+              parser->current_disabled_monitor_specs = NULL;
+
+              if (!gf_verify_monitors_config (config,
+                                              store->monitor_manager,
+                                              error))
+                {
+                  g_object_unref (config);
+                  return;
+                }
+
+              g_hash_table_replace (parser->pending_configs,
+                                    config->key,
+                                    config);
+            }
 
           parser->state = STATE_MONITORS;
           return;
