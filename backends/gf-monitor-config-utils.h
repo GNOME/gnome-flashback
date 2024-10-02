@@ -20,9 +20,18 @@
 
 #include <glib.h>
 
+#include "gf-monitor-manager-private.h"
+
 G_BEGIN_DECLS
 
 GList *gf_clone_logical_monitor_config_list (GList *logical_monitor_configs_in);
+
+gboolean
+gf_verify_logical_monitor_config_list (GList                       *logical_monitor_configs,
+                                       GfLogicalMonitorLayoutMode   layout_mode,
+                                       GfMonitorManager            *monitor_manager,
+                                       GError                     **error);
+
 
 G_END_DECLS
 
