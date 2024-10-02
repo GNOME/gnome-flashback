@@ -201,6 +201,7 @@ typedef struct
   int                     unknown_level;
 
   GfMonitorsConfigFlag    extra_config_flags;
+  gboolean                should_update_file;
 } ConfigParser;
 
 typedef struct
@@ -1573,6 +1574,8 @@ handle_end_element (GMarkupParseContext  *context,
                                         logical_layout_mode_config->key,
                                         logical_layout_mode_config);
                 }
+
+              parser->should_update_file = TRUE;
             }
           else
             {
@@ -2070,6 +2073,7 @@ read_config_file (GfMonitorConfigStore  *config_store,
                   GFile                 *file,
                   GfMonitorsConfigFlag   extra_config_flags,
                   GHashTable           **out_configs,
+                  gboolean              *should_update_file,
                   GError               **error)
 {
   gchar *buffer;
@@ -2093,7 +2097,8 @@ read_config_file (GfMonitorConfigStore  *config_store,
                                               g_object_unref),
     .extra_config_flags = extra_config_flags,
     .unknown_state_root = -1,
-    .pending_store = GF_CONFIG_STORE_NONE
+    .pending_store = GF_CONFIG_STORE_NONE,
+    .should_update_file = FALSE
   };
 
   parse_context = g_markup_parse_context_new (&config_parser,
@@ -2123,6 +2128,8 @@ read_config_file (GfMonitorConfigStore  *config_store,
     }
 
   *out_configs = parser.pending_configs;
+  *should_update_file = parser.should_update_file;
+
   parser.pending_configs = NULL;
 
   g_markup_parse_context_free (parse_context);
@@ -2638,8 +2645,10 @@ gf_monitor_config_store_set_custom (GfMonitorConfigStore  *config_store,
                                     GError               **error)
 {
   GHashTable *new_configs;
+  gboolean should_save_configs;
 
   new_configs = NULL;
+  should_save_configs = FALSE;
 
   g_clear_object (&config_store->custom_read_file);
   g_clear_object (&config_store->custom_write_file);
@@ -2657,11 +2666,15 @@ gf_monitor_config_store_set_custom (GfMonitorConfigStore  *config_store,
                          config_store->custom_read_file,
                          config_flags,
                          &new_configs,
+                         &should_save_configs,
                          error))
     return FALSE;
 
   g_clear_pointer (&config_store->configs, g_hash_table_unref);
   config_store->configs = new_configs;
+
+  if (should_save_configs)
+    maybe_save_configs (config_store);
 
   return TRUE;
 }
@@ -2685,10 +2698,12 @@ gf_monitor_config_store_reset (GfMonitorConfigStore  *config_store)
   GHashTable *user_configs;
   const char * const *system_dirs;
   char *user_file_path;
+  gboolean should_save_configs;
   GError *error;
 
   system_configs = NULL;
   user_configs = NULL;
+  should_save_configs = FALSE;
   error = NULL;
 
   g_clear_object (&config_store->user_file);
@@ -2714,12 +2729,22 @@ gf_monitor_config_store_reset (GfMonitorConfigStore  *config_store)
                                  system_file,
                                  GF_MONITORS_CONFIG_FLAG_SYSTEM_CONFIG,
                                  &system_configs,
+                                 &should_save_configs,
                                  &error))
             {
               g_warning ("Failed to read monitors config file '%s': %s",
                          system_file_path, error->message);
 
               g_clear_error (&error);
+            }
+
+          if (should_save_configs)
+            {
+              g_warning ("System monitor configuration file (%s) needs "
+                         "updating; ask your administrator to migrate "
+                         "the system monitor configuration.",
+                         system_file_path);
+              should_save_configs = FALSE;
             }
 
           g_object_unref (system_file);
@@ -2737,6 +2762,7 @@ gf_monitor_config_store_reset (GfMonitorConfigStore  *config_store)
                              config_store->user_file,
                              GF_MONITORS_CONFIG_FLAG_NONE,
                              &user_configs,
+                             &should_save_configs,
                              &error))
         {
           g_warning ("Failed to read monitors config file '%s': %s",
@@ -2782,6 +2808,9 @@ gf_monitor_config_store_reset (GfMonitorConfigStore  *config_store)
       if (user_configs)
         replace_configs (config_store, user_configs);
     }
+
+  if (should_save_configs)
+    maybe_save_configs (config_store);
 
   g_clear_pointer (&system_configs, g_hash_table_unref);
   g_clear_pointer (&user_configs, g_hash_table_unref);
