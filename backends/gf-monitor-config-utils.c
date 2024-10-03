@@ -26,34 +26,42 @@
 #include "gf-monitor-spec-private.h"
 #include "gf-rectangle-private.h"
 
-static GList *
-clone_monitor_config_list (GList *configs_in)
+static gpointer
+copy_monitor_config (gconstpointer src,
+                     gpointer      data)
 {
-  GList *configs_out;
-  GList *l;
+  GfMonitorConfig *config;
+  GfMonitorConfig *new_config;
 
-  configs_out = NULL;
+  config = (GfMonitorConfig *) src;
+  new_config = g_new0 (GfMonitorConfig, 1);
 
-  for (l = configs_in; l != NULL; l = l->next)
-    {
-      GfMonitorConfig *config_in;
-      GfMonitorConfig *config_out;
+  *new_config = (GfMonitorConfig) {
+    .monitor_spec = gf_monitor_spec_clone (config->monitor_spec),
+    .mode_spec = g_memdup2 (config->mode_spec, sizeof (GfMonitorModeSpec)),
+    .enable_underscanning = config->enable_underscanning,
+    .has_max_bpc = config->has_max_bpc,
+    .max_bpc = config->max_bpc
+  };
 
-      config_in = l->data;
+  return new_config;
+}
 
-      config_out = g_new0 (GfMonitorConfig, 1);
-      *config_out = (GfMonitorConfig) {
-        .monitor_spec = gf_monitor_spec_clone (config_in->monitor_spec),
-        .mode_spec = g_memdup2 (config_in->mode_spec, sizeof (GfMonitorModeSpec)),
-        .enable_underscanning = config_in->enable_underscanning,
-        .has_max_bpc = config_in->has_max_bpc,
-        .max_bpc = config_in->max_bpc
-      };
+static gpointer
+copy_logical_monitor_config (gconstpointer src,
+                             gpointer      data)
+{
+  GfLogicalMonitorConfig *config;
+  GfLogicalMonitorConfig *new_config;
 
-      configs_out = g_list_append (configs_out, config_out);
-    }
+  config = (GfLogicalMonitorConfig *) src;
+  new_config = g_memdup2 (config, sizeof (GfLogicalMonitorConfig));
 
-  return configs_out;
+  new_config->monitor_configs = g_list_copy_deep (config->monitor_configs,
+                                                  copy_monitor_config,
+                                                  NULL);
+
+  return new_config;
 }
 
 static GList *
@@ -138,30 +146,11 @@ is_connected_to_all (GfLogicalMonitorConfig *logical_monitor_config,
 }
 
 GList *
-gf_clone_logical_monitor_config_list (GList *logical_monitor_configs_in)
+gf_clone_logical_monitor_config_list (GList *logical_monitor_configs)
 {
-  GList *configs_out;
-  GList *l;
-
-  configs_out = NULL;
-
-  for (l = logical_monitor_configs_in; l != NULL; l = l->next)
-    {
-      GfLogicalMonitorConfig *config_in;
-      GfLogicalMonitorConfig *config_out;
-      GList *config_list;
-
-      config_in = l->data;
-
-      config_out = g_memdup2 (config_in, sizeof (GfLogicalMonitorConfig));
-
-      config_list = clone_monitor_config_list (config_in->monitor_configs);
-      config_out->monitor_configs = config_list;
-
-      configs_out = g_list_append (configs_out, config_out);
-    }
-
-  return configs_out;
+  return g_list_copy_deep (logical_monitor_configs,
+                           copy_logical_monitor_config,
+                           NULL);
 }
 
 gboolean

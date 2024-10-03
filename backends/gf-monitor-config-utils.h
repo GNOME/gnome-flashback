@@ -24,7 +24,8 @@
 
 G_BEGIN_DECLS
 
-GList *gf_clone_logical_monitor_config_list (GList *logical_monitor_configs_in);
+GList *
+gf_clone_logical_monitor_config_list (GList *logical_monitor_configs);
 
 gboolean
 gf_verify_logical_monitor_config_list (GList                       *logical_monitor_configs,
