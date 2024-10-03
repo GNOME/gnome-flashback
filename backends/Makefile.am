@@ -87,6 +87,7 @@ libbackends_la_SOURCES = \
 	gf-rectangle.h \
 	gf-settings-private.h \
 	gf-settings.c \
+	gf-settings.h \
 	$(BUILT_SOURCES) \
 	$(NULL)
 
