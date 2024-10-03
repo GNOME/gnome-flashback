@@ -57,6 +57,9 @@ struct _GfInputSettings
 
   Display          *xdisplay;
 
+  int               xkb_event_base;
+  int               xkb_error_base;
+
   GdkSeat          *seat;
 
   GfMonitorManager *monitor_manager;
@@ -1005,6 +1008,76 @@ update_keyboard_repeat (GfInputSettings *settings)
 }
 
 static void
+maybe_save_numlock_state (GfInputSettings *self,
+                          gboolean         numlock_state)
+{
+  if (!g_settings_get_boolean (self->keyboard, "remember-numlock-state"))
+    return;
+
+  if (g_settings_get_boolean (self->keyboard, "numlock-state") == numlock_state)
+    return;
+
+  g_settings_set_boolean (self->keyboard, "numlock-state", numlock_state);
+}
+
+static void
+maybe_restore_numlock_state (GfInputSettings *self)
+{
+  unsigned int numlock_mask;
+  unsigned int affect;
+  unsigned int values;
+
+  if (self->xkb_event_base == -1)
+    return;
+
+  if (!g_settings_get_boolean (self->keyboard, "remember-numlock-state"))
+    return;
+
+  numlock_mask = XkbKeysymToModifiers (self->xdisplay, XK_Num_Lock);
+  affect = values = 0;
+
+  affect = numlock_mask;
+  if (g_settings_get_boolean (self->keyboard, "numlock-state"))
+    values |= numlock_mask;
+
+  XkbLockModifiers (self->xdisplay, XkbUseCoreKbd, affect, values);
+}
+
+static GdkFilterReturn
+xkb_event_filter_cb (GdkXEvent *gdk_x_event,
+                     GdkEvent  *gdk_event,
+                     void      *user_data)
+{
+  GfInputSettings *self;
+  XEvent *x_event;
+  XkbEvent *xkb_event;
+
+  self = GF_INPUT_SETTINGS (user_data);
+  x_event = (XEvent *) gdk_x_event;
+
+  if (x_event->type != self->xkb_event_base)
+    return GDK_FILTER_CONTINUE;
+
+  xkb_event = (XkbEvent *) gdk_x_event;
+
+  if (xkb_event->any.xkb_type != XkbStateNotify)
+    return GDK_FILTER_CONTINUE;
+
+  if (xkb_event->state.changed & XkbModifierLockMask)
+    {
+      unsigned int numlock_mask;
+      gboolean numlock_state;
+
+      numlock_mask = XkbKeysymToModifiers (self->xdisplay, XK_Num_Lock);
+      numlock_state = (xkb_event->state.locked_mods & numlock_mask) == numlock_mask;
+
+      maybe_save_numlock_state (self, numlock_state);
+    }
+
+  return GDK_FILTER_CONTINUE;
+}
+
+static void
 settings_changed_cb (GSettings       *gsettings,
                      const gchar     *key,
                      GfInputSettings *settings)
@@ -1360,6 +1433,35 @@ check_mappable_devices (GfInputSettings *settings)
     }
 }
 
+static gboolean
+check_xkb_extension (GfInputSettings *self)
+{
+  int xkb_opcode;
+  int xkb_major;
+  int xkb_minor;
+
+  xkb_major = XkbMajorVersion;
+  xkb_minor = XkbMinorVersion;
+
+  if (!XkbQueryExtension (self->xdisplay,
+                          &xkb_opcode,
+                          &self->xkb_event_base,
+                          &self->xkb_error_base,
+                          &xkb_major,
+                          &xkb_minor))
+    {
+      self->xkb_event_base = -1;
+      self->xkb_error_base = -1;
+
+      g_warning ("X server doesn't have the XKB extension, version %d.%d or "
+                 "newer", XkbMajorVersion, XkbMinorVersion);
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 static void
 gf_input_settings_constructed (GObject *object)
 {
@@ -1371,6 +1473,7 @@ gf_input_settings_constructed (GObject *object)
 
   apply_device_settings (settings, NULL);
   update_keyboard_repeat (settings);
+  maybe_restore_numlock_state (settings);
   check_mappable_devices (settings);
 }
 
@@ -1398,6 +1501,18 @@ gf_input_settings_dispose (GObject *object)
 }
 
 static void
+gf_input_settings_finalize (GObject *object)
+{
+  GfInputSettings *self;
+
+  self = GF_INPUT_SETTINGS (object);
+
+  gdk_window_remove_filter (NULL, xkb_event_filter_cb, self);
+
+  G_OBJECT_CLASS (gf_input_settings_parent_class)->finalize (object);
+}
+
+static void
 gf_input_settings_class_init (GfInputSettingsClass *settings_class)
 {
   GObjectClass *object_class;
@@ -1406,6 +1521,7 @@ gf_input_settings_class_init (GfInputSettingsClass *settings_class)
 
   object_class->constructed = gf_input_settings_constructed;
   object_class->dispose = gf_input_settings_dispose;
+  object_class->finalize = gf_input_settings_finalize;
 }
 
 static void
@@ -1416,6 +1532,15 @@ gf_input_settings_init (GfInputSettings *settings)
   display = gdk_display_get_default ();
 
   settings->xdisplay = gdk_x11_display_get_xdisplay (display);
+
+  if (check_xkb_extension (settings))
+    {
+      XkbSelectEventDetails (settings->xdisplay,
+                             XkbUseCoreKbd,
+                             XkbStateNotify,
+                             XkbModifierLockMask,
+                             XkbModifierLockMask);
+    }
 
   settings->seat = gdk_display_get_default_seat (display);
   g_signal_connect (settings->seat, "device-added",
@@ -1440,6 +1565,8 @@ gf_input_settings_init (GfInputSettings *settings)
                     G_CALLBACK (settings_changed_cb), settings);
 
   settings->mappable_devices = g_hash_table_new_full (NULL, NULL, NULL, g_object_unref);
+
+  gdk_window_add_filter (NULL, xkb_event_filter_cb, settings);
 }
 
 GfInputSettings *
