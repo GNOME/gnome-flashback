@@ -49,6 +49,8 @@
 #define BG_KEY_PICTURE_PLACEMENT  "picture-options"
 #define BG_KEY_PICTURE_OPACITY    "picture-opacity"
 #define BG_KEY_PICTURE_URI        "picture-uri"
+#define BG_KEY_PICTURE_URI_DARK   "picture-uri-dark"
+#define IFACE_KEY_COLOR_SCHEME    "color-scheme"
 
 /* We keep the large pixbufs around if the next update
    in the slideshow is less than 60 seconds away */
@@ -63,7 +65,10 @@ struct _GfBG
 
 	char *                  schema_id;
 	GSettings *             settings;
+	GSettings *             interface_settings;
+	gboolean                has_dark_key;
 	gulong                  change_event_id;
+	gulong                  changed_color_scheme_id;
 
 	char *			filename;
 	GDesktopBackgroundStyle	placement;
@@ -1725,21 +1730,42 @@ settings_change_event_cb (GSettings *settings,
   return TRUE;
 }
 
+static gboolean
+color_scheme_changed_cb (GSettings  *interface_settings,
+                         const char *key,
+                         GfBG       *self)
+{
+  gf_bg_load_from_preferences (self);
+
+  return FALSE;
+}
+
 static void
 gf_bg_constructed (GObject *object)
 {
   GfBG *self;
+  GSettingsSchema *schema;
 
   self = GF_BG (object);
 
   G_OBJECT_CLASS (gf_bg_parent_class)->constructed (object);
 
   self->settings = g_settings_new (self->schema_id);
+  self->interface_settings = g_settings_new ("org.gnome.desktop.interface");
+
+  g_object_get (self->settings, "settings-schema", &schema, NULL);
+  self->has_dark_key = g_settings_schema_has_key (schema, BG_KEY_PICTURE_URI_DARK);
+  g_settings_schema_unref (schema);
 
   self->change_event_id = g_signal_connect (self->settings,
                                             "change-event",
                                             G_CALLBACK (settings_change_event_cb),
                                             self);
+
+  self->changed_color_scheme_id = g_signal_connect (self->interface_settings,
+                                                    "changed::color-scheme",
+                                                    G_CALLBACK (color_scheme_changed_cb),
+                                                    self);
 }
 
 static void
@@ -1755,7 +1781,14 @@ gf_bg_dispose (GObject *object)
       self->change_event_id = 0;
     }
 
+  if (self->changed_color_scheme_id != 0)
+    {
+      g_signal_handler_disconnect (self->interface_settings, self->changed_color_scheme_id);
+      self->changed_color_scheme_id = 0;
+    }
+
   g_clear_object (&self->settings);
+  g_clear_object (&self->interface_settings);
   g_clear_object (&self->file_monitor);
 
   clear_cache (self);
@@ -1895,10 +1928,18 @@ gf_bg_load_from_preferences (GfBG *self)
   g_return_if_fail (GF_IS_BG (self));
 
   /* Filename */
-  filename = g_settings_get_mapped (self->settings,
-                                    BG_KEY_PICTURE_URI,
-                                    bg_gsettings_mapping,
-                                    NULL);
+  tmp = g_settings_get_string (self->interface_settings, IFACE_KEY_COLOR_SCHEME);
+  if (self->has_dark_key && strcmp (tmp, "prefer-dark") == 0)
+    filename = g_settings_get_mapped (self->settings,
+                                      BG_KEY_PICTURE_URI_DARK,
+                                      bg_gsettings_mapping,
+                                      NULL);
+  else
+    filename = g_settings_get_mapped (self->settings,
+                                      BG_KEY_PICTURE_URI,
+                                      bg_gsettings_mapping,
+                                      NULL);
+  g_free (tmp);
 
   /* Colors */
   tmp = g_settings_get_string (self->settings, BG_KEY_PRIMARY_COLOR);
