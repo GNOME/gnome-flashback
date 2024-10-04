@@ -28,13 +28,10 @@ struct _GfRootBackground
 
   gulong     monitors_changed_id;
   gulong     size_changed_id;
-  gulong     change_event_id;
 
   guint      change_idle_id;
 
   GfBG      *bg;
-
-  GSettings *settings;
 };
 
 G_DEFINE_TYPE (GfRootBackground, gf_root_background, G_TYPE_OBJECT)
@@ -87,17 +84,6 @@ set_background (GfRootBackground *self)
 
   gf_bg_set_surface_as_root (display, surface);
   cairo_surface_destroy (surface);
-}
-
-static gboolean
-change_event_cb (GSettings        *settings,
-                 gpointer          keys,
-                 gint              n_keys,
-                 GfRootBackground *self)
-{
-  gf_bg_load_from_preferences (self->bg, self->settings);
-
-  return TRUE;
 }
 
 static void
@@ -171,12 +157,6 @@ gf_root_background_dispose (GObject *object)
       self->size_changed_id = 0;
     }
 
-  if (self->change_event_id != 0)
-    {
-      g_signal_handler_disconnect (self->settings, self->change_event_id);
-      self->change_event_id = 0;
-    }
-
   if (self->change_idle_id != 0)
     {
       g_source_remove (self->change_idle_id);
@@ -184,7 +164,6 @@ gf_root_background_dispose (GObject *object)
     }
 
   g_clear_object (&self->bg);
-  g_clear_object (&self->settings);
 
   G_OBJECT_CLASS (gf_root_background_parent_class)->dispose (object);
 }
@@ -214,7 +193,7 @@ gf_root_background_init (GfRootBackground *self)
     g_signal_connect (screen, "size-changed",
                       G_CALLBACK (size_changed_cb), self);
 
-  self->bg = gf_bg_new ();
+  self->bg = gf_bg_new ("org.gnome.desktop.background");
 
   g_signal_connect (self->bg, "changed",
                     G_CALLBACK (changed_cb), self);
@@ -222,13 +201,7 @@ gf_root_background_init (GfRootBackground *self)
   g_signal_connect (self->bg, "transitioned",
                     G_CALLBACK (transitioned_cb), self);
 
-  self->settings = g_settings_new ("org.gnome.desktop.background");
-
-  self->change_event_id =
-    g_signal_connect (self->settings, "change-event",
-                      G_CALLBACK (change_event_cb), self);
-
-  gf_bg_load_from_preferences (self->bg, self->settings);
+  gf_bg_load_from_preferences (self->bg);
 }
 
 GfRootBackground *

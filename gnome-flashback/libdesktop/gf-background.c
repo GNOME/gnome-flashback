@@ -40,7 +40,6 @@ struct _GfBackground
 
   GtkWidget       *window;
 
-  GSettings       *settings1;
   GSettings       *settings2;
 
   GfBG            *bg;
@@ -260,17 +259,6 @@ size_changed_cb (GfDesktopWindow *window,
   queue_change (self, FALSE);
 }
 
-static gboolean
-change_event_cb (GSettings    *settings,
-                 gpointer      keys,
-                 gint          n_keys,
-                 GfBackground *self)
-{
-  gf_bg_load_from_preferences (self->bg, self->settings1);
-
-  return TRUE;
-}
-
 static void
 changed_cb (GfBG         *bg,
             GfBackground *self)
@@ -297,10 +285,9 @@ gf_background_constructed (GObject *object)
 
   G_OBJECT_CLASS (gf_background_parent_class)->constructed (object);
 
-  self->settings1 = g_settings_new ("org.gnome.desktop.background");
   self->settings2 = g_settings_new ("org.gnome.gnome-flashback.desktop.background");
 
-  self->bg = gf_bg_new ();
+  self->bg = gf_bg_new ("org.gnome.desktop.background");
 
   g_signal_connect_object (self->window, "draw",
                            G_CALLBACK (draw_cb),
@@ -310,10 +297,6 @@ gf_background_constructed (GObject *object)
                            G_CALLBACK (size_changed_cb),
                            self, 0);
 
-  g_signal_connect (self->settings1, "change-event",
-                    G_CALLBACK (change_event_cb),
-                    self);
-
   g_signal_connect (self->bg, "changed",
                     G_CALLBACK (changed_cb),
                     self);
@@ -322,7 +305,7 @@ gf_background_constructed (GObject *object)
                     G_CALLBACK (transitioned_cb),
                     self);
 
-  gf_bg_load_from_preferences (self->bg, self->settings1);
+  gf_bg_load_from_preferences (self->bg);
 }
 
 static void
@@ -332,7 +315,6 @@ gf_background_dispose (GObject *object)
 
   self = GF_BACKGROUND (object);
 
-  g_clear_object (&self->settings1);
   g_clear_object (&self->settings2);
   g_clear_object (&self->bg);
 

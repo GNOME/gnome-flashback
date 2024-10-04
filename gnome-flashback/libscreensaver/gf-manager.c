@@ -30,7 +30,6 @@ struct _GfManager
 {
   GObject           parent;
 
-  GSettings        *settings;
   GfBG             *bg;
 
   GfGrab           *grab;
@@ -242,17 +241,6 @@ bg_changed_cb (GfBG      *bg,
 
   for (l = self->windows; l != NULL; l = l->next)
     apply_background (self, GF_WINDOW (l->data));
-}
-
-static gboolean
-settings_change_event_cb (GSettings *settings,
-                          gpointer   keys,
-                          gint       n_keys,
-                          GfManager *self)
-{
-  gf_bg_load_from_preferences (self->bg, self->settings);
-
-  return FALSE;
 }
 
 static void
@@ -574,7 +562,6 @@ gf_manager_dispose (GObject *object)
 
   self = GF_MANAGER (object);
 
-  g_clear_object (&self->settings);
   g_clear_object (&self->bg);
 
   G_OBJECT_CLASS (gf_manager_parent_class)->dispose (object);
@@ -679,18 +666,13 @@ gf_manager_class_init (GfManagerClass *self_class)
 static void
 gf_manager_init (GfManager *self)
 {
-  self->settings = g_settings_new ("org.gnome.desktop.screensaver");
-  self->bg = gf_bg_new ();
+  self->bg = gf_bg_new ("org.gnome.desktop.screensaver");
 
   g_signal_connect (self->bg, "changed",
                     G_CALLBACK (bg_changed_cb),
                     self);
 
-  g_signal_connect (self->settings, "change-event",
-                    G_CALLBACK (settings_change_event_cb),
-                    self);
-
-  gf_bg_load_from_preferences (self->bg, self->settings);
+  gf_bg_load_from_preferences (self->bg);
 }
 
 GfManager *

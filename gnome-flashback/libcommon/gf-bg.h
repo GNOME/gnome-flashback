@@ -31,13 +31,11 @@ G_BEGIN_DECLS
 #define GF_TYPE_BG (gf_bg_get_type ())
 G_DECLARE_FINAL_TYPE (GfBG, gf_bg, GF, BG, GObject)
 
-GfBG            *gf_bg_new                            (void);
+GfBG            *gf_bg_new                            (const char                *schema_id);
 
-void             gf_bg_load_from_preferences          (GfBG                      *self,
-                                                       GSettings                 *settings);
+void             gf_bg_load_from_preferences          (GfBG                      *self);
 
-void             gf_bg_save_to_preferences            (GfBG                      *self,
-                                                       GSettings                 *settings);
+void             gf_bg_save_to_preferences            (GfBG                      *self);
 
 void             gf_bg_set_filename                   (GfBG                      *self,
                                                        const char                *filename);

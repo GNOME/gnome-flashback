@@ -60,6 +60,11 @@ typedef struct FileCacheEntry FileCacheEntry;
 struct _GfBG
 {
 	GObject                 parent_instance;
+
+	char *                  schema_id;
+	GSettings *             settings;
+	gulong                  change_event_id;
+
 	char *			filename;
 	GDesktopBackgroundStyle	placement;
 	GDesktopBackgroundShading	color_type;
@@ -80,6 +85,17 @@ struct _GfBG
 
 	GList *		        file_cache;
 };
+
+enum
+{
+  PROP_0,
+
+  PROP_SCHEMA_ID,
+
+  LAST_PROP
+};
+
+static GParamSpec *bg_properties[LAST_PROP] = { NULL };
 
 enum {
 	CHANGED,
@@ -1698,6 +1714,34 @@ set_average_color (GdkDisplay *display,
     }
 }
 
+static gboolean
+settings_change_event_cb (GSettings *settings,
+                          void      *keys,
+                          int        n_keys,
+                          GfBG      *self)
+{
+  gf_bg_load_from_preferences (self);
+
+  return TRUE;
+}
+
+static void
+gf_bg_constructed (GObject *object)
+{
+  GfBG *self;
+
+  self = GF_BG (object);
+
+  G_OBJECT_CLASS (gf_bg_parent_class)->constructed (object);
+
+  self->settings = g_settings_new (self->schema_id);
+
+  self->change_event_id = g_signal_connect (self->settings,
+                                            "change-event",
+                                            G_CALLBACK (settings_change_event_cb),
+                                            self);
+}
+
 static void
 gf_bg_dispose (GObject *object)
 {
@@ -1705,6 +1749,13 @@ gf_bg_dispose (GObject *object)
 
   self = GF_BG (object);
 
+  if (self->change_event_id != 0)
+    {
+      g_signal_handler_disconnect (self->settings, self->change_event_id);
+      self->change_event_id = 0;
+    }
+
+  g_clear_object (&self->settings);
   g_clear_object (&self->file_monitor);
 
   clear_cache (self);
@@ -1718,6 +1769,8 @@ gf_bg_finalize (GObject *object)
   GfBG *self;
 
   self = GF_BG (object);
+
+  g_clear_pointer (&self->schema_id, g_free);
 
   if (self->changed_id != 0)
     {
@@ -1743,14 +1796,55 @@ gf_bg_finalize (GObject *object)
 }
 
 static void
+gf_bg_set_property (GObject      *object,
+                    unsigned int  property_id,
+                    const GValue *value,
+                    GParamSpec   *pspec)
+{
+  GfBG *self;
+
+  self = GF_BG (object);
+
+  switch (property_id)
+    {
+      case PROP_SCHEMA_ID:
+        g_assert (self->schema_id == NULL);
+        self->schema_id = g_value_dup_string (value);
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
+
+static void
+install_properties (GObjectClass *object_class)
+{
+  bg_properties[PROP_SCHEMA_ID] =
+    g_param_spec_string ("schema-id",
+                         "schema-id",
+                         "schema-id",
+                         NULL,
+                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE |
+                         G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (object_class, LAST_PROP, bg_properties);
+}
+
+static void
 gf_bg_class_init (GfBGClass *self_class)
 {
   GObjectClass *object_class;
 
   object_class = G_OBJECT_CLASS (self_class);
 
+  object_class->constructed = gf_bg_constructed;
   object_class->dispose = gf_bg_dispose;
   object_class->finalize = gf_bg_finalize;
+  object_class->set_property = gf_bg_set_property;
+
+  install_properties (object_class);
 
   signals[CHANGED] =
     g_signal_new ("changed",
@@ -1781,14 +1875,15 @@ gf_bg_init (GfBG *self)
 }
 
 GfBG *
-gf_bg_new (void)
+gf_bg_new (const char *schema_id)
 {
-  return g_object_new (GF_TYPE_BG, NULL);
+  return g_object_new (GF_TYPE_BG,
+                       "schema-id", schema_id,
+                       NULL);
 }
 
 void
-gf_bg_load_from_preferences (GfBG      *self,
-                             GSettings *settings)
+gf_bg_load_from_preferences (GfBG *self)
 {
   char *tmp;
   char *filename;
@@ -1798,28 +1893,27 @@ gf_bg_load_from_preferences (GfBG      *self,
   GDesktopBackgroundStyle placement;
 
   g_return_if_fail (GF_IS_BG (self));
-  g_return_if_fail (G_IS_SETTINGS (settings));
 
   /* Filename */
-  filename = g_settings_get_mapped (settings,
+  filename = g_settings_get_mapped (self->settings,
                                     BG_KEY_PICTURE_URI,
                                     bg_gsettings_mapping,
                                     NULL);
 
   /* Colors */
-  tmp = g_settings_get_string (settings, BG_KEY_PRIMARY_COLOR);
+  tmp = g_settings_get_string (self->settings, BG_KEY_PRIMARY_COLOR);
   color_from_string (tmp, &c1);
   g_free (tmp);
 
-  tmp = g_settings_get_string (settings, BG_KEY_SECONDARY_COLOR);
+  tmp = g_settings_get_string (self->settings, BG_KEY_SECONDARY_COLOR);
   color_from_string (tmp, &c2);
   g_free (tmp);
 
   /* Color type */
-  ctype = g_settings_get_enum (settings, BG_KEY_COLOR_TYPE);
+  ctype = g_settings_get_enum (self->settings, BG_KEY_COLOR_TYPE);
 
   /* Placement */
-  placement = g_settings_get_enum (settings, BG_KEY_PICTURE_PLACEMENT);
+  placement = g_settings_get_enum (self->settings, BG_KEY_PICTURE_PLACEMENT);
 
   gf_bg_set_rgba (self, ctype, &c1, &c2);
   gf_bg_set_placement (self, placement);
@@ -1829,20 +1923,18 @@ gf_bg_load_from_preferences (GfBG      *self,
 }
 
 void
-gf_bg_save_to_preferences (GfBG      *self,
-                           GSettings *settings)
+gf_bg_save_to_preferences (GfBG *self)
 {
   gchar *primary;
   gchar *secondary;
   gchar *uri;
 
   g_return_if_fail (GF_IS_BG (self));
-  g_return_if_fail (G_IS_SETTINGS (settings));
 
   primary = color_to_string (&self->primary);
   secondary = color_to_string (&self->secondary);
 
-  g_settings_delay (settings);
+  g_settings_delay (self->settings);
 
   uri = NULL;
 
@@ -1852,14 +1944,14 @@ gf_bg_save_to_preferences (GfBG      *self,
   if (uri == NULL)
     uri = g_strdup ("");
 
-  g_settings_set_string (settings, BG_KEY_PICTURE_URI, uri);
-  g_settings_set_string (settings, BG_KEY_PRIMARY_COLOR, primary);
-  g_settings_set_string (settings, BG_KEY_SECONDARY_COLOR, secondary);
-  g_settings_set_enum (settings, BG_KEY_COLOR_TYPE, self->color_type);
-  g_settings_set_enum (settings, BG_KEY_PICTURE_PLACEMENT, self->placement);
+  g_settings_set_string (self->settings, BG_KEY_PICTURE_URI, uri);
+  g_settings_set_string (self->settings, BG_KEY_PRIMARY_COLOR, primary);
+  g_settings_set_string (self->settings, BG_KEY_SECONDARY_COLOR, secondary);
+  g_settings_set_enum (self->settings, BG_KEY_COLOR_TYPE, self->color_type);
+  g_settings_set_enum (self->settings, BG_KEY_PICTURE_PLACEMENT, self->placement);
 
   /* Apply changes atomically. */
-  g_settings_apply (settings);
+  g_settings_apply (self->settings);
 
   g_free (primary);
   g_free (secondary);
