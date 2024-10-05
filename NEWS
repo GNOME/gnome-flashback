@@ -1,3 +1,14 @@
+Version 3.54.0
+==============
+- Fix use after free in timeout_bubble. (#96)
+- Fix polkit crash. (#92)
+- Add new D-Bus API for UI scaling.
+- Update DisplayConfig D-Bus API.
+- Improve screensaver style. (!54)
+- Add support for color-scheme setting. (!51, !53)
+- Save and restore numlock state. (#62, #93)
+- Updated translations.
+
 Version 3.52.1
 ==============
 - Add shadow for desktop icon text. (#89)
