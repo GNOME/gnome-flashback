@@ -72,6 +72,8 @@ activate_cb (SiDesktopMenuItem *self,
              gpointer           user_data)
 {
   char *message;
+  GdkDisplay *display;
+  GdkAppLaunchContext *context;
   GError *error;
   const char *label;
 
@@ -85,8 +87,16 @@ activate_cb (SiDesktopMenuItem *self,
       return;
     }
 
+  display = gdk_display_get_default ();
+  context = gdk_display_get_app_launch_context (display);
+
   error = NULL;
-  g_app_info_launch (G_APP_INFO (self->app_info), NULL, NULL, &error);
+  g_app_info_launch (G_APP_INFO (self->app_info),
+                     NULL,
+                     G_APP_LAUNCH_CONTEXT (context),
+                     &error);
+
+  g_object_unref (context);
 
   if (error == NULL)
     return;
