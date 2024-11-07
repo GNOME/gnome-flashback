@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: gnome-flashback 3.15.0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/"
 "issues/\n"
-"POT-Creation-Date: 2024-03-23 10:19+0000\n"
-"PO-Revision-Date: 2024-07-10 22:14+0300\n"
-"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
+"POT-Creation-Date: 2024-09-01 21:37+0000\n"
+"PO-Revision-Date: 2024-11-07 21:40+0200\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 46.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: backends/gf-monitor.c:135
 msgid "Built-in display"
@@ -161,14 +161,12 @@ msgid "Clipboard (GNOME Flashback)"
 msgstr "לוח הגזירים (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:3
-#, fuzzy
-#| msgid "GNOME Flashback"
 msgid "Geoclue Demo agent (GNOME Flashback)"
-msgstr "GNOME Flashback"
+msgstr "סוכן gecolue להדגמה (GNOME Flashback)"
 
 #: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:4
 msgid "Demo geoclue agent"
-msgstr ""
+msgstr "סוכן geoclue להדגמה"
 
 #: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:5
 msgid "geolocation;"
@@ -1145,7 +1143,7 @@ msgstr "לצערינו פעולה זו לא צלחה. יש לנסות שוב."
 
 #: gnome-flashback/libscreensaver/gf-unlock-dialog.c:177
 msgid "Failed to switch to greeter!"
-msgstr ""
+msgstr "מעבר למקבל הפנים נכשל!"
 
 #: gnome-flashback/libscreensaver/gf-unlock-dialog.c:251
 msgid "Time has expired."
