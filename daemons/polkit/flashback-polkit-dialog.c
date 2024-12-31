@@ -930,6 +930,7 @@ flashback_polkit_dialog_init (FlashbackPolkitDialog *dialog)
 
   gtk_widget_init_template (widget);
 
+  gtk_window_set_icon_name (window, "dialog-password");
   gtk_window_set_keep_above (window, TRUE);
 
   g_signal_connect (dialog, "close",
