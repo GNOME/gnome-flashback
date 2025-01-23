@@ -121,7 +121,7 @@ update_preedit_text_cb (IBusPanelService *service,
       guint start;
       guint end;
 
-      if (ibus_attribute_get_type (attribute) != IBUS_ATTR_TYPE_BACKGROUND)
+      if (ibus_attribute_get_attr_type (attribute) != IBUS_ATTR_TYPE_BACKGROUND)
         continue;
 
       start = ibus_attribute_get_start_index (attribute);
