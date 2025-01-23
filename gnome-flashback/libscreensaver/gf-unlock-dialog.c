@@ -40,6 +40,8 @@ struct _GfUnlockDialog
   GfDmSeatGen    *dm_seat;
 
   GfAuth         *auth;
+  gulong          auth_message_id;
+  gulong          auth_complete_id;
 
   GtkWidget      *face_image;
   GtkWidget      *prompt_label;
@@ -753,15 +755,15 @@ gf_unlock_dialog_constructed (GObject *object)
 
   self->auth = gf_auth_new (username, env_display);
 
-  g_signal_connect (self->auth,
-                    "message",
-                    G_CALLBACK (auth_message_cb),
-                    self);
+  self->auth_message_id = g_signal_connect (self->auth,
+                                            "message",
+                                            G_CALLBACK (auth_message_cb),
+                                            self);
 
-  g_signal_connect (self->auth,
-                    "complete",
-                    G_CALLBACK (auth_complete_cb),
-                    self);
+  self->auth_complete_id = g_signal_connect (self->auth,
+                                             "complete",
+                                             G_CALLBACK (auth_complete_cb),
+                                             self);
 
   gf_auth_verify (self->auth);
 }
@@ -777,6 +779,18 @@ gf_unlock_dialog_dispose (GObject *object)
   g_clear_object (&self->cancellable);
 
   g_clear_object (&self->dm_seat);
+
+  if (self->auth_complete_id != 0)
+    {
+      g_signal_handler_disconnect (self->auth, self->auth_complete_id);
+      self->auth_complete_id = 0;
+    }
+
+  if (self->auth_message_id != 0)
+    {
+      g_signal_handler_disconnect (self->auth, self->auth_message_id);
+      self->auth_message_id = 0;
+    }
 
   if (self->auth != NULL)
     {
