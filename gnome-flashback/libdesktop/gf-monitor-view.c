@@ -945,6 +945,12 @@ gf_monitor_view_dispose (GObject *object)
 
   self = GF_MONITOR_VIEW (object);
 
+  if (self->grid_size_id != 0)
+    {
+      g_source_remove (self->grid_size_id);
+      self->grid_size_id = 0;
+    }
+
   g_clear_object (&self->monitor);
 
   G_OBJECT_CLASS (gf_monitor_view_parent_class)->dispose (object);
@@ -956,12 +962,6 @@ gf_monitor_view_finalize (GObject *object)
   GfMonitorView *self;
 
   self = GF_MONITOR_VIEW (object);
-
-  if (self->grid_size_id != 0)
-    {
-      g_source_remove (self->grid_size_id);
-      self->grid_size_id = 0;
-    }
 
   g_clear_pointer (&self->grid, g_hash_table_destroy);
 
