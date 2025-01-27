@@ -34,6 +34,8 @@ struct _GfMonitorView
   GfIconView  *icon_view;
 
   GfDummyIcon *dummy_icon;
+  gulong       size_changed_id;
+
   guint        column_spacing;
   guint        row_spacing;
 
@@ -933,9 +935,10 @@ gf_monitor_view_constructed (GObject *object)
 
   G_OBJECT_CLASS (gf_monitor_view_parent_class)->constructed (object);
 
-  g_signal_connect (self->dummy_icon, "size-changed",
-                    G_CALLBACK (dummy_icon_size_changed_cb),
-                    self);
+  self->size_changed_id = g_signal_connect (self->dummy_icon,
+                                            "size-changed",
+                                            G_CALLBACK (dummy_icon_size_changed_cb),
+                                            self);
 }
 
 static void
@@ -944,6 +947,12 @@ gf_monitor_view_dispose (GObject *object)
   GfMonitorView *self;
 
   self = GF_MONITOR_VIEW (object);
+
+  if (self->size_changed_id != 0)
+    {
+      g_signal_handler_disconnect (self->dummy_icon, self->size_changed_id);
+      self->size_changed_id = 0;
+    }
 
   if (self->grid_size_id != 0)
     {
