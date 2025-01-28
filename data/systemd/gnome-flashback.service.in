@@ -15,6 +15,7 @@ StartLimitBurst=3
 
 [Service]
 Type=dbus
+Slice=session.slice
 ExecStart=@bindir@/gnome-flashback
 Restart=on-failure
 RestartSec=0ms
