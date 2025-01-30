@@ -161,7 +161,8 @@ list_engines_cb (GObject      *source_object,
     }
   else
     {
-      g_warning ("Failed to list ibus engines - %s", error->message);
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Failed to list ibus engines - %s", error->message);
       g_error_free (error);
 
       clear (manager);
@@ -281,7 +282,8 @@ request_name_cb (GObject      *source_object,
 
   if (result == 0)
     {
-      g_warning ("Name request failed - %s", error->message);
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Name request failed - %s", error->message);
       g_error_free (error);
 
       clear (manager);
@@ -349,7 +351,8 @@ set_global_engine_cb (GObject      *source_object,
 
   if (!result)
     {
-      g_warning ("Failed to set ibus engine - %s", error->message);
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Failed to set ibus engine - %s", error->message);
       g_error_free (error);
     }
 
@@ -372,7 +375,8 @@ preload_engines_cb (GObject      *source_object,
 
   if (!result)
     {
-      g_warning ("Failed to preload engines - %s", error->message);
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Failed to preload engines - %s", error->message);
       g_error_free (error);
     }
 }
