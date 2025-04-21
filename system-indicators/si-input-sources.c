@@ -803,14 +803,13 @@ spawn_keyboard_display (const char *description)
   GPid pid;
   GError *error;
 
-  argv = g_new0 (gchar *, 4);
+  argv = g_new0 (gchar *, 3);
   flags = G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD;
   error = NULL;
 
-  argv[0] = g_strdup ("gkbd-keyboard-display");
-  argv[1] = g_strdup ("-l");
-  argv[2] = g_strdup (description);
-  argv[3] = NULL;
+  argv[0] = g_strdup ("tecla");
+  argv[1] = g_strdup (description);
+  argv[2] = NULL;
 
   g_spawn_async (NULL, argv, NULL, flags, NULL, NULL, &pid, &error);
   g_strfreev (argv);
