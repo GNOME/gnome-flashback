@@ -1,4 +1,6 @@
 [Unit]
 @WANTS_GSD@
 
+Wants=localsearch-3.service
+
 Requires=gnome-flashback.target
