@@ -26,8 +26,7 @@ gnome-flashback-metacity: Makefile
 	             echo '  export XDG_CURRENT_DESKTOP="GNOME-Flashback:GNOME"' && \
 	             echo 'fi' && echo '' && \
 	             echo -n 'exec gnome-session ' && \
-	             echo -n '--session=gnome-flashback-metacity ' && \
-	             echo '--disable-acceleration-check "$$@"') > $@
+	             echo '--session=gnome-flashback-metacity "$$@"') > $@
 	$(AM_V_at) chmod a+x $@
 
 CLEANFILES = \
