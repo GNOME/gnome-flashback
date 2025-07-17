@@ -15,8 +15,5 @@ PartOf=graphical-session.target
 BindsTo=gnome-session@.target
 After=gnome-session@.target
 
-BindsTo=gnome-session-x11.target
-After=gnome-session-x11.target
-
 BindsTo=gnome-session.target
 After=gnome-session.target
