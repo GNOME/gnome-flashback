@@ -1050,14 +1050,27 @@ static void
 open_terminal_cb (GtkMenuItem *item,
                   GfIconView  *self)
 {
-  GError *error;
+  gboolean ok_console = FALSE;
+  gboolean ok_terminal = FALSE;
+  GError *error_console = NULL;
+  GError *error_terminal = NULL;
 
-  error = NULL;
-  if (!gf_launch_desktop_file ("org.gnome.Terminal.desktop", &error))
+  ok_console = gf_launch_desktop_file ("org.gnome.Console.desktop", &error_console);
+
+  if (!ok_console)
+    ok_terminal = gf_launch_desktop_file ("org.gnome.Terminal.desktop", &error_terminal);
+
+  if (!ok_console && !ok_terminal)
     {
-      g_warning ("%s", error->message);
-      g_error_free (error);
+      if (error_console)
+          g_warning ("%s", error_console->message);
+
+      if (error_terminal)
+          g_warning ("%s", error_terminal->message);
     }
+
+  g_clear_error (&error_console);
+  g_clear_error (&error_terminal);
 }
 
 typedef struct
