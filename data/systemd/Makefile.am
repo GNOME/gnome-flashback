@@ -47,24 +47,26 @@ metacity/session.conf: Makefile.am gnome-flashback.session.conf.in
 systemd_metacity_sessiondir = $(prefix)/lib/systemd/user/gnome-session@gnome-flashback-metacity.target.d
 systemd_metacity_session_DATA = \
 	metacity/session.conf \
+	metacity.conf \
 	$(NULL)
 
 CLEANFILES = \
+	metacity/session.conf \
 	$(service_files) \
-	$(systemd_metacity_session_DATA) \
 	$(NULL)
 
 EXTRA_DIST = \
 	gnome-flashback.session.conf.in \
+	metacity.conf \
 	$(service_in_files) \
 	$(target_files) \
 	$(NULL)
 
-if WITH_COMPIZ_SESSION
 compiz_target_files = \
 	gnome-session-x11@gnome-flashback-compiz.target \
 	$(NULL)
 
+if WITH_COMPIZ_SESSION
 systemduserunit_DATA += \
 	$(compiz_target_files) \
 	$(NULL)
@@ -77,15 +79,17 @@ compiz/session.conf: Makefile.am gnome-flashback.session.conf.in
 systemd_compiz_sessiondir = $(prefix)/lib/systemd/user/gnome-session@gnome-flashback-compiz.target.d
 systemd_compiz_session_DATA = \
 	compiz/session.conf \
+	compiz.conf \
 	$(NULL)
 
 CLEANFILES += \
-	$(systemd_compiz_session_DATA) \
-	$(NULL)
-
-EXTRA_DIST += \
-	$(compiz_target_files) \
+	compiz/session.conf \
 	$(NULL)
 endif
+
+EXTRA_DIST += \
+	compiz.conf \
+	$(compiz_target_files) \
+	$(NULL)
 
 -include $(top_srcdir)/git.mk
