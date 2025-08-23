@@ -1,7 +1,12 @@
 [Unit]
 @WANTS_GSD@
 
+Wants=evolution-alarm-notify.service
+Wants=gcr-ssh-agent.socket
+Wants=gnome-disk-utility-notify.service
+Wants=gnome-software.service
 Wants=localsearch-3.service
+Wants=user-dirs-update-gtk.service
 
 Requires=gnome-session-x11-services-ready.target
 Requires=gnome-flashback.target
