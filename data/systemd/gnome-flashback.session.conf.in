@@ -5,3 +5,4 @@ Wants=localsearch-3.service
 
 Requires=gnome-session-x11-services-ready.target
 Requires=gnome-flashback.target
+Wants=gnome-panel.service
