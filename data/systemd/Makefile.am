@@ -19,7 +19,11 @@ required_components_gsd = \
 	org.gnome.SettingsDaemon.XSettings \
 	$(NULL)
 
-service_in_files = gnome-flashback.service.in
+service_in_files = \
+	gnome-flashback.service.in \
+	gnome-flashback-idle-monitor.service.in \
+	$(NULL)
+
 service_files = $(service_in_files:.service.in=.service)
 
 target_files = \
@@ -34,7 +38,10 @@ systemduserunit_DATA = \
 	$(NULL)
 
 %.service: %.service.in
-	$(AM_V_GEN) sed -e 's,[@]bindir[@],$(bindir),g' < $< > $@
+	$(AM_V_GEN) sed \
+		-e 's,[@]bindir[@],$(bindir),g' \
+		-e 's,[@]libexecdir[@],$(libexecdir),g' \
+		< $< > $@
 
 space = $(NULL) $(NULL)
 wants_gsd = Wants=$(subst $(space),.target\nWants=,$(strip $(required_components_gsd))).target
