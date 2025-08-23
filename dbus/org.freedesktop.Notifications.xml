@@ -32,6 +32,11 @@
       <arg type="u" name="id" direction="out" />
     </method>
 
+    <signal name="ActivationToken">
+      <arg type="u" name="id" />
+      <arg type="s" name="activation_token" />
+    </signal>
+
     <signal name="ActionInvoked">
       <arg type="u" name="id" />
       <arg type="s" name="action_key" />

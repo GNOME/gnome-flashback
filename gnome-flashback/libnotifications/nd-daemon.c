@@ -21,6 +21,7 @@
 #include "config.h"
 #include "nd-daemon.h"
 
+#include <gio/gdesktopappinfo.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
@@ -66,6 +67,7 @@ closed_cb (NdNotification *notification,
 static void
 action_invoked_cb (NdNotification *notification,
                    const gchar    *action,
+                   guint32         time,
                    gpointer        user_data)
 {
   NdDaemon *daemon;
@@ -73,6 +75,30 @@ action_invoked_cb (NdNotification *notification,
 
   daemon = ND_DAEMON (user_data);
   id = nd_notification_get_id (notification);
+
+  {
+    GdkDisplay *display;
+    GdkAppLaunchContext *context;
+    GDesktopAppInfo *app_info;
+    char *activation_token;
+
+    display = gdk_display_get_default ();
+    context = gdk_display_get_app_launch_context (display);
+
+    gdk_app_launch_context_set_timestamp (context, time);
+
+    app_info = g_desktop_app_info_new ("gnome-flashback.desktop");
+    activation_token = g_app_launch_context_get_startup_notify_id (G_APP_LAUNCH_CONTEXT (context),
+                                                                   G_APP_INFO (app_info),
+                                                                   NULL);
+
+    gf_fd_notifications_gen_emit_activation_token (daemon->notifications,
+                                                   id, activation_token);
+
+    g_free (activation_token);
+    g_object_unref (app_info);
+    g_object_unref (context);
+  }
 
   gf_fd_notifications_gen_emit_action_invoked (daemon->notifications,
                                                id, action);

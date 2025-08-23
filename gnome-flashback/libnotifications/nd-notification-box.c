@@ -62,7 +62,9 @@ nd_notification_box_button_release_event (GtkWidget      *widget,
 {
         NdNotificationBox *notification_box = ND_NOTIFICATION_BOX (widget);
 
-        nd_notification_action_invoked (notification_box->priv->notification, "default");
+        nd_notification_action_invoked (notification_box->priv->notification,
+                                        "default",
+                                        event->time);
 
         return FALSE;
 }
@@ -92,7 +94,8 @@ on_action_clicked (GtkButton         *button,
         const char *key = g_object_get_data (G_OBJECT (button), "_action_key");
 
         nd_notification_action_invoked (notification_box->priv->notification,
-                                        key);
+                                        key,
+                                        event->time);
 }
 
 static GtkWidget *

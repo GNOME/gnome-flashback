@@ -336,8 +336,11 @@ nd_notification_class_init (NdNotificationClass *class)
                               G_SIGNAL_RUN_LAST,
                               0,
                               NULL, NULL,
-                              g_cclosure_marshal_VOID__STRING,
-                              G_TYPE_NONE, 1, G_TYPE_STRING);
+                              NULL,
+                              G_TYPE_NONE,
+                              2,
+                              G_TYPE_STRING,
+                              G_TYPE_UINT);
 }
 
 static void
@@ -531,12 +534,13 @@ nd_notification_close (NdNotification            *notification,
 
 void
 nd_notification_action_invoked (NdNotification  *notification,
-                                const char      *action)
+                                const char      *action,
+                                guint32          time)
 {
         g_return_if_fail (ND_IS_NOTIFICATION (notification));
 
         g_object_ref (notification);
-        g_signal_emit (notification, signals[ACTION_INVOKED], 0, action);
+        g_signal_emit (notification, signals[ACTION_INVOKED], 0, action, time);
         g_object_unref (notification);
 }
 

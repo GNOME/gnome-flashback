@@ -77,7 +77,8 @@ gboolean              nd_notification_get_action_icons    (NdNotification *notif
 void                  nd_notification_close               (NdNotification *notification,
                                                            NdNotificationClosedReason reason);
 void                  nd_notification_action_invoked      (NdNotification *notification,
-                                                           const char     *action);
+                                                           const char     *action,
+                                                           guint32         time);
 void                  nd_notification_url_clicked         (NdNotification *notification,
                                                            const char     *url);
 

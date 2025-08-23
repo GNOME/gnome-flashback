@@ -103,7 +103,7 @@ button_release_event_cb (GtkButton      *button,
   priv = gf_bubble_get_instance_private (bubble);
 
   key = g_object_get_data (G_OBJECT (button), "_action_key");
-  nd_notification_action_invoked (priv->notification, key);
+  nd_notification_action_invoked (priv->notification, key, event->time);
 
   transient = nd_notification_get_is_transient (priv->notification);
   resident = nd_notification_get_is_resident (priv->notification);
@@ -411,7 +411,7 @@ gf_bubble_button_release_event (GtkWidget      *widget,
       return retval;
     }
 
-  nd_notification_action_invoked (priv->notification, "default");
+  nd_notification_action_invoked (priv->notification, "default", event->time);
   gtk_widget_destroy (widget);
 
   return retval;
