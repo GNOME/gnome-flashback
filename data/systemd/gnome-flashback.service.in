@@ -1,8 +1,5 @@
 [Unit]
 Description=GNOME Flashback
-OnFailure=gnome-session-failed.target
-OnFailureJobMode=replace
-CollectMode=inactive-or-failed
 
 After=gnome-session-manager.target
 
