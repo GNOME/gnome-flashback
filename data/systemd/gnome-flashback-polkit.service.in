@@ -1,0 +1,11 @@
+[Unit]
+Description=Polkit (GNOME Flashback)
+After=graphical-session.target
+Requisite=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Slice=session.slice
+ExecStart=@libexecdir@/gnome-flashback-polkit
+Restart=on-failure
+RestartSec=0ms

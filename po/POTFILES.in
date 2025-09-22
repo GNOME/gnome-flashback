@@ -8,11 +8,8 @@ daemons/polkit/flashback-listener.c
 daemons/polkit/flashback-polkit-dialog.c
 daemons/polkit/flashback-polkit-dialog.ui
 data/applications/gnome-flashback.desktop.in
-data/autostart/gnome-flashback-clipboard.desktop.in.in
 data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in
-data/autostart/gnome-flashback-media-keys.desktop.in.in
 data/autostart/gnome-flashback-nm-applet.desktop.in
-data/autostart/gnome-flashback-polkit.desktop.in.in
 data/directories/X-GNOME-Flashback-Science.directory.desktop.in
 data/directories/X-GNOME-Flashback-Settings.directory.desktop.in
 data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in

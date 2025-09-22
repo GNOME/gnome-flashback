@@ -21,7 +21,10 @@ required_components_gsd = \
 
 service_in_files = \
 	gnome-flashback.service.in \
+	gnome-flashback-clipboard.service.in \
 	gnome-flashback-idle-monitor.service.in \
+	gnome-flashback-media-keys.service.in \
+	gnome-flashback-polkit.service.in \
 	$(NULL)
 
 service_files = $(service_in_files:.service.in=.service)

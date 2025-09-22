@@ -1,0 +1,11 @@
+[Unit]
+Description=Clipboard (GNOME Flashback)
+After=graphical-session.target
+Requisite=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Slice=session.slice
+ExecStart=@libexecdir@/gnome-flashback-clipboard
+Restart=on-failure
+RestartSec=0ms

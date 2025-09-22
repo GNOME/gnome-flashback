@@ -8,7 +8,10 @@ Wants=gnome-software.service
 Wants=localsearch-3.service
 Wants=user-dirs-update-gtk.service
 
+Wants=gnome-flashback-clipboard.service
 Wants=gnome-flashback-idle-monitor.service
+Wants=gnome-flashback-media-keys.service
+Wants=gnome-flashback-polkit.service
 
 Requires=gnome-session-x11-services-ready.target
 Requires=gnome-flashback.target
