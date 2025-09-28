@@ -19,7 +19,7 @@ variables:
                   gsettings-desktop-schemas-dev
                   libasound2-dev
                   libcanberra-gtk3-dev
-                  libgdk-pixbuf2.0-dev
+                  libgdk-pixbuf-2.0-dev
                   libgdm-dev
                   libglib2.0-dev
                   libgnome-bluetooth-3.0-dev
