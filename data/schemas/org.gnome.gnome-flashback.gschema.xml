@@ -17,11 +17,6 @@
       <description>If set to true, then GNOME Flashback application will be used to automount removable media.</description>
     </key>
 
-    <key name="clipboard" type="b">
-      <default>true</default>
-      <summary>Clipboard</summary>
-    </key>
-
     <key name="desktop" type="b">
       <default>true</default>
       <summary>Desktop</summary>
@@ -31,12 +26,6 @@
       <default>true</default>
       <summary>End session dialog</summary>
       <description>If set to true, then GNOME Flashback application will be used to show the end session dialog.</description>
-    </key>
-
-    <key name="idle-monitor" type="b">
-      <default>true</default>
-      <summary>Idle monitor</summary>
-      <description>If set to true, then GNOME Flashback application will be used for user activity monitoring.</description>
     </key>
 
     <key name="input-settings" type="b">
@@ -54,12 +43,6 @@
       <default>true</default>
       <summary>Notification daemon</summary>
       <description>If set to true, then GNOME Flashback application will be used to manage notifications.</description>
-    </key>
-
-    <key name="polkit" type="b">
-      <default>true</default>
-      <summary>Authentication agent for polkit</summary>
-      <description>This is the same authentication agent that was provided by PolicyKit-gnome.</description>
     </key>
 
     <key name="root-background" type="b">
