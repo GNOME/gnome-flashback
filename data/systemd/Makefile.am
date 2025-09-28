@@ -34,7 +34,7 @@ target_files = \
 	gnome-session-x11@gnome-flashback-metacity.target \
 	$(NULL)
 
-systemduserunitdir = $(prefix)/lib/systemd/user
+systemduserunitdir = $(SYSTEMD_USER_UNIT_DIR)
 systemduserunit_DATA = \
 	$(service_files) \
 	$(target_files) \
@@ -54,7 +54,7 @@ metacity/session.conf: Makefile.am gnome-flashback.session.conf.in
 		-e 's,[@]WANTS_GSD[@],$(wants_gsd),g' \
 		< $(srcdir)/gnome-flashback.session.conf.in > $@
 
-systemd_metacity_sessiondir = $(prefix)/lib/systemd/user/gnome-session@gnome-flashback-metacity.target.d
+systemd_metacity_sessiondir = $(SYSTEMD_USER_UNIT_DIR)/gnome-session@gnome-flashback-metacity.target.d
 systemd_metacity_session_DATA = \
 	metacity/session.conf \
 	metacity.conf \
@@ -86,7 +86,7 @@ compiz/session.conf: Makefile.am gnome-flashback.session.conf.in
 		-e 's,[@]WANTS_GSD[@],$(wants_gsd),g' \
 		< $(srcdir)/gnome-flashback.session.conf.in > $@
 
-systemd_compiz_sessiondir = $(prefix)/lib/systemd/user/gnome-session@gnome-flashback-compiz.target.d
+systemd_compiz_sessiondir = $(SYSTEMD_USER_UNIT_DIR)/gnome-session@gnome-flashback-compiz.target.d
 systemd_compiz_session_DATA = \
 	compiz/session.conf \
 	compiz.conf \

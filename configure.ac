@@ -299,6 +299,21 @@ GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
 AC_SUBST([GNOME_KEYBINDINGS_KEYSDIR])
 
 dnl **************************************************************************
+dnl systemd user unit dir
+dnl **************************************************************************
+
+AS_IF([$PKG_CONFIG systemd], [
+  SYSTEMD_USER_UNIT_DIR=$($PKG_CONFIG \
+    --variable=systemduserunitdir \
+    --define-variable=prefix=${prefix} \
+    systemd)
+], [
+  SYSTEMD_USER_UNIT_DIR="${prefix}/lib/systemd/user"
+])
+
+AC_SUBST([SYSTEMD_USER_UNIT_DIR], [$SYSTEMD_USER_UNIT_DIR])
+
+dnl **************************************************************************
 dnl System indicators
 dnl **************************************************************************
 
