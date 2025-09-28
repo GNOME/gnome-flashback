@@ -1,3 +1,8 @@
+Version 3.58.0
+==============
+- Fix session starting with GNOME 49. (#103)
+- Updated translations.
+
 Version 3.56.0
 ==============
 - Use tecla to show keyboard layout. (#101)
