@@ -648,10 +648,11 @@ get_window_rect_coords (GdkWindow    *window,
     }
   else
     {
-      real.width = gdk_window_get_width (window);
-      real.height = gdk_window_get_height (window);
-
-      gdk_window_get_origin (window, &real.x, &real.y);
+      gdk_window_get_geometry (window,
+                               &real.x,
+                               &real.y,
+                               &real.width,
+                               &real.height);
     }
 
   if (real_out != NULL)
