@@ -980,38 +980,44 @@ take_screenshot_real (GfScreenshot    *screenshot,
                * the areas for the invisible borders themselves.
                * In that case, trim every rectangle we get by the offset between
                * the WM window size and the frame extents.
+               *
+               * Note that the XShape values are in actual pixels, whereas the
+               * GDK ones are in display pixels (i.e. scaled), so we need to
+               * apply the scale factor to the former to use display pixels for
+               * all our math.
                */
-              rec_x = rectangles[i].x;
-              rec_y = rectangles[i].y;
-              rec_width = rectangles[i].width;
-              rec_height = rectangles[i].height;
+              rec_x = rectangles[i].x / scale;
+              rec_y = rectangles[i].y / scale;
+              rec_width = rectangles[i].width / scale;
+              rec_height = rectangles[i].height / scale;
 
-              rec_width -= frame_offset.left * scale + frame_offset.right * scale;
-              rec_height -= frame_offset.top * scale + frame_offset.bottom * scale;
+              rec_width -= frame_offset.left + frame_offset.right;
+              rec_height -= frame_offset.top + frame_offset.bottom;
 
               if (real.x < 0)
                 {
-                  rec_x += real.x * scale;
+                  rec_x += real.x;
                   rec_x = MAX(rec_x, 0);
-                  rec_width += real.x * scale;
+                  rec_width += real.x;
                 }
 
               if (real.y < 0)
                 {
-                  rec_y += real.y * scale;
+                  rec_y += real.y;
                   rec_y = MAX(rec_y, 0);
-                  rec_height += real.y * scale;
+                  rec_height += real.y;
                 }
 
               get_screen_size (&screen_width, &screen_height, 1);
 
-              if (s.x * scale + rec_x + rec_width > screen_width)
-                rec_width = screen_width - s.x * scale - rec_x;
+              if (s.x + rec_x + rec_width > screen_width)
+                rec_width = screen_width - s.x - rec_x;
 
-              if (s.y * scale + rec_y + rec_height > screen_height)
-                rec_height = screen_height - s.y * scale - rec_y;
+              if (s.y + rec_y + rec_height > screen_height)
+                rec_height = screen_height - s.y - rec_y;
 
-              for (y2 = rec_y; y2 < rec_y + rec_height; y2++)
+              /* Undo the scale factor in order to copy the pixbuf data pixel-wise */
+              for (y2 = rec_y * scale; y2 < (rec_y + rec_height) * scale; y2++)
                 {
                   guchar *src_pixels;
                   guchar *dest_pixels;
@@ -1019,12 +1025,12 @@ take_screenshot_real (GfScreenshot    *screenshot,
 
                   src_pixels = gdk_pixbuf_get_pixels (pixbuf)
                              + y2 * gdk_pixbuf_get_rowstride(pixbuf)
-                             + rec_x * (has_alpha ? 4 : 3);
+                             + rec_x * scale * (has_alpha ? 4 : 3);
                   dest_pixels = gdk_pixbuf_get_pixels (tmp)
                               + y2 * gdk_pixbuf_get_rowstride (tmp)
-                              + rec_x * 4;
+                              + rec_x * scale * 4;
 
-                  for (x2 = 0; x2 < rec_width; x2++)
+                  for (x2 = 0; x2 < rec_width * scale; x2++)
                     {
                       *dest_pixels++ = *src_pixels++;
                       *dest_pixels++ = *src_pixels++;
