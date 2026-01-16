@@ -881,6 +881,9 @@ take_screenshot_real (GfScreenshot    *screenshot,
       pixbuf = gdk_pixbuf_get_from_window (window, real.x, real.y,
                                            real.width, real.height);
 
+      if (pixbuf == NULL)
+        return FALSE;
+
       screenshot_add_cursor (pixbuf, type, include_cursor, window,
                              real.x * scale, real.y *scale);
 
@@ -938,6 +941,9 @@ take_screenshot_real (GfScreenshot    *screenshot,
 
   root = gdk_get_default_root_window ();
   pixbuf = gdk_pixbuf_get_from_window (root, s.x, s.y, s.width, s.height);
+
+  if (pixbuf == NULL)
+    return FALSE;
 
   if (type != SCREENSHOT_WINDOW && type != SCREENSHOT_AREA)
     mask_monitors (pixbuf, root);
