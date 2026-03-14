@@ -1,0 +1,1308 @@
+# Kazakh translation for gnome-flashback.
+# Copyright (C) 2026 gnome-flashback's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-flashback package.
+# Baurzhan Muftakhidinov <baurthefirst@gmail.com>,  2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-flashback gnome-3-44\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/"
+"issues/\n"
+"POT-Creation-Date: 2026-01-16 11:20+0000\n"
+"PO-Revision-Date: 2026-03-15 00:53+0500\n"
+"Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
+"Language-Team: Kazakh <Kazakh>\n"
+"Language: kk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.9\n"
+
+#: backends/gf-monitor.c:135
+msgid "Built-in display"
+msgstr "Құрамындағы дисплей"
+
+#: backends/gf-monitor.c:169
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
+msgid "Unknown"
+msgstr "Белгісіз"
+
+#: backends/gf-monitor.c:171
+msgid "Unknown Display"
+msgstr "Белгісіз дисплей"
+
+#: backends/gf-monitor.c:180
+#, c-format
+msgctxt ""
+"This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
+msgid "%s %s"
+msgstr "%s %s"
+
+#: backends/gf-monitor.c:194
+#, c-format
+msgctxt ""
+"This is a monitor vendor name followed by product/model name where size in "
+"inches could not be calculated, e.g. Dell U2414H"
+msgid "%s %s"
+msgstr "%s %s"
+
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#: daemons/media-keys/gsd-media-keys-manager.c:551
+#, no-c-format
+msgid "Screencast from %d %t.webm"
+msgstr "Экран жазбасы: %d %t.webm"
+
+#. translators: this is the name of the file that gets made up
+#. * with the screenshot
+#: daemons/media-keys/gsd-screenshot-utils.c:240
+#, c-format
+msgid "Screenshot from %s"
+msgstr "Скриншот: %s"
+
+#: daemons/polkit/flashback-authenticator.c:100
+#, c-format
+msgid "_Password for %s:"
+msgstr "%s үшін п_ароль:"
+
+#: daemons/polkit/flashback-authenticator.c:104
+#: daemons/polkit/flashback-polkit-dialog.ui:99
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:368
+msgid "_Password:"
+msgstr "П_ароль:"
+
+#: daemons/polkit/flashback-authenticator.c:259
+msgid "Your authentication attempt was unsuccessful. Please try again."
+msgstr "Аутентификация әрекеті сәтсіз аяқталды. Қайталап көріңіз."
+
+#: daemons/polkit/flashback-listener.c:139
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Аутентификация сұхбат терезесін пайдаланушы жапты"
+
+#: daemons/polkit/flashback-polkit-dialog.c:202
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as one of the users below is required to perform this action."
+msgstr ""
+"Қолданба артықшылықтарды талап ететін әрекетті орындауға тырысуда. Осы "
+"әрекетті орындау үшін төмендегі пайдаланушылардың бірі ретінде "
+"аутентификациядан өту керек."
+
+#: daemons/polkit/flashback-polkit-dialog.c:212
+#: daemons/polkit/flashback-polkit-dialog.ui:68
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication is required to perform this action."
+msgstr ""
+"Қолданба артықшылықтарды талап ететін әрекетті орындауға тырысуда. Осы "
+"әрекетті орындау үшін аутентификация қажет."
+
+#: daemons/polkit/flashback-polkit-dialog.c:217
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication as the super user is required to perform this action."
+msgstr ""
+"Қолданба артықшылықтарды талап ететін әрекетті орындауға тырысуда. Осы "
+"әрекетті орындау үшін әкімші ретінде аутентификациядан өту қажет."
+
+#: daemons/polkit/flashback-polkit-dialog.c:386
+msgid "Select user..."
+msgstr "Пайдаланушыны таңдау..."
+
+#: daemons/polkit/flashback-polkit-dialog.c:425
+#, c-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: daemons/polkit/flashback-polkit-dialog.c:600
+msgid "Action:"
+msgstr "Әрекет:"
+
+#: daemons/polkit/flashback-polkit-dialog.c:603
+#, c-format
+msgid "Click to edit %s"
+msgstr "%s түзету үшін шертіңіз"
+
+#: daemons/polkit/flashback-polkit-dialog.c:611
+msgid "Vendor:"
+msgstr "Сатушы:"
+
+#: daemons/polkit/flashback-polkit-dialog.c:614
+#, c-format
+msgid "Click to open %s"
+msgstr "%s ашу үшін шертіңіз"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:8
+msgid "Authenticate"
+msgstr "Аутентификациялау"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:53
+msgid "<big><b>Title</b></big>"
+msgstr "<big><b>Тақырыбы</b></big>"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:192
+msgid "<small><b>_Details</b></small>"
+msgstr "<small><b>Т_олығырақ</b></small>"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:213
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
+msgid "_Cancel"
+msgstr "Бас _тарту"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:228
+msgid "_Authenticate"
+msgstr "А_утентификациялау"
+
+#: data/applications/gnome-flashback.desktop.in:3
+msgid "GNOME Flashback"
+msgstr "GNOME Flashback"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:2
+msgid "Geoclue Demo agent (GNOME Flashback)"
+msgstr "Geoclue демо агенті (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:3
+msgid "Demo geoclue agent"
+msgstr "Демо geoclue агенті"
+
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:4
+msgid "geolocation;"
+msgstr "геолокация;"
+
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:2
+msgid "Network (GNOME Flashback)"
+msgstr "Желі (GNOME Flashback)"
+
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:3
+msgid "Manage your network connections"
+msgstr "Желілік байланыстарды басқару"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:3
+msgid "Science"
+msgstr "Ғылым"
+
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:4
+msgid "Scientific applications"
+msgstr "Ғылыми қолданбалар"
+
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:3
+msgid "Preferences"
+msgstr "Баптаулар"
+
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
+msgid "Personal preferences"
+msgstr "Жеке баптаулар"
+
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:3
+msgid "Administration"
+msgstr "Әкімшілік"
+
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
+msgid "Change system-wide settings (affects all users)"
+msgstr ""
+"Жалпы жүйелік параметрлерді өзгерту (барлық пайдаланушыларға әсер етеді)"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:6
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
+msgid "Screenshots"
+msgstr "Скриншоттар"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:10
+msgid "Save a screenshot to $PICTURES"
+msgstr "Скриншотты $PICTURES бумасына сақтау"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:14
+msgid "Save a screenshot of a window to $PICTURES"
+msgstr "Терезе скриншотын $PICTURES бумасына сақтау"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:18
+msgid "Save a screenshot of an area to $PICTURES"
+msgstr "Аймақ скриншотын $PICTURES бумасына сақтау"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:21
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:23
+msgid "Copy a screenshot to clipboard"
+msgstr "Скриншотты алмасу буферіне көшіру"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:24
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:29
+msgid "Copy a screenshot of a window to clipboard"
+msgstr "Терезе скриншотын алмасу буферіне көшіру"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:27
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:35
+msgid "Copy a screenshot of an area to clipboard"
+msgstr "Аймақ скриншотын алмасу буферіне көшіру"
+
+#: data/keybindings/50-gnome-flashback-screenshots.xml:30
+msgid "Record a short screencast"
+msgstr "Қысқа экран жазбасын түсіру"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:5
+msgid "a11y-keyboard"
+msgstr "a11y-keyboard"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:10
+msgid "Audio device selection"
+msgstr "Аудио құрылғыны таңдау"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:11
+msgid ""
+"If set to true, then GNOME Flashback application will be used to provide the "
+"audio device selection dialog."
+msgstr ""
+"Егер ақиқат болса, аудио құрылғыны таңдау сұхбат терезесін ұсыну үшін GNOME "
+"Flashback қолданбасы қолданылады."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:16
+msgid "Automount manager"
+msgstr "Автоматты тіркеу менеджері"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:17
+msgid ""
+"If set to true, then GNOME Flashback application will be used to automount "
+"removable media."
+msgstr ""
+"Егер ақиқат болса, алынбалы тасушыларды автоматты тіркеу үшін GNOME "
+"Flashback қолданбасы қолданылады."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:22
+#: gnome-flashback/libdesktop/gf-desktop-window.c:824
+msgid "Desktop"
+msgstr "Жұмыс үстелі"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:27
+msgid "End session dialog"
+msgstr "Сеансты аяқтау сұхбат терезесі"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:28
+msgid ""
+"If set to true, then GNOME Flashback application will be used to show the "
+"end session dialog."
+msgstr ""
+"Егер ақиқат болса, сеансты аяқтау сұхбат терезесін көрсету үшін GNOME "
+"Flashback қолданбасы қолданылады."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
+msgid "Input settings"
+msgstr "Енгізу параметрлері"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
+msgid "Keyboard layouts and input methods"
+msgstr "Пернетақта жаймалары және енгізу әдістері"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"keyboard layouts and input methods."
+msgstr ""
+"Егер ақиқат болса, пернетақта жаймалары мен енгізу әдістерін басқару үшін "
+"GNOME Flashback қолданбасы қолданылады."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
+msgid "Notification daemon"
+msgstr "Хабарландыру қызметі"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:45
+msgid ""
+"If set to true, then GNOME Flashback application will be used to manage "
+"notifications."
+msgstr ""
+"Егер ақиқат болса, хабарландыруларды басқару үшін GNOME Flashback қолданбасы "
+"қолданылады."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
+msgid "Root background"
+msgstr "Түбірлік фон"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
+msgid "Screencasts"
+msgstr "Экран жазбалары"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
+msgid ""
+"If set to true, then GNOME Flashback application will be used to record the "
+"screen."
+msgstr ""
+"Егер ақиқат болса, экранды жазу үшін GNOME Flashback қолданбасы қолданылады."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
+msgid "Screensaver"
+msgstr "Экран сақтағышы"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a "
+"screensaver."
+msgstr ""
+"Егер ақиқат болса, GNOME Flashback қолданбасы экран сақтағышы ретінде "
+"қолданылады."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:68
+msgid ""
+"If set to true, then GNOME Flashback application will be used to take "
+"screenshots."
+msgstr ""
+"Егер ақиқат болса, скриншоттар түсіру үшін GNOME Flashback қолданбасы "
+"қолданылады."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
+msgid "Shell"
+msgstr "Қоршам"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:74
+msgid ""
+"If set to true, then GNOME Flashback application will be used as a shell."
+msgstr ""
+"Егер ақиқат болса, GNOME Flashback қолданбасы қоршам ретінде қолданылады."
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
+msgid "Status Notifier Watcher"
+msgstr "Status Notifier Watcher"
+
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:80
+msgid ""
+"If set to true, then GNOME Flashback application will be used as Status "
+"Notifier Watcher."
+msgstr ""
+"Егер ақиқат болса, GNOME Flashback қолданбасы Status Notifier Watcher "
+"ретінде қолданылады."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:5
+msgid "Draw desktop background"
+msgstr "Жұмыс үстелі фонын салу"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:6
+msgid "If set to true, then GNOME Flashback will draw the desktop background."
+msgstr "Егер ақиқат болса, GNOME Flashback жұмыс үстелі фонын салады."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:11
+msgid "Show desktop icons"
+msgstr "Жұмыс үстелі таңбашаларын көрсету"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.gschema.xml:12
+msgid ""
+"If set to true, then GNOME Flashback will draw the icons on the desktop."
+msgstr ""
+"Егер ақиқат болса, GNOME Flashback жұмыс үстелінде таңбашаларды салады."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:5
+msgid "Fade the background on change"
+msgstr "Фон өзгерген кезде баяу сөнуді қолдану"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.background.gschema.xml:6
+msgid ""
+"If set to true, then fade effect will be used to change the desktop "
+"background."
+msgstr ""
+"Егер ақиқат болса, жұмыс үстелі фонын өзгерту үшін баяу сөну эффектісі "
+"қолданылады."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:5
+msgid "Icon size"
+msgstr "Таңбаша өлшемі"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:6
+msgid "The size of desktop icons."
+msgstr "Жұмыс үстелі таңбашаларының өлшемі."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
+#: gnome-flashback/libdesktop/gf-icon-view.c:1345
+msgid "Placement"
+msgstr "Орналастыру"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:12
+msgid ""
+"Can be one of \"auto-arrange-icons\", \"align-icons-to-grid\" or \"free\". "
+"It controls how icons are placed on desktop."
+msgstr ""
+"«auto-arrange-icons», «align-icons-to-grid» немесе «free» мәндерінің бірі "
+"болуы мүмкін. Бұл таңбашалардың жұмыс үстелінде қалай орналасатынын "
+"басқарады."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
+#: gnome-flashback/libdesktop/gf-icon-view.c:1351
+msgid "Sort by"
+msgstr "Келесі бойынша сұрыптау"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:18
+msgid ""
+"Can be one of \"name\", \"date-modified\" or \"size\". It controls how icons "
+"are sorted in \"auto-arrange-icons\" placement."
+msgstr ""
+"«name», «date-modified» немесе «size» мәндерінің бірі болуы мүмкін. Бұл "
+"«auto-arrange-icons» орналасуында таңбашалардың қалай сұрыпталатынын "
+"басқарады."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:24
+msgid "Extra text width"
+msgstr "Мәтіннің қосымша ені"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:25
+msgid "Extra width for icon text."
+msgstr "Таңбаша мәтіні үшін қосымша ен."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:31
+msgid "Column spacing"
+msgstr "Бағандар аралығы"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:32
+msgid "The amount of space between columns."
+msgstr "Бағандар арасындағы бос орын мөлшері."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:38
+msgid "Row spacing"
+msgstr "Жолдар аралығы"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:39
+msgid "The amount of space between rows."
+msgstr "Жолдар арасындағы бос орын мөлшері."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:44
+msgid "Show home icon"
+msgstr "Үй бумасы таңбашасын көрсету"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:45
+msgid ""
+"If this is set to true, an icon linking to the home folder will be put on "
+"the desktop."
+msgstr ""
+"Егер бұл ақиқат болса, жұмыс үстеліне үй бумасына сілтейтін таңбаша қойылады."
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:50
+msgid "Show trash icon"
+msgstr "Қоқыс шелегі таңбашасын көрсету"
+
+#: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:51
+msgid ""
+"If this is set to true, an icon linking to the trash will be put on the "
+"desktop."
+msgstr ""
+"Егер бұл ақиқат болса, жұмыс үстеліне қоқыс шелегіне сілтейтін таңбаша "
+"қойылады."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:5
+msgid "Take a screenshot"
+msgstr "Скриншот түсіру"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:6
+msgid "Binding to take a screenshot."
+msgstr "Скриншот түсіруге арналған пернелер тіркесі."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:11
+msgid "Take a screenshot of a window"
+msgstr "Терезе скриншотын түсіру"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:12
+msgid "Binding to take a screenshot of a window."
+msgstr "Терезе скриншотын түсіруге арналған пернелер тіркесі."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:17
+msgid "Take a screenshot of an area"
+msgstr "Аймақ скриншотын түсіру"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:18
+msgid "Binding to take a screenshot of an area."
+msgstr "Аймақ скриншотын түсіруге арналған пернелер тіркесі."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:24
+msgid "Binding to copy a screenshot to clipboard."
+msgstr "Скриншотты алмасу буферіне көшіруге арналған пернелер тіркесі."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:30
+msgid "Binding to copy a screenshot of a window to clipboard."
+msgstr "Терезе скриншотын алмасу буферіне көшіруге арналған пернелер тіркесі."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:36
+msgid "Binding to copy a screenshot of an area to clipboard."
+msgstr "Аймақ скриншотын алмасу буферіне көшіруге арналған пернелер тіркесі."
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:41
+msgid "Record a short video of the screen"
+msgstr "Экраннан қысқа видео жазу"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:42
+msgid "Binding to record a short video of the screen"
+msgstr "Экраннан қысқа видео жазуға арналған пернелер тіркесі"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:47
+msgid "Maximum length of screen recordings"
+msgstr "Экран жазбаларының максималды ұзақтығы"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:48
+msgid ""
+"The maximum length of single screen cast recordings in seconds or 0 for "
+"unlimited"
+msgstr ""
+"Жеке экран жазбаларының максималды ұзақтығы секундпен немесе шектеусіз үшін 0"
+
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:12
+msgid "Location of the notifications"
+msgstr "Хабарламалардың орны"
+
+#: data/schemas/org.gnome.gnome-flashback.notifications.gschema.xml:13
+msgid "The corner of the screen where notifications will be shown."
+msgstr "Экранның хабарламалар көрсетілетін бұрышы."
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:5
+msgid "Use IBus icon if available"
+msgstr "Қолжетімді болса, IBus таңбашасын қолдану"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:10
+msgid "Icon background color"
+msgstr "Таңбашаның фон түсі"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:15
+msgid "Icon foreground color"
+msgstr "Таңбашаның алдыңғы түсі"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:20
+msgid "Icon font family"
+msgstr "Таңбаша қаріптер тобы"
+
+#: data/schemas/org.gnome.gnome-flashback.system-indicators.input-sources.gschema.xml:26
+msgid "Icon font weight"
+msgstr "Таңбаша қарпінің салмағы"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:57
+msgid "Do you want to keep these display settings?"
+msgstr "Осы дисплей баптауларын сақтағыңыз келе ме?"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:103
+msgid "_Revert Settings"
+msgstr "Баптауларды қайта_ру"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:118
+msgid "_Keep Changes"
+msgstr "Өзгерістерді сақ_тау"
+
+#: data/ui/gf-confirm-display-change-dialog.ui:144
+msgid "Confirm Changes"
+msgstr "Өзгерістерді растау"
+
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:2
+msgid "GNOME Flashback (Compiz)"
+msgstr "GNOME Flashback (Compiz)"
+
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:3
+msgid "This session logs you into GNOME Flashback with Compiz"
+msgstr "Бұл сеанс сізді Compiz қолданылатын GNOME Flashback-ке кіргізеді"
+
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:2
+msgid "GNOME Flashback (Metacity)"
+msgstr "GNOME Flashback (Metacity)"
+
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:3
+msgid "This session logs you into GNOME Flashback with Metacity"
+msgstr "Бұл сеанс сізді Metacity қолданылатын GNOME Flashback-ке кіргізеді"
+
+#: gnome-flashback/gf-confirm-display-change-dialog.c:62
+#, c-format
+msgid "Settings changes will revert in %d second!"
+msgid_plural "Settings changes will revert in %d seconds!"
+msgstr[0] "Баптау өзгерістері %d секундтан кейін қайтарылады!"
+
+#: gnome-flashback/gf-main.c:43
+msgid "Replace a currently running application"
+msgstr "Қазір жұмыс істеп тұрған қолданбаны алмастыру"
+
+#: gnome-flashback/gf-main.c:49
+msgid "Print version and exit"
+msgstr "Нұсқасын басып шығару және шығу"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:295
+msgid "Slow Keys Turned On"
+msgstr "Баяу пернелер іске қосылды"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:296
+msgid "Slow Keys Turned Off"
+msgstr "Баяу пернелер сөндірілді"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:298
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Сіз Shift пернесін 8 секунд бойы басып тұрдыңыз. Бұл — пернетақтаның жұмыс "
+"істеу тәсіліне әсер ететін «Баяу пернелер» мүмкіндігінің жарлығы."
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
+#: system-indicators/si-bluetooth.c:116
+msgid "Turn Off"
+msgstr "Сөндіру"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
+#: system-indicators/si-bluetooth.c:130
+msgid "Turn On"
+msgstr "Іске қосу"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
+msgid "Leave On"
+msgstr "Қосулы қалдыру"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
+msgid "Leave Off"
+msgstr "Сөндірулі қалдыру"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:313
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:400
+msgid "Universal Access"
+msgstr "Әмбебап қолжетімділік"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:379
+msgid "Sticky Keys Turned On"
+msgstr "Жабысқақ пернелер іске қосылды"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:380
+msgid "Sticky Keys Turned Off"
+msgstr "Жабысқақ пернелер сөндірілді"
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:383
+msgid ""
+"You just pressed the Shift key 5 times in a row.  This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Сіз Shift пернесін қатарынан 5 рет бастыңыз. Бұл — пернетақтаның жұмыс істеу "
+"тәсіліне әсер ететін «Жабысқақ пернелер» мүмкіндігінің жарлығы."
+
+#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:385
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+"Сіз екі пернені бір уақытта бастыңыз немесе Shift пернесін қатарынан 5 рет "
+"бастыңыз. Бұл пернетақтаның жұмыс істеу тәсіліне әсер ететін «Жабысқақ "
+"пернелер» мүмкіндігін сөндіреді."
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:109
+msgid "Headphones"
+msgstr "Құлаққаптар"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:112
+msgid "Headset"
+msgstr "Гарнитура"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:115
+msgid "Microphone"
+msgstr "Микрофон"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
+#, c-format
+msgid "Failed to start Sound Preferences: %s"
+msgstr "Дыбыс баптауларын іске қосу сәтсіз аяқталды: %s"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:248
+msgid "What kind of device did you plug in?"
+msgstr "Қандай құрылғыны қостыңыз?"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
+#: system-indicators/si-bluetooth.c:307 system-indicators/si-volume.c:446
+msgid "Sound Settings"
+msgstr "Дыбыс параметрлері"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:104
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
+msgid "Cancel"
+msgstr "Бас тарту"
+
+#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:285
+msgid "Unknown Audio Device"
+msgstr "Белгісіз аудио құрылғы"
+
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:175
+#, c-format
+msgid "Unable to mount %s"
+msgstr "%s тіркеу мүмкін емес"
+
+#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:292
+#, c-format
+msgid "Unable to open a folder for %s"
+msgstr "%s үшін буманы ашу мүмкін емес"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:339
+msgid "Ask what to do"
+msgstr "Не істеу керектігін сұрау"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:345
+msgid "Do Nothing"
+msgstr "Ештеңе істемеу"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:351
+msgid "Open Folder"
+msgstr "Буманы ашу"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
+#, c-format
+msgid "Unable to eject %p"
+msgstr "%p шығару мүмкін емес"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:500
+#, c-format
+msgid "Unable to unmount %p"
+msgstr "%p тіркеуден шығару мүмкін емес"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
+msgid "You have just inserted an Audio CD."
+msgstr "Сіз дыбыстық CD дискісін салдыңыз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
+msgid "You have just inserted an Audio DVD."
+msgstr "Сіз дыбыстық DVD дискісін салдыңыз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
+msgid "You have just inserted a Video DVD."
+msgstr "Сіз видео DVD дискісін салдыңыз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
+msgid "You have just inserted a Video CD."
+msgstr "Сіз жаңа ғана Видео CD салдыңыз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
+msgid "You have just inserted a Super Video CD."
+msgstr "Сіз жаңа ғана Super Video CD салдыңыз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
+msgid "You have just inserted a blank CD."
+msgstr "Сіз жаңа ғана бос CD салдыңыз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
+msgid "You have just inserted a blank DVD."
+msgstr "Сіз жаңа ғана бос DVD салдыңыз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
+msgid "You have just inserted a blank Blu-Ray disc."
+msgstr "Сіз жаңа ғана бос Blu-Ray дискісін салдыңыз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
+msgid "You have just inserted a blank HD DVD."
+msgstr "Сіз жаңа ғана бос HD DVD салдыңыз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
+msgid "You have just inserted a Photo CD."
+msgstr "Сіз жаңа ғана Photo CD салдыңыз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
+msgid "You have just inserted a Picture CD."
+msgstr "Сіз жаңа ғана Picture CD салдыңыз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
+msgid "You have just inserted a medium with digital photos."
+msgstr "Сіз жаңа ғана цифрлық фотолары бар тасушы салдыңыз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
+msgid "You have just inserted a digital audio player."
+msgstr "Сіз жаңа ғана цифрлық аудио ойнатқыш салдыңыз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:735
+msgid ""
+"You have just inserted a medium with software intended to be automatically "
+"started."
+msgstr ""
+"Сіз жаңа ғана автоматты түрде іске қосылуға арналған бағдарламалық қамтамасы "
+"бар тасушы салдыңыз."
+
+#. fallback to generic greeting
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
+msgid "You have just inserted a medium."
+msgstr "Сіз жаңа ғана тасушы салдыңыз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:740
+msgid "Choose what application to launch."
+msgstr "Іске қосылатын қолданбаны таңдаңыз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:749
+#, c-format
+msgid ""
+"Select how to open \"%s\" and whether to perform this action in the future "
+"for other media of type \"%s\"."
+msgstr ""
+"«%s» қалай ашуды таңдаңыз және болашақта «%s» түріндегі басқа тасушылар үшін "
+"осы әрекетті орындау-орындамауды шешіңіз."
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:776
+msgid "_Always perform this action"
+msgstr "Осы ә_рекетті әрқашан орындау"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:786
+msgid "_OK"
+msgstr "_ОК"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:792
+msgid "_Eject"
+msgstr "Ш_ығару"
+
+#: gnome-flashback/libautomount-manager/gsd-autorun.c:797
+msgid "_Unmount"
+msgstr "Тіркеуден ш_ығару"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
+#: gnome-flashback/libdesktop/gf-icon-view.c:1333
+msgid "New Folder"
+msgstr "Жаңа бума"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:112
+msgid "Create"
+msgstr "Жасау"
+
+#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:140
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "Folder name"
+msgstr "Бума аты"
+
+#: gnome-flashback/libdesktop/gf-home-icon.c:45
+msgid "Home"
+msgstr "Үй"
+
+#: gnome-flashback/libdesktop/gf-icon.c:508
+msgid "Open"
+msgstr "Ашу"
+
+#: gnome-flashback/libdesktop/gf-icon.c:544
+msgid "Move to Trash"
+msgstr "Қоқыс шелегіне та_стау"
+
+#: gnome-flashback/libdesktop/gf-icon.c:564
+msgid "Rename..."
+msgstr "Атын ө_згерту..."
+
+#: gnome-flashback/libdesktop/gf-icon.c:587
+msgid "Empty Trash"
+msgstr "Қоқыс шелегін бо_сату"
+
+#: gnome-flashback/libdesktop/gf-icon.c:601
+msgid "Properties"
+msgstr "Қасие_ттері"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1109
+msgid "Auto arrange icons"
+msgstr "Таңбашаларды автоматты реттеу"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1113
+msgid "Align icons to grid"
+msgstr "Таңбашаларды тор бойынша туралау"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1117
+msgctxt "Free placement of icons"
+msgid "Free"
+msgstr "Еркін"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1237
+msgid "Name"
+msgstr "Аты"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1241
+msgid "Date modified"
+msgstr "Өзгертілген күні"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1245
+msgid "Size"
+msgstr "Өлшемі"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1361
+msgid "Change Background"
+msgstr "Фонды өзгерту"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1369
+msgid "Display Settings"
+msgstr "Экран баптаулары"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:1381
+msgid "Open Terminal"
+msgstr "Терминалды ашу"
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3228
+msgid "Folder names cannot contain “/”."
+msgstr "Бума аттарында «/» таңбасы болмауы тиіс."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3230
+msgid "File names cannot contain “/”."
+msgstr "Файл аттарында «/» таңбасы болмауы тиіс."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3237
+msgid "A folder cannot be called “.”."
+msgstr "Бума «.» деп аталуы мүмкін емес."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3239
+msgid "A file cannot be called “.”."
+msgstr "Файл «.» деп аталуы мүмкін емес."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3246
+msgid "A folder cannot be called “..”."
+msgstr "Бума «..» деп аталуы мүмкін емес."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3248
+msgid "A file cannot be called “..”."
+msgstr "Файл «..» деп аталуы мүмкін емес."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3264
+msgid "A folder with that name already exists."
+msgstr "Мұндай аты бар бума бұрыннан бар."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3266
+msgid "A file with that name already exists."
+msgstr "Мұндай аты бар файл бұрыннан бар."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3277
+msgid "Folders with “.” at the beginning of their name are hidden."
+msgstr "Атының басында «.» бар бумалар жасырын болады."
+
+#: gnome-flashback/libdesktop/gf-icon-view.c:3279
+msgid "Files with “.” at the beginning of their name are hidden."
+msgstr "Атының басында «.» бар файлдар жасырын болады."
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:117
+msgid "File name"
+msgstr "Файл аты"
+
+#: gnome-flashback/libdesktop/gf-rename-popover.c:254
+msgid "Rename"
+msgstr "Атын өзгерту"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:514
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:750
+msgid "Log Out"
+msgstr "Шығу"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:518
+msgid "Click Log Out to quit these applications and log out of the system."
+msgstr ""
+"Бұл қолданбалардан шығу және жүйеден шығу үшін «Шығу» батырмасын шертіңіз."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
+#, c-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s %d секундтан кейін автоматты түрде шығады."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:537
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:754
+msgid "Power Off"
+msgstr "Сөндіру"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:540
+msgid "Click Power Off to quit these applications and power off the system."
+msgstr ""
+"Бұл қолданбалардан шығу және жүйені сөндіру үшін «Сөндіру» батырмасын "
+"шертіңіз."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:542
+#, c-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Жүйе %d секундтан кейін автоматты түрде сөнеді."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:549
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:758
+msgid "Restart"
+msgstr "Қайта жүктеу"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:552
+msgid "Click Restart to quit these applications and restart the system."
+msgstr ""
+"Бұл қолданбалардан шығу және жүйені қайта жүктеу үшін «Қайта жүктеу» "
+"батырмасын шертіңіз."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:554
+#, c-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Жүйе %d секундтан кейін автоматты түрде қайта жүктеледі."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:561
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:762
+msgid "Hibernate"
+msgstr "Гибернация"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:562
+#, c-format
+msgid "The system will hibernate automatically in %d second."
+msgid_plural "The system will hibernate automatically in %d seconds."
+msgstr[0] "Жүйе %d секундтан кейін автоматты түрде гибернацияға өтеді."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:569
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:766
+msgid "Suspend"
+msgstr "Күту режимі"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:570
+#, c-format
+msgid "The system will suspend automatically in %d second."
+msgid_plural "The system will suspend automatically in %d seconds."
+msgstr[0] "Жүйе %d секундтан кейін автоматты түрде күту режиміне өтеді."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:577
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:770
+msgid "Hybrid Sleep"
+msgstr "Гибридті ұйқы"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:578
+#, c-format
+msgid "The system will hybrid sleep automatically in %d second."
+msgid_plural "The system will hybrid sleep automatically in %d seconds."
+msgstr[0] "Жүйе %d секундтан кейін автоматты түрде гибридті ұйқыға өтеді."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:29
+msgid "Some programs are still running:"
+msgstr "Кейбір бағдарламалар әлі де орындалуда:"
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:78
+msgid ""
+"Waiting for these applications to finish. Interrupting them can lead to loss "
+"of data."
+msgstr ""
+"Бұл қолданбалардың аяқталуын күту. Оларды үзу деректердің жоғалуына әкелуі "
+"мүмкін."
+
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
+msgid "Lock Screen"
+msgstr "Экранды құлыптау"
+
+#: gnome-flashback/libnotifications/gf-bubble.c:549
+#: gnome-flashback/libnotifications/gf-bubble.c:553
+#: gnome-flashback/libnotifications/nd-notification-box.c:323
+#: gnome-flashback/libnotifications/nd-notification-box.c:325
+msgid "Closes the notification."
+msgstr "Хабарламаны жабады."
+
+#: gnome-flashback/libnotifications/gf-bubble.c:573
+#: gnome-flashback/libnotifications/gf-bubble.c:604
+#: gnome-flashback/libnotifications/nd-notification-box.c:341
+msgid "Notification summary text."
+msgstr "Хабарламаның қысқаша мәтіні."
+
+#: gnome-flashback/libnotifications/gf-bubble.c:623
+msgid "Notification"
+msgstr "Хабарлама"
+
+#: gnome-flashback/libnotifications/nd-daemon.c:124
+msgid "Invalid notification identifier"
+msgstr "Хабарлама идентификаторы жарамсыз"
+
+#: gnome-flashback/libnotifications/nd-notification-box.c:361
+msgid "Notification body text."
+msgstr "Хабарламаның негізгі мәтіні."
+
+#: gnome-flashback/libnotifications/nd-queue.c:428
+msgid "Clear all notifications"
+msgstr "Барлық хабарламаларды тазарту"
+
+#: gnome-flashback/libnotifications/nd-queue.c:846
+msgid "Notifications"
+msgstr "Хабарламалар"
+
+#: gnome-flashback/libscreensaver/gf-auth.c:432
+msgid "Your account was given a time limit that has now passed."
+msgstr "Тіркелгіңізге уақыт шектеуі берілген, ол қазір аяқталды."
+
+#: gnome-flashback/libscreensaver/gf-auth.c:436
+msgid "Sorry, that didn’t work. Please try again."
+msgstr "Кешіріңіз, бұл болмады. Қайталап көріңіз."
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:179
+msgid "Failed to switch to greeter!"
+msgstr "Қарсы алу экранына ауысу сәтсіз аяқталды!"
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:253
+msgid "Time has expired."
+msgstr "Уақыт аяқталды."
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:469
+msgid "Checking…"
+msgstr "Тексеру…"
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:494
+msgid "S_witch User…"
+msgstr "Пайдаланушыны а_уыстыру…"
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:503
+msgid "_Unlock"
+msgstr "Құ_лпын ашу"
+
+#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:714
+msgid "You have the Caps Lock key on."
+msgstr "Caps Lock пернесі қосулы тұр."
+
+#: gnome-flashback/libscreenshot/gf-screenshot.c:279
+msgid "Screenshot taken"
+msgstr "Скриншот жасалды"
+
+#. translators:
+#. * The device has been disabled
+#: gvc/gvc/gvc-mixer-control.c:1910
+msgid "Disabled"
+msgstr "Сөндірілген"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: gvc/gvc/gvc-mixer-control.c:1917
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u шығыс"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: gvc/gvc/gvc-mixer-control.c:1927
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u кіріс"
+
+#: gvc/gvc/gvc-mixer-control.c:2910
+msgid "System Sounds"
+msgstr "Жүйелік дыбыстар"
+
+#: system-indicators/si-bluetooth.c:122
+msgid "Send Files"
+msgstr "Файлдарды жіберу"
+
+#: system-indicators/si-bluetooth.c:260
+msgid "Disconnect"
+msgstr "Ажырату"
+
+#: system-indicators/si-bluetooth.c:273
+msgid "Connect"
+msgstr "Қосылу"
+
+#: system-indicators/si-bluetooth.c:288
+msgid "Keyboard Settings"
+msgstr "Пернетақта баптаулары"
+
+#: system-indicators/si-bluetooth.c:296
+msgid "Mouse & Touchpad Settings"
+msgstr "Тышқан және тачпад баптаулары"
+
+#: system-indicators/si-bluetooth.c:344
+msgid "Bluetooth Settings"
+msgstr "Bluetooth баптаулары"
+
+#: system-indicators/si-bluetooth.c:438
+#, c-format
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "%d қосылған құрылғы"
+
+#: system-indicators/si-bluetooth.c:445
+msgid "Not Connected"
+msgstr "Қосылмаған"
+
+#: system-indicators/si-desktop-menu-item.c:82
+#, c-format
+msgid "Desktop file “%s” is missing!"
+msgstr "«%s» жұмыс үстелі файлы жоқ!"
+
+#: system-indicators/si-desktop-menu-item.c:105
+#, c-format
+msgid "Failed to start “%s”: %s"
+msgstr "«%s» іске қосу сәтсіз аяқталды: %s"
+
+#: system-indicators/si-input-sources.c:858
+msgid "Show Keyboard Layout"
+msgstr "Пернетақта жаймасын көрсету"
+
+#: system-indicators/si-input-sources.c:889
+msgid "Region & Language Settings"
+msgstr "Аймақ және тіл баптаулары"
+
+#: system-indicators/si-module.c:33
+msgid "System Indicators"
+msgstr "Жүйелік индикаторлар"
+
+#: system-indicators/si-module.c:34
+msgid "This applet contains system indicators"
+msgstr "Бұл апплетте жүйелік индикаторлар бар"
+
+#: system-indicators/si-power.c:63
+msgid "UPS"
+msgstr "UPS"
+
+#: system-indicators/si-power.c:65
+msgid "Battery"
+msgstr "Батарея"
+
+#: system-indicators/si-power.c:81
+msgid "Fully Charged"
+msgstr "Толық зарядталған"
+
+#: system-indicators/si-power.c:83
+msgid "Empty"
+msgstr "Бос"
+
+#: system-indicators/si-power.c:89
+msgid "Not Charging"
+msgstr "Зарядталмай жатыр"
+
+#: system-indicators/si-power.c:91 system-indicators/si-power.c:96
+msgid "Estimating..."
+msgstr "Есептеу..."
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: system-indicators/si-power.c:105
+#, c-format
+msgid "%.0f:%02.0f Remaining (%.0f%%)"
+msgstr "%.0f:%02.0f қалды (%.0f%%)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: system-indicators/si-power.c:112
+#, c-format
+msgid "%.0f:%02.0f Until Full (%.0f%%)"
+msgstr "Толық зарядталғанға дейін %.0f:%02.0f (%.0f%%)"
+
+#: system-indicators/si-power.c:146
+msgid "Power Settings"
+msgstr "Қуат баптаулары"
+
+#: system-indicators/si-volume.c:245
+msgid "Volume changed"
+msgstr "Дыбыс деңгейі өзгертілді"
+
+#: system-indicators/si-volume.c:266
+msgid "Mute"
+msgstr "Дыбысты өшіру"
+
+#: system-indicators/si-volume.c:523
+msgid "Input"
+msgstr "Кіріс"
+
+#: system-indicators/si-volume.c:523
+msgid "Output"
+msgstr "Шығыс"
+
+#: system-indicators/si-volume.c:534
+msgid "Muted"
+msgstr "Дыбысы өшірілген"
+
+#~ msgid "MediaKeys (GNOME Flashback)"
+#~ msgstr "MediaKeys (GNOME Flashback)"
+
+#~ msgid "Clipboard"
+#~ msgstr "Алмасу буфері"
+
+#~ msgid "Idle monitor"
+#~ msgstr "Әрекетсіздік мониторы"
+
+#~ msgid ""
+#~ "If set to true, then GNOME Flashback application will be used for user "
+#~ "activity monitoring."
+#~ msgstr ""
+#~ "Егер ақиқат болса, пайдаланушы әрекетін бақылау үшін GNOME Flashback "
+#~ "қолданбасы қолданылады."
+
+#~ msgid "Authentication agent for polkit"
+#~ msgstr "Polkit үшін аутентификация агенті"
+
+#~ msgid ""
+#~ "This is the same authentication agent that was provided by PolicyKit-"
+#~ "gnome."
+#~ msgstr "Бұл PolicyKit-gnome ұсынған аутентификация агентімен бірдей."
+
+#~ msgid "Exceeded maximum number of notifications"
+#~ msgstr "Хабарламалардың максималды санынан асып кетті"
