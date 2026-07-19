@@ -822,6 +822,7 @@ gf_desktop_window_new (gboolean   draw_background,
                          "draw-background", draw_background,
                          "show-icons", show_icons,
                          "title", _("Desktop"),
+                         "decorated", FALSE,
                          NULL);
 
   if (!g_initable_init (G_INITABLE (window), NULL, error))
