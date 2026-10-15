@@ -55,6 +55,7 @@ struct _GfManager
 
   guint             lock_timeout_id;
   guint             unfade_timeout_id;
+  guint             restore_grab_id;
 
   gboolean          dialog_up;
 
@@ -208,6 +209,42 @@ unfade_timeout_remove (GfManager *self)
   self->unfade_timeout_id = 0;
 }
 
+static gboolean
+restore_grab_cb (gpointer user_data)
+{
+  GfManager *self;
+
+  self = GF_MANAGER (user_data);
+  self->restore_grab_id = 0;
+
+  g_debug ("Restoring grab");
+  gf_grab_restore (self->grab);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+restore_grab_add (GfManager *self)
+{
+  if (self->restore_grab_id != 0)
+    return;
+
+  self->restore_grab_id = g_idle_add (restore_grab_cb, self);
+
+  g_source_set_name_by_id (self->restore_grab_id,
+                           "[gnome-flashback] restore_grab_cb");
+}
+
+static void
+restore_grab_remove (GfManager *self)
+{
+  if (self->restore_grab_id == 0)
+    return;
+
+  g_source_remove (self->restore_grab_id);
+  self->restore_grab_id = 0;
+}
+
 static void
 apply_background (GfManager *self,
                   GfWindow  *window)
@@ -322,6 +359,22 @@ window_dialog_up_cb (GfWindow  *window,
 }
 
 static void
+window_grab_notify_cb (GtkWidget *widget,
+                       gboolean   was_grabbed,
+                       GfManager *self)
+{
+  /* A GTK grab that shadowed the window has ended. If it came with a
+   * seat grab (as popup menus do), it replaced our grab and released it,
+   * so the lock screen no longer gets all input. Take the grab back once
+   * the other grab is gone.
+   */
+  if (!was_grabbed || !self->active)
+    return;
+
+  restore_grab_add (self);
+}
+
+static void
 window_show_cb (GtkWidget *widget,
                 GfManager *self)
 {
@@ -415,6 +468,10 @@ create_window_for_monitor (GfManager  *self,
 
   g_signal_connect (window, "dialog-up",
                     G_CALLBACK (window_dialog_up_cb),
+                    self);
+
+  g_signal_connect (window, "grab-notify",
+                    G_CALLBACK (window_grab_notify_cb),
                     self);
 
   g_signal_connect (window, "show",
@@ -579,6 +636,7 @@ gf_manager_finalize (GObject *object)
 
   lock_timeout_remove (self);
   unfade_timeout_remove (self);
+  restore_grab_remove (self);
 
   destroy_windows (self);
 
@@ -735,6 +793,7 @@ gf_manager_set_active (GfManager *self,
 
       lock_timeout_remove (self);
       unfade_timeout_remove (self);
+      restore_grab_remove (self);
 
       gf_fade_reset (self->fade);
       destroy_windows (self);

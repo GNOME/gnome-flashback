@@ -192,6 +192,17 @@ grab_window (GfGrab    *self,
 }
 
 static gboolean
+seat_is_grabbed (GdkDisplay *display)
+{
+  GdkSeat *seat;
+
+  seat = gdk_display_get_default_seat (display);
+
+  return gdk_display_device_is_grabbed (display, gdk_seat_get_keyboard (seat)) &&
+         gdk_display_device_is_grabbed (display, gdk_seat_get_pointer (seat));
+}
+
+static gboolean
 grab_move (GfGrab    *self,
            GdkWindow *window)
 {
@@ -199,7 +210,13 @@ grab_move (GfGrab    *self,
   GdkWindow *old_window;
   GdkGrabStatus status;
 
-  if (self->grab_window == window)
+  display = gdk_window_get_display (window);
+
+  /* Another grab in this process (for example the one of a popup menu)
+   * replaces ours and does not give it back when it ends, so only trust
+   * grab_window while the seat is still grabbed.
+   */
+  if (self->grab_window == window && seat_is_grabbed (display))
     {
       g_debug ("Window 0x%lx is already grabbed, skipping",
                gdk_x11_window_get_xid (window));
@@ -216,8 +233,6 @@ grab_move (GfGrab    *self,
     {
       g_debug ("Grabbing window 0x%lx", gdk_x11_window_get_xid (window));
     }
-
-  display = gdk_window_get_display (window);
 
   g_debug ("Grabbing X server");
   gdk_x11_display_grab (display);
@@ -325,6 +340,16 @@ gf_grab_move_to_window (GfGrab    *self,
       gdk_display_flush (display);
     }
   while (!result);
+}
+
+/* this is used to take the grab back after another grab replaced it */
+void
+gf_grab_restore (GfGrab *self)
+{
+  if (self->grab_window == NULL)
+    return;
+
+  gf_grab_move_to_window (self, self->grab_window);
 }
 
 void

@@ -40,6 +40,8 @@ gboolean  gf_grab_grab_offscreen (GfGrab    *self);
 void      gf_grab_move_to_window (GfGrab    *self,
                                   GdkWindow *window);
 
+void      gf_grab_restore        (GfGrab    *self);
+
 void      gf_grab_release        (GfGrab    *self);
 
 G_END_DECLS
