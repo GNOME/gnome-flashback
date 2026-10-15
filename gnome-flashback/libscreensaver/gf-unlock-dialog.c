@@ -346,6 +346,17 @@ prompt_entry_button_press_event_cb (GtkWidget      *widget,
   return FALSE;
 }
 
+static gboolean
+prompt_entry_popup_menu_cb (GtkWidget *widget,
+                            gpointer   user_data)
+{
+  /* The context menu takes over the keyboard and pointer grab of the
+   * lock screen and releases it when it is dismissed, which would let
+   * input reach the windows behind the lock screen.
+   */
+  return TRUE;
+}
+
 static GtkWidget *
 create_page_one_content (GfUnlockDialog *self)
 {
@@ -398,6 +409,11 @@ create_page_one_content (GfUnlockDialog *self)
   /* button press handler used to inhibit popup menu */
   g_signal_connect (self->prompt_entry, "button-press-event",
                     G_CALLBACK (prompt_entry_button_press_event_cb),
+                    NULL);
+
+  /* keyboard (Menu key, Shift+F10) equivalent of the handler above */
+  g_signal_connect (self->prompt_entry, "popup-menu",
+                    G_CALLBACK (prompt_entry_popup_menu_cb),
                     NULL);
 
   return hbox;
