@@ -292,6 +292,14 @@ PKG_CHECK_EXISTS([pango >= 1.44.0],
                            [Define if Pango is 1.44.0 or newer]))
 
 dnl **************************************************************************
+dnl Check if we have gsettings-desktop-schemas 51.rc or newer
+dnl **************************************************************************
+
+PKG_CHECK_EXISTS([gsettings-desktop-schemas >= 51.rc],
+                 AC_DEFINE([HAVE_GDESKTOP_POINTER_ACCEL_PROFILE_CUSTOM], [1],
+                           [Define if gsettings-desktop-schemas is 51.rc or newer]))
+
+dnl **************************************************************************
 dnl Keybindings
 dnl **************************************************************************
 

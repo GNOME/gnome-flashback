@@ -337,6 +337,11 @@ set_accel_profile (GfInputSettings             *settings,
         break;
       case G_DESKTOP_POINTER_ACCEL_PROFILE_DEFAULT:
         break;
+#ifdef HAVE_GDESKTOP_POINTER_ACCEL_PROFILE_CUSTOM
+      case G_DESKTOP_POINTER_ACCEL_PROFILE_CUSTOM:
+        /* custom acceleration curves are not supported, use default */
+        break;
+#endif
       default:
         g_warn_if_reached ();
         break;
