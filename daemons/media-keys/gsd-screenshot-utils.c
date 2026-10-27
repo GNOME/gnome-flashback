@@ -278,6 +278,12 @@ gsd_screenshot_take (MediaKeyType key_type)
       ctx->type = SCREENSHOT_TYPE_AREA;
       break;
     case SCREENCAST_KEY:
+    case SCREEN_BRIGHTNESS_UP_KEY:
+    case SCREEN_BRIGHTNESS_UP_MONITOR_KEY:
+    case SCREEN_BRIGHTNESS_DOWN_KEY:
+    case SCREEN_BRIGHTNESS_DOWN_MONITOR_KEY:
+    case SCREEN_BRIGHTNESS_CYCLE_KEY:
+    case SCREEN_BRIGHTNESS_CYCLE_MONITOR_KEY:
     default:
       g_assert_not_reached ();
       break;

@@ -80,6 +80,10 @@ typedef struct
         gboolean         screencast_recording;
         GCancellable    *screencast_cancellable;
 
+        /* Brightness stuff */
+        GDBusProxy      *brightness_proxy;
+        GCancellable    *brightness_cancellable;
+
         guint            start_idle_id;
 } GsdMediaKeysManagerPrivate;
 
@@ -578,6 +582,24 @@ do_screencast_action (GsdMediaKeysManager *manager)
                 screencast_stop (manager);
 }
 
+static void
+do_brightness_action (GsdMediaKeysManager *manager,
+                      const char          *method,
+                      gboolean             current_monitor)
+{
+        GsdMediaKeysManagerPrivate *priv = GSD_MEDIA_KEYS_MANAGER_GET_PRIVATE (manager);
+
+        if (priv->brightness_proxy == NULL)
+                return;
+
+        g_dbus_proxy_call (priv->brightness_proxy,
+                           method,
+                           g_variant_new ("(b)", current_monitor),
+                           G_DBUS_CALL_FLAGS_NONE, -1,
+                           priv->brightness_cancellable,
+                           NULL, NULL);
+}
+
 static gboolean
 do_action (GsdMediaKeysManager *manager,
            MediaKeyType         type)
@@ -595,6 +617,24 @@ do_action (GsdMediaKeysManager *manager,
                 break;
         case SCREENCAST_KEY:
                 do_screencast_action (manager);
+                break;
+        case SCREEN_BRIGHTNESS_UP_KEY:
+                do_brightness_action (manager, "StepUp", FALSE);
+                break;
+        case SCREEN_BRIGHTNESS_UP_MONITOR_KEY:
+                do_brightness_action (manager, "StepUp", TRUE);
+                break;
+        case SCREEN_BRIGHTNESS_DOWN_KEY:
+                do_brightness_action (manager, "StepDown", FALSE);
+                break;
+        case SCREEN_BRIGHTNESS_DOWN_MONITOR_KEY:
+                do_brightness_action (manager, "StepDown", TRUE);
+                break;
+        case SCREEN_BRIGHTNESS_CYCLE_KEY:
+                do_brightness_action (manager, "Cycle", FALSE);
+                break;
+        case SCREEN_BRIGHTNESS_CYCLE_MONITOR_KEY:
+                do_brightness_action (manager, "Cycle", TRUE);
                 break;
         default:
                 break;
@@ -649,6 +689,25 @@ on_screencast_proxy_ready (GObject      *source,
         if (!priv->screencast_proxy) {
                 if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
                         g_warning ("Failed to create proxy for screencast: %s", error->message);
+                g_error_free (error);
+        }
+}
+
+static void
+on_brightness_proxy_ready (GObject      *source,
+                           GAsyncResult *result,
+                           gpointer      data)
+{
+        GsdMediaKeysManager *manager = data;
+        GsdMediaKeysManagerPrivate *priv = GSD_MEDIA_KEYS_MANAGER_GET_PRIVATE (manager);
+        GError *error = NULL;
+
+        priv->brightness_proxy =
+                g_dbus_proxy_new_for_bus_finish (result, &error);
+
+        if (!priv->brightness_proxy) {
+                if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+                        g_warning ("Failed to create proxy for brightness: %s", error->message);
                 g_error_free (error);
         }
 }
@@ -739,6 +798,7 @@ start_media_keys_idle_cb (GsdMediaKeysManager *manager)
 
         priv->grab_cancellable = g_cancellable_new ();
         priv->screencast_cancellable = g_cancellable_new ();
+        priv->brightness_cancellable = g_cancellable_new ();
 
         priv->shell_proxy = get_shell_proxy ();
         g_signal_connect_swapped (priv->shell_proxy, "notify::g-name-owner",
@@ -752,6 +812,16 @@ start_media_keys_idle_cb (GsdMediaKeysManager *manager)
                                   SHELL_DBUS_NAME ".Screencast",
                                   priv->screencast_cancellable,
                                   on_screencast_proxy_ready, manager);
+
+        g_dbus_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+                                  G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
+                                  G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
+                                  NULL,
+                                  SHELL_DBUS_NAME ".Brightness",
+                                  SHELL_DBUS_PATH "/Brightness",
+                                  "org.gnome.Flashback.Brightness",
+                                  priv->brightness_cancellable,
+                                  on_brightness_proxy_ready, manager);
 
         priv->start_idle_id = 0;
 
@@ -782,6 +852,7 @@ gsd_media_keys_manager_stop (GsdMediaKeysManager *manager)
 
         g_clear_object (&priv->settings);
         g_clear_object (&priv->screencast_proxy);
+        g_clear_object (&priv->brightness_proxy);
 
         if (priv->keys_sync_data) {
                 /* Cancel ongoing sync. */
@@ -822,6 +893,11 @@ gsd_media_keys_manager_stop (GsdMediaKeysManager *manager)
         if (priv->screencast_cancellable != NULL) {
                 g_cancellable_cancel (priv->screencast_cancellable);
                 g_clear_object (&priv->screencast_cancellable);
+        }
+
+        if (priv->brightness_cancellable != NULL) {
+                g_cancellable_cancel (priv->brightness_cancellable);
+                g_clear_object (&priv->brightness_cancellable);
         }
 
         g_clear_object (&priv->shell_proxy);
