@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <!--
+      org.gnome.Flashback.Brightness:
+      @short_description: Screen brightness control
+
+      Changes the brightness of the displays that have a backlight. It is
+      exported on the same object as org.gnome.Shell.Brightness.
+  -->
+  <interface name="org.gnome.Flashback.Brightness">
+    <annotation name="org.gtk.GDBus.C.Name" value="BrightnessGen" />
+
+    <!--
+        StepUp:
+        @current_monitor: only change the monitor under the pointer
+
+        Increases the brightness by one step and shows the OSD.
+    -->
+    <method name="StepUp">
+      <arg type="b" direction="in" name="current_monitor" />
+    </method>
+
+    <!--
+        StepDown:
+        @current_monitor: only change the monitor under the pointer
+
+        Decreases the brightness by one step and shows the OSD.
+    -->
+    <method name="StepDown">
+      <arg type="b" direction="in" name="current_monitor" />
+    </method>
+
+    <!--
+        Cycle:
+        @current_monitor: only change the monitor under the pointer
+
+        Increases the brightness by one step, or sets it to the minimum
+        if it is at the maximum, and shows the OSD.
+    -->
+    <method name="Cycle">
+      <arg type="b" direction="in" name="current_monitor" />
+    </method>
+
+    <!--
+        Brightness:
+
+        The brightness of the brightest display in percent, or -1 if no
+        display has brightness control. Setting it changes all displays
+        and keeps their relative brightness.
+    -->
+    <property name="Brightness" type="i" access="readwrite" />
+
+  </interface>
+</node>

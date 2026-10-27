@@ -26,6 +26,7 @@ variables:
                   libgnome-desktop-3-dev
                   libgnome-panel-dev
                   libgtk-3-dev
+                  libgudev-1.0-dev
                   libibus-1.0-dev
                   libpam0g-dev
                   libpango1.0-dev

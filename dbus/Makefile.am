@@ -95,6 +95,12 @@ gf-gtk-notifications-gen.c: org.gtk.Notifications.xml
 		--generate-c-code gf-gtk-notifications-gen \
 		$(srcdir)/org.gtk.Notifications.xml
 
+gf-brightness-gen.h:
+gf-brightness-gen.c: org.gnome.Flashback.Brightness.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-brightness-gen \
+		$(srcdir)/org.gnome.Flashback.Brightness.xml
+
 gf-input-sources-gen.h:
 gf-input-sources-gen.c: org.gnome.Flashback.InputSources.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
@@ -155,6 +161,12 @@ gf-session-manager-gen.c: org.gnome.SessionManager.xml
 		--generate-c-code gf-session-manager-gen \
 		$(srcdir)/org.gnome.SessionManager.xml
 
+gf-shell-brightness-gen.h:
+gf-shell-brightness-gen.c: org.gnome.Shell.Brightness.xml
+	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
+		--generate-c-code gf-shell-brightness-gen \
+		$(srcdir)/org.gnome.Shell.Brightness.xml
+
 gf-shell-gen.h:
 gf-shell-gen.c: org.gnome.Shell.xml
 	$(AM_V_GEN) $(GDBUS_CODEGEN) --c-namespace Gf \
@@ -192,6 +204,8 @@ BUILT_SOURCES = \
 	gf-accounts-user-gen.h \
 	gf-audio-device-selection-gen.c \
 	gf-audio-device-selection-gen.h \
+	gf-brightness-gen.c \
+	gf-brightness-gen.h \
 	gf-dbus-x11.c \
 	gf-dbus-x11.h \
 	gf-dm-seat-gen.c \
@@ -228,6 +242,8 @@ BUILT_SOURCES = \
 	gf-sd-rfkill-gen.h \
 	gf-session-manager-gen.c \
 	gf-session-manager-gen.h \
+	gf-shell-brightness-gen.c \
+	gf-shell-brightness-gen.h \
 	gf-shell-gen.c \
 	gf-shell-gen.h \
 	gf-shell-introspect-gen.c \
@@ -251,6 +267,7 @@ EXTRA_DIST = \
 	org.freedesktop.login1.Session.xml \
 	org.freedesktop.Notifications.xml \
 	org.freedesktop.UPower.Device.xml \
+	org.gnome.Flashback.Brightness.xml \
 	org.gnome.Flashback.InputSources.xml \
 	org.gnome.Mutter.X11.xml \
 	org.gnome.Nautilus.FileOperations2.xml \
@@ -261,6 +278,7 @@ EXTRA_DIST = \
 	org.gnome.SessionManager.xml \
 	org.gnome.SettingsDaemon.Rfkill.xml \
 	org.gnome.Shell.AudioDeviceSelection.xml \
+	org.gnome.Shell.Brightness.xml \
 	org.gnome.Shell.Introspect.xml \
 	org.gnome.Shell.Screencast.xml \
 	org.gnome.Shell.Screenshot.xml \

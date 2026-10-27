@@ -24,6 +24,7 @@
 #include "dbus/gf-shell-gen.h"
 #include "flashback-monitor-labeler.h"
 #include "flashback-osd.h"
+#include "gf-shell-brightness.h"
 #include "gf-shell-introspect.h"
 
 #define SHELL_DBUS_NAME "org.gnome.Shell"
@@ -55,6 +56,8 @@ struct _FlashbackShell
   FlashbackOsd            *osd;
 
   GfShellIntrospect       *introspect;
+
+  GfShellBrightness       *brightness;
 };
 
 G_DEFINE_TYPE (FlashbackShell, flashback_shell, G_TYPE_OBJECT)
@@ -511,6 +514,7 @@ flashback_shell_finalize (GObject *object)
 
   g_clear_object (&shell->keybindings);
   g_clear_object (&shell->labeler);
+  g_clear_object (&shell->brightness);
   g_clear_object (&shell->osd);
   g_clear_object (&shell->introspect);
 
@@ -542,6 +546,7 @@ flashback_shell_init (FlashbackShell *shell)
   shell->osd = flashback_osd_new ();
 
   shell->introspect = gf_shell_introspect_new ();
+  shell->brightness = gf_shell_brightness_new (shell->osd);
 
   shell->bus_name = g_bus_watch_name (G_BUS_TYPE_SESSION,
                                       SHELL_DBUS_NAME,
@@ -563,4 +568,6 @@ flashback_shell_set_monitor_manager (FlashbackShell   *shell,
                                      GfMonitorManager *monitor_manager)
 {
   shell->monitor_manager = monitor_manager;
+
+  gf_shell_brightness_set_monitor_manager (shell->brightness, monitor_manager);
 }

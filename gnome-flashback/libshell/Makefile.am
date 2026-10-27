@@ -31,6 +31,8 @@ libshell_la_SOURCES = \
 	gf-label-window.h \
 	gf-osd-window.c \
 	gf-osd-window.h \
+	gf-shell-brightness.c \
+	gf-shell-brightness.h \
 	gf-shell-introspect.c \
 	gf-shell-introspect.h \
 	$(NULL)
