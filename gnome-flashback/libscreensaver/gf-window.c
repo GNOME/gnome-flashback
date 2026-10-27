@@ -21,6 +21,7 @@
 #include "gf-window.h"
 
 #include <gdk/gdkx.h>
+#include <X11/Xlib.h>
 
 #include "gf-info-bar.h"
 #include "gf-panel.h"
@@ -486,6 +487,85 @@ gf_window_motion_notify_event (GtkWidget      *widget,
                                                                          event);
 }
 
+static gboolean
+is_our_window (GdkDisplay *display,
+               Window      xwindow)
+{
+  GdkWindow *window;
+
+  if (xwindow == gdk_x11_get_default_root_xwindow ())
+    return FALSE;
+
+  window = gdk_x11_window_lookup_for_display (display, xwindow);
+
+  return window != NULL;
+}
+
+static GdkFilterReturn
+restack_filter (GdkXEvent *xevent,
+                GdkEvent  *event,
+                gpointer   user_data)
+{
+  GfWindow *self;
+  XEvent *xev;
+  GdkDisplay *display;
+  Window xwindow;
+
+  self = GF_WINDOW (user_data);
+  xev = (XEvent *) xevent;
+  display = gtk_widget_get_display (GTK_WIDGET (self));
+
+  switch (xev->type)
+    {
+      case MapNotify:
+        xwindow = xev->xmap.window;
+        break;
+
+      case ConfigureNotify:
+        xwindow = xev->xconfigure.window;
+        break;
+
+      default:
+        return GDK_FILTER_CONTINUE;
+    }
+
+  if (xev->xany.window != gdk_x11_get_default_root_xwindow () ||
+      is_our_window (display, xwindow))
+    return GDK_FILTER_CONTINUE;
+
+  /* Another client mapped or restacked a window, for example the window
+   * manager created new frames or a dock. It may now be above this
+   * override-redirect window, so raise it again to keep the session
+   * covered.
+   */
+  g_debug ("Window 0x%lx was mapped or restacked, raising", xwindow);
+  gdk_window_raise (gtk_widget_get_window (GTK_WIDGET (self)));
+
+  return GDK_FILTER_CONTINUE;
+}
+
+static void
+select_substructure_events (GdkDisplay *display)
+{
+  Display *xdisplay;
+  Window xroot;
+  XWindowAttributes attrs;
+
+  xdisplay = gdk_x11_display_get_xdisplay (display);
+  xroot = gdk_x11_get_default_root_xwindow ();
+
+  gdk_x11_display_error_trap_push (display);
+
+  if (XGetWindowAttributes (xdisplay, xroot, &attrs) != 0 &&
+      (attrs.your_event_mask & SubstructureNotifyMask) == 0)
+    {
+      XSelectInput (xdisplay, xroot,
+                    attrs.your_event_mask | SubstructureNotifyMask);
+    }
+
+  gdk_x11_display_error_trap_pop_ignored (display);
+}
+
 static void
 gf_window_realize (GtkWidget *widget)
 {
@@ -496,6 +576,17 @@ gf_window_realize (GtkWidget *widget)
   GTK_WIDGET_CLASS (gf_window_parent_class)->realize (widget);
 
   move_resize (self);
+
+  select_substructure_events (gtk_widget_get_display (widget));
+  gdk_window_add_filter (NULL, restack_filter, self);
+}
+
+static void
+gf_window_unrealize (GtkWidget *widget)
+{
+  gdk_window_remove_filter (NULL, restack_filter, widget);
+
+  GTK_WIDGET_CLASS (gf_window_parent_class)->unrealize (widget);
 }
 
 static gboolean
@@ -579,6 +670,7 @@ gf_window_class_init (GfWindowClass *self_class)
   widget_class->realize = gf_window_realize;
   widget_class->scroll_event = gf_window_scroll_event;
   widget_class->show = gf_window_show;
+  widget_class->unrealize = gf_window_unrealize;
 
   install_properties (object_class);
   install_signals ();
