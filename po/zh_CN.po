@@ -4,15 +4,15 @@
 # Mingye Wang <arthur2e5@aosc.xyz>, 2016.
 # Aron Xu <happyaron.xu@gmail.com>, 2017.
 # Dingzhong Chen <wsxy162@gmail.com>, 2016-2020.
-# lumingzh <lumingzh@qq.com>, 2022-2024.
+# lumingzh <lumingzh@qq.com>, 2022-2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-flashback master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-flashback/"
 "issues/\n"
-"POT-Creation-Date: 2024-03-23 10:19+0000\n"
-"PO-Revision-Date: 2024-06-05 18:48+0800\n"
+"POT-Creation-Date: 2026-11-01 16:16+0000\n"
+"PO-Revision-Date: 2026-11-02 09:22+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -20,117 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Gtranslator 46.1\n"
-
-#: backends/gf-monitor.c:135
-msgid "Built-in display"
-msgstr "内建显示器"
-
-#: backends/gf-monitor.c:169
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:433
-msgid "Unknown"
-msgstr "未知"
-
-#: backends/gf-monitor.c:171
-msgid "Unknown Display"
-msgstr "未知显示器"
-
-#: backends/gf-monitor.c:180
-#, c-format
-msgctxt ""
-"This is a monitor vendor name, followed by a size in inches, like 'Dell 15\"'"
-msgid "%s %s"
-msgstr "%s %s"
-
-#: backends/gf-monitor.c:194
-#, c-format
-msgctxt ""
-"This is a monitor vendor name followed by product/model name where size in "
-"inches could not be calculated, e.g. Dell U2414H"
-msgid "%s %s"
-msgstr "%s %s"
-
-#. Translators: this is a filename used for screencast
-#. * recording, where "%d" and "%t" date and time, e.g.
-#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: daemons/media-keys/gsd-media-keys-manager.c:551
-#, no-c-format
-msgid "Screencast from %d %t.webm"
-msgstr "录屏于 %d %t.webm"
-
-#. translators: this is the name of the file that gets made up
-#. * with the screenshot
-#: daemons/media-keys/gsd-screenshot-utils.c:240
-#, c-format
-msgid "Screenshot from %s"
-msgstr "截图于 %s"
-
-#: daemons/polkit/flashback-authenticator.c:100
-#, c-format
-msgid "_Password for %s:"
-msgstr "用于 %s 的密码(_P)："
-
-#: daemons/polkit/flashback-authenticator.c:104
-#: daemons/polkit/flashback-polkit-dialog.ui:99
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:366
-msgid "_Password:"
-msgstr "密码(_P)："
-
-#: daemons/polkit/flashback-authenticator.c:259
-msgid "Your authentication attempt was unsuccessful. Please try again."
-msgstr "认证失败，请重试。"
-
-#: daemons/polkit/flashback-listener.c:139
-msgid "Authentication dialog was dismissed by the user"
-msgstr "认证对话框被用户关闭"
-
-#: daemons/polkit/flashback-polkit-dialog.c:202
-msgid ""
-"An application is attempting to perform an action that requires privileges. "
-"Authentication as one of the users below is required to perform this action."
-msgstr ""
-"一个应用程序正在尝试执行需要权限的操作。 执行此操作需要认证为以下用户之一。"
-
-#: daemons/polkit/flashback-polkit-dialog.c:212
-#: daemons/polkit/flashback-polkit-dialog.ui:68
-msgid ""
-"An application is attempting to perform an action that requires privileges. "
-"Authentication is required to perform this action."
-msgstr "一个应用程序正在尝试执行需要权限的操作。 执行此操作需要认证。"
-
-#: daemons/polkit/flashback-polkit-dialog.c:217
-msgid ""
-"An application is attempting to perform an action that requires privileges. "
-"Authentication as the super user is required to perform this action."
-msgstr ""
-"一个应用程序正在尝试执行需要权限的操作。 执行此操作需要认证为超级用户。"
-
-#: daemons/polkit/flashback-polkit-dialog.c:386
-msgid "Select user..."
-msgstr "选择用户…"
-
-#: daemons/polkit/flashback-polkit-dialog.c:425
-#, c-format
-msgid "%s (%s)"
-msgstr "%s (%s)"
-
-#: daemons/polkit/flashback-polkit-dialog.c:600
-msgid "Action:"
-msgstr "动作："
-
-#: daemons/polkit/flashback-polkit-dialog.c:603
-#, c-format
-msgid "Click to edit %s"
-msgstr "点击编辑 %s"
-
-#: daemons/polkit/flashback-polkit-dialog.c:611
-msgid "Vendor:"
-msgstr "供应商："
-
-#: daemons/polkit/flashback-polkit-dialog.c:614
-#, c-format
-msgid "Click to open %s"
-msgstr "单击以打开 %s"
+"X-Generator: Gtranslator 51.0\n"
 
 #: daemons/polkit/flashback-polkit-dialog.ui:8
 msgid "Authenticate"
@@ -140,12 +30,21 @@ msgstr "认证"
 msgid "<big><b>Title</b></big>"
 msgstr "<big><b>标题</b></big>"
 
+#: daemons/polkit/flashback-polkit-dialog.ui:68
+msgid ""
+"An application is attempting to perform an action that requires privileges. "
+"Authentication is required to perform this action."
+msgstr "一个应用程序正在尝试执行需要权限的操作。 执行此操作需要认证。"
+
+#: daemons/polkit/flashback-polkit-dialog.ui:99
+msgid "_Password:"
+msgstr "密码(_P)："
+
 #: daemons/polkit/flashback-polkit-dialog.ui:192
 msgid "<small><b>_Details</b></small>"
 msgstr "<small><b>详细信息(_D)</b></small>"
 
 #: daemons/polkit/flashback-polkit-dialog.ui:213
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:785
 msgid "_Cancel"
 msgstr "取消(_C)"
 
@@ -153,72 +52,56 @@ msgstr "取消(_C)"
 msgid "_Authenticate"
 msgstr "认证(_A)"
 
-#: data/applications/gnome-flashback.desktop.in:4
+#: data/applications/gnome-flashback.desktop.in:3
 msgid "GNOME Flashback"
 msgstr "GNOME Flashback"
 
-#: data/autostart/gnome-flashback-clipboard.desktop.in.in:4
-msgid "Clipboard (GNOME Flashback)"
-msgstr "剪贴板（GNOME Flashback）"
-
-#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:3
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:2
 msgid "Geoclue Demo agent (GNOME Flashback)"
 msgstr "地理位置演示代理（GNOME Flashback）"
 
-#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:4
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:3
 msgid "Demo geoclue agent"
 msgstr "演示地理位置代理"
 
-#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:5
+#: data/autostart/gnome-flashback-geoclue-demo-agent.desktop.in.in:4
 msgid "geolocation;"
 msgstr "geolocation;定位;地理位置;位置;"
 
-#: data/autostart/gnome-flashback-idle-monitor.desktop.in.in:4
-msgid "Idle Monitor (GNOME Flashback)"
-msgstr "闲置监视器（GNOME Flashback）"
-
-#: data/autostart/gnome-flashback-media-keys.desktop.in.in:4
-msgid "MediaKeys (GNOME Flashback)"
-msgstr "媒体键（GNOME Flashback）"
-
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:3
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:2
 msgid "Network (GNOME Flashback)"
 msgstr "网络（GNOME Flashback）"
 
-#: data/autostart/gnome-flashback-nm-applet.desktop.in:4
+#: data/autostart/gnome-flashback-nm-applet.desktop.in:3
 msgid "Manage your network connections"
 msgstr "管理您的网络连接"
 
-#: data/autostart/gnome-flashback-polkit.desktop.in.in:4
-msgid "Polkit (GNOME Flashback)"
-msgstr "策略（GNOME Flashback）"
-
-#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:4
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:3
 msgid "Science"
 msgstr "科学"
 
-#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:5
+#: data/directories/X-GNOME-Flashback-Science.directory.desktop.in:4
 msgid "Scientific applications"
 msgstr "科学应用程序"
 
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:3
 msgid "Preferences"
 msgstr "首选项"
 
-#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:5
+#: data/directories/X-GNOME-Flashback-Settings.directory.desktop.in:4
 msgid "Personal preferences"
 msgstr "个人首选项"
 
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:3
 msgid "Administration"
 msgstr "管理"
 
-#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:5
+#: data/directories/X-GNOME-Flashback-Settings-System.directory.desktop.in:4
 msgid "Change system-wide settings (affects all users)"
 msgstr "改变系统设置（影响所有用户）"
 
 #: data/keybindings/50-gnome-flashback-screenshots.xml:6
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:84
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
 msgid "Screenshots"
 msgstr "截屏"
 
@@ -278,112 +161,88 @@ msgid ""
 msgstr "若为真，GNOME Flashback 应用程序将负责自动挂载可移动介质。"
 
 #: data/schemas/org.gnome.gnome-flashback.gschema.xml:22
-msgid "Clipboard"
-msgstr "剪贴板"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:27
-#: gnome-flashback/libdesktop/gf-desktop-window.c:824
 msgid "Desktop"
 msgstr "桌面"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:32
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:27
 msgid "End session dialog"
 msgstr "终止会话对话框"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:28
 msgid ""
 "If set to true, then GNOME Flashback application will be used to show the "
 "end session dialog."
 msgstr "若为真，GNOME Flashback 应用程序将负责显示“终止会话”对话框。"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
-msgid "Idle monitor"
-msgstr "空闲监视器"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
-msgid ""
-"If set to true, then GNOME Flashback application will be used for user "
-"activity monitoring."
-msgstr "若为真，GNOME Flashback 应用程序将负责监视用户活动。"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:33
 msgid "Input settings"
 msgstr "输入设置"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:49
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:38
 msgid "Keyboard layouts and input methods"
 msgstr "键盘布局和输入法"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:39
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "keyboard layouts and input methods."
 msgstr "若为真，GNOME Flashback 应用程序将负责管理键盘布局和输入法。"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:44
 msgid "Notification daemon"
 msgstr "通知守护程序"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:45
 msgid ""
 "If set to true, then GNOME Flashback application will be used to manage "
 "notifications."
 msgstr "若为真，GNOME Flashback 应用程序将负责管理通知。"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
-msgid "Authentication agent for polkit"
-msgstr "polkit 的验证代理"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
-msgid ""
-"This is the same authentication agent that was provided by PolicyKit-gnome."
-msgstr "这和 PolicyKit-gnome 所提供的验证代理相同。"
-
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:67
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:50
 msgid "Root background"
 msgstr "桌面背景（Root）"
 
 # 原译 屏幕广播
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:72
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:55
 msgid "Screencasts"
 msgstr "屏幕录制"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:56
 msgid ""
 "If set to true, then GNOME Flashback application will be used to record the "
 "screen."
 msgstr "若为真，GNOME Flashback 应用程序将负责录屏。"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:78
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:61
 msgid "Screensaver"
 msgstr "屏幕保护"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:62
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a "
 "screensaver."
 msgstr "若为真，GNOME Flashback 应用程序将作为屏幕保护程序运行。"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:85
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:68
 msgid ""
 "If set to true, then GNOME Flashback application will be used to take "
 "screenshots."
 msgstr "若为真，GNOME Flashback 应用程序将负责截屏。"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:90
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:73
 msgid "Shell"
 msgstr "Shell"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:91
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:74
 msgid ""
 "If set to true, then GNOME Flashback application will be used as a shell."
 msgstr "若为真，GNOME Flashback 应用程序将作为 shell 运行。"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:96
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:79
 msgid "Status Notifier Watcher"
 msgstr "状态通知观察程序"
 
-#: data/schemas/org.gnome.gnome-flashback.gschema.xml:97
+#: data/schemas/org.gnome.gnome-flashback.gschema.xml:80
 msgid ""
 "If set to true, then GNOME Flashback application will be used as Status "
 "Notifier Watcher."
@@ -425,7 +284,6 @@ msgid "The size of desktop icons."
 msgstr "桌面图标的大小。"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:11
-#: gnome-flashback/libdesktop/gf-icon-view.c:1332
 msgid "Placement"
 msgstr "放置方式"
 
@@ -438,7 +296,6 @@ msgstr ""
 "格）、“free”（自由）之一。此项控制图标如何在桌面放置。"
 
 #: data/schemas/org.gnome.gnome-flashback.desktop.icons.gschema.xml:17
-#: gnome-flashback/libdesktop/gf-icon-view.c:1338
 msgid "Sort by"
 msgstr "排序方式"
 
@@ -539,10 +396,58 @@ msgid "Binding to record a short video of the screen"
 msgstr "简短录屏的按键绑定"
 
 #: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:47
+msgid "Screen brightness up"
+msgstr "屏幕亮度升高"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:48
+msgid "Binding to increase the screen brightness."
+msgstr "升高屏幕亮度的按键绑定。"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:53
+msgid "Screen brightness up on current monitor"
+msgstr "升高当前监视器屏幕亮度"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:54
+msgid "Binding to increase the brightness of the monitor under the pointer."
+msgstr "升高指针所在当前监视器亮度的按键绑定。"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:59
+msgid "Screen brightness down"
+msgstr "屏幕亮度降低"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:60
+msgid "Binding to decrease the screen brightness."
+msgstr "降低屏幕亮度的按键绑定。"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:65
+msgid "Screen brightness down on current monitor"
+msgstr "降低当前监视器屏幕亮度"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:66
+msgid "Binding to decrease the brightness of the monitor under the pointer."
+msgstr "降低指针所在当前监视器亮度的按键绑定。"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:71
+msgid "Screen brightness cycle"
+msgstr "屏幕亮度循环"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:72
+msgid "Binding to cycle the screen brightness."
+msgstr "循环屏幕亮度的按键绑定。"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:77
+msgid "Screen brightness cycle on current monitor"
+msgstr "循环当前监视器屏幕亮度"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:78
+msgid "Binding to cycle the brightness of the monitor under the pointer."
+msgstr "循环指针所在当前监视器亮度的按键绑定。"
+
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:83
 msgid "Maximum length of screen recordings"
 msgstr "屏幕录制的最大时长"
 
-#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:48
+#: data/schemas/org.gnome.gnome-flashback.keybindings.gschema.xml:84
 msgid ""
 "The maximum length of single screen cast recordings in seconds or 0 for "
 "unlimited"
@@ -592,19 +497,19 @@ msgstr "保留变更(_K)"
 msgid "Confirm Changes"
 msgstr "确认更改"
 
-#: data/xsessions/gnome-flashback-compiz.desktop.in.in:3
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:2
 msgid "GNOME Flashback (Compiz)"
 msgstr "GNOME Flashback (Compiz)"
 
-#: data/xsessions/gnome-flashback-compiz.desktop.in.in:4
+#: data/xsessions/gnome-flashback-compiz.desktop.in.in:3
 msgid "This session logs you into GNOME Flashback with Compiz"
 msgstr "此会话将用 Compiz 登录您到 GNOME Flashback"
 
-#: data/xsessions/gnome-flashback-metacity.desktop.in.in:3
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:2
 msgid "GNOME Flashback (Metacity)"
 msgstr "GNOME Flashback (Metacity)"
 
-#: data/xsessions/gnome-flashback-metacity.desktop.in.in:4
+#: data/xsessions/gnome-flashback-metacity.desktop.in.in:3
 msgid "This session logs you into GNOME Flashback with Metacity"
 msgstr "此会话将用 Metacity 登录您到 GNOME Flashback"
 
@@ -614,385 +519,11 @@ msgid "Settings changes will revert in %d second!"
 msgid_plural "Settings changes will revert in %d seconds!"
 msgstr[0] "设置更改将在 %d 秒后还原！"
 
-#: gnome-flashback/gf-main.c:43
-msgid "Replace a currently running application"
-msgstr "替换当前正在运行的应用程序"
-
-#: gnome-flashback/gf-main.c:49
-msgid "Print version and exit"
-msgstr "显示版本并退出"
-
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:295
-msgid "Slow Keys Turned On"
-msgstr "慢速键已开启"
-
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:296
-msgid "Slow Keys Turned Off"
-msgstr "慢速键已关闭"
-
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:298
-msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the "
-"Slow Keys feature, which affects the way your keyboard works."
-msgstr ""
-"您刚刚按住了 Shift 键 8 秒钟。这是启用慢速键特性的快捷方式，这会影响您键盘的"
-"使用。"
-
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: system-indicators/si-bluetooth.c:116
-msgid "Turn Off"
-msgstr "关闭"
-
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:303
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:390
-#: system-indicators/si-bluetooth.c:130
-msgid "Turn On"
-msgstr "打开"
-
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
-msgid "Leave On"
-msgstr "保持开启"
-
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:305
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:392
-msgid "Leave Off"
-msgstr "保持关闭"
-
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:313
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:400
-msgid "Universal Access"
-msgstr "通用辅助"
-
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:379
-msgid "Sticky Keys Turned On"
-msgstr "粘滞键已开启"
-
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:380
-msgid "Sticky Keys Turned Off"
-msgstr "粘滞键已关闭"
-
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:383
-msgid ""
-"You just pressed the Shift key 5 times in a row.  This is the shortcut for "
-"the Sticky Keys feature, which affects the way your keyboard works."
-msgstr ""
-"您刚刚按了 Shift 键五次。这是启用粘滞键特性的快捷方式，这会影响您键盘的使用。"
-
-#: gnome-flashback/liba11y-keyboard/gf-a11y-keyboard.c:385
-msgid ""
-"You just pressed two keys at once, or pressed the Shift key 5 times in a "
-"row. This turns off the Sticky Keys feature, which affects the way your "
-"keyboard works."
-msgstr ""
-"您刚刚一次按了两个键或者按了 Shift 键五次。这将会关闭粘滞键特性，这会影响您使"
-"用键盘的方式。"
-
-#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:109
-msgid "Headphones"
-msgstr "耳机"
-
-#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:112
-msgid "Headset"
-msgstr "耳麦"
-
-#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:115
-msgid "Microphone"
-msgstr "麦克风"
-
-#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:178
-#, c-format
-msgid "Failed to start Sound Preferences: %s"
-msgstr "启动声音首选项失败：%s"
-
-#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:248
-msgid "What kind of device did you plug in?"
-msgstr "您插入了哪种设备？"
-
-#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:262
-#: system-indicators/si-bluetooth.c:307 system-indicators/si-volume.c:446
-msgid "Sound Settings"
-msgstr "声音设置"
-
-#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:269
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:104
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
-msgid "Cancel"
-msgstr "取消"
-
-#: gnome-flashback/libaudio-device-selection/gf-audio-device-selection-dialog.c:285
-msgid "Unknown Audio Device"
-msgstr "未知的音频设备"
-
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:175
-#, c-format
-msgid "Unable to mount %s"
-msgstr "无法挂载 %s"
-
-#: gnome-flashback/libautomount-manager/gsd-automount-manager.c:292
-#, c-format
-msgid "Unable to open a folder for %s"
-msgstr "无法为 %s 打开文件夹"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:339
-msgid "Ask what to do"
-msgstr "询问做什么"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:345
-msgid "Do Nothing"
-msgstr "什么也不做"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:351
-msgid "Open Folder"
-msgstr "打开文件夹"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:498
-#, c-format
-msgid "Unable to eject %p"
-msgstr "无法弹出 %p"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:500
-#, c-format
-msgid "Unable to unmount %p"
-msgstr "无法卸载 %p"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:709
-msgid "You have just inserted an Audio CD."
-msgstr "您刚刚插入了一张音频 CD。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:711
-msgid "You have just inserted an Audio DVD."
-msgstr "您刚刚插入了一张音频 DVD。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:713
-msgid "You have just inserted a Video DVD."
-msgstr "您刚刚插入了一张视频 DVD。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:715
-msgid "You have just inserted a Video CD."
-msgstr "您刚刚插入了一张视频 CD (VCD)。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:717
-msgid "You have just inserted a Super Video CD."
-msgstr "您刚刚插入了一张超级视频 CD (SVCD)。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:719
-msgid "You have just inserted a blank CD."
-msgstr "您刚刚插入了一张空白 CD。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:721
-msgid "You have just inserted a blank DVD."
-msgstr "您刚刚插入了一张空白 DVD。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:723
-msgid "You have just inserted a blank Blu-Ray disc."
-msgstr "您刚刚插入了一张空白蓝光光盘。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:725
-msgid "You have just inserted a blank HD DVD."
-msgstr "您刚刚插入了一张空白 HD DVD。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:727
-msgid "You have just inserted a Photo CD."
-msgstr "您刚刚插入了一张照片 CD。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:729
-msgid "You have just inserted a Picture CD."
-msgstr "您刚刚插入了一张图片 CD。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:731
-msgid "You have just inserted a medium with digital photos."
-msgstr "您刚刚插入了一个数码照片的介质。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:733
-msgid "You have just inserted a digital audio player."
-msgstr "您刚刚插入了一个数字音频播放器。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:735
-msgid ""
-"You have just inserted a medium with software intended to be automatically "
-"started."
-msgstr "您刚刚插入了一个想要自动启动的软件的介质。"
-
-#. fallback to generic greeting
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:738
-msgid "You have just inserted a medium."
-msgstr "您刚刚插入了一个介质。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:740
-msgid "Choose what application to launch."
-msgstr "选择要启动的应用程序。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:749
-#, c-format
-msgid ""
-"Select how to open \"%s\" and whether to perform this action in the future "
-"for other media of type \"%s\"."
-msgstr "选择怎样打开“%s”以及是否为其他类型为“%s”的介质在将来执行此操作。"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:776
-msgid "_Always perform this action"
-msgstr "总是执行这一操作(_A)"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:786
-msgid "_OK"
-msgstr "确定(_O)"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:792
-msgid "_Eject"
-msgstr "弹出(_E)"
-
-#: gnome-flashback/libautomount-manager/gsd-autorun.c:797
-msgid "_Unmount"
-msgstr "卸载(_U)"
-
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:102
-#: gnome-flashback/libdesktop/gf-icon-view.c:1320
-msgid "New Folder"
-msgstr "新文件夹"
-
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:112
-msgid "Create"
-msgstr "创建"
-
-#: gnome-flashback/libdesktop/gf-create-folder-dialog.c:140
-#: gnome-flashback/libdesktop/gf-rename-popover.c:117
-msgid "Folder name"
-msgstr "文件夹名称"
-
-#: gnome-flashback/libdesktop/gf-home-icon.c:45
-msgid "Home"
-msgstr "主目录"
-
-#: gnome-flashback/libdesktop/gf-icon.c:508
-msgid "Open"
-msgstr "打开"
-
-#: gnome-flashback/libdesktop/gf-icon.c:544
-msgid "Move to Trash"
-msgstr "移到回收站"
-
-#: gnome-flashback/libdesktop/gf-icon.c:564
-msgid "Rename..."
-msgstr "重命名…"
-
-#: gnome-flashback/libdesktop/gf-icon.c:587
-msgid "Empty Trash"
-msgstr "清空回收站"
-
-#: gnome-flashback/libdesktop/gf-icon.c:601
-msgid "Properties"
-msgstr "属性"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:1096
-msgid "Auto arrange icons"
-msgstr "自动排列图标"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:1100
-msgid "Align icons to grid"
-msgstr "对齐图标到网格"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:1104
-msgctxt "Free placement of icons"
-msgid "Free"
-msgstr "自由"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:1224
-msgid "Name"
-msgstr "名称"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:1228
-msgid "Date modified"
-msgstr "修改日期"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:1232
-msgid "Size"
-msgstr "大小"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:1348
-msgid "Change Background"
-msgstr "更换壁纸"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:1356
-msgid "Display Settings"
-msgstr "显示设置"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:1368
-msgid "Open Terminal"
-msgstr "打开终端"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:3215
-msgid "Folder names cannot contain “/”."
-msgstr "文件夹名中不能包含“/”。"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:3217
-msgid "File names cannot contain “/”."
-msgstr "文件名中不能包含“/”。"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:3224
-msgid "A folder cannot be called “.”."
-msgstr "文件夹不能命名为“.”。"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:3226
-msgid "A file cannot be called “.”."
-msgstr "文件不能命名为“.”。"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:3233
-msgid "A folder cannot be called “..”."
-msgstr "文件夹不能命名为“..”。"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:3235
-msgid "A file cannot be called “..”."
-msgstr "文件不能命名为“..”。"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:3251
-msgid "A folder with that name already exists."
-msgstr "相同名称的文件夹已存在。"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:3253
-msgid "A file with that name already exists."
-msgstr "相同名称的文件已存在。"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:3264
-msgid "Folders with “.” at the beginning of their name are hidden."
-msgstr "名称以“.”开头的文件夹将被隐藏。"
-
-#: gnome-flashback/libdesktop/gf-icon-view.c:3266
-msgid "Files with “.” at the beginning of their name are hidden."
-msgstr "名称以“.”开头的文件将被隐藏。"
-
-#: gnome-flashback/libdesktop/gf-rename-popover.c:117
-msgid "File name"
-msgstr "文件名称"
-
-#: gnome-flashback/libdesktop/gf-rename-popover.c:254
-msgid "Rename"
-msgstr "重命名"
-
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:514
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:750
-msgid "Log Out"
-msgstr "注销"
-
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:518
-msgid "Click Log Out to quit these applications and log out of the system."
-msgstr "点击注销以退出应用程序并登出系统。"
-
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:526
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s 将在 %d 秒后自动注销。"
-
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:537
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:754
-msgid "Power Off"
-msgstr "关闭电源"
-
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:540
-msgid "Click Power Off to quit these applications and power off the system."
-msgstr "点击关闭电源以退出应用程序并关闭系统的电源。"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:542
 #, c-format
@@ -1000,25 +531,11 @@ msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "系统将在 %d 秒后自动关闭电源。"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:549
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:758
-msgid "Restart"
-msgstr "重新启动"
-
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:552
-msgid "Click Restart to quit these applications and restart the system."
-msgstr "点击重启以退出应用程序并重新启动系统。"
-
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:554
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "系统将在 %d 秒后自动重启。"
-
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:561
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:762
-msgid "Hibernate"
-msgstr "休眠"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:562
 #, c-format
@@ -1026,21 +543,11 @@ msgid "The system will hibernate automatically in %d second."
 msgid_plural "The system will hibernate automatically in %d seconds."
 msgstr[0] "系统将在 %d 秒后自动休眠。"
 
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:569
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:766
-msgid "Suspend"
-msgstr "睡眠"
-
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:570
 #, c-format
 msgid "The system will suspend automatically in %d second."
 msgid_plural "The system will suspend automatically in %d seconds."
 msgstr[0] "系统将在 %d 秒后自动睡眠。"
-
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:577
-#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:770
-msgid "Hybrid Sleep"
-msgstr "混合式睡眠"
 
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.c:578
 #, c-format
@@ -1058,88 +565,17 @@ msgid ""
 "of data."
 msgstr "正在等待这些应用程序完成。中端它们可能导致数据丢失。"
 
+#: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:111
+msgid "Cancel"
+msgstr "取消"
+
 #: gnome-flashback/libend-session-dialog/gf-inhibit-dialog.ui:125
 msgid "Lock Screen"
 msgstr "锁屏"
 
-#: gnome-flashback/libnotifications/gf-bubble.c:549
-#: gnome-flashback/libnotifications/gf-bubble.c:553
-#: gnome-flashback/libnotifications/nd-notification-box.c:320
-#: gnome-flashback/libnotifications/nd-notification-box.c:322
-msgid "Closes the notification."
-msgstr "关闭此通知。"
-
-#: gnome-flashback/libnotifications/gf-bubble.c:573
-#: gnome-flashback/libnotifications/gf-bubble.c:604
-#: gnome-flashback/libnotifications/nd-notification-box.c:338
-msgid "Notification summary text."
-msgstr "通知概要文本。"
-
-#: gnome-flashback/libnotifications/gf-bubble.c:623
-msgid "Notification"
-msgstr "通知"
-
-#: gnome-flashback/libnotifications/nd-daemon.c:98
-msgid "Invalid notification identifier"
-msgstr "无效的通知标识符"
-
-#: gnome-flashback/libnotifications/nd-notification-box.c:358
-msgid "Notification body text."
-msgstr "通知正文文本。"
-
-#: gnome-flashback/libnotifications/nd-queue.c:428
-msgid "Clear all notifications"
-msgstr "清除全部通知"
-
-#: gnome-flashback/libnotifications/nd-queue.c:846
-msgid "Notifications"
-msgstr "通知"
-
-#: gnome-flashback/libscreensaver/gf-auth.c:432
-msgid "Your account was given a time limit that has now passed."
-msgstr "你的帐号设有时间限制，已超过限定时间。"
-
-#: gnome-flashback/libscreensaver/gf-auth.c:436
-msgid "Sorry, that didn’t work. Please try again."
-msgstr "抱歉，密码有误。请重试。"
-
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:177
-msgid "Failed to switch to greeter!"
-msgstr "切换欢迎屏幕失败！"
-
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:251
-msgid "Time has expired."
-msgstr "时间已到期。"
-
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:467
-msgid "Checking…"
-msgstr "正在检查……"
-
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:492
-msgid "S_witch User…"
-msgstr "切换用户(_S)…"
-
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:501
-msgid "_Unlock"
-msgstr "解锁(_U)"
-
-#: gnome-flashback/libscreensaver/gf-unlock-dialog.c:712
-msgid "You have the Caps Lock key on."
-msgstr "你的大写锁定键正打开着。"
-
-#: gnome-flashback/libscreenshot/gf-screenshot.c:279
-msgid "Screenshot taken"
-msgstr "已截屏"
-
-#. translators:
-#. * The device has been disabled
-#: gvc/gvc/gvc-mixer-control.c:1908
-msgid "Disabled"
-msgstr "已禁用"
-
 #. translators:
 #. * The number of sound outputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1915
+#: gvc/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1147,39 +583,11 @@ msgstr[0] "%u 输出"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: gvc/gvc/gvc-mixer-control.c:1925
+#: gvc/gvc/gvc-mixer-control.c:1927
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u 输入"
-
-#: gvc/gvc/gvc-mixer-control.c:2882
-msgid "System Sounds"
-msgstr "系统声音"
-
-#: system-indicators/si-bluetooth.c:122
-msgid "Send Files"
-msgstr "发送文件"
-
-#: system-indicators/si-bluetooth.c:260
-msgid "Disconnect"
-msgstr "断开连接"
-
-#: system-indicators/si-bluetooth.c:273
-msgid "Connect"
-msgstr "连接"
-
-#: system-indicators/si-bluetooth.c:288
-msgid "Keyboard Settings"
-msgstr "键盘设置"
-
-#: system-indicators/si-bluetooth.c:296
-msgid "Mouse & Touchpad Settings"
-msgstr "鼠标和触摸板设置"
-
-#: system-indicators/si-bluetooth.c:344
-msgid "Bluetooth Settings"
-msgstr "蓝牙设置"
 
 #: system-indicators/si-bluetooth.c:438
 #, c-format
@@ -1187,95 +595,540 @@ msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d 个已连接设备"
 
-#: system-indicators/si-bluetooth.c:445
-msgid "Not Connected"
-msgstr "未连接"
+#~ msgid "Built-in display"
+#~ msgstr "内建显示器"
 
-#: system-indicators/si-desktop-menu-item.c:80
+#~ msgid "Unknown"
+#~ msgstr "未知"
+
+#~ msgid "Unknown Display"
+#~ msgstr "未知显示器"
+
 #, c-format
-msgid "Desktop file “%s” is missing!"
-msgstr "缺少桌面文件“%s”！"
+#~ msgctxt ""
+#~ "This is a monitor vendor name, followed by a size in inches, like 'Dell "
+#~ "15\"'"
+#~ msgid "%s %s"
+#~ msgstr "%s %s"
 
-#: system-indicators/si-desktop-menu-item.c:95
 #, c-format
-msgid "Failed to start “%s”: %s"
-msgstr "启动“%s”失败：%s"
+#~ msgctxt ""
+#~ "This is a monitor vendor name followed by product/model name where size "
+#~ "in inches could not be calculated, e.g. Dell U2414H"
+#~ msgid "%s %s"
+#~ msgstr "%s %s"
 
-#: system-indicators/si-input-sources.c:859
-msgid "Show Keyboard Layout"
-msgstr "显示键盘布局"
+#, no-c-format
+#~ msgid "Screencast from %d %t.webm"
+#~ msgstr "录屏于 %d %t.webm"
 
-#: system-indicators/si-input-sources.c:890
-msgid "Region & Language Settings"
-msgstr "区域与语言设置"
-
-#: system-indicators/si-module.c:33
-msgid "System Indicators"
-msgstr "系统指示器"
-
-#: system-indicators/si-module.c:34
-msgid "This applet contains system indicators"
-msgstr "此小程序包含系统的指示器"
-
-#: system-indicators/si-power.c:63
-msgid "UPS"
-msgstr "UPS"
-
-#: system-indicators/si-power.c:65
-msgid "Battery"
-msgstr "电池"
-
-#: system-indicators/si-power.c:81
-msgid "Fully Charged"
-msgstr "已充满电"
-
-#: system-indicators/si-power.c:83
-msgid "Empty"
-msgstr "电池已空"
-
-#: system-indicators/si-power.c:89
-msgid "Not Charging"
-msgstr "未在充电"
-
-#: system-indicators/si-power.c:91 system-indicators/si-power.c:96
-msgid "Estimating..."
-msgstr "正在估计…"
-
-#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: system-indicators/si-power.c:105
 #, c-format
-msgid "%.0f:%02.0f Remaining (%.0f%%)"
-msgstr "剩余 %.0f:%02.0f (%.0f%%)"
+#~ msgid "Screenshot from %s"
+#~ msgstr "截图于 %s"
 
-#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: system-indicators/si-power.c:112
 #, c-format
-msgid "%.0f:%02.0f Until Full (%.0f%%)"
-msgstr "还有 %.0f:%02.0f 充满 (%.0f%%)"
+#~ msgid "_Password for %s:"
+#~ msgstr "用于 %s 的密码(_P)："
 
-#: system-indicators/si-power.c:146
-msgid "Power Settings"
-msgstr "电源设置"
+#~ msgid "Your authentication attempt was unsuccessful. Please try again."
+#~ msgstr "认证失败，请重试。"
 
-#: system-indicators/si-volume.c:245
-msgid "Volume changed"
-msgstr "音量已变更"
+#~ msgid "Authentication dialog was dismissed by the user"
+#~ msgstr "认证对话框被用户关闭"
 
-#: system-indicators/si-volume.c:266
-msgid "Mute"
-msgstr "静音"
+#~ msgid ""
+#~ "An application is attempting to perform an action that requires "
+#~ "privileges. Authentication as one of the users below is required to "
+#~ "perform this action."
+#~ msgstr ""
+#~ "一个应用程序正在尝试执行需要权限的操作。 执行此操作需要认证为以下用户之"
+#~ "一。"
 
-#: system-indicators/si-volume.c:523
-msgid "Input"
-msgstr "输入"
+#~ msgid ""
+#~ "An application is attempting to perform an action that requires "
+#~ "privileges. Authentication as the super user is required to perform this "
+#~ "action."
+#~ msgstr ""
+#~ "一个应用程序正在尝试执行需要权限的操作。 执行此操作需要认证为超级用户。"
 
-#: system-indicators/si-volume.c:523
-msgid "Output"
-msgstr "输出"
+#~ msgid "Select user..."
+#~ msgstr "选择用户…"
 
-#: system-indicators/si-volume.c:534
-msgid "Muted"
-msgstr "静音"
+#, c-format
+#~ msgid "%s (%s)"
+#~ msgstr "%s (%s)"
+
+#~ msgid "Action:"
+#~ msgstr "动作："
+
+#, c-format
+#~ msgid "Click to edit %s"
+#~ msgstr "点击编辑 %s"
+
+#~ msgid "Vendor:"
+#~ msgstr "供应商："
+
+#, c-format
+#~ msgid "Click to open %s"
+#~ msgstr "单击以打开 %s"
+
+#~ msgid "Clipboard (GNOME Flashback)"
+#~ msgstr "剪贴板（GNOME Flashback）"
+
+#~ msgid "Idle Monitor (GNOME Flashback)"
+#~ msgstr "闲置监视器（GNOME Flashback）"
+
+#~ msgid "MediaKeys (GNOME Flashback)"
+#~ msgstr "媒体键（GNOME Flashback）"
+
+#~ msgid "Polkit (GNOME Flashback)"
+#~ msgstr "策略（GNOME Flashback）"
+
+#~ msgid "Clipboard"
+#~ msgstr "剪贴板"
+
+#~ msgid "Idle monitor"
+#~ msgstr "空闲监视器"
+
+#~ msgid ""
+#~ "If set to true, then GNOME Flashback application will be used for user "
+#~ "activity monitoring."
+#~ msgstr "若为真，GNOME Flashback 应用程序将负责监视用户活动。"
+
+#~ msgid "Authentication agent for polkit"
+#~ msgstr "polkit 的验证代理"
+
+#~ msgid ""
+#~ "This is the same authentication agent that was provided by PolicyKit-"
+#~ "gnome."
+#~ msgstr "这和 PolicyKit-gnome 所提供的验证代理相同。"
+
+#~ msgid "Replace a currently running application"
+#~ msgstr "替换当前正在运行的应用程序"
+
+#~ msgid "Print version and exit"
+#~ msgstr "显示版本并退出"
+
+#~ msgid "Slow Keys Turned On"
+#~ msgstr "慢速键已开启"
+
+#~ msgid "Slow Keys Turned Off"
+#~ msgstr "慢速键已关闭"
+
+#~ msgid ""
+#~ "You just held down the Shift key for 8 seconds. This is the shortcut for "
+#~ "the Slow Keys feature, which affects the way your keyboard works."
+#~ msgstr ""
+#~ "您刚刚按住了 Shift 键 8 秒钟。这是启用慢速键特性的快捷方式，这会影响您键盘"
+#~ "的使用。"
+
+#~ msgid "Turn Off"
+#~ msgstr "关闭"
+
+#~ msgid "Turn On"
+#~ msgstr "打开"
+
+#~ msgid "Leave On"
+#~ msgstr "保持开启"
+
+#~ msgid "Leave Off"
+#~ msgstr "保持关闭"
+
+#~ msgid "Universal Access"
+#~ msgstr "通用辅助"
+
+#~ msgid "Sticky Keys Turned On"
+#~ msgstr "粘滞键已开启"
+
+#~ msgid "Sticky Keys Turned Off"
+#~ msgstr "粘滞键已关闭"
+
+#~ msgid ""
+#~ "You just pressed the Shift key 5 times in a row.  This is the shortcut "
+#~ "for the Sticky Keys feature, which affects the way your keyboard works."
+#~ msgstr ""
+#~ "您刚刚按了 Shift 键五次。这是启用粘滞键特性的快捷方式，这会影响您键盘的使"
+#~ "用。"
+
+#~ msgid ""
+#~ "You just pressed two keys at once, or pressed the Shift key 5 times in a "
+#~ "row. This turns off the Sticky Keys feature, which affects the way your "
+#~ "keyboard works."
+#~ msgstr ""
+#~ "您刚刚一次按了两个键或者按了 Shift 键五次。这将会关闭粘滞键特性，这会影响"
+#~ "您使用键盘的方式。"
+
+#~ msgid "Headphones"
+#~ msgstr "耳机"
+
+#~ msgid "Headset"
+#~ msgstr "耳麦"
+
+#~ msgid "Microphone"
+#~ msgstr "麦克风"
+
+#, c-format
+#~ msgid "Failed to start Sound Preferences: %s"
+#~ msgstr "启动声音首选项失败：%s"
+
+#~ msgid "What kind of device did you plug in?"
+#~ msgstr "您插入了哪种设备？"
+
+#~ msgid "Sound Settings"
+#~ msgstr "声音设置"
+
+#~ msgid "Unknown Audio Device"
+#~ msgstr "未知的音频设备"
+
+#, c-format
+#~ msgid "Unable to mount %s"
+#~ msgstr "无法挂载 %s"
+
+#, c-format
+#~ msgid "Unable to open a folder for %s"
+#~ msgstr "无法为 %s 打开文件夹"
+
+#~ msgid "Ask what to do"
+#~ msgstr "询问做什么"
+
+#~ msgid "Do Nothing"
+#~ msgstr "什么也不做"
+
+#~ msgid "Open Folder"
+#~ msgstr "打开文件夹"
+
+#, c-format
+#~ msgid "Unable to eject %p"
+#~ msgstr "无法弹出 %p"
+
+#, c-format
+#~ msgid "Unable to unmount %p"
+#~ msgstr "无法卸载 %p"
+
+#~ msgid "You have just inserted an Audio CD."
+#~ msgstr "您刚刚插入了一张音频 CD。"
+
+#~ msgid "You have just inserted an Audio DVD."
+#~ msgstr "您刚刚插入了一张音频 DVD。"
+
+#~ msgid "You have just inserted a Video DVD."
+#~ msgstr "您刚刚插入了一张视频 DVD。"
+
+#~ msgid "You have just inserted a Video CD."
+#~ msgstr "您刚刚插入了一张视频 CD (VCD)。"
+
+#~ msgid "You have just inserted a Super Video CD."
+#~ msgstr "您刚刚插入了一张超级视频 CD (SVCD)。"
+
+#~ msgid "You have just inserted a blank CD."
+#~ msgstr "您刚刚插入了一张空白 CD。"
+
+#~ msgid "You have just inserted a blank DVD."
+#~ msgstr "您刚刚插入了一张空白 DVD。"
+
+#~ msgid "You have just inserted a blank Blu-Ray disc."
+#~ msgstr "您刚刚插入了一张空白蓝光光盘。"
+
+#~ msgid "You have just inserted a blank HD DVD."
+#~ msgstr "您刚刚插入了一张空白 HD DVD。"
+
+#~ msgid "You have just inserted a Photo CD."
+#~ msgstr "您刚刚插入了一张照片 CD。"
+
+#~ msgid "You have just inserted a Picture CD."
+#~ msgstr "您刚刚插入了一张图片 CD。"
+
+#~ msgid "You have just inserted a medium with digital photos."
+#~ msgstr "您刚刚插入了一个数码照片的介质。"
+
+#~ msgid "You have just inserted a digital audio player."
+#~ msgstr "您刚刚插入了一个数字音频播放器。"
+
+#~ msgid ""
+#~ "You have just inserted a medium with software intended to be "
+#~ "automatically started."
+#~ msgstr "您刚刚插入了一个想要自动启动的软件的介质。"
+
+#~ msgid "You have just inserted a medium."
+#~ msgstr "您刚刚插入了一个介质。"
+
+#~ msgid "Choose what application to launch."
+#~ msgstr "选择要启动的应用程序。"
+
+#, c-format
+#~ msgid ""
+#~ "Select how to open \"%s\" and whether to perform this action in the "
+#~ "future for other media of type \"%s\"."
+#~ msgstr "选择怎样打开“%s”以及是否为其他类型为“%s”的介质在将来执行此操作。"
+
+#~ msgid "_Always perform this action"
+#~ msgstr "总是执行这一操作(_A)"
+
+#~ msgid "_OK"
+#~ msgstr "确定(_O)"
+
+#~ msgid "_Eject"
+#~ msgstr "弹出(_E)"
+
+#~ msgid "_Unmount"
+#~ msgstr "卸载(_U)"
+
+#~ msgid "New Folder"
+#~ msgstr "新文件夹"
+
+#~ msgid "Create"
+#~ msgstr "创建"
+
+#~ msgid "Folder name"
+#~ msgstr "文件夹名称"
+
+#~ msgid "Home"
+#~ msgstr "主目录"
+
+#~ msgid "Open"
+#~ msgstr "打开"
+
+#~ msgid "Move to Trash"
+#~ msgstr "移到回收站"
+
+#~ msgid "Rename..."
+#~ msgstr "重命名…"
+
+#~ msgid "Empty Trash"
+#~ msgstr "清空回收站"
+
+#~ msgid "Properties"
+#~ msgstr "属性"
+
+#~ msgid "Auto arrange icons"
+#~ msgstr "自动排列图标"
+
+#~ msgid "Align icons to grid"
+#~ msgstr "对齐图标到网格"
+
+#~ msgctxt "Free placement of icons"
+#~ msgid "Free"
+#~ msgstr "自由"
+
+#~ msgid "Name"
+#~ msgstr "名称"
+
+#~ msgid "Date modified"
+#~ msgstr "修改日期"
+
+#~ msgid "Size"
+#~ msgstr "大小"
+
+#~ msgid "Change Background"
+#~ msgstr "更换壁纸"
+
+#~ msgid "Display Settings"
+#~ msgstr "显示设置"
+
+#~ msgid "Open Terminal"
+#~ msgstr "打开终端"
+
+#~ msgid "Folder names cannot contain “/”."
+#~ msgstr "文件夹名中不能包含“/”。"
+
+#~ msgid "File names cannot contain “/”."
+#~ msgstr "文件名中不能包含“/”。"
+
+#~ msgid "A folder cannot be called “.”."
+#~ msgstr "文件夹不能命名为“.”。"
+
+#~ msgid "A file cannot be called “.”."
+#~ msgstr "文件不能命名为“.”。"
+
+#~ msgid "A folder cannot be called “..”."
+#~ msgstr "文件夹不能命名为“..”。"
+
+#~ msgid "A file cannot be called “..”."
+#~ msgstr "文件不能命名为“..”。"
+
+#~ msgid "A folder with that name already exists."
+#~ msgstr "相同名称的文件夹已存在。"
+
+#~ msgid "A file with that name already exists."
+#~ msgstr "相同名称的文件已存在。"
+
+#~ msgid "Folders with “.” at the beginning of their name are hidden."
+#~ msgstr "名称以“.”开头的文件夹将被隐藏。"
+
+#~ msgid "Files with “.” at the beginning of their name are hidden."
+#~ msgstr "名称以“.”开头的文件将被隐藏。"
+
+#~ msgid "File name"
+#~ msgstr "文件名称"
+
+#~ msgid "Rename"
+#~ msgstr "重命名"
+
+#~ msgid "Log Out"
+#~ msgstr "注销"
+
+#~ msgid "Click Log Out to quit these applications and log out of the system."
+#~ msgstr "点击注销以退出应用程序并登出系统。"
+
+#~ msgid "Power Off"
+#~ msgstr "关闭电源"
+
+#~ msgid "Click Power Off to quit these applications and power off the system."
+#~ msgstr "点击关闭电源以退出应用程序并关闭系统的电源。"
+
+#~ msgid "Restart"
+#~ msgstr "重新启动"
+
+#~ msgid "Click Restart to quit these applications and restart the system."
+#~ msgstr "点击重启以退出应用程序并重新启动系统。"
+
+#~ msgid "Hibernate"
+#~ msgstr "休眠"
+
+#~ msgid "Suspend"
+#~ msgstr "睡眠"
+
+#~ msgid "Hybrid Sleep"
+#~ msgstr "混合式睡眠"
+
+#~ msgid "Closes the notification."
+#~ msgstr "关闭此通知。"
+
+#~ msgid "Notification summary text."
+#~ msgstr "通知概要文本。"
+
+#~ msgid "Notification"
+#~ msgstr "通知"
+
+#~ msgid "Invalid notification identifier"
+#~ msgstr "无效的通知标识符"
+
+#~ msgid "Notification body text."
+#~ msgstr "通知正文文本。"
+
+#~ msgid "Clear all notifications"
+#~ msgstr "清除全部通知"
+
+#~ msgid "Notifications"
+#~ msgstr "通知"
+
+#~ msgid "Your account was given a time limit that has now passed."
+#~ msgstr "你的帐号设有时间限制，已超过限定时间。"
+
+#~ msgid "Sorry, that didn’t work. Please try again."
+#~ msgstr "抱歉，密码有误。请重试。"
+
+#~ msgid "Failed to switch to greeter!"
+#~ msgstr "切换欢迎屏幕失败！"
+
+#~ msgid "Time has expired."
+#~ msgstr "时间已到期。"
+
+#~ msgid "Checking…"
+#~ msgstr "正在检查……"
+
+#~ msgid "S_witch User…"
+#~ msgstr "切换用户(_S)…"
+
+#~ msgid "_Unlock"
+#~ msgstr "解锁(_U)"
+
+#~ msgid "You have the Caps Lock key on."
+#~ msgstr "你的大写锁定键正打开着。"
+
+#~ msgid "Screenshot taken"
+#~ msgstr "已截屏"
+
+#~ msgid "Disabled"
+#~ msgstr "已禁用"
+
+#~ msgid "System Sounds"
+#~ msgstr "系统声音"
+
+#~ msgid "Send Files"
+#~ msgstr "发送文件"
+
+#~ msgid "Disconnect"
+#~ msgstr "断开连接"
+
+#~ msgid "Connect"
+#~ msgstr "连接"
+
+#~ msgid "Keyboard Settings"
+#~ msgstr "键盘设置"
+
+#~ msgid "Mouse & Touchpad Settings"
+#~ msgstr "鼠标和触摸板设置"
+
+#~ msgid "Bluetooth Settings"
+#~ msgstr "蓝牙设置"
+
+#~ msgid "Not Connected"
+#~ msgstr "未连接"
+
+#, c-format
+#~ msgid "Desktop file “%s” is missing!"
+#~ msgstr "缺少桌面文件“%s”！"
+
+#, c-format
+#~ msgid "Failed to start “%s”: %s"
+#~ msgstr "启动“%s”失败：%s"
+
+#~ msgid "Show Keyboard Layout"
+#~ msgstr "显示键盘布局"
+
+#~ msgid "Region & Language Settings"
+#~ msgstr "区域与语言设置"
+
+#~ msgid "System Indicators"
+#~ msgstr "系统指示器"
+
+#~ msgid "This applet contains system indicators"
+#~ msgstr "此小程序包含系统的指示器"
+
+#~ msgid "UPS"
+#~ msgstr "UPS"
+
+#~ msgid "Battery"
+#~ msgstr "电池"
+
+#~ msgid "Fully Charged"
+#~ msgstr "已充满电"
+
+#~ msgid "Empty"
+#~ msgstr "电池已空"
+
+#~ msgid "Not Charging"
+#~ msgstr "未在充电"
+
+#~ msgid "Estimating..."
+#~ msgstr "正在估计…"
+
+#, c-format
+#~ msgid "%.0f:%02.0f Remaining (%.0f%%)"
+#~ msgstr "剩余 %.0f:%02.0f (%.0f%%)"
+
+#, c-format
+#~ msgid "%.0f:%02.0f Until Full (%.0f%%)"
+#~ msgstr "还有 %.0f:%02.0f 充满 (%.0f%%)"
+
+#~ msgid "Power Settings"
+#~ msgstr "电源设置"
+
+#~ msgid "Volume changed"
+#~ msgstr "音量已变更"
+
+#~ msgid "Mute"
+#~ msgstr "静音"
+
+#~ msgid "Input"
+#~ msgstr "输入"
+
+#~ msgid "Output"
+#~ msgstr "输出"
+
+#~ msgid "Muted"
+#~ msgstr "静音"
 
 # 这是 msgid bug?
 #~ msgid "nm-device-wireless"
