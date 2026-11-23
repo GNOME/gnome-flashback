@@ -33,8 +33,6 @@ struct _GfIBusManager
   GfCandidatePopup *candidate_popup;
   IBusBus          *ibus;
 
-  GSubprocess      *subprocess;
-
   GHashTable       *engines;
 
   IBusPanelService *panel_service;
@@ -63,24 +61,6 @@ static guint signals[LAST_SIGNAL] = { 0 };
 G_DEFINE_TYPE (GfIBusManager, gf_ibus_manager, G_TYPE_OBJECT)
 
 static void
-spawn (GfIBusManager *manager)
-{
-  GError *error;
-
-  error = NULL;
-  manager->subprocess = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_SILENCE |
-                                          G_SUBPROCESS_FLAGS_STDERR_SILENCE,
-                                          &error, "ibus-daemon", "--xim",
-                                          "--panel", "disable", NULL);
-
-  if (error != NULL)
-    {
-      g_warning ("Failed to launch ibus-daemon: %s", error->message);
-      g_error_free (error);
-    }
-}
-
-static void
 clear (GfIBusManager *manager)
 {
   gf_candidate_popup_set_panel_service (manager->candidate_popup, NULL);
@@ -100,8 +80,6 @@ clear (GfIBusManager *manager)
   manager->register_properties_id = 0;
 
   g_signal_emit (manager, signals[SIGNAL_READY], 0, FALSE);
-
-  spawn (manager);
 }
 
 static void
@@ -395,7 +373,6 @@ gf_ibus_manager_dispose (GObject *object)
     }
 
   g_clear_object (&manager->ibus);
-  g_clear_object (&manager->subprocess);
 
   if (manager->engines != NULL)
     {
@@ -481,8 +458,6 @@ gf_ibus_manager_init (GfIBusManager *manager)
 
   g_signal_connect (manager->ibus, "global-engine-changed",
                     G_CALLBACK (global_engine_changed_cb), manager);
-
-  spawn (manager);
 }
 
 GfIBusManager *
